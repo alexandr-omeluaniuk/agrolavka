@@ -23,48 +23,34 @@
                         <div class="col-sm-6">
 
                             <div class="footer-info">
-                                <h3>Rapid</h3>
-                                <p>Cras fermentum odio eu feugiat lide par naso tierra. Justo eget nada terra videa magna derita valies darta donna mare fermentum iaculis eu non diam phasellus. Scelerisque felis imperdiet proin fermentum leo. Amet volutpat consequat mauris nunc congue.</p>
+                                <h3>Агролавка</h3>
+                                <p>Наш магазин «Агролавка» открылся в июне 2020 года. Наша главная цель предложить нашим клиентам самый широкий выбор товаров для сада и дачи по самым низким ценам. Мы настроены на долгосрочное сотрудничество и очень надеемся, что Вы станете нашим постоянным клиентом.</p>
                             </div>
-
-                            <div class="footer-newsletter">
-                                <h4>Our Newsletter</h4>
-                                <p>Tamen quem nulla quae legam multos aute sint culpa legam noster magna veniam enim veniam illum dolore legam minim quorum culpa amet magna export quem.</p>
-                                <form action="" method="post">
-                                    <input type="email" name="email"><input type="submit" value="Subscribe">
-                                </form>
+                            
+                            <div class="footer-links">
+                                <h4>Контакты</h4>
+                                <p>
+                                    ул.Мелиоративная, 61 <br>
+                                    г.Дрогичин, 225612<br>
+                                    Республика Беларусь <br>
+                                    <strong>Телефон:</strong> +375 29 871-37-58<br>
+                                    <strong>Email:</strong> info@example.com<br>
+                                </p>
                             </div>
 
                         </div>
 
                         <div class="col-sm-6">
                             <div class="footer-links">
-                                <h4>Useful Links</h4>
+                                <h4>Полезные ссылки</h4>
                                 <ul>
-                                    <li><a href="#">Home</a></li>
-                                    <li><a href="#about">About us</a></li>
-                                    <li><a href="#">Services</a></li>
-                                    <li><a href="#">Terms of service</a></li>
-                                    <li><a href="#">Privacy policy</a></li>
+                                    <li><a href="/">Главная</a></li>
+                                    <li><a href="/about">О нас</a></li>
                                 </ul>
                             </div>
-
-                            <div class="footer-links">
-                                <h4>Contact Us</h4>
-                                <p>
-                                    A108 Adam Street <br>
-                                    New York, NY 535022<br>
-                                    United States <br>
-                                    <strong>Phone:</strong> +1 5589 55488 55<br>
-                                    <strong>Email:</strong> info@example.com<br>
-                                </p>
-                            </div>
-
+                            
                             <div class="social-links">
-                                <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
-                                <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
-                                <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
-                                <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
+                                <a href="https://www.instagram.com/agrolavka.by" class="instagram"><i class="bi bi-instagram"></i></a>
                             </div>
 
                         </div>
@@ -75,34 +61,13 @@
 
                 <div class="col-lg-6">
 
-                    <div class="form">
-
-                        <h4>Send us a message</h4>
-                        <p>Eos ipsa est voluptates. Nostrum nam libero ipsa vero. Debitis quasi sit eaque numquam similique commodi harum aut temporibus.</p>
-
-                        <form action="forms/contact.php" method="post" role="form" class="php-email-form">
-                            <div class="form-group">
-                                <input type="text" name="name" class="form-control" id="name" placeholder="Your Name" required>
-                            </div>
-                            <div class="form-group mt-3">
-                                <input type="email" class="form-control" name="email" id="email" placeholder="Your Email" required>
-                            </div>
-                            <div class="form-group mt-3">
-                                <input type="text" class="form-control" name="subject" id="subject" placeholder="Subject" required>
-                            </div>
-                            <div class="form-group mt-3">
-                                <textarea class="form-control" name="message" rows="5" placeholder="Message" required></textarea>
-                            </div>
-
-                            <div class="my-3">
-                                <div class="loading">Loading</div>
-                                <div class="error-message"></div>
-                                <div class="sent-message">Your message has been sent. Thank you!</div>
-                            </div>
-
-                            <div class="text-center"><button type="submit" title="Send Message">Send Message</button></div>
+                    <div class="footer-newsletter">
+                        <h4>Лента новостей</h4>
+                        <p>Большое поступление семян овощных и цветочных культур,элитные голландские обработанные семена, лук-севок из Голландии, грунты для рассады, горшки, ящики, пакеты для рассады, удобрения, средства защиты растений. Также принимаем заказы на интересующие вас удобрения, СЗР(химию), плёнку, капельный полив и др. по индивидуальным ценам!<br/>
+                            Приглашаем за покупками!!!</p>
+                        <form action="" method="post">
+                            <input type="email" name="email"><input type="submit" value="Подписаться">
                         </form>
-
                     </div>
 
                 </div>
@@ -114,7 +79,7 @@
 
     <div class="container">
         <div class="copyright">
-            &copy; Copyright <strong>Rapid</strong>. All Rights Reserved
+            &copy; <strong>Агролавка</strong>. Все права защищены
         </div>
         <div class="credits">
             <!--

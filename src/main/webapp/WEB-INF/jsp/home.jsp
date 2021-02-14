@@ -12,10 +12,7 @@
         <div class="container d-flex h-100">
             <div class="row justify-content-center" data-aos="fade-up" style="width: 100%">
                 <div class="col-lg-8 intro-info order-lg-first order-last" data-aos="zoom-in" data-aos-delay="100">
-                    <h2>Rapid Solutions<br>for Your <span>Business!</span></h2>
-                    <div>
-                        <a href="#about" class="btn-get-started scrollto">Get Started</a>
-                    </div>
+                    <h2>Самый большой ассортимент<br>товаров для сада и огорода в <span>Дрогичине!</span></h2>
                 </div>
 
                 <div id="highlights" class="col-lg-4 intro-info order-lg-last order-first" data-aos="zoom-in" data-aos-delay="100">
