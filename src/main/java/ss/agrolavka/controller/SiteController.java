@@ -19,4 +19,8 @@ public class SiteController {
     public String home(Model model) {
         return "home";
     }
+    @RequestMapping("/about")
+    public String about(Model model) {
+        return "about";
+    }
 }
