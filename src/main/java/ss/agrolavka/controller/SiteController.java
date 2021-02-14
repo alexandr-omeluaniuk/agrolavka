@@ -16,8 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class SiteController {
     @RequestMapping("/")
-    public String hello(Model model) {
-        model.addAttribute("name", "Alex");
-        return "welcome";
+    public String home(Model model) {
+        return "home";
     }
 }
