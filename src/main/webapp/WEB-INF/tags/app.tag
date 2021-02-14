@@ -8,6 +8,7 @@
 
 <%-- The list of normal or fragment attributes can be specified here: --%>
 <%@attribute name="title" required="true"%>
+<%@attribute name="activePage" required="true"%>
 
 <%-- any content can be specified here e.g.: --%>
 <!DOCTYPE html>
@@ -47,7 +48,7 @@
     </head>
 
     <body>
-        <t:navbar></t:navbar>
+        <t:navbar activePage="${activePage}"></t:navbar>
         <jsp:doBody/>
         <t:footer></t:footer>
 
