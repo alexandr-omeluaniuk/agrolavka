@@ -1,0 +1,11 @@
+## YAML Template.
+---
+server:
+  port: 9090
+application:
+  version: 1.0
+spring:
+  mvc:
+    view:
+      prefix: /WEB-INF/jsp/
+      suffix: .jsp
