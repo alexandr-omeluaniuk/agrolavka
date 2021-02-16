@@ -5,10 +5,18 @@
  */
 package ss.agrolavka.service;
 
+import java.util.List;
+import ss.agrolavka.model.ProductsGroup;
+
 /**
  * My Sklad integration service.
  * @author alex
  */
 public interface MySkladIntegrationService {
-    
+    /**
+     * Get product groups.
+     * @return list of product groups.
+     * @throws Exception error.
+     */
+    List<ProductsGroup> getProductGroups() throws Exception;
 }

@@ -7,12 +7,15 @@ package ss.agrolavka.service.impl;
 
 import java.io.InputStream;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import javax.annotation.PostConstruct;
 import javax.net.ssl.HttpsURLConnection;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +24,7 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import ss.agrolavka.AgrolavkaConfiguration;
+import ss.agrolavka.model.ProductsGroup;
 import ss.agrolavka.service.MySkladIntegrationService;
 
 /**
@@ -45,6 +49,36 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
     @PostConstruct
     protected void init() {
         acquireToken();
+        getProducts();
+    }
+    private void getProducts() {
+        try {
+            String response = request("/entity/product", "GET");
+        } catch (Exception e) {
+            LOG.error("Can't request list of products");
+        }
+    }
+    
+    @Override
+    public List<ProductsGroup> getProductGroups() throws Exception {
+        String response = request("/entity/productfolder", "GET");
+        JSONObject json = new JSONObject(response);
+        List<ProductsGroup> result = new ArrayList<>();
+        JSONArray rows = json.getJSONArray("rows");
+        for (int i = 0; i < rows.length(); i++) {
+            JSONObject item = rows.getJSONObject(i);
+            ProductsGroup productGroup = new ProductsGroup();
+            productGroup.setExternalId(item.getString("id"));
+            productGroup.setName(item.getString("name"));
+            if (item.has("productFolder")) {
+                String link = item.getJSONObject("productFolder").getJSONObject("meta").getString("href");
+                productGroup.setParentId(link.substring(link.lastIndexOf("/")));
+            }
+            LOG.debug(productGroup.toString());
+            result.add(productGroup);
+        }
+        LOG.debug("loaded product groups [" + result.size() + "]");
+        return result;
     }
     // ============================================= PRIVATE ==========================================================
     /**
@@ -67,6 +101,12 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
         } catch (Exception ex) {
             LOG.error("Can't perform MySklad authorization!", ex);
         }
+    }
+    
+    private String request(String url, String method) throws Exception {
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Authorization", "Bearer " + token);
+        return request(url, method, headers);
     }
     
     private String request(String url, String method, Map<String, String> headers) throws Exception {
