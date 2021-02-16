@@ -15,5 +15,32 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ConfigurationProperties(prefix = "agrolavka")
 public class AgrolavkaConfiguration {
-    
+    /** My sklad: username. */
+    private String mySkladUsername;
+    /** My sklad: password. */
+    private String mySkladPassword;
+    /**
+     * @return the mySkladUsername
+     */
+    public String getMySkladUsername() {
+        return mySkladUsername;
+    }
+    /**
+     * @param mySkladUsername the mySkladUsername to set
+     */
+    public void setMySkladUsername(String mySkladUsername) {
+        this.mySkladUsername = mySkladUsername;
+    }
+    /**
+     * @return the mySkladPassword
+     */
+    public String getMySkladPassword() {
+        return mySkladPassword;
+    }
+    /**
+     * @param mySkladPassword the mySkladPassword to set
+     */
+    public void setMySkladPassword(String mySkladPassword) {
+        this.mySkladPassword = mySkladPassword;
+    }
 }
