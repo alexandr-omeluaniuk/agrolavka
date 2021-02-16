@@ -10,10 +10,14 @@
 
 <%-- any content can be specified here e.g.: --%>
 
-<h3 class="card-title">Наша продукция</h3>
-<ul class="list-group shadow-sm p-3 mb-5 bg-body rounded">
-            <li class="list-group-item">An item</li>
-            <li class="list-group-item">A second item</li>
-            <li class="list-group-item">A third item</li>
-            <li class="list-group-item">And a fifth one</li>
-        </ul>
+<h3>Наша продукция</h3>
+<ul class="list-group shadow-lg rounded-3">
+    <li class="list-group-item d-flex justify-content-between align-items-center">An item <i class="fas fa-plus-circle"></i></li>
+        <li class="list-group-item" style="padding-left: 32px">Nested 1</li>
+        <li class="list-group-item" style="padding-left: 32px">Nested 2</li>
+    <li class="list-group-item">A second item</li>
+    <li class="list-group-item">A third item</li>
+        <li class="list-group-item" style="padding-left: 32px">Nested 1</li>
+        <li class="list-group-item" style="padding-left: 32px">Nested 2</li>
+    <li class="list-group-item">And a fifth one</li>
+</ul>
