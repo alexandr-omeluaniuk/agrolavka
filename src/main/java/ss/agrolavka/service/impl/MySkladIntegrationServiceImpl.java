@@ -13,7 +13,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
-import javax.annotation.PostConstruct;
 import javax.net.ssl.HttpsURLConnection;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -43,14 +42,7 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
     private AgrolavkaConfiguration configuration;
     /** Authorization token. */
     private String token;
-    /**
-     * Initialization.
-     */
-    @PostConstruct
-    protected void init() {
-        acquireToken();
-        getProducts();
-    }
+
     private void getProducts() {
         try {
             String response = request("/entity/product", "GET");
@@ -58,7 +50,19 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
             LOG.error("Can't request list of products");
         }
     }
-    
+    @Override
+    public void authentication() throws Exception {
+        Map<String, String> headers = new HashMap<>();
+        String credentials = configuration.getMySkladUsername() + ":" + configuration.getMySkladPassword();
+        credentials = Base64.getEncoder().encodeToString(credentials.getBytes("UTF-8"));
+        LOG.debug("credentials: " + credentials);
+        headers.put("Authorization", "Basic " + credentials);
+        String tokenResponse = request("/security/token", "POST", headers);
+        LOG.info("security token: " + tokenResponse);
+        JSONObject json = new JSONObject(tokenResponse);
+        token = json.getString("access_token");
+        LOG.debug("new acquired token: " + token);
+    }
     @Override
     public List<ProductsGroup> getProductGroups() throws Exception {
         String response = request("/entity/productfolder", "GET");
@@ -81,27 +85,6 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
         return result;
     }
     // ============================================= PRIVATE ==========================================================
-    /**
-     * Get new security token.
-     * @return new security token.
-     * @throws Exception 
-     */
-    private void acquireToken() {
-        try {
-            Map<String, String> headers = new HashMap<>();
-            String credentials = configuration.getMySkladUsername() + ":" + configuration.getMySkladPassword();
-            credentials = Base64.getEncoder().encodeToString(credentials.getBytes("UTF-8"));
-            LOG.debug("credentials: " + credentials);
-            headers.put("Authorization", "Basic " + credentials);
-            String tokenResponse = request("/security/token", "POST", headers);
-            LOG.info("security token: " + tokenResponse);
-            JSONObject json = new JSONObject(tokenResponse);
-            token = json.getString("access_token");
-            LOG.debug("new acquired token: " + token);
-        } catch (Exception ex) {
-            LOG.error("Can't perform MySklad authorization!", ex);
-        }
-    }
     
     private String request(String url, String method) throws Exception {
         Map<String, String> headers = new HashMap<>();

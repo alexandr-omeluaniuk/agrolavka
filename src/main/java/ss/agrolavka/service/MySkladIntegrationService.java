@@ -14,6 +14,11 @@ import ss.agrolavka.model.ProductsGroup;
  */
 public interface MySkladIntegrationService {
     /**
+     * Authentication.
+     * @throws Exception error.
+     */
+    void authentication() throws Exception;
+    /**
      * Get product groups.
      * @return list of product groups.
      * @throws Exception error.
