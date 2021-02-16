@@ -23,6 +23,7 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import ss.agrolavka.AgrolavkaConfiguration;
+import ss.agrolavka.model.Product;
 import ss.agrolavka.model.ProductsGroup;
 import ss.agrolavka.service.MySkladIntegrationService;
 
@@ -42,14 +43,6 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
     private AgrolavkaConfiguration configuration;
     /** Authorization token. */
     private String token;
-
-    private void getProducts() {
-        try {
-            String response = request("/entity/product", "GET");
-        } catch (Exception e) {
-            LOG.error("Can't request list of products");
-        }
-    }
     @Override
     public void authentication() throws Exception {
         Map<String, String> headers = new HashMap<>();
@@ -82,6 +75,34 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
             result.add(productGroup);
         }
         LOG.debug("loaded product groups [" + result.size() + "]");
+        return result;
+    }
+    @Override
+    public List<Product> getProducts() throws Exception {
+        String response = request("/entity/product", "GET");
+        JSONObject json = new JSONObject(response);
+        List<Product> result = new ArrayList<>();
+        JSONArray rows = json.getJSONArray("rows");
+        for (int i = 0; i < rows.length(); i++) {
+            JSONObject item = rows.getJSONObject(i);
+            Product product = new Product();
+            product.setExternalId(item.getString("id"));
+            product.setName(item.getString("name"));
+            if (item.has("productFolder")) {
+                String link = item.getJSONObject("productFolder").getJSONObject("meta").getString("href");
+                product.setProductGroupId(link.substring(link.lastIndexOf("/") + 1));
+            }
+            if (item.has("salePrices")) {
+                JSONArray prices = item.getJSONArray("salePrices");
+                for (int j = 0; j < prices.length(); j++) {
+                    JSONObject price = prices.getJSONObject(j);
+                    product.setPrice(price.getDouble("value"));
+                }
+            }
+            LOG.debug(product.toString());
+            result.add(product);
+        }
+        LOG.debug("loaded products [" + result.size() + "]");
         return result;
     }
     // ============================================= PRIVATE ==========================================================

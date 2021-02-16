@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import ss.agrolavka.dao.CoreDAO;
+import ss.agrolavka.model.Product;
 import ss.agrolavka.model.ProductsGroup;
 import ss.agrolavka.service.MySkladIntegrationService;
 
@@ -45,9 +46,13 @@ class DataUpdater {
             LOG.info("authentication completed...");
             List<ProductsGroup> productGroups = mySkladIntegrationService.getProductGroups();
             LOG.info("product groups [" + productGroups.size() + "]");
+            List<Product> products = mySkladIntegrationService.getProducts();
+            LOG.info("products [" + productGroups.size() + "]");
             LOG.info("update database...");
             coreDAO.deleteAll(ProductsGroup.class);
             coreDAO.massCreate(productGroups);
+            coreDAO.deleteAll(Product.class);
+            coreDAO.massCreate(products);
             LOG.info("database updated...");
             LOG.info("time [" + (System.currentTimeMillis() - start) + "] ms");
             LOG.info("===============================================================================================");

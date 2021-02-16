@@ -6,6 +6,7 @@
 package ss.agrolavka.service;
 
 import java.util.List;
+import ss.agrolavka.model.Product;
 import ss.agrolavka.model.ProductsGroup;
 
 /**
@@ -24,4 +25,10 @@ public interface MySkladIntegrationService {
      * @throws Exception error.
      */
     List<ProductsGroup> getProductGroups() throws Exception;
+    /**
+     * Get products.
+     * @return products.
+     * @throws Exception error.
+     */
+    List<Product> getProducts() throws Exception;
 }
