@@ -46,7 +46,8 @@ class DataUpdater {
             List<ProductsGroup> productGroups = mySkladIntegrationService.getProductGroups();
             LOG.info("product groups [" + productGroups.size() + "]");
             LOG.info("update database...");
-            
+            coreDAO.deleteAll(ProductsGroup.class);
+            coreDAO.massCreate(productGroups);
             LOG.info("database updated...");
             LOG.info("time [" + (System.currentTimeMillis() - start) + "] ms");
             LOG.info("===============================================================================================");

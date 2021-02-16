@@ -6,6 +6,7 @@
 package ss.agrolavka.dao.impl;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -57,5 +58,14 @@ class CoreDAOImpl implements CoreDAO {
         CriteriaDelete<T> criteria = cb.createCriteriaDelete(cl);
         Root<T> c = criteria.from(cl);
         em.createQuery(criteria).executeUpdate();
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public <T> void massCreate(List<T> list) throws Exception {
+        for (T entity : list) {
+            em.persist(entity);
+        }
+        em.flush();
     }
 }

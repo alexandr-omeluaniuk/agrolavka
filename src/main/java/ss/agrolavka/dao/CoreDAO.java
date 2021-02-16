@@ -6,6 +6,7 @@
 package ss.agrolavka.dao;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Core DAO API.
@@ -50,4 +51,11 @@ public interface CoreDAO {
      * @throws Exception error.
      */
     <T> void deleteAll(Class<T> cl) throws Exception;
+    /**
+     * Mass creation.
+     * @param <T> entity type.
+     * @param list list of entities.
+     * @throws Exception error.
+     */
+    <T> void massCreate(List<T> list) throws Exception; 
 }
