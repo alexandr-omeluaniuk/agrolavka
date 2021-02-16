@@ -51,7 +51,7 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
         LOG.debug("credentials: " + credentials);
         headers.put("Authorization", "Basic " + credentials);
         String tokenResponse = request("/security/token", "POST", headers);
-        LOG.info("security token: " + tokenResponse);
+        LOG.debug("security token: " + tokenResponse);
         JSONObject json = new JSONObject(tokenResponse);
         token = json.getString("access_token");
         LOG.debug("new acquired token: " + token);
