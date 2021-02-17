@@ -39,11 +39,22 @@ public class CatalogDrawer {
         "</h2>" +
         "<div id=\"collapse-product-group-%s\" class=\"accordion-collapse collapse\"" +
                 "aria-labelledby=\"heading-product-group-%s\" data-bs-parent=\"#catalog-%s\">" +
-            "<div class=\"accordion-body\">" +
+            "<div class=\"accordion-body catalog-body\">" +
                 "%s" +                    
             "</div>" +
         "</div>" +
-    "</div>"; 
+    "</div>";
+    private static final String ACCORDION_ITEM_HTML_LEAF = 
+    "<div class=\"accordion-item\">" +
+        "<h2 class=\"accordion-header\" id=\"heading-product-group-%s\">" +
+            "<button class=\"accordion-button collapsed accordion-button-leaf\" type=\"button\" " +
+                    "data-bs-toggle=\"collapse\"" + 
+                    "data-bs-target=\"#collapse-product-group-%s\" aria-expanded=\"true\"" + 
+                    "aria-controls=\"collapse-product-group-%s\">" +
+                "%s" +
+            "</button>" +
+        "</h2>" +
+    "</div>";
     /**
      * Draw catalog HTML template.
      * @return HTML string.
@@ -80,14 +91,18 @@ public class CatalogDrawer {
         StringBuilder sb = new StringBuilder();
         StringBuilder childsSb = new StringBuilder();
         if (groupsMap.containsKey(group.getExternalId())) {
-            childsSb.append("<div class=\"accordion\" id=\"catalog-" + nextLevel + "\">");
+            childsSb.append("<div class=\"accordion\" id=\"catalog-" + nextLevel
+                    + "\" style=\"margin-left: " + (nextLevel * 16) + "px\">");
             for (ProductsGroup child : groupsMap.get(group.getExternalId())) {
                 childsSb.append(drawCatalogItem(child, groupsMap, nextLevel));
             }
             childsSb.append("</div>");
-        }
-        sb.append(String.format(ACCORDION_ITEM_HTML, group.getId(), group.getId(), group.getId(), group.getName(),
+            sb.append(String.format(ACCORDION_ITEM_HTML, group.getId(), group.getId(), group.getId(), group.getName(),
                 group.getId(), group.getId(), level, childsSb.toString()));
+        } else {
+            sb.append(String.format(ACCORDION_ITEM_HTML_LEAF, group.getId(), group.getId(), group.getId(),
+                    group.getName()));
+        }
         return sb.toString();
     }
 }

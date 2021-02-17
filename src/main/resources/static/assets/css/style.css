@@ -1587,3 +1587,16 @@ section {
     border-radius: 8px;
 }
 
+
+/*--------------------------------------------------------------
+# Catalog
+--------------------------------------------------------------*/
+.accordion-button-leaf:after {
+    background-image: none !important;
+}
+.catalog-body {
+    padding: 0;
+    padding-bottom: 8px;
+    padding-right: 4px;
+}
+
