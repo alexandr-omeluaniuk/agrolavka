@@ -21,7 +21,7 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "products_group")
-public class ProductsGroup implements Serializable {
+public class ProductsGroup implements Serializable, Comparable<ProductsGroup> {
     /** Default UID. */
     private static final long serialVersionUID = 1L;
     // =============================================== FIELDS =========================================================
@@ -111,5 +111,10 @@ public class ProductsGroup implements Serializable {
     public String toString() {
         return "ss.agrolavka.model.ProductsGroup[ id=" + getId() + ", name=" + getName()
                 + ", externalId=" + getExternalId() + ", parentId=" + getParentId() + " ]";
+    }
+
+    @Override
+    public int compareTo(ProductsGroup o) {
+        return getName().compareTo(o.getName());
     }
 }

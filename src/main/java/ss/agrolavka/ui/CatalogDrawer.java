@@ -6,6 +6,7 @@
 package ss.agrolavka.ui;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,22 +38,23 @@ public class CatalogDrawer {
                 "%s" +
             "</button>" +
         "</h2>" +
-        "<div id=\"collapse-product-group-%s\" class=\"accordion-collapse collapse\"" +
+        "<div id=\"collapse-product-group-%s\" class=\"accordion-collapse collapse nested-catalog\"" +
                 "aria-labelledby=\"heading-product-group-%s\" data-bs-parent=\"#catalog-%s\">" +
             "<div class=\"accordion-body catalog-body\">" +
                 "%s" +                    
             "</div>" +
         "</div>" +
     "</div>";
+    /** Accordion leaf item HTML template. */
     private static final String ACCORDION_ITEM_HTML_LEAF = 
     "<div class=\"accordion-item\">" +
         "<h2 class=\"accordion-header\" id=\"heading-product-group-%s\">" +
-            "<button class=\"accordion-button collapsed accordion-button-leaf\" type=\"button\" " +
+            "<a class=\"accordion-button collapsed accordion-button-leaf\" type=\"button\" " +
                     "data-bs-toggle=\"collapse\"" + 
                     "data-bs-target=\"#collapse-product-group-%s\" aria-expanded=\"true\"" + 
-                    "aria-controls=\"collapse-product-group-%s\">" +
+                    "aria-controls=\"collapse-product-group-%s\" href=\"/catalog/%s/%s\">" +
                 "%s" +
-            "</button>" +
+            "</a>" +
         "</h2>" +
     "</div>";
     /**
@@ -76,6 +78,7 @@ public class CatalogDrawer {
                     roots.add(group);
                 }
             }
+            Collections.sort(roots);
             for (ProductsGroup root : roots) {
                 sb.append(drawCatalogItem(root, groupsMap, 0));
             }
@@ -92,8 +95,10 @@ public class CatalogDrawer {
         StringBuilder childsSb = new StringBuilder();
         if (groupsMap.containsKey(group.getExternalId())) {
             childsSb.append("<div class=\"accordion\" id=\"catalog-" + nextLevel
-                    + "\" style=\"margin-left: " + (nextLevel * 16) + "px\">");
-            for (ProductsGroup child : groupsMap.get(group.getExternalId())) {
+                    + "\" style=\"padding-left: 32px\">");
+            List<ProductsGroup> childs = groupsMap.get(group.getExternalId());
+            Collections.sort(childs);
+            for (ProductsGroup child : childs) {
                 childsSb.append(drawCatalogItem(child, groupsMap, nextLevel));
             }
             childsSb.append("</div>");
@@ -101,7 +106,7 @@ public class CatalogDrawer {
                 group.getId(), group.getId(), level, childsSb.toString()));
         } else {
             sb.append(String.format(ACCORDION_ITEM_HTML_LEAF, group.getId(), group.getId(), group.getId(),
-                    group.getName()));
+                    group.getExternalId(), group.getName(), group.getName()));
         }
         return sb.toString();
     }

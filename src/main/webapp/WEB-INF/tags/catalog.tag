@@ -9,4 +9,5 @@
 <%-- The list of normal or fragment attributes can be specified here: --%>
 
 <%-- any content can be specified here e.g.: --%>
+<h4>Каталог продукции</h4>
 ${catalog}

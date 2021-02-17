@@ -277,5 +277,14 @@
       mirror: false
     })
   });
+  
+    var elements = document.getElementsByClassName("accordion-button-leaf");
+
+    for (var i = 0; i < elements.length; i++) {
+        elements[i].addEventListener('click', function () {
+            var attribute = this.getAttribute("href");
+            window.location.href = attribute;
+        }, false);
+    }
 
 })()

@@ -7,7 +7,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 
-<t:app title="Агролавка | Главная" activePage="HOME">
+<t:app title="Агролавка | ${title}" activePage="HOME">
 
     <section id="hero" class="clearfix">
         <div class="container h-100">

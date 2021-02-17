@@ -1596,7 +1596,12 @@ section {
 }
 .catalog-body {
     padding: 0;
-    padding-bottom: 8px;
-    padding-right: 4px;
+}
+.accordion-button:not(.collapsed) {
+    color: #212529;
+    background-color: white;
+}
+.nested-catalog {
+    border: none;
 }
 
