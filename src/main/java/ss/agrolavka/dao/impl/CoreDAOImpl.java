@@ -11,6 +11,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaDelete;
+import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
@@ -67,5 +68,13 @@ class CoreDAOImpl implements CoreDAO {
             em.persist(entity);
         }
         em.flush();
+    }
+    @Override
+    @Transactional(propagation = Propagation.SUPPORTS)
+    public <T> List<T> getAll(Class<T> cl) throws Exception {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<T> criteria = cb.createQuery(cl);
+        Root<T> c = criteria.from(cl);
+        return em.createQuery(criteria).getResultList();
     }
 }

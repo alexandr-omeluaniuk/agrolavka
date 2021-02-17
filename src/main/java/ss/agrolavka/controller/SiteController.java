@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import ss.agrolavka.service.MySkladIntegrationService;
+import ss.agrolavka.ui.CatalogDrawer;
 
 /**
  *
@@ -18,9 +18,10 @@ import ss.agrolavka.service.MySkladIntegrationService;
 @Controller
 public class SiteController {
     @Autowired
-    private MySkladIntegrationService service;
+    private CatalogDrawer catalogDrawer;
     @RequestMapping("/")
     public String home(Model model) {
+        model.addAttribute("catalog", catalogDrawer.draw());
         return "home";
     }
     @RequestMapping("/about")
