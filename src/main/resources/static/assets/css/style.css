@@ -564,11 +564,11 @@ section {
 
 /* Services Section
 --------------------------------*/
-#services {
+#products {
   padding: 60px 0 40px 0;
 }
 
-#services .box {
+#products .box {
   padding: 30px;
   position: relative;
   overflow: hidden;
@@ -580,11 +580,11 @@ section {
   text-align: center;
 }
 
-#services .box:hover {
+#products .box:hover {
   transform: scale(1.1);
 }
 
-#services .icon {
+#products .icon {
   margin: 0 auto 15px auto;
   padding-top: 12px;
   display: inline-block;
@@ -594,26 +594,26 @@ section {
   height: 60px;
 }
 
-#services .icon i {
+#products .icon i {
   font-size: 36px;
   line-height: 0;
 }
 
-#services .title {
+#products .title {
   font-weight: 700;
   margin-bottom: 15px;
   font-size: 18px;
 }
 
-#services .title a {
+#products .title a {
   color: #111;
 }
 
-#services .box:hover .title a {
+#products .box:hover .title a {
   color: #1bb1dc;
 }
 
-#services .description {
+#products .description {
   font-size: 14px;
   line-height: 28px;
   margin-bottom: 0;

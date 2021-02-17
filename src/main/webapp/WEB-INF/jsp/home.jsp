@@ -8,6 +8,7 @@
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 
 <t:app title="Агролавка | Главная" activePage="HOME">
+
     <section id="hero" class="clearfix">
         <div class="container h-100">
             <div class="row justify-content-center">
@@ -17,12 +18,32 @@
             </div>
             <div class="row justify-content-center" data-aos="fade-up" style="width: 100%">
                 <div class="col-lg-4 intro-info order-lg-first order-last" data-aos="zoom-in" data-aos-delay="100">
-                    <t:catalog></t:catalog>
+                    
                 </div>
                 
                 <div class="col-lg-8 intro-info order-lg-first order-last" data-aos="zoom-in" data-aos-delay="100">
-                    TODO
+                    
                 </div>
             </div>
     </section>
+    <main id="main">
+        <section id="products" class="services">
+            <div class="container" data-aos="fade-up">
+                <header class="section-header">
+                    <h3>Наша продукция</h3>
+                    <p>ТОВАРЫ ДЛЯ САДА И ОГОРОДА</p>
+                </header>
+                <div class="row justify-content-center" data-aos="fade-up" style="width: 100%">
+                    <div class="col-lg-4 intro-info order-lg-first order-last" data-aos="zoom-in" data-aos-delay="100">
+                        <t:catalog></t:catalog>
+                        </div>
+
+                        <div class="col-lg-8 intro-info order-lg-first order-last" data-aos="zoom-in" data-aos-delay="100">
+                            TODO
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
 </t:app>
