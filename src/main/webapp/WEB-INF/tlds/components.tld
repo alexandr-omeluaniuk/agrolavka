@@ -20,4 +20,9 @@
           <listener-class>com.mycompany.TagLibListener</listener-class> 
       </listener>
     -->
+  <tag>
+    <name>menu-catalog</name>
+    <tag-class>ss.agrolavka.tag.MenuCatalogTag</tag-class>
+    <body-content>scriptless</body-content>
+  </tag>
 </taglib>

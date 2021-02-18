@@ -5,6 +5,7 @@
 --%>
 
 <%@tag description="put the tag description here" pageEncoding="UTF-8"%>
+<%@taglib prefix = "cmp" uri = "/WEB-INF/tlds/components.tld"%>
 
 <%-- The list of normal or fragment attributes can be specified here: --%>
 <%@attribute name="activePage" required="true"%>
@@ -21,8 +22,11 @@
             <ul>
                 <li><a class="nav-link scrollto ${activePage == "HOME" ? "active" : ""}" href="/">Главная</a></li>
                 <li><a class="nav-link scrollto ${activePage == "ABOUT" ? "active" : ""}" href="/about">О нас</a></li>
-                <li class="dropdown"><a href="#products"><span>Наша продукция</span> <i class="bi bi-chevron-down"></i></a>
-                    <ul>
+                <li><a class="nav-link scrollto" href="#products">Наша продукция</a></li>
+                
+                <li class="dropdown"><a href="#catalog"><span>Каталог</span> <i class="bi bi-chevron-down"></i></a>
+                    <cmp:menu-catalog></cmp:menu-catalog>
+                    <!--ul>
                         <li><a href="#">Drop Down 1</a></li>
                         <li class="dropdown"><a href="#"><span>Deep Drop Down</span> <i class="bi bi-chevron-right"></i></a>
                             <ul>
@@ -36,7 +40,7 @@
                         <li><a href="#">Drop Down 2</a></li>
                         <li><a href="#">Drop Down 3</a></li>
                         <li><a href="#">Drop Down 4</a></li>
-                    </ul>
+                    </ul-->
                 </li>
                 <li><a class="nav-link scrollto" href="#footer">Контакты</a></li>
             </ul>

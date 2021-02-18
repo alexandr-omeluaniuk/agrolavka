@@ -365,6 +365,7 @@ h1, h2, h3, h4, h5, h6 {
   position: relative;
   padding-top: 160px;
   padding-bottom: 160px;
+  height: 100vh;
 }
 
 #hero:before {
