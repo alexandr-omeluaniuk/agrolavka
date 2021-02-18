@@ -22,9 +22,10 @@
             <ul>
                 <li><a class="nav-link scrollto ${activePage == "HOME" ? "active" : ""}" href="/">Главная</a></li>
                 <li><a class="nav-link scrollto ${activePage == "ABOUT" ? "active" : ""}" href="/about">О нас</a></li>
-                <li><a class="nav-link scrollto" href="#products">Наша продукция</a></li>
-                
-                <li class="dropdown"><a href="#catalog"><span>Каталог</span> <i class="bi bi-chevron-down"></i></a>
+                <li class="dropdown">
+                    <a href="/catalog" class="${activePage == "PRODUCTS" ? "active" : ""}">
+                        <span>Наша продукция</span> <i class="bi bi-chevron-down"></i>
+                    </a>
                     <cmp:menu-catalog></cmp:menu-catalog>
                 </li>
                 <li><a class="nav-link scrollto" href="#footer">Контакты</a></li>

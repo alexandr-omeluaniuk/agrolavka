@@ -25,10 +25,15 @@ public class SiteController {
     public String about(Model model) {
         return "about";
     }
+    @RequestMapping("/catalog")
+    public String productsGroup(Model model) {
+        model.addAttribute("title", "Каталог");
+        return "catalog";
+    }
     @RequestMapping("/catalog/{groupId}/{name}")
     public String productsGroup(Model model, @PathVariable("groupId") String groupId,
             @PathVariable("name") String name) {
         model.addAttribute("title", name);
-        return "home";
+        return "catalog";
     }
 }
