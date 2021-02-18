@@ -25,4 +25,9 @@
     <tag-class>ss.agrolavka.tag.MenuCatalogTag</tag-class>
     <body-content>scriptless</body-content>
   </tag>
+  <tag>
+    <name>catalog</name>
+    <tag-class>ss.agrolavka.tag.CatalogTag</tag-class>
+    <body-content>scriptless</body-content>
+  </tag>
 </taglib>

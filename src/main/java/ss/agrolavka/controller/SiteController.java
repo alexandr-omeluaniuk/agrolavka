@@ -5,12 +5,10 @@
  */
 package ss.agrolavka.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import ss.agrolavka.ui.CatalogDrawer;
 
 /**
  *
@@ -18,11 +16,8 @@ import ss.agrolavka.ui.CatalogDrawer;
  */
 @Controller
 public class SiteController {
-    @Autowired
-    private CatalogDrawer catalogDrawer;
     @RequestMapping("/")
     public String home(Model model) {
-        model.addAttribute("catalog", catalogDrawer.draw());
         model.addAttribute("title", "Главная");
         return "home";
     }
@@ -33,7 +28,6 @@ public class SiteController {
     @RequestMapping("/catalog/{groupId}/{name}")
     public String productsGroup(Model model, @PathVariable("groupId") String groupId,
             @PathVariable("name") String name) {
-        model.addAttribute("catalog", catalogDrawer.draw());
         model.addAttribute("title", name);
         return "home";
     }

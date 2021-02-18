@@ -3,28 +3,31 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ss.agrolavka.ui;
+package ss.agrolavka.tag;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.servlet.jsp.JspWriter;
+import static javax.servlet.jsp.tagext.Tag.SKIP_BODY;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.servlet.tags.RequestContextAwareTag;
 import ss.agrolavka.dao.CoreDAO;
 import ss.agrolavka.model.ProductsGroup;
 
 /**
- * Draw catalog tree.
+ * Catalog tag.
  * @author alex
  */
-@Component
-public class CatalogDrawer {
+public class CatalogTag extends RequestContextAwareTag {
     /** Logger. */
-    private static final Logger LOG = LoggerFactory.getLogger(CatalogDrawer.class);
+    private static final Logger LOG = LoggerFactory.getLogger(CatalogTag.class);
     /** Core DAO. */
     @Autowired
     private CoreDAO coreDAO;
@@ -57,11 +60,9 @@ public class CatalogDrawer {
             "</a>" +
         "</h2>" +
     "</div>";
-    /**
-     * Draw catalog HTML template.
-     * @return HTML string.
-     */
-    public String draw() {
+    @Override
+    public void doFinally() {
+        JspWriter out = pageContext.getOut();
         try {
             StringBuilder sb = new StringBuilder();
             sb.append("<div class=\"accordion\" id=\"catalog-0\">");
@@ -83,12 +84,27 @@ public class CatalogDrawer {
                 sb.append(drawCatalogItem(root, groupsMap, 0));
             }
             sb.append("</div>");
-            return sb.toString();
-        } catch (Exception e) {
-            return "<h3 class=\"text-danger\">Произошла непредвиденная ошибка, приносим свои извинения</h3>";
+            out.print(sb.toString());
+        } catch (Exception ex) {
+            LOG.error("Catalog rendering error!", ex);
         }
     }
-    
+    @Override
+    protected int doStartTagInternal() throws Exception {
+        if (coreDAO == null) {
+            WebApplicationContext context = getRequestContext().getWebApplicationContext();
+            AutowireCapableBeanFactory autowireCapableBeanFactory = context.getAutowireCapableBeanFactory();
+            autowireCapableBeanFactory.autowireBean(this);
+        }
+        return SKIP_BODY;
+    }
+    /**
+     * Draw catalog item.
+     * @param group products group.
+     * @param groupsMap groups map.
+     * @param level item level.
+     * @return HTM template.
+     */
     private String drawCatalogItem(ProductsGroup group, Map<String, List<ProductsGroup>> groupsMap, Integer level) {
         Integer nextLevel = level + 1;
         StringBuilder sb = new StringBuilder();
