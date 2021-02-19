@@ -34,6 +34,7 @@ public class SiteController {
     public String productsGroup(Model model, @PathVariable("groupId") String groupId,
             @PathVariable("name") String name) {
         model.addAttribute("title", name);
+        model.addAttribute("groupId", groupId);
         return "catalog";
     }
 }

@@ -10,7 +10,7 @@
 
 <t:app title="Агролавка | ${title}" activePage="PRODUCTS">
     <main id="main">
-        <section id="products" class="services" style="height: 100vh; padding-top: 180px;">
+        <section id="products" class="services" style="padding-top: 180px;">
             <div class="container" data-aos="fade-up">
                 <header class="section-header">
                     <h3>Наша продукция</h3>
@@ -22,7 +22,7 @@
                         </div>
 
                         <div class="col-lg-8 intro-info order-lg-first order-last" data-aos="zoom-in" data-aos-delay="100">
-                            TODO
+                        <cmp:search-result-tag groupId="${groupId}"></cmp:search-result-tag>
                         </div>
                     </div>
                 </div>

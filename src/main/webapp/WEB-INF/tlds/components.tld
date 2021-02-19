@@ -30,4 +30,14 @@
     <tag-class>ss.agrolavka.tag.CatalogTag</tag-class>
     <body-content>scriptless</body-content>
   </tag>
+  <tag>
+    <name>search-result-tag</name>
+    <tag-class>ss.agrolavka.tag.SearchResultTag</tag-class>
+    <body-content>tagdependent</body-content>
+    <attribute>
+      <name>groupId</name>
+      <rtexprvalue>true</rtexprvalue>
+      <type>java.lang.String</type>
+    </attribute>
+  </tag>
 </taglib>
