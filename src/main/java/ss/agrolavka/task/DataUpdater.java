@@ -5,7 +5,12 @@
  */
 package ss.agrolavka.task;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +19,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import ss.agrolavka.dao.CoreDAO;
+import ss.agrolavka.dao.ProductDAO;
 import ss.agrolavka.model.Product;
 import ss.agrolavka.model.ProductsGroup;
 import ss.agrolavka.service.MySkladIntegrationService;
@@ -32,6 +38,9 @@ class DataUpdater {
     /** Core DAO. */
     @Autowired
     private CoreDAO coreDAO;
+    /** Product DAO. */
+    @Autowired
+    private ProductDAO productDAO;
     /**
      * Import MySklad data.
      */
@@ -44,20 +53,44 @@ class DataUpdater {
             LOG.info("start authentication...");
             mySkladIntegrationService.authentication();
             LOG.info("authentication completed...");
-            List<ProductsGroup> productGroups = mySkladIntegrationService.getProductGroups();
-            LOG.info("product groups [" + productGroups.size() + "]");
+            importProductGroups();
             List<Product> products = mySkladIntegrationService.getProducts();
-            LOG.info("products [" + productGroups.size() + "]");
-            LOG.info("update database...");
-            coreDAO.deleteAll(ProductsGroup.class);
-            coreDAO.massCreate(productGroups);
-            coreDAO.deleteAll(Product.class);
-            coreDAO.massCreate(products);
-            LOG.info("database updated...");
+            LOG.info("products [" + products.size() + "]");
             LOG.info("time [" + (System.currentTimeMillis() - start) + "] ms");
             LOG.info("===============================================================================================");
         } catch (Exception e) {
             LOG.error("Import MySklad data - fail!", e);
         }
+    }
+    
+    private void importProductGroups() throws Exception {
+        List<ProductsGroup> productGroups = mySkladIntegrationService.getProductGroups();
+        LOG.info("product groups [" + productGroups.size() + "]");
+        Map<String, ProductsGroup> groupsMap = new HashMap<>();
+        Set<String> actualGroupIDs = groupsMap.keySet();
+        for (ProductsGroup productGroup : productGroups) {
+            groupsMap.put(productGroup.getExternalId(), productGroup);
+        }
+        // update existing groups
+        List<ProductsGroup> existGroups = productDAO.getProductGroupsByExternalIds(actualGroupIDs);
+        Set<String> existGroupsIDs = new HashSet<>();
+        for (ProductsGroup eGroup : existGroups) {
+            ProductsGroup actualGroup = groupsMap.get(eGroup.getExternalId());
+            eGroup.setName(actualGroup.getName());
+            eGroup.setParentId(actualGroup.getParentId());
+            existGroupsIDs.add(eGroup.getExternalId());
+        }
+        coreDAO.massUpdate(existGroups);
+        // create new groups
+        actualGroupIDs.removeAll(existGroupsIDs);
+        List<ProductsGroup> newGroups = new ArrayList<>();
+        for (String newGroupExternalId : actualGroupIDs) {
+            ProductsGroup newProductGroup = groupsMap.get(newGroupExternalId);
+            LOG.info("create new group: " + newProductGroup);
+            newGroups.add(newProductGroup);
+        }
+        coreDAO.massCreate(newGroups);
+        // remove unused groups.
+        productDAO.removeProductGroupsByExternalIDs(groupsMap.keySet());
     }
 }

@@ -70,6 +70,14 @@ class CoreDAOImpl implements CoreDAO {
         em.flush();
     }
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public <T> void massUpdate(List<T> list) throws Exception {
+        for (T entity : list) {
+            em.merge(entity);
+        }
+        em.flush();
+    }
+    @Override
     @Transactional(propagation = Propagation.SUPPORTS)
     public <T> List<T> getAll(Class<T> cl) throws Exception {
         CriteriaBuilder cb = em.getCriteriaBuilder();

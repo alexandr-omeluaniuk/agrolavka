@@ -59,6 +59,13 @@ public interface CoreDAO {
      */
     <T> void massCreate(List<T> list) throws Exception;
     /**
+     * Mass update.
+     * @param <T> entity type.
+     * @param list list of entities.
+     * @throws Exception error.
+     */
+    <T> void massUpdate(List<T> list) throws Exception;
+    /**
      * Get all entities.
      * @param <T> entity type.
      * @param cl entity class.

@@ -6,11 +6,15 @@
 package ss.agrolavka.model;
 
 import java.io.Serializable;
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -44,6 +48,12 @@ public class Product implements Serializable {
     @NotNull
     @Column(name = "price", nullable = false)
     private Double price;
+    /** Images. */
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "product")
+    private List<ProductImage> images;
+    /** Has images. */
+    @Column(name = "has_images", nullable = false)
+    private boolean hasImages;
     // ============================================== SET & GET =======================================================
     /**
      * @return the id
@@ -104,6 +114,30 @@ public class Product implements Serializable {
      */
     public void setPrice(Double price) {
         this.price = price;
+    }
+    /**
+     * @return the images
+     */
+    public List<ProductImage> getImages() {
+        return images;
+    }
+    /**
+     * @param images the images to set
+     */
+    public void setImages(List<ProductImage> images) {
+        this.images = images;
+    }
+    /**
+     * @return the hasImages
+     */
+    public boolean isHasImages() {
+        return hasImages;
+    }
+    /**
+     * @param hasImages the hasImages to set
+     */
+    public void setHasImages(boolean hasImages) {
+        this.hasImages = hasImages;
     }
     // ================================================================================================================
     @Override
