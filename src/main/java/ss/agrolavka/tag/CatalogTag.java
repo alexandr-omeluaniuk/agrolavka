@@ -60,6 +60,8 @@ public class CatalogTag extends RequestContextAwareTag {
             "</a>" +
         "</h2>" +
     "</div>";
+    /** Product group ID. */
+    private Long groupId;
     @Override
     public void doFinally() {
         JspWriter out = pageContext.getOut();
@@ -89,6 +91,12 @@ public class CatalogTag extends RequestContextAwareTag {
             LOG.error("Catalog rendering error!", ex);
         }
     }
+    /**
+     * @param groupId the groupId to set
+     */
+    public void setGroupId(Long groupId) {
+        this.groupId = groupId;
+    }
     @Override
     protected int doStartTagInternal() throws Exception {
         if (coreDAO == null) {
@@ -110,8 +118,8 @@ public class CatalogTag extends RequestContextAwareTag {
         StringBuilder sb = new StringBuilder();
         StringBuilder childsSb = new StringBuilder();
         if (groupsMap.containsKey(group.getExternalId())) {
-            childsSb.append("<div class=\"accordion\" id=\"catalog-" + nextLevel
-                    + "\" style=\"padding-left: 32px\">");
+            childsSb.append("<div class=\"accordion\" id=\"catalog-")
+                    .append(nextLevel).append("\" style=\"padding-left: 32px\">");
             List<ProductsGroup> childs = groupsMap.get(group.getExternalId());
             Collections.sort(childs);
             for (ProductsGroup child : childs) {
