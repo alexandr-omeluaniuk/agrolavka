@@ -5,6 +5,7 @@
  */
 package ss.agrolavka.tag;
 
+import java.util.List;
 import javax.servlet.jsp.JspWriter;
 import static javax.servlet.jsp.tagext.Tag.SKIP_BODY;
 import org.slf4j.Logger;
@@ -14,7 +15,9 @@ import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.tags.RequestContextAwareTag;
 import ss.agrolavka.dao.CoreDAO;
+import ss.agrolavka.dao.ProductDAO;
 import ss.agrolavka.model.Product;
+import ss.agrolavka.wrapper.ProductsSearchRequest;
 
 /**
  * Search result tag.
@@ -30,19 +33,29 @@ public class SearchResultTag extends RequestContextAwareTag {
     /** Core DAO. */
     @Autowired
     private CoreDAO coreDAO;
+    /** Product DAO. */
+    @Autowired
+    private ProductDAO productDAO;
     /** Product group ID. */
-    private String groupId;
+    private Long groupId;
     @Override
     public void doFinally() {
         JspWriter out = pageContext.getOut();
+        ProductsSearchRequest searchRequest = new ProductsSearchRequest();
+        searchRequest.setGroupId(groupId);
+        searchRequest.setPage(1);
+        searchRequest.setPageSize(COLUMNS * ROWS);
         try {
+            List<Product> pageProducts = productDAO.search(searchRequest);
             out.print("<div class=\"container\">");
+            int counter = 0;
             for (int i = 0; i < ROWS; i++) {
                 out.print("<div class=\"row\">");
                 for (int j = 0; j < COLUMNS; j++) {
                     out.print("<div class=\"col-sm\">");
-                    out.print("TODO: Product");
+                    out.print(renderProductCard(pageProducts.size() > counter ? pageProducts.get(counter) : null));
                     out.print("</div>");
+                    counter++;
                 }
                 out.print("</div>");
             }
@@ -63,26 +76,22 @@ public class SearchResultTag extends RequestContextAwareTag {
     /**
      * @param groupId the groupId to set
      */
-    public void setGroupId(String groupId) {
+    public void setGroupId(Long groupId) {
         this.groupId = groupId;
     }
     // ============================================== PRIVATE =========================================================
     private String renderProductCard(Product product) {
+        if (product == null) {
+            return "<div class=\"empty-product-card\"></div>";
+        }
+        String imageLink = "/api/product-image/" + product.getId();
         StringBuilder sb = new StringBuilder();
-        sb.append("<div class=\"container mt-5 mb-5 d-flex justify-content-center align-items-center\">");
-            sb.append("<div class=\"card\">");
-                sb.append("<div class=\"inner-card\"> <img src=\"https://i.imgur.com/4qXhMAM.jpg\" class=\"img-fluid rounded\">");
-                    sb.append("<div class=\"d-flex justify-content-between align-items-center mt-3 px-2\">");
-                        sb.append("<h4>Worksheet chair </h4> <span class=\"heart\"><i class=\"fa fa-heart\"></i></span>");
-                    sb.append("</div>");
-                    sb.append("<div class=\"mt-2 px-2\"> <small>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium</small> </div>");
-                    sb.append("<div class=\"px-2\">");
-                        sb.append("<h3>$500</h3>");
-                    sb.append("</div>");
-                    sb.append("<div class=\"px-2 mt-3\"> <button class=\"btn btn-primary px-3\">Buy Now</button> <button class=\"btn btn-outline-primary px-3\">Add to cart</button> </div>");
+            sb.append("<div class=\"card shadow-sm mb-5 bg-body rounded product-card\">");
+                sb.append("<div class=\"card-img-top product-image\" style=\"background-image: url('" + imageLink + "')\"></div>");
+                sb.append("<div class=\"card-body\">");
+                    sb.append("<h5 class=\"card-title\">").append(product.getName()).append("</h5>");
                 sb.append("</div>");
             sb.append("</div>");
-        sb.append("</div>");
         return sb.toString();
     }
 }

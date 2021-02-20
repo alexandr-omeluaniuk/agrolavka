@@ -1605,4 +1605,21 @@ section {
 .nested-catalog {
     border: none;
 }
-
+/*--------------------------------------------------------------
+# Product card
+--------------------------------------------------------------*/
+.product-card:hover {
+    cursor: pointer;
+}
+.empty-product-card {
+    min-height: 200px;
+    width: 100%;
+}
+.product-image {
+    display: block;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 0;
+    padding-top: 100%;
+}
