@@ -31,35 +31,6 @@ public class CatalogTag extends RequestContextAwareTag {
     /** Core DAO. */
     @Autowired
     private CoreDAO coreDAO;
-    /** Accordion item HTML template. */
-    private static final String ACCORDION_ITEM_HTML = 
-    "<div class=\"accordion-item\">" +
-        "<h2 class=\"accordion-header\" id=\"heading-product-group-%s\">" +
-            "<button class=\"accordion-button collapsed\" type=\"button\" data-bs-toggle=\"collapse\"" + 
-                    "data-bs-target=\"#collapse-product-group-%s\" aria-expanded=\"true\"" + 
-                    "aria-controls=\"collapse-product-group-%s\">" +
-                "%s" +
-            "</button>" +
-        "</h2>" +
-        "<div id=\"collapse-product-group-%s\" class=\"accordion-collapse collapse nested-catalog\"" +
-                "aria-labelledby=\"heading-product-group-%s\" data-bs-parent=\"#catalog-%s\">" +
-            "<div class=\"accordion-body catalog-body\">" +
-                "%s" +                    
-            "</div>" +
-        "</div>" +
-    "</div>";
-    /** Accordion leaf item HTML template. */
-    private static final String ACCORDION_ITEM_HTML_LEAF = 
-    "<div class=\"accordion-item\">" +
-        "<h2 class=\"accordion-header\" id=\"heading-product-group-%s\">" +
-            "<a class=\"accordion-button collapsed accordion-button-leaf\" type=\"button\" " +
-                    "data-bs-toggle=\"collapse\"" + 
-                    "data-bs-target=\"#collapse-product-group-%s\" aria-expanded=\"true\"" + 
-                    "aria-controls=\"collapse-product-group-%s\" href=\"/catalog/%s/%s\">" +
-                "%s" +
-            "</a>" +
-        "</h2>" +
-    "</div>";
     /** Product group ID. */
     private Long groupId;
     @Override
@@ -126,12 +97,54 @@ public class CatalogTag extends RequestContextAwareTag {
                 childsSb.append(drawCatalogItem(child, groupsMap, nextLevel));
             }
             childsSb.append("</div>");
-            sb.append(String.format(ACCORDION_ITEM_HTML, group.getId(), group.getId(), group.getId(), group.getName(),
-                group.getId(), group.getId(), level, childsSb.toString()));
+            boolean expanded = isExpanded(group, groupsMap);
+            sb.append("<div class=\"accordion-item\">" +
+                "<h2 class=\"accordion-header\" id=\"heading-product-group-" + group.getId() + "\">" +
+                    "<button class=\"accordion-button " + (expanded ? "" : "collapsed") +
+                            "\" type=\"button\" data-bs-toggle=\"collapse\"" + 
+                            "data-bs-target=\"#collapse-product-group-" + group.getId() + "\" aria-expanded=\"true\"" + 
+                            "aria-controls=\"collapse-product-group-" + group.getId() + "\">" +
+                        group.getName() +
+                    "</button>" +
+                "</h2>" +
+                "<div id=\"collapse-product-group-" + group.getId() +
+                        "\" class=\"accordion-collapse collapse nested-catalog " + (expanded ? "show" : "") + "\"" +
+                        "aria-labelledby=\"heading-product-group-" + group.getId() + "\" data-bs-parent=\"#catalog-" + level + "\">" +
+                    "<div class=\"accordion-body catalog-body\">" +
+                        childsSb.toString() +                    
+                    "</div>" +
+                "</div>" +
+            "</div>");
         } else {
-            sb.append(String.format(ACCORDION_ITEM_HTML_LEAF, group.getId(), group.getId(), group.getId(),
-                    group.getId(), group.getName(), group.getName()));
+            sb.append("<div class=\"accordion-item\">" +
+                "<h2 class=\"accordion-header\" id=\"heading-product-group-" + group.getId() + "\">" +
+                    "<a class=\"accordion-button collapsed accordion-button-leaf link-dark " +
+                                (groupId != null && groupId.equals(group.getId()) ? "fw-bold" : "") + "\" type=\"button\" " +
+                            "data-bs-toggle=\"collapse\"" + 
+                            "data-bs-target=\"#collapse-product-group-" + group.getId() + "\" aria-expanded=\"true\"" + 
+                            "aria-controls=\"collapse-product-group-" + group.getId() +
+                                "\" href=\"/catalog/" + group.getId() + "/" + group.getName() + "\">" +
+                        group.getName() +
+                    "</a>" +
+                "</h2>" +
+            "</div>");
         }
         return sb.toString();
+    }
+    
+    private boolean isExpanded(ProductsGroup group, Map<String, List<ProductsGroup>> groupsMap) {
+        if (groupId == null || !groupsMap.containsKey(group.getExternalId())) {
+            return false;
+        } else {
+            List<ProductsGroup> childs = groupsMap.get(group.getExternalId());
+            boolean isExpanded = false;
+            for (ProductsGroup child : childs) {
+                if (groupId.equals(child.getId()) || isExpanded(child, groupsMap)) {
+                    isExpanded = true;
+                    break;
+                }
+            }
+            return isExpanded;
+        }
     }
 }

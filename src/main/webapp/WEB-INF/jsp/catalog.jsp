@@ -11,17 +11,17 @@
 <t:app title="Агролавка | ${title}" activePage="PRODUCTS">
     <main id="main">
         <section id="products" class="services" style="padding-top: 180px;">
-            <div class="container" data-aos="fade-up">
+            <div class="container">
                 <header class="section-header">
                     <h3>Наша продукция</h3>
                     <p>ТОВАРЫ ДЛЯ САДА И ОГОРОДА</p>
                 </header>
-                <div class="row justify-content-center" data-aos="fade-up" style="width: 100%">
-                    <div class="col-lg-3 intro-info order-lg-first order-last" data-aos="zoom-in" data-aos-delay="100">
+                <div class="row justify-content-center" style="width: 100%">
+                    <div class="col-lg-3 intro-info order-lg-first order-last">
                         <cmp:catalog groupId="${groupId}"></cmp:catalog>
                         </div>
 
-                        <div class="col-lg-9 intro-info order-lg-first order-last" data-aos="zoom-in" data-aos-delay="100">
+                        <div class="col-lg-9 intro-info order-lg-first order-last">
                         <cmp:search-result-tag groupId="${groupId}"></cmp:search-result-tag>
                         </div>
                     </div>
