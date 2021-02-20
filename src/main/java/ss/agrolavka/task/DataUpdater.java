@@ -65,10 +65,11 @@ class DataUpdater {
         List<ProductsGroup> productGroups = mySkladIntegrationService.getProductGroups();
         LOG.info("product groups [" + productGroups.size() + "]");
         Map<String, ProductsGroup> groupsMap = new HashMap<>();
-        Set<String> actualGroupIDs = groupsMap.keySet();
         for (ProductsGroup productGroup : productGroups) {
             groupsMap.put(productGroup.getExternalId(), productGroup);
         }
+        Set<String> actualGroupIDs = groupsMap.keySet();
+        Set<String> deleteNotIn = new HashSet<>(groupsMap.keySet());
         // update existing groups
         List<ProductsGroup> existGroups = externalEntityDAO.getExternalEntitiesByIds(
                 actualGroupIDs, ProductsGroup.class);
@@ -92,17 +93,18 @@ class DataUpdater {
         LOG.info("new product groups [" + newGroups.size() + "]");
         coreDAO.massCreate(newGroups);
         // remove unused groups.
-        externalEntityDAO.removeExternalEntitiesNotInIDs(groupsMap.keySet(), ProductsGroup.class);
+        externalEntityDAO.removeExternalEntitiesNotInIDs(deleteNotIn, ProductsGroup.class);
     }
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     private void importProducts() throws Exception {
         List<Product> products = mySkladIntegrationService.getProducts();
         LOG.info("products [" + products.size() + "]");
         Map<String, Product> productsMap = new HashMap<>();
-        Set<String> actualProductsIDs = productsMap.keySet();
         for (Product product : products) {
             productsMap.put(product.getExternalId(), product);
         }
+        Set<String> actualProductsIDs = productsMap.keySet();
+        Set<String> deleteNotIn = new HashSet<>(productsMap.keySet());
         // update existing groups
         List<Product> existProducts = externalEntityDAO.getExternalEntitiesByIds(actualProductsIDs, Product.class);
         Set<String> existProductsIDs = new HashSet<>();
@@ -111,6 +113,7 @@ class DataUpdater {
             eProduct.setName(actualProduct.getName());
             eProduct.setPrice(actualProduct.getPrice());
             existProductsIDs.add(eProduct.getExternalId());
+            LOG.trace("update product: " + eProduct);
         }
         LOG.info("update products [" + existProducts.size() + "]");
         coreDAO.massUpdate(existProducts);
@@ -122,9 +125,9 @@ class DataUpdater {
             LOG.info("create product: " + newProduct);
             newProducts.add(newProduct);
         }
-        LOG.info("new products [" + newProducts.size() + "]");
+        LOG.info("new products [" + newProducts.size() + "] ");
         coreDAO.massCreate(newProducts);
         // remove unused groups.
-        externalEntityDAO.removeExternalEntitiesNotInIDs(productsMap.keySet(), Product.class);
+        externalEntityDAO.removeExternalEntitiesNotInIDs(deleteNotIn, Product.class);
     }
 }
