@@ -26,7 +26,7 @@ import ss.agrolavka.model.ExternalEntity_;
  */
 @Repository
 class ExternalEntityDAOImpl implements ExternalEntityDAO {
-    /** DataModel manager. */
+    /** Entity manager. */
     @PersistenceContext
     private EntityManager em;
     @Override
