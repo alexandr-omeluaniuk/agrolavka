@@ -70,7 +70,8 @@ class DataUpdater {
             groupsMap.put(productGroup.getExternalId(), productGroup);
         }
         // update existing groups
-        List<ProductsGroup> existGroups = externalEntityDAO.getExternalEntitiesByIds(actualGroupIDs, ProductsGroup.class);
+        List<ProductsGroup> existGroups = externalEntityDAO.getExternalEntitiesByIds(
+                actualGroupIDs, ProductsGroup.class);
         Set<String> existGroupsIDs = new HashSet<>();
         for (ProductsGroup eGroup : existGroups) {
             ProductsGroup actualGroup = groupsMap.get(eGroup.getExternalId());
@@ -95,5 +96,31 @@ class DataUpdater {
     private void importProducts() throws Exception {
         List<Product> products = mySkladIntegrationService.getProducts();
         LOG.info("products [" + products.size() + "]");
+        Map<String, Product> productsMap = new HashMap<>();
+        Set<String> actualProductsIDs = productsMap.keySet();
+        for (Product product : products) {
+            productsMap.put(product.getExternalId(), product);
+        }
+        // update existing groups
+        List<Product> existProducts = externalEntityDAO.getExternalEntitiesByIds(actualProductsIDs, Product.class);
+        Set<String> existProductsIDs = new HashSet<>();
+        for (Product eProduct : existProducts) {
+            Product actualProduct = productsMap.get(eProduct.getExternalId());
+            eProduct.setName(actualProduct.getName());
+            eProduct.setPrice(actualProduct.getPrice());
+            existProductsIDs.add(eProduct.getExternalId());
+        }
+        coreDAO.massUpdate(existProducts);
+        // create new groups
+        actualProductsIDs.removeAll(existProductsIDs);
+        List<Product> newProducts = new ArrayList<>();
+        for (String newProductExternalId : actualProductsIDs) {
+            Product newProduct = productsMap.get(newProductExternalId);
+            LOG.info("create product: " + newProduct);
+            newProducts.add(newProduct);
+        }
+        coreDAO.massCreate(newProducts);
+        // remove unused groups.
+        externalEntityDAO.removeExternalEntitiesNotInIDs(productsMap.keySet(), Product.class);
     }
 }

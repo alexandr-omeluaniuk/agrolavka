@@ -108,7 +108,7 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
                     product.setPrice(price.getDouble("value"));
                 }
             }
-            product.setHasImages(item.has("images"));
+            //product.setHasImages(item.has("images"));
             LOG.debug(product.toString());
             result.add(product);
         }

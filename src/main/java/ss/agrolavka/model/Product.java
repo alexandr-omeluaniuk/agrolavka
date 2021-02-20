@@ -48,9 +48,6 @@ public class Product extends ExternalEntity implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "group_id")
     private ProductsGroup group;
-    /** Has images. */
-    @Column(name = "has_images", nullable = false)
-    private boolean hasImages;
     // ============================================== SET & GET =======================================================
     /**
      * @return the id
@@ -99,18 +96,6 @@ public class Product extends ExternalEntity implements Serializable {
      */
     public void setImages(List<ProductImage> images) {
         this.images = images;
-    }
-    /**
-     * @return the hasImages
-     */
-    public boolean isHasImages() {
-        return hasImages;
-    }
-    /**
-     * @param hasImages the hasImages to set
-     */
-    public void setHasImages(boolean hasImages) {
-        this.hasImages = hasImages;
     }
     /**
      * @return the group
