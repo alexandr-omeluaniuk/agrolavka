@@ -31,7 +31,7 @@ public class SiteController {
         return "catalog";
     }
     @RequestMapping("/catalog/{groupId}/{name}")
-    public String productsGroup(Model model, @PathVariable("groupId") String groupId,
+    public String productsGroup(Model model, @PathVariable("groupId") Long groupId,
             @PathVariable("name") String name) {
         model.addAttribute("title", name);
         model.addAttribute("groupId", groupId);

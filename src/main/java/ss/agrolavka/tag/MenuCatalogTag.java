@@ -90,7 +90,7 @@ public class MenuCatalogTag extends RequestContextAwareTag {
             childsSb.append("</ul></li>");
             sb.append(childsSb);
         } else {
-            sb.append(String.format("<li><a href=\"/catalog/%s/%s\">%s</a></li>", group.getExternalId(),
+            sb.append(String.format("<li><a href=\"/catalog/%s/%s\">%s</a></li>", group.getId(),
                     group.getName(), group.getName()));
         }
         return sb.toString();

@@ -122,7 +122,7 @@ public class CatalogTag extends RequestContextAwareTag {
                 group.getId(), group.getId(), level, childsSb.toString()));
         } else {
             sb.append(String.format(ACCORDION_ITEM_HTML_LEAF, group.getId(), group.getId(), group.getId(),
-                    group.getExternalId(), group.getName(), group.getName()));
+                    group.getId(), group.getName(), group.getName()));
         }
         return sb.toString();
     }

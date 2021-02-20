@@ -79,6 +79,7 @@ class DataUpdater {
             eGroup.setParentId(actualGroup.getParentId());
             existGroupsIDs.add(eGroup.getExternalId());
         }
+        LOG.info("update product groups [" + existGroups.size() + "]");
         coreDAO.massUpdate(existGroups);
         // create new groups
         actualGroupIDs.removeAll(existGroupsIDs);
@@ -88,6 +89,7 @@ class DataUpdater {
             LOG.info("create new group: " + newProductGroup);
             newGroups.add(newProductGroup);
         }
+        LOG.info("new product groups [" + newGroups.size() + "]");
         coreDAO.massCreate(newGroups);
         // remove unused groups.
         externalEntityDAO.removeExternalEntitiesNotInIDs(groupsMap.keySet(), ProductsGroup.class);
@@ -110,6 +112,7 @@ class DataUpdater {
             eProduct.setPrice(actualProduct.getPrice());
             existProductsIDs.add(eProduct.getExternalId());
         }
+        LOG.info("update products [" + existProducts.size() + "]");
         coreDAO.massUpdate(existProducts);
         // create new groups
         actualProductsIDs.removeAll(existProductsIDs);
@@ -119,6 +122,7 @@ class DataUpdater {
             LOG.info("create product: " + newProduct);
             newProducts.add(newProduct);
         }
+        LOG.info("new products [" + newProducts.size() + "]");
         coreDAO.massCreate(newProducts);
         // remove unused groups.
         externalEntityDAO.removeExternalEntitiesNotInIDs(productsMap.keySet(), Product.class);
