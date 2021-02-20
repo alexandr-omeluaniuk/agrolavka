@@ -16,35 +16,35 @@ import javax.persistence.criteria.Root;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import ss.agrolavka.dao.ProductDAO;
-import ss.agrolavka.model.ProductsGroup;
-import ss.agrolavka.model.ProductsGroup_;
+import ss.agrolavka.dao.ExternalEntityDAO;
+import ss.agrolavka.model.ExternalEntity;
+import ss.agrolavka.model.ExternalEntity_;
 
 /**
- * Product DAO implementation.
+ * External entity DAO implementation.
  * @author alex
  */
 @Repository
-class ProductDAOImpl implements ProductDAO {
+class ExternalEntityDAOImpl implements ExternalEntityDAO {
     /** DataModel manager. */
     @PersistenceContext
     private EntityManager em;
     @Override
     @Transactional(propagation = Propagation.SUPPORTS)
-    public List<ProductsGroup> getProductGroupsByExternalIds(Set<String> ids) {
+    public <T extends ExternalEntity> List<T> getExternalEntitiesByIds(Set<String> ids, Class<T> cl) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<ProductsGroup> criteria = cb.createQuery(ProductsGroup.class);
-        Root<ProductsGroup> c = criteria.from(ProductsGroup.class);
-        criteria.select(c).where(c.get(ProductsGroup_.externalId).in(ids));
+        CriteriaQuery<T> criteria = cb.createQuery(cl);
+        Root<T> c = criteria.from(cl);
+        criteria.select(c).where(c.get(ExternalEntity_.externalId).in(ids));
         return em.createQuery(criteria).getResultList();
     }
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public void removeProductGroupsByExternalIDs(Set<String> ids) {
+    public <T extends ExternalEntity> void removeExternalEntitiesNotInIDs(Set<String> ids, Class<T> cl) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaDelete<ProductsGroup> criteria = cb.createCriteriaDelete(ProductsGroup.class);
-        Root<ProductsGroup> c = criteria.from(ProductsGroup.class);
-        criteria.where(cb.not(c.get(ProductsGroup_.externalId).in(ids)));
+        CriteriaDelete<T> criteria = cb.createCriteriaDelete(cl);
+        Root<T> c = criteria.from(cl);
+        criteria.where(cb.not(c.get(ExternalEntity_.externalId).in(ids)));
         em.createQuery(criteria).executeUpdate();
     }
 }

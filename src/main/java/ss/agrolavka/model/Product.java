@@ -17,7 +17,6 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 /**
  * Product.
@@ -25,7 +24,7 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "product")
-public class Product implements Serializable {
+public class Product extends ExternalEntity implements Serializable {
     /** Default UID. */
     private static final long serialVersionUID = 1L;
     // ============================================== FIELDS ==========================================================
@@ -39,11 +38,6 @@ public class Product implements Serializable {
     /** Product group ID. */
     @Column(name = "product_groupd_id", length = 255)
     private String productGroupId;
-    /** External ID. */
-    @NotNull
-    @Size(max = 255)
-    @Column(name = "external_id", length = 255, nullable = false)
-    private String externalId;
     /** Price. */
     @NotNull
     @Column(name = "price", nullable = false)
@@ -90,18 +84,6 @@ public class Product implements Serializable {
      */
     public void setProductGroupId(String productGroupId) {
         this.productGroupId = productGroupId;
-    }
-    /**
-     * @return the externalId
-     */
-    public String getExternalId() {
-        return externalId;
-    }
-    /**
-     * @param externalId the externalId to set
-     */
-    public void setExternalId(String externalId) {
-        this.externalId = externalId;
     }
     /**
      * @return the price

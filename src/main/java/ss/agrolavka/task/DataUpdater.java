@@ -19,7 +19,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import ss.agrolavka.dao.CoreDAO;
-import ss.agrolavka.dao.ProductDAO;
+import ss.agrolavka.dao.ExternalEntityDAO;
 import ss.agrolavka.model.Product;
 import ss.agrolavka.model.ProductsGroup;
 import ss.agrolavka.service.MySkladIntegrationService;
@@ -38,9 +38,9 @@ class DataUpdater {
     /** Core DAO. */
     @Autowired
     private CoreDAO coreDAO;
-    /** Product DAO. */
+    /** External entity DAO. */
     @Autowired
-    private ProductDAO productDAO;
+    private ExternalEntityDAO externalEntityDAO;
     /**
      * Import MySklad data.
      */
@@ -54,8 +54,7 @@ class DataUpdater {
             mySkladIntegrationService.authentication();
             LOG.info("authentication completed...");
             importProductGroups();
-            List<Product> products = mySkladIntegrationService.getProducts();
-            LOG.info("products [" + products.size() + "]");
+            importProducts();
             LOG.info("time [" + (System.currentTimeMillis() - start) + "] ms");
             LOG.info("===============================================================================================");
         } catch (Exception e) {
@@ -72,7 +71,7 @@ class DataUpdater {
             groupsMap.put(productGroup.getExternalId(), productGroup);
         }
         // update existing groups
-        List<ProductsGroup> existGroups = productDAO.getProductGroupsByExternalIds(actualGroupIDs);
+        List<ProductsGroup> existGroups = externalEntityDAO.getExternalEntitiesByIds(actualGroupIDs, ProductsGroup.class);
         Set<String> existGroupsIDs = new HashSet<>();
         for (ProductsGroup eGroup : existGroups) {
             ProductsGroup actualGroup = groupsMap.get(eGroup.getExternalId());
@@ -91,6 +90,11 @@ class DataUpdater {
         }
         coreDAO.massCreate(newGroups);
         // remove unused groups.
-        productDAO.removeProductGroupsByExternalIDs(groupsMap.keySet());
+        externalEntityDAO.removeExternalEntitiesNotInIDs(groupsMap.keySet(), ProductsGroup.class);
+    }
+    
+    private void importProducts() throws Exception {
+        List<Product> products = mySkladIntegrationService.getProducts();
+        LOG.info("products [" + products.size() + "]");
     }
 }

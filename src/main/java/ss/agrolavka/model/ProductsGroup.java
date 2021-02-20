@@ -21,7 +21,7 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "products_group")
-public class ProductsGroup implements Serializable, Comparable<ProductsGroup> {
+public class ProductsGroup extends ExternalEntity implements Serializable, Comparable<ProductsGroup> {
     /** Default UID. */
     private static final long serialVersionUID = 1L;
     // =============================================== FIELDS =========================================================
@@ -38,10 +38,6 @@ public class ProductsGroup implements Serializable, Comparable<ProductsGroup> {
     @Size(max = 255)
     @Column(name = "parent_id", length = 255)
     private String parentId;
-    /** External ID. */
-    @NotNull
-    @Column(name = "external_id", length = 255, nullable = false)
-    private String externalId;
     // =============================================== SET & GET ======================================================
     /**
      * @return the id
@@ -66,18 +62,6 @@ public class ProductsGroup implements Serializable, Comparable<ProductsGroup> {
      */
     public void setName(String name) {
         this.name = name;
-    }
-    /**
-     * @return the externalId
-     */
-    public String getExternalId() {
-        return externalId;
-    }
-    /**
-     * @param externalId the externalId to set
-     */
-    public void setExternalId(String externalId) {
-        this.externalId = externalId;
     }
     /**
      * @return the parentId
