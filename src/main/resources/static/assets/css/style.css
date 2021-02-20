@@ -1613,7 +1613,7 @@ section {
     box-shadow: 0 .5rem 1rem rgba(0,0,0,.15) !important;
 }
 .empty-product-card {
-    min-height: 200px;
+    min-height: 420px;
     width: 100%;
 }
 .product-image {
@@ -1623,4 +1623,11 @@ section {
     background-position: center;
     height: 0;
     padding-top: 100%;
+}
+.page-link, .page-item {
+    color: #212529;
+}
+.page-item.active .page-link {
+    background-color: #6c757d;
+    border-color: #6c757d;
 }

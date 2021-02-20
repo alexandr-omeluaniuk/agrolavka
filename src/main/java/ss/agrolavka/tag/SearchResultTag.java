@@ -29,7 +29,7 @@ public class SearchResultTag extends RequestContextAwareTag {
     /** Columns. */
     private static final int COLUMNS = 3;
     /** Rows. */
-    private static final int ROWS = 4;
+    private static final int ROWS = 3;
     /** Core DAO. */
     @Autowired
     private CoreDAO coreDAO;
@@ -38,16 +38,19 @@ public class SearchResultTag extends RequestContextAwareTag {
     private ProductDAO productDAO;
     /** Product group ID. */
     private Long groupId;
+    /** Page. */
+    private Integer page;
     @Override
     public void doFinally() {
         JspWriter out = pageContext.getOut();
         ProductsSearchRequest searchRequest = new ProductsSearchRequest();
         searchRequest.setGroupId(groupId);
-        searchRequest.setPage(1);
+        searchRequest.setPage(page == null ? 1 : page);
         searchRequest.setPageSize(COLUMNS * ROWS);
         try {
             List<Product> pageProducts = productDAO.search(searchRequest);
             out.print("<div class=\"container\">");
+            out.print(renderToolbar(searchRequest));
             int counter = 0;
             for (int i = 0; i < ROWS; i++) {
                 out.print("<div class=\"row\">");
@@ -79,7 +82,18 @@ public class SearchResultTag extends RequestContextAwareTag {
     public void setGroupId(Long groupId) {
         this.groupId = groupId;
     }
+    /**
+     * @param page the page to set
+     */
+    public void setPage(Integer page) {
+        this.page = page;
+    }
     // ============================================== PRIVATE =========================================================
+    /**
+     * Render product card.
+     * @param product product.
+     * @return product card HTML template.
+     */
     private String renderProductCard(Product product) {
         if (product == null) {
             return "<div class=\"empty-product-card\"></div>";
@@ -91,10 +105,54 @@ public class SearchResultTag extends RequestContextAwareTag {
                         .append(imageLink).append("')\"></div>");
                 sb.append("<div class=\"card-body\">");
                     sb.append("<h6 class=\"card-title\">").append(product.getName()).append("</h6>");
-                    sb.append("<p class=\"card-subtitle mb-2 text-muted fs-6\">Цена: <span class=\"text-dark fw-bold\">")
+                    sb.append("<p class=\"card-subtitle mb-2 text-muted fs-6\">Цена:")
+                            .append("<span class=\"text-dark fw-bold\">")
                             .append(product.getPrice()).append(" BYN</span></p>");
                 sb.append("</div>");
             sb.append("</div>");
+        return sb.toString();
+    }
+    
+    private String renderToolbar(ProductsSearchRequest searchRequest) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("<div class=\"card\" style=\"width: 100%; border: none;\">");
+            sb.append("<div class=\"card-body\" "
+                    + "style=\"border: none; padding-top: 0px; padding-right: 0px; padding-left: 0px;\">");
+                sb.append(renderPagination(searchRequest));
+            sb.append("</div>");
+        sb.append("</div>");
+        return sb.toString();
+    }
+    
+    private String renderPagination(ProductsSearchRequest searchRequest) {
+        Long count = productDAO.count(searchRequest);
+        int pagesCount = Double.valueOf(Math.ceil((double) count / (ROWS * COLUMNS))).intValue();
+        if (pagesCount == 1) {
+            return "";
+        }
+        StringBuilder pageLinks = new StringBuilder();
+        for (int i = 0; i < pagesCount; i++) {
+            int p = i + 1;
+            pageLinks.append("<li class=\"page-item ").append(searchRequest.getPage().equals(p) ? "active" : "")
+                    .append("\"><a class=\"page-link\" href=\"?page=")
+                    .append(p).append("\">").append(p).append("</a></li>");
+        }
+        StringBuilder sb = new StringBuilder();
+        sb.append("<nav aria-label=\"Page navigation\" class=\"d-flex justify-content-start\">" +
+            "<ul class=\"pagination\" style=\"margin-bottom: 0;\">" +
+                "<li class=\"page-item\">" +
+                    "<a class=\"page-link \" href=\"?page=1\" aria-label=\"Previous\">" +
+                        "<i class=\"fas fa-angle-double-left\"></i>" +
+                    "</a>" +
+                "</li>" +
+                pageLinks.toString() +
+                "<li class=\"page-item\">" +
+                    "<a class=\"page-link\" href=\"?page=" + pagesCount + "\" aria-label=\"Next\">" +
+                        "<i class=\"fas fa-angle-double-right\"></i>" +
+                    "</a>" +
+                "</li>" +
+            "</ul>" +
+        "</nav>");
         return sb.toString();
     }
 }

@@ -19,11 +19,11 @@
             </div>
             <div class="row justify-content-center" data-aos="fade-up" style="width: 100%">
                 <div class="col-lg-4 intro-info order-lg-first order-last" data-aos="zoom-in" data-aos-delay="100">
-                    
+
                 </div>
-                
+
                 <div class="col-lg-8 intro-info order-lg-first order-last" data-aos="zoom-in" data-aos-delay="100">
-                    
+
                 </div>
             </div>
     </section>
@@ -37,14 +37,14 @@
                 <div class="row justify-content-center" data-aos="fade-up" style="width: 100%">
                     <div class="col-lg-4 intro-info order-lg-first order-last" data-aos="zoom-in" data-aos-delay="100">
                         <cmp:catalog></cmp:catalog>
-                        </div>
+                    </div>
 
-                        <div class="col-lg-8 intro-info order-lg-first order-last" data-aos="zoom-in" data-aos-delay="100">
-                            TODO
-                        </div>
+                    <div class="col-lg-8 intro-info order-lg-first order-last" data-aos="zoom-in" data-aos-delay="100">
+                        <cmp:search-result-tag groupId="${groupId}" page="${page}"></cmp:search-result-tag>
                     </div>
                 </div>
-            </section>
-        </main>
+            </div>
+        </section>
+    </main>
 
 </t:app>

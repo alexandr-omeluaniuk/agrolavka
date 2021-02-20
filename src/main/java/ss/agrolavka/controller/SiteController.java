@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  *
@@ -26,15 +27,19 @@ public class SiteController {
         return "about";
     }
     @RequestMapping("/catalog")
-    public String productsGroup(Model model) {
+    public String productsGroup(Model model, @RequestParam(name = "page", required = false) Integer page) {
         model.addAttribute("title", "Каталог");
+        model.addAttribute("page", page);
         return "catalog";
     }
     @RequestMapping("/catalog/{groupId}/{name}")
-    public String productsGroup(Model model, @PathVariable("groupId") Long groupId,
-            @PathVariable("name") String name) {
+    public String productsGroup(Model model,
+            @PathVariable("groupId") Long groupId,
+            @PathVariable("name") String name,
+            @RequestParam(name = "page", required = false) Integer page) {
         model.addAttribute("title", name);
         model.addAttribute("groupId", groupId);
+        model.addAttribute("page", page);
         return "catalog";
     }
 }
