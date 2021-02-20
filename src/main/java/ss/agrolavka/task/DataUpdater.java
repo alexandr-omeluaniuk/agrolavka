@@ -135,7 +135,16 @@ class DataUpdater {
     private void importImages() throws Exception {
         List<Product> products = coreDAO.getAll(Product.class);
         for (Product product : products) {
-            List<ProductImage> images = mySkladIntegrationService.getProductImages(product.getExternalId());
+            try {
+                List<ProductImage> images = mySkladIntegrationService.getProductImages(product.getExternalId());
+                for (ProductImage image : images) {
+                    image.setProduct(product);
+                }
+                product.setImages(images);
+                coreDAO.update(product);
+            } catch (Exception e) {
+                LOG.warn("Can't synchronize product images: " + product, e);
+            }
         }
     }
 }
