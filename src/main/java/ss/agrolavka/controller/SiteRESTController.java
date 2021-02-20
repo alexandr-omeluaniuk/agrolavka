@@ -5,6 +5,7 @@
  */
 package ss.agrolavka.controller;
 
+import java.util.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Propagation;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import ss.agrolavka.constants.ImageStubs;
 import ss.agrolavka.dao.CoreDAO;
 import ss.agrolavka.model.Product;
 
@@ -31,6 +33,7 @@ public class SiteRESTController {
     @Transactional(propagation = Propagation.SUPPORTS)
     public byte[] list(@PathVariable("id") Long id) throws Exception {
         Product product = coreDAO.findById(id, Product.class);
-        return product != null && !product.getImages().isEmpty() ? product.getImages().get(0).getImageData() : null;
+        return product != null && !product.getImages().isEmpty() ? product.getImages().get(0).getImageData()
+                : Base64.getDecoder().decode(ImageStubs.NO_PRODUCT_IMAGE);
     }
 }

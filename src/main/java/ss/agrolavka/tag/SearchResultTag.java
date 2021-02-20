@@ -87,9 +87,12 @@ public class SearchResultTag extends RequestContextAwareTag {
         String imageLink = "/api/product-image/" + product.getId();
         StringBuilder sb = new StringBuilder();
             sb.append("<div class=\"card shadow-sm mb-5 bg-body rounded product-card\">");
-                sb.append("<div class=\"card-img-top product-image\" style=\"background-image: url('" + imageLink + "')\"></div>");
+                sb.append("<div class=\"card-img-top product-image\" style=\"background-image: url('")
+                        .append(imageLink).append("')\"></div>");
                 sb.append("<div class=\"card-body\">");
-                    sb.append("<h5 class=\"card-title\">").append(product.getName()).append("</h5>");
+                    sb.append("<h6 class=\"card-title\">").append(product.getName()).append("</h6>");
+                    sb.append("<p class=\"card-subtitle mb-2 text-muted fs-6\">Цена: <span class=\"text-dark fw-bold\">")
+                            .append(product.getPrice()).append(" BYN</span></p>");
                 sb.append("</div>");
             sb.append("</div>");
         return sb.toString();

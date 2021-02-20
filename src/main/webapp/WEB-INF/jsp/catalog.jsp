@@ -17,11 +17,11 @@
                     <p>ТОВАРЫ ДЛЯ САДА И ОГОРОДА</p>
                 </header>
                 <div class="row justify-content-center" data-aos="fade-up" style="width: 100%">
-                    <div class="col-lg-4 intro-info order-lg-first order-last" data-aos="zoom-in" data-aos-delay="100">
+                    <div class="col-lg-3 intro-info order-lg-first order-last" data-aos="zoom-in" data-aos-delay="100">
                         <cmp:catalog></cmp:catalog>
                         </div>
 
-                        <div class="col-lg-8 intro-info order-lg-first order-last" data-aos="zoom-in" data-aos-delay="100">
+                        <div class="col-lg-9 intro-info order-lg-first order-last" data-aos="zoom-in" data-aos-delay="100">
                         <cmp:search-result-tag groupId="${groupId}"></cmp:search-result-tag>
                         </div>
                     </div>

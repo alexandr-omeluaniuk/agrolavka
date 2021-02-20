@@ -108,7 +108,7 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
                 JSONArray prices = item.getJSONArray("salePrices");
                 for (int j = 0; j < prices.length(); j++) {
                     JSONObject price = prices.getJSONObject(j);
-                    product.setPrice(price.getDouble("value"));
+                    product.setPrice(price.getDouble("value") / 100);
                 }
             }
             LOG.debug(product.toString());
