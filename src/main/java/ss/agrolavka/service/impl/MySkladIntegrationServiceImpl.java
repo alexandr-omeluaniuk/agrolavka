@@ -5,6 +5,8 @@
  */
 package ss.agrolavka.service.impl;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
@@ -25,6 +27,7 @@ import org.springframework.stereotype.Service;
 import ss.agrolavka.AgrolavkaConfiguration;
 import ss.agrolavka.dao.CoreDAO;
 import ss.agrolavka.model.Product;
+import ss.agrolavka.model.ProductImage;
 import ss.agrolavka.model.ProductsGroup;
 import ss.agrolavka.service.MySkladIntegrationService;
 
@@ -108,21 +111,53 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
                     product.setPrice(price.getDouble("value"));
                 }
             }
-            //product.setHasImages(item.has("images"));
             LOG.debug(product.toString());
             result.add(product);
         }
         LOG.debug("loaded products [" + result.size() + "]");
         return result;
     }
+    @Override
+    public List<ProductImage> getProductImages(String productExternalId) throws Exception {
+        List<ProductImage> result = new ArrayList<>();
+        String response = request("/entity/product/" + productExternalId + "/images", "GET");
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Authorization", "Bearer " + token);
+        JSONObject json = new JSONObject(response);
+        JSONArray rows = json.getJSONArray("rows");
+        for (int i = 0; i < rows.length(); i++) {
+            JSONObject item = rows.getJSONObject(i);
+            JSONObject meta = item.getJSONObject("meta");
+            String href = meta.getString("downloadHref");
+            ProductImage productImage = new ProductImage();
+            productImage.setFilename(item.getString("filename"));
+            productImage.setImageSize(item.getLong("size"));
+            productImage.setImageData(requestData(href, "GET", headers));
+            result.add(productImage);
+        }
+        return result;
+    }
     // ============================================= PRIVATE ==========================================================
-    
+    /**
+     * Request data from MySklad with predefined headers.
+     * @param url URL.
+     * @param method HTTP method.
+     * @return response as string.
+     * @throws Exception request error.
+     */
     private String request(String url, String method) throws Exception {
         Map<String, String> headers = new HashMap<>();
         headers.put("Authorization", "Bearer " + token);
         return request(url, method, headers);
     }
-    
+    /**
+     * Request data from MySklad.
+     * @param url URL.
+     * @param method HTTP method.
+     * @param headers HTTP headers.
+     * @return response as string.
+     * @throws Exception error.
+     */
     private String request(String url, String method, Map<String, String> headers) throws Exception {
         LOG.debug("------------------------------ REQUEST TO MY SKLAD -----------------------------------------------");
         LOG.debug("url [" + url + "]");
@@ -146,7 +181,41 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
         LOG.debug("response: " + response);
         return response;
     }
-    
+    /**
+     * Request data.
+     * @param url URL.
+     * @param method HTTP method.
+     * @param headers headers.
+     * @return response as byte array.
+     * @throws Exception request error. 
+     */
+    private byte[] requestData(String url, String method, Map<String, String> headers) throws Exception {
+        LOG.debug("------------------------------ DATA REQUEST ------------------------------------------------------");
+        LOG.debug("url [" + url + "]");
+        LOG.debug("method [" + method + "]");
+        HttpsURLConnection connection = (HttpsURLConnection) new URL(url).openConnection();
+        connection.setRequestMethod(method);
+        connection.setReadTimeout(Long.valueOf(TimeUnit.SECONDS.toMillis(30)).intValue());
+        for (String header : headers.keySet()) {
+            connection.setRequestProperty(header, headers.get(header));
+        }
+        connection.setDoInput(true);
+        connection.setDoOutput(true);
+        int responseCode = connection.getResponseCode();
+        LOG.debug("response code [" + responseCode + "]");
+        String response;
+        if (responseCode == 200 || responseCode == 201) {
+            return inputStreamToByteArray(connection.getInputStream());
+        } else {
+            throw new IOException(inputStreamToString(connection.getErrorStream()));
+        }
+    }
+    /**
+     * Convert input stream to UTF-8 string.
+     * @param is input stream.
+     * @return UTF-8 string.
+     * @throws Exception error.
+     */
     private String inputStreamToString(InputStream is) throws Exception {
         int len;
         byte[] buff = new byte[1024 * 16];
@@ -156,5 +225,23 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
         }
         is.close();
         return sb.toString();
+    }
+    /**
+     * Convert input stream to byte array.
+     * @param is input stream.
+     * @return byte array.
+     * @throws Exception error.
+     */
+    private byte[] inputStreamToByteArray(InputStream is) throws Exception {
+        int len;
+        byte[] buff = new byte[1024 * 16];
+        ByteArrayOutputStream sb = new ByteArrayOutputStream();
+        while ((len = is.read(buff)) != -1) {
+            sb.write(buff, 0, len);
+        }
+        is.close();
+        byte[] data = sb.toByteArray();
+        sb.close();
+        return data;
     }
 }

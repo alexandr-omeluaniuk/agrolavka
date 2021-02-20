@@ -6,14 +6,17 @@
 package ss.agrolavka.model;
 
 import java.io.Serializable;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 /**
  * Product image.
@@ -33,6 +36,17 @@ public class ProductImage implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
     private Product product;
+    /** File name. */
+    @Column(name = "filename", length = 10000)
+    private String filename;
+    /** Size. */
+    @Column(name = "image_size")
+    private Long imageSize;
+    /** Data. */
+    @NotNull
+    @Lob
+    @Column(name = "image_data", nullable = false)
+    private byte[] imageData;
     // ============================================= SET & GET ========================================================
     /**
      * @return the id
@@ -57,6 +71,42 @@ public class ProductImage implements Serializable {
      */
     public void setProduct(Product product) {
         this.product = product;
+    }
+    /**
+     * @return the filename
+     */
+    public String getFilename() {
+        return filename;
+    }
+    /**
+     * @param filename the filename to set
+     */
+    public void setFilename(String filename) {
+        this.filename = filename;
+    }
+    /**
+     * @return the imageData
+     */
+    public byte[] getImageData() {
+        return imageData;
+    }
+    /**
+     * @param imageData the imageData to set
+     */
+    public void setImageData(byte[] imageData) {
+        this.imageData = imageData;
+    }
+    /**
+     * @return the imageSize
+     */
+    public Long getImageSize() {
+        return imageSize;
+    }
+    /**
+     * @param imageSize the imageSize to set
+     */
+    public void setImageSize(Long imageSize) {
+        this.imageSize = imageSize;
     }
     // ================================================================================================================
     @Override

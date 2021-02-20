@@ -7,6 +7,7 @@ package ss.agrolavka.service;
 
 import java.util.List;
 import ss.agrolavka.model.Product;
+import ss.agrolavka.model.ProductImage;
 import ss.agrolavka.model.ProductsGroup;
 
 /**
@@ -31,4 +32,11 @@ public interface MySkladIntegrationService {
      * @throws Exception error.
      */
     List<Product> getProducts() throws Exception;
+    /**
+     * Get product images.
+     * @param productExternalId product external ID.
+     * @return list of images.
+     * @throws Exception error.
+     */
+    List<ProductImage> getProductImages(String productExternalId) throws Exception;
 }

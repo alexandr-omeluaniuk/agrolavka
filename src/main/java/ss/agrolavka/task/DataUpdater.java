@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ss.agrolavka.dao.CoreDAO;
 import ss.agrolavka.dao.ExternalEntityDAO;
 import ss.agrolavka.model.Product;
+import ss.agrolavka.model.ProductImage;
 import ss.agrolavka.model.ProductsGroup;
 import ss.agrolavka.service.MySkladIntegrationService;
 
@@ -54,6 +55,7 @@ class DataUpdater {
             LOG.info("authentication completed...");
             importProductGroups();
             importProducts();
+            importImages();
             LOG.info("time [" + (System.currentTimeMillis() - start) + "] ms");
             LOG.info("===============================================================================================");
         } catch (Exception e) {
@@ -129,5 +131,11 @@ class DataUpdater {
         coreDAO.massCreate(newProducts);
         // remove unused groups.
         externalEntityDAO.removeExternalEntitiesNotInIDs(deleteNotIn, Product.class);
+    }
+    private void importImages() throws Exception {
+        List<Product> products = coreDAO.getAll(Product.class);
+        for (Product product : products) {
+            List<ProductImage> images = mySkladIntegrationService.getProductImages(product.getExternalId());
+        }
     }
 }
