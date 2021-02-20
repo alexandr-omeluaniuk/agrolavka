@@ -23,6 +23,7 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import ss.agrolavka.AgrolavkaConfiguration;
+import ss.agrolavka.dao.CoreDAO;
 import ss.agrolavka.model.Product;
 import ss.agrolavka.model.ProductsGroup;
 import ss.agrolavka.service.MySkladIntegrationService;
@@ -41,6 +42,9 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
     /** Configuration. */
     @Autowired
     private AgrolavkaConfiguration configuration;
+    /** Core DAO. */
+    @Autowired
+    private CoreDAO coreDAO;
     /** Authorization token. */
     private String token;
     @Override
@@ -83,6 +87,10 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
         JSONObject json = new JSONObject(response);
         List<Product> result = new ArrayList<>();
         JSONArray rows = json.getJSONArray("rows");
+        Map<String, ProductsGroup> productGroupsMap = new HashMap();
+        for (ProductsGroup group : coreDAO.getAll(ProductsGroup.class)) {
+            productGroupsMap.put(group.getExternalId(), group);
+        }
         for (int i = 0; i < rows.length(); i++) {
             JSONObject item = rows.getJSONObject(i);
             Product product = new Product();
@@ -90,7 +98,8 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
             product.setName(item.getString("name"));
             if (item.has("productFolder")) {
                 String link = item.getJSONObject("productFolder").getJSONObject("meta").getString("href");
-                product.setProductGroupId(link.substring(link.lastIndexOf("/") + 1));
+                String productGroupId = link.substring(link.lastIndexOf("/") + 1);
+                product.setGroup(productGroupsMap.get(productGroupId));
             }
             if (item.has("salePrices")) {
                 JSONArray prices = item.getJSONArray("salePrices");

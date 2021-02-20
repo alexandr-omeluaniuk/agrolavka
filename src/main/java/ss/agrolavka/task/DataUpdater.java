@@ -45,7 +45,6 @@ class DataUpdater {
      * Import MySklad data.
      */
     @Scheduled(fixedRate = 1000 * 60 * 5)
-    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     protected void importMySkladData() {
         try {
             LOG.info("====================================== MY SKLAD DATA UPDATE ===================================");
@@ -61,7 +60,7 @@ class DataUpdater {
             LOG.error("Import MySklad data - fail!", e);
         }
     }
-    
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     private void importProductGroups() throws Exception {
         List<ProductsGroup> productGroups = mySkladIntegrationService.getProductGroups();
         LOG.info("product groups [" + productGroups.size() + "]");
@@ -92,7 +91,7 @@ class DataUpdater {
         // remove unused groups.
         externalEntityDAO.removeExternalEntitiesNotInIDs(groupsMap.keySet(), ProductsGroup.class);
     }
-    
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     private void importProducts() throws Exception {
         List<Product> products = mySkladIntegrationService.getProducts();
         LOG.info("products [" + products.size() + "]");

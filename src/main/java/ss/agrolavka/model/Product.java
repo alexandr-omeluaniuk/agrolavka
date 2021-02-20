@@ -14,6 +14,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -35,9 +37,6 @@ public class Product extends ExternalEntity implements Serializable {
     /** Name. */
     @Column(name = "name", length = 1000, nullable = false)
     private String name;
-    /** Product group ID. */
-    @Column(name = "product_groupd_id", length = 255)
-    private String productGroupId;
     /** Price. */
     @NotNull
     @Column(name = "price", nullable = false)
@@ -45,6 +44,10 @@ public class Product extends ExternalEntity implements Serializable {
     /** Images. */
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "product")
     private List<ProductImage> images;
+    /** Product group. */
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "group_id")
+    private ProductsGroup group;
     /** Has images. */
     @Column(name = "has_images", nullable = false)
     private boolean hasImages;
@@ -72,18 +75,6 @@ public class Product extends ExternalEntity implements Serializable {
      */
     public void setName(String name) {
         this.name = name;
-    }
-    /**
-     * @return the productGroupId
-     */
-    public String getProductGroupId() {
-        return productGroupId;
-    }
-    /**
-     * @param productGroupId the productGroupId to set
-     */
-    public void setProductGroupId(String productGroupId) {
-        this.productGroupId = productGroupId;
     }
     /**
      * @return the price
@@ -120,6 +111,18 @@ public class Product extends ExternalEntity implements Serializable {
      */
     public void setHasImages(boolean hasImages) {
         this.hasImages = hasImages;
+    }
+    /**
+     * @return the group
+     */
+    public ProductsGroup getGroup() {
+        return group;
+    }
+    /**
+     * @param group the group to set
+     */
+    public void setGroup(ProductsGroup group) {
+        this.group = group;
     }
     // ================================================================================================================
     @Override
