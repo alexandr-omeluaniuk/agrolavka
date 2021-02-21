@@ -154,12 +154,8 @@
       }, 300);
   }, true);
   
-  on('input', '#products-search', function (e) {
-      const searchText = this.value;
-      search(searchText);
-  }, true);
-  
-    function search(page, view, searchText) {
+    on('input', '#products-search', function (e) {
+        const searchText = this.value;
         fetch(`/api/search?searchText=${searchText}`, {
             method: 'GET',
             headers: {
@@ -174,7 +170,28 @@
         }).catch(error => {
             console.error('HTTP error occurred: ' + error);
         });
-    }
+    }, true);
+    
+    on('click', '#nav-search-button', function (e) {
+        const brand = select('#agrolavka-brand');
+        const social = select('.social-links');
+        const searchInputContainer = select('#products-search-container');
+        console.log(brand);
+        if (brand.style.display === 'none') {
+            brand.style.display = "";
+            social.style.display = "";
+            searchInputContainer.style.display = "none";
+        } else {
+            brand.style.display = "none";
+            social.style.display = "none";
+            searchInputContainer.style.display = "flex";
+        }
+        scrollto('#products');
+    }, true);
+    
+    on('click', '#products-search-close', function (e) {
+        select('#nav-search-button').click();
+    }, true);
 
   /**
    * Scroll with ofset on page load with hash links in the url
@@ -184,15 +201,6 @@
       if (select(window.location.hash)) {
         scrollto(window.location.hash)
       }
-    }
-    const searchText = localStorage.getItem('SEARCH_TEXT');
-    const searchInput = select('#products-search');
-    if (searchInput && searchText) {
-        searchInput.value = searchText;
-        var url = new URL(window.location.href);
-        var page = url.searchParams.get("page");
-        var view = url.searchParams.get("view");
-        search(page, view, searchText);
     }
   });
 

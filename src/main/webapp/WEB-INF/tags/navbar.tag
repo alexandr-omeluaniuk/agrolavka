@@ -14,7 +14,14 @@
 <header id="header" class="fixed-top d-flex align-items-center header-transparent">
     <div class="container d-flex align-items-center">
 
-        <h1 class="logo me-auto"><a href="/"><i class="fas fa-carrot agrolavka-logo"></i> Агролавка</a></h1>
+        <h1 class="logo me-auto" id="agrolavka-brand"><a href="/"><i class="fas fa-carrot agrolavka-logo"></i> Агролавка</a></h1>
+        
+        <div class="input-group mb-3" id="products-search-container">
+            <span class="input-group-text"><i class="fas fa-search"></i></span>
+            <input type="text" class="form-control" aria-label="Поиск товаров" id="products-search" placeholder="Поиск">
+            <button class="btn btn-outline-secondary" type="button" id="products-search-close"><i class="fas fa-times"></i></button>
+        </div>
+        
         <!-- Uncomment below if you prefer to use an image logo -->
         <!-- <a href="index.html" class="logo me-auto"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
 
@@ -45,6 +52,7 @@
         </nav><!-- .navbar -->
 
         <div class="social-links">
+            <a href="#products" id="nav-search-button"><i class="fas fa-search"></i></a>
             <!--a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
             <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
             <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a-->
