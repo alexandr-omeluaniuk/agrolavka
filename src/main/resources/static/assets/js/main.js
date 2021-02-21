@@ -160,17 +160,20 @@
         const searchResultOutput = select('#products-search-results-list');
         if (searchResultOutput.innerHTML) {
             searchResultOutput.classList.add("show");
+            searchResultOutput.classList.add("list-group");
         }
     }, true);
     
     on('blur', '#products-search', function (e) {
         const searchResultOutput = select('#products-search-results-list');
         searchResultOutput.classList.remove("show");
+        searchResultOutput.classList.remove("list-group");
     }, true);
 
     on('input', '#products-search', function (e) {
         const searchText = this.value;
         const searchResultOutput = select('#products-search-results-list');
+        const noResult = '<li><a class="dropdown-item text-danger" href="#">По вашему запросу ничего не найдено</a></li>';
         if (searchText) {
             fetch(`/api/search?searchText=${searchText}`, {
                 method: 'GET',
@@ -182,24 +185,32 @@
                 if (response.ok) {
                     response.json().then(json => {
                         let sb = '';
-                        json.forEach(product => {
-                            sb += `<a href="#" class="list-group-item list-group-item-action">
-                                        <div class="d-flex w-100 justify-content-between">
-                                            <h5 class="mb-1">${product.name}</h5>
-                                            <small>${product.price}</small>
-                                        </div>
-                                        <p class="mb-1">${product.group.name}</p>
-                                   </a>`;
-                        });
+                        if (json.length === 0) {
+                            sb = noResult;
+                        } else {
+                            json.forEach(product => {
+                                sb += `<a href="#" class="list-group-item list-group-item-action">
+                                            <div class="d-flex w-100 justify-content-between">
+                                                <h6 class="mb-1">${product.name}</h6>
+                                                <small style="margin-left: 20px;">${parseFloat(product.price).toFixed(2)} BYN</small>
+                                            </div>
+                                            <div class="d-flex justify-content-between">
+                                                <small class="mb-1">Категория</small>
+                                                <span>${product.group.name}</span>
+                                            </div>
+                                       </a>`;
+                            });
+                        }
                         searchResultOutput.innerHTML = sb;
                         searchResultOutput.classList.add("show");
+                        searchResultOutput.classList.add("list-group");
                     });
                 }
             }).catch(error => {
                 console.error('HTTP error occurred: ' + error);
             });
         } else {
-            searchResultOutput.innerHTML = '<li><a class="dropdown-item text-danger" href="#">По вашему запросу ничего не найдено</a></li>';
+            searchResultOutput.innerHTML = noResult;
         }
     }, true);
 
@@ -218,6 +229,7 @@
             social.style.display = "none";
             searchInputContainer.style.display = "flex";
             searchResultOutput.classList.remove("show");
+            searchResultOutput.classList.remove("list-group");
             searchResultOutput.innerHTML = '';
         }
         setTimeout(() => {
