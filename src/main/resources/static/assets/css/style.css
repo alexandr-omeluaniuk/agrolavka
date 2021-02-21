@@ -1629,9 +1629,19 @@ section {
     padding-top: 100%;
 }
 .page-link, .page-item {
-    color: #212529;
+    color: #0dcaf0;
 }
 .page-item.active .page-link {
-    background-color: #6c757d;
-    border-color: #6c757d;
+    background-color: #0dcaf0;
+    border-color: #0dcaf0;
+}
+.product-avatar {
+    vertical-align: middle;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+.product-table td {
+    vertical-align: middle;
 }

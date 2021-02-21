@@ -60,16 +60,11 @@ public class SearchResultTag extends RequestContextAwareTag {
             List<Product> pageProducts = productDAO.search(searchRequest);
             out.print("<div class=\"container\">");
             out.print(renderToolbar(searchRequest));
-            int counter = 0;
-            for (int i = 0; i < ROWS; i++) {
-                out.print("<div class=\"row\">");
-                for (int j = 0; j < COLUMNS; j++) {
-                    out.print("<div class=\"col-sm\">");
-                    out.print(renderProductCard(pageProducts.size() > counter ? pageProducts.get(counter) : null));
-                    out.print("</div>");
-                    counter++;
-                }
-                out.print("</div>");
+            
+            if (VIEW_LIST.equals(view)) {
+                out.print(list(pageProducts));
+            } else {
+                out.print(tiles(pageProducts));
             }
             out.print("</div>");
         } catch (Exception ex) {
@@ -110,6 +105,59 @@ public class SearchResultTag extends RequestContextAwareTag {
         this.url = url;
     }
     // ============================================== PRIVATE =========================================================
+    /**
+     * Render tiles view.
+     * @param pageProducts page products.
+     * @return HTML template.
+     */
+    private String tiles(List<Product> pageProducts) {
+        StringBuilder sb = new StringBuilder();
+        int counter = 0;
+        for (int i = 0; i < ROWS; i++) {
+            sb.append("<div class=\"row\">");
+            for (int j = 0; j < COLUMNS; j++) {
+                sb.append("<div class=\"col-sm\">");
+                sb.append(renderProductCard(pageProducts.size() > counter ? pageProducts.get(counter) : null));
+                sb.append("</div>");
+                counter++;
+            }
+            sb.append("</div>");
+        }
+        return sb.toString();
+    }
+    /**
+     * Render list view.
+     * @param pageProducts page products.
+     * @return HTML template.
+     */
+    private String list(List<Product> pageProducts) {
+        StringBuilder content = new StringBuilder();
+        for (Product product: pageProducts) {
+            String imageLink = "/api/product-image/" + product.getId();
+            content.append("<tr>");
+                content.append("<th scope=\"row\" width=\"80px\" style=\"padding: 0;\"><img src=\"").append(imageLink)
+                        .append("\" class=\"product-avatar img-thumbnail\" alt=\"")
+                        .append(product.getName()).append("\"></th>");
+                content.append("<td>").append(product.getName()).append("</td>");
+                content.append("<td class=\"text-end\" width=\"130px\">")
+                        .append(String.format("%.2f", product.getPrice())).append(" BYN</td>");
+            content.append("</tr>");
+        }
+        StringBuilder sb = new StringBuilder();
+        sb.append("<table class=\"table table-responsive-sm table-hover table-bordered rounded product-table\">");
+            sb.append("<thead class=\"table-light\">");
+                sb.append("<tr>");
+                    sb.append("<th scope=\"col\"></th>");
+                    sb.append("<th scope=\"col\">Наименование</th>");
+                    sb.append("<th class=\"text-end\" scope=\"col\">Цена</th>");
+                sb.append("</tr>");
+            sb.append("</thead>");
+            sb.append("<tbody>");
+                sb.append(content.toString());
+            sb.append("</tbody>");
+        sb.append("</table>");
+        return sb.toString();
+    }
     /**
      * Render product card.
      * @param product product.
