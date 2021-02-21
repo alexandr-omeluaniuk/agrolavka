@@ -26,11 +26,11 @@
                     
                 </header>
                 <div class="row justify-content-center" style="width: 100%">
-                    <div class="col-lg-3 intro-info order-lg-first order-last">
+                    <div class="col-lg-3 col-md-12 intro-info order-lg-first order-last">
                         <cmp:catalog groupId="${groupId}"></cmp:catalog>
                     </div>
 
-                    <div class="col-lg-9 intro-info order-lg-first order-last">
+                    <div class="col-lg-9 col-md-12 intro-info order-lg-first order-last">
                         <cmp:search-result-tag groupId="${groupId}" page="${page}" view="${view}"></cmp:search-result-tag>
                     </div>
                 </div>
