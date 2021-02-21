@@ -173,7 +173,7 @@
     on('input', '#products-search', function (e) {
         const searchText = this.value;
         const searchResultOutput = select('#products-search-results-list');
-        const noResult = '<li><a class="dropdown-item text-danger" href="#">По вашему запросу ничего не найдено</a></li>';
+        const noResult = '<li><a class="dropdown-item text-muted" href="#">По вашему запросу ничего не найдено</a></li>';
         if (searchText) {
             fetch(`/api/search?searchText=${searchText}`, {
                 method: 'GET',
@@ -248,7 +248,7 @@
     function highlightText(text, searchText) {
         const idx = text.toLowerCase().indexOf(searchText.toLowerCase());
         if (searchText.length > 0 && idx !== -1) {
-            return `${text.substring(0, idx)}<b>${text.substring(idx, idx + searchText.length)}</b>${text.substring(idx + searchText.length)}`;
+            return `${text.substring(0, idx)}<span class="text-info" style="background-color: rgba(27,177,220,.07);">${text.substring(idx, idx + searchText.length)}</span>${text.substring(idx + searchText.length)}`;
         } else {
             return text;
         }

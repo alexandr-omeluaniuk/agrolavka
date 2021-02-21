@@ -92,6 +92,11 @@ h1, h2, h3, h4, h5, h6 {
     max-height: calc(100vh - 100px);
     overflow-y: auto;
 }
+#products-search:focus {
+    color: #1bb1dc;
+    border-color: #1bb1dc;
+    box-shadow: 0 0 0 0.25rem rgba(27,177,220,.25);
+}
 #header {
   background: #fff;
   transition: all 0.5s;
