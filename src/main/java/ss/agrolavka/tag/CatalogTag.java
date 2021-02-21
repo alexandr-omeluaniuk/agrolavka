@@ -41,7 +41,8 @@ public class CatalogTag extends RequestContextAwareTag {
             sb.append("<div class=\"card\" style=\"width: 100%; border: none;\">");
                 sb.append("<div class=\"card-body d-flex justify-content-between\" "
                         + "style=\"border: none; padding-top: 0px; padding-right: 0px; padding-left: 0px;\">");
-                    sb.append("<h5 style=\"margin-bottom: 1rem;\">Каталог товаров</h5>");
+                    sb.append("<h5 style=\"margin-bottom: 1rem;\" class=\"text-info\">"
+                            + "<i class=\"fas fa-seedling\"></i> Каталог товаров</h5>");
                 sb.append("</div>");
             sb.append("</div>");
             sb.append("<div class=\"accordion\" id=\"catalog-0\">");

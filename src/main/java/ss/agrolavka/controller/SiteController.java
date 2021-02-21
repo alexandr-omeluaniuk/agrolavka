@@ -34,7 +34,7 @@ public class SiteController {
     public String productsGroup(Model model,
             @RequestParam(name = "page", required = false) Integer page,
             @RequestParam(name = "view", required = false) String view) {
-        model.addAttribute("title", "Каталог");
+        model.addAttribute("title", "Товары для сада и огорода");
         model.addAttribute("page", page);
         model.addAttribute("view", view);
         return "catalog";
