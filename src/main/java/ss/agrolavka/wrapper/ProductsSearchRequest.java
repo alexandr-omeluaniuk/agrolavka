@@ -16,6 +16,8 @@ public class ProductsSearchRequest {
     private Integer page;
     /** Page size. */
     private Integer pageSize;
+    /** Search text. */
+    private String text;
     // =================================================== SET & GET ==================================================
     /**
      * @return the groupId
@@ -52,5 +54,17 @@ public class ProductsSearchRequest {
      */
     public void setPageSize(Integer pageSize) {
         this.pageSize = pageSize;
+    }
+    /**
+     * @return the text
+     */
+    public String getText() {
+        return text;
+    }
+    /**
+     * @param text the text to set
+     */
+    public void setText(String text) {
+        this.text = text;
     }
 }

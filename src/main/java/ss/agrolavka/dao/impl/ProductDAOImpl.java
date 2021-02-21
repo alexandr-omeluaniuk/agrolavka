@@ -73,6 +73,9 @@ class ProductDAOImpl implements ProductDAO {
             Join<Product, ProductsGroup> productGroup = c.join(Product_.group, JoinType.LEFT);
             predicates.add(cb.equal(productGroup.get(ProductsGroup_.id), request.getGroupId()));
         }
+        if (request.getText() != null && !request.getText().isBlank()) {
+            predicates.add(cb.like(cb.upper(c.get(Product_.name)), "%" + request.getText().toUpperCase() + "%"));
+        }
         return predicates;
     }
 }

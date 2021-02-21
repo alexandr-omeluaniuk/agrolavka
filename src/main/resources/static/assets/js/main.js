@@ -176,7 +176,7 @@
         const brand = select('#agrolavka-brand');
         const social = select('.social-links');
         const searchInputContainer = select('#products-search-container');
-        console.log(brand);
+        const searchInput = select('#products-search');
         if (brand.style.display === 'none') {
             brand.style.display = "";
             social.style.display = "";
@@ -187,6 +187,9 @@
             searchInputContainer.style.display = "flex";
         }
         scrollto('#products');
+        setTimeout(() => {
+            searchInput.focus();
+        }, 100);
     }, true);
     
     on('click', '#products-search-close', function (e) {

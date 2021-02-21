@@ -21,6 +21,11 @@
             <input type="text" class="form-control" aria-label="Поиск товаров" id="products-search" placeholder="Поиск">
             <button class="btn btn-outline-secondary" type="button" id="products-search-close"><i class="fas fa-times"></i></button>
         </div>
+        <ul class="dropdown-menu shadow-sm" aria-labelledby="products-search-container" id="products-search-results-list">
+            <li><a class="dropdown-item" href="#">Action</a></li>
+            <li><a class="dropdown-item" href="#">Another action</a></li>
+            <li><a class="dropdown-item" href="#">Something else here</a></li>
+        </ul>
         
         <!-- Uncomment below if you prefer to use an image logo -->
         <!-- <a href="index.html" class="logo me-auto"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->

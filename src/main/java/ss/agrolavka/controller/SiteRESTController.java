@@ -6,7 +6,6 @@
 package ss.agrolavka.controller;
 
 import java.util.Base64;
-import java.util.Collections;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -21,6 +20,7 @@ import ss.agrolavka.constants.ImageStubs;
 import ss.agrolavka.dao.CoreDAO;
 import ss.agrolavka.dao.ProductDAO;
 import ss.agrolavka.model.Product;
+import ss.agrolavka.wrapper.ProductsSearchRequest;
 
 /**
  * Site REST controller.
@@ -46,6 +46,10 @@ public class SiteRESTController {
     @RequestMapping(value = "/search", method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Product> search(@RequestParam(value = "searchText", required = false) String searchText) throws Exception {
-        return Collections.emptyList();
+        ProductsSearchRequest request = new ProductsSearchRequest();
+        request.setPage(1);
+        request.setPageSize(10);
+        request.setText(searchText);
+        return productDAO.search(request);
     }
 }
