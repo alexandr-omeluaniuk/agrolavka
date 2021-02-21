@@ -20,17 +20,26 @@
 
         <nav id="navbar" class="navbar order-last order-lg-0">
             <ul>
-                <li><a class="nav-link scrollto ${activePage == "HOME" ? "active" : ""}" href="/">
-                        <i class="fas fa-home nav-icon"></i> Главная</a></li>
+                <li>
+                    <a class="nav-link scrollto ${activePage == "HOME" ? "active" : ""}" href="/">
+                        <span><i class="fas fa-home nav-icon"></i> Главная</span>
+                    </a>
+                </li>
                 <li class="dropdown">
                     <a href="/catalog" class="${activePage == "PRODUCTS" ? "active" : ""}">
-                        <i class="fas fa-seedling nav-icon"></i> <span>Наша продукция</span> <i class="bi bi-chevron-down"></i>
+                        <span><i class="fas fa-seedling nav-icon"></i> Наша продукция</span> <i class="bi bi-chevron-down"></i>
                     </a>
                     <cmp:menu-catalog></cmp:menu-catalog>
                 </li>
-                <li><a class="nav-link scrollto ${activePage == "ABOUT" ? "active" : ""}" href="/about">
-                        <i class="fas fa-store nav-icon"></i> О нас</a></li>
-                <li><a class="nav-link scrollto" href="#footer"><i class="fas fa-phone-alt nav-icon"></i> Контакты</a></li>
+                <li>
+                    <a class="nav-link scrollto ${activePage == "ABOUT" ? "active" : ""}" href="/about">
+                        <span><i class="fas fa-store nav-icon"></i> О нас</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="nav-link scrollto" href="#footer">
+                        <span><i class="fas fa-phone-alt nav-icon"></i> Контакты</span>
+                    </a></li>
             </ul>
             <i class="bi bi-list mobile-nav-toggle"></i>
         </nav><!-- .navbar -->

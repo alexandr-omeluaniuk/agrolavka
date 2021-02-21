@@ -104,6 +104,7 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 400;
   letter-spacing: 3px;
   text-transform: uppercase;
+  
 }
 
 #header .logo a {
@@ -144,7 +145,14 @@ h1, h2, h3, h4, h5, h6 {
 
 @media (max-width: 992px) {
   #header .logo {
-    font-size: 28px;
+    font-size: 22px;
+    letter-spacing: 1px;
+  }
+  #header {
+      height: 64px;
+  }
+  #header.header-scrolled {
+      height: 56px;
   }
 }
 
@@ -393,6 +401,7 @@ h1, h2, h3, h4, h5, h6 {
 
 @media (max-width: 991px) {
   #hero {
+    min-height: 100vh;
     height: auto;
     padding: 100px 0 60px 0;
   }
@@ -1643,9 +1652,19 @@ section {
     vertical-align: middle;
     width: 80px;
     height: 80px;
+    min-width: 80px;
     border-radius: 50%;
     object-fit: cover;
+}
+.product-table {
+    min-width: 400px;
 }
 .product-table td {
     vertical-align: middle;
 }
+@media (max-width: 992px) {
+  .products-search-result {
+    margin-top: 16px;
+  }
+}
+

@@ -58,14 +58,19 @@ public class SearchResultTag extends RequestContextAwareTag {
         searchRequest.setPageSize(COLUMNS * ROWS);
         try {
             List<Product> pageProducts = productDAO.search(searchRequest);
-            out.print("<div class=\"container\">");
+            out.print("<div class=\"row products-search-result\">");
+            out.print("<div class=\"col-sm-12\">");
             out.print(renderToolbar(searchRequest));
-            
-            if (VIEW_LIST.equals(view)) {
-                out.print(list(pageProducts));
+            if (pageProducts.isEmpty()) {
+                out.print("<p class=\"text-center\">По вашему запросу ничего не найдено</p>");
             } else {
-                out.print(tiles(pageProducts));
+                if (VIEW_LIST.equals(view)) {
+                    out.print(list(pageProducts));
+                } else {
+                    out.print(tiles(pageProducts));
+                }
             }
+            out.print("</div>");
             out.print("</div>");
         } catch (Exception ex) {
             LOG.error("Search result rendering error!", ex);
@@ -135,27 +140,29 @@ public class SearchResultTag extends RequestContextAwareTag {
         for (Product product: pageProducts) {
             String imageLink = "/api/product-image/" + product.getId();
             content.append("<tr>");
-                content.append("<th scope=\"row\" width=\"80px\" style=\"padding: 0;\"><img src=\"").append(imageLink)
+                content.append("<th scope=\"row\" style=\"padding: 0;\"><img src=\"").append(imageLink)
                         .append("\" class=\"product-avatar img-thumbnail\" alt=\"")
                         .append(product.getName()).append("\"></th>");
                 content.append("<td>").append(product.getName()).append("</td>");
-                content.append("<td class=\"text-end\" width=\"130px\">")
+                content.append("<td class=\"text-end\">")
                         .append(String.format("%.2f", product.getPrice())).append(" BYN</td>");
             content.append("</tr>");
         }
         StringBuilder sb = new StringBuilder();
-        sb.append("<table class=\"table table-responsive-sm table-hover table-bordered rounded product-table\">");
+        sb.append("<div class=\"table-responsive\">");
+        sb.append("<table class=\"table table-hover table-bordered rounded product-table\">");
             sb.append("<thead class=\"table-light\">");
                 sb.append("<tr>");
-                    sb.append("<th scope=\"col\"></th>");
+                    sb.append("<th scope=\"col\" width=\"80px\"></th>");
                     sb.append("<th scope=\"col\">Наименование</th>");
-                    sb.append("<th class=\"text-end\" scope=\"col\">Цена</th>");
+                    sb.append("<th class=\"text-end\" scope=\"col\" width=\"130px\">Цена</th>");
                 sb.append("</tr>");
             sb.append("</thead>");
             sb.append("<tbody>");
                 sb.append(content.toString());
             sb.append("</tbody>");
         sb.append("</table>");
+        sb.append("</div>");
         return sb.toString();
     }
     /**
