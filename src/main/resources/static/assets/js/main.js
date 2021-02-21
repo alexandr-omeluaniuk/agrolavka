@@ -191,12 +191,12 @@
                             json.forEach(product => {
                                 sb += `<a href="#" class="list-group-item list-group-item-action">
                                             <div class="d-flex w-100 justify-content-between">
-                                                <h6 class="mb-1">${product.name}</h6>
-                                                <small style="margin-left: 20px;">${parseFloat(product.price).toFixed(2)} BYN</small>
+                                                <h6 class="mb-1">${highlightText(product.name, searchText)}</h6>
+                                                <small style="margin-left: 20px;" class="fw-bold">${parseFloat(product.price).toFixed(2)} BYN</small>
                                             </div>
                                             <div class="d-flex justify-content-between">
-                                                <small class="mb-1">Категория</small>
-                                                <span>${product.group.name}</span>
+                                                <small class="mb-1 text-muted">Категория</small>
+                                                <small class="text-muted">${product.group.name}</small>
                                             </div>
                                        </a>`;
                             });
@@ -220,7 +220,8 @@
         const searchInputContainer = select('#products-search-container');
         const searchInput = select('#products-search');
         const searchResultOutput = select('#products-search-results-list');
-        if (brand.style.display === 'none') {
+        const isSearchOpen = brand.style.display === 'none';
+        if (isSearchOpen) {
             brand.style.display = "";
             social.style.display = "";
             searchInputContainer.style.display = "none";
@@ -232,15 +233,26 @@
             searchResultOutput.classList.remove("list-group");
             searchResultOutput.innerHTML = '';
         }
-        setTimeout(() => {
-            scrollto('#products');
-            searchInput.focus();
-        }, 100);
+        if (!isSearchOpen) {
+            setTimeout(() => {
+                scrollto('#products');
+                searchInput.focus();
+            }, 100);
+        }
     }, true);
 
     on('click', '#products-search-close', function (e) {
         select('#nav-search-button').click();
     }, true);
+    
+    function highlightText(text, searchText) {
+        const idx = text.toLowerCase().indexOf(searchText.toLowerCase());
+        if (searchText.length > 0 && idx !== -1) {
+            return `${text.substring(0, idx)}<b>${text.substring(idx, idx + searchText.length)}</b>${text.substring(idx + searchText.length)}`;
+        } else {
+            return text;
+        }
+    }
 
     /**
      * Scroll with ofset on page load with hash links in the url

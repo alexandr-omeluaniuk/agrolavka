@@ -18,7 +18,9 @@
         
         <div class="input-group mb-3" id="products-search-container">
             <input type="search" class="form-control" aria-label="Поиск товаров" id="products-search" placeholder="Поиск">
-            <button class="btn btn-outline-secondary" type="button" id="products-search-close"><i class="fas fa-times"></i></button>
+            <button class="btn btn-outline-secondary" type="button" id="products-search-close" title="Закрыть поиск">
+                <i class="fas fa-chevron-right"></i>
+            </button>
         </div>
         <ul class="dropdown-menu shadow-sm" aria-labelledby="products-search-container" id="products-search-results-list"></ul>
         
