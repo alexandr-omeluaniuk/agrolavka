@@ -156,22 +156,20 @@
   
   on('input', '#products-search', function (e) {
       const searchText = this.value;
-      var url = new URL(window.location.href);
-      console.log(url);
-      var page = url.searchParams.get("page");
-      var view = url.searchParams.get("view");
-      localStorage.setItem('SEARCH_TEXT', searchText);
-      search(page, view, searchText);
+      search(searchText);
   }, true);
   
     function search(page, view, searchText) {
-        fetch(`/api/search?page=${page}&view=${view}&searchText=${searchText}`, {
-            method: 'GET'
+        fetch(`/api/search?searchText=${searchText}`, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
         }).then(function (response) {
             if (response.ok) {
-                response.text().then(function (text) {
-                    console.log(text);
-                });
+                const json = response.json();
+                console.log(json);
             }
         }).catch(error => {
             console.error('HTTP error occurred: ' + error);

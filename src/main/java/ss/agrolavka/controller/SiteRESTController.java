@@ -6,6 +6,8 @@
 package ss.agrolavka.controller;
 
 import java.util.Base64;
+import java.util.Collections;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Propagation;
@@ -17,8 +19,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ss.agrolavka.constants.ImageStubs;
 import ss.agrolavka.dao.CoreDAO;
+import ss.agrolavka.dao.ProductDAO;
 import ss.agrolavka.model.Product;
-import ss.agrolavka.tag.SearchResultTag;
 
 /**
  * Site REST controller.
@@ -30,6 +32,9 @@ public class SiteRESTController {
     /** Core DAO. */
     @Autowired
     private CoreDAO coreDAO;
+    /** Product DAO. */
+    @Autowired
+    private ProductDAO productDAO;
     @RequestMapping(value = "/product-image/{id}", method = RequestMethod.GET,
             produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     @Transactional(propagation = Propagation.SUPPORTS)
@@ -39,14 +44,8 @@ public class SiteRESTController {
                 : Base64.getDecoder().decode(ImageStubs.NO_PRODUCT_IMAGE);
     }
     @RequestMapping(value = "/search", method = RequestMethod.GET,
-            produces = MediaType.TEXT_HTML_VALUE)
-    public String search(@RequestParam(value = "page", required = false) Integer page,
-            @RequestParam(value = "view", required = false) String view,
-            @RequestParam(value = "searchText", required = false) String searchText) throws Exception {
-        SearchResultTag tag = new SearchResultTag();
-        tag.setPage(page);
-        tag.setView(view);
-        tag.doStartTag();
-        return tag.toString();
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<Product> search(@RequestParam(value = "searchText", required = false) String searchText) throws Exception {
+        return Collections.emptyList();
     }
 }

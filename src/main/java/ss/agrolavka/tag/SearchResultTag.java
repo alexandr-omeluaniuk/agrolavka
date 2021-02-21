@@ -51,40 +51,30 @@ public class SearchResultTag extends RequestContextAwareTag {
     private String url;
     @Override
     public void doFinally() {
+        JspWriter out = pageContext.getOut();
+        ProductsSearchRequest searchRequest = new ProductsSearchRequest();
+        searchRequest.setGroupId(groupId);
+        searchRequest.setPage(page == null ? 1 : page);
+        searchRequest.setPageSize(COLUMNS * ROWS);
         try {
-            JspWriter out = pageContext.getOut();
-            out.print(toString());
-        } catch (Exception ex) {
-            LOG.error("Search result rendering error!", ex);
-        }
-    }
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        try {
-            ProductsSearchRequest searchRequest = new ProductsSearchRequest();
-            searchRequest.setGroupId(groupId);
-            searchRequest.setPage(page == null ? 1 : page);
-            searchRequest.setPageSize(COLUMNS * ROWS);
             List<Product> pageProducts = productDAO.search(searchRequest);
-            sb.append("<div class=\"row products-search-result\">");
-            sb.append("<div class=\"col-sm-12\">");
-            sb.append(renderToolbar(searchRequest));
+            out.print("<div class=\"row products-search-result\">");
+            out.print("<div class=\"col-sm-12\">");
+            out.print(renderToolbar(searchRequest));
             if (pageProducts.isEmpty()) {
-                sb.append("<p class=\"text-center\">По вашему запросу ничего не найдено</p>");
+                out.print("<p class=\"text-center\">По вашему запросу ничего не найдено</p>");
             } else {
                 if (VIEW_LIST.equals(view)) {
-                    sb.append(list(pageProducts));
+                    out.print(list(pageProducts));
                 } else {
-                    sb.append(tiles(pageProducts));
+                    out.print(tiles(pageProducts));
                 }
             }
-            sb.append("</div>");
-            sb.append("</div>");
+            out.print("</div>");
+            out.print("</div>");
         } catch (Exception ex) {
             LOG.error("Search result rendering error!", ex);
         }
-        return sb.toString();
     }
     @Override
     protected int doStartTagInternal() throws Exception {
@@ -209,18 +199,11 @@ public class SearchResultTag extends RequestContextAwareTag {
     private String renderToolbar(ProductsSearchRequest searchRequest) {
         StringBuilder sb = new StringBuilder();
         sb.append("<div class=\"row products-toolbar\">");
-            sb.append("<div class=\"col-12 col-lg-4\">");
-                sb.append("<div class=\"input-group mb-3\">");
-                    sb.append("<span class=\"input-group-text\"><i class=\"fas fa-search\"></i></span>");
-                    sb.append("<input type=\"text\" class=\"form-control\" placeholder=\"Поиск\" "
-                            + "id=\"products-search\">");
-                sb.append("</div>");
-            sb.append("</div>");
-            sb.append("<div class=\"col-6 col-lg-4 d-flex justify-content-start\">");
+            sb.append("<div class=\"col-6 d-flex justify-content-start\">");
                 sb.append(renderPagination(searchRequest));
                 
             sb.append("</div>");
-            sb.append("<div class=\"col-6 col-lg-4 d-flex justify-content-end\">");
+            sb.append("<div class=\"col-6 d-flex justify-content-end\">");
                 sb.append(renderViewSwitcher());
             sb.append("</div>");
         sb.append("</div>");
