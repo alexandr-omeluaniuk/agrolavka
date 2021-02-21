@@ -105,9 +105,12 @@ public class SearchResultTag extends RequestContextAwareTag {
                         .append(imageLink).append("')\"></div>");
                 sb.append("<div class=\"card-body\">");
                     sb.append("<h6 class=\"card-title\">").append(product.getName()).append("</h6>");
-                    sb.append("<p class=\"card-subtitle mb-2 text-muted fs-6\">Цена:")
-                            .append("<span class=\"text-dark fw-bold\">")
-                            .append(product.getPrice()).append(" BYN</span></p>");
+                    sb.append("<div class=\"d-flex justify-content-between align-items-center\">"
+                            + "<span class=\"card-subtitle text-muted fs-6\">Цена</span>"
+                            + "<span class=\"text-dark fw-bold product-price\">"
+                            + String.format("%.2f", product.getPrice())
+                            + " BYN</span>"
+                            + "</div>");
                 sb.append("</div>");
             sb.append("</div>");
         return sb.toString();
@@ -116,9 +119,17 @@ public class SearchResultTag extends RequestContextAwareTag {
     private String renderToolbar(ProductsSearchRequest searchRequest) {
         StringBuilder sb = new StringBuilder();
         sb.append("<div class=\"card\" style=\"width: 100%; border: none;\">");
-            sb.append("<div class=\"card-body\" "
+            sb.append("<div class=\"card-body d-flex justify-content-between\" "
                     + "style=\"border: none; padding-top: 0px; padding-right: 0px; padding-left: 0px;\">");
                 sb.append(renderPagination(searchRequest));
+                sb.append("<div class=\"btn-group\">" +
+                            "<a href=\"?view=tiles\" class=\"btn btn-outline-info active\" aria-current=\"page\">" +
+                                "<i class=\"fas fa-th\"></i>" +
+                            "</a>" +
+                            "<a href=\"?view=list\" class=\"btn btn-outline-info\">" +
+                                "<i class=\"fas fa-list\"></i>" +
+                            "</a>" +
+                        "</div>");
             sb.append("</div>");
         sb.append("</div>");
         return sb.toString();
