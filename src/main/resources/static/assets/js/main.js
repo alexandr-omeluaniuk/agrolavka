@@ -146,6 +146,13 @@
       scrollto(this.hash)
     }
   }, true)
+  
+  on('click', '#mobile-catalog-button', function(e) {
+      select('.mobile-nav-toggle').click();
+      setTimeout(() => {
+          select('#mobile-catalog').click();
+      }, 300);
+  }, true);
 
   /**
    * Scroll with ofset on page load with hash links in the url

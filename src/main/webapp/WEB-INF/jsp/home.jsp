@@ -35,11 +35,17 @@
                     <p>ТОВАРЫ ДЛЯ САДА И ОГОРОДА</p>
                 </header>
                 <div class="row justify-content-center" data-aos="fade-up" style="width: 100%">
-                    <div class="col-lg-4 intro-info order-lg-first order-last" data-aos="zoom-in" data-aos-delay="100">
-                        <cmp:catalog></cmp:catalog>
+                    <div class="col-lg-3 col-md-12 intro-info order-lg-first order-last catalog-desktop">
+                        <cmp:catalog groupId="${groupId}"></cmp:catalog>
+                    </div>
+                    
+                    <div class="col-lg-3 col-md-12 intro-info order-lg-first order-last catalog-mobile">
+                        <button class="btn btn-outline-info" style="width: 100%" id="mobile-catalog-button">
+                            <span><i class="fas fa-seedling nav-icon"></i> Каталог товаров</span></i>
+                        </button>
                     </div>
 
-                    <div class="col-lg-8 intro-info order-lg-first order-last" data-aos="zoom-in" data-aos-delay="100">
+                    <div class="col-lg-8 col-md-12 intro-info order-lg-first order-last" data-aos="zoom-in" data-aos-delay="100">
                         <cmp:search-result-tag groupId="${groupId}" page="${page}" view="${view}" url="/catalog"></cmp:search-result-tag>
                     </div>
                 </div>

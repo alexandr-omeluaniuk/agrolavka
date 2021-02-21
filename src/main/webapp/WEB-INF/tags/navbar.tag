@@ -26,7 +26,7 @@
                     </a>
                 </li>
                 <li class="dropdown">
-                    <a href="/catalog" class="${activePage == "PRODUCTS" ? "active" : ""}">
+                    <a href="/catalog" class="${activePage == "PRODUCTS" ? "active" : ""}" id="mobile-catalog">
                         <span><i class="fas fa-seedling nav-icon"></i> Наша продукция</span> <i class="bi bi-chevron-down"></i>
                     </a>
                     <cmp:menu-catalog></cmp:menu-catalog>
@@ -48,7 +48,7 @@
             <!--a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
             <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
             <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a-->
-            <a href="https://www.instagram.com/agrolavka.by" class="instagram"><i class="bi bi-instagram"></i></a>
+            <a href="https://www.instagram.com/agrolavka.by"><i class="fab fa-instagram social-icon"></i></a>
         </div>
 
     </div>
