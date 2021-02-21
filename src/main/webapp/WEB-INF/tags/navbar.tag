@@ -17,15 +17,10 @@
         <h1 class="logo me-auto" id="agrolavka-brand"><a href="/"><i class="fas fa-carrot agrolavka-logo"></i> Агролавка</a></h1>
         
         <div class="input-group mb-3" id="products-search-container">
-            <span class="input-group-text"><i class="fas fa-search"></i></span>
-            <input type="text" class="form-control" aria-label="Поиск товаров" id="products-search" placeholder="Поиск">
+            <input type="search" class="form-control" aria-label="Поиск товаров" id="products-search" placeholder="Поиск">
             <button class="btn btn-outline-secondary" type="button" id="products-search-close"><i class="fas fa-times"></i></button>
         </div>
-        <ul class="dropdown-menu shadow-sm" aria-labelledby="products-search-container" id="products-search-results-list">
-            <li><a class="dropdown-item" href="#">Action</a></li>
-            <li><a class="dropdown-item" href="#">Another action</a></li>
-            <li><a class="dropdown-item" href="#">Something else here</a></li>
-        </ul>
+        <ul class="dropdown-menu shadow-sm" aria-labelledby="products-search-container" id="products-search-results-list"></ul>
         
         <!-- Uncomment below if you prefer to use an image logo -->
         <!-- <a href="index.html" class="logo me-auto"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->

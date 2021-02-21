@@ -5,6 +5,7 @@
  */
 package ss.agrolavka.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -43,6 +44,7 @@ public class ProductsGroup extends ExternalEntity implements Serializable, Compa
     @Column(name = "parent_id", length = 255)
     private String parentId;
     /** Products. */
+    @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "group", cascade = CascadeType.ALL)
     private List<Product> products;
     // =============================================== SET & GET ======================================================

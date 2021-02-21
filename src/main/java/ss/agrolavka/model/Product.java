@@ -5,6 +5,7 @@
  */
 package ss.agrolavka.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -42,10 +43,11 @@ public class Product extends ExternalEntity implements Serializable {
     @Column(name = "price", nullable = false)
     private Double price;
     /** Images. */
+    @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "product")
     private List<ProductImage> images;
     /** Product group. */
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "group_id")
     private ProductsGroup group;
     // ============================================== SET & GET =======================================================
