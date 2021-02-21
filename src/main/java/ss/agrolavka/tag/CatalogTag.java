@@ -38,6 +38,12 @@ public class CatalogTag extends RequestContextAwareTag {
         JspWriter out = pageContext.getOut();
         try {
             StringBuilder sb = new StringBuilder();
+            sb.append("<div class=\"card\" style=\"width: 100%; border: none;\">");
+                sb.append("<div class=\"card-body d-flex justify-content-between\" "
+                        + "style=\"border: none; padding-top: 0px; padding-right: 0px; padding-left: 0px;\">");
+                    sb.append("<h5 style=\"margin-bottom: 1rem;\">Каталог товаров</h5>");
+                sb.append("</div>");
+            sb.append("</div>");
             sb.append("<div class=\"accordion\" id=\"catalog-0\">");
             List<ProductsGroup> allGroups = coreDAO.getAll(ProductsGroup.class);
             Map<String, List<ProductsGroup>> groupsMap = new HashMap<>();

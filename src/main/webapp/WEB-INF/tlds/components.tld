@@ -40,6 +40,11 @@
     <tag-class>ss.agrolavka.tag.SearchResultTag</tag-class>
     <body-content>tagdependent</body-content>
     <attribute>
+      <name>url</name>
+      <rtexprvalue>true</rtexprvalue>
+      <type>java.lang.String</type>
+    </attribute>
+    <attribute>
       <name>groupId</name>
       <rtexprvalue>true</rtexprvalue>
       <type>java.lang.String</type>

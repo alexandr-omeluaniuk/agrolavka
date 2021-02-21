@@ -47,6 +47,8 @@ public class SearchResultTag extends RequestContextAwareTag {
     private Integer page;
     /** View. TILES or LIST. */
     private String view;
+    /** URL. */
+    private String url;
     @Override
     public void doFinally() {
         JspWriter out = pageContext.getOut();
@@ -100,6 +102,12 @@ public class SearchResultTag extends RequestContextAwareTag {
      */
     public void setView(String view) {
         this.view = view;
+    }
+    /**
+     * @param url the url to set
+     */
+    public void setUrl(String url) {
+        this.url = url;
     }
     // ============================================== PRIVATE =========================================================
     /**
@@ -217,6 +225,9 @@ public class SearchResultTag extends RequestContextAwareTag {
         }
         StringBuilder sb = new StringBuilder();
         if (!params.isEmpty()) {
+            if (url != null && !url.isEmpty()) {
+                sb.append(url);
+            }
             sb.append("?");
             params.forEach(p -> {
                 sb.append(p).append("&");

@@ -18,8 +18,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class SiteController {
     @RequestMapping("/")
-    public String home(Model model) {
+    public String home(Model model,
+            @RequestParam(name = "page", required = false) Integer page,
+            @RequestParam(name = "view", required = false) String view) {
         model.addAttribute("title", "Главная");
+        model.addAttribute("page", page);
+        model.addAttribute("view", view);
         return "home";
     }
     @RequestMapping("/about")
