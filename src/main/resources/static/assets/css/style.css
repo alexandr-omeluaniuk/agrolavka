@@ -1666,5 +1666,14 @@ section {
   .products-search-result {
     margin-top: 16px;
   }
+  .catalog-mobile {
+      display: block !important;
+  }
+  .catalog-desktop {
+      display: none;
+  }
+}
+.catalog-mobile {
+    display: none;
 }
 

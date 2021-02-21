@@ -26,8 +26,19 @@
                     
                 </header>
                 <div class="row justify-content-center" style="width: 100%">
-                    <div class="col-lg-3 col-md-12 intro-info order-lg-first order-last">
+                    <div class="col-lg-3 col-md-12 intro-info order-lg-first order-last catalog-desktop">
                         <cmp:catalog groupId="${groupId}"></cmp:catalog>
+                    </div>
+                    
+                    <div class="col-lg-3 col-md-12 intro-info order-lg-first order-last catalog-mobile">
+                        <ul class="navbar navbar-mobile">
+                            <li class="dropdown" style="width: 100%">
+                                <button class="btn btn-outline-info" style="width: 100%">
+                                    <span><i class="fas fa-seedling nav-icon"></i> Каталог товаров</span> <i class="bi bi-chevron-down"></i>
+                                </button>
+                                <cmp:menu-catalog></cmp:menu-catalog>
+                            </li>
+                        </ul>
                     </div>
 
                     <div class="col-lg-9 col-md-12 intro-info order-lg-first order-last">
