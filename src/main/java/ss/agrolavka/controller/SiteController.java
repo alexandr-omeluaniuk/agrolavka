@@ -27,19 +27,24 @@ public class SiteController {
         return "about";
     }
     @RequestMapping("/catalog")
-    public String productsGroup(Model model, @RequestParam(name = "page", required = false) Integer page) {
+    public String productsGroup(Model model,
+            @RequestParam(name = "page", required = false) Integer page,
+            @RequestParam(name = "view", required = false) String view) {
         model.addAttribute("title", "Каталог");
         model.addAttribute("page", page);
+        model.addAttribute("view", view);
         return "catalog";
     }
     @RequestMapping("/catalog/{groupId}/{name}")
     public String productsGroup(Model model,
             @PathVariable("groupId") Long groupId,
             @PathVariable("name") String name,
-            @RequestParam(name = "page", required = false) Integer page) {
+            @RequestParam(name = "page", required = false) Integer page,
+            @RequestParam(name = "view", required = false) String view) {
         model.addAttribute("title", name);
         model.addAttribute("groupId", groupId);
         model.addAttribute("page", page);
+        model.addAttribute("view", view);
         return "catalog";
     }
 }

@@ -40,7 +40,7 @@
                     </div>
 
                     <div class="col-lg-8 intro-info order-lg-first order-last" data-aos="zoom-in" data-aos-delay="100">
-                        <cmp:search-result-tag groupId="${groupId}" page="${page}"></cmp:search-result-tag>
+                        <cmp:search-result-tag groupId="${groupId}" page="${page}" view="${view}"></cmp:search-result-tag>
                     </div>
                 </div>
             </div>

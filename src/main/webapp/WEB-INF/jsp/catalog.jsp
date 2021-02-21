@@ -31,7 +31,7 @@
                     </div>
 
                     <div class="col-lg-9 intro-info order-lg-first order-last">
-                        <cmp:search-result-tag groupId="${groupId}" page="${page}"></cmp:search-result-tag>
+                        <cmp:search-result-tag groupId="${groupId}" page="${page}" view="${view}"></cmp:search-result-tag>
                     </div>
                 </div>
             </div>

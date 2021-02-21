@@ -5,6 +5,7 @@
  */
 package ss.agrolavka.tag;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.jsp.JspWriter;
 import static javax.servlet.jsp.tagext.Tag.SKIP_BODY;
@@ -30,6 +31,10 @@ public class SearchResultTag extends RequestContextAwareTag {
     private static final int COLUMNS = 3;
     /** Rows. */
     private static final int ROWS = 3;
+    /** List view. */
+    private static final String VIEW_LIST = "LIST";
+    /** Tiles view. */
+    private static final String VIEW_TILES = "TILES";
     /** Core DAO. */
     @Autowired
     private CoreDAO coreDAO;
@@ -40,6 +45,8 @@ public class SearchResultTag extends RequestContextAwareTag {
     private Long groupId;
     /** Page. */
     private Integer page;
+    /** View. TILES or LIST. */
+    private String view;
     @Override
     public void doFinally() {
         JspWriter out = pageContext.getOut();
@@ -88,6 +95,12 @@ public class SearchResultTag extends RequestContextAwareTag {
     public void setPage(Integer page) {
         this.page = page;
     }
+    /**
+     * @param view the view to set
+     */
+    public void setView(String view) {
+        this.view = view;
+    }
     // ============================================== PRIVATE =========================================================
     /**
      * Render product card.
@@ -115,26 +128,27 @@ public class SearchResultTag extends RequestContextAwareTag {
             sb.append("</div>");
         return sb.toString();
     }
-    
+    /**
+     * Render search result toolbar.
+     * @param searchRequest search request.
+     * @return toolbar HTML template.
+     */
     private String renderToolbar(ProductsSearchRequest searchRequest) {
         StringBuilder sb = new StringBuilder();
         sb.append("<div class=\"card\" style=\"width: 100%; border: none;\">");
             sb.append("<div class=\"card-body d-flex justify-content-between\" "
                     + "style=\"border: none; padding-top: 0px; padding-right: 0px; padding-left: 0px;\">");
                 sb.append(renderPagination(searchRequest));
-                sb.append("<div class=\"btn-group\">" +
-                            "<a href=\"?view=tiles\" class=\"btn btn-outline-info active\" aria-current=\"page\">" +
-                                "<i class=\"fas fa-th\"></i>" +
-                            "</a>" +
-                            "<a href=\"?view=list\" class=\"btn btn-outline-info\">" +
-                                "<i class=\"fas fa-list\"></i>" +
-                            "</a>" +
-                        "</div>");
+                sb.append(renderViewSwitcher());
             sb.append("</div>");
         sb.append("</div>");
         return sb.toString();
     }
-    
+    /**
+     * Render pagination component.
+     * @param searchRequest search request.
+     * @return pagination HTML template.
+     */
     private String renderPagination(ProductsSearchRequest searchRequest) {
         Long count = productDAO.count(searchRequest);
         int pagesCount = Double.valueOf(Math.ceil((double) count / (ROWS * COLUMNS))).intValue();
@@ -145,25 +159,70 @@ public class SearchResultTag extends RequestContextAwareTag {
         for (int i = 0; i < pagesCount; i++) {
             int p = i + 1;
             pageLinks.append("<li class=\"page-item ").append(searchRequest.getPage().equals(p) ? "active" : "")
-                    .append("\"><a class=\"page-link\" href=\"?page=")
-                    .append(p).append("\">").append(p).append("</a></li>");
+                    .append("\"><a class=\"page-link\" href=\"").append(createLink(p, null))
+                    .append("\">").append(p).append("</a></li>");
         }
         StringBuilder sb = new StringBuilder();
         sb.append("<nav aria-label=\"Page navigation\" class=\"d-flex justify-content-start\">" +
             "<ul class=\"pagination\" style=\"margin-bottom: 0;\">" +
                 "<li class=\"page-item\">" +
-                    "<a class=\"page-link \" href=\"?page=1\" aria-label=\"Previous\">" +
+                    "<a class=\"page-link \" href=\"" + createLink(1, null) + "\" aria-label=\"Previous\">" +
                         "<i class=\"fas fa-angle-double-left\"></i>" +
                     "</a>" +
                 "</li>" +
                 pageLinks.toString() +
                 "<li class=\"page-item\">" +
-                    "<a class=\"page-link\" href=\"?page=" + pagesCount + "\" aria-label=\"Next\">" +
+                    "<a class=\"page-link\" href=\"" + createLink(pagesCount, null) + "\" aria-label=\"Next\">" +
                         "<i class=\"fas fa-angle-double-right\"></i>" +
                     "</a>" +
                 "</li>" +
             "</ul>" +
         "</nav>");
+        return sb.toString();
+    }
+    /**
+     * Render view switcher.
+     * @return view switcher HTML template.
+     */
+    private String renderViewSwitcher() {
+        String aView = view == null || view.isEmpty() ? VIEW_TILES : view;
+        return "<div class=\"btn-group\">" +
+            "<a href=\"" + createLink(null, VIEW_TILES) + "\" class=\"btn btn-outline-info "
+                    + (VIEW_TILES.equals(aView) ? "active" : "") + "\">" +
+                "<i class=\"fas fa-th\"" + (VIEW_TILES.equals(aView) ? " style=\"color: white;\"" : "") + "></i>" +
+            "</a>" +
+            "<a href=\"" + createLink(null, VIEW_LIST) + "\" class=\"btn btn-outline-info "
+                    + (VIEW_LIST.equals(aView) ? "active" : "") + "\">" +
+                "<i class=\"fas fa-list\"" + (VIEW_LIST.equals(aView) ? " style=\"color: white;\"" : "") + "></i>" +
+            "</a>" +
+        "</div>";
+    }
+    /**
+     * Create link for page.
+     * @param pageParam page number parameter, optional.
+     * @param viewParam view type parameter, optional.
+     * @return link parameters string.
+     */
+    private String createLink(Integer pageParam, String viewParam) {
+        List<String> params = new ArrayList();
+        if (pageParam != null) {
+            params.add("page=" + pageParam);
+        } else if (page != null) {
+            params.add("page=" + page);
+        }
+        if (viewParam != null) {
+            params.add("view=" + viewParam);
+        } else if (view != null && !view.isEmpty()) {
+            params.add("view=" + view);
+        }
+        StringBuilder sb = new StringBuilder();
+        if (!params.isEmpty()) {
+            sb.append("?");
+            params.forEach(p -> {
+                sb.append(p).append("&");
+            });
+            sb.setLength(sb.length() - 1);
+        }
         return sb.toString();
     }
 }
