@@ -34,17 +34,22 @@
                         <span><i class="fas fa-home nav-icon"></i> Главная</span>
                     </a>
                 </li>
+                <li class="d-none d-lg-block">
+                    <a class="nav-link" href="#" id="products-search-link">
+                        <span><i class="fas fa-search nav-icon"></i> Поиск</span>
+                    </a>
+                </li>
                 <li class="dropdown">
                     <a href="/catalog" class="${activePage == "PRODUCTS" ? "active" : ""}" id="mobile-catalog">
                         <span><i class="fas fa-seedling nav-icon"></i> Наша продукция</span> <i class="bi bi-chevron-down"></i>
                     </a>
                     <cmp:menu-catalog></cmp:menu-catalog>
                 </li>
-                <li>
+                <!--li>
                     <a class="nav-link scrollto ${activePage == "ABOUT" ? "active" : ""}" href="/about">
                         <span><i class="fas fa-store nav-icon"></i> О нас</span>
                     </a>
-                </li>
+                </li-->
                 <li>
                     <a class="nav-link scrollto" href="#footer">
                         <span><i class="fas fa-phone-alt nav-icon"></i> Контакты</span>
@@ -54,7 +59,7 @@
         </nav><!-- .navbar -->
 
         <div class="social-links">
-            <a href="#products" id="nav-search-button"><i class="fas fa-search"></i></a>
+            <a href="#products" id="nav-search-button" class="d-lg-none"><i class="fas fa-search"></i></a>
             <!--a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
             <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
             <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a-->

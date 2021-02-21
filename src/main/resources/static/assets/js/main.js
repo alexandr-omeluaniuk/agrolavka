@@ -213,8 +213,8 @@
             searchResultOutput.innerHTML = noResult;
         }
     }, true);
-
-    on('click', '#nav-search-button', function (e) {
+    
+    function openQuickSearch() {
         const brand = select('#agrolavka-brand');
         const social = select('.social-links');
         const searchInputContainer = select('#products-search-container');
@@ -239,6 +239,14 @@
                 searchInput.focus();
             }, 100);
         }
+    }
+
+    on('click', '#nav-search-button', function (e) {
+        openQuickSearch();
+    }, true);
+    
+    on('click', '#products-search-link', function (e) {
+        openQuickSearch();
     }, true);
 
     on('click', '#products-search-close', function (e) {
