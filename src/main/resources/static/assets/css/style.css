@@ -1680,4 +1680,7 @@ section {
 .catalog-mobile {
     display: none;
 }
+.products-toolbar {
+    margin-bottom: 10px;
+}
 

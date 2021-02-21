@@ -153,6 +153,30 @@
           select('#mobile-catalog').click();
       }, 300);
   }, true);
+  
+  on('input', '#products-search', function (e) {
+      const searchText = this.value;
+      var url = new URL(window.location.href);
+      console.log(url);
+      var page = url.searchParams.get("page");
+      var view = url.searchParams.get("view");
+      localStorage.setItem('SEARCH_TEXT', searchText);
+      search(page, view, searchText);
+  }, true);
+  
+    function search(page, view, searchText) {
+        fetch(`/api/search?page=${page}&view=${view}&searchText=${searchText}`, {
+            method: 'GET'
+        }).then(function (response) {
+            if (response.ok) {
+                response.text().then(function (text) {
+                    console.log(text);
+                });
+            }
+        }).catch(error => {
+            console.error('HTTP error occurred: ' + error);
+        });
+    }
 
   /**
    * Scroll with ofset on page load with hash links in the url
@@ -162,6 +186,15 @@
       if (select(window.location.hash)) {
         scrollto(window.location.hash)
       }
+    }
+    const searchText = localStorage.getItem('SEARCH_TEXT');
+    const searchInput = select('#products-search');
+    if (searchInput && searchText) {
+        searchInput.value = searchText;
+        var url = new URL(window.location.href);
+        var page = url.searchParams.get("page");
+        var view = url.searchParams.get("view");
+        search(page, view, searchText);
     }
   });
 

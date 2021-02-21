@@ -13,10 +13,12 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ss.agrolavka.constants.ImageStubs;
 import ss.agrolavka.dao.CoreDAO;
 import ss.agrolavka.model.Product;
+import ss.agrolavka.tag.SearchResultTag;
 
 /**
  * Site REST controller.
@@ -35,5 +37,16 @@ public class SiteRESTController {
         Product product = coreDAO.findById(id, Product.class);
         return product != null && !product.getImages().isEmpty() ? product.getImages().get(0).getImageData()
                 : Base64.getDecoder().decode(ImageStubs.NO_PRODUCT_IMAGE);
+    }
+    @RequestMapping(value = "/search", method = RequestMethod.GET,
+            produces = MediaType.TEXT_HTML_VALUE)
+    public String search(@RequestParam(value = "page", required = false) Integer page,
+            @RequestParam(value = "view", required = false) String view,
+            @RequestParam(value = "searchText", required = false) String searchText) throws Exception {
+        SearchResultTag tag = new SearchResultTag();
+        tag.setPage(page);
+        tag.setView(view);
+        tag.doStartTag();
+        return tag.toString();
     }
 }
