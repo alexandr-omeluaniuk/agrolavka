@@ -180,7 +180,8 @@ public class SearchResultTag extends RequestContextAwareTag {
                 sb.append("<div class=\"card-img-top product-image\" style=\"background-image: url('")
                         .append(imageLink).append("')\"></div>");
                 sb.append("<div class=\"card-body\">");
-                    sb.append("<h6 class=\"card-title\">").append(product.getName()).append("</h6>");
+                    sb.append("<h6 class=\"card-title\" style=\"min-height: 60px\">")
+                            .append(product.getName()).append("</h6>");
                     sb.append("<div class=\"d-flex justify-content-between align-items-center\">"
                             + "<span class=\"card-subtitle text-muted fs-6\">Цена</span>"
                             + "<span class=\"text-dark fw-bold product-price\">"
@@ -201,7 +202,6 @@ public class SearchResultTag extends RequestContextAwareTag {
         sb.append("<div class=\"row products-toolbar\">");
             sb.append("<div class=\"col-6 d-flex justify-content-start\">");
                 sb.append(renderPagination(searchRequest));
-                
             sb.append("</div>");
             sb.append("<div class=\"col-6 d-flex justify-content-end\">");
                 sb.append(renderViewSwitcher());
@@ -220,24 +220,33 @@ public class SearchResultTag extends RequestContextAwareTag {
         if (pagesCount == 1) {
             return "";
         }
+        Integer aPage = page != null ? page : 1;
         StringBuilder pageLinks = new StringBuilder();
-        for (int i = 0; i < pagesCount; i++) {
-            int p = i + 1;
-            pageLinks.append("<li class=\"page-item ").append(searchRequest.getPage().equals(p) ? "active" : "")
-                    .append("\"><a class=\"page-link\" href=\"").append(createLink(p, null))
-                    .append("\">").append(p).append("</a></li>");
-        }
+        pageLinks.append("<li class=\"page-item ").append(searchRequest.getPage().equals(aPage) ? "active" : "")
+                .append("\"><a class=\"page-link\" href=\"").append(createLink(aPage, null))
+                .append("\">").append(aPage).append("</a></li>");
         StringBuilder sb = new StringBuilder();
         sb.append("<nav aria-label=\"Page navigation\" class=\"d-flex justify-content-start\">" +
             "<ul class=\"pagination\" style=\"margin-bottom: 0;\">" +
-                "<li class=\"page-item\">" +
-                    "<a class=\"page-link \" href=\"" + createLink(1, null) + "\" aria-label=\"Previous\">" +
+                "<li class=\"page-item" + (aPage == 1 ? " disabled" : "") + "\">" +
+                    "<a class=\"page-link \" href=\"" + createLink(1, null) + "\" aria-label=\"Первая страница\">" +
                         "<i class=\"fas fa-angle-double-left\"></i>" +
                     "</a>" +
                 "</li>" +
+                "<li class=\"page-item" + (aPage == 1 ? " disabled" : "") + "\">" +
+                    "<a class=\"page-link \" href=\"" + createLink(aPage - 1, null) + "\" aria-label=\"Назад\">" +
+                        "<i class=\"fas fa-angle-left\"></i>" +
+                    "</a>" +
+                "</li>" +
                 pageLinks.toString() +
-                "<li class=\"page-item\">" +
-                    "<a class=\"page-link\" href=\"" + createLink(pagesCount, null) + "\" aria-label=\"Next\">" +
+                "<li class=\"page-item" + (aPage == pagesCount ? " disabled" : "") + "\">" +
+                    "<a class=\"page-link \" href=\"" + createLink(aPage + 1, null) + "\" aria-label=\"Вперед\">" +
+                        "<i class=\"fas fa-angle-right\"></i>" +
+                    "</a>" +
+                "</li>" +
+                "<li class=\"page-item" + (aPage == pagesCount ? " disabled" : "") + "\">" +
+                    "<a class=\"page-link\" href=\"" + createLink(pagesCount, null) +
+                            "\" aria-label=\"Последняя страница\">" +
                         "<i class=\"fas fa-angle-double-right\"></i>" +
                     "</a>" +
                 "</li>" +

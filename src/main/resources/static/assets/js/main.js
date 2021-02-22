@@ -185,17 +185,19 @@
                 if (response.ok) {
                     response.json().then(json => {
                         let sb = '';
-                        if (json.length === 0) {
+                        const data = json.data;
+                        const count = json.count;
+                        if (data.length === 0) {
                             sb = noResult;
                         } else {
-                            json.forEach(product => {
+                            data.forEach(product => {
                                 sb += `<a href="#" class="list-group-item list-group-item-action">
                                             <div class="d-flex w-100 justify-content-between">
                                                 <h6 class="mb-1">${highlightText(product.name, searchText)}</h6>
-                                                <small style="margin-left: 20px;" class="fw-bold">${parseFloat(product.price).toFixed(2)} BYN</small>
+                                                <small style="margin-left: 20px; min-width: 100px; text-align: right;" 
+                                                    class="fw-bold">${parseFloat(product.price).toFixed(2)} BYN</small>
                                             </div>
                                             <div class="d-flex justify-content-between">
-                                                <small class="mb-1 text-muted">Категория</small>
                                                 <small class="text-muted">${product.group.name}</small>
                                             </div>
                                        </a>`;

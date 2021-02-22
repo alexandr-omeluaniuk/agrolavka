@@ -44,7 +44,7 @@ public class Product extends ExternalEntity implements Serializable {
     private Double price;
     /** Images. */
     @JsonIgnore
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "product")
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "product", orphanRemoval = true)
     private List<ProductImage> images;
     /** Product group. */
     @ManyToOne(fetch = FetchType.EAGER)

@@ -85,8 +85,8 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
         return result;
     }
     @Override
-    public List<Product> getProducts() throws Exception {
-        String response = request("/entity/product", "GET");
+    public List<Product> getProducts(int offset, int limit) throws Exception {
+        String response = request("/entity/product?limit=" + limit + "&offset=" + offset, "GET");
         JSONObject json = new JSONObject(response);
         List<Product> result = new ArrayList<>();
         JSONArray rows = json.getJSONArray("rows");
@@ -133,6 +133,7 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
             productImage.setFilename(item.getString("filename"));
             productImage.setImageSize(item.getLong("size"));
             productImage.setImageData(requestData(href, "GET", headers));
+            productImage.setExternalId(item.getString("id"));
             result.add(productImage);
         }
         return result;

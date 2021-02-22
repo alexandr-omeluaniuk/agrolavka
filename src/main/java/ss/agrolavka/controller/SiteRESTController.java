@@ -6,7 +6,8 @@
 package ss.agrolavka.controller;
 
 import java.util.Base64;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Propagation;
@@ -45,11 +46,15 @@ public class SiteRESTController {
     }
     @RequestMapping(value = "/search", method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Product> search(@RequestParam(value = "searchText", required = false) String searchText) throws Exception {
+    public Map<String, Object> search(@RequestParam(value = "searchText", required = false) String searchText)
+            throws Exception {
         ProductsSearchRequest request = new ProductsSearchRequest();
         request.setPage(1);
-        request.setPageSize(10);
+        request.setPageSize(20);
         request.setText(searchText);
-        return productDAO.search(request);
+        Map<String, Object> result = new HashMap<>();
+        result.put("data", productDAO.search(request));
+        result.put("count", productDAO.count(request));
+        return result;
     }
 }

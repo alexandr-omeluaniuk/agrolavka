@@ -24,7 +24,7 @@ import javax.validation.constraints.NotNull;
  */
 @Entity
 @Table(name = "product_image")
-public class ProductImage implements Serializable {
+public class ProductImage extends ExternalEntity implements Serializable {
     /** UID. */
     private static final long serialVersionUID = 1L;
     // ============================================= FIEDLS ===========================================================

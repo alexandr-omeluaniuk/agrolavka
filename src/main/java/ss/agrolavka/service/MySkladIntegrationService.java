@@ -28,10 +28,12 @@ public interface MySkladIntegrationService {
     List<ProductsGroup> getProductGroups() throws Exception;
     /**
      * Get products.
+     * @param offset offset.
+     * @param limit limit.
      * @return products.
      * @throws Exception error.
      */
-    List<Product> getProducts() throws Exception;
+    List<Product> getProducts(int offset, int limit) throws Exception;
     /**
      * Get product images.
      * @param productExternalId product external ID.

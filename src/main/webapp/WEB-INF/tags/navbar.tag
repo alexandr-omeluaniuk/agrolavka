@@ -17,7 +17,8 @@
         <h1 class="logo me-auto" id="agrolavka-brand"><a href="/"><i class="fas fa-carrot agrolavka-logo"></i> Агролавка</a></h1>
         
         <div class="input-group mb-3" id="products-search-container">
-            <input type="search" class="form-control" aria-label="Поиск товаров" id="products-search" placeholder="Поиск">
+            <input type="search" class="form-control" aria-label="Поиск товаров" id="products-search" placeholder="Поиск"
+                   autocomplete="off">
             <button class="btn btn-outline-info" type="button" id="products-search-close" title="Закрыть поиск">
                 <i class="fas fa-chevron-right"></i>
             </button>
