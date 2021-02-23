@@ -28,7 +28,7 @@
                                 <h4>Полезные ссылки</h4>
                                 <ul>
                                     <li><a href="/">Главная</a></li>
-                                    <li><a href="/about">О нас</a></li>
+                                    <!--li><a href="/about">О нас</a></li-->
                                 </ul>
                             </div>
                             <div class="social-links">

@@ -8,13 +8,13 @@
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@taglib prefix="cmp" uri="/WEB-INF/tlds/components.tld"%>
 
-<t:app title="Агролавка | ${title}" activePage="HOME">
+<t:app title="Агролавка | ${title}">
 
     <section id="hero" class="clearfix">
         <div class="container h-100">
             <div class="row justify-content-center">
                 <div class="col-lg-12 intro-info order-lg-first order-last" data-aos="zoom-in" data-aos-delay="100">
-                    <h2>Самый большой ассортимент<br>товаров для сада и огорода в <span>Дрогичине!</span></h2>
+                    <h2>Самый большой ассортимент<br>товаров для сада и огорода!</h2>
                 </div>
             </div>
             <div class="row justify-content-center" data-aos="fade-up" style="width: 100%">

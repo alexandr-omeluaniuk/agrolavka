@@ -8,7 +8,7 @@
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@taglib prefix="cmp" uri="/WEB-INF/tlds/components.tld"%>
 
-<t:app title="Агролавка | ${title}" activePage="PRODUCTS">
+<t:app title="Агролавка | ${title}">
     <main id="main">
         <section id="products" class="services" style="padding-top: 120px;">
             <div class="container">
