@@ -30,14 +30,14 @@
 
         <nav id="navbar" class="navbar order-last order-lg-0">
             <ul>
-                <li>
-                    <a class="nav-link scrollto ${activePage == "HOME" ? "active" : ""}" href="/">
-                        <span><i class="fas fa-home nav-icon"></i> Главная</span>
-                    </a>
-                </li>
                 <li class="d-none d-lg-block">
                     <a class="nav-link" href="#" id="products-search-link">
                         <span><i class="fas fa-search nav-icon"></i> Поиск</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="nav-link scrollto ${activePage == "HOME" ? "active" : ""}" href="/">
+                        <span><i class="fas fa-home nav-icon"></i> Главная</span>
                     </a>
                 </li>
                 <li class="dropdown">

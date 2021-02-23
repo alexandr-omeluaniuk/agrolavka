@@ -139,14 +139,14 @@ public class SearchResultTag extends RequestContextAwareTag {
         StringBuilder content = new StringBuilder();
         for (Product product: pageProducts) {
             String imageLink = "/api/product-image/" + product.getId();
-            content.append("<tr>");
+            content.append("<tr>").append("<a href=\"/product/" + product.getId() + "/" + product.getName() + "\">");
                 content.append("<th scope=\"row\" style=\"padding: 0;\"><img src=\"").append(imageLink)
                         .append("\" class=\"product-avatar img-thumbnail\" alt=\"")
                         .append(product.getName()).append("\"></th>");
                 content.append("<td>").append(product.getName()).append("</td>");
                 content.append("<td class=\"text-end\">")
                         .append(String.format("%.2f", product.getPrice())).append(" BYN</td>");
-            content.append("</tr>");
+            content.append("</a></tr>");
         }
         StringBuilder sb = new StringBuilder();
         sb.append("<div class=\"table-responsive\">");
@@ -190,7 +190,7 @@ public class SearchResultTag extends RequestContextAwareTag {
                             + "</div>");
                 sb.append("</div>");
             sb.append("</div>");
-        return sb.toString();
+        return "<a href=\"/product/" + product.getId() + "/" + product.getName() + "\">" + sb.toString() + "</a>";
     }
     /**
      * Render search result toolbar.

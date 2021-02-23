@@ -126,7 +126,7 @@ public class CatalogTag extends RequestContextAwareTag {
         } else if (!group.getProducts().isEmpty()) {
             sb.append("<div class=\"accordion-item\">" +
                 "<h2 class=\"accordion-header\" id=\"heading-product-group-" + group.getId() + "\">" +
-                    "<a class=\"accordion-button collapsed accordion-button-leaf link-dark " +
+                    "<a class=\"accordion-button collapsed accordion-button-leaf " +
                                 (groupId != null && groupId.equals(group.getId()) ? "fw-bold" : "") + "\" type=\"button\" " +
                             "data-bs-toggle=\"collapse\"" + 
                             "data-bs-target=\"#collapse-product-group-" + group.getId() + "\" aria-expanded=\"true\"" + 

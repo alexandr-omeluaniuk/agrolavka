@@ -6,17 +6,18 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
+<%@taglib prefix="cmp" uri="/WEB-INF/tlds/components.tld"%>
 
 <t:app title="Агролавка | ${title}" activePage="PRODUCTS">
     <main id="main">
-        <section id="product" class="services" style="padding-top: 120px;">
+        <section id="products" class="services" style="padding-top: 120px;">
             <div class="container">
                 <header class="section-header">
                     <h3>${title}</h3>
                 </header>
                 <div class="row justify-content-center" style="width: 100%">
                     <div class="col-lg-3 col-md-12 intro-info order-lg-first order-last catalog-desktop">
-                        <cmp:catalog groupId="${groupId}"></cmp:catalog>
+                        <cmp:catalog></cmp:catalog>
                     </div>
                     
                     <div class="col-lg-3 col-md-12 intro-info order-lg-first order-last catalog-mobile">

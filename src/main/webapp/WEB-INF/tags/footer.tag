@@ -45,7 +45,7 @@
                             ул.Мелиоративная, 61 <br>
                             г.Дрогичин, 225612<br>
                             Республика Беларусь <br>
-                            <strong>Телефон:</strong> +375 29 871-37-58<br>
+                            <strong>Телефон:</strong> <a href="tel:+375298713758">+375 29 871-37-58</a><br>
                             <strong>Email:</strong> info@example.com<br>
                         </p>
                     </div>

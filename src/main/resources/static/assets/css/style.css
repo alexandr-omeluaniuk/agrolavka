@@ -1634,6 +1634,9 @@ section {
 .accordion-button-leaf:after {
     background-image: none !important;
 }
+.accordion-button-leaf {
+    font-weight: 400;
+}
 .catalog-body {
     padding: 0;
 }

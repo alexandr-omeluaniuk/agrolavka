@@ -191,7 +191,7 @@
                             sb = noResult;
                         } else {
                             data.forEach(product => {
-                                sb += `<a href="#" class="list-group-item list-group-item-action">
+                                sb += `<a href="/product/${product.id}/${product.name}" class="list-group-item list-group-item-action">
                                             <div class="d-flex w-100 justify-content-between">
                                                 <h6 class="mb-1">${highlightText(product.name, searchText)}</h6>
                                                 <small style="margin-left: 20px; min-width: 100px; text-align: right;" 
@@ -403,5 +403,5 @@
             window.location.href = attribute;
         }, false);
     }
-
+    
 })()
