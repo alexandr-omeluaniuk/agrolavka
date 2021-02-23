@@ -5,6 +5,7 @@
  */
 package ss.agrolavka.tag;
 
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -76,7 +77,8 @@ public class MenuCatalogTag extends RequestContextAwareTag {
      * @param level item level.
      * @return HTM template.
      */
-    private String drawCatalogItem(ProductsGroup group, Map<String, List<ProductsGroup>> groupsMap, Integer level) {
+    private String drawCatalogItem(ProductsGroup group, Map<String, List<ProductsGroup>> groupsMap, Integer level)
+            throws Exception {
         Integer nextLevel = level + 1;
         StringBuilder sb = new StringBuilder();
         StringBuilder childsSb = new StringBuilder();
@@ -91,8 +93,8 @@ public class MenuCatalogTag extends RequestContextAwareTag {
             childsSb.append("</ul></li>");
             sb.append(childsSb);
         } else if (!group.getProducts().isEmpty()) {
-            sb.append(String.format("<li><a href=\"/catalog/%s/%s\">%s</a></li>", group.getId(),
-                    group.getName(), group.getName()));
+            sb.append(String.format("<li><a href=\"/catalog/%s?name=%s\">%s</a></li>", group.getId(),
+                    group.getName(), URLEncoder.encode(group.getName(), "UTF-8")));
         }
         return sb.toString();
     }

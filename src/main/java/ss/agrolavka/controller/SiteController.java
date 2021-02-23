@@ -73,10 +73,10 @@ public class SiteController {
      * @param view catalog view type.
      * @return JSP page.
      */
-    @RequestMapping("/catalog/{groupId}/{name}")
+    @RequestMapping("/catalog/{groupId}")
     public String productsGroup(Model model,
             @PathVariable("groupId") Long groupId,
-            @PathVariable("name") String name,
+            @RequestParam(name = "name", required = false) String name,
             @RequestParam(name = "page", required = false) Integer page,
             @RequestParam(name = "view", required = false) String view) {
         model.addAttribute("title", name);

@@ -5,6 +5,7 @@
  */
 package ss.agrolavka.tag;
 
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -92,7 +93,8 @@ public class CatalogTag extends RequestContextAwareTag {
      * @param level item level.
      * @return HTM template.
      */
-    private String drawCatalogItem(ProductsGroup group, Map<String, List<ProductsGroup>> groupsMap, Integer level) {
+    private String drawCatalogItem(ProductsGroup group, Map<String, List<ProductsGroup>> groupsMap, Integer level)
+            throws Exception {
         Integer nextLevel = level + 1;
         StringBuilder sb = new StringBuilder();
         StringBuilder childsSb = new StringBuilder();
@@ -117,7 +119,8 @@ public class CatalogTag extends RequestContextAwareTag {
                 "</h2>" +
                 "<div id=\"collapse-product-group-" + group.getId() +
                         "\" class=\"accordion-collapse collapse nested-catalog " + (expanded ? "show" : "") + "\"" +
-                        "aria-labelledby=\"heading-product-group-" + group.getId() + "\" data-bs-parent=\"#catalog-" + level + "\">" +
+                        "aria-labelledby=\"heading-product-group-" + group.getId() +
+                        "\" data-bs-parent=\"#catalog-" + level + "\">" +
                     "<div class=\"accordion-body catalog-body\">" +
                         childsSb.toString() +                    
                     "</div>" +
@@ -127,11 +130,14 @@ public class CatalogTag extends RequestContextAwareTag {
             sb.append("<div class=\"accordion-item\">" +
                 "<h2 class=\"accordion-header\" id=\"heading-product-group-" + group.getId() + "\">" +
                     "<a class=\"accordion-button collapsed accordion-button-leaf " +
-                                (groupId != null && groupId.equals(group.getId()) ? "fw-bold" : "") + "\" type=\"button\" " +
+                                (groupId != null && groupId.equals(group.getId()) ? "fw-bold" : "") +
+                            "\" type=\"button\" " +
                             "data-bs-toggle=\"collapse\"" + 
-                            "data-bs-target=\"#collapse-product-group-" + group.getId() + "\" aria-expanded=\"true\"" + 
+                            "data-bs-target=\"#collapse-product-group-" + group.getId() +
+                            "\" aria-expanded=\"true\"" + 
                             "aria-controls=\"collapse-product-group-" + group.getId() +
-                                "\" href=\"/catalog/" + group.getId() + "/" + group.getName() + "\">" +
+                            "\" href=\"/catalog/" + group.getId() + "?name=" +
+                            URLEncoder.encode(group.getName(), "UTF-8") + "\">" +
                         group.getName() +
                     "</a>" +
                 "</h2>" +

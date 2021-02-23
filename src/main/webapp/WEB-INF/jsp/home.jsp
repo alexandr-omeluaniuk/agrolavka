@@ -12,18 +12,21 @@
 
     <section id="hero" class="clearfix">
         <div class="container h-100">
-            <div class="row justify-content-center">
+            <div class="row d-flex justify-content-center">
                 <div class="col-lg-12 intro-info order-lg-first order-last" data-aos="zoom-in" data-aos-delay="100">
-                    <h2>Самый большой ассортимент<br>товаров для сада и огорода!</h2>
+                    <h2 class="text-center">Самый большой ассортимент<br>товаров для сада и огорода!</h2>
                 </div>
             </div>
-            <div class="row justify-content-center" data-aos="fade-up" style="width: 100%">
+            <div class="row d-flex justify-content-center" data-aos="fade-up" style="width: 100%">
                 <div class="col-lg-4 intro-info order-lg-first order-last" data-aos="zoom-in" data-aos-delay="100">
-
+                    <header class="section-header">
+                        <h4 class="text-center">Большое поступление семян овощных и цветочных культур, элитные голландские обработанные семена!</h4>
+                    </header>
                 </div>
 
-                <div class="col-lg-8 intro-info order-lg-first order-last" data-aos="zoom-in" data-aos-delay="100">
-
+                <div class="col-lg-8 intro-info order-lg-first order-last d-flex justify-content-center"
+                        data-aos="zoom-in" data-aos-delay="100">
+                    <t:highlights/>
                 </div>
             </div>
     </section>
