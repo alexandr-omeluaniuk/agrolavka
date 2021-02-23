@@ -23,7 +23,7 @@
                 <i class="fas fa-chevron-right"></i>
             </button>
         </div>
-        <ul class="dropdown-menu shadow-sm" aria-labelledby="products-search-container" id="products-search-results-list"></ul>
+        <ul class="products-dropdown-menu shadow-sm" aria-labelledby="products-search-container" id="products-search-results-list"></ul>
         
         <!-- Uncomment below if you prefer to use an image logo -->
         <!-- <a href="index.html" class="logo me-auto"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->

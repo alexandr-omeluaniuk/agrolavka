@@ -5,11 +5,14 @@
  */
 package ss.agrolavka.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import ss.agrolavka.dao.CoreDAO;
+import ss.agrolavka.model.Product;
 
 /**
  * Site static pages controller.
@@ -17,6 +20,9 @@ import org.springframework.web.bind.annotation.RequestParam;
  */
 @Controller
 public class SiteController {
+    /** Core DAO. */
+    @Autowired
+    private CoreDAO coreDAO;
     /**
      * Home page.
      * @param model data model.
@@ -86,12 +92,14 @@ public class SiteController {
      * @param name product name.
      * @return JSP page.
      */
-    @RequestMapping("/product/{id}/{name}")
+    @RequestMapping("/product/{id}")
     public String product(Model model,
             @PathVariable("id") Long id,
-            @PathVariable("name") String name) {
+            @RequestParam(value = "name", required = false) String name) throws Exception {
+        Product product = coreDAO.findById(id, Product.class);
         model.addAttribute("title", name);
         model.addAttribute("id", id);
+        model.addAttribute("groupId", product.getGroup() != null ? product.getGroup().getId() : null);
         return "product";
     }
 }

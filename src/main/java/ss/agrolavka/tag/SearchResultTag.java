@@ -5,6 +5,7 @@
  */
 package ss.agrolavka.tag;
 
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.jsp.JspWriter;
@@ -115,7 +116,7 @@ public class SearchResultTag extends RequestContextAwareTag {
      * @param pageProducts page products.
      * @return HTML template.
      */
-    private String tiles(List<Product> pageProducts) {
+    private String tiles(List<Product> pageProducts) throws Exception {
         StringBuilder sb = new StringBuilder();
         int counter = 0;
         for (int i = 0; i < ROWS; i++) {
@@ -135,11 +136,12 @@ public class SearchResultTag extends RequestContextAwareTag {
      * @param pageProducts page products.
      * @return HTML template.
      */
-    private String list(List<Product> pageProducts) {
+    private String list(List<Product> pageProducts) throws Exception {
         StringBuilder content = new StringBuilder();
         for (Product product: pageProducts) {
             String imageLink = "/api/product-image/" + product.getId();
-            content.append("<tr>").append("<a href=\"/product/" + product.getId() + "/" + product.getName() + "\">");
+            content.append("<tr>").append("<a href=\"/product/" + product.getId()
+                    + "?name=" + URLEncoder.encode(product.getName(), "UTF-8") + "\">");
                 content.append("<th scope=\"row\" style=\"padding: 0;\"><img src=\"").append(imageLink)
                         .append("\" class=\"product-avatar img-thumbnail\" alt=\"")
                         .append(product.getName()).append("\"></th>");
@@ -170,7 +172,7 @@ public class SearchResultTag extends RequestContextAwareTag {
      * @param product product.
      * @return product card HTML template.
      */
-    private String renderProductCard(Product product) {
+    private String renderProductCard(Product product) throws Exception {
         if (product == null) {
             return "<div class=\"empty-product-card\"></div>";
         }
@@ -190,7 +192,8 @@ public class SearchResultTag extends RequestContextAwareTag {
                             + "</div>");
                 sb.append("</div>");
             sb.append("</div>");
-        return "<a href=\"/product/" + product.getId() + "/" + product.getName() + "\">" + sb.toString() + "</a>";
+        return "<a href=\"/product/" + product.getId() + "?name=" + URLEncoder.encode(product.getName(), "UTF-8")
+                + "\">" + sb.toString() + "</a>";
     }
     /**
      * Render search result toolbar.
