@@ -94,7 +94,7 @@ public class MenuCatalogTag extends RequestContextAwareTag {
             sb.append(childsSb);
         } else if (!group.getProducts().isEmpty()) {
             sb.append(String.format("<li><a href=\"/catalog/%s?name=%s\">%s</a></li>", group.getId(),
-                    group.getName(), URLEncoder.encode(group.getName(), "UTF-8")));
+                    URLEncoder.encode(group.getName(), "UTF-8"), group.getName()));
         }
         return sb.toString();
     }

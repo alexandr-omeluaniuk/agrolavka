@@ -9,7 +9,7 @@
 <%-- The list of normal or fragment attributes can be specified here: --%>
 
 <%-- any content can be specified here e.g.: --%>
-<div class="row d-flex justify-content-center" id="highlights">
+<div class="row d-flex justify-content-end" id="highlights">
     <div class="col-lg-12">
         <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-indicators">
