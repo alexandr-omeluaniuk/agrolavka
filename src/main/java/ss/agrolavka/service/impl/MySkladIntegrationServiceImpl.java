@@ -68,18 +68,20 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
         String response = request("/entity/productfolder", "GET");
         JSONObject json = new JSONObject(response);
         List<ProductsGroup> result = new ArrayList<>();
-        JSONArray rows = json.getJSONArray("rows");
-        for (int i = 0; i < rows.length(); i++) {
-            JSONObject item = rows.getJSONObject(i);
-            ProductsGroup productGroup = new ProductsGroup();
-            productGroup.setExternalId(item.getString("id"));
-            productGroup.setName(item.getString("name"));
-            if (item.has("productFolder")) {
-                String link = item.getJSONObject("productFolder").getJSONObject("meta").getString("href");
-                productGroup.setParentId(link.substring(link.lastIndexOf("/") + 1));
+        if (json.has("rows")) {
+            JSONArray rows = json.getJSONArray("rows");
+            for (int i = 0; i < rows.length(); i++) {
+                JSONObject item = rows.getJSONObject(i);
+                ProductsGroup productGroup = new ProductsGroup();
+                productGroup.setExternalId(item.getString("id"));
+                productGroup.setName(item.getString("name"));
+                if (item.has("productFolder")) {
+                    String link = item.getJSONObject("productFolder").getJSONObject("meta").getString("href");
+                    productGroup.setParentId(link.substring(link.lastIndexOf("/") + 1));
+                }
+                LOG.debug(productGroup.toString());
+                result.add(productGroup);
             }
-            LOG.debug(productGroup.toString());
-            result.add(productGroup);
         }
         LOG.debug("loaded product groups [" + result.size() + "]");
         return result;
@@ -91,7 +93,8 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
         List<Product> result = new ArrayList<>();
         JSONArray rows = json.getJSONArray("rows");
         Map<String, ProductsGroup> productGroupsMap = new HashMap();
-        for (ProductsGroup group : coreDAO.getAll(ProductsGroup.class)) {
+        List<ProductsGroup> groups = coreDAO.getAll(ProductsGroup.class);
+        for (ProductsGroup group : groups) {
             productGroupsMap.put(group.getExternalId(), group);
         }
         for (int i = 0; i < rows.length(); i++) {
@@ -124,17 +127,19 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
         Map<String, String> headers = new HashMap<>();
         headers.put("Authorization", "Bearer " + token);
         JSONObject json = new JSONObject(response);
-        JSONArray rows = json.getJSONArray("rows");
-        for (int i = 0; i < rows.length(); i++) {
-            JSONObject item = rows.getJSONObject(i);
-            JSONObject meta = item.getJSONObject("meta");
-            String href = meta.getString("downloadHref");
-            ProductImage productImage = new ProductImage();
-            productImage.setFilename(item.getString("filename"));
-            productImage.setImageSize(item.getLong("size"));
-            productImage.setImageData(requestData(href, "GET", headers));
-            productImage.setExternalId(item.getString("id"));
-            result.add(productImage);
+        if (json.has("rows")) {
+            JSONArray rows = json.getJSONArray("rows");
+            for (int i = 0; i < rows.length(); i++) {
+                JSONObject item = rows.getJSONObject(i);
+                JSONObject meta = item.getJSONObject("meta");
+                String href = meta.getString("downloadHref");
+                ProductImage productImage = new ProductImage();
+                productImage.setFilename(item.getString("filename"));
+                productImage.setImageSize(item.getLong("size"));
+                productImage.setImageData(requestData(href, "GET", headers));
+                productImage.setExternalId(item.getString("id"));
+                result.add(productImage);
+            }
         }
         return result;
     }

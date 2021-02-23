@@ -14,6 +14,7 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,7 +45,7 @@ class DataUpdater {
     /**
      * Import MySklad data.
      */
-    //@Scheduled(fixedRate = 1000 * 60 * 30)
+    @Scheduled(fixedRate = 1000 * 60 * 30)
     protected void importMySkladData() {
         try {
             LOG.info("====================================== MY SKLAD DATA UPDATE ===================================");
@@ -53,16 +54,7 @@ class DataUpdater {
             mySkladIntegrationService.authentication();
             LOG.info("authentication completed...");
             importProductGroups();
-            int portion = 0;
-            while (true) {
-                LOG.info("products portion: " + portion + " - " + (portion + 1000));
-                int productsLoaded = importProducts(portion);
-                if (productsLoaded != 1000) {
-                    break;
-                } else {
-                    portion += 1000;
-                }
-            }
+            importProducts();
             importImages();
             LOG.info("time [" + (System.currentTimeMillis() - start) + "] ms");
             LOG.info("===============================================================================================");
@@ -106,8 +98,20 @@ class DataUpdater {
         externalEntityDAO.removeExternalEntitiesNotInIDs(deleteNotIn, ProductsGroup.class);
     }
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    private int importProducts(int offset) throws Exception {
-        List<Product> products = mySkladIntegrationService.getProducts(offset, 1000);
+    private void importProducts() throws Exception {
+        List<Product> products = new ArrayList<>();
+        int offset = 0;
+        while (true) {
+            LOG.info("products portion: " + offset + " - " + (offset + 1000));
+            List<Product> chunk = mySkladIntegrationService.getProducts(offset, 1000);
+            products.addAll(chunk);
+            int productsLoaded = chunk.size();
+            if (productsLoaded != 1000) {
+                break;
+            } else {
+                offset += 1000;
+            }
+        }
         LOG.info("products [" + products.size() + "]");
         Map<String, Product> productsMap = new HashMap<>();
         for (Product product : products) {
@@ -139,8 +143,8 @@ class DataUpdater {
         coreDAO.massCreate(newProducts);
         // remove unused groups.
         externalEntityDAO.removeExternalEntitiesNotInIDs(deleteNotIn, Product.class);
-        return products.size();
     }
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     private void importImages() throws Exception {
         List<Product> products = coreDAO.getAll(Product.class);
         for (Product product : products) {

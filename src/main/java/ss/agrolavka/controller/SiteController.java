@@ -29,14 +29,16 @@ public class SiteController {
      * @param page page number.
      * @param view view type.
      * @return JSP page.
+     * @throws Exception error.
      */
     @RequestMapping("/")
     public String home(Model model,
             @RequestParam(name = "page", required = false) Integer page,
-            @RequestParam(name = "view", required = false) String view) {
+            @RequestParam(name = "view", required = false) String view) throws Exception {
         model.addAttribute("title", "Главная");
         model.addAttribute("page", page);
         model.addAttribute("view", view);
+        model.addAttribute("productsCount", coreDAO.count(Product.class));
         return "home";
     }
     /**

@@ -20,6 +20,7 @@
             <div class="row d-flex justify-content-center" data-aos="fade-up" style="width: 100%">
                 <div class="col-lg-6 intro-info order-lg-first order-last" data-aos="zoom-in" data-aos-delay="100">
                     <header class="section-header">
+                        <h3 class="text-center">Более <span class="purecounter" data-purecounter-end="${productsCount}"></span> наименований!</h3>
                         <h4 class="text-center">Большое поступление семян овощных и цветочных культур, элитные голландские обработанные семена!</h4>
                     </header>
                 </div>

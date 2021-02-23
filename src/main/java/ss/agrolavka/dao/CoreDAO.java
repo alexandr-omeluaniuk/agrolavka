@@ -73,4 +73,12 @@ public interface CoreDAO {
      * @throws Exception error.
      */
     <T> List<T> getAll(Class<T> cl) throws Exception;
+    /**
+     * Count.
+     * @param <T> entity type.
+     * @param cl entity class.
+     * @return count of entities.
+     * @throws Exception error.
+     */
+    <T> Long count(Class<T> cl) throws Exception;
 }

@@ -12,6 +12,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaDelete;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Root;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
@@ -84,5 +85,16 @@ class CoreDAOImpl implements CoreDAO {
         CriteriaQuery<T> criteria = cb.createQuery(cl);
         Root<T> c = criteria.from(cl);
         return em.createQuery(criteria).getResultList();
+    }
+    @Override
+    @Transactional(propagation = Propagation.SUPPORTS)
+    public <T> Long count(Class<T> cl) throws Exception {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Long> criteriaCount = cb.createQuery(Long.class);
+        Root<T> c = criteriaCount.from(cl);
+        Expression<Long> sum = cb.count(c);
+        criteriaCount.select(sum);
+        List<Long> maxList = em.createQuery(criteriaCount).getResultList();
+        return maxList.iterator().next();
     }
 }
