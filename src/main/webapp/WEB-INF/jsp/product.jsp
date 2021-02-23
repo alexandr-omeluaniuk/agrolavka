@@ -28,7 +28,7 @@
                     </div>
 
                     <div class="col-lg-9 col-md-12 intro-info order-lg-first order-last">
-                        TODO: product
+                    <t:product-details product="${product}"></t:product-details>
                     </div>
                 </div>
             </div>

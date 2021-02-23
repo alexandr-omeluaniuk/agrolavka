@@ -99,6 +99,7 @@ public class SiteController {
         Product product = coreDAO.findById(id, Product.class);
         model.addAttribute("title", name);
         model.addAttribute("id", id);
+        model.addAttribute("product", product);
         model.addAttribute("groupId", product.getGroup() != null ? product.getGroup().getId() : null);
         return "product";
     }
