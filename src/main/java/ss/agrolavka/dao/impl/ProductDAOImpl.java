@@ -6,7 +6,9 @@
 package ss.agrolavka.dao.impl;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -58,6 +60,18 @@ class ProductDAOImpl implements ProductDAO {
         criteriaCount.select(sum).where(predicates.toArray(new Predicate[0]));
         List<Long> maxList = em.createQuery(criteriaCount).getResultList();
         return maxList.iterator().next();
+    }
+    @Override
+    @Transactional(propagation = Propagation.SUPPORTS)
+    public Set<ProductsGroup> getCatalogProductGroups() {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<ProductsGroup> criteria = cb.createQuery(ProductsGroup.class);
+        Root<ProductsGroup> c = criteria.from(ProductsGroup.class);
+        c.fetch(ProductsGroup_.products, JoinType.LEFT);
+//        Join<ProductsGroup, Product> product = c.join(ProductsGroup_.products, JoinType.LEFT);
+//        criteria.select(c).groupBy(c.get(ProductsGroup_.id))
+//                .having(cb.ge(cb.count(product), 1));
+        return new HashSet<>(em.createQuery(criteria).getResultList());
     }
     /**
      * Create search criteria from search request.

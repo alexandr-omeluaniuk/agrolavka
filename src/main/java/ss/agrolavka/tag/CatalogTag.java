@@ -10,6 +10,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import javax.servlet.jsp.JspWriter;
 import static javax.servlet.jsp.tagext.Tag.SKIP_BODY;
 import org.slf4j.Logger;
@@ -18,7 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.tags.RequestContextAwareTag;
-import ss.agrolavka.dao.CoreDAO;
+import ss.agrolavka.dao.ProductDAO;
 import ss.agrolavka.model.ProductsGroup;
 
 /**
@@ -28,9 +29,9 @@ import ss.agrolavka.model.ProductsGroup;
 public class CatalogTag extends RequestContextAwareTag {
     /** Logger. */
     private static final Logger LOG = LoggerFactory.getLogger(CatalogTag.class);
-    /** Core DAO. */
+    /** Product DAO. */
     @Autowired
-    private CoreDAO coreDAO;
+    private ProductDAO productDAO;
     /** Product group ID. */
     private Long groupId;
     @Override
@@ -46,7 +47,7 @@ public class CatalogTag extends RequestContextAwareTag {
                 sb.append("</div>");
             sb.append("</div>");
             sb.append("<div class=\"accordion\" id=\"catalog-0\">");
-            List<ProductsGroup> allGroups = coreDAO.getAll(ProductsGroup.class);
+            Set<ProductsGroup> allGroups = productDAO.getCatalogProductGroups();
             Map<String, List<ProductsGroup>> groupsMap = new HashMap<>();
             List<ProductsGroup> roots = new ArrayList<>();
             for (ProductsGroup group : allGroups) {
@@ -77,7 +78,7 @@ public class CatalogTag extends RequestContextAwareTag {
     }
     @Override
     protected int doStartTagInternal() throws Exception {
-        if (coreDAO == null) {
+        if (productDAO == null) {
             WebApplicationContext context = getRequestContext().getWebApplicationContext();
             AutowireCapableBeanFactory autowireCapableBeanFactory = context.getAutowireCapableBeanFactory();
             autowireCapableBeanFactory.autowireBean(this);
@@ -122,7 +123,7 @@ public class CatalogTag extends RequestContextAwareTag {
                     "</div>" +
                 "</div>" +
             "</div>");
-        } else {
+        } else if (!group.getProducts().isEmpty()) {
             sb.append("<div class=\"accordion-item\">" +
                 "<h2 class=\"accordion-header\" id=\"heading-product-group-" + group.getId() + "\">" +
                     "<a class=\"accordion-button collapsed accordion-button-leaf link-dark " +

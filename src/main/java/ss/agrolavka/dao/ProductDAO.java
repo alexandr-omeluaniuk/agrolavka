@@ -6,7 +6,9 @@
 package ss.agrolavka.dao;
 
 import java.util.List;
+import java.util.Set;
 import ss.agrolavka.model.Product;
+import ss.agrolavka.model.ProductsGroup;
 import ss.agrolavka.wrapper.ProductsSearchRequest;
 
 /**
@@ -26,4 +28,9 @@ public interface ProductDAO {
      * @return count of products.
      */
     Long count(ProductsSearchRequest request);
+    /**
+     * Get catalog product groups.
+     * @return catalog product groups.
+     */
+    Set<ProductsGroup> getCatalogProductGroups();
 }

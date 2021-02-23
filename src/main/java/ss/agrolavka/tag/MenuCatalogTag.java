@@ -10,6 +10,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import javax.servlet.jsp.JspWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +19,7 @@ import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.tags.RequestContextAwareTag;
-import ss.agrolavka.dao.CoreDAO;
+import ss.agrolavka.dao.ProductDAO;
 import ss.agrolavka.model.ProductsGroup;
 
 /**
@@ -29,14 +30,14 @@ import ss.agrolavka.model.ProductsGroup;
 public class MenuCatalogTag extends RequestContextAwareTag {
     /** Logger. */
     private static final Logger LOG = LoggerFactory.getLogger(MenuCatalogTag.class);
-    /** Core DAO. */
+    /** Product DAO. */
     @Autowired
-    private CoreDAO coreDAO;
+    private ProductDAO productDAO;
     @Override
     public void doFinally() {
         JspWriter out = pageContext.getOut();
         try {
-            List<ProductsGroup> allGroups = coreDAO.getAll(ProductsGroup.class);
+            Set<ProductsGroup> allGroups = productDAO.getCatalogProductGroups();
             Map<String, List<ProductsGroup>> groupsMap = new HashMap<>();
             List<ProductsGroup> roots = new ArrayList<>();
             for (ProductsGroup group : allGroups) {
@@ -61,7 +62,7 @@ public class MenuCatalogTag extends RequestContextAwareTag {
     }
     @Override
     protected int doStartTagInternal() throws Exception {
-        if (coreDAO == null) {
+        if (productDAO == null) {
             WebApplicationContext context = getRequestContext().getWebApplicationContext();
             AutowireCapableBeanFactory autowireCapableBeanFactory = context.getAutowireCapableBeanFactory();
             autowireCapableBeanFactory.autowireBean(this);
@@ -89,7 +90,7 @@ public class MenuCatalogTag extends RequestContextAwareTag {
             }
             childsSb.append("</ul></li>");
             sb.append(childsSb);
-        } else {
+        } else if (!group.getProducts().isEmpty()) {
             sb.append(String.format("<li><a href=\"/catalog/%s/%s\">%s</a></li>", group.getId(),
                     group.getName(), group.getName()));
         }
