@@ -14,6 +14,7 @@
             <div class="container">
                 <header class="section-header">
                     <h3>${title}</h3>
+                    <p class="text-uppercase"></p>
                 </header>
                 <div class="row justify-content-center" style="width: 100%">
                     <div class="col-lg-3 col-md-12 intro-info order-lg-first order-last catalog-desktop">
