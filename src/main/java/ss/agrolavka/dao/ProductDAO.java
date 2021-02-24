@@ -20,14 +20,16 @@ public interface ProductDAO {
      * Search products.
      * @param request search request.
      * @return list of products.
+     * @throws Exception error.
      */
-    List<Product> search(ProductsSearchRequest request);
+    List<Product> search(ProductsSearchRequest request) throws Exception ;
     /**
      * Count of products.
      * @param request search request.
      * @return count of products.
+     * @throws Exception error.
      */
-    Long count(ProductsSearchRequest request);
+    Long count(ProductsSearchRequest request) throws Exception;
     /**
      * Get catalog product groups.
      * @return catalog product groups.

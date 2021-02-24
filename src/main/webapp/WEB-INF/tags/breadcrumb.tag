@@ -30,9 +30,15 @@
     <nav aria-label="breadcrumb" class="agrolavka-breadcrumb">
         <ol class="breadcrumb">
             <c:forEach var="group" items="${groups}">
-                <li class="breadcrumb-item"><a href="/catalog/${group.id}?name=${group.getName()}">${group.getName()}</a></li>
+                <li class="breadcrumb-item">
+                    <a href="/catalog/${group.id}?name=${group.getName()}">
+                        <small>${group.getName()}</small>
+                    </a>
+                </li>
             </c:forEach>
-            <li class="breadcrumb-item active" aria-current="page">${label}</li>
+            <li class="breadcrumb-item active" aria-current="page">
+                <small>${label}</small>
+            </li>
         </ol>
     </nav>
 </c:if>

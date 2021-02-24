@@ -200,7 +200,7 @@ public class SearchResultTag extends RequestContextAwareTag {
      * @param searchRequest search request.
      * @return toolbar HTML template.
      */
-    private String renderToolbar(ProductsSearchRequest searchRequest) {
+    private String renderToolbar(ProductsSearchRequest searchRequest) throws Exception {
         StringBuilder sb = new StringBuilder();
         sb.append("<div class=\"row products-toolbar\">");
             sb.append("<div class=\"col-6 d-flex justify-content-start\">");
@@ -217,7 +217,7 @@ public class SearchResultTag extends RequestContextAwareTag {
      * @param searchRequest search request.
      * @return pagination HTML template.
      */
-    private String renderPagination(ProductsSearchRequest searchRequest) {
+    private String renderPagination(ProductsSearchRequest searchRequest) throws Exception {
         Long count = productDAO.count(searchRequest);
         int pagesCount = Double.valueOf(Math.ceil((double) count / (ROWS * COLUMNS))).intValue();
         if (pagesCount == 1) {

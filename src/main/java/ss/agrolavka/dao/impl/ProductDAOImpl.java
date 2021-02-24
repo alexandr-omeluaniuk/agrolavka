@@ -6,8 +6,10 @@
 package ss.agrolavka.dao.impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -18,9 +20,11 @@ import javax.persistence.criteria.Join;
 import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import ss.agrolavka.dao.CoreDAO;
 import ss.agrolavka.dao.ProductDAO;
 import ss.agrolavka.model.Product;
 import ss.agrolavka.model.Product_;
@@ -37,9 +41,12 @@ class ProductDAOImpl implements ProductDAO {
     /** Entity manager. */
     @PersistenceContext
     private EntityManager em;
+    /** Core DAO. */
+    @Autowired
+    private CoreDAO coreDAO;
     @Override
     @Transactional(propagation = Propagation.SUPPORTS)
-    public List<Product> search(ProductsSearchRequest request) {
+    public List<Product> search(ProductsSearchRequest request) throws Exception {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Product> criteria = cb.createQuery(Product.class);
         Root<Product> c = criteria.from(Product.class);
@@ -51,7 +58,7 @@ class ProductDAOImpl implements ProductDAO {
     }
     @Override
     @Transactional(propagation = Propagation.SUPPORTS)
-    public Long count(ProductsSearchRequest request) {
+    public Long count(ProductsSearchRequest request) throws Exception {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Long> criteriaCount = cb.createQuery(Long.class);
         Root<Product> c = criteriaCount.from(Product.class);
@@ -80,16 +87,39 @@ class ProductDAOImpl implements ProductDAO {
      * @param request search request.
      * @return list of criteria.
      */
+    @Transactional(propagation = Propagation.SUPPORTS)
     private List<Predicate> createSearchCriteria(CriteriaBuilder cb, Root<Product> c,
-            ProductsSearchRequest request) {
+            ProductsSearchRequest request) throws Exception {
         List<Predicate> predicates = new ArrayList<>();
         if (request.getGroupId() != null) {
+            ProductsGroup targetGroup = coreDAO.findById(request.getGroupId(), ProductsGroup.class);
+            Map<String, List<ProductsGroup>> groupsMap = new HashMap<>();
+            List<ProductsGroup> allGroups = coreDAO.getAll(ProductsGroup.class);
+            for (ProductsGroup group : allGroups) {
+                if (group.getParentId() != null) {
+                    if (!groupsMap.containsKey(group.getParentId())) {
+                        groupsMap.put(group.getParentId(), new ArrayList<>());
+                    }
+                    groupsMap.get(group.getParentId()).add(group);
+                }
+            }
+            Set<Long> groupIds = new HashSet<>();
+            walkProductGroup(targetGroup, groupIds, groupsMap);
             Join<Product, ProductsGroup> productGroup = c.join(Product_.group, JoinType.LEFT);
-            predicates.add(cb.equal(productGroup.get(ProductsGroup_.id), request.getGroupId()));
+            predicates.add(productGroup.get(ProductsGroup_.id).in(groupIds));
         }
         if (request.getText() != null && !request.getText().isBlank()) {
             predicates.add(cb.like(cb.upper(c.get(Product_.name)), "%" + request.getText().toUpperCase() + "%"));
         }
         return predicates;
+    }
+    @Transactional(propagation = Propagation.SUPPORTS)
+    private void walkProductGroup(ProductsGroup group, Set<Long> groupIds, Map<String, List<ProductsGroup>> groupsMap) {
+        groupIds.add(group.getId());
+        if (groupsMap.containsKey(group.getExternalId())) {
+            groupsMap.get(group.getExternalId()).stream().forEach(g -> {
+                walkProductGroup(g, groupIds, groupsMap);
+            });
+        }
     }
 }
