@@ -28,7 +28,8 @@
                     </div>
 
                     <div class="col-lg-9 col-md-12 intro-info order-lg-first order-last">
-                    <t:product-details product="${product}"></t:product-details>
+                        <t:breadcrumb label="${breadcrumbLabel}" groups="${breadcrumbPath}"></t:breadcrumb>
+                        <t:product-details product="${product}"></t:product-details>
                     </div>
                 </div>
             </div>

@@ -5,6 +5,9 @@
  */
 package ss.agrolavka.controller;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ss.agrolavka.dao.CoreDAO;
 import ss.agrolavka.model.Product;
+import ss.agrolavka.model.ProductsGroup;
 
 /**
  * Site static pages controller.
@@ -70,7 +74,6 @@ public class SiteController {
      * Product group page.
      * @param model data model.
      * @param groupId product group ID.
-     * @param name product group name.
      * @param page page number.
      * @param view catalog view type.
      * @return JSP page.
@@ -78,13 +81,17 @@ public class SiteController {
     @RequestMapping("/catalog/{groupId}")
     public String productsGroup(Model model,
             @PathVariable("groupId") Long groupId,
-            @RequestParam(name = "name", required = false) String name,
             @RequestParam(name = "page", required = false) Integer page,
-            @RequestParam(name = "view", required = false) String view) {
-        model.addAttribute("title", name);
+            @RequestParam(name = "view", required = false) String view) throws Exception {
+        ProductsGroup group = coreDAO.findById(groupId, ProductsGroup.class);
+        model.addAttribute("title", group.getName());
         model.addAttribute("groupId", groupId);
         model.addAttribute("page", page);
         model.addAttribute("view", view);
+        model.addAttribute("breadcrumbLabel", group.getName());
+        List<ProductsGroup> path = getPath(group);
+        path.remove(group);
+        model.addAttribute("breadcrumbPath", path);
         return "catalog";
     }
     /**
@@ -103,6 +110,32 @@ public class SiteController {
         model.addAttribute("id", id);
         model.addAttribute("product", product);
         model.addAttribute("groupId", product.getGroup() != null ? product.getGroup().getId() : null);
+        model.addAttribute("breadcrumbLabel", name);
+        model.addAttribute("breadcrumbPath", getPath(product.getGroup()));
         return "product";
+    }
+    /**
+     * Get breadcrumbs path.
+     * @param group leaf group.
+     * @return path.
+     * @throws Exception error. 
+     */
+    private List<ProductsGroup> getPath(ProductsGroup group) throws Exception {
+        List<ProductsGroup> allGroups = coreDAO.getAll(ProductsGroup.class);
+        List<ProductsGroup> path = new ArrayList<>();
+        ProductsGroup current = group;
+        while (current != null) {
+            path.add(current);
+            final String parentId = current.getParentId();
+            if (parentId != null) {
+                current = allGroups.stream().filter(g -> {
+                    return parentId.equals(g.getExternalId());
+                }).findFirst().get();
+            } else {
+                current = null;
+            }
+        }
+        Collections.reverse(path);
+        return path;
     }
 }
