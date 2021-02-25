@@ -12,14 +12,24 @@
 <%-- any content can be specified here e.g.: --%>
 <!DOCTYPE html>
 <html lang="ru">
-
+    
     <head>
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-190622177-1"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+
+                gtag('config', 'UA-190622177-1');
+        </script>
+
         <meta charset="utf-8">
         <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
         <title>${title}</title>
-        <meta content="" name="description">
-        <meta content="" name="keywords">
+        <meta content="Все для сада и огорода" name="description">
+        <meta content="Семена растений, капельный полив, грунты, инвентарь, сад и огород" name="keywords">
 
         <!-- Favicons -->
         <link href="/favicon.svg" rel="icon">
