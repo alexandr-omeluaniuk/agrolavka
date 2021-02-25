@@ -31,7 +31,7 @@ public class SearchResultTag extends RequestContextAwareTag {
     /** Columns. */
     private static final int COLUMNS = 3;
     /** Rows. */
-    private static final int ROWS = 3;
+    private static final int ROWS = 5;
     /** List view. */
     private static final String VIEW_LIST = "LIST";
     /** Tiles view. */
@@ -58,10 +58,11 @@ public class SearchResultTag extends RequestContextAwareTag {
         searchRequest.setPage(page == null ? 1 : page);
         searchRequest.setPageSize(COLUMNS * ROWS);
         try {
+            String pagination = renderPagination(searchRequest);
             List<Product> pageProducts = productDAO.search(searchRequest);
             out.print("<div class=\"row products-search-result\">");
             out.print("<div class=\"col-sm-12\">");
-            out.print(renderToolbar(searchRequest));
+            out.print(renderToolbar(searchRequest, pagination));
             if (pageProducts.isEmpty()) {
                 out.print("<p class=\"text-center\">По вашему запросу ничего не найдено</p>");
             } else {
@@ -71,6 +72,11 @@ public class SearchResultTag extends RequestContextAwareTag {
                     out.print(tiles(pageProducts));
                 }
             }
+            out.print("<div class=\"row\">"
+                        + "<div class=\"col-12 d-flex justify-content-center\">"
+                            + pagination
+                        + "</div>"
+                    + "</div>");
             out.print("</div>");
             out.print("</div>");
         } catch (Exception ex) {
@@ -200,11 +206,11 @@ public class SearchResultTag extends RequestContextAwareTag {
      * @param searchRequest search request.
      * @return toolbar HTML template.
      */
-    private String renderToolbar(ProductsSearchRequest searchRequest) throws Exception {
+    private String renderToolbar(ProductsSearchRequest searchRequest, String pagination) throws Exception {
         StringBuilder sb = new StringBuilder();
         sb.append("<div class=\"row products-toolbar\">");
             sb.append("<div class=\"col-6 d-flex justify-content-start\">");
-                sb.append(renderPagination(searchRequest));
+                sb.append(pagination);
             sb.append("</div>");
             sb.append("<div class=\"col-6 d-flex justify-content-end\">");
                 sb.append(renderViewSwitcher());
@@ -228,6 +234,12 @@ public class SearchResultTag extends RequestContextAwareTag {
         pageLinks.append("<li class=\"page-item ").append(searchRequest.getPage().equals(aPage) ? "active" : "")
                 .append("\"><a class=\"page-link\" href=\"").append(createLink(aPage, null))
                 .append("\">").append(aPage).append("</a></li>");
+        if (aPage != pagesCount) {
+            pageLinks.append("<li class=\"page-item disabled\"><a class=\"page-link\" href=\"#\">...</a></li>");
+            pageLinks.append("<li class=\"page-item\"><a class=\"page-link\" href=\"")
+                    .append(createLink(pagesCount, null))
+                    .append("\">").append(pagesCount).append("</a></li>");
+        }
         StringBuilder sb = new StringBuilder();
         sb.append("<nav aria-label=\"Page navigation\" class=\"d-flex justify-content-start\">" +
             "<ul class=\"pagination\" style=\"margin-bottom: 0;\">" +

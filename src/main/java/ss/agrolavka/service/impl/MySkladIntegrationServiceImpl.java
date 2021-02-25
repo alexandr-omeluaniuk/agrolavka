@@ -115,7 +115,9 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
                 }
             }
             LOG.debug(product.toString());
-            result.add(product);
+            if (product.getGroup() != null) {
+                result.add(product);
+            }
         }
         LOG.debug("loaded products [" + result.size() + "]");
         return result;

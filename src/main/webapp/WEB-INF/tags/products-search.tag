@@ -98,7 +98,7 @@
                                                         + 'class="fw-bold">' + parseFloat(product.price).toFixed(2) + ' BYN</small>'
                                                 + '</div>'
                                                 + '<div class="d-flex justify-content-between">'
-                                                    + '<small class="text-muted">' + product.group.name + '</small>'
+                                                    + '<small class="text-muted">' + (product.group ? product.group.name : '') + '</small>'
                                                 + '</div>'
                                            + '</a>';
                                 });

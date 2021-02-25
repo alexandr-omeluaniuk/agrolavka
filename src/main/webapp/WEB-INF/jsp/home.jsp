@@ -23,6 +23,9 @@
                         <h3 class="text-center">Более <span class="purecounter" data-purecounter-end="${productsCount}"></span> наименований!</h3>
                         <h4 class="text-center">Большое поступление семян овощных и цветочных культур, элитные голландские обработанные семена!</h4>
                     </header>
+                    <p style="text-align: center; margin-top: 30px" class="text-muted">
+                        На данный момент сайт находится в стадии разработки и в ближайшее время будет выглядеть наилучшим образом.
+                    </p>
                 </div>
 
                 <div class="col-lg-6 intro-info order-lg-first order-last d-flex justify-content-end"

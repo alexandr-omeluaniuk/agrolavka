@@ -126,6 +126,7 @@ class DataUpdater {
             Product actualProduct = productsMap.get(eProduct.getExternalId());
             eProduct.setName(actualProduct.getName());
             eProduct.setPrice(actualProduct.getPrice());
+            eProduct.setGroup(actualProduct.getGroup());
             existProductsIDs.add(eProduct.getExternalId());
             LOG.trace("update product: " + eProduct);
         }
@@ -144,7 +145,7 @@ class DataUpdater {
         // remove unused groups.
         externalEntityDAO.removeExternalEntitiesNotInIDs(deleteNotIn, Product.class);
     }
-    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    @Transactional(propagation = Propagation.SUPPORTS, rollbackFor = Exception.class)
     private void importImages() throws Exception {
         List<Product> products = coreDAO.getAll(Product.class);
         for (Product product : products) {

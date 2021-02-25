@@ -132,6 +132,7 @@ public class Product extends ExternalEntity implements Serializable {
     }
     @Override
     public String toString() {
-        return "ss.agrolavka.model.Product[ id=" + getId() + ", name=" + getName() + ", price=" + getPrice() + " ]";
+        return "ss.agrolavka.model.Product[ id=" + getId() + ", name=" + getName() + ", price=" + getPrice()
+                + ", group=" + (this.getGroup() != null ? this.getGroup().getName() : "") + " ]";
     }
 }
