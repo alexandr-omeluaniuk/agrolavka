@@ -17,8 +17,8 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import ss.agrolavka.dao.ExternalEntityDAO;
-import ss.martin.platform.entity.ExternalEntity;
-import ss.martin.platform.entity.ExternalEntity_;
+import ss.agrolavka.entity.ExternalEntity;
+import ss.agrolavka.entity.ExternalEntity_;
 
 /**
  * External entity DAO implementation.

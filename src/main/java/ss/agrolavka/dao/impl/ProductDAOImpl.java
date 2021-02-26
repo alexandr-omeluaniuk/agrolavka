@@ -26,11 +26,11 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import ss.agrolavka.dao.AgrolavkaDAO;
 import ss.agrolavka.dao.ProductDAO;
+import ss.agrolavka.entity.Product;
+import ss.agrolavka.entity.Product_;
+import ss.agrolavka.entity.ProductsGroup;
+import ss.agrolavka.entity.ProductsGroup_;
 import ss.agrolavka.wrapper.ProductsSearchRequest;
-import ss.martin.platform.entity.Product;
-import ss.martin.platform.entity.Product_;
-import ss.martin.platform.entity.ProductsGroup;
-import ss.martin.platform.entity.ProductsGroup_;
 
 /**
  * Product DAO implementation.

@@ -7,7 +7,7 @@
 <%@tag description="put the tag description here" pageEncoding="UTF-8"%>
 
 <%-- The list of normal or fragment attributes can be specified here: --%>
-<%@attribute name="product" required="true" type="ss.agrolavka.model.Product"%>
+<%@attribute name="product" required="true" type="ss.agrolavka.entity.Product"%>
 
 <%-- any content can be specified here e.g.: --%>
 <div class="row">

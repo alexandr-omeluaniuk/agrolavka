@@ -7,7 +7,7 @@ package ss.agrolavka.dao;
 
 import java.util.List;
 import java.util.Set;
-import ss.martin.platform.entity.ExternalEntity;
+import ss.agrolavka.entity.ExternalEntity;
 
 /**
  * External entity DAO.

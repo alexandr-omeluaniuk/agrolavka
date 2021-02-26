@@ -14,15 +14,22 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import ss.agrolavka.dao.ExternalEntityDAO;
-import ss.martin.platform.entity.Product;
-import ss.martin.platform.entity.ProductImage;
-import ss.martin.platform.entity.ProductsGroup;
-import ss.agrolavka.service.MySkladIntegrationService;
 import ss.agrolavka.dao.AgrolavkaDAO;
+import ss.agrolavka.dao.ExternalEntityDAO;
+import ss.agrolavka.service.MySkladIntegrationService;
+import ss.agrolavka.entity.Product;
+import ss.agrolavka.entity.ProductImage;
+import ss.agrolavka.entity.ProductsGroup;
+import ss.martin.platform.security.StandardRole;
+import ss.martin.platform.spring.security.UserPrincipal;
 
 /**
  * Data updater.
@@ -41,12 +48,20 @@ class DataUpdater {
     /** External entity DAO. */
     @Autowired
     private ExternalEntityDAO externalEntityDAO;
+    
+    @Autowired
+    private AuthenticationManager authManager;
     /**
      * Import MySklad data.
      */
     //@Scheduled(fixedRate = 1000 * 60 * 60 * 3)
     protected void importMySkladData() {
         try {
+            GrantedAuthority ga = new SimpleGrantedAuthority(StandardRole.ROLE_SUBSCRIPTION_ADMINISTRATOR.name());
+            List<GrantedAuthority> gaList = new ArrayList<>();
+            gaList.add(ga);
+            Authentication a = authManager.authenticate(new UserPrincipal("starshistrelok@gmail.com", "8228023mts", gaList));
+            SecurityContextHolder.getContext().setAuthentication(a);
             LOG.info("====================================== MY SKLAD DATA UPDATE ===================================");
             long start = System.currentTimeMillis();
             LOG.info("start authentication...");
