@@ -16,10 +16,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.tags.RequestContextAwareTag;
-import ss.agrolavka.dao.CoreDAO;
 import ss.agrolavka.dao.ProductDAO;
 import ss.agrolavka.model.Product;
 import ss.agrolavka.wrapper.ProductsSearchRequest;
+import ss.agrolavka.dao.AgrolavkaDAO;
 
 /**
  * Search result tag.
@@ -38,7 +38,7 @@ public class SearchResultTag extends RequestContextAwareTag {
     private static final String VIEW_TILES = "TILES";
     /** Core DAO. */
     @Autowired
-    private CoreDAO coreDAO;
+    private AgrolavkaDAO coreDAO;
     /** Product DAO. */
     @Autowired
     private ProductDAO productDAO;

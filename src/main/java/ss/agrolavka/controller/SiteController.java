@@ -14,9 +14,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import ss.agrolavka.dao.CoreDAO;
 import ss.agrolavka.model.Product;
 import ss.agrolavka.model.ProductsGroup;
+import ss.agrolavka.dao.AgrolavkaDAO;
 
 /**
  * Site static pages controller.
@@ -26,7 +26,7 @@ import ss.agrolavka.model.ProductsGroup;
 public class SiteController {
     /** Core DAO. */
     @Autowired
-    private CoreDAO coreDAO;
+    private AgrolavkaDAO coreDAO;
     /**
      * Home page.
      * @param model data model.

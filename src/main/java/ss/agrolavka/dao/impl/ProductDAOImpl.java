@@ -24,13 +24,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import ss.agrolavka.dao.CoreDAO;
 import ss.agrolavka.dao.ProductDAO;
 import ss.agrolavka.model.Product;
 import ss.agrolavka.model.Product_;
 import ss.agrolavka.model.ProductsGroup;
 import ss.agrolavka.model.ProductsGroup_;
 import ss.agrolavka.wrapper.ProductsSearchRequest;
+import ss.agrolavka.dao.AgrolavkaDAO;
 
 /**
  * Product DAO implementation.
@@ -43,7 +43,7 @@ class ProductDAOImpl implements ProductDAO {
     private EntityManager em;
     /** Core DAO. */
     @Autowired
-    private CoreDAO coreDAO;
+    private AgrolavkaDAO coreDAO;
     @Override
     @Transactional(propagation = Propagation.SUPPORTS)
     public List<Product> search(ProductsSearchRequest request) throws Exception {

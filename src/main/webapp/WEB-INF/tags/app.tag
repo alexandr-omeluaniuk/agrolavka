@@ -32,7 +32,7 @@
         <meta content="Семена растений, капельный полив, грунты, инвентарь, сад и огород" name="keywords">
 
         <!-- Favicons -->
-        <link href="/favicon.svg" rel="icon">
+        <link href="/favicon.svg?" rel="icon">
         <link href="/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
 
         <!-- Google Fonts -->

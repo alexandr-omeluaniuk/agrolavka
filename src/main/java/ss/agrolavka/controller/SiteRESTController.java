@@ -18,10 +18,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ss.agrolavka.constants.ImageStubs;
-import ss.agrolavka.dao.CoreDAO;
 import ss.agrolavka.dao.ProductDAO;
 import ss.agrolavka.model.Product;
 import ss.agrolavka.wrapper.ProductsSearchRequest;
+import ss.agrolavka.dao.AgrolavkaDAO;
 
 /**
  * Site REST controller.
@@ -32,7 +32,7 @@ import ss.agrolavka.wrapper.ProductsSearchRequest;
 public class SiteRESTController {
     /** Core DAO. */
     @Autowired
-    private CoreDAO coreDAO;
+    private AgrolavkaDAO coreDAO;
     /** Product DAO. */
     @Autowired
     private ProductDAO productDAO;

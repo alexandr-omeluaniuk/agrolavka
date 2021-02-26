@@ -26,3 +26,17 @@ spring:
 agrolavka:
   mySkladUsername: admin@test
   mySkladPassword: mypass
+platform:
+  # system email settings
+  systemEmailContactName: Platform support
+  systemEmailContactEmail: platform.support@domain.com
+  # super admin registration info
+  superAdminEmail: superadmin@domain.com
+  superAdminFirstName: Jack
+  superAdminLastName: Hubert
+  superAdminPassword: password
+  # domain settings
+  serverDomain: http://localhost:3000
+  # mailjet settings
+  mailjetApiKey: 492d0272c772703df12e9557857b9947
+  mailjetSecretKey: d1808011418953e5f357a2d6a5886fee

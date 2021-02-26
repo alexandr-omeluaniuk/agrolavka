@@ -14,16 +14,15 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import ss.agrolavka.dao.CoreDAO;
 import ss.agrolavka.dao.ExternalEntityDAO;
 import ss.agrolavka.model.Product;
 import ss.agrolavka.model.ProductImage;
 import ss.agrolavka.model.ProductsGroup;
 import ss.agrolavka.service.MySkladIntegrationService;
+import ss.agrolavka.dao.AgrolavkaDAO;
 
 /**
  * Data updater.
@@ -38,14 +37,14 @@ class DataUpdater {
     private MySkladIntegrationService mySkladIntegrationService;
     /** Core DAO. */
     @Autowired
-    private CoreDAO coreDAO;
+    private AgrolavkaDAO coreDAO;
     /** External entity DAO. */
     @Autowired
     private ExternalEntityDAO externalEntityDAO;
     /**
      * Import MySklad data.
      */
-    @Scheduled(fixedRate = 1000 * 60 * 60 * 3)
+    //@Scheduled(fixedRate = 1000 * 60 * 60 * 3)
     protected void importMySkladData() {
         try {
             LOG.info("====================================== MY SKLAD DATA UPDATE ===================================");
@@ -101,16 +100,11 @@ class DataUpdater {
     private void importProducts() throws Exception {
         List<Product> products = new ArrayList<>();
         int offset = 0;
-        while (true) {
+        while (offset < 5000) {
             LOG.info("products portion: " + offset + " - " + (offset + 1000));
             List<Product> chunk = mySkladIntegrationService.getProducts(offset, 1000);
             products.addAll(chunk);
-            int productsLoaded = chunk.size();
-            if (productsLoaded != 1000) {
-                break;
-            } else {
-                offset += 1000;
-            }
+            offset += 1000;
         }
         LOG.info("products [" + products.size() + "]");
         Map<String, Product> productsMap = new HashMap<>();

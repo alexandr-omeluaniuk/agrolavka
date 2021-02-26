@@ -12,7 +12,7 @@ import java.util.List;
  * Core DAO API.
  * @author Alexandr Omeluaniuk
  */
-public interface CoreDAO {
+public interface AgrolavkaDAO {
     /**
      * Create entity (subscription will be assigned automatically).
      * @param <T> entity class.

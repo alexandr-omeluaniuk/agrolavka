@@ -17,14 +17,14 @@ import javax.persistence.criteria.Root;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import ss.agrolavka.dao.CoreDAO;
+import ss.agrolavka.dao.AgrolavkaDAO;
 
 /**
  * Core DAO implementation.
  * @author Alexandr Omeluaniuk
  */
 @Repository
-class CoreDAOImpl implements CoreDAO {
+class AgrolavkaDAOImpl implements AgrolavkaDAO {
     /** DataModel manager. */
     @PersistenceContext
     private EntityManager em;
