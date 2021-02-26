@@ -23,7 +23,7 @@ import ss.martin.platform.spring.config.PlatformConfiguration;
 @Configuration
 @EnableScheduling
 @ComponentScan({"ss.agrolavka", "ss.martin"})
-@EntityScan("ss.agrolavka.model")
+@EntityScan("ss.agrolavka.entity")
 public class SpringConfig implements WebMvcConfigurer {
     /** Platform configuration. */
     @Autowired
