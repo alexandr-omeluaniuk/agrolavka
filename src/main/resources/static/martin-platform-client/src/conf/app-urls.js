@@ -11,7 +11,7 @@ const AppURLs = {
     api: context + '/api',
     welcome: context + '/welcome',
     app: context + '/protected',
-    registration: context + '/finish-registration/:validationString'
+    registration: context + '/verification/:validationString'
 };
 
 export default AppURLs;

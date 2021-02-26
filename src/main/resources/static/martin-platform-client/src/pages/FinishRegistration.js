@@ -81,7 +81,7 @@ export default function FinishRegistration(props) {
     };
     const finishRegistration = () => {
         if (passwordValid && passwordRepeatValid) {
-            dataService.put('/public/finish-registration', {
+            dataService.put('/platform/public/finish-registration', {
                 validation: validationString,
                 password: password
             }).then(resp => {
@@ -92,7 +92,7 @@ export default function FinishRegistration(props) {
     // ------------------------------------------------- HOOKS ----------------------------------------------------------------------------
     useEffect(() => {
         if (!user) {
-            dataService.get('/public/check-validation-string/' + validationString).then(resp => {
+            dataService.get('/platform/public/check-validation-string/' + validationString).then(resp => {
                 setUser(resp ? resp : {});
             });
         }
