@@ -24,13 +24,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import ss.agrolavka.dao.ProductDAO;
-import ss.agrolavka.model.Product;
-import ss.agrolavka.model.Product_;
-import ss.agrolavka.model.ProductsGroup;
-import ss.agrolavka.model.ProductsGroup_;
-import ss.agrolavka.wrapper.ProductsSearchRequest;
 import ss.agrolavka.dao.AgrolavkaDAO;
+import ss.agrolavka.dao.ProductDAO;
+import ss.agrolavka.wrapper.ProductsSearchRequest;
+import ss.martin.platform.entity.Product;
+import ss.martin.platform.entity.Product_;
+import ss.martin.platform.entity.ProductsGroup;
+import ss.martin.platform.entity.ProductsGroup_;
 
 /**
  * Product DAO implementation.

@@ -25,9 +25,9 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import ss.agrolavka.AgrolavkaConfiguration;
-import ss.agrolavka.model.Product;
-import ss.agrolavka.model.ProductImage;
-import ss.agrolavka.model.ProductsGroup;
+import ss.martin.platform.entity.Product;
+import ss.martin.platform.entity.ProductImage;
+import ss.martin.platform.entity.ProductsGroup;
 import ss.agrolavka.service.MySkladIntegrationService;
 import ss.agrolavka.dao.AgrolavkaDAO;
 

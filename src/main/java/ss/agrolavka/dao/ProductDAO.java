@@ -7,8 +7,8 @@ package ss.agrolavka.dao;
 
 import java.util.List;
 import java.util.Set;
-import ss.agrolavka.model.Product;
-import ss.agrolavka.model.ProductsGroup;
+import ss.martin.platform.entity.Product;
+import ss.martin.platform.entity.ProductsGroup;
 import ss.agrolavka.wrapper.ProductsSearchRequest;
 
 /**

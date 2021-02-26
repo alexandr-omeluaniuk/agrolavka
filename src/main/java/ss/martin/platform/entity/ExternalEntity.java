@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ss.agrolavka.model;
+package ss.martin.platform.entity;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
@@ -15,7 +15,7 @@ import javax.validation.constraints.Size;
  * @author alex
  */
 @MappedSuperclass
-public abstract class ExternalEntity {
+public abstract class ExternalEntity extends EntityAudit {
     /** External ID. */
     @NotNull
     @Size(max = 255)

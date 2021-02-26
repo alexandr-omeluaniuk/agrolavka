@@ -14,8 +14,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import ss.agrolavka.model.Product;
-import ss.agrolavka.model.ProductsGroup;
+import ss.martin.platform.entity.Product;
+import ss.martin.platform.entity.ProductsGroup;
 import ss.agrolavka.dao.AgrolavkaDAO;
 
 /**
