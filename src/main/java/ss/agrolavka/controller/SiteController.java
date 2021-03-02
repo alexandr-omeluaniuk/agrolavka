@@ -14,9 +14,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
+import ss.agrolavka.dao.ProductDAO;
 import ss.agrolavka.entity.Product;
 import ss.agrolavka.entity.ProductsGroup;
-import ss.agrolavka.dao.AgrolavkaDAO;
+import ss.agrolavka.wrapper.ProductsSearchRequest;
+import ss.martin.platform.dao.CoreDAO;
 
 /**
  * Site static pages controller.
@@ -26,7 +29,10 @@ import ss.agrolavka.dao.AgrolavkaDAO;
 public class SiteController {
     /** Core DAO. */
     @Autowired
-    private AgrolavkaDAO coreDAO;
+    private CoreDAO coreDAO;
+    /** Product DAO. */
+    @Autowired
+    private ProductDAO productDAO;
     /**
      * Home page.
      * @param model data model.
@@ -42,7 +48,10 @@ public class SiteController {
         model.addAttribute("title", "Главная");
         model.addAttribute("page", page);
         model.addAttribute("view", view);
-        model.addAttribute("productsCount", coreDAO.count(Product.class));
+        ProductsSearchRequest request = new ProductsSearchRequest();
+        request.setPage(1);
+        request.setPageSize(Integer.MAX_VALUE);
+        model.addAttribute("productsCount", productDAO.count(request));
         return "home";
     }
     /**
@@ -79,11 +88,14 @@ public class SiteController {
      * @return JSP page.
      */
     @RequestMapping("/catalog/{groupId}")
-    public String productsGroup(Model model,
+    public Object productsGroup(Model model,
             @PathVariable("groupId") Long groupId,
             @RequestParam(name = "page", required = false) Integer page,
             @RequestParam(name = "view", required = false) String view) throws Exception {
         ProductsGroup group = coreDAO.findById(groupId, ProductsGroup.class);
+        if (group == null) {
+            return new ModelAndView("redirect:/");
+        }
         model.addAttribute("title", group.getName());
         model.addAttribute("groupId", groupId);
         model.addAttribute("page", page);
@@ -102,10 +114,13 @@ public class SiteController {
      * @return JSP page.
      */
     @RequestMapping("/product/{id}")
-    public String product(Model model,
+    public Object product(Model model,
             @PathVariable("id") Long id,
             @RequestParam(value = "name", required = false) String name) throws Exception {
         Product product = coreDAO.findById(id, Product.class);
+        if (product == null) {
+            return new ModelAndView("redirect:/");
+        }
         model.addAttribute("title", name);
         model.addAttribute("id", id);
         model.addAttribute("product", product);

@@ -19,7 +19,7 @@ import org.springframework.web.servlet.tags.RequestContextAwareTag;
 import ss.agrolavka.dao.ProductDAO;
 import ss.agrolavka.entity.Product;
 import ss.agrolavka.wrapper.ProductsSearchRequest;
-import ss.agrolavka.dao.AgrolavkaDAO;
+import ss.martin.platform.dao.CoreDAO;
 
 /**
  * Search result tag.
@@ -38,7 +38,7 @@ public class SearchResultTag extends RequestContextAwareTag {
     private static final String VIEW_TILES = "TILES";
     /** Core DAO. */
     @Autowired
-    private AgrolavkaDAO coreDAO;
+    private CoreDAO coreDAO;
     /** Product DAO. */
     @Autowired
     private ProductDAO productDAO;

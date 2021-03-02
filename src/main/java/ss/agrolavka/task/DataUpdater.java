@@ -19,12 +19,12 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import ss.agrolavka.AgrolavkaConfiguration;
-import ss.agrolavka.dao.AgrolavkaDAO;
 import ss.agrolavka.dao.ExternalEntityDAO;
 import ss.agrolavka.entity.Product;
 import ss.agrolavka.entity.ProductImage;
 import ss.agrolavka.entity.ProductsGroup;
 import ss.agrolavka.service.MySkladIntegrationService;
+import ss.martin.platform.dao.CoreDAO;
 import ss.martin.platform.service.SecurityService;
 
 /**
@@ -40,7 +40,7 @@ class DataUpdater {
     private MySkladIntegrationService mySkladIntegrationService;
     /** Core DAO. */
     @Autowired
-    private AgrolavkaDAO coreDAO;
+    private CoreDAO coreDAO;
     /** External entity DAO. */
     @Autowired
     private ExternalEntityDAO externalEntityDAO;

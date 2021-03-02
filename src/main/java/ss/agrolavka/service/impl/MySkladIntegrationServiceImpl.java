@@ -25,11 +25,11 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import ss.agrolavka.AgrolavkaConfiguration;
-import ss.agrolavka.dao.AgrolavkaDAO;
 import ss.agrolavka.entity.Product;
 import ss.agrolavka.entity.ProductImage;
 import ss.agrolavka.entity.ProductsGroup;
 import ss.agrolavka.service.MySkladIntegrationService;
+import ss.martin.platform.dao.CoreDAO;
 
 /**
  * My Sklad integration service implementation.
@@ -47,7 +47,7 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
     private AgrolavkaConfiguration configuration;
     /** Core DAO. */
     @Autowired
-    private AgrolavkaDAO coreDAO;
+    private CoreDAO coreDAO;
     /** Authorization token. */
     private String token;
     @Override

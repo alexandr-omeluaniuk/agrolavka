@@ -21,7 +21,7 @@ import ss.agrolavka.constants.ImageStubs;
 import ss.agrolavka.dao.ProductDAO;
 import ss.agrolavka.entity.Product;
 import ss.agrolavka.wrapper.ProductsSearchRequest;
-import ss.agrolavka.dao.AgrolavkaDAO;
+import ss.martin.platform.dao.CoreDAO;
 
 /**
  * Site REST controller.
@@ -32,7 +32,7 @@ import ss.agrolavka.dao.AgrolavkaDAO;
 public class SiteRESTController {
     /** Core DAO. */
     @Autowired
-    private AgrolavkaDAO coreDAO;
+    private CoreDAO coreDAO;
     /** Product DAO. */
     @Autowired
     private ProductDAO productDAO;
