@@ -12,9 +12,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -31,10 +28,6 @@ public class Product extends ExternalEntity implements Serializable {
     /** Default UID. */
     private static final long serialVersionUID = 1L;
     // ============================================== FIELDS ==========================================================
-    /** Id. */
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
     /** Name. */
     @Column(name = "name", length = 1000, nullable = false)
     private String name;
@@ -51,18 +44,6 @@ public class Product extends ExternalEntity implements Serializable {
     @JoinColumn(name = "group_id")
     private ProductsGroup group;
     // ============================================== SET & GET =======================================================
-    /**
-     * @return the id
-     */
-    public Long getId() {
-        return id;
-    }
-    /**
-     * @param id the id to set
-     */
-    public void setId(Long id) {
-        this.id = id;
-    }
     /**
      * @return the name
      */
@@ -125,7 +106,8 @@ public class Product extends ExternalEntity implements Serializable {
             return false;
         }
         Product other = (Product) object;
-        if ((this.getId() == null && other.getId() != null) || (this.getId() != null && !this.id.equals(other.id))) {
+        if ((this.getId() == null && other.getId() != null)
+                || (this.getId() != null && !this.getId().equals(other.getId()))) {
             return false;
         }
         return true;

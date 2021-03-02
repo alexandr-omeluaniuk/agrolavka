@@ -1,3 +1,4 @@
 /src/main/resources/application.yml
 /src/main/resources/application.bak.yml
 /src/main/resources/static/martin-platform-client/nbproject/private/
+/src/main/resources/application.prod.yml

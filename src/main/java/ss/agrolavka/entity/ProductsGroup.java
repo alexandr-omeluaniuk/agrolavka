@@ -12,9 +12,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -30,10 +27,6 @@ public class ProductsGroup extends ExternalEntity implements Serializable, Compa
     /** Default UID. */
     private static final long serialVersionUID = 1L;
     // =============================================== FIELDS =========================================================
-    /** ID. */
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
     /** Name. */
     @NotNull
     @Size(max = 255)
@@ -48,18 +41,6 @@ public class ProductsGroup extends ExternalEntity implements Serializable, Compa
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "group", cascade = CascadeType.ALL)
     private List<Product> products;
     // =============================================== SET & GET ======================================================
-    /**
-     * @return the id
-     */
-    public Long getId() {
-        return id;
-    }
-    /**
-     * @param id the id to set
-     */
-    public void setId(Long id) {
-        this.id = id;
-    }
     /**
      * @return the name
      */
@@ -110,7 +91,8 @@ public class ProductsGroup extends ExternalEntity implements Serializable, Compa
             return false;
         }
         ProductsGroup other = (ProductsGroup) object;
-        return !((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id)));
+        return !((this.getId() == null && other.getId() != null)
+                || (this.getId() != null && !this.getId().equals(other.getId())));
     }
     @Override
     public String toString() {

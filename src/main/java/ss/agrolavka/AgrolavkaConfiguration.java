@@ -19,6 +19,10 @@ public class AgrolavkaConfiguration {
     private String mySkladUsername;
     /** My sklad: password. */
     private String mySkladPassword;
+    /** Background user username. */
+    private String backgroundUserUsername;
+    /** Background user password. */
+    private String backgroundUserPassword;
     /**
      * @return the mySkladUsername
      */
@@ -42,5 +46,29 @@ public class AgrolavkaConfiguration {
      */
     public void setMySkladPassword(String mySkladPassword) {
         this.mySkladPassword = mySkladPassword;
+    }
+    /**
+     * @return the backgroundUserUsername
+     */
+    public String getBackgroundUserUsername() {
+        return backgroundUserUsername;
+    }
+    /**
+     * @param backgroundUserUsername the backgroundUserUsername to set
+     */
+    public void setBackgroundUserUsername(String backgroundUserUsername) {
+        this.backgroundUserUsername = backgroundUserUsername;
+    }
+    /**
+     * @return the backgroundUserPassword
+     */
+    public String getBackgroundUserPassword() {
+        return backgroundUserPassword;
+    }
+    /**
+     * @param backgroundUserPassword the backgroundUserPassword to set
+     */
+    public void setBackgroundUserPassword(String backgroundUserPassword) {
+        this.backgroundUserPassword = backgroundUserPassword;
     }
 }

@@ -26,6 +26,8 @@ spring:
 agrolavka:
   mySkladUsername: admin@test
   mySkladPassword: mypass
+  backgroundUserUsername: jack@test.com
+  backgroundUserPassword: 8dsfjjPassword
 platform:
   # system email settings
   systemEmailContactName: Platform support

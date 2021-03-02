@@ -18,12 +18,14 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import ss.agrolavka.AgrolavkaConfiguration;
 import ss.agrolavka.dao.AgrolavkaDAO;
 import ss.agrolavka.dao.ExternalEntityDAO;
 import ss.agrolavka.entity.Product;
 import ss.agrolavka.entity.ProductImage;
 import ss.agrolavka.entity.ProductsGroup;
 import ss.agrolavka.service.MySkladIntegrationService;
+import ss.martin.platform.service.SecurityService;
 
 /**
  * Data updater.
@@ -42,6 +44,12 @@ class DataUpdater {
     /** External entity DAO. */
     @Autowired
     private ExternalEntityDAO externalEntityDAO;
+    /** Security service. */
+    @Autowired
+    private SecurityService securityService;
+    /** Agrolavka configuration. */
+    @Autowired
+    private AgrolavkaConfiguration configuration;
     /**
      * Import MySklad data.
      */
@@ -49,6 +57,8 @@ class DataUpdater {
     protected void importMySkladData() {
         try {
             LOG.info("====================================== MY SKLAD DATA UPDATE ===================================");
+            securityService.backgroundAuthentication(
+                    configuration.getBackgroundUserUsername(), configuration.getBackgroundUserPassword());
             long start = System.currentTimeMillis();
             LOG.info("start authentication...");
             mySkladIntegrationService.authentication();

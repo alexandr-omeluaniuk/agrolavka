@@ -9,9 +9,6 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
@@ -28,10 +25,6 @@ public class ProductImage extends ExternalEntity implements Serializable {
     /** UID. */
     private static final long serialVersionUID = 1L;
     // ============================================= FIEDLS ===========================================================
-    /** ID. */
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
     /** Product. */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
@@ -48,18 +41,6 @@ public class ProductImage extends ExternalEntity implements Serializable {
     @Column(name = "image_data", nullable = false)
     private byte[] imageData;
     // ============================================= SET & GET ========================================================
-    /**
-     * @return the id
-     */
-    public Long getId() {
-        return id;
-    }
-    /**
-     * @param id the id to set
-     */
-    public void setId(Long id) {
-        this.id = id;
-    }
     /**
      * @return the product
      */
@@ -122,7 +103,8 @@ public class ProductImage extends ExternalEntity implements Serializable {
             return false;
         }
         ProductImage other = (ProductImage) object;
-        if ((this.getId() == null && other.getId() != null) || (this.getId() != null && !this.id.equals(other.id))) {
+        if ((this.getId() == null && other.getId() != null)
+                || (this.getId() != null && !this.getId().equals(other.getId()))) {
             return false;
         }
         return true;

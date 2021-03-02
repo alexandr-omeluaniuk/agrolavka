@@ -25,11 +25,11 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import ss.agrolavka.AgrolavkaConfiguration;
+import ss.agrolavka.dao.AgrolavkaDAO;
 import ss.agrolavka.entity.Product;
 import ss.agrolavka.entity.ProductImage;
 import ss.agrolavka.entity.ProductsGroup;
 import ss.agrolavka.service.MySkladIntegrationService;
-import ss.agrolavka.dao.AgrolavkaDAO;
 
 /**
  * My Sklad integration service implementation.
@@ -139,7 +139,7 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
                 productImage.setFilename(item.getString("filename"));
                 productImage.setImageSize(item.getLong("size"));
                 productImage.setImageData(requestData(href, "GET", headers));
-                productImage.setExternalId(item.getString("id"));
+                productImage.setExternalId("-");
                 result.add(productImage);
             }
         }
