@@ -53,7 +53,9 @@ const useStyles = makeStyles(theme => ({
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundImage: `url(${background})`
+        backgroundImage: `url(${background})`,
+        backgroundPosition: 'center center',
+        backgroundSize: '100% 100%'
     }
 }));
 

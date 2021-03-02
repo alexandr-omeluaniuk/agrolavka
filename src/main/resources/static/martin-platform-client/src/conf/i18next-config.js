@@ -14,7 +14,7 @@ i18n.use(LanguageDetector).use(XHR).use(initReactI18next).init({
     backend: {
         loadPath: AppURLs.context + '/locales/{{lng}}/{{ns}}.json'
     },
-    ns: ['m_core', 'm_administrator'],
+    ns: ['m_core', 'm_administrator', 'm_agrolavka'],
     fallbackLng: "en",
     debug: false,
     whitelist: ["en"],

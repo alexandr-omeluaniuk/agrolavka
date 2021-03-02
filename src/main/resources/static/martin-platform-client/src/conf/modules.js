@@ -7,6 +7,7 @@
 import { common } from '../module/common/module';
 import { core } from '../module/core/module';
 import { administrator } from '../module/admin/module';
+import { agrolavka } from '../module/agrolavka/module';
 import { SharedDataService } from '../service/SharedDataService';
 
 /**
@@ -15,7 +16,7 @@ import { SharedDataService } from '../service/SharedDataService';
  * @type Array
  */
 export const modules = function () {
-    const modules = [common, core, administrator];
+    const modules = [common, core, administrator, agrolavka];
     const permissions = SharedDataService.getPermissions();
     return modules.filter(m => {
         return m.isPermitted(permissions.standardRole);
