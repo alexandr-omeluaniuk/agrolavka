@@ -1,3 +1,6 @@
 {
-    "title": "Agrolavka"
+    "title": "Agrolavka",
+    "agrolavka": {
+        "products": "Products"
+    }
 }

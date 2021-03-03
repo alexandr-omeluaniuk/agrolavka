@@ -42,3 +42,12 @@ platform:
   # mailjet settings
   mailjetApiKey: 492d0272c772703df12e9557857b9947
   mailjetSecretKey: d1808011418953e5f357a2d6a5886fee
+  #navigation
+  navigation:
+    login: /login
+    logout: /logout
+    loginPage: /welcome
+    protectedRest: /api/agrolavka/protected/**
+    publicRest: /api/agrolavka/public/**
+    registrationVerification: /verification
+    views: /martin

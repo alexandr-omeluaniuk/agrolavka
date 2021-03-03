@@ -4,13 +4,14 @@
  * and open the template in the editor.
  */
 
-import React from 'react';
-import DataTable from '../../../component/datatable/DataTable';
+import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { makeStyles } from '@material-ui/core/styles';
-import { TableConfig, TableColumn, FormConfig, FormField, Validator, ALIGN_RIGHT } from '../../../util/model/TableConfig';
-import Icon from '@material-ui/core/Icon';
-import { TYPES, VALIDATORS } from '../../../service/DataTypeService';
+import Grid from '@material-ui/core/Grid';
+import StyledTreeView from '../../../component/tree/StyledTreeView';
+import DataService from '../../../service/DataService';
+
+let dataService = new DataService();
 
 const useStyles = makeStyles(theme => ({
     
@@ -19,9 +20,26 @@ const useStyles = makeStyles(theme => ({
 function Products() {
     const classes = useStyles();
     const { t } = useTranslation();
-    
+    const [productGroups, setProductGroups] = React.useState(null);
+    // ------------------------------------------------------- HOOKS ----------------------------------------------------------------------
+    useEffect(() => {
+        if (productGroups === null) {
+            dataService.get('/agrolavka/protected/ProductsGroup').then(resp => {
+                setProductGroups(resp.data);
+            });
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [productGroups]);
+    // ------------------------------------------------------- RENDERING ------------------------------------------------------------------
     return (
-            <div>TODO</div>
+            <Grid container>
+                <Grid item sm={3}>
+                    <StyledTreeView />
+                </Grid>
+                <Grid item sm={9}>
+                    Table
+                </Grid>
+            </Grid>
     );
 }
 
