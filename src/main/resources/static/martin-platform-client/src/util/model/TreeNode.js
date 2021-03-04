@@ -18,4 +18,12 @@ export class TreeNode {
     getChildren() {
         return this.children;
     }
+    
+    setOrigin(origin) {
+        this.origin = origin;
+    }
+    
+    getOrigin() {
+        return this.origin;
+    }
 }

@@ -20,11 +20,11 @@ const useStyles = makeStyles({
 
 function StyledTreeView(props) {
     const classes = useStyles();
-    const { data } = props;
+    const { data, onSelect } = props;
     // ----------------------------------------------------- METHODS ----------------------------------------------------------------------
-    const renderTree = (nodes) => (
-        <TreeItem key={nodes.id} nodeId={nodes.id} label={nodes.name}>
-            {Array.isArray(nodes.getChildren()) ? nodes.getChildren().map((node) => renderTree(node)) : null}
+    const renderTree = (treeNode) => (
+        <TreeItem key={treeNode.id} nodeId={treeNode.id} label={treeNode.name} onClick={() => onSelect(treeNode)}>
+            {Array.isArray(treeNode.getChildren()) ? treeNode.getChildren().map((node) => renderTree(node)) : null}
         </TreeItem>
     );
     // ----------------------------------------------------- RENDERING --------------------------------------------------------------------
@@ -39,7 +39,8 @@ function StyledTreeView(props) {
 }
 
 StyledTreeView.propTypes = {
-    data: PropTypes.array.isRequired
+    data: PropTypes.array.isRequired,
+    onSelect: PropTypes.func
 };
 
 export default StyledTreeView;
