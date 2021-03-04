@@ -8,6 +8,7 @@ import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
 import StyledTreeView from '../../../component/tree/StyledTreeView';
 import DataService from '../../../service/DataService';
 import { TreeNode } from '../../../util/model/TreeNode';
@@ -15,7 +16,9 @@ import { TreeNode } from '../../../util/model/TreeNode';
 let dataService = new DataService();
 
 const useStyles = makeStyles(theme => ({
-    
+    root: {
+        padding: theme.spacing(2)
+    }
 }));
 
 function Products() {
@@ -37,11 +40,15 @@ function Products() {
                 roots.push(pg);
             }
         });
+        function compare(a, b) {
+            return a.name > b.name ? 1 : -1;
+        }
         const recursiveWalkTree = (productGroup) => {
             const node = new TreeNode(productGroup.id, productGroup.name);
             const children = [];
             const childProductGroups = map[productGroup.externalId];
             if (childProductGroups) {
+                childProductGroups.sort(compare);
                 childProductGroups.forEach(child => {
                     children.push(recursiveWalkTree(child));
                 });
@@ -49,6 +56,7 @@ function Products() {
             node.setChildren(children);
             return node;
         };
+        roots.sort(compare);
         roots.forEach(root => {
             result.push(recursiveWalkTree(root));
         });
@@ -68,14 +76,16 @@ function Products() {
         return null;
     }
     return (
-            <Grid container>
-                <Grid item sm={3}>
-                    <StyledTreeView data={buildTree()}/>
+            <Paper elevation={1} className={classes.root}>
+                <Grid container spacing={2}>
+                    <Grid item sm={3}>
+                        <StyledTreeView data={buildTree()}/>
+                    </Grid>
+                    <Grid item sm={9}>
+                        Table
+                    </Grid>
                 </Grid>
-                <Grid item sm={9}>
-                    Table
-                </Grid>
-            </Grid>
+            </Paper>
     );
 }
 
