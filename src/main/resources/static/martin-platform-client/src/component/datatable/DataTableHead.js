@@ -12,6 +12,7 @@ import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import { SORT_ASC } from '../../util/model/TableConfig';
+import { ApiURL } from '../../util/model/TableConfig';
 
 const useStyles = makeStyles(theme => ({
     visuallyHidden: {
@@ -35,6 +36,14 @@ function DataTableHead(props) {
     const classes = useStyles();
     const { tableConfig, orderBy, onSort } = props;
     let actionColumns = 2;
+    const isEditable = tableConfig.apiUrl instanceof ApiURL ? tableConfig.apiUrl.putUrl : (tableConfig.apiUrl ? true : false);
+    const isDeletable = tableConfig.apiUrl instanceof ApiURL ? tableConfig.apiUrl.deleteUrl : (tableConfig.apiUrl ? true : false);
+    if (!isDeletable) {
+        actionColumns--;
+    }
+    if (!isEditable) {
+        actionColumns--;
+    }
     let actionColumnsUI = [];
     for (let i = 0; i < actionColumns; i++) {
         actionColumnsUI.push(<TableCell className={classes.actionCell} key={i}></TableCell>);

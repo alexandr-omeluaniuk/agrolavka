@@ -56,6 +56,9 @@ function DataTable(props) {
             localStorage.getItem(ITEMS_PER_PAGE) ? parseInt(localStorage.getItem(ITEMS_PER_PAGE)) : 5);
     // ============================================================ HOOKS =================================================================
     useEffect(() => {
+        setPage(0);
+    }, [tableConfig]);
+    useEffect(() => {
         let params = `?page=${page + 1}&page_size=${rowsPerPage}`;
         if (order && orderBy) {
             params += `&order=${order}&order_by=${orderBy}`;
@@ -145,18 +148,23 @@ function DataTable(props) {
     if (record && tableConfig.formConfigEdit) {
         actualFormConfig = tableConfig.formConfigEdit;
     }
+    const isEditable = tableConfig.apiUrl instanceof ApiURL ? tableConfig.apiUrl.putUrl : (tableConfig.apiUrl ? true : false);
+    const isDeletable = tableConfig.apiUrl instanceof ApiURL ? tableConfig.apiUrl.deleteUrl : (tableConfig.apiUrl ? true : false);
+    const isCreatable = tableConfig.apiUrl instanceof ApiURL ? tableConfig.apiUrl.postUrl : (tableConfig.apiUrl ? true : false);
     return (
         <div>
             <Paper className={isMobile ? classes.paperMobile : null} elevation={isMobile ? 0 : (tableConfig.getElevation())}>
-                <DataTableToolbar tableConfig={tableConfig} onNewRecord={onNewRecord}
+                <DataTableToolbar tableConfig={tableConfig} onNewRecord={isCreatable ? onNewRecord : null}
                         onRefresh={onRefresh} isMobile={isMobile}/>
                 {isMobile ? (
-                    <DataTableBodyMobile tableConfig={tableConfig} data={data} onEditRecord={onEditRecord} onDeleteRecord={onDeleteRecord}/>
+                    <DataTableBodyMobile tableConfig={tableConfig} data={data} onEditRecord={isEditable ? onEditRecord : null}
+                        onDeleteRecord={isDeletable ? onDeleteRecord : null}/>
                 ) : (
                     <TableContainer>
                         <Table size={dense ? 'small' : 'medium'}>
                             <DataTableHead tableConfig={tableConfig} onSort={onSort} orderBy={orderBy} />
-                            <DataTableBody tableConfig={tableConfig} data={data} onEditRecord={onEditRecord} onDeleteRecord={onDeleteRecord}/>
+                            <DataTableBody tableConfig={tableConfig} data={data} onEditRecord={isEditable ? onEditRecord : null}
+                                    onDeleteRecord={isDeletable ? onDeleteRecord : null}/>
                         </Table>
                     </TableContainer>
                 )}

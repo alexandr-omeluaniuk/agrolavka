@@ -12,6 +12,7 @@ import Icon from '@material-ui/core/Icon';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import NumberField from './input/NumberField';
+import MoneyField from './input/MoneyField';
 import Dropdown from './input/Dropdown';
 import FileUpload from './input/FileUpload';
 import MultipleSelect from './input/MultipleSelect';
@@ -53,6 +54,10 @@ function FormField (props) {
             return <NumberField label={label} value={fieldValue ? fieldValue : ''} variant={variant}
                             onChange={(e) => onChangeFieldValue(name, e.target.value)} fullWidth={true}
                             helperText={invalidFields.get(name)} required={isRequired}/>;
+        } else if (fieldConfig.type === TYPES.MONEY) {
+            return <MoneyField label={label} value={fieldValue ? fieldValue : ''} variant={variant} suffix={attributes.suffix}
+                            onChange={(e) => onChangeFieldValue(name, e.target.value)} fullWidth={true} align={attributes.align}
+                            helperText={invalidFields.get(name)} required={isRequired} decimalScale={attributes.decimalScale}/>;
         } else if (fieldConfig.type === TYPES.SELECT) {
             return <Dropdown label={label} value={fieldValue ? fieldValue : ''} required={isRequired} variant={variant}
                             onChange={(e) => {

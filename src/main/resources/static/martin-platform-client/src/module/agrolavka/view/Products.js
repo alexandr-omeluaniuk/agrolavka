@@ -4,12 +4,11 @@
  * and open the template in the editor.
  */
 
-/* global parseFloat */
-
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
+import Avatar from '@material-ui/core/Avatar';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
@@ -93,12 +92,22 @@ function Products() {
             const apiUrl = new ApiURL('/agrolavka/protected/product/search');
             apiUrl.addGetExtraParam('group_id', selectedProductGroup.id);
             const newTableConfig = new TableConfig(t('m_agrolavka:agrolavka.products'), apiUrl, [
+                new TableColumn('avatar', '', (row) => {
+                    return <Avatar alt={row.name} src={`/api/agrolavka/public/product-image/${row.id}`} />;
+                }).setSortable().width('40px'),
                 new TableColumn('name', t('m_agrolavka:products.product_name')).setSortable(),
                 new TableColumn('price', t('m_agrolavka:products.product_price'), (row) => {
                     return parseFloat(row.price).toFixed(2);
                 }).setSortable().width('100px').alignment(ALIGN_RIGHT)
             ], new FormConfig([
-
+                new FormField('name', TYPES.TEXTFIELD, t('m_agrolavka:products.product_name')).setGrid({xs: 12, md: 9}).validation([
+                    new Validator(VALIDATORS.REQUIRED),
+                    new Validator(VALIDATORS.MAX_LENGTH, {length: 255})
+                ]),
+                new FormField('price', TYPES.MONEY, t('m_agrolavka:products.product_price')).setGrid({xs: 12, md: 3}).validation([
+                    new Validator(VALIDATORS.REQUIRED),
+                    new Validator(VALIDATORS.MIN, {size: 0})
+                ]).setAttributes({ decimalScale: 2, suffix: ' BYN', align: 'right' })
             ])).setElevation(1);
             setTableConfig(newTableConfig);
         }
