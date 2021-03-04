@@ -34,6 +34,7 @@ import { drawerWidth } from '../../conf/theme';
 import ErrorBoundary from '../util/ErrorBoundary';
 import AppURLs from '../../conf/app-urls';
 import { Route, Redirect } from "react-router-dom";
+import background from '../../assets/images/main-background.jpg';
 
 
 const useStyles = makeStyles(theme => ({
@@ -60,8 +61,8 @@ const useStyles = makeStyles(theme => ({
             zIndex: "-1",
             content: '""',
             display: "block",
-            opacity: `1`,
-            //backgroundImage: 'url(' + SessionService.moduleBackground() + ')',
+            opacity: `.3`,
+            backgroundImage: 'url(' + background + ')',
             backgroundSize: "cover",
             backgroundPosition: "center center"
         }

@@ -36,12 +36,12 @@ const useStyles = makeStyles(theme => ({
         minWidth: '30px'
     },
     itemIconSelected: {
-        color: theme.palette.getContrastText(theme.palette.text.primary) + ' !important',
+        color: fade(theme.palette.primary.dark) + ' !important',
         minWidth: '30px'
     },
     selected: {
-        backgroundColor: fade(theme.palette.grey[50], 1) + ' !important',
-        color: theme.palette.getContrastText(theme.palette.grey[50]) + ' !important'
+        backgroundColor: 'transparent !important',
+        color: fade(theme.palette.primary[900], 1) + ' !important'
     },
     innerList: {
         paddingBottom: 0,
