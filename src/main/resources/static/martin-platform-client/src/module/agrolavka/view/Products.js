@@ -4,6 +4,8 @@
  * and open the template in the editor.
  */
 
+/* global parseFloat */
+
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { makeStyles } from '@material-ui/core/styles';
@@ -14,6 +16,9 @@ import Divider from '@material-ui/core/Divider';
 import StyledTreeView from '../../../component/tree/StyledTreeView';
 import DataService from '../../../service/DataService';
 import { TreeNode } from '../../../util/model/TreeNode';
+import { TableConfig, TableColumn, FormConfig, FormField, Validator, ALIGN_RIGHT, ApiURL } from '../../../util/model/TableConfig';
+import { TYPES, VALIDATORS } from '../../../service/DataTypeService';
+import DataTable from '../../../component/datatable/DataTable';
 
 let dataService = new DataService();
 
@@ -86,6 +91,16 @@ function Products() {
     if (productGroups === null) {
         return null;
     }
+    const tableConfig = new TableConfig(t('m_agrolavka:agrolavka.products'),
+        new ApiURL('/agrolavka/protected/product/search')
+                .addGetExtraParam('groupId', selectedProductGroup ? selectedProductGroup.id : ''), [
+        new TableColumn('name', t('m_agrolavka:products.product_name')).setSortable(),
+        new TableColumn('price', t('m_agrolavka:products.product_price'), (row) => {
+            return parseFloat(row.price).toFixed(2);
+        }).setSortable().width('100px').alignment(ALIGN_RIGHT)
+    ], new FormConfig([
+        
+    ])).setElevation(0);
     return (
             <Paper elevation={1} className={classes.root}>
                 <Grid container spacing={2}>
@@ -95,7 +110,7 @@ function Products() {
                         <StyledTreeView data={buildTree()} onSelect={onProductGroupSelect}/>
                     </Grid>
                     <Grid item sm={9}>
-                        Table
+                        {selectedProductGroup ? <DataTable tableConfig={tableConfig}/> : null}
                     </Grid>
                 </Grid>
             </Paper>

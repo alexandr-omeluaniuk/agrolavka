@@ -16,6 +16,16 @@ export class TableConfig {
         this.apiUrl = apiUrl;
         this.columns = columns;
         this.formConfig = formConfig;
+        this.elevation = 1;
+    }
+    
+    setElevation(elevation) {
+        this.elevation = elevation;
+        return this;
+    }
+    
+    getElevation() {
+        return this.elevation;
     }
 }
 
@@ -128,5 +138,29 @@ export class Validator {
     constructor(type, attributes) {
         this.type = type;
         this.attr = attributes;
+    }
+}
+
+export class ApiURL {
+    
+    constructor(getUrl, postUrl, putUrl, deleteUrl) {
+        this.getUrl = getUrl;
+        this.postUrl = postUrl;
+        this.putUrl = putUrl;
+        this.deleteUrl = deleteUrl;
+        this.getExtraParams = {};
+    }
+    
+    addGetExtraParam(name, value) {
+        this.getExtraParams[name] = value;
+        return this;
+    }
+    
+    getGetExtraParams() {
+        let params = [];
+        for (let key in this.getExtraParams) {
+            params.push(`${key}=${this.getExtraParams[key]}`);
+        }
+        return params.join('&');
     }
 }

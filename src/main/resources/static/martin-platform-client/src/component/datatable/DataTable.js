@@ -24,6 +24,7 @@ import Switch from '@material-ui/core/Switch';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import TablePagination from '@material-ui/core/TablePagination';
 import { DENSE_PADDING, ITEMS_PER_PAGE } from '../../conf/local-storage-keys';
+import { ApiURL } from '../../util/model/TableConfig';
 
 let dataService = new DataService();
 
@@ -59,7 +60,10 @@ function DataTable(props) {
         if (order && orderBy) {
             params += `&order=${order}&order_by=${orderBy}`;
         }
-        dataService.get(`${tableConfig.apiUrl}${params}`).then(resp => {
+        if (tableConfig.apiUrl instanceof ApiURL) {
+            params += '&' + tableConfig.apiUrl.getGetExtraParams();
+        }
+        dataService.get(`${tableConfig.apiUrl instanceof ApiURL ? tableConfig.apiUrl.getUrl : tableConfig.apiUrl}${params}`).then(resp => {
             if (resp) {
                 setData(resp.data);
                 setTotal(resp.total);
@@ -140,15 +144,15 @@ function DataTable(props) {
                     rowsPerPage={rowsPerPage} page={page}
                     onChangePage={handleChangePage} onChangeRowsPerPage={handleChangeRowsPerPage}/>;
         };
-        return <Paper elevation={1}>{c()}</Paper>;
+        return <Paper elevation={tableConfig.getElevation()}>{c()}</Paper>;
     };
     let actualFormConfig = tableConfig.formConfig;
     if (record && tableConfig.formConfigEdit) {
         actualFormConfig = tableConfig.formConfigEdit;
     }
     return (
-        <div className={classes.root}>
-            <Paper className={isMobile ? classes.paperMobile : null} elevation={isMobile ? 0 : 3}>
+        <div>
+            <Paper className={isMobile ? classes.paperMobile : null} elevation={isMobile ? 0 : (tableConfig.getElevation())}>
                 <DataTableToolbar tableConfig={tableConfig} onNewRecord={onNewRecord}
                         onRefresh={onRefresh} isMobile={isMobile}/>
                 {isMobile ? (

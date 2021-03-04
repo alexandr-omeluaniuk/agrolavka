@@ -4,6 +4,8 @@
         "products": "Products"
     },
     "products": {
-        "product_groups": "Product groups"
+        "product_groups": "Product groups",
+        "product_name": "Name",
+        "product_price": "Price"
     }
 }
