@@ -70,7 +70,7 @@ function DataTable(props) {
             }
         });
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [load]);
+    }, [load, tableConfig, page, rowsPerPage, order, orderBy]);
 //    useEffect(() => {
 //        return () => {
 //            dataService.abort();
@@ -79,7 +79,6 @@ function DataTable(props) {
 //    }, []);
     // ============================================================ METHODS ===============================================================
     const onSort = (column) => {
-        console.log(column);
         setOrder(column._toggleSortDirection());
         setOrderBy(column.name);
         setLoad(!load);
@@ -132,10 +131,6 @@ function DataTable(props) {
         setRowsPerPage(parseInt(event.target.value, 10));
         localStorage.setItem(ITEMS_PER_PAGE, parseInt(event.target.value, 10));
         setPage(0);
-    };
-    // bind component functions for using in parent components
-    tableConfig.api = {
-        onRefresh: onRefresh
     };
     // ============================================================ RENDERING =============================================================
     const pagination = () => {

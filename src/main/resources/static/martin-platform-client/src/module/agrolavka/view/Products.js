@@ -37,6 +37,7 @@ function Products() {
     const { t } = useTranslation();
     const [productGroups, setProductGroups] = React.useState(null);
     const [selectedProductGroup, setSelectedProductGroup] = React.useState(null);
+    const [tableConfig, setTableConfig] = React.useState(null);
     // ------------------------------------------------------- METHODS --------------------------------------------------------------------
     const buildTree = () => {
         const result = [];
@@ -87,30 +88,38 @@ function Products() {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [productGroups]);
+    useEffect(() => {
+        if (selectedProductGroup) {
+            const apiUrl = new ApiURL('/agrolavka/protected/product/search');
+            apiUrl.addGetExtraParam('group_id', selectedProductGroup.id);
+            const newTableConfig = new TableConfig(t('m_agrolavka:agrolavka.products'), apiUrl, [
+                new TableColumn('name', t('m_agrolavka:products.product_name')).setSortable(),
+                new TableColumn('price', t('m_agrolavka:products.product_price'), (row) => {
+                    return parseFloat(row.price).toFixed(2);
+                }).setSortable().width('100px').alignment(ALIGN_RIGHT)
+            ], new FormConfig([
+
+            ])).setElevation(1);
+            setTableConfig(newTableConfig);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [selectedProductGroup]);
     // ------------------------------------------------------- RENDERING ------------------------------------------------------------------
     if (productGroups === null) {
         return null;
     }
-    const tableConfig = new TableConfig(t('m_agrolavka:agrolavka.products'),
-        new ApiURL('/agrolavka/protected/product/search')
-                .addGetExtraParam('groupId', selectedProductGroup ? selectedProductGroup.id : ''), [
-        new TableColumn('name', t('m_agrolavka:products.product_name')).setSortable(),
-        new TableColumn('price', t('m_agrolavka:products.product_price'), (row) => {
-            return parseFloat(row.price).toFixed(2);
-        }).setSortable().width('100px').alignment(ALIGN_RIGHT)
-    ], new FormConfig([
-        
-    ])).setElevation(0);
     return (
             <Paper elevation={1} className={classes.root}>
                 <Grid container spacing={2}>
-                    <Grid item sm={3}>
-                        <Typography variant={'h6'}>{t('m_agrolavka:products.product_groups')}</Typography>
-                        <Divider className={classes.divider}/>
-                        <StyledTreeView data={buildTree()} onSelect={onProductGroupSelect}/>
+                    <Grid item sm={12} md={3} lg={2}>
+                        <Paper elevation={1} className={classes.root}>
+                            <Typography variant={'h6'}>{t('m_agrolavka:products.product_groups')}</Typography>
+                            <Divider className={classes.divider}/>
+                            <StyledTreeView data={buildTree()} onSelect={onProductGroupSelect}/>
+                        </Paper>
                     </Grid>
-                    <Grid item sm={9}>
-                        {selectedProductGroup ? <DataTable tableConfig={tableConfig}/> : null}
+                    <Grid item sm={12} md={9} lg={10}>
+                        {tableConfig ? <DataTable tableConfig={tableConfig}/> : null}
                     </Grid>
                 </Grid>
             </Paper>
