@@ -72,7 +72,6 @@ function Products() {
     };
     const onProductGroupSelect = (node) => {
         setSelectedProductGroup(node.getOrigin());
-        console.log(node);
     };
     // ------------------------------------------------------- HOOKS ----------------------------------------------------------------------
     useEffect(() => {

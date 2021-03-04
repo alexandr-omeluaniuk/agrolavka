@@ -15,7 +15,7 @@ import ss.martin.platform.rest.EntityRESTController;
  */
 @RestController
 @RequestMapping("/api/agrolavka/protected")
-public class AgrolavkaEntityRESTController extends EntityRESTController {
+class AgrolavkaEntityRESTController extends EntityRESTController {
     @Override
     protected Class getEntityClass(String name) throws Exception {
         return Class.forName("ss.agrolavka.entity." + name);

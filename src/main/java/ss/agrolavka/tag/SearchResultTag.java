@@ -145,7 +145,7 @@ public class SearchResultTag extends RequestContextAwareTag {
     private String list(List<Product> pageProducts) throws Exception {
         StringBuilder content = new StringBuilder();
         for (Product product: pageProducts) {
-            String imageLink = "/api/product-image/" + product.getId();
+            String imageLink = "/api/agrolavka/public/product-image/" + product.getId();
             content.append("<tr>").append("<a href=\"/product/" + product.getId()
                     + "?name=" + URLEncoder.encode(product.getName(), "UTF-8") + "\">");
                 content.append("<th scope=\"row\" style=\"padding: 0;\"><img src=\"").append(imageLink)
@@ -182,7 +182,7 @@ public class SearchResultTag extends RequestContextAwareTag {
         if (product == null) {
             return "<div class=\"empty-product-card\"></div>";
         }
-        String imageLink = "/api/product-image/" + product.getId();
+        String imageLink = "/api/agrolavka/public/product-image/" + product.getId();
         StringBuilder sb = new StringBuilder();
             sb.append("<div class=\"card shadow-sm mb-5 bg-body rounded product-card\">");
                 sb.append("<div class=\"card-img-top product-image\" style=\"background-image: url('")

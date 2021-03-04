@@ -13,7 +13,8 @@
 <div class="row">
     <div class="col-lg-6 col-sm-12">
         <div class="card shadow-sm mb-5 bg-body rounded">
-            <div class="card-img-top product-image" style="background-image: url('/api/product-image/${product.getId()}')"></div>
+            <div class="card-img-top product-image img-thumbnail" 
+                 style="background-image: url('/api/agrolavka/public/product-image/${product.getId()}')"></div>
         </div>
     </div>
     <div class="col-lg-6 col-sm-12">

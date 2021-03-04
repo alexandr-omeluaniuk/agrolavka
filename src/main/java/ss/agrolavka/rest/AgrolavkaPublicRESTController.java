@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ss.agrolavka.controller;
+package ss.agrolavka.rest;
 
 import java.util.Base64;
 import java.util.HashMap;
@@ -24,18 +24,24 @@ import ss.agrolavka.wrapper.ProductsSearchRequest;
 import ss.martin.platform.dao.CoreDAO;
 
 /**
- * Site REST controller.
+ * Public REST controller.
  * @author alex
  */
 @RestController
-@RequestMapping("/api")
-public class SiteRESTController {
+@RequestMapping("/api/agrolavka/public")
+class AgrolavkaPublicRESTController {
     /** Core DAO. */
     @Autowired
     private CoreDAO coreDAO;
     /** Product DAO. */
     @Autowired
     private ProductDAO productDAO;
+    /**
+     * Get product image.
+     * @param id product ID.
+     * @return product image.
+     * @throws Exception error.
+     */
     @RequestMapping(value = "/product-image/{id}", method = RequestMethod.GET,
             produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     @Transactional(propagation = Propagation.SUPPORTS)
@@ -44,6 +50,12 @@ public class SiteRESTController {
         return product != null && !product.getImages().isEmpty() ? product.getImages().get(0).getImageData()
                 : Base64.getDecoder().decode(ImageStubs.NO_PRODUCT_IMAGE);
     }
+    /**
+     * Search product.
+     * @param searchText search text.
+     * @return products.
+     * @throws Exception error.
+     */
     @RequestMapping(value = "/search", method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> search(@RequestParam(value = "searchText", required = false) String searchText)
