@@ -74,7 +74,7 @@
             const searchResultOutput = document.querySelector('#products-search-results-list');
             const noResult = '<li><a class="dropdown-item text-muted" href="#">По вашему запросу ничего не найдено</a></li>';
             if (searchText) {
-                fetch('/api/search?searchText=' + searchText, {
+                fetch('/api/agrolavka/public/search?searchText=' + searchText, {
                     method: 'GET',
                     headers: {
                         'Accept': 'application/json',

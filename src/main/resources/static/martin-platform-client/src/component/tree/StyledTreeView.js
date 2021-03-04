@@ -10,6 +10,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import TreeView from '@material-ui/lab/TreeView';
 import TreeItem from '@material-ui/lab/TreeItem';
 import Icon from '@material-ui/core/Icon';
+import { TreeNode } from '../../util/model/TreeNode';
 
 const useStyles = makeStyles({
     root: {
@@ -39,7 +40,7 @@ function StyledTreeView(props) {
 }
 
 StyledTreeView.propTypes = {
-    data: PropTypes.array.isRequired,
+    data: PropTypes.arrayOf(PropTypes.instanceOf(TreeNode)).isRequired,
     onSelect: PropTypes.func
 };
 
