@@ -69,7 +69,6 @@ export default function Welcome() {
     }, []);
     const doLogin = (data) => {
         dataService.login(data).then(() => {
-            console.log(AppURLs.app);
             history.push(AppURLs.app);
         });
     };
