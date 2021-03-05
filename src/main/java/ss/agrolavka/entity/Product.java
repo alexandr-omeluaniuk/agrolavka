@@ -11,12 +11,16 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import ss.agrolavka.util.ProductEntityListener;
 
 /**
  * Product.
@@ -24,6 +28,7 @@ import javax.validation.constraints.NotNull;
  */
 @Entity
 @Table(name = "product")
+@EntityListeners(ProductEntityListener.class)
 public class Product extends ExternalEntity implements Serializable {
     /** Default UID. */
     private static final long serialVersionUID = 1L;
@@ -116,5 +121,16 @@ public class Product extends ExternalEntity implements Serializable {
     public String toString() {
         return "ss.agrolavka.model.Product[ id=" + getId() + ", name=" + getName() + ", price=" + getPrice()
                 + ", group=" + (this.getGroup() != null ? this.getGroup().getName() : "") + " ]";
+    }
+    
+    public String toMySkladJSON() {
+        JSONObject json = new JSONObject();
+        json.put("name", getName());
+        JSONArray salePrices = new JSONArray();
+        JSONObject productPrice = new JSONObject();
+        productPrice.put("value", Double.valueOf(getPrice() * 100).intValue());
+        salePrices.put(productPrice);
+        json.put("salePrices", salePrices);
+        return json.toString();
     }
 }

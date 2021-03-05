@@ -41,4 +41,11 @@ public interface MySkladIntegrationService {
      * @throws Exception error.
      */
     List<ProductImage> getProductImages(String productExternalId) throws Exception;
+    /**
+     * Create product.
+     * @param product product.
+     * @return product with external ID.
+     * @throws Exception error.
+     */
+    Product createProduct(Product product) throws Exception;
 }

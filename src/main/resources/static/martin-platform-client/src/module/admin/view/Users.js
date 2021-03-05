@@ -24,7 +24,7 @@ const useStyles = makeStyles(theme => ({
 function Users() {
     const classes = useStyles();
     const { t } = useTranslation();
-    const config = new TableConfig(t('m_administrator:administrator.users'), '/platform/entity/SystemUser', [
+    const config = new TableConfig(t('m_administrator:administrator.users'), '/platform/entity/ss.martin.platform.entity.SystemUser', [
         new TableColumn('fullname', t('m_administrator:users.fullname'), (row) => {
             return `${row.firstname ? `${row.firstname} ` : ''}${row.lastname}`;
         }).setSortable().width('300px'),

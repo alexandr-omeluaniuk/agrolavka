@@ -57,7 +57,7 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
         credentials = Base64.getEncoder().encodeToString(credentials.getBytes("UTF-8"));
         LOG.debug("credentials: " + credentials);
         headers.put("Authorization", "Basic " + credentials);
-        String tokenResponse = request("/security/token", "POST", headers);
+        String tokenResponse = request("/security/token", "POST", headers, null);
         LOG.debug("security token: " + tokenResponse);
         JSONObject json = new JSONObject(tokenResponse);
         token = json.getString("access_token");
@@ -65,7 +65,7 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
     }
     @Override
     public List<ProductsGroup> getProductGroups() throws Exception {
-        String response = request("/entity/productfolder", "GET");
+        String response = request("/entity/productfolder", "GET", null);
         JSONObject json = new JSONObject(response);
         List<ProductsGroup> result = new ArrayList<>();
         if (json.has("rows")) {
@@ -88,7 +88,7 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
     }
     @Override
     public List<Product> getProducts(int offset, int limit) throws Exception {
-        String response = request("/entity/product?limit=" + limit + "&offset=" + offset, "GET");
+        String response = request("/entity/product?limit=" + limit + "&offset=" + offset, "GET", null);
         JSONObject json = new JSONObject(response);
         List<Product> result = new ArrayList<>();
         JSONArray rows = json.getJSONArray("rows");
@@ -125,7 +125,7 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
     @Override
     public List<ProductImage> getProductImages(String productExternalId) throws Exception {
         List<ProductImage> result = new ArrayList<>();
-        String response = request("/entity/product/" + productExternalId + "/images", "GET");
+        String response = request("/entity/product/" + productExternalId + "/images", "GET", null);
         Map<String, String> headers = new HashMap<>();
         headers.put("Authorization", "Bearer " + token);
         JSONObject json = new JSONObject(response);
@@ -145,28 +145,36 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
         }
         return result;
     }
+    @Override
+    public Product createProduct(Product product) throws Exception {
+        String response = request("/entity/product", "POST", product.toMySkladJSON());
+        LOG.info(response);
+        return product;
+    }
     // ============================================= PRIVATE ==========================================================
     /**
      * Request data from MySklad with predefined headers.
      * @param url URL.
      * @param method HTTP method.
+     * @param payload payload.
      * @return response as string.
      * @throws Exception request error.
      */
-    private String request(String url, String method) throws Exception {
+    private String request(String url, String method, String payload) throws Exception {
         Map<String, String> headers = new HashMap<>();
         headers.put("Authorization", "Bearer " + token);
-        return request(url, method, headers);
+        return request(url, method, headers, payload);
     }
     /**
      * Request data from MySklad.
      * @param url URL.
      * @param method HTTP method.
      * @param headers HTTP headers.
+     * @param payload payload.
      * @return response as string.
      * @throws Exception error.
      */
-    private String request(String url, String method, Map<String, String> headers) throws Exception {
+    private String request(String url, String method, Map<String, String> headers, String payload) throws Exception {
         LOG.debug("------------------------------ REQUEST TO MY SKLAD -----------------------------------------------");
         LOG.debug("url [" + url + "]");
         LOG.debug("method [" + method + "]");
@@ -178,6 +186,9 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
         }
         connection.setDoInput(true);
         connection.setDoOutput(true);
+        if (payload != null) {
+            connection.getOutputStream().write(payload.getBytes("UTF-8"));
+        }
         int responseCode = connection.getResponseCode();
         LOG.debug("response code [" + responseCode + "]");
         String response;

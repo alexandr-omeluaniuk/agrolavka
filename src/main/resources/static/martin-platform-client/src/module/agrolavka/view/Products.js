@@ -89,7 +89,10 @@ function Products() {
     }, [productGroups]);
     useEffect(() => {
         if (selectedProductGroup) {
-            const apiUrl = new ApiURL('/agrolavka/protected/product/search');
+            const apiUrl = new ApiURL(
+                    '/agrolavka/protected/product/search',
+                    '/platform/entity/ss.agrolavka.entity.Product'
+            );
             apiUrl.addGetExtraParam('group_id', selectedProductGroup.id);
             const newTableConfig = new TableConfig(t('m_agrolavka:agrolavka.products'), apiUrl, [
                 new TableColumn('avatar', '', (row) => {
