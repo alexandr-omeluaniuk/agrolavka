@@ -94,11 +94,11 @@ function Products() {
                     '/platform/entity/ss.agrolavka.entity.Product'
             );
             apiUrl.beforeCreate = (data) => {
-                data.group = {id: selectedProductGroup.id};
+                data.group = selectedProductGroup;
                 return data;
             };
             apiUrl.beforeUpdate = (data) => {
-                data.group = {id: selectedProductGroup.id};
+                data.group = selectedProductGroup;
                 return data;
             };
             apiUrl.addGetExtraParam('group_id', selectedProductGroup.id);

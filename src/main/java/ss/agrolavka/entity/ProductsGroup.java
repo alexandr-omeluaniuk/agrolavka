@@ -16,6 +16,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import org.json.JSONObject;
 
 /**
  * Products group.
@@ -103,5 +104,17 @@ public class ProductsGroup extends ExternalEntity implements Serializable, Compa
     @Override
     public int compareTo(ProductsGroup o) {
         return getName().compareTo(o.getName());
+    }
+    
+    public JSONObject toMySkladJSON() {
+        JSONObject json = new JSONObject();
+        JSONObject meta = new JSONObject();
+        meta.put("href", "https://online.moysklad.ru/api/remap/1.2/entity/productfolder/" + getExternalId());
+        meta.put("metadataHref", "https://online.moysklad.ru/api/remap/1.2/entity/productfolder/metadata");
+        meta.put("type", "productfolder");
+        meta.put("mediaType", "application/json");
+        meta.put("uuidHref", "https://online.moysklad.ru/app/#good/edit?id=" + getExternalId());
+        json.put("meta", meta);
+        return json;
     }
 }
