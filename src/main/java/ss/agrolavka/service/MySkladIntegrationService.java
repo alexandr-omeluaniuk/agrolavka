@@ -6,6 +6,7 @@
 package ss.agrolavka.service;
 
 import java.util.List;
+import ss.agrolavka.entity.PriceType;
 import ss.agrolavka.entity.Product;
 import ss.agrolavka.entity.ProductImage;
 import ss.agrolavka.entity.ProductsGroup;
@@ -48,4 +49,10 @@ public interface MySkladIntegrationService {
      * @throws Exception error.
      */
     Product createProduct(Product product) throws Exception;
+    /**
+     * Get price types.
+     * @return price type.
+     * @throws Exception error.
+     */
+    List<PriceType> getPriceTypes() throws Exception;
 }

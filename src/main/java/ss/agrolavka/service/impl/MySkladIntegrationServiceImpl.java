@@ -25,6 +25,7 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import ss.agrolavka.AgrolavkaConfiguration;
+import ss.agrolavka.entity.PriceType;
 import ss.agrolavka.entity.Product;
 import ss.agrolavka.entity.ProductImage;
 import ss.agrolavka.entity.ProductsGroup;
@@ -147,9 +148,25 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
     }
     @Override
     public Product createProduct(Product product) throws Exception {
-        String response = request("/entity/product", "POST", product.toMySkladJSON());
+        List<PriceType> priceTypes = coreDAO.getAll(PriceType.class);
+        String response = request("/entity/product", "POST", product.toMySkladJSON(priceTypes.get(0)).toString());
         LOG.info(response);
         return product;
+    }
+    @Override
+    public List<PriceType> getPriceTypes() throws Exception {
+        String response = request("/context/companysettings/pricetype", "GET", null);
+        LOG.info(response);
+        JSONArray arr = new JSONArray(response);
+        List<PriceType> result = new ArrayList<>();
+        for (int i = 0; i < arr.length(); i++) {
+            JSONObject item = arr.getJSONObject(i);
+            PriceType pt = new PriceType();
+            pt.setExternalId(item.getString("id"));
+            pt.setName(item.getString("name"));
+            result.add(pt);
+        }
+        return result;
     }
     // ============================================= PRIVATE ==========================================================
     /**
@@ -163,6 +180,7 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
     private String request(String url, String method, String payload) throws Exception {
         Map<String, String> headers = new HashMap<>();
         headers.put("Authorization", "Bearer " + token);
+        headers.put("Content-Type", "application/json");
         return request(url, method, headers, payload);
     }
     /**
@@ -178,6 +196,7 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
         LOG.debug("------------------------------ REQUEST TO MY SKLAD -----------------------------------------------");
         LOG.debug("url [" + url + "]");
         LOG.debug("method [" + method + "]");
+        LOG.debug("payload [" + payload + "]");
         HttpsURLConnection connection = (HttpsURLConnection) new URL(API_ENDPOINT + url).openConnection();
         connection.setRequestMethod(method);
         connection.setReadTimeout(Long.valueOf(TimeUnit.SECONDS.toMillis(30)).intValue());
@@ -191,7 +210,7 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
         }
         int responseCode = connection.getResponseCode();
         LOG.debug("response code [" + responseCode + "]");
-        String response;
+        String response = null;
         if (responseCode == 200 || responseCode == 201) {
             response = inputStreamToString(connection.getInputStream());
         } else {

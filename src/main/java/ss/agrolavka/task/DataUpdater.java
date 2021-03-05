@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import ss.agrolavka.AgrolavkaConfiguration;
 import ss.agrolavka.dao.ExternalEntityDAO;
+import ss.agrolavka.entity.PriceType;
 import ss.agrolavka.entity.Product;
 import ss.agrolavka.entity.ProductImage;
 import ss.agrolavka.entity.ProductsGroup;
@@ -63,6 +64,7 @@ class DataUpdater {
             LOG.info("start authentication...");
             mySkladIntegrationService.authentication();
             LOG.info("authentication completed...");
+            importPriceTypes();
             importProductGroups();
             importProducts();
             importImages();
@@ -72,6 +74,38 @@ class DataUpdater {
             LOG.error("Import MySklad data - fail!", e);
         }
     }
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    private void importPriceTypes() throws Exception {
+        List<PriceType> priceTypes = mySkladIntegrationService.getPriceTypes();
+        Map<String, PriceType> map = new HashMap<>();
+        for (PriceType pt : priceTypes) {
+            map.put(pt.getExternalId(), pt);
+        }
+        Set<String> actualPriceTypesIDs = map.keySet();
+        Set<String> deleteNotIn = new HashSet<>(map.keySet());
+        Set<String> existPriceTypesIDs = new HashSet<>();
+        List<PriceType> existingPriceTypes = externalEntityDAO.getExternalEntitiesByIds(map.keySet(), PriceType.class);
+        for (PriceType existingPriceType : existingPriceTypes) {
+            PriceType freshPriceType = map.get(existingPriceType.getExternalId());
+            existingPriceType.setName(freshPriceType.getName());
+            existPriceTypesIDs.add(existingPriceType.getExternalId());
+        }
+        LOG.info("update price types [" + existingPriceTypes.size() + "]");
+        coreDAO.massUpdate(existingPriceTypes);
+        // create new groups
+        actualPriceTypesIDs.removeAll(existPriceTypesIDs);
+        List<PriceType> newPriceTypes = new ArrayList<>();
+        for (String newExternalId : actualPriceTypesIDs) {
+            PriceType newPriceType = map.get(newExternalId);
+            LOG.info("create new price type: " + newPriceType);
+            newPriceTypes.add(newPriceType);
+        }
+        LOG.info("new price types [" + newPriceTypes.size() + "]");
+        coreDAO.massCreate(newPriceTypes);
+        // remove unused groups.
+        externalEntityDAO.removeExternalEntitiesNotInIDs(deleteNotIn, PriceType.class);
+    }
+    
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     private void importProductGroups() throws Exception {
         List<ProductsGroup> productGroups = mySkladIntegrationService.getProductGroups();
