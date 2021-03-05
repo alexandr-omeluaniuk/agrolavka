@@ -149,6 +149,8 @@ export class ApiURL {
         this.putUrl = putUrl;
         this.deleteUrl = deleteUrl;
         this.getExtraParams = {};
+        this.beforeCreate = null;
+        this.beforeUpdate = null;
     }
     
     addGetExtraParam(name, value) {

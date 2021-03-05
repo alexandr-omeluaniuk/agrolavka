@@ -31,7 +31,8 @@ public class ProductEntityListener implements PlatformEntityListener<Product> {
     @Override
     public void prePersist(Product entity) throws Exception {
         mySkladIntegrationService.authentication();
-        mySkladIntegrationService.createProduct(entity);
+        Product mySkladEntity = mySkladIntegrationService.createProduct(entity);
+        entity.setExternalId(mySkladEntity.getExternalId());
     }
     
 }

@@ -109,11 +109,17 @@ function DataTable(props) {
     const onFormSubmitAction = (data) => {
         let id = DataTypeService.getIdValue(tableConfig.formConfig, data);
         if (id) {
+            if (tableConfig.apiUrl.beforeUpdate) {
+                data = tableConfig.apiUrl.beforeUpdate(data);
+            }
             dataService.put(tableConfig.apiUrl instanceof ApiURL ? tableConfig.apiUrl.putUrl : tableConfig.apiUrl, data).then(() => {
                 setFormOpen(false);
                 setLoad(!load);
             });
         } else {
+            if (tableConfig.apiUrl.beforeCreate) {
+                data = tableConfig.apiUrl.beforeCreate(data);
+            }
             dataService.post(tableConfig.apiUrl instanceof ApiURL ? tableConfig.apiUrl.postUrl : tableConfig.apiUrl, data).then(() => {
                 setFormOpen(false);
                 setLoad(!load);

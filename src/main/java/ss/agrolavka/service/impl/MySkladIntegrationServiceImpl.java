@@ -100,22 +100,7 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
         }
         for (int i = 0; i < rows.length(); i++) {
             JSONObject item = rows.getJSONObject(i);
-            Product product = new Product();
-            product.setExternalId(item.getString("id"));
-            product.setName(item.getString("name"));
-            if (item.has("productFolder")) {
-                String link = item.getJSONObject("productFolder").getJSONObject("meta").getString("href");
-                String productGroupId = link.substring(link.lastIndexOf("/") + 1);
-                product.setGroup(productGroupsMap.get(productGroupId));
-            }
-            if (item.has("salePrices")) {
-                JSONArray prices = item.getJSONArray("salePrices");
-                for (int j = 0; j < prices.length(); j++) {
-                    JSONObject price = prices.getJSONObject(j);
-                    product.setPrice(price.getDouble("value") / 100);
-                }
-            }
-            LOG.debug(product.toString());
+            Product product = fromJSON(item, productGroupsMap);
             if (product.getGroup() != null) {
                 result.add(product);
             }
@@ -150,8 +135,8 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
     public Product createProduct(Product product) throws Exception {
         List<PriceType> priceTypes = coreDAO.getAll(PriceType.class);
         String response = request("/entity/product", "POST", product.toMySkladJSON(priceTypes.get(0)).toString());
-        LOG.info(response);
-        return product;
+        //LOG.info(response);
+        return fromJSON(new JSONObject(response), null);
     }
     @Override
     public List<PriceType> getPriceTypes() throws Exception {
@@ -281,5 +266,27 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
         byte[] data = sb.toByteArray();
         sb.close();
         return data;
+    }
+    
+    private Product fromJSON(JSONObject item, Map<String, ProductsGroup> productGroupsMap) {
+        Product product = new Product();
+        product.setExternalId(item.getString("id"));
+        product.setName(item.getString("name"));
+        if (item.has("productFolder")) {
+            String link = item.getJSONObject("productFolder").getJSONObject("meta").getString("href");
+            String productGroupId = link.substring(link.lastIndexOf("/") + 1);
+            if (productGroupsMap != null) {
+                product.setGroup(productGroupsMap.get(productGroupId));
+            }
+        }
+        if (item.has("salePrices")) {
+            JSONArray prices = item.getJSONArray("salePrices");
+            for (int j = 0; j < prices.length(); j++) {
+                JSONObject price = prices.getJSONObject(j);
+                product.setPrice(price.getDouble("value") / 100);
+            }
+        }
+        LOG.debug(product.toString());
+        return product;
     }
 }

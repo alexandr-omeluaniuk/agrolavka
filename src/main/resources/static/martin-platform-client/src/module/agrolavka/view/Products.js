@@ -93,6 +93,14 @@ function Products() {
                     '/agrolavka/protected/product/search',
                     '/platform/entity/ss.agrolavka.entity.Product'
             );
+            apiUrl.beforeCreate = (data) => {
+                data.group = {id: selectedProductGroup.id};
+                return data;
+            };
+            apiUrl.beforeUpdate = (data) => {
+                data.group = {id: selectedProductGroup.id};
+                return data;
+            };
             apiUrl.addGetExtraParam('group_id', selectedProductGroup.id);
             const newTableConfig = new TableConfig(t('m_agrolavka:agrolavka.products'), apiUrl, [
                 new TableColumn('avatar', '', (row) => {
