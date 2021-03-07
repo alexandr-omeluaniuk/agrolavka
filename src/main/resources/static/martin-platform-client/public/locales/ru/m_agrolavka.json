@@ -1,11 +1,11 @@
 {
     "title": "Agrolavka",
     "agrolavka": {
-        "products": "Products"
+        "products": "Товары"
     },
     "products": {
-        "product_groups": "Product groups",
-        "product_name": "Name",
-        "product_price": "Price"
+        "product_groups": "Категория товара",
+        "product_name": "Название",
+        "product_price": "Отпускная цена"
     }
 }

@@ -1,12 +1,12 @@
 {
-    "title": "Administration",
+    "title": "Администрирование",
     "core": {
-        "subscriptions": "Subscriptions",
-        "users": "Users"
+        "subscriptions": "Подписки",
+        "users": "Пользователи"
     },
-    "organization_name": "Organization name",
-    "subscription_start_date": "Started",
-    "subscription_expiration_date": "Expiration date",
-    "subscription_active": "Active",
-    "subscription_admin_email": "Administrator email"
+    "organization_name": "Название организации",
+    "subscription_start_date": "Начало подписки",
+    "subscription_expiration_date": "Конец подписки",
+    "subscription_active": "Активная",
+    "subscription_admin_email": "Адрес электронной почты администратора"
 }
