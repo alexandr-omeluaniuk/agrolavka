@@ -50,6 +50,13 @@ public interface MySkladIntegrationService {
      */
     Product createProduct(Product product) throws Exception;
     /**
+     * Update product.
+     * @param product product.
+     * @return product.
+     * @throws Exception error.
+     */
+    Product updateProduct(Product product) throws Exception;
+    /**
      * Get price types.
      * @return price type.
      * @throws Exception error.

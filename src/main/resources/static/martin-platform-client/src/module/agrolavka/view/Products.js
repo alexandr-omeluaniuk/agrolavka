@@ -90,14 +90,16 @@ function Products() {
     useEffect(() => {
         const apiUrl = new ApiURL(
                 '/agrolavka/protected/product/search',
+                '/platform/entity/ss.agrolavka.entity.Product',
                 '/platform/entity/ss.agrolavka.entity.Product'
         );
         apiUrl.beforeCreate = (data) => {
             data.group = selectedProductGroup;
             return data;
         };
-        apiUrl.beforeUpdate = (data) => {
-            data.group = selectedProductGroup;
+        apiUrl.beforeUpdate = (data, record) => {
+            data.group = record.group;
+            data.externalId = record.externalId;
             return data;
         };
         if (selectedProductGroup) {
@@ -112,6 +114,7 @@ function Products() {
                 return parseFloat(row.price).toFixed(2);
             }).setSortable().width('100px').alignment(ALIGN_RIGHT)
         ], new FormConfig([
+            new FormField('id', TYPES.ID).hide(),
             new FormField('name', TYPES.TEXTFIELD, t('m_agrolavka:products.product_name')).setGrid({xs: 12, md: 9}).validation([
                 new Validator(VALIDATORS.REQUIRED),
                 new Validator(VALIDATORS.MAX_LENGTH, {length: 255})

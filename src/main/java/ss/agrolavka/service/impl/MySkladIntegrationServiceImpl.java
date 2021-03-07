@@ -138,6 +138,13 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
         return fromJSON(new JSONObject(response), null);
     }
     @Override
+    public Product updateProduct(Product product) throws Exception {
+        List<PriceType> priceTypes = coreDAO.getAll(PriceType.class);
+        String response = request("/entity/product/" + product.getExternalId(), "PUT",
+                product.toMySkladJSON(priceTypes.get(0)).toString());
+        return fromJSON(new JSONObject(response), null);
+    }
+    @Override
     public List<PriceType> getPriceTypes() throws Exception {
         String response = request("/context/companysettings/pricetype", "GET", null);
         JSONArray arr = new JSONArray(response);

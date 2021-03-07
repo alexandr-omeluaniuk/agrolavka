@@ -35,4 +35,10 @@ public class ProductEntityListener implements PlatformEntityListener<Product> {
         entity.setExternalId(mySkladEntity.getExternalId());
     }
     
+    @Override
+    public void preUpdate(Product entity) throws Exception {
+        mySkladIntegrationService.authentication();
+        mySkladIntegrationService.updateProduct(entity);
+    }
+    
 }

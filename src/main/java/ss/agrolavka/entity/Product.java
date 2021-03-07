@@ -19,6 +19,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import ss.martin.platform.anno.security.FormField;
 
 /**
  * Product.
@@ -31,9 +32,11 @@ public class Product extends ExternalEntity implements Serializable {
     private static final long serialVersionUID = 1L;
     // ============================================== FIELDS ==========================================================
     /** Name. */
+    @FormField
     @Column(name = "name", length = 1000, nullable = false)
     private String name;
     /** Price. */
+    @FormField
     @NotNull
     @Column(name = "price", nullable = false)
     private Double price;

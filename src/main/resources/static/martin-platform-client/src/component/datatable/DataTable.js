@@ -110,7 +110,7 @@ function DataTable(props) {
         let id = DataTypeService.getIdValue(tableConfig.formConfig, data);
         if (id) {
             if (tableConfig.apiUrl.beforeUpdate) {
-                data = tableConfig.apiUrl.beforeUpdate(data);
+                data = tableConfig.apiUrl.beforeUpdate(data, record);
             }
             dataService.put(tableConfig.apiUrl instanceof ApiURL ? tableConfig.apiUrl.putUrl : tableConfig.apiUrl, data).then(() => {
                 setFormOpen(false);
