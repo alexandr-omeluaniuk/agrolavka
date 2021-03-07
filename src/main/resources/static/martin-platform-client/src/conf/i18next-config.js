@@ -17,7 +17,7 @@ i18n.use(LanguageDetector).use(XHR).use(initReactI18next).init({
     ns: ['m_core', 'm_administrator', 'm_agrolavka'],
     fallbackLng: "en",
     debug: false,
-    whitelist: ["en"],
+    whitelist: ["en", "ru"],
     interpolation: {
         escapeValue: false
     }

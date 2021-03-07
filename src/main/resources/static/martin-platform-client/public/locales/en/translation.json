@@ -1,11 +1,12 @@
 {
     "app_name": "Martin",
     "copyright": "Copyright",
-    "vendor_site": "https://material-ui.com",
+    "vendor_site": "https://github.com/alexandr-omeluaniuk",
     "author": "Alex Omelyaniuk",
     
     "language": {
-        "en": "English"
+        "en": "English",
+        "ru": "Русский"
     },
     
     "component": {
