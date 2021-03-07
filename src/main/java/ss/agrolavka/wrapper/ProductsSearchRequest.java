@@ -18,6 +18,10 @@ public class ProductsSearchRequest {
     private Integer pageSize;
     /** Search text. */
     private String text;
+    /** Order. */
+    private String order;
+    /** Order by. */
+    private String orderBy;
     // =================================================== SET & GET ==================================================
     /**
      * @return the groupId
@@ -66,5 +70,29 @@ public class ProductsSearchRequest {
      */
     public void setText(String text) {
         this.text = text;
+    }
+    /**
+     * @return the order
+     */
+    public String getOrder() {
+        return order;
+    }
+    /**
+     * @param order the order to set
+     */
+    public void setOrder(String order) {
+        this.order = order;
+    }
+    /**
+     * @return the orderBy
+     */
+    public String getOrderBy() {
+        return orderBy;
+    }
+    /**
+     * @param orderBy the orderBy to set
+     */
+    public void setOrderBy(String orderBy) {
+        this.orderBy = orderBy;
     }
 }

@@ -52,6 +52,13 @@ class ProductDAOImpl implements ProductDAO {
         Root<Product> c = criteria.from(Product.class);
         List<Predicate> predicates = createSearchCriteria(cb, c, request);
         criteria.select(c).where(predicates.toArray(new Predicate[0]));
+        if (request.getOrder() != null && request.getOrderBy() != null) {
+            if ("asc".equals(request.getOrder())) {
+                criteria.orderBy(cb.asc(c.get(request.getOrderBy())));
+            } else {
+                criteria.orderBy(cb.desc(c.get(request.getOrderBy())));
+            }
+        }
         return em.createQuery(criteria)
                 .setFirstResult((request.getPage() - 1) * request.getPageSize())
                 .setMaxResults(request.getPageSize()).getResultList();

@@ -29,6 +29,8 @@ public class ProductRESTController {
      * Search products.
      * @param page page.
      * @param pageSize page size.
+     * @param order order.
+     * @param orderBy order by.
      * @param searchText search text.
      * @param groupId group ID.
      * @return products portion.
@@ -38,6 +40,8 @@ public class ProductRESTController {
     public EntitySearchResponse search(
             @RequestParam("page") Integer page,
             @RequestParam("page_size") Integer pageSize,
+            @RequestParam(value = "order", required = false) String order,
+            @RequestParam(value = "order_by", required = false) String orderBy,
             @RequestParam(value = "search_text", required = false) String searchText,
             @RequestParam(value = "group_id", required = false) Long groupId)
             throws Exception {
@@ -46,6 +50,8 @@ public class ProductRESTController {
         request.setPageSize(pageSize);
         request.setText(searchText);
         request.setGroupId(groupId);
+        request.setOrder(order);
+        request.setOrderBy(orderBy);
         EntitySearchResponse response = new EntitySearchResponse();
         response.setData(productDAO.search(request));
         response.setTotal(productDAO.count(request).intValue());
