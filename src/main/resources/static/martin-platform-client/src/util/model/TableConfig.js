@@ -17,10 +17,16 @@ export class TableConfig {
         this.columns = columns;
         this.formConfig = formConfig;
         this.elevation = 1;
+        this.toolbarFilter = null;
     }
     
     setElevation(elevation) {
         this.elevation = elevation;
+        return this;
+    }
+    
+    setFilter(filter) {
+        this.toolbarFilter = filter;
         return this;
     }
     

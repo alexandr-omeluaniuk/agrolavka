@@ -8,6 +8,7 @@ import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
+import TextField from '@material-ui/core/TextField';
 import Avatar from '@material-ui/core/Avatar';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
@@ -37,6 +38,7 @@ function Products() {
     const [productGroups, setProductGroups] = React.useState(null);
     const [selectedProductGroup, setSelectedProductGroup] = React.useState(null);
     const [tableConfig, setTableConfig] = React.useState(null);
+    const [filterProductName, setFilterProductName] = React.useState(null);
     // ------------------------------------------------------- METHODS --------------------------------------------------------------------
     const buildTree = () => {
         const result = [];
@@ -78,6 +80,17 @@ function Products() {
     const onProductGroupSelect = (node) => {
         setSelectedProductGroup(node.getOrigin());
     };
+    const productsFilter = () => {
+        return (
+                <Grid container spacing={2}>
+                    <Grid item xs={12}>
+                        <TextField label={t('m_agrolavka:products.product_name')} variant="outlined" fullWidth onChange={(e) => {
+                            setFilterProductName(e.target.value);
+                        }}/>
+                    </Grid>
+                </Grid>
+        );
+    };
     // ------------------------------------------------------- HOOKS ----------------------------------------------------------------------
     useEffect(() => {
         if (productGroups === null) {
@@ -106,6 +119,7 @@ function Products() {
         if (selectedProductGroup) {
             apiUrl.addGetExtraParam('group_id', selectedProductGroup.id);
         }
+        apiUrl.addGetExtraParam('search_text', filterProductName ? filterProductName : '');
         const newTableConfig = new TableConfig(t('m_agrolavka:agrolavka.products'), apiUrl, [
             new TableColumn('avatar', '', (row) => {
                 return <Avatar alt={row.name} src={`/api/agrolavka/public/product-image/${row.id}?timestamp=${new Date().getTime()}`} />;
@@ -135,10 +149,10 @@ function Products() {
                     resolve(record);
                 });
             });
-        })).setElevation(1);
+        })).setElevation(1).setFilter(productsFilter());
         setTableConfig(newTableConfig);
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [selectedProductGroup]);
+    }, [selectedProductGroup, filterProductName]);
     // ------------------------------------------------------- RENDERING ------------------------------------------------------------------
     if (productGroups === null) {
         return null;
