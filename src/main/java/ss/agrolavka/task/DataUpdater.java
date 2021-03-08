@@ -61,9 +61,6 @@ class DataUpdater {
             securityService.backgroundAuthentication(
                     configuration.getBackgroundUserUsername(), configuration.getBackgroundUserPassword());
             long start = System.currentTimeMillis();
-            LOG.info("start authentication...");
-            mySkladIntegrationService.authentication();
-            LOG.info("authentication completed...");
             importPriceTypes();
             importProductGroups();
             importProducts();

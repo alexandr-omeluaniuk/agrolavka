@@ -52,19 +52,6 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
     /** Authorization token. */
     private String token;
     @Override
-    public void authentication() throws Exception {
-        Map<String, String> headers = new HashMap<>();
-        String credentials = configuration.getMySkladUsername() + ":" + configuration.getMySkladPassword();
-        credentials = Base64.getEncoder().encodeToString(credentials.getBytes("UTF-8"));
-        LOG.debug("credentials: " + credentials);
-        headers.put("Authorization", "Basic " + credentials);
-        String tokenResponse = request("/security/token", "POST", headers, null);
-        LOG.debug("security token: " + tokenResponse);
-        JSONObject json = new JSONObject(tokenResponse);
-        token = json.getString("access_token");
-        LOG.debug("new acquired token: " + token);
-    }
-    @Override
     public List<ProductsGroup> getProductGroups() throws Exception {
         String response = request("/entity/productfolder", "GET", null);
         JSONObject json = new JSONObject(response);
@@ -169,9 +156,15 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
      */
     private String request(String url, String method, String payload) throws Exception {
         Map<String, String> headers = new HashMap<>();
-        headers.put("Authorization", "Bearer " + token);
         headers.put("Content-Type", "application/json");
-        return request(url, method, headers, payload);
+        try {
+            headers.put("Authorization", "Bearer " + token);
+            return request(url, method, headers, payload);
+        } catch (MySkladAuthenticationException authEx) {
+            authentication();
+            headers.put("Authorization", "Bearer " + token);
+            return request(url, method, headers, payload);
+        }
     }
     /**
      * Request data from MySklad.
@@ -203,11 +196,14 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
         String response = null;
         if (responseCode == 200 || responseCode == 201) {
             response = inputStreamToString(connection.getInputStream());
+            LOG.debug("response: " + response);
+            return response;
+        } else if (responseCode == 401) {
+            throw new MySkladAuthenticationException();
         } else {
             response = inputStreamToString(connection.getErrorStream());
+            throw new MySkladInternalErrorException(response);
         }
-        LOG.debug("response: " + response);
-        return response;
     }
     /**
      * Request data.
@@ -231,7 +227,6 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
         connection.setDoOutput(true);
         int responseCode = connection.getResponseCode();
         LOG.debug("response code [" + responseCode + "]");
-        String response;
         if (responseCode == 200 || responseCode == 201) {
             return inputStreamToByteArray(connection.getInputStream());
         } else {
@@ -293,5 +288,38 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
         }
         LOG.debug(product.toString());
         return product;
+    }
+    /**
+     * Authentication.
+     * @throws Exception error.
+     */
+    private void authentication() throws Exception {
+        Map<String, String> headers = new HashMap<>();
+        String credentials = configuration.getMySkladUsername() + ":" + configuration.getMySkladPassword();
+        credentials = Base64.getEncoder().encodeToString(credentials.getBytes("UTF-8"));
+        LOG.debug("credentials: " + credentials);
+        headers.put("Authorization", "Basic " + credentials);
+        String tokenResponse = request("/security/token", "POST", headers, null);
+        LOG.debug("security token: " + tokenResponse);
+        JSONObject json = new JSONObject(tokenResponse);
+        token = json.getString("access_token");
+        LOG.debug("new acquired token: " + token);
+    }
+    /**
+     * MySklad authentication error.
+     */
+    private static class MySkladAuthenticationException extends Exception {
+    }
+    /**
+     * MySklad internal error.
+     */
+    private static class MySkladInternalErrorException extends Exception {
+        /**
+         * Constructor.
+         * @param msg message.
+         */
+        public MySkladInternalErrorException(String msg) {
+            super(msg);
+        }
     }
 }
