@@ -13,6 +13,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -20,6 +21,7 @@ import javax.validation.constraints.NotNull;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import ss.martin.platform.anno.security.FormField;
+import ss.martin.platform.entity.EntityImage;
 
 /**
  * Product.
@@ -42,8 +44,11 @@ public class Product extends ExternalEntity implements Serializable {
     private Double price;
     /** Images. */
     @JsonIgnore
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "product", orphanRemoval = true)
-    private List<ProductImage> images;
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinTable(name = "product_images",
+            joinColumns = @JoinColumn(name = "product_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "image_id", referencedColumnName = "id"))
+    private List<EntityImage> images;
     /** Product group. */
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "group_id")
@@ -74,18 +79,6 @@ public class Product extends ExternalEntity implements Serializable {
         this.price = price;
     }
     /**
-     * @return the images
-     */
-    public List<ProductImage> getImages() {
-        return images;
-    }
-    /**
-     * @param images the images to set
-     */
-    public void setImages(List<ProductImage> images) {
-        this.images = images;
-    }
-    /**
      * @return the group
      */
     public ProductsGroup getGroup() {
@@ -96,6 +89,18 @@ public class Product extends ExternalEntity implements Serializable {
      */
     public void setGroup(ProductsGroup group) {
         this.group = group;
+    }
+    /**
+     * @return the images
+     */
+    public List<EntityImage> getImages() {
+        return images;
+    }
+    /**
+     * @param images the images to set
+     */
+    public void setImages(List<EntityImage> images) {
+        this.images = images;
     }
     // ================================================================================================================
     @Override

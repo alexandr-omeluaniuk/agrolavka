@@ -8,8 +8,8 @@ package ss.agrolavka.service;
 import java.util.List;
 import ss.agrolavka.entity.PriceType;
 import ss.agrolavka.entity.Product;
-import ss.agrolavka.entity.ProductImage;
 import ss.agrolavka.entity.ProductsGroup;
+import ss.martin.platform.entity.EntityImage;
 
 /**
  * My Sklad integration service.
@@ -36,7 +36,7 @@ public interface MySkladIntegrationService {
      * @return list of images.
      * @throws Exception error.
      */
-    List<ProductImage> getProductImages(String productExternalId) throws Exception;
+    List<EntityImage> getProductImages(String productExternalId) throws Exception;
     /**
      * Create product.
      * @param product product.

@@ -27,10 +27,10 @@ import org.springframework.stereotype.Service;
 import ss.agrolavka.AgrolavkaConfiguration;
 import ss.agrolavka.entity.PriceType;
 import ss.agrolavka.entity.Product;
-import ss.agrolavka.entity.ProductImage;
 import ss.agrolavka.entity.ProductsGroup;
 import ss.agrolavka.service.MySkladIntegrationService;
 import ss.martin.platform.dao.CoreDAO;
+import ss.martin.platform.entity.EntityImage;
 
 /**
  * My Sklad integration service implementation.
@@ -96,8 +96,8 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
         return result;
     }
     @Override
-    public List<ProductImage> getProductImages(String productExternalId) throws Exception {
-        List<ProductImage> result = new ArrayList<>();
+    public List<EntityImage> getProductImages(String productExternalId) throws Exception {
+        List<EntityImage> result = new ArrayList<>();
         String response = request("/entity/product/" + productExternalId + "/images", "GET", null);
         Map<String, String> headers = new HashMap<>();
         headers.put("Authorization", "Bearer " + token);
@@ -108,11 +108,14 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
                 JSONObject item = rows.getJSONObject(i);
                 JSONObject meta = item.getJSONObject("meta");
                 String href = meta.getString("downloadHref");
-                ProductImage productImage = new ProductImage();
-                productImage.setFilename(item.getString("filename"));
-                productImage.setImageSize(item.getLong("size"));
-                productImage.setImageData(requestData(href, "GET", headers));
-                productImage.setExternalId("-");
+                EntityImage productImage = new EntityImage();
+                productImage.setName(item.getString("filename"));
+                productImage.setSize(item.getLong("size"));
+                productImage.setData(requestData(href, "GET", headers));
+                if (item.has("miniature")) {
+                    JSONObject miniature = item.getJSONObject("miniature");
+                    productImage.setType(miniature.getString("mediaType"));
+                }
                 result.add(productImage);
             }
         }

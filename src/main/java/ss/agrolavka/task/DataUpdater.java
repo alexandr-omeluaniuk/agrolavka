@@ -22,10 +22,10 @@ import ss.agrolavka.AgrolavkaConfiguration;
 import ss.agrolavka.dao.ExternalEntityDAO;
 import ss.agrolavka.entity.PriceType;
 import ss.agrolavka.entity.Product;
-import ss.agrolavka.entity.ProductImage;
 import ss.agrolavka.entity.ProductsGroup;
 import ss.agrolavka.service.MySkladIntegrationService;
 import ss.martin.platform.dao.CoreDAO;
+import ss.martin.platform.entity.EntityImage;
 import ss.martin.platform.service.SecurityService;
 
 /**
@@ -186,10 +186,7 @@ class DataUpdater {
         List<Product> products = coreDAO.getAll(Product.class);
         for (Product product : products) {
             try {
-                List<ProductImage> images = mySkladIntegrationService.getProductImages(product.getExternalId());
-                for (ProductImage image : images) {
-                    image.setProduct(product);
-                }
+                List<EntityImage> images = mySkladIntegrationService.getProductImages(product.getExternalId());
                 product.setImages(images);
                 coreDAO.update(product);
             } catch (Exception e) {

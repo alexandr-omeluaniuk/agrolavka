@@ -47,7 +47,7 @@ class AgrolavkaPublicRESTController {
     @Transactional(propagation = Propagation.SUPPORTS)
     public byte[] list(@PathVariable("id") Long id) throws Exception {
         Product product = coreDAO.findById(id, Product.class);
-        return product != null && !product.getImages().isEmpty() ? product.getImages().get(0).getImageData()
+        return product != null && !product.getImages().isEmpty() ? product.getImages().get(0).getData()
                 : Base64.getDecoder().decode(ImageStubs.NO_PRODUCT_IMAGE);
     }
     /**
