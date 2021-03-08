@@ -113,7 +113,7 @@ export class DataTypeService {
                     id: v.id,
                     name: v.name,
                     size: v.size,
-                    data: v.base64,
+                    data: v.data,
                     type: v.type
                 });
             });

@@ -107,7 +107,7 @@ function Products() {
         }
         const newTableConfig = new TableConfig(t('m_agrolavka:agrolavka.products'), apiUrl, [
             new TableColumn('avatar', '', (row) => {
-                return <Avatar alt={row.name} src={`/api/agrolavka/public/product-image/${row.id}`} />;
+                return <Avatar alt={row.name} src={`/api/agrolavka/public/product-image/${row.id}?timestamp=${new Date().getTime()}`} />;
             }).setSortable().width('40px'),
             new TableColumn('name', t('m_agrolavka:products.product_name')).setSortable(),
             new TableColumn('price', t('m_agrolavka:products.product_price'), (row) => {
@@ -127,9 +127,8 @@ function Products() {
         ]).setBeforeOnEditRecord((record) => {
             return new Promise((resolve) => {
                 dataService.get('/agrolavka/protected/product/images/' + record.id).then(images => {
-                    console.log(images);
                     images.forEach(i => {
-                        i.data = `data:${i.type};base64, ${i.data}`;
+                        i.data = `data:${i.type};base64,${i.data}`;
                     });
                     record.images = images;
                     resolve(record);

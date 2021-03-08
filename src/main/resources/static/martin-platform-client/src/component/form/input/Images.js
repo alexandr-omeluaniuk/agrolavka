@@ -104,7 +104,7 @@ function Images (props) {
                                             </Typography>
                                             <Tooltip title={t('component.form.remove_image')}>
                                                 <IconButton onClick={() => deleteImage(img)}>
-                                                    <Icon className={classes.deleteImage}>trash</Icon>
+                                                    <Icon className={classes.deleteImage}>delete</Icon>
                                                 </IconButton>
                                             </Tooltip>
                                         </CardActions>
