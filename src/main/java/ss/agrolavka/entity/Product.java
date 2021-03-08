@@ -6,6 +6,7 @@
 package ss.agrolavka.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -43,7 +44,7 @@ public class Product extends ExternalEntity implements Serializable {
     @Column(name = "price", nullable = false)
     private Double price;
     /** Images. */
-    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinTable(name = "product_images",
             joinColumns = @JoinColumn(name = "product_id", referencedColumnName = "id"),
@@ -93,6 +94,7 @@ public class Product extends ExternalEntity implements Serializable {
     /**
      * @return the images
      */
+    @JsonIgnore
     public List<EntityImage> getImages() {
         return images;
     }

@@ -39,4 +39,9 @@ public class ProductEntityListener implements PlatformEntityListener<Product> {
         mySkladIntegrationService.updateProduct(entity);
     }
     
+    @Override
+    public void postUpdate(Product entity) throws Exception {
+        System.out.println("");
+    }
+    
 }
