@@ -5,6 +5,7 @@
  */
 package ss.agrolavka.entity.listener;
 
+import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -44,6 +45,14 @@ public class ProductEntityListener implements PlatformEntityListener<Product> {
         Product entityFromDB = coreDAO.findById(entity.getId(), Product.class);
         entityFromDB.setImages(entity.getImages());
         coreDAO.update(entityFromDB);
+    }
+    
+    @Override
+    public void preDelete(Set<Long> ids) throws Exception {
+        for (Long id : ids) {
+            Product product = coreDAO.findById(id, Product.class);
+            mySkladIntegrationService.deleteProduct(product);
+        }
     }
     
 }

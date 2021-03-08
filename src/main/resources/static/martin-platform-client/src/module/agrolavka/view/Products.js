@@ -91,6 +91,7 @@ function Products() {
         const apiUrl = new ApiURL(
                 '/agrolavka/protected/product/search',
                 '/platform/entity/ss.agrolavka.entity.Product',
+                '/platform/entity/ss.agrolavka.entity.Product',
                 '/platform/entity/ss.agrolavka.entity.Product'
         );
         apiUrl.beforeCreate = (data) => {

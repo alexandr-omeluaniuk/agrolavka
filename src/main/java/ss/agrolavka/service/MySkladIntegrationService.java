@@ -52,6 +52,12 @@ public interface MySkladIntegrationService {
      */
     Product updateProduct(Product product) throws Exception;
     /**
+     * Delete product.
+     * @param product product.
+     * @throws Exception error.
+     */
+    void deleteProduct(Product product) throws Exception;
+    /**
      * Get price types.
      * @return price type.
      * @throws Exception error.

@@ -54,6 +54,7 @@ function DataTable(props) {
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(
             localStorage.getItem(ITEMS_PER_PAGE) ? parseInt(localStorage.getItem(ITEMS_PER_PAGE)) : 5);
+    const [formDisabled, setFormDisabled] = React.useState(false);
     // ============================================================ HOOKS =================================================================
     useEffect(() => {
         setPage(0);
@@ -112,17 +113,20 @@ function DataTable(props) {
     };
     const doDeleteRecord = () => {
         let id = DataTypeService.getIdValue(tableConfig.formConfig, record);
-        dataService.delete(`${tableConfig.apiUrl}/${id}`).then(data => {
+        dataService.delete(`${tableConfig.apiUrl instanceof ApiURL ? tableConfig.apiUrl.deleteUrl : tableConfig.apiUrl}/${id}`)
+                .then(data => {
             setLoad(!load);
         });
     };
     const onFormSubmitAction = (data) => {
+        setFormDisabled(true);
         let id = DataTypeService.getIdValue(tableConfig.formConfig, data);
         if (id) {
             if (tableConfig.apiUrl.beforeUpdate) {
                 data = tableConfig.apiUrl.beforeUpdate(data, record);
             }
             dataService.put(tableConfig.apiUrl instanceof ApiURL ? tableConfig.apiUrl.putUrl : tableConfig.apiUrl, data).then(() => {
+                setFormDisabled(false);
                 setFormOpen(false);
                 setLoad(!load);
             });
@@ -131,6 +135,7 @@ function DataTable(props) {
                 data = tableConfig.apiUrl.beforeCreate(data);
             }
             dataService.post(tableConfig.apiUrl instanceof ApiURL ? tableConfig.apiUrl.postUrl : tableConfig.apiUrl, data).then(() => {
+                setFormDisabled(false);
                 setFormOpen(false);
                 setLoad(!load);
             });
@@ -190,7 +195,7 @@ function DataTable(props) {
                 <FormControlLabel control={<Switch checked={dense} onChange={handleChangeDense} />} label={t('component.datatable.dense_padding')} />
             )}
             <FormDialog title={formTitle} open={formOpen} handleClose={() => setFormOpen(false)}>
-                <Form formConfig={actualFormConfig} onSubmitAction={onFormSubmitAction} record={record}/>
+                <Form formConfig={actualFormConfig} onSubmitAction={onFormSubmitAction} record={record} disabled={formDisabled}/>
             </FormDialog>
             <ConfirmDialog open={confirmDialogOpen} handleClose={() => setConfirmDialogOpen(false)} title={t('component.datatable.delete')}
                 contentText={t('component.datatable.confirm_delete_message')} acceptBtnLabel={t('component.datatable.confirm')}

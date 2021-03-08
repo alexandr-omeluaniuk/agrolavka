@@ -135,6 +135,10 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
         return fromJSON(new JSONObject(response), null);
     }
     @Override
+    public void deleteProduct(Product product) throws Exception {
+        request("/entity/product/" + product.getExternalId(), "DELETE", null);
+    }
+    @Override
     public List<PriceType> getPriceTypes() throws Exception {
         String response = request("/context/companysettings/pricetype", "GET", null);
         JSONArray arr = new JSONArray(response);

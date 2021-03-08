@@ -45,7 +45,7 @@ class AgrolavkaPublicRESTController {
     @RequestMapping(value = "/product-image/{id}", method = RequestMethod.GET,
             produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     @Transactional(propagation = Propagation.SUPPORTS)
-    public byte[] list(@PathVariable("id") Long id) throws Exception {
+    public byte[] getProductImage(@PathVariable("id") Long id) throws Exception {
         Product product = coreDAO.findById(id, Product.class);
         return product != null && !product.getImages().isEmpty() ? product.getImages().get(0).getData()
                 : Base64.getDecoder().decode(ImageStubs.NO_PRODUCT_IMAGE);

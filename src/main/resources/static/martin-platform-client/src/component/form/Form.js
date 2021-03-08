@@ -27,7 +27,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function Form (props) {
-    const { formConfig, onSubmitAction, record } = props;
+    const { formConfig, onSubmitAction, record, disabled } = props;
     const classes = useStyles();
     const { t } = useTranslation();
     const [formData, setFormData] = React.useState(new Map());
@@ -141,7 +141,7 @@ function Form (props) {
                 })}
                 <Grid item xs={12} lg={12} sm={12} md={12} className={classes.actions}>
                     <Button variant={submit.variant} color={submit.color} className={classes.saveButton} 
-                            disabled={invalidFields.size > 0} onClick={saveChanges}>
+                            disabled={invalidFields.size > 0 || disabled} onClick={saveChanges}>
                         <Icon className={classes.submitIcon}>
                             {submit.icon}</Icon> {submit.label ? submit.label : t('component.form.save')}
                     </Button>
