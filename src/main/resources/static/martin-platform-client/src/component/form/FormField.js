@@ -15,6 +15,7 @@ import NumberField from './input/NumberField';
 import MoneyField from './input/MoneyField';
 import Dropdown from './input/Dropdown';
 import FileUpload from './input/FileUpload';
+import Images from './input/Images';
 import MultipleSelect from './input/MultipleSelect';
 import HTMLEditor from './input/HTMLEditor';
 import PasswordField from './input/PasswordField';
@@ -72,6 +73,9 @@ function FormField (props) {
             return <FileUpload label={label} onChange={onChangeFieldValue} fullWidth={true} value={fieldValue ? fieldValue : ''} 
                             helperText={invalidFields.get(name)} name={name} required={isRequired} avatar={attributes.avatar}
                             entryId={entryId} variant={variant}/>;
+        } else if (fieldConfig.type === TYPES.IMAGES) {
+            return <Images label={label} onChange={onChangeFieldValue} fullWidth={true} value={fieldValue ? fieldValue : []} 
+                            helperText={invalidFields.get(name)} name={name} required={isRequired} variant={variant}/>;
         } else if (fieldConfig.type === TYPES.PASSWORD) {
             return <PasswordField label={label} fullWidth={true} required={isRequired} type="password"
                             onChange={(e) => onChangeFieldValue(name, e.target.value)}

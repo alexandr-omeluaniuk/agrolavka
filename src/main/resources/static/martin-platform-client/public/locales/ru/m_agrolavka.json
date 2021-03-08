@@ -6,6 +6,7 @@
     "products": {
         "product_groups": "Категория товара",
         "product_name": "Название",
-        "product_price": "Отпускная цена"
+        "product_price": "Отпускная цена",
+        "product_images": "Изображения"
     }
 }

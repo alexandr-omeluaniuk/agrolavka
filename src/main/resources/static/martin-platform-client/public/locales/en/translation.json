@@ -30,7 +30,9 @@
             "cancel": "Cancel",
             "clear": "Clear",
             "none": "None",
-            "today": "Today"
+            "today": "Today",
+            "select_image": "Select image",
+            "remove_image": "Remove image"
         },
         "toolbar": {
             "account": "Account"

@@ -20,6 +20,7 @@ export let TYPES = {
     SELECT: 'SELECT',
     MULTIPLESELECT: 'MULTIPLESELECT',
     FILE: 'FILE',
+    IMAGES: 'IMAGES',
     PASSWORD: 'PASSWORD',
     TIME: 'TIME',
     DATE: 'DATE',

@@ -122,7 +122,8 @@ function Products() {
             new FormField('price', TYPES.MONEY, t('m_agrolavka:products.product_price')).setGrid({xs: 12, md: 3}).validation([
                 new Validator(VALIDATORS.REQUIRED),
                 new Validator(VALIDATORS.MIN, {size: 0})
-            ]).setAttributes({ decimalScale: 2, suffix: ' BYN', align: 'right' })
+            ]).setAttributes({ decimalScale: 2, suffix: ' BYN', align: 'right' }),
+            new FormField('image', TYPES.IMAGES, t('m_agrolavka:products.product_images')).setGrid({xs: 12})
         ])).setElevation(1);
         setTableConfig(newTableConfig);
         // eslint-disable-next-line react-hooks/exhaustive-deps
