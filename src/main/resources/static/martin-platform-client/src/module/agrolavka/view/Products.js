@@ -72,13 +72,14 @@ function Products() {
             return node;
         };
         roots.sort(compare);
+        roots.unshift(new TreeNode(-1, t('m_agrolavka:products.all_product_groups')));
         roots.forEach(root => {
             result.push(recursiveWalkTree(root));
         });
         return result;
     };
     const onProductGroupSelect = (node) => {
-        setSelectedProductGroup(node.getOrigin());
+        setSelectedProductGroup(node.getId() > 0 ? node.getOrigin() : null);
     };
     const productsFilter = () => {
         return (
@@ -103,7 +104,7 @@ function Products() {
     useEffect(() => {
         const apiUrl = new ApiURL(
                 '/agrolavka/protected/product/search',
-                '/platform/entity/ss.agrolavka.entity.Product',
+                selectedProductGroup ? '/platform/entity/ss.agrolavka.entity.Product' : null,
                 '/platform/entity/ss.agrolavka.entity.Product',
                 '/platform/entity/ss.agrolavka.entity.Product'
         );
@@ -125,6 +126,9 @@ function Products() {
                 return <Avatar alt={row.name} src={`/api/agrolavka/public/product-image/${row.id}?timestamp=${new Date().getTime()}`} />;
             }).setSortable().width('40px'),
             new TableColumn('name', t('m_agrolavka:products.product_name')).setSortable(),
+            new TableColumn('group', t('m_agrolavka:products.product_groups'), (row) => {
+                return row.group ? row.group.name : '';
+            }).width('200px'),
             new TableColumn('price', t('m_agrolavka:products.product_price'), (row) => {
                 return parseFloat(row.price).toFixed(2);
             }).setSortable().width('100px').alignment(ALIGN_RIGHT)

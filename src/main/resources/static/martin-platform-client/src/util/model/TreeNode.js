@@ -26,4 +26,8 @@ export class TreeNode {
     getOrigin() {
         return this.origin;
     }
+    
+    getId() {
+        return this.id;
+    }
 }
