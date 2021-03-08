@@ -106,6 +106,18 @@ export class DataTypeService {
             return value.format(DATETIME_FORMAT);
         } else if (value && value.format && field.type === TYPES.TIME) {
             return value.format(TIME_FORMAT);
+        } else if (value && field.type === TYPES.IMAGES) {
+            const images = [];
+            value.forEach(v => {
+                images.push({
+                    id: v.id,
+                    name: v.name,
+                    size: v.size,
+                    data: v.base64,
+                    type: v.type
+                });
+            });
+            return images;
         }
         return value;
     }

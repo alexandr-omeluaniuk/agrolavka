@@ -133,20 +133,18 @@ function Products() {
         return null;
     }
     return (
-            <Paper elevation={1} className={classes.root}>
-                <Grid container spacing={2}>
-                    <Grid item sm={12} md={3} lg={2}>
-                        <Paper elevation={1} className={classes.root}>
-                            <Typography variant={'h6'}>{t('m_agrolavka:products.product_groups')}</Typography>
-                            <Divider className={classes.divider}/>
-                            <StyledTreeView data={buildTree()} onSelect={onProductGroupSelect}/>
-                        </Paper>
-                    </Grid>
-                    <Grid item sm={12} md={9} lg={10}>
-                        <DataTable tableConfig={tableConfig}/>
-                    </Grid>
+            <Grid container spacing={2}>
+                <Grid item sm={12} md={3} lg={2}>
+                    <Paper elevation={1} className={classes.root}>
+                        <Typography variant={'h6'}>{t('m_agrolavka:products.product_groups')}</Typography>
+                        <Divider className={classes.divider}/>
+                        <StyledTreeView data={buildTree()} onSelect={onProductGroupSelect}/>
+                    </Paper>
                 </Grid>
-            </Paper>
+                <Grid item sm={12} md={9} lg={10}>
+                    <DataTable tableConfig={tableConfig}/>
+                </Grid>
+            </Grid>
     );
 }
 
