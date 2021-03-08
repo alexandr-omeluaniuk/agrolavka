@@ -121,7 +121,8 @@ function Products() {
             apiUrl.addGetExtraParam('group_id', selectedProductGroup.id);
         }
         apiUrl.addGetExtraParam('search_text', filterProductName ? filterProductName : '');
-        const newTableConfig = new TableConfig(t('m_agrolavka:agrolavka.products'), apiUrl, [
+        const newTableConfig = new TableConfig(
+                t('m_agrolavka:agrolavka.products') + (selectedProductGroup ? ` (${selectedProductGroup.name})` : ''), apiUrl, [
             new TableColumn('avatar', '', (row) => {
                 return <Avatar alt={row.name} src={`/api/agrolavka/public/product-image/${row.id}?timestamp=${new Date().getTime()}`} />;
             }).setSortable().width('40px'),
