@@ -71,6 +71,11 @@ export class FormConfig {
         this.spacing = 1;
         this.variant = 'standard';
         this.submit = new FormSubmit();
+        this.beforeOnEditRecord = null; // should return Promise.
+    }
+    setBeforeOnEditRecord(func) {
+        this.beforeOnEditRecord = func;
+        return this;
     }
     setVariant(variant) {
         this.variant = variant;

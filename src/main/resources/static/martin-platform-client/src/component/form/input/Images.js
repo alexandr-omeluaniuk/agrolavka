@@ -63,7 +63,7 @@ function Images (props) {
         let file = e.target.files[0];
         var reader = new FileReader();
         reader.onloadend = function() {
-            file.base64 = reader.result;
+            file.data = reader.result;
             value.push(file);
             onChange(name, value);
         };
@@ -97,14 +97,14 @@ function Images (props) {
                         return (
                                 <Grid item key={idx} xs={12} md={4}>
                                     <Card>
-                                        <CardMedia className={classes.media} image={img.base64} title={img.name}/>
+                                        <CardMedia className={classes.media} image={img.data} title={img.name}/>
                                         <CardActions className={classes.imageActions}>
                                             <Typography className={classes.imageName} varian={'caption'}>
                                                 {img.name}
                                             </Typography>
                                             <Tooltip title={t('component.form.remove_image')}>
                                                 <IconButton onClick={() => deleteImage(img)}>
-                                                    <Icon className={classes.deleteImage}>hide_image</Icon>
+                                                    <Icon className={classes.deleteImage}>trash</Icon>
                                                 </IconButton>
                                             </Tooltip>
                                         </CardActions>

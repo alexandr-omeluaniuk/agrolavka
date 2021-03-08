@@ -46,9 +46,4 @@ public class ProductEntityListener implements PlatformEntityListener<Product> {
         coreDAO.update(entityFromDB);
     }
     
-    @Override
-    public void postUpdate(Product entity) throws Exception {
-        System.out.println("");
-    }
-    
 }

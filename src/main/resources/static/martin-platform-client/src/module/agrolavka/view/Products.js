@@ -81,7 +81,7 @@ function Products() {
     // ------------------------------------------------------- HOOKS ----------------------------------------------------------------------
     useEffect(() => {
         if (productGroups === null) {
-            dataService.get('/agrolavka/protected/ProductsGroup').then(resp => {
+            dataService.get('/platform/entity/ss.agrolavka.entity.ProductsGroup').then(resp => {
                 setProductGroups(resp.data);
             });
         }
@@ -124,7 +124,18 @@ function Products() {
                 new Validator(VALIDATORS.MIN, {size: 0})
             ]).setAttributes({ decimalScale: 2, suffix: ' BYN', align: 'right' }),
             new FormField('images', TYPES.IMAGES, t('m_agrolavka:products.product_images')).setGrid({xs: 12})
-        ])).setElevation(1);
+        ]).setBeforeOnEditRecord((record) => {
+            return new Promise((resolve) => {
+                dataService.get('/agrolavka/protected/product/images/' + record.id).then(images => {
+                    console.log(images);
+                    images.forEach(i => {
+                        i.data = `data:${i.type};base64, ${i.data}`;
+                    });
+                    record.images = images;
+                    resolve(record);
+                });
+            });
+        })).setElevation(1);
         setTableConfig(newTableConfig);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedProductGroup]);

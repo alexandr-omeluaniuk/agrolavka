@@ -92,9 +92,19 @@ function DataTable(props) {
         setFormOpen(true);
     };
     const onEditRecord = (rowData) => {
-        setRecord(rowData);
-        setFormTitle(t('component.datatable.edit'));
-        setFormOpen(true);
+        const doEdit = (entity) => {
+            setRecord(entity);
+            setFormTitle(t('component.datatable.edit'));
+            setFormOpen(true);
+        };
+        if (tableConfig.formConfig.beforeOnEditRecord) {
+            tableConfig.formConfig.beforeOnEditRecord(rowData).then(entity => {
+                doEdit(rowData);
+            });
+        } else {
+            doEdit(rowData);
+        }
+        
     };
     const onDeleteRecord = (rowData) => {
         setRecord(rowData);
