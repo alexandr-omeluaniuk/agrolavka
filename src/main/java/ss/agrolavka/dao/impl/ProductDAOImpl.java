@@ -25,11 +25,11 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import ss.agrolavka.dao.ProductDAO;
-import ss.agrolavka.entity.Product;
-import ss.agrolavka.entity.Product_;
-import ss.agrolavka.entity.ProductsGroup;
-import ss.agrolavka.entity.ProductsGroup_;
 import ss.agrolavka.wrapper.ProductsSearchRequest;
+import ss.entity.agrolavka.Product;
+import ss.entity.agrolavka.Product_;
+import ss.entity.agrolavka.ProductsGroup;
+import ss.entity.agrolavka.ProductsGroup_;
 import ss.martin.platform.dao.CoreDAO;
 
 /**

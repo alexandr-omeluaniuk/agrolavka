@@ -3,13 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ss.agrolavka.entity;
+package ss.entity.agrolavka;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import ss.martin.platform.entity.EntityAudit;
+import ss.entity.martin.EntityAudit;
 
 /**
  * External Entity.

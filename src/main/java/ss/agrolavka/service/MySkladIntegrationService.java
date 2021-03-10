@@ -6,10 +6,10 @@
 package ss.agrolavka.service;
 
 import java.util.List;
-import ss.agrolavka.entity.PriceType;
-import ss.agrolavka.entity.Product;
-import ss.agrolavka.entity.ProductsGroup;
-import ss.martin.platform.entity.EntityImage;
+import ss.entity.agrolavka.PriceType;
+import ss.entity.agrolavka.Product;
+import ss.entity.agrolavka.ProductsGroup;
+import ss.entity.martin.EntityImage;
 
 /**
  * My Sklad integration service.

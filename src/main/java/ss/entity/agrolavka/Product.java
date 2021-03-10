@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ss.agrolavka.entity;
+package ss.entity.agrolavka;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -21,8 +21,8 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import ss.entity.martin.EntityImage;
 import ss.martin.platform.anno.security.FormField;
-import ss.martin.platform.entity.EntityImage;
 
 /**
  * Product.

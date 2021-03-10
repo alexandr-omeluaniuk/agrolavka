@@ -16,10 +16,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ss.agrolavka.dao.ProductDAO;
-import ss.agrolavka.entity.Product;
 import ss.agrolavka.wrapper.ProductsSearchRequest;
+import ss.entity.agrolavka.Product;
+import ss.entity.martin.EntityImage;
 import ss.martin.platform.dao.CoreDAO;
-import ss.martin.platform.entity.EntityImage;
 import ss.martin.platform.wrapper.EntitySearchResponse;
 
 /**

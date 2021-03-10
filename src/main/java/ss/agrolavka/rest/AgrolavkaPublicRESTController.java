@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ss.agrolavka.constants.ImageStubs;
 import ss.agrolavka.dao.ProductDAO;
-import ss.agrolavka.entity.Product;
+import ss.entity.agrolavka.Product;
 import ss.agrolavka.wrapper.ProductsSearchRequest;
 import ss.martin.platform.dao.CoreDAO;
 

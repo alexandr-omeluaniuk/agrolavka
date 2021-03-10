@@ -9,7 +9,7 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
-import ss.agrolavka.entity.Product;
+import ss.entity.agrolavka.Product;
 import ss.agrolavka.service.MySkladIntegrationService;
 import ss.martin.platform.dao.CoreDAO;
 import ss.martin.platform.util.PlatformEntityListener;

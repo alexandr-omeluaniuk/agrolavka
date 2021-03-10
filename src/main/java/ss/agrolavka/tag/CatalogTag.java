@@ -21,7 +21,7 @@ import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.tags.RequestContextAwareTag;
 import ss.agrolavka.dao.ProductDAO;
-import ss.agrolavka.entity.ProductsGroup;
+import ss.entity.agrolavka.ProductsGroup;
 
 /**
  * Catalog tag.

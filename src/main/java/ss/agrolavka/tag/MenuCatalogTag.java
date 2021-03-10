@@ -21,7 +21,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.tags.RequestContextAwareTag;
 import ss.agrolavka.dao.ProductDAO;
-import ss.agrolavka.entity.ProductsGroup;
+import ss.entity.agrolavka.ProductsGroup;
 
 /**
  * Toolbar dropdown menu catalog.

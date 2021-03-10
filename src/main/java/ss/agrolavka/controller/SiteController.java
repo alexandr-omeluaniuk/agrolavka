@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import ss.agrolavka.dao.ProductDAO;
-import ss.agrolavka.entity.Product;
-import ss.agrolavka.entity.ProductsGroup;
+import ss.entity.agrolavka.Product;
+import ss.entity.agrolavka.ProductsGroup;
 import ss.agrolavka.wrapper.ProductsSearchRequest;
 import ss.martin.platform.dao.CoreDAO;
 

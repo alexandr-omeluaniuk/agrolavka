@@ -25,12 +25,12 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import ss.agrolavka.AgrolavkaConfiguration;
-import ss.agrolavka.entity.PriceType;
-import ss.agrolavka.entity.Product;
-import ss.agrolavka.entity.ProductsGroup;
 import ss.agrolavka.service.MySkladIntegrationService;
+import ss.entity.agrolavka.PriceType;
+import ss.entity.agrolavka.Product;
+import ss.entity.agrolavka.ProductsGroup;
+import ss.entity.martin.EntityImage;
 import ss.martin.platform.dao.CoreDAO;
-import ss.martin.platform.entity.EntityImage;
 
 /**
  * My Sklad integration service implementation.
