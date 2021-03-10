@@ -6,7 +6,6 @@
 package ss.agrolavka;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -23,7 +22,6 @@ import ss.martin.platform.spring.config.PlatformConfiguration;
 @Configuration
 @EnableScheduling
 @ComponentScan({"ss.agrolavka", "ss.martin"})
-@EntityScan("ss.agrolavka.entity")
 public class SpringConfig implements WebMvcConfigurer {
     /** Platform configuration. */
     @Autowired

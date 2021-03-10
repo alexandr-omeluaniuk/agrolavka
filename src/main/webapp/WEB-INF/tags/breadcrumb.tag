@@ -8,7 +8,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <%-- The list of normal or fragment attributes can be specified here: --%>
-<%@attribute name="groups" required="false" type="java.util.List<ss.agrolavka.entity.ProductsGroup>"%>
+<%@attribute name="groups" required="false" type="java.util.List<ss.entity.agrolavka.ProductsGroup>"%>
 <%@attribute name="label" required="false" type="java.lang.String"%>
 
 <%-- any content can be specified here e.g.: --%>

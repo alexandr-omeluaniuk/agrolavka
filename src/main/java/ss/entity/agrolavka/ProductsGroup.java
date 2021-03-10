@@ -97,7 +97,7 @@ public class ProductsGroup extends ExternalEntity implements Serializable, Compa
     }
     @Override
     public String toString() {
-        return "ss.agrolavka.model.ProductsGroup[ id=" + getId() + ", name=" + getName()
+        return "ProductsGroup[ id=" + getId() + ", name=" + getName()
                 + ", externalId=" + getExternalId() + ", parentId=" + getParentId() + " ]";
     }
 

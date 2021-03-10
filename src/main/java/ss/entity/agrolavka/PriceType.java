@@ -60,7 +60,7 @@ public class PriceType extends ExternalEntity {
     }
     @Override
     public String toString() {
-        return "ss.agrolavka.entity.PriceType[ id=" + getId() + " ]";
+        return "PriceType[ id=" + getId() + " ]";
     }
     
     public JSONObject toMySkladJSON() {
