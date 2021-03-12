@@ -279,6 +279,7 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
         Product product = new Product();
         product.setExternalId(item.getString("id"));
         product.setName(item.getString("name"));
+        product.setArticle(item.getString("article"));
         if (item.has("productFolder")) {
             String link = item.getJSONObject("productFolder").getJSONObject("meta").getString("href");
             String productGroupId = link.substring(link.lastIndexOf("/") + 1);
@@ -292,6 +293,13 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
                 JSONObject price = prices.getJSONObject(j);
                 product.setPrice(price.getDouble("value") / 100);
             }
+        }
+        if (item.has("buyPrice")) {
+            JSONObject buyPrice = item.getJSONObject("buyPrice");
+            product.setBuyPrice(buyPrice.getDouble("value") / 100);
+        }
+        if (product.getBuyPrice() == null) {
+            product.setBuyPrice(0d);
         }
         LOG.debug(product.toString());
         return product;

@@ -82,7 +82,7 @@ function DataTableToolbar(props) {
                                 </Tooltip>
                             ) : null}
                             {toolbarFilter ? (
-                                <Tooltip title={t('queueManagement.view.queue.tableFilters')}>
+                                <Tooltip title={t('component.datatable.filters')}>
                                     <IconButton onClick={handleShowFilters}>
                                         <Icon color="primary">filter_list</Icon>
                                     </IconButton>

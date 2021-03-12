@@ -19,7 +19,8 @@
             "cancel": "Cancel",
             "dense_padding": "Dense padding",
             "confirm_delete_message": "Do you really want to delete this record?",
-            "no_data": "No data"
+            "no_data": "No data",
+            "filters": "Filters"
         },
         "menu": {
             "close": "Close",

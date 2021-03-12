@@ -19,6 +19,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import ss.entity.martin.EntityImage;
@@ -43,6 +44,16 @@ public class Product extends ExternalEntity implements Serializable {
     @NotNull
     @Column(name = "price", nullable = false)
     private Double price;
+    /** Buy price. */
+    @FormField
+    @NotNull
+    @Column(name = "buy_price")
+    private Double buyPrice;
+    /** Article number. */
+    @FormField
+    @Size(max = 255)
+    @Column(name = "article", length = 255)
+    private String article;
     /** Images. */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
@@ -104,6 +115,30 @@ public class Product extends ExternalEntity implements Serializable {
     public void setImages(List<EntityImage> images) {
         this.images = images;
     }
+    /**
+     * @return the buyPrice
+     */
+    public Double getBuyPrice() {
+        return buyPrice;
+    }
+    /**
+     * @param buyPrice the buyPrice to set
+     */
+    public void setBuyPrice(Double buyPrice) {
+        this.buyPrice = buyPrice;
+    }
+    /**
+     * @return the article
+     */
+    public String getArticle() {
+        return article;
+    }
+    /**
+     * @param article the article to set
+     */
+    public void setArticle(String article) {
+        this.article = article;
+    }
     // ================================================================================================================
     @Override
     public int hashCode() {
@@ -133,12 +168,16 @@ public class Product extends ExternalEntity implements Serializable {
     public JSONObject toMySkladJSON(PriceType priceType) {
         JSONObject json = new JSONObject();
         json.put("name", getName());
+        json.put("article", getArticle());
         JSONArray salePrices = new JSONArray();
         JSONObject productPrice = new JSONObject();
         productPrice.put("value", Double.valueOf(getPrice() * 100).intValue());
         productPrice.put("priceType", priceType.toMySkladJSON());
         salePrices.put(productPrice);
         json.put("salePrices", salePrices);
+        JSONObject buyPrice = new JSONObject();
+        buyPrice.put("value", buyPrice);
+        json.put("buyPrice", buyPrice);
         json.put("productFolder", getGroup().toMySkladJSON());
         return json;
     }
