@@ -161,6 +161,8 @@ class DataUpdater {
             eProduct.setName(actualProduct.getName());
             eProduct.setPrice(actualProduct.getPrice());
             eProduct.setGroup(actualProduct.getGroup());
+            eProduct.setArticle(actualProduct.getArticle());
+            eProduct.setBuyPrice(actualProduct.getBuyPrice());
             existProductsIDs.add(eProduct.getExternalId());
             LOG.trace("update product: " + eProduct);
         }

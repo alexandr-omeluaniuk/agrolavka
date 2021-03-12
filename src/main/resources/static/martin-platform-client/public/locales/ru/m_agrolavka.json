@@ -7,7 +7,9 @@
         "product_groups": "Категория товара",
         "product_name": "Название",
         "product_price": "Отпускная цена",
+        "product_buy_price": "Закупочная цена",
         "product_images": "Изображения",
-        "all_product_groups": "Все"
+        "all_product_groups": "Все",
+        "product_article": "Артикул"
     }
 }

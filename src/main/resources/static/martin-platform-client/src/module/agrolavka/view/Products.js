@@ -128,9 +128,13 @@ function Products() {
                 return <Avatar alt={row.name} src={`/api/agrolavka/public/product-image/${row.id}?timestamp=${new Date().getTime()}`} />;
             }).setSortable().width('40px'),
             new TableColumn('name', t('m_agrolavka:products.product_name')).setSortable(),
+            new TableColumn('article', t('m_agrolavka:products.product_article')).setSortable().width('160px').alignment(ALIGN_RIGHT),
             new TableColumn('group', t('m_agrolavka:products.product_groups'), (row) => {
                 return row.group ? row.group.name : '';
             }).width('200px'),
+            new TableColumn('buyPrice', t('m_agrolavka:products.product_buy_price'), (row) => {
+                return parseFloat(row.buyPrice).toFixed(2);
+            }).setSortable().width('100px').alignment(ALIGN_RIGHT),
             new TableColumn('price', t('m_agrolavka:products.product_price'), (row) => {
                 return parseFloat(row.price).toFixed(2);
             }).setSortable().width('100px').alignment(ALIGN_RIGHT)

@@ -162,7 +162,8 @@ public class Product extends ExternalEntity implements Serializable {
     @Override
     public String toString() {
         return "Product[ id=" + getId() + ", name=" + getName() + ", price=" + getPrice()
-                + ", group=" + (this.getGroup() != null ? this.getGroup().getName() : "") + " ]";
+                + ", group=" + (this.getGroup() != null ? this.getGroup().getName() : "")
+                + ", article=" + (getArticle() == null ? "" : getArticle()) + " ]";
     }
     
     public JSONObject toMySkladJSON(PriceType priceType) {
