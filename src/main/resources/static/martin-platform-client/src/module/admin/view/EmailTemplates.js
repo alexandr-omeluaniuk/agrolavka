@@ -25,7 +25,7 @@ function EmailTemplates() {
     const classes = useStyles();
     const { t } = useTranslation();
     const config = new TableConfig(t('m_administrator:administrator.email.emailtemplates'),
-            '/platform/entity/ss.martin.platform.entity.EmailTemplate', [
+            '/platform/entity/ss.entity.martin.EmailTemplate', [
         new TableColumn('subject', t('m_administrator:email_templates.subject')).setSortable()
     ], new FormConfig([
         new FormField('id', TYPES.ID).hide(),

@@ -9,8 +9,8 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
-import ss.entity.agrolavka.Product;
 import ss.agrolavka.service.MySkladIntegrationService;
+import ss.entity.agrolavka.Product;
 import ss.martin.platform.dao.CoreDAO;
 import ss.martin.platform.util.PlatformEntityListener;
 
@@ -35,24 +35,24 @@ public class ProductEntityListener implements PlatformEntityListener<Product> {
 
     @Override
     public void prePersist(Product entity) throws Exception {
-        Product mySkladEntity = mySkladIntegrationService.createProduct(entity);
-        entity.setExternalId(mySkladEntity.getExternalId());
+//        Product mySkladEntity = mySkladIntegrationService.createProduct(entity);
+//        entity.setExternalId(mySkladEntity.getExternalId());
     }
     
     @Override
     public void preUpdate(Product entity) throws Exception {
-        mySkladIntegrationService.updateProduct(entity);
-        Product entityFromDB = coreDAO.findById(entity.getId(), Product.class);
-        entityFromDB.setImages(entity.getImages());
-        coreDAO.update(entityFromDB);
+//        mySkladIntegrationService.updateProduct(entity);
+//        Product entityFromDB = coreDAO.findById(entity.getId(), Product.class);
+//        entityFromDB.setImages(entity.getImages());
+//        coreDAO.update(entityFromDB);
     }
     
     @Override
     public void preDelete(Set<Long> ids) throws Exception {
-        for (Long id : ids) {
-            Product product = coreDAO.findById(id, Product.class);
-            mySkladIntegrationService.deleteProduct(product);
-        }
+//        for (Long id : ids) {
+//            Product product = coreDAO.findById(id, Product.class);
+//            mySkladIntegrationService.deleteProduct(product);
+//        }
     }
     
 }

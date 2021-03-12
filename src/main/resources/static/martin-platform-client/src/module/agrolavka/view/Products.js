@@ -24,7 +24,8 @@ let dataService = new DataService();
 
 const useStyles = makeStyles(theme => ({
     root: {
-        padding: theme.spacing(2)
+        padding: theme.spacing(2),
+        overflowX: 'auto'
     },
     divider: {
         marginTop: theme.spacing(1),
@@ -95,7 +96,7 @@ function Products() {
     // ------------------------------------------------------- HOOKS ----------------------------------------------------------------------
     useEffect(() => {
         if (productGroups === null) {
-            dataService.get('/platform/entity/ss.agrolavka.entity.ProductsGroup').then(resp => {
+            dataService.get('/platform/entity/ss.entity.agrolavka.ProductsGroup').then(resp => {
                 setProductGroups(resp.data);
             });
         }
@@ -104,9 +105,9 @@ function Products() {
     useEffect(() => {
         const apiUrl = new ApiURL(
                 '/agrolavka/protected/product/search',
-                selectedProductGroup ? '/platform/entity/ss.agrolavka.entity.Product' : null,
-                '/platform/entity/ss.agrolavka.entity.Product',
-                '/platform/entity/ss.agrolavka.entity.Product'
+                selectedProductGroup ? '/platform/entity/ss.entity.agrolavka.Product' : null,
+                '/platform/entity/ss.entity.agrolavka.Product',
+                '/platform/entity/ss.entity.agrolavka.Product'
         );
         apiUrl.beforeCreate = (data) => {
             data.group = selectedProductGroup;

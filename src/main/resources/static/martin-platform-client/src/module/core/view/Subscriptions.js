@@ -24,7 +24,7 @@ const useStyles = makeStyles(theme => ({
 function Subscriptions() {
     const classes = useStyles();
     const { t } = useTranslation();
-    const config = new TableConfig(t('m_core:core.subscriptions'), '/platform/entity/ss.martin.platform.entity.Subscription', [
+    const config = new TableConfig(t('m_core:core.subscriptions'), '/platform/entity/ss.entity.martin.Subscription', [
         new TableColumn('organizationName', t('m_core:organization_name')).setSortable(),
         new TableColumn('subscriptionAdminEmail', t('m_core:subscription_admin_email')).setSortable(),
         new TableColumn('started', t('m_core:subscription_start_date')).width('150px').alignment(ALIGN_RIGHT).setSortable(),
