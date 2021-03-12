@@ -176,9 +176,9 @@ public class Product extends ExternalEntity implements Serializable {
         productPrice.put("priceType", priceType.toMySkladJSON());
         salePrices.put(productPrice);
         json.put("salePrices", salePrices);
-        JSONObject buyPrice = new JSONObject();
-        buyPrice.put("value", buyPrice);
-        json.put("buyPrice", buyPrice);
+        JSONObject buyPriceJSON = new JSONObject();
+        buyPriceJSON.put("value", getBuyPrice());
+        json.put("buyPrice", buyPriceJSON);
         json.put("productFolder", getGroup().toMySkladJSON());
         return json;
     }
