@@ -7,6 +7,7 @@ package ss.agrolavka.rest;
 
 import java.util.Base64;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -19,8 +20,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ss.agrolavka.constants.ImageStubs;
 import ss.agrolavka.dao.ProductDAO;
-import ss.entity.agrolavka.Product;
 import ss.agrolavka.wrapper.ProductsSearchRequest;
+import ss.entity.agrolavka.Product;
 import ss.martin.platform.dao.CoreDAO;
 
 /**
@@ -65,7 +66,11 @@ class AgrolavkaPublicRESTController {
         request.setPageSize(20);
         request.setText(searchText);
         Map<String, Object> result = new HashMap<>();
-        result.put("data", productDAO.search(request));
+        List<Product> list = productDAO.search(request);
+        for (Product product : list) {
+            product.setBuyPrice(null);
+        }
+        result.put("data", list);
         result.put("count", productDAO.count(request));
         return result;
     }
