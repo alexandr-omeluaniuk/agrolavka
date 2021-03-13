@@ -46,6 +46,7 @@ public class ProductEntityListener implements PlatformEntityListener<Product> {
         Product entityFromDB = coreDAO.findById(entity.getId(), Product.class);
         entityFromDB.setImages(entity.getImages());
         coreDAO.update(entityFromDB);
+        mySkladIntegrationService.removeProductImages(entity);
         mySkladIntegrationService.attachImagesToProduct(entity);
     }
     

@@ -64,6 +64,12 @@ public interface MySkladIntegrationService {
      */
     void attachImagesToProduct(Product product) throws Exception;
     /**
+     * Remove product images.
+     * @param product product.
+     * @throws Exception error.
+     */
+    void removeProductImages(Product product) throws Exception;
+    /**
      * Get price types.
      * @return price type.
      * @throws Exception error.

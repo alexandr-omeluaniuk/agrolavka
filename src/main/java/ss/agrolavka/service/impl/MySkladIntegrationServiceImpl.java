@@ -122,6 +122,15 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
         return result;
     }
     @Override
+    public void removeProductImages(Product product) throws Exception {
+        String response = request("/entity/product/" + product.getExternalId() + "/images", "GET", null);
+        JSONObject json = new JSONObject(response);
+        if (json.has("rows")) {
+            JSONArray rows = json.getJSONArray("rows");
+            request("/entity/product/" + product.getExternalId() + "/images/delete", "POST", rows.toString());
+        }
+    }
+    @Override
     public Product createProduct(Product product) throws Exception {
         List<PriceType> priceTypes = coreDAO.getAll(PriceType.class);
         String response = request("/entity/product", "POST", product.toMySkladJSON(priceTypes.get(0)).toString());
@@ -283,7 +292,12 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
         sb.close();
         return data;
     }
-    
+    /**
+     * Create product from JSON.
+     * @param item json object.
+     * @param productGroupsMap product groups map.
+     * @return product model.
+     */
     private Product fromJSON(JSONObject item, Map<String, ProductsGroup> productGroupsMap) {
         Product product = new Product();
         product.setExternalId(item.getString("id"));
