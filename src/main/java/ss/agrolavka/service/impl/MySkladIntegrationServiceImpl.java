@@ -158,10 +158,7 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
             JSONObject payload = new JSONObject();
             payload.put("filename", image.getName());
             payload.put("content", new String(Base64.getEncoder().encode(image.getData()), "UTF-8"));
-            LOG.info(payload.toString());
-            String response = request(
-                    "/entity/product/" + product.getExternalId() + "/images", "POST", payload.toString());
-            LOG.info(response);
+            request("/entity/product/" + product.getExternalId() + "/images", "POST", payload.toString());
         }
     }
     // ============================================= PRIVATE ==========================================================

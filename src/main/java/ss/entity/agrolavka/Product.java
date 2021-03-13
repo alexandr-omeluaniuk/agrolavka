@@ -67,6 +67,7 @@ public class Product extends ExternalEntity implements Serializable {
     @JoinColumn(name = "group_id")
     private ProductsGroup group;
     /** Description. */
+    @FormField
     @Lob
     @Size(max = 65535)
     @Column(name = "description", length = 65535)

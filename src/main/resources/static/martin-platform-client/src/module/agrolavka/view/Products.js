@@ -176,6 +176,9 @@ function Products() {
                 new Validator(VALIDATORS.REQUIRED),
                 new Validator(VALIDATORS.MIN, {size: 0})
             ]).setAttributes({ decimalScale: 2, suffix: ' BYN', align: 'right' }),
+            new FormField('description', TYPES.TEXTAREA, t('m_agrolavka:products.product_description')).setGrid({xs: 12}).setAttributes({
+                rows: 10
+            }),
             new FormField('images', TYPES.IMAGES, t('m_agrolavka:products.product_images')).setGrid({xs: 12})
         ]).setBeforeOnEditRecord((record) => {
             return new Promise((resolve) => {
