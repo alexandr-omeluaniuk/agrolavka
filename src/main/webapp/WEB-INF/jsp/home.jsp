@@ -43,7 +43,7 @@
                 </header>
                 <div class="row justify-content-center" data-aos="fade-up" style="width: 100%">
                     <div class="col-lg-3 col-md-12 intro-info order-lg-first order-last catalog-desktop">
-                        <cmp:catalog groupId="${groupId}"></cmp:catalog>
+                        <t:product-groups-tree groups="${catalog}" groupId="${groupId}"></t:product-groups-tree>
                     </div>
                     
                     <div class="col-lg-3 col-md-12 intro-info order-lg-first order-last catalog-mobile">

@@ -58,8 +58,8 @@ public class SearchResultTag extends RequestContextAwareTag {
         searchRequest.setPage(page == null ? 1 : page);
         searchRequest.setPageSize(COLUMNS * ROWS);
         try {
-            String pagination = renderPagination(searchRequest);
             List<Product> pageProducts = productDAO.search(searchRequest);
+            String pagination = pageProducts.isEmpty() ? "" : renderPagination(searchRequest);
             out.print("<div class=\"row products-search-result\">");
             out.print("<div class=\"col-sm-12\">");
             out.print(renderToolbar(searchRequest, pagination));
