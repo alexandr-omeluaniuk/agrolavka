@@ -291,6 +291,9 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
         if (item.has("article")) {
             product.setArticle(item.getString("article"));
         }
+        if (item.has("code")) {
+            product.setCode(item.getString("code"));
+        }
         if (item.has("description")) {
             product.setDescription(item.getString("description"));
         }

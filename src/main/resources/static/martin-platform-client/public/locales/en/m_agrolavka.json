@@ -12,6 +12,7 @@
         "all_product_groups": "All",
         "product_article": "Article",
         "product_description": "Description",
+        "product_code": "Code",
         "synchronize": "Synchronize MySklad data"
     }
 }

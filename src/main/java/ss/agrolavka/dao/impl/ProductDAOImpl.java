@@ -118,6 +118,9 @@ class ProductDAOImpl implements ProductDAO {
         if (request.getText() != null && !request.getText().isBlank()) {
             predicates.add(cb.like(cb.upper(c.get(Product_.name)), "%" + request.getText().toUpperCase() + "%"));
         }
+        if (request.getCode() != null && !request.getCode().isBlank()) {
+            predicates.add(cb.like(cb.upper(c.get(Product_.code)), "%" + request.getCode().toUpperCase() + "%"));
+        }
         return predicates;
     }
     @Transactional(propagation = Propagation.SUPPORTS)

@@ -42,6 +42,7 @@ public class ProductRESTController {
      * @param order order.
      * @param orderBy order by.
      * @param searchText search text.
+     * @param code product code.
      * @param groupId group ID.
      * @return products portion.
      * @throws Exception error.
@@ -53,6 +54,7 @@ public class ProductRESTController {
             @RequestParam(value = "order", required = false) String order,
             @RequestParam(value = "order_by", required = false) String orderBy,
             @RequestParam(value = "search_text", required = false) String searchText,
+            @RequestParam(value = "code", required = false) String code,
             @RequestParam(value = "group_id", required = false) Long groupId)
             throws Exception {
         ProductsSearchRequest request = new ProductsSearchRequest();
@@ -62,6 +64,7 @@ public class ProductRESTController {
         request.setGroupId(groupId);
         request.setOrder(order);
         request.setOrderBy(orderBy);
+        request.setCode(code);
         EntitySearchResponse response = new EntitySearchResponse();
         response.setData(productDAO.search(request));
         response.setTotal(productDAO.count(request).intValue());

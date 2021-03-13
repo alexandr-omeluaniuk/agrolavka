@@ -22,6 +22,8 @@ public class ProductsSearchRequest {
     private String order;
     /** Order by. */
     private String orderBy;
+    /** Code. */
+    private String code;
     // =================================================== SET & GET ==================================================
     /**
      * @return the groupId
@@ -94,5 +96,17 @@ public class ProductsSearchRequest {
      */
     public void setOrderBy(String orderBy) {
         this.orderBy = orderBy;
+    }
+    /**
+     * @return the code
+     */
+    public String getCode() {
+        return code;
+    }
+    /**
+     * @param code the code to set
+     */
+    public void setCode(String code) {
+        this.code = code;
     }
 }

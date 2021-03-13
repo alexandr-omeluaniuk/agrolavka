@@ -72,6 +72,11 @@ public class Product extends ExternalEntity implements Serializable {
     @Size(max = 65535)
     @Column(name = "description", length = 65535)
     private String description;
+    /** Code. */
+    @FormField
+    @Size(max = 255)
+    @Column(name = "code", length = 255)
+    private String code;
     // ============================================== SET & GET =======================================================
     /**
      * @return the name
@@ -157,6 +162,18 @@ public class Product extends ExternalEntity implements Serializable {
      */
     public void setDescription(String description) {
         this.description = description;
+    }
+    /**
+     * @return the code
+     */
+    public String getCode() {
+        return code;
+    }
+    /**
+     * @param code the code to set
+     */
+    public void setCode(String code) {
+        this.code = code;
     }
     // ================================================================================================================
     @Override
