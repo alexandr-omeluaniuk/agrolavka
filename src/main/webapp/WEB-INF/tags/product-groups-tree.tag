@@ -48,7 +48,7 @@
 <nav class="pgt-root">
     <ul class="list-unstyled mb-0 py-3 pt-md-1">
         <c:forEach items="${catalogRoots}" var="root">
-            <t:product-groups-tree-item group="${root}" catalogMap="${catalogMap}" level="1"/>
+            <t:product-groups-tree-item group="${root}" catalogMap="${catalogMap}" groupId="${groupId}"/>
         </c:forEach>
     </ul>
 </nav>

@@ -10,29 +10,29 @@
 
 <%-- The list of normal or fragment attributes can be specified here: --%>
 <%@attribute name="group" required="true" type="ProductsGroup"%>
-<%@attribute name="level" required="true" type="Integer"%>
 <%@attribute name="catalogMap" required="true" type="Map<String, List<ProductsGroup>>"%>
+<%@attribute name="groupId" required="false" type="Long"%>
 
 <%-- any content can be specified here e.g.: --%>
-    <c:choose>
-        <c:when test="${catalogMap.containsKey(group.getExternalId())}">
-            <button class="btn d-inline-flex align-items-center rounded collapsed" data-bs-toggle="collapse" 
-                    data-bs-target="#product-group-item-${group.id}" aria-expanded="false">
-                <i class="fas fa-chevron-right pgt-expand-icon"></i> ${group.name}
-            </button>
-            <div class="collapse" id="product-group-item-${group.id}" style="margin-left: ${10 * level}px">
-                <ul class="list-unstyled fw-normal pb-1 small">
-                    <c:forEach items="${catalogMap.get(group.getExternalId())}" var="child">
-                        <t:product-groups-tree-item group="${child}" catalogMap="${catalogMap}" level="${level + 1}"/>
-                    </c:forEach>
-                </ul>
-            </div>
-        </c:when>    
-        <c:otherwise>
-            <li>
-                <a href="/catalog/${group.id}?name=${group.name}" class="d-inline-flex align-items-center rounded">
-                    ${group.name}
-                </a>
-            </li>
-        </c:otherwise>
-    </c:choose>
+<c:choose>
+    <c:when test="${catalogMap.containsKey(group.getExternalId())}">
+        <button class="btn d-inline-flex align-items-center rounded collapsed" data-bs-toggle="collapse" 
+                data-bs-target="#product-group-item-${group.id}" aria-expanded="false">
+            <i class="fas fa-chevron-right pgt-expand-icon"></i> ${group.name}
+        </button>
+        <div class="collapse" id="product-group-item-${group.id}" style="margin-left: 1.4rem">
+            <ul class="list-unstyled fw-normal pb-1 small">
+                <c:forEach items="${catalogMap.get(group.getExternalId())}" var="child">
+                    <t:product-groups-tree-item group="${child}" catalogMap="${catalogMap}"/>
+                </c:forEach>
+            </ul>
+        </div>
+    </c:when>    
+    <c:otherwise>
+        <li>
+            <a href="/catalog/${group.id}?name=${group.name}" class="d-inline-flex align-items-center rounded">
+                ${group.name}
+            </a>
+        </li>
+    </c:otherwise>
+</c:choose>
