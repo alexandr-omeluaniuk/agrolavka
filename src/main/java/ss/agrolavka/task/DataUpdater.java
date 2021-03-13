@@ -33,7 +33,7 @@ import ss.martin.platform.service.SecurityService;
  * @author alex
  */
 @Component
-class DataUpdater {
+public class DataUpdater {
     /** Logger. */
     private static final Logger LOG = LoggerFactory.getLogger(DataUpdater.class);
     /** MySklad integration service. */
@@ -54,8 +54,8 @@ class DataUpdater {
     /**
      * Import MySklad data.
      */
-    @Scheduled(fixedRate = 1000 * 60 * 60 * 3)
-    protected void importMySkladData() {
+    @Scheduled(cron = "0 0 0 * * *")
+    public void importMySkladData() {
         try {
             LOG.info("====================================== MY SKLAD DATA UPDATE ===================================");
             securityService.backgroundAuthentication(

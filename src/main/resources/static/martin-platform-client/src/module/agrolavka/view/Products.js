@@ -30,6 +30,9 @@ const useStyles = makeStyles(theme => ({
     divider: {
         marginTop: theme.spacing(1),
         marginBottom: theme.spacing(1)
+    },
+    image: {
+        borderRadius: 0
     }
 }));
 
@@ -125,7 +128,8 @@ function Products() {
         const newTableConfig = new TableConfig(
                 t('m_agrolavka:agrolavka.products') + (selectedProductGroup ? ` (${selectedProductGroup.name})` : ''), apiUrl, [
             new TableColumn('avatar', '', (row) => {
-                return <Avatar alt={row.name} src={`/api/agrolavka/public/product-image/${row.id}?timestamp=${new Date().getTime()}`} />;
+                return <Avatar className={classes.image} alt={row.name}
+                        src={`/api/agrolavka/public/product-image/${row.id}?timestamp=${new Date().getTime()}`} />;
             }).setSortable().width('40px'),
             new TableColumn('name', t('m_agrolavka:products.product_name')).setSortable(),
             new TableColumn('group', t('m_agrolavka:products.product_groups'), (row) => {
