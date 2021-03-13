@@ -8,6 +8,9 @@ import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
+import Icon from '@material-ui/core/Icon';
+import IconButton from '@material-ui/core/IconButton';
+import Tooltip from '@material-ui/core/Tooltip';
 import TextField from '@material-ui/core/TextField';
 import Avatar from '@material-ui/core/Avatar';
 import Paper from '@material-ui/core/Paper';
@@ -96,6 +99,20 @@ function Products() {
                 </Grid>
         );
     };
+    const toolbarBefore = () => {
+        return (
+                <Tooltip title={t('m_agrolavka:products.synchronize')}>
+                    <IconButton onClick={synchronizeData}>
+                        <Icon color="primary">sync_alt</Icon>
+                    </IconButton>
+                </Tooltip>
+        );
+    };
+    const synchronizeData = () => {
+        dataService.put('/agrolavka/protected/mysklad/synchronize').then(resp => {
+            setProductGroups(null);
+        });
+    };
     // ------------------------------------------------------- HOOKS ----------------------------------------------------------------------
     useEffect(() => {
         if (productGroups === null) {
@@ -170,7 +187,7 @@ function Products() {
                     resolve(record);
                 });
             });
-        })).setElevation(1).setFilter(productsFilter());
+        })).setElevation(1).setFilter(productsFilter()).setToolbarActionsBefore(toolbarBefore());
         setTableConfig(newTableConfig);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedProductGroup, filterProductName]);

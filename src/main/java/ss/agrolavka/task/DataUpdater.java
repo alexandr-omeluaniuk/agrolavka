@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import ss.agrolavka.AgrolavkaConfiguration;
 import ss.agrolavka.dao.ExternalEntityDAO;
+import ss.agrolavka.dao.ProductDAO;
 import ss.agrolavka.service.MySkladIntegrationService;
 import ss.entity.agrolavka.PriceType;
 import ss.entity.agrolavka.Product;
@@ -42,6 +43,9 @@ public class DataUpdater {
     /** Core DAO. */
     @Autowired
     private CoreDAO coreDAO;
+    /** Product DAO. */
+    @Autowired
+    private ProductDAO productDAO;
     /** External entity DAO. */
     @Autowired
     private ExternalEntityDAO externalEntityDAO;
@@ -134,6 +138,7 @@ public class DataUpdater {
         LOG.info("new product groups [" + newGroups.size() + "]");
         coreDAO.massCreate(newGroups);
         // remove unused groups.
+        productDAO.deleteProductsByNotProductGroupIDs(deleteNotIn);
         externalEntityDAO.removeExternalEntitiesNotInIDs(deleteNotIn, ProductsGroup.class);
     }
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)

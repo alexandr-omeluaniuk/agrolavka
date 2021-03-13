@@ -7,9 +7,9 @@ package ss.agrolavka.dao;
 
 import java.util.List;
 import java.util.Set;
+import ss.agrolavka.wrapper.ProductsSearchRequest;
 import ss.entity.agrolavka.Product;
 import ss.entity.agrolavka.ProductsGroup;
-import ss.agrolavka.wrapper.ProductsSearchRequest;
 
 /**
  * Product DAO.
@@ -35,4 +35,9 @@ public interface ProductDAO {
      * @return catalog product groups.
      */
     Set<ProductsGroup> getCatalogProductGroups();
+    /**
+     * Delete products from groups that are not belongs to group external IDs.
+     * @param groupExternalIds group external IDs.
+     */
+    void deleteProductsByNotProductGroupIDs(Set<String> groupExternalIds);
 }

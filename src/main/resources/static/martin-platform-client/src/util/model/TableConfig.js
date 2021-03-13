@@ -33,6 +33,16 @@ export class TableConfig {
     getElevation() {
         return this.elevation;
     }
+    
+    setToolbarActionsBefore(el) {
+        this.toolbarActionsBefore = el;
+        return this;
+    }
+    
+    setToolbarActionsAfter(el) {
+        this.toolbarActionsAfter = el;
+        return this;
+    }
 }
 
 export class TableColumn {

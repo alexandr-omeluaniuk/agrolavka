@@ -39,7 +39,7 @@ public class ProductsGroup extends ExternalEntity implements Serializable, Compa
     private String parentId;
     /** Products. */
     @JsonIgnore
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "group", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "group", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Product> products;
     // =============================================== SET & GET ======================================================
     /**

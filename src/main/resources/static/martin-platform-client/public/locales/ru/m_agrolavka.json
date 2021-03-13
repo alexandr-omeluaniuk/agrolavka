@@ -10,6 +10,7 @@
         "product_buy_price": "Закупочная цена",
         "product_images": "Изображения",
         "all_product_groups": "Все",
-        "product_article": "Артикул"
+        "product_article": "Артикул",
+        "synchronize": "Синхонизировать данные c программой Мой Склад"
     }
 }

@@ -10,6 +10,7 @@
         "product_buy_price": "Buy price",
         "product_images": "Images",
         "all_product_groups": "All",
-        "product_article": "Article"
+        "product_article": "Article",
+        "synchronize": "Synchronize MySklad data"
     }
 }

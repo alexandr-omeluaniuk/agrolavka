@@ -129,4 +129,18 @@ class ProductDAOImpl implements ProductDAO {
             });
         }
     }
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public void deleteProductsByNotProductGroupIDs(Set<String> groupExternalIds) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Product> criteria = cb.createQuery(Product.class);
+        Root<Product> c = criteria.from(Product.class);
+        Join<Product, ProductsGroup> productGroup = c.join(Product_.group, JoinType.LEFT);
+        criteria.select(c).where(cb.not(productGroup.get(ProductsGroup_.externalId).in(groupExternalIds)));
+        List<Product> entities = em.createQuery(criteria).getResultList();
+        for (Product product : entities) {
+            em.remove(product);
+        }
+        em.flush();
+    }
 }
