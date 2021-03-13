@@ -37,6 +37,7 @@ public class ProductEntityListener implements PlatformEntityListener<Product> {
     public void prePersist(Product entity) throws Exception {
         Product mySkladEntity = mySkladIntegrationService.createProduct(entity);
         entity.setExternalId(mySkladEntity.getExternalId());
+        mySkladIntegrationService.attachImagesToProduct(entity);
     }
     
     @Override
@@ -45,6 +46,7 @@ public class ProductEntityListener implements PlatformEntityListener<Product> {
         Product entityFromDB = coreDAO.findById(entity.getId(), Product.class);
         entityFromDB.setImages(entity.getImages());
         coreDAO.update(entityFromDB);
+        mySkladIntegrationService.attachImagesToProduct(entity);
     }
     
     @Override
