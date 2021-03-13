@@ -40,6 +40,7 @@
     }
     .pgt-root .btn {
         width: 100%;
+        text-align: left;
     }
     .pgt-root a {
         padding: .1875rem .5rem;
