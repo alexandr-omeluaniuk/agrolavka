@@ -38,14 +38,27 @@
     .pgt-root .btn[aria-expanded="true"] .pgt-expand-icon {
         transform: rotate(90deg);
     }
+    .pgt-root .btn {
+        width: 100%;
+    }
     .pgt-root a {
         padding: .1875rem .5rem;
         margin-top: .125rem;
         color: rgba(0,0,0,0.65);
         text-decoration: none;
     }
+    .pgt-root .btn:focus {
+        box-shadow: 0 0 0 1px rgb(121 82 179 / 70%);
+        background-color: rgba(121,82,179,0.1);
+        font-weight: bold;
+    }
+    .pgt-root .active {
+        font-weight: bold;
+        color: rgba(0,0,0,0.85);
+    }
 </style>
 <nav class="pgt-root">
+    <h3><i class="fas fa-seedling nav-icon"></i> Каталог товаров</h3>
     <ul class="list-unstyled mb-0 py-3 pt-md-1">
         <c:forEach items="${catalogRoots}" var="root">
             <t:product-groups-tree-item group="${root}" catalogMap="${catalogMap}" groupId="${groupId}"/>
