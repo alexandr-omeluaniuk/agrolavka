@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import ss.agrolavka.dao.ProductDAO;
+import ss.agrolavka.wrapper.ProductsSearchRequest;
 import ss.entity.agrolavka.Product;
 import ss.entity.agrolavka.ProductsGroup;
-import ss.agrolavka.wrapper.ProductsSearchRequest;
 import ss.martin.platform.dao.CoreDAO;
 
 /**
@@ -52,6 +52,7 @@ public class SiteController {
         request.setPage(1);
         request.setPageSize(Integer.MAX_VALUE);
         model.addAttribute("productsCount", productDAO.count(request));
+        model.addAttribute("catalog", productDAO.getCatalogProductGroups());
         return "home";
     }
     /**
@@ -77,6 +78,7 @@ public class SiteController {
         model.addAttribute("title", "Товары для сада и огорода");
         model.addAttribute("page", page);
         model.addAttribute("view", view);
+        model.addAttribute("catalog", productDAO.getCatalogProductGroups());
         return "catalog";
     }
     /**
@@ -104,6 +106,7 @@ public class SiteController {
         List<ProductsGroup> path = getPath(group);
         path.remove(group);
         model.addAttribute("breadcrumbPath", path);
+        model.addAttribute("catalog", productDAO.getCatalogProductGroups());
         return "catalog";
     }
     /**
@@ -127,6 +130,7 @@ public class SiteController {
         model.addAttribute("groupId", product.getGroup() != null ? product.getGroup().getId() : null);
         model.addAttribute("breadcrumbLabel", name);
         model.addAttribute("breadcrumbPath", getPath(product.getGroup()));
+        model.addAttribute("catalog", productDAO.getCatalogProductGroups());
         return "product";
     }
     /**
