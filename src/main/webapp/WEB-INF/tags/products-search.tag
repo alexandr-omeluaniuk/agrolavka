@@ -34,9 +34,10 @@
     }
 </style>
 <div class="input-group mb-3" id="products-search-container">
-    <input type="search" class="form-control" aria-label="Поиск товаров" id="products-search" placeholder="Поиск"
+    <input type="search" class="form-control" aria-label="Поиск товаров" id="products-search" placeholder="Быстрый поиск"
            autocomplete="off">
     <ul class="dropdown-menu shadow-sm" aria-labelledby="products-search-container" id="products-search-results-list"></ul>
+    <span class="input-group-text"><i class="fas fa-search"></i></span>
 </div>
 
 <script>
