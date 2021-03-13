@@ -14,6 +14,7 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -53,7 +54,7 @@ class DataUpdater {
     /**
      * Import MySklad data.
      */
-    //@Scheduled(fixedRate = 1000 * 60 * 60 * 3)
+    @Scheduled(fixedRate = 1000 * 60 * 60 * 3)
     protected void importMySkladData() {
         try {
             LOG.info("====================================== MY SKLAD DATA UPDATE ===================================");
@@ -162,6 +163,7 @@ class DataUpdater {
             eProduct.setGroup(actualProduct.getGroup());
             eProduct.setArticle(actualProduct.getArticle());
             eProduct.setBuyPrice(actualProduct.getBuyPrice());
+            eProduct.setDescription(actualProduct.getDescription());
             existProductsIDs.add(eProduct.getExternalId());
             LOG.trace("update product: " + eProduct);
         }

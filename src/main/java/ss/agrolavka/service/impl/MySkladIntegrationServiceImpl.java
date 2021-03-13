@@ -289,6 +289,9 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
         if (item.has("article")) {
             product.setArticle(item.getString("article"));
         }
+        if (item.has("description")) {
+            product.setDescription(item.getString("description"));
+        }
         if (item.has("productFolder")) {
             String link = item.getJSONObject("productFolder").getJSONObject("meta").getString("href");
             String productGroupId = link.substring(link.lastIndexOf("/") + 1);

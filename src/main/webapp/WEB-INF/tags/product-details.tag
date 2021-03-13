@@ -13,12 +13,21 @@
 <div class="row">
     <div class="col-lg-6 col-sm-12">
         <div class="card shadow-sm mb-5 bg-body rounded">
-            <div class="card-img-top product-image img-thumbnail" 
+            <div class="card-img-top product-image" 
                  style="background-image: url('/api/agrolavka/public/product-image/${product.getId()}')"></div>
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <small>Цена</small>
+                    <b><% out.print(String.format("%.2f", product.getPrice())); %> BYN</b>
+                </div>
+            </div>
         </div>
     </div>
     <div class="col-lg-6 col-sm-12">
-        <table class="table table-bordered rounded">
+        <h4>${product.name}</h4>
+        <p style="white-space: pre-line;">${product.description}</p>
+        
+        <!--table class="table table-bordered rounded">
             <tbody>
                 <tr>
                     <td>Категория</td>
@@ -29,6 +38,6 @@
                     <td style="text-align: right;"><% out.print(String.format("%.2f", product.getPrice())); %> BYN</td>
                 </tr>
             </tbody>
-        </table>
+        </table-->
     </div>
 </div>

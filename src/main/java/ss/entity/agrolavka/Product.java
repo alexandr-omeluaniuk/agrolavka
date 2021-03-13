@@ -15,6 +15,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -65,6 +66,11 @@ public class Product extends ExternalEntity implements Serializable {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "group_id")
     private ProductsGroup group;
+    /** Description. */
+    @Lob
+    @Size(max = 65535)
+    @Column(name = "description", length = 65535)
+    private String description;
     // ============================================== SET & GET =======================================================
     /**
      * @return the name
@@ -139,6 +145,18 @@ public class Product extends ExternalEntity implements Serializable {
     public void setArticle(String article) {
         this.article = article;
     }
+    /**
+     * @return the description
+     */
+    public String getDescription() {
+        return description;
+    }
+    /**
+     * @param description the description to set
+     */
+    public void setDescription(String description) {
+        this.description = description;
+    }
     // ================================================================================================================
     @Override
     public int hashCode() {
@@ -180,6 +198,7 @@ public class Product extends ExternalEntity implements Serializable {
         buyPriceJSON.put("value", getBuyPrice() * 100);
         json.put("buyPrice", buyPriceJSON);
         json.put("productFolder", getGroup().toMySkladJSON());
+        json.put("description", getDescription() == null ? "" : getDescription());
         return json;
     }
 }
