@@ -47,7 +47,7 @@ public class CatalogTag extends RequestContextAwareTag {
                             + "<i class=\"fas fa-seedling\"></i> Каталог товаров</h5>");
                 sb.append("</div>");
             sb.append("</div>");
-            sb.append("<div class=\"accordion\" id=\"catalog-0\">");
+            sb.append("<div class=\"accordion products-catalog-tree\" id=\"catalog-0\">");
             Set<ProductsGroup> allGroups = productDAO.getCatalogProductGroups();
             Map<String, List<ProductsGroup>> groupsMap = new HashMap<>();
             List<ProductsGroup> roots = new ArrayList<>();

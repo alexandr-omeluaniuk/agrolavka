@@ -188,7 +188,7 @@ public class SearchResultTag extends RequestContextAwareTag {
                 sb.append("<div class=\"card-img-top product-image\" style=\"background-image: url('")
                         .append(imageLink).append("')\"></div>");
                 sb.append("<div class=\"card-body\">");
-                    sb.append("<h6 class=\"card-title\" style=\"min-height: 60px\">")
+                    sb.append("<h6 class=\"card-title text-dark\" style=\"min-height: 60px\">")
                             .append(product.getName()).append("</h6>");
                     sb.append("<div class=\"d-flex justify-content-between align-items-center\">"
                             + "<span class=\"card-subtitle text-muted fs-6\">Цена</span>"
@@ -239,7 +239,6 @@ public class SearchResultTag extends RequestContextAwareTag {
             }
             cursor++;
         }
-//        pageLinks.append(renderPage(aPage, searchRequest.getPage()));
         cursor = Integer.valueOf(aPage + "");
         while (cursor < aPage + shift && cursor <= pagesCount) {
             pageLinks.append(renderPage(cursor, searchRequest.getPage()));
