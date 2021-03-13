@@ -156,6 +156,7 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
     public void attachImagesToProduct(Product product) throws Exception {
         for (EntityImage image : product.getImages()) {
             String response = request("/entity/product/" + product.getExternalId() + "/images", "GET", null);
+            // TODO: save image.
         }
     }
     // ============================================= PRIVATE ==========================================================

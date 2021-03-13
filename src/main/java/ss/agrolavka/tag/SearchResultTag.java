@@ -17,8 +17,8 @@ import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.tags.RequestContextAwareTag;
 import ss.agrolavka.dao.ProductDAO;
-import ss.entity.agrolavka.Product;
 import ss.agrolavka.wrapper.ProductsSearchRequest;
+import ss.entity.agrolavka.Product;
 import ss.martin.platform.dao.CoreDAO;
 
 /**
@@ -231,14 +231,23 @@ public class SearchResultTag extends RequestContextAwareTag {
         }
         Integer aPage = page != null ? page : 1;
         StringBuilder pageLinks = new StringBuilder();
-        pageLinks.append("<li class=\"page-item ").append(searchRequest.getPage().equals(aPage) ? "active" : "")
-                .append("\"><a class=\"page-link\" href=\"").append(createLink(aPage, null))
-                .append("\">").append(aPage).append("</a></li>");
-        if (aPage != pagesCount) {
+        final int shift = 3;
+        int cursor = aPage - shift;
+        while (cursor < aPage) {
+            if (cursor > 0) {
+                pageLinks.append(renderPage(cursor, searchRequest.getPage()));
+            }
+            cursor++;
+        }
+//        pageLinks.append(renderPage(aPage, searchRequest.getPage()));
+        cursor = Integer.valueOf(aPage + "");
+        while (cursor < aPage + shift && cursor <= pagesCount) {
+            pageLinks.append(renderPage(cursor, searchRequest.getPage()));
+            cursor++;
+        }
+        if (cursor < pagesCount) {
             pageLinks.append("<li class=\"page-item disabled\"><a class=\"page-link\" href=\"#\">...</a></li>");
-            pageLinks.append("<li class=\"page-item\"><a class=\"page-link\" href=\"")
-                    .append(createLink(pagesCount, null))
-                    .append("\">").append(pagesCount).append("</a></li>");
+            pageLinks.append(renderPage(pagesCount, searchRequest.getPage()));
         }
         StringBuilder sb = new StringBuilder();
         sb.append("<nav aria-label=\"Page navigation\" class=\"d-flex justify-content-start\">" +
@@ -315,6 +324,14 @@ public class SearchResultTag extends RequestContextAwareTag {
             });
             sb.setLength(sb.length() - 1);
         }
+        return sb.toString();
+    }
+    
+    private String renderPage(Integer page, Integer currentPage) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("<li class=\"page-item ").append(currentPage.equals(page) ? "active" : "")
+                .append("\"><a class=\"page-link\" href=\"").append(createLink(page, null))
+                .append("\">").append(page).append("</a></li>");
         return sb.toString();
     }
 }
