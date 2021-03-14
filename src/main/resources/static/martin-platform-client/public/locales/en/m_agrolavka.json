@@ -14,5 +14,8 @@
         "product_description": "Description",
         "product_code": "Code",
         "synchronize": "Synchronize MySklad data"
+    },
+    "products_group": {
+        "new_group": "Create new product group"
     }
 }

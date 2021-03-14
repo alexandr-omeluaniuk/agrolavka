@@ -14,5 +14,8 @@
         "product_description": "Описание",
         "product_code": "Код товара",
         "synchronize": "Синхонизировать данные c программой Мой Склад"
+    },
+    "products_group": {
+        "new_group": "Создать новую группу товаров"
     }
 }

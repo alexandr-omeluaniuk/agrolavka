@@ -10,6 +10,9 @@ import { useTranslation } from 'react-i18next';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
+import Icon from '@material-ui/core/Icon';
+import IconButton from '@material-ui/core/IconButton';
+import Tooltip from '@material-ui/core/Tooltip';
 import StyledTreeView from '../../../component/tree/StyledTreeView';
 import DataService from '../../../service/DataService';
 import { TreeNode } from '../../../util/model/TreeNode';
@@ -24,6 +27,21 @@ const useStyles = makeStyles(theme => ({
     divider: {
         marginTop: theme.spacing(1),
         marginBottom: theme.spacing(1)
+    },
+    title: {
+        display: 'flex',
+        alignItems: 'center',
+        flex: 1
+    },
+    titleIcon: {
+        marginRight: theme.spacing(1)
+    },
+    toolbar: {
+        display: 'flex',
+        justifyContent: 'space-between'
+    },
+    newGroup: {
+        color: theme.palette.success.main
     }
 }));
 
@@ -91,7 +109,18 @@ function ProductsGroups(props) {
     }
     return (
             <Paper elevation={1} className={classes.root}>
-                <Typography variant={'h6'}>{t('m_agrolavka:products.product_groups')}</Typography>
+                <div className={classes.toolbar}>
+                    <Typography variant={'h6'} className={classes.title}>
+                        <Icon className={classes.titleIcon}>account_tree</Icon> {t('m_agrolavka:products.product_groups')}
+                    </Typography>
+                    <div>
+                        <Tooltip title={t('m_agrolavka:products_group.new_group')}>
+                            <IconButton className={classes.newGroup}>
+                                <Icon>add</Icon>
+                            </IconButton>
+                        </Tooltip>
+                    </div>
+                </div>
                 <Divider className={classes.divider}/>
                 <StyledTreeView data={buildTree()} onSelect={onProductGroupSelect}/>
             </Paper>
