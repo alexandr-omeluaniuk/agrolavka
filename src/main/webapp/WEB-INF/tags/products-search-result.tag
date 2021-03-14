@@ -4,7 +4,8 @@
     Author     : alex
 --%>
 
-<%@tag description="put the tag description here" pageEncoding="UTF-8" import="java.lang.*,java.util.*,ss.entity.agrolavka.*"%>
+<%@tag description="put the tag description here" pageEncoding="UTF-8" 
+       import="java.lang.*,java.util.*,ss.entity.agrolavka.*,ss.agrolavka.constants.SiteConstants"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%-- The list of normal or fragment attributes can be specified here: --%>
@@ -27,5 +28,20 @@
 <div class="row products-search-result">
     <div class="col-sm-12">
         <t:products-search-result-pagination pages="${pages}" page="${page}" view="${view}"></t:products-search-result-pagination>
+        <c:choose>
+            <c:when test="${searchResult.isEmpty()}">
+                <p class="text-center">По вашему запросу ничего не найдено</p>
+            </c:when>
+            <c:otherwise>
+                <c:choose>
+                    <c:when test="${'TILES' == view}">
+                        
+                    </c:when>
+                    <c:otherwise>
+                        
+                    </c:otherwise>
+                </c:choose>
+            </c:otherwise>
+        </c:choose>
     </div>
 </div>

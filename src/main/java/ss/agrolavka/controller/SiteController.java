@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import ss.agrolavka.constants.SiteConstants;
 import ss.agrolavka.dao.ProductDAO;
 import ss.agrolavka.wrapper.ProductsSearchRequest;
 import ss.entity.agrolavka.Product;
@@ -31,10 +32,6 @@ import ss.martin.platform.dao.CoreDAO;
 public class SiteController {
     /** Logger. */
     private static final Logger LOG = LoggerFactory.getLogger(SiteController.class);
-    /** Columns. */
-    private static final int COLUMNS = 3;
-    /** Rows. */
-    private static final int ROWS = 5;
     /** Core DAO. */
     @Autowired
     private CoreDAO coreDAO;
@@ -157,11 +154,12 @@ public class SiteController {
             ProductsSearchRequest searchRequest = new ProductsSearchRequest();
             searchRequest.setGroupId(groupId);
             searchRequest.setPage(page == null ? 1 : page);
-            searchRequest.setPageSize(COLUMNS * ROWS);
+            int pageSize = SiteConstants.SEARCH_RESULT_TILES_COLUMNS * SiteConstants.SEARCH_RESULT_TILES_ROWS;
+            searchRequest.setPageSize(pageSize);
             model.addAttribute("searchResult", productDAO.search(searchRequest));
             Long count = productDAO.count(searchRequest);
             model.addAttribute(
-                    "searchResultPages", Double.valueOf(Math.ceil((double) count / (ROWS * COLUMNS))).intValue());
+                    "searchResultPages", Double.valueOf(Math.ceil((double) count / pageSize)).intValue());
         } catch (Exception e) {
             LOG.error("Search products fail!", e);
             model.addAttribute("searchResult", new ArrayList<Product>());
