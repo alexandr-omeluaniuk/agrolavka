@@ -21,6 +21,9 @@
         .products-search-result {
             margin-top: 16px;
         }
+        .product-description {
+            max-width: 300px;
+        }
     }
     .products-toolbar {
         margin-bottom: 10px;
@@ -36,6 +39,18 @@
         background-position: center;
         height: 0;
         padding-top: 100%;
+    }
+    .product-item {
+        display: flex;
+    }
+    .product-item:hover {
+        box-shadow: 0 .125rem .25rem rgba(0,0,0,.075)!important;
+    }
+    .product-description {
+        max-width: 600px;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        display: inline-block;
     }
 </style>
 <div class="row products-search-result">
@@ -68,7 +83,9 @@
                         </c:forEach>
                     </c:when>
                     <c:otherwise>
-                        
+                        <c:forEach items="${searchResult}" var="product">
+                            <t:product-list-item product="${product}"></t:product-list-item>
+                        </c:forEach>
                     </c:otherwise>
                 </c:choose>
             </c:otherwise>
