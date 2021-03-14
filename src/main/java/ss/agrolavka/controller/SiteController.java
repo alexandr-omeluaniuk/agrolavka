@@ -90,13 +90,14 @@ public class SiteController {
         }
         model.addAttribute("title", group.getName());
         model.addAttribute("groupId", groupId);
-        model.addAttribute("page", page);
-        model.addAttribute("view", view);
+        model.addAttribute("page", page == null ? 1 : page);
+        model.addAttribute("view", view == null ? "TILES" : view);
         model.addAttribute("breadcrumbLabel", group.getName());
         List<ProductsGroup> path = getPath(group);
         path.remove(group);
         model.addAttribute("breadcrumbPath", path);
         model.addAttribute("catalog", productDAO.getCatalogProductGroups());
+        insertSearchResultToPage(model, groupId, page);
         return "catalog";
     }
     /**

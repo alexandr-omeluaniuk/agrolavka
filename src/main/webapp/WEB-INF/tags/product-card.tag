@@ -17,7 +17,7 @@
             <h6 class="card-title text-dark" style="min-height: 60px">${product.name}</h6>
             <div class="d-flex justify-content-between align-items-center">
                 <span class="card-subtitle text-muted fs-6">Цена</span>
-                <span class="text-dark fw-bold product-price"><%= String.format("%.2f", product.getPrice()) %> BYN</span>
+                <span class="text-dark fw-bold"><%= String.format("%.2f", product.getPrice()) %> BYN</span>
             </div>
         </div>
     </div>

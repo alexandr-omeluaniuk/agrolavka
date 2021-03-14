@@ -29,10 +29,21 @@
         cursor: pointer;
         box-shadow: 0 .5rem 1rem rgba(0,0,0,.15) !important;
     }
+    .product-image {
+        display: block;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        height: 0;
+        padding-top: 100%;
+    }
 </style>
 <div class="row products-search-result">
     <div class="col-sm-12">
-        <t:products-search-result-pagination pages="${pages}" page="${page}" view="${view}"></t:products-search-result-pagination>
+        <% String url = groupId != null ? ("/catalog/" + groupId) : "/catalog"; %>
+        <t:products-search-result-pagination pages="${pages}" page="${page}" view="${view}" url="<%= url %>">
+            
+        </t:products-search-result-pagination>
         <c:choose>
             <c:when test="${searchResult.isEmpty()}">
                 <p class="text-center">По вашему запросу ничего не найдено</p>

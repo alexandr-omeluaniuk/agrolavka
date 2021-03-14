@@ -10,9 +10,9 @@
 <%@attribute name="pages" required="true" type="Integer"%>
 <%@attribute name="page" required="true" type="Integer"%>
 <%@attribute name="view" required="true" type="String"%>
+<%@attribute name="url" required="true" type="String"%>
 
 <%-- any content can be specified here e.g.: --%>
-
 <%!
     String outputPagination() {
         StringBuilder pageLinks = new StringBuilder();
@@ -56,7 +56,7 @@
         }
         StringBuilder sb = new StringBuilder();
         if (!params.isEmpty()) {
-            sb.append("/catalog?");
+            sb.append(url).append("?");
             params.forEach(p -> {
                 sb.append(p).append("&");
             });

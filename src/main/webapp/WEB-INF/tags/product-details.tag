@@ -10,6 +10,16 @@
 <%@attribute name="product" required="true" type="ss.entity.agrolavka.Product"%>
 
 <%-- any content can be specified here e.g.: --%>
+<style>
+    .product-image {
+        display: block;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        height: 0;
+        padding-top: 100%;
+    }
+</style>
 <div class="row">
     <div class="col-lg-6 col-sm-12">
         <div class="card shadow-sm mb-5 bg-body rounded">

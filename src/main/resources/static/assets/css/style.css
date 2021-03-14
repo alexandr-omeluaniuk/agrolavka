@@ -1638,14 +1638,6 @@ section {
     min-height: 420px;
     width: 100%;
 }
-.product-image {
-    display: block;
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-    height: 0;
-    padding-top: 100%;
-}
 .page-link, .page-item {
     color: #444;
 }
