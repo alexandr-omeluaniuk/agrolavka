@@ -57,7 +57,7 @@
                                 <c:forEach step="1" begin="1" end="${SiteConstants.SEARCH_RESULT_TILES_COLUMNS}">
                                     <div class="col-sm">
                                         <% if (searchResult.size() > counter) { %>
-                                            <t:product-card product="${searchResult.get(counter)}"></t:product-card>
+                                            <t:product-card product="<%= searchResult.get(counter) %>"></t:product-card>
                                         <% } %>
                                     </div>
                                     <% 
@@ -73,5 +73,8 @@
                 </c:choose>
             </c:otherwise>
         </c:choose>
+        <t:products-search-result-pagination pages="${pages}" page="${page}" view="${view}" url="<%= url %>">
+            
+        </t:products-search-result-pagination>
     </div>
 </div>

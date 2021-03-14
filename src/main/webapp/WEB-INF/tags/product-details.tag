@@ -36,18 +36,5 @@
     <div class="col-lg-6 col-sm-12">
         <h4>${product.name}</h4>
         <p style="white-space: pre-line;">${product.description}</p>
-        
-        <!--table class="table table-bordered rounded">
-            <tbody>
-                <tr>
-                    <td>Категория</td>
-                    <td style="text-align: right;">${product.getGroup().getName()}</td>
-                </tr>
-                <tr>
-                    <td>Цена</td>
-                    <td style="text-align: right;"><% out.print(String.format("%.2f", product.getPrice())); %> BYN</td>
-                </tr>
-            </tbody>
-        </table-->
     </div>
 </div>

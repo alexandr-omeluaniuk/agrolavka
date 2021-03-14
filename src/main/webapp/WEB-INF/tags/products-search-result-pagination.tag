@@ -4,6 +4,8 @@
     Author     : alex
 --%>
 
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@tag description="put the tag description here" pageEncoding="UTF-8" import="java.util.*"%>
 
 <%-- The list of normal or fragment attributes can be specified here: --%>
@@ -67,31 +69,33 @@
 %>
 <div class="row products-toolbar">
     <div class="col-6 d-flex justify-content-start">
-        <nav aria-label="Page navigation" class="d-flex justify-content-start">
-            <ul class="pagination" style="margin-bottom: 0;">
-                <li class="page-item ${page == 1 ? " disabled" : ""}">
-                    <a class="page-link" href="<%= createLink(1, null) %>" aria-label="Первая страница">
-                        <i class="fas fa-angle-double-left"></i>
-                    </a>
-                </li>
-                <li class="page-item ${page == 1 ? " disabled" : ""}">
-                    <a class="page-link" href="<%= createLink(page - 1, null) %>" aria-label="Назад">
-                        <i class="fas fa-angle-left"></i>
-                    </a>
-                </li>
-                <%= outputPagination() %>
-                <li class="page-item ${page == pagesCount ? " disabled" : ""}">
-                    <a class="page-link" href="<%= createLink(page + 1, null) %>" aria-label="Вперед">
-                        <i class="fas fa-angle-right"></i>
-                    </a>
-                </li>
-                <li class="page-item ${page == pagesCount ? " disabled" : ""}">
-                    <a class="page-link" href="<%= createLink(pages, null) %>" aria-label="Последняя страница">
-                        <i class="fas fa-angle-double-right"></i>
-                    </a>
-                </li>
-            </ul>
-        </nav>
+        <c:if test="${pages > 1}">
+            <nav aria-label="Page navigation" class="d-flex justify-content-start">
+                <ul class="pagination" style="margin-bottom: 0;">
+                    <li class="page-item ${page == 1 ? " disabled" : ""}">
+                        <a class="page-link" href="<%= createLink(1, null) %>" aria-label="Первая страница">
+                            <i class="fas fa-angle-double-left"></i>
+                        </a>
+                    </li>
+                    <li class="page-item ${page == 1 ? " disabled" : ""}">
+                        <a class="page-link" href="<%= createLink(page - 1, null) %>" aria-label="Назад">
+                            <i class="fas fa-angle-left"></i>
+                        </a>
+                    </li>
+                    <%= outputPagination() %>
+                    <li class="page-item ${page == pages ? " disabled" : ""}">
+                        <a class="page-link" href="<%= createLink(page + 1, null) %>" aria-label="Вперед">
+                            <i class="fas fa-angle-right"></i>
+                        </a>
+                    </li>
+                    <li class="page-item ${page == pages ? " disabled" : ""}">
+                        <a class="page-link" href="<%= createLink(pages, null) %>" aria-label="Последняя страница">
+                            <i class="fas fa-angle-double-right"></i>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </c:if>
     </div>
     <div class="col-6 d-flex justify-content-end">
         <div class="btn-group">
