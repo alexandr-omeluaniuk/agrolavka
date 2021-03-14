@@ -26,15 +26,6 @@
 </style>
 <div class="row products-search-result">
     <div class="col-sm-12">
-        <div class="row products-toolbar">
-            <div class="col-6 d-flex justify-content-start">
-                <t:products-search-result-pagination pages="${pages}" page="${page}" view="${view}">
-                    
-                </t:products-search-result-pagination>
-            </div>
-            <div class="col-6 d-flex justify-content-end">
-                
-            </div>
-        </div>
+        <t:products-search-result-pagination pages="${pages}" page="${page}" view="${view}"></t:products-search-result-pagination>
     </div>
 </div>

@@ -65,29 +65,42 @@
         return sb.toString();
     }
 %>
-
-<nav aria-label="Page navigation" class="d-flex justify-content-start">
-    <ul class="pagination" style="margin-bottom: 0;">
-        <li class="page-item ${page == 1 ? " disabled" : ""}">
-            <a class="page-link" href="<%= createLink(1, null) %>" aria-label="Первая страница">
-                <i class="fas fa-angle-double-left"></i>
+<div class="row products-toolbar">
+    <div class="col-6 d-flex justify-content-start">
+        <nav aria-label="Page navigation" class="d-flex justify-content-start">
+            <ul class="pagination" style="margin-bottom: 0;">
+                <li class="page-item ${page == 1 ? " disabled" : ""}">
+                    <a class="page-link" href="<%= createLink(1, null) %>" aria-label="Первая страница">
+                        <i class="fas fa-angle-double-left"></i>
+                    </a>
+                </li>
+                <li class="page-item ${page == 1 ? " disabled" : ""}">
+                    <a class="page-link" href="<%= createLink(page - 1, null) %>" aria-label="Назад">
+                        <i class="fas fa-angle-left"></i>
+                    </a>
+                </li>
+                <%= outputPagination() %>
+                <li class="page-item ${page == pagesCount ? " disabled" : ""}">
+                    <a class="page-link" href="<%= createLink(page + 1, null) %>" aria-label="Вперед">
+                        <i class="fas fa-angle-right"></i>
+                    </a>
+                </li>
+                <li class="page-item ${page == pagesCount ? " disabled" : ""}">
+                    <a class="page-link" href="<%= createLink(pages, null) %>" aria-label="Последняя страница">
+                        <i class="fas fa-angle-double-right"></i>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+    <div class="col-6 d-flex justify-content-end">
+        <div class="btn-group">
+            <a href="<%= createLink(null, "TILES") %>" class="btn btn-outline-info ${"TILES".equals(view) ? "active" : ""}">
+                <i class="fas fa-th" ${"TILES".equals(view) ? " style=\"color: white;\"" : ""}></i>
             </a>
-        </li>
-        <li class="page-item ${page == 1 ? " disabled" : ""}">
-            <a class="page-link" href="<%= createLink(page - 1, null) %>" aria-label="Назад">
-                <i class="fas fa-angle-left"></i>
+            <a href="<%= createLink(null, "LIST") %>" class="btn btn-outline-info ${"LIST".equals(view) ? "active" : ""}">
+                <i class="fas fa-list" ${"LIST".equals(view) ? " style=\"color: white;\"" : ""}></i>
             </a>
-        </li>
-        <%= outputPagination() %>
-        <li class="page-item ${page == pagesCount ? " disabled" : ""}">
-            <a class="page-link" href="<%= createLink(page + 1, null) %>" aria-label="Вперед">
-                <i class="fas fa-angle-right"></i>
-            </a>
-        </li>
-        <li class="page-item ${page == pagesCount ? " disabled" : ""}">
-            <a class="page-link" href="<%= createLink(pages, null) %>" aria-label="Последняя страница">
-                <i class="fas fa-angle-double-right"></i>
-            </a>
-        </li>
-    </ul>
-</nav>
+        </div>
+    </div>
+</div>
