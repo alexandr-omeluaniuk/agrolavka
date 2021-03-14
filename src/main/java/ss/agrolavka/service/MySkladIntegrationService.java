@@ -82,4 +82,10 @@ public interface MySkladIntegrationService {
      * @throws Exception error.
      */
     String createProductsGroup(ProductsGroup group) throws Exception;
+    /**
+     * Delete product group.
+     * @param group group.
+     * @throws Exception error.
+     */
+    void deleteProductsGroup(ProductsGroup group) throws Exception;
 }

@@ -67,6 +67,7 @@ function ProductsGroups(props) {
     const [formDisabled, setFormDisabled] = React.useState(false);
     const [record, setRecord] = React.useState(null);
     const [selectedProductGroup, setSelectedProductGroup] = React.useState(null);
+    const [confirmDialogOpen, setConfirmDialogOpen] = React.useState(false);
     // ----------------------------------------------------- METHODS ----------------------------------------------------------------------
     const buildTree = () => {
         const result = [];
@@ -128,6 +129,15 @@ function ProductsGroups(props) {
         setFormOpen(true);
         setRecord(null);
     };
+    const onDeleteGroup = () => {
+        setConfirmDialogOpen(true);
+    };
+    const doDelete = () => {
+        setConfirmDialogOpen(false);
+        dataService.delete('/platform/entity/ss.entity.agrolavka.ProductsGroup/' + selectedProductGroup.id).then(() => {
+            setProductGroups(null);
+        });
+    };
     // -------------------------------------------------------- HOOKS ---------------------------------------------------------------------
     useEffect(() => {
         if (productGroups === null) {
@@ -164,7 +174,7 @@ function ProductsGroups(props) {
                         {selectedProductGroup ? (
                             <React.Fragment>
                                 <Tooltip title={t('m_agrolavka:products_groups.delete_group')}>
-                                    <IconButton className={classes.deleteGroup}>
+                                    <IconButton className={classes.deleteGroup} onClick={onDeleteGroup}>
                                         <Icon>delete</Icon>
                                     </IconButton>
                                 </Tooltip>
@@ -190,6 +200,10 @@ function ProductsGroups(props) {
                             disabled={formDisabled}/>
                     </FormDialog>
                 ) : null}
+                <ConfirmDialog open={confirmDialogOpen} handleClose={() => setConfirmDialogOpen(false)} title={t('component.datatable.delete')}
+                    contentText={t('component.datatable.confirm_delete_message')} acceptBtnLabel={t('component.datatable.confirm')}
+                    declineBtnLabel={t('component.datatable.cancel')} declineBtnOnClick={() => setConfirmDialogOpen(false)}
+                    acceptBtnOnClick={doDelete}/>
             </Paper>
     );
 }

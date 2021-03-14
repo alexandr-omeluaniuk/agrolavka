@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import ss.agrolavka.service.MySkladIntegrationService;
 import ss.entity.agrolavka.ProductsGroup;
+import ss.martin.platform.dao.CoreDAO;
 import ss.martin.platform.util.PlatformEntityListener;
 
 /**
@@ -23,6 +24,9 @@ class ProductsGroupEntityListener implements PlatformEntityListener<ProductsGrou
     /** MySklad integration service. */
     @Autowired
     private MySkladIntegrationService mySkladIntegrationService;
+    /** Core DAO. */
+    @Autowired
+    private CoreDAO coreDAO;
     
     @Override
     public Class<ProductsGroup> entity() {
@@ -40,6 +44,9 @@ class ProductsGroupEntityListener implements PlatformEntityListener<ProductsGrou
 
     @Override
     public void preDelete(Set<Long> ids) throws Exception {
+        for (Long id : ids) {
+            ProductsGroup group = coreDAO.findById(id, ProductsGroup.class);
+            mySkladIntegrationService.deleteProductsGroup(group);
+        }
     }
-    
 }

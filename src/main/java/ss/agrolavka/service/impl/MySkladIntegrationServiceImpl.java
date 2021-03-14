@@ -177,6 +177,10 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
         JSONObject json = new JSONObject(response);
         return json.getString("id");
     }
+    @Override
+    public void deleteProductsGroup(ProductsGroup group) throws Exception {
+        request("/entity/productfolder/" + group.getExternalId(), "DELETE", null);
+    }
     // ============================================= PRIVATE ==========================================================
     /**
      * Request data from MySklad with predefined headers.
