@@ -18,19 +18,31 @@
     }
     #products-search-results-list {
         padding: 0;
-        border: none;
         margin-top: 0px;
         max-height: calc(100vh - 100px);
         overflow-y: auto;
     }
     #products-search:focus {
-        color: #1bb1dc;
+        color: rgb(121,82,179);
         border-color: #1bb1dc;
-        box-shadow: 0 0 0 0.25rem rgba(27,177,220,.25);
+        box-shadow: 0 0 0 3px rgb(121 82 179 / 25%);
+        border-color: #7952b3;
     }
     #products-search {
         border-top-right-radius: .25rem;
         border-bottom-right-radius: .25rem;
+    }
+    #products-search-results-list h6 {
+        max-width: 400px;
+        white-space: pre-line;
+        font-size: .9rem;
+    }
+    #products-search-results-list .text-muted {
+        font-size: .8rem;
+    }
+    #products-search-results-list .highlighted-text {
+        color: rgb(121,82,179);
+        background-color: rgba(121,82,179,.07);
     }
 </style>
 <div class="input-group mb-3" id="products-search-container">
@@ -47,7 +59,7 @@
         function highlightText(text, searchText) {
             const idx = text.toLowerCase().indexOf(searchText.toLowerCase());
             if (searchText.length > 0 && idx !== -1) {
-                return text.substring(0, idx) + '<span class="text-info" style="background-color: rgba(27,177,220,.07);">' +
+                return text.substring(0, idx) + '<span class="highlighted-text">' +
                     text.substring(idx, idx + searchText.length) + '</span>' + text.substring(idx + searchText.length);
             } else {
                 return text;
@@ -91,17 +103,20 @@
                                 sb = noResult;
                             } else {
                                 data.forEach(product => {
-                                    sb += '<a href="/product/' + product.id + '?name=' + encodeURIComponent(product.name)
-                                                + '" class="list-group-item list-group-item-action">'
+                                    sb += 
+                                        '<li>'
+                                            + '<a class="dropdown-item" href="/product/' + product.id + '?name='
+                                                    + encodeURIComponent(product.name) + '">'
                                                 + '<div class="d-flex w-100 justify-content-between">'
                                                     + '<h6 class="mb-1">' + highlightText(product.name, searchText) + '</h6>'
-                                                    + '<small style="margin-left: 20px; min-width: 100px; text-align: right;"' 
+                                                    + '<small style="margin-left: 10px; min-width: 80px; text-align: right;"' 
                                                         + 'class="fw-bold">' + parseFloat(product.price).toFixed(2) + ' BYN</small>'
                                                 + '</div>'
                                                 + '<div class="d-flex justify-content-between">'
                                                     + '<small class="text-muted">' + (product.group ? product.group.name : '') + '</small>'
                                                 + '</div>'
-                                           + '</a>';
+                                            + '</a>'
+                                        + '</li>';
                                 });
                             }
                             searchResultOutput.innerHTML = sb;

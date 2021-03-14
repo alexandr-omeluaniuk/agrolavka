@@ -46,7 +46,7 @@
             <i class="bi bi-list mobile-nav-toggle"></i>
         </nav>
 
-        <div class="social-links">
+        <div class="social-links d-none d-lg-block">
             <!--a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
             <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
             <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a-->
