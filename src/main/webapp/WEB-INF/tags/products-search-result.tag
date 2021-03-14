@@ -10,7 +10,8 @@
 <%-- The list of normal or fragment attributes can be specified here: --%>
 <%@attribute name="searchResult" required="true" type="List<Product>"%>
 <%@attribute name="pages" required="true" type="Integer"%>
-<%@attribute name="page" required="false" type="Integer"%>
+<%@attribute name="page" required="true" type="Integer"%>
+<%@attribute name="view" required="true" type="String"%>
 
 <%-- any content can be specified here e.g.: --%>
 <style>
@@ -27,7 +28,7 @@
     <div class="col-sm-12">
         <div class="row products-toolbar">
             <div class="col-6 d-flex justify-content-start">
-                <t:products-search-result-pagination pages="${pages}" page="${page == null ? 1 : page}">
+                <t:products-search-result-pagination pages="${pages}" page="${page}" view="${view}">
                     
                 </t:products-search-result-pagination>
             </div>

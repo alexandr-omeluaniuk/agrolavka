@@ -64,12 +64,12 @@ public class SiteController {
      * @return JSP page.
      */
     @RequestMapping("/catalog")
-    public String productsGroup(Model model,
+    public String catalog(Model model,
             @RequestParam(name = "page", required = false) Integer page,
             @RequestParam(name = "view", required = false) String view) {
         model.addAttribute("title", "Товары для сада и огорода");
-        model.addAttribute("page", page);
-        model.addAttribute("view", view);
+        model.addAttribute("page", page == null ? 1 : page);
+        model.addAttribute("view", view == null ? "TILES" : view);
         model.addAttribute("catalog", productDAO.getCatalogProductGroups());
         insertSearchResultToPage(model, null, page);
         return "catalog";
