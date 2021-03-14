@@ -15,13 +15,11 @@ import TextField from '@material-ui/core/TextField';
 import Avatar from '@material-ui/core/Avatar';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
-import Divider from '@material-ui/core/Divider';
-import StyledTreeView from '../../../component/tree/StyledTreeView';
 import DataService from '../../../service/DataService';
-import { TreeNode } from '../../../util/model/TreeNode';
 import { TableConfig, TableColumn, FormConfig, FormField, Validator, ALIGN_RIGHT, ApiURL } from '../../../util/model/TableConfig';
 import { TYPES, VALIDATORS } from '../../../service/DataTypeService';
 import DataTable from '../../../component/datatable/DataTable';
+import ProductsGroups from './ProductsGroups';
 
 let dataService = new DataService();
 
@@ -42,53 +40,11 @@ const useStyles = makeStyles(theme => ({
 function Products() {
     const classes = useStyles();
     const { t } = useTranslation();
-    const [productGroups, setProductGroups] = React.useState(null);
     const [selectedProductGroup, setSelectedProductGroup] = React.useState(null);
     const [tableConfig, setTableConfig] = React.useState(null);
     const [filterProductName, setFilterProductName] = React.useState(null);
     const [filterCode, setFilterCode] = React.useState(null);
     // ------------------------------------------------------- METHODS --------------------------------------------------------------------
-    const buildTree = () => {
-        const result = [];
-        const map = {};
-        const roots = [];
-        productGroups.forEach(pg => {
-            if (pg.parentId) {
-                if (!map[pg.parentId]) {
-                    map[pg.parentId] = [];
-                }
-                map[pg.parentId].push(pg);
-            } else {
-                roots.push(pg);
-            }
-        });
-        function compare(a, b) {
-            return a.name > b.name ? 1 : -1;
-        }
-        const recursiveWalkTree = (productGroup) => {
-            const node = new TreeNode(productGroup.id, productGroup.name);
-            node.setOrigin(productGroup);
-            const children = [];
-            const childProductGroups = map[productGroup.externalId];
-            if (childProductGroups) {
-                childProductGroups.sort(compare);
-                childProductGroups.forEach(child => {
-                    children.push(recursiveWalkTree(child));
-                });
-            }
-            node.setChildren(children);
-            return node;
-        };
-        roots.sort(compare);
-        roots.unshift(new TreeNode(-1, t('m_agrolavka:products.all_product_groups')));
-        roots.forEach(root => {
-            result.push(recursiveWalkTree(root));
-        });
-        return result;
-    };
-    const onProductGroupSelect = (node) => {
-        setSelectedProductGroup(node.getId() > 0 ? node.getOrigin() : null);
-    };
     const productsFilter = () => {
         return (
                 <Grid container spacing={2}>
@@ -116,18 +72,10 @@ function Products() {
     };
     const synchronizeData = () => {
         dataService.put('/agrolavka/protected/mysklad/synchronize').then(resp => {
-            setProductGroups(null);
+            //setProductGroups(null);
         });
     };
     // ------------------------------------------------------- HOOKS ----------------------------------------------------------------------
-    useEffect(() => {
-        if (productGroups === null) {
-            dataService.get('/platform/entity/ss.entity.agrolavka.ProductsGroup').then(resp => {
-                setProductGroups(resp.data);
-            });
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [productGroups]);
     useEffect(() => {
         const apiUrl = new ApiURL(
                 '/agrolavka/protected/product/search',
@@ -203,19 +151,15 @@ function Products() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedProductGroup, filterProductName, filterCode]);
     // ------------------------------------------------------- RENDERING ------------------------------------------------------------------
-    if (productGroups === null) {
+    if (tableConfig === null) {
         return null;
     }
     return (
             <Grid container spacing={2}>
-                <Grid item sm={12} md={3} lg={2}>
-                    <Paper elevation={1} className={classes.root}>
-                        <Typography variant={'h6'}>{t('m_agrolavka:products.product_groups')}</Typography>
-                        <Divider className={classes.divider}/>
-                        <StyledTreeView data={buildTree()} onSelect={onProductGroupSelect}/>
-                    </Paper>
+                <Grid item sm={12} md={3}>
+                    <ProductsGroups onSelect={setSelectedProductGroup}/>
                 </Grid>
-                <Grid item sm={12} md={9} lg={10}>
+                <Grid item sm={12} md={9}>
                     <DataTable tableConfig={tableConfig}/>
                 </Grid>
             </Grid>
