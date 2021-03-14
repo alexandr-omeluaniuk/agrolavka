@@ -39,10 +39,9 @@
                     <div class="col-lg-9 col-md-12 intro-info order-lg-first order-last">
                         <t:breadcrumb label="${breadcrumbLabel}" groups="${breadcrumbPath}"></t:breadcrumb>
                         <t:products-search-result searchResult="${searchResult}" pages="${searchResultPages}"
-                                                  page="${page}" view="${view}">
+                                                  page="${page}" view="${view}" groupId="${groupId}">
                             
                         </t:products-search-result>
-                        <cmp:search-result-tag groupId="${groupId}" page="${page}" view="${view}"></cmp:search-result-tag>
                     </div>
                 </div>
             </div>

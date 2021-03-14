@@ -13,6 +13,7 @@
 <%@attribute name="pages" required="true" type="Integer"%>
 <%@attribute name="page" required="true" type="Integer"%>
 <%@attribute name="view" required="true" type="String"%>
+<%@attribute name="groupId" required="false" type="Long"%>
 
 <%-- any content can be specified here e.g.: --%>
 <style>
@@ -23,6 +24,10 @@
     }
     .products-toolbar {
         margin-bottom: 10px;
+    }
+    .product-card:hover {
+        cursor: pointer;
+        box-shadow: 0 .5rem 1rem rgba(0,0,0,.15) !important;
     }
 </style>
 <div class="row products-search-result">
@@ -39,10 +44,14 @@
                         <c:forEach step="1" begin="1" end="${SiteConstants.SEARCH_RESULT_TILES_ROWS}">
                             <div class="row">
                                 <c:forEach step="1" begin="1" end="${SiteConstants.SEARCH_RESULT_TILES_COLUMNS}">
-                                    <% counter++; %>
                                     <div class="col-sm">
-                                        <t:product-card product="${searchResult.get(counter)}"></t:product-card>
+                                        <% if (searchResult.size() > counter) { %>
+                                            <t:product-card product="${searchResult.get(counter)}"></t:product-card>
+                                        <% } %>
                                     </div>
+                                    <% 
+                                        counter++;
+                                    %>
                                 </c:forEach>
                             </div>
                         </c:forEach>
