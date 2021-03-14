@@ -20,7 +20,7 @@ import ss.martin.platform.util.PlatformEntityListener;
  */
 @Component
 @Qualifier("ProductEntityListener")
-public class ProductEntityListener implements PlatformEntityListener<Product> {
+class ProductEntityListener implements PlatformEntityListener<Product> {
     /** MySklad integration service. */
     @Autowired
     private MySkladIntegrationService mySkladIntegrationService;

@@ -75,4 +75,11 @@ public interface MySkladIntegrationService {
      * @throws Exception error.
      */
     List<PriceType> getPriceTypes() throws Exception;
+    /**
+     * Create products group.
+     * @param group products group.
+     * @return external ID.
+     * @throws Exception error.
+     */
+    String createProductsGroup(ProductsGroup group) throws Exception;
 }

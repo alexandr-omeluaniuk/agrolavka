@@ -65,6 +65,7 @@ function ProductsGroups(props) {
     const [formTitle, setFormTitle] = React.useState('');
     const [formOpen, setFormOpen] = React.useState(false);
     const [formDisabled, setFormDisabled] = React.useState(false);
+    const [record, setRecord] = React.useState(null);
     const [selectedProductGroup, setSelectedProductGroup] = React.useState(null);
     // ----------------------------------------------------- METHODS ----------------------------------------------------------------------
     const buildTree = () => {
@@ -112,11 +113,20 @@ function ProductsGroups(props) {
         setSelectedProductGroup(node.getId() > 0 ? node.getOrigin() : null);
     };
     const onFormSubmitAction = (data) => {
-        
+        setFormDisabled(true);
+        if (selectedProductGroup) {
+            data.externalId = selectedProductGroup.externalId;
+        }
+        dataService.post('/platform/entity/ss.entity.agrolavka.ProductsGroup', data).then(() => {
+            setProductGroups(null);
+            setFormDisabled(false);
+            setFormOpen(false);
+        });
     };
     const onCreateNewGroup = () => {
         setFormTitle(t('m_agrolavka:products_groups.new_group'));
         setFormOpen(true);
+        setRecord(null);
     };
     // -------------------------------------------------------- HOOKS ---------------------------------------------------------------------
     useEffect(() => {
@@ -151,32 +161,32 @@ function ProductsGroups(props) {
                         <Icon className={classes.titleIcon}>account_tree</Icon> {t('m_agrolavka:products.product_groups')}
                     </Typography>
                     <div>
-                        <Tooltip title={t('m_agrolavka:products_groups.new_group')}>
-                            <IconButton className={classes.newGroup} onClick={onCreateNewGroup}>
-                                <Icon>add</Icon>
-                            </IconButton>
-                        </Tooltip>
                         {selectedProductGroup ? (
                             <React.Fragment>
-                                <Tooltip title={t('m_agrolavka:products_groups.edit_group')}>
-                                    <IconButton className={classes.editGroup}>
-                                        <Icon>edit</Icon>
-                                    </IconButton>
-                                </Tooltip>
                                 <Tooltip title={t('m_agrolavka:products_groups.delete_group')}>
                                     <IconButton className={classes.deleteGroup}>
                                         <Icon>delete</Icon>
                                     </IconButton>
                                 </Tooltip>
+                                <Tooltip title={t('m_agrolavka:products_groups.edit_group')}>
+                                    <IconButton className={classes.editGroup}>
+                                        <Icon>edit</Icon>
+                                    </IconButton>
+                                </Tooltip>
                             </React.Fragment>
                         ) : null}
+                        <Tooltip title={t('m_agrolavka:products_groups.new_group')}>
+                            <IconButton className={classes.newGroup} onClick={onCreateNewGroup}>
+                                <Icon>add</Icon>
+                            </IconButton>
+                        </Tooltip>
                     </div>
                 </div>
                 <Divider className={classes.divider}/>
                 <StyledTreeView data={buildTree()} onSelect={onProductGroupSelect}/>
                 {formConfig ? (
                     <FormDialog title={formTitle} open={formOpen} handleClose={() => setFormOpen(false)}>
-                        <Form formConfig={formConfig} onSubmitAction={onFormSubmitAction} record={selectedProductGroup}
+                        <Form formConfig={formConfig} onSubmitAction={onFormSubmitAction} record={record}
                             disabled={formDisabled}/>
                     </FormDialog>
                 ) : null}

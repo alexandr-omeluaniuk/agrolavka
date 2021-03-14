@@ -54,6 +54,7 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
     @Override
     public List<ProductsGroup> getProductGroups() throws Exception {
         String response = request("/entity/productfolder", "GET", null);
+        LOG.info(response);
         JSONObject json = new JSONObject(response);
         List<ProductsGroup> result = new ArrayList<>();
         if (json.has("rows")) {
@@ -169,6 +170,12 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
             payload.put("content", new String(Base64.getEncoder().encode(image.getData()), "UTF-8"));
             request("/entity/product/" + product.getExternalId() + "/images", "POST", payload.toString());
         }
+    }
+    @Override
+    public String createProductsGroup(ProductsGroup group) throws Exception {
+        String response = request("/entity/productfolder", "POST", group.toMySkladJSON().toString());
+        JSONObject json = new JSONObject(response);
+        return json.getString("id");
     }
     // ============================================= PRIVATE ==========================================================
     /**
