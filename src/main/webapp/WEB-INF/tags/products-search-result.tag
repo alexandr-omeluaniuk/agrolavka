@@ -35,7 +35,17 @@
             <c:otherwise>
                 <c:choose>
                     <c:when test="${'TILES' == view}">
-                        
+                        <% int counter = 0; %>
+                        <c:forEach step="1" begin="1" end="${SiteConstants.SEARCH_RESULT_TILES_ROWS}">
+                            <div class="row">
+                                <c:forEach step="1" begin="1" end="${SiteConstants.SEARCH_RESULT_TILES_COLUMNS}">
+                                    <% counter++; %>
+                                    <div class="col-sm">
+                                        <t:product-card product="${searchResult.get(counter)}"></t:product-card>
+                                    </div>
+                                </c:forEach>
+                            </div>
+                        </c:forEach>
                     </c:when>
                     <c:otherwise>
                         
