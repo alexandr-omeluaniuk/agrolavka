@@ -16,6 +16,11 @@ import Tooltip from '@material-ui/core/Tooltip';
 import StyledTreeView from '../../../component/tree/StyledTreeView';
 import DataService from '../../../service/DataService';
 import { TreeNode } from '../../../util/model/TreeNode';
+import Form from './../../../component/form/Form';
+import ConfirmDialog from '../../../component/window/ConfirmDialog';
+import FormDialog from '../../../component/window/FormDialog';
+import { FormConfig, FormField, Validator } from '../../../util/model/TableConfig';
+import { TYPES, VALIDATORS } from '../../../service/DataTypeService';
 
 let dataService = new DataService();
 
@@ -56,6 +61,10 @@ function ProductsGroups(props) {
     const { onSelect } = props;
     const { t } = useTranslation();
     const [productGroups, setProductGroups] = React.useState(null);
+    const [formConfig, setFormConfig] = React.useState(null);
+    const [formTitle, setFormTitle] = React.useState('');
+    const [formOpen, setFormOpen] = React.useState(false);
+    const [formDisabled, setFormDisabled] = React.useState(false);
     const [selectedProductGroup, setSelectedProductGroup] = React.useState(null);
     // ----------------------------------------------------- METHODS ----------------------------------------------------------------------
     const buildTree = () => {
@@ -102,6 +111,13 @@ function ProductsGroups(props) {
         }
         setSelectedProductGroup(node.getId() > 0 ? node.getOrigin() : null);
     };
+    const onFormSubmitAction = (data) => {
+        
+    };
+    const onCreateNewGroup = () => {
+        setFormTitle(t('m_agrolavka:products_groups.new_group'));
+        setFormOpen(true);
+    };
     // -------------------------------------------------------- HOOKS ---------------------------------------------------------------------
     useEffect(() => {
         if (productGroups === null) {
@@ -111,6 +127,19 @@ function ProductsGroups(props) {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [productGroups]);
+    useEffect(() => {
+        if (formConfig === null) {
+            setFormConfig(new FormConfig([
+                new FormField('id', TYPES.ID).hide(),
+                new FormField('name', TYPES.TEXTFIELD, t('m_agrolavka:products_groups.product_group_name'))
+                        .setGrid({xs: 12}).validation([
+                    new Validator(VALIDATORS.REQUIRED),
+                    new Validator(VALIDATORS.MAX_LENGTH, {length: 255})
+                ])
+            ]));
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [formConfig]);
     // --------------------------------------------------------- RENDERING ----------------------------------------------------------------
     if (productGroups === null) {
         return null;
@@ -122,19 +151,19 @@ function ProductsGroups(props) {
                         <Icon className={classes.titleIcon}>account_tree</Icon> {t('m_agrolavka:products.product_groups')}
                     </Typography>
                     <div>
-                        <Tooltip title={t('m_agrolavka:products_group.new_group')}>
-                            <IconButton className={classes.newGroup}>
+                        <Tooltip title={t('m_agrolavka:products_groups.new_group')}>
+                            <IconButton className={classes.newGroup} onClick={onCreateNewGroup}>
                                 <Icon>add</Icon>
                             </IconButton>
                         </Tooltip>
                         {selectedProductGroup ? (
                             <React.Fragment>
-                                <Tooltip title={t('m_agrolavka:products_group.edit_group')}>
+                                <Tooltip title={t('m_agrolavka:products_groups.edit_group')}>
                                     <IconButton className={classes.editGroup}>
                                         <Icon>edit</Icon>
                                     </IconButton>
                                 </Tooltip>
-                                <Tooltip title={t('m_agrolavka:products_group.delete_group')}>
+                                <Tooltip title={t('m_agrolavka:products_groups.delete_group')}>
                                     <IconButton className={classes.deleteGroup}>
                                         <Icon>delete</Icon>
                                     </IconButton>
@@ -145,6 +174,12 @@ function ProductsGroups(props) {
                 </div>
                 <Divider className={classes.divider}/>
                 <StyledTreeView data={buildTree()} onSelect={onProductGroupSelect}/>
+                {formConfig ? (
+                    <FormDialog title={formTitle} open={formOpen} handleClose={() => setFormOpen(false)}>
+                        <Form formConfig={formConfig} onSubmitAction={onFormSubmitAction} record={selectedProductGroup}
+                            disabled={formDisabled}/>
+                    </FormDialog>
+                ) : null}
             </Paper>
     );
 }
