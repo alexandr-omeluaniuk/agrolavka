@@ -115,19 +115,34 @@ function ProductsGroups(props) {
     };
     const onFormSubmitAction = (data) => {
         setFormDisabled(true);
-        if (selectedProductGroup) {
-            data.parentId = selectedProductGroup.externalId;
+        if (data.id) {
+            data.parentId = record.parentId;
+            data.externalId = record.externalId;
+            dataService.put('/platform/entity/ss.entity.agrolavka.ProductsGroup', data).then(() => {
+                setProductGroups(null);
+                setFormDisabled(false);
+                setFormOpen(false);
+            });
+        } else {
+            if (selectedProductGroup) {
+                data.parentId = selectedProductGroup.externalId;
+            }
+            dataService.post('/platform/entity/ss.entity.agrolavka.ProductsGroup', data).then(() => {
+                setProductGroups(null);
+                setFormDisabled(false);
+                setFormOpen(false);
+            });
         }
-        dataService.post('/platform/entity/ss.entity.agrolavka.ProductsGroup', data).then(() => {
-            setProductGroups(null);
-            setFormDisabled(false);
-            setFormOpen(false);
-        });
     };
     const onCreateNewGroup = () => {
         setFormTitle(t('m_agrolavka:products_groups.new_group'));
         setFormOpen(true);
         setRecord(null);
+    };
+    const onEditGroup = () => {
+        setFormTitle(t('m_agrolavka:products_groups.edit_group'));
+        setRecord(selectedProductGroup);
+        setFormOpen(true);
     };
     const onDeleteGroup = () => {
         setConfirmDialogOpen(true);
@@ -179,7 +194,7 @@ function ProductsGroups(props) {
                                     </IconButton>
                                 </Tooltip>
                                 <Tooltip title={t('m_agrolavka:products_groups.edit_group')}>
-                                    <IconButton className={classes.editGroup}>
+                                    <IconButton className={classes.editGroup} onClick={onEditGroup}>
                                         <Icon>edit</Icon>
                                     </IconButton>
                                 </Tooltip>

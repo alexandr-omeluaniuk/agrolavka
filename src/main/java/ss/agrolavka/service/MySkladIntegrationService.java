@@ -88,4 +88,10 @@ public interface MySkladIntegrationService {
      * @throws Exception error.
      */
     void deleteProductsGroup(ProductsGroup group) throws Exception;
+    /**
+     * Update products group.
+     * @param group products group.
+     * @throws Exception error.
+     */
+    void updateProductsGroup(ProductsGroup group) throws Exception;
 }

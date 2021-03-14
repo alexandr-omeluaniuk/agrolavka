@@ -40,6 +40,7 @@ class ProductsGroupEntityListener implements PlatformEntityListener<ProductsGrou
 
     @Override
     public void preUpdate(ProductsGroup entity) throws Exception {
+        mySkladIntegrationService.updateProductsGroup(entity);
     }
 
     @Override

@@ -54,7 +54,6 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
     @Override
     public List<ProductsGroup> getProductGroups() throws Exception {
         String response = request("/entity/productfolder", "GET", null);
-        LOG.info(response);
         JSONObject json = new JSONObject(response);
         List<ProductsGroup> result = new ArrayList<>();
         if (json.has("rows")) {
@@ -180,6 +179,10 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
     @Override
     public void deleteProductsGroup(ProductsGroup group) throws Exception {
         request("/entity/productfolder/" + group.getExternalId(), "DELETE", null);
+    }
+    @Override
+    public void updateProductsGroup(ProductsGroup group) throws Exception {
+        request("/entity/productfolder/" + group.getExternalId(), "PUT", group.toMySkladJSON().toString());
     }
     // ============================================= PRIVATE ==========================================================
     /**

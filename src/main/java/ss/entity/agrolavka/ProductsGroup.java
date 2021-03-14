@@ -17,6 +17,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import org.json.JSONObject;
+import ss.martin.platform.anno.security.FormField;
 
 /**
  * Products group.
@@ -29,6 +30,7 @@ public class ProductsGroup extends ExternalEntity implements Serializable, Compa
     private static final long serialVersionUID = 1L;
     // =============================================== FIELDS =========================================================
     /** Name. */
+    @FormField
     @NotNull
     @Size(max = 255)
     @Column(name = "name", length = 255, nullable = false)
