@@ -267,12 +267,15 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
     private String inputStreamToString(InputStream is) throws Exception {
         int len;
         byte[] buff = new byte[1024 * 16];
-        StringBuilder sb = new StringBuilder();
-        while ((len = is.read(buff)) != -1) {
-            sb.append(new String(buff, 0, len, "UTF-8"));
+        String result;
+        try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+            while ((len = is.read(buff)) != -1) {
+                baos.write(buff, 0, len);
+            }
+            is.close();
+            result = new String(baos.toByteArray(), "UTF-8");
         }
-        is.close();
-        return sb.toString();
+        return result;
     }
     /**
      * Convert input stream to byte array.
@@ -283,13 +286,13 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
     private byte[] inputStreamToByteArray(InputStream is) throws Exception {
         int len;
         byte[] buff = new byte[1024 * 16];
-        ByteArrayOutputStream sb = new ByteArrayOutputStream();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
         while ((len = is.read(buff)) != -1) {
-            sb.write(buff, 0, len);
+            baos.write(buff, 0, len);
         }
         is.close();
-        byte[] data = sb.toByteArray();
-        sb.close();
+        byte[] data = baos.toByteArray();
+        baos.close();
         return data;
     }
     /**

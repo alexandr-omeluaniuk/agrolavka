@@ -59,7 +59,7 @@
     }
 </style>
 <nav class="pgt-root">
-    <h3><i class="fas fa-seedling nav-icon"></i> Каталог товаров</h3>
+    <h4><i class="fas fa-seedling nav-icon"></i> Каталог товаров</h4>
     <ul class="list-unstyled mb-0 py-3 pt-md-1">
         <c:forEach items="${catalogRoots}" var="root">
             <t:product-groups-tree-item group="${root}" catalogMap="${catalogMap}" groupId="${groupId}"/>
