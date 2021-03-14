@@ -121,6 +121,17 @@ public class ProductsGroup extends ExternalEntity implements Serializable, Compa
     public JSONObject toMySkladJSON() {
         JSONObject json = new JSONObject();
         json.put("name", getName());
+        if (getParentId() != null) {
+            JSONObject meta = new JSONObject();
+            meta.put("href", "https://online.moysklad.ru/api/remap/1.2/entity/productfolder/" + getParentId());
+            meta.put("metadataHref", "https://online.moysklad.ru/api/remap/1.2/entity/productfolder/metadata");
+            meta.put("type", "productfolder");
+            meta.put("mediaType", "application/json");
+            meta.put("uuidHref", "https://online.moysklad.ru/app/#good/edit?id=" + getParentId());
+            JSONObject productFolder = new JSONObject();
+            productFolder.put("meta", meta);
+            json.put("productFolder", productFolder);
+        }
         return json;
     }
 }

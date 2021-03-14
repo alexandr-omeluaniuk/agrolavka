@@ -115,7 +115,7 @@ function ProductsGroups(props) {
     const onFormSubmitAction = (data) => {
         setFormDisabled(true);
         if (selectedProductGroup) {
-            data.externalId = selectedProductGroup.externalId;
+            data.parentId = selectedProductGroup.externalId;
         }
         dataService.post('/platform/entity/ss.entity.agrolavka.ProductsGroup', data).then(() => {
             setProductGroups(null);
