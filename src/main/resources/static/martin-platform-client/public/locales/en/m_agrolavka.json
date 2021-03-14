@@ -16,6 +16,8 @@
         "synchronize": "Synchronize MySklad data"
     },
     "products_group": {
-        "new_group": "Create new product group"
+        "new_group": "Create new product group",
+        "edit_group": "Edit",
+        "delete_group": "Delete"
     }
 }

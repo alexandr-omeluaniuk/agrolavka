@@ -42,6 +42,12 @@ const useStyles = makeStyles(theme => ({
     },
     newGroup: {
         color: theme.palette.success.main
+    },
+    editGroup: {
+        color: theme.palette.warning.main
+    },
+    deleteGroup: {
+        color: theme.palette.error.main
     }
 }));
 
@@ -50,6 +56,7 @@ function ProductsGroups(props) {
     const { onSelect } = props;
     const { t } = useTranslation();
     const [productGroups, setProductGroups] = React.useState(null);
+    const [selectedProductGroup, setSelectedProductGroup] = React.useState(null);
     // ----------------------------------------------------- METHODS ----------------------------------------------------------------------
     const buildTree = () => {
         const result = [];
@@ -93,6 +100,7 @@ function ProductsGroups(props) {
         if (onSelect) {
             onSelect(node.getId() > 0 ? node.getOrigin() : null);
         }
+        setSelectedProductGroup(node.getId() > 0 ? node.getOrigin() : null);
     };
     // -------------------------------------------------------- HOOKS ---------------------------------------------------------------------
     useEffect(() => {
@@ -119,6 +127,20 @@ function ProductsGroups(props) {
                                 <Icon>add</Icon>
                             </IconButton>
                         </Tooltip>
+                        {selectedProductGroup ? (
+                            <React.Fragment>
+                                <Tooltip title={t('m_agrolavka:products_group.edit_group')}>
+                                    <IconButton className={classes.editGroup}>
+                                        <Icon>edit</Icon>
+                                    </IconButton>
+                                </Tooltip>
+                                <Tooltip title={t('m_agrolavka:products_group.delete_group')}>
+                                    <IconButton className={classes.deleteGroup}>
+                                        <Icon>delete</Icon>
+                                    </IconButton>
+                                </Tooltip>
+                            </React.Fragment>
+                        ) : null}
                     </div>
                 </div>
                 <Divider className={classes.divider}/>
