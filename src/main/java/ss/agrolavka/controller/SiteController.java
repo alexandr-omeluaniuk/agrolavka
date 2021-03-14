@@ -8,6 +8,8 @@ package ss.agrolavka.controller;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,6 +29,12 @@ import ss.martin.platform.dao.CoreDAO;
  */
 @Controller
 public class SiteController {
+    /** Logger. */
+    private static final Logger LOG = LoggerFactory.getLogger(SiteController.class);
+    /** Columns. */
+    private static final int COLUMNS = 3;
+    /** Rows. */
+    private static final int ROWS = 5;
     /** Core DAO. */
     @Autowired
     private CoreDAO coreDAO;
@@ -36,33 +44,17 @@ public class SiteController {
     /**
      * Home page.
      * @param model data model.
-     * @param page page number.
-     * @param view view type.
      * @return JSP page.
      * @throws Exception error.
      */
     @RequestMapping("/")
-    public String home(Model model,
-            @RequestParam(name = "page", required = false) Integer page,
-            @RequestParam(name = "view", required = false) String view) throws Exception {
+    public String home(Model model) throws Exception {
         model.addAttribute("title", "Главная");
-        model.addAttribute("page", page);
-        model.addAttribute("view", view);
         ProductsSearchRequest request = new ProductsSearchRequest();
         request.setPage(1);
         request.setPageSize(Integer.MAX_VALUE);
         model.addAttribute("productsCount", productDAO.count(request));
-        model.addAttribute("catalog", productDAO.getCatalogProductGroups());
         return "home";
-    }
-    /**
-     * About page.
-     * @param model data model.
-     * @return JSP page.
-     */
-    @RequestMapping("/about")
-    public String about(Model model) {
-        return "about";
     }
     /**
      * Products catalog page.
@@ -79,6 +71,7 @@ public class SiteController {
         model.addAttribute("page", page);
         model.addAttribute("view", view);
         model.addAttribute("catalog", productDAO.getCatalogProductGroups());
+        insertSearchResultToPage(model, null, page);
         return "catalog";
     }
     /**
@@ -133,6 +126,7 @@ public class SiteController {
         model.addAttribute("catalog", productDAO.getCatalogProductGroups());
         return "product";
     }
+    // ================================================ PRIVATE =======================================================
     /**
      * Get breadcrumbs path.
      * @param group leaf group.
@@ -156,5 +150,22 @@ public class SiteController {
         }
         Collections.reverse(path);
         return path;
+    }
+    
+    private void insertSearchResultToPage(Model model, Long groupId, Integer page) {
+        try {
+            ProductsSearchRequest searchRequest = new ProductsSearchRequest();
+            searchRequest.setGroupId(groupId);
+            searchRequest.setPage(page == null ? 1 : page);
+            searchRequest.setPageSize(COLUMNS * ROWS);
+            model.addAttribute("searchResult", productDAO.search(searchRequest));
+            Long count = productDAO.count(searchRequest);
+            model.addAttribute(
+                    "searchResultPages", Double.valueOf(Math.ceil((double) count / (ROWS * COLUMNS))).intValue());
+        } catch (Exception e) {
+            LOG.error("Search products fail!", e);
+            model.addAttribute("searchResult", new ArrayList<Product>());
+            model.addAttribute("searchResultPages", 0);
+        }
     }
 }

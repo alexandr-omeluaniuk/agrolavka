@@ -1672,9 +1672,6 @@ section {
     vertical-align: middle;
 }
 @media (max-width: 992px) {
-  .products-search-result {
-    margin-top: 16px;
-  }
   .catalog-mobile {
       display: block !important;
   }
@@ -1684,9 +1681,6 @@ section {
 }
 .catalog-mobile {
     display: none;
-}
-.products-toolbar {
-    margin-bottom: 10px;
 }
 .accordion-button {
     padding: .5rem .6rem;
