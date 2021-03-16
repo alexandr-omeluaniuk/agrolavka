@@ -43,6 +43,11 @@ public class ProductsGroup extends ExternalEntity implements Serializable, Compa
     @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "group", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Product> products;
+    /** URL. */
+    @NotNull
+    @Size(max = 255)
+    @Column(name = "url", length = 255, unique = true)
+    private String url;
     // =============================================== SET & GET ======================================================
     /**
      * @return the name
@@ -79,6 +84,18 @@ public class ProductsGroup extends ExternalEntity implements Serializable, Compa
      */
     public void setProducts(List<Product> products) {
         this.products = products;
+    }
+    /**
+     * @return the url
+     */
+    public String getUrl() {
+        return url;
+    }
+    /**
+     * @param url the url to set
+     */
+    public void setUrl(String url) {
+        this.url = url;
     }
     // ================================================================================================================
     @Override

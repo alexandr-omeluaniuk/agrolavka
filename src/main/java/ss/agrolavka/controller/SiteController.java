@@ -106,6 +106,7 @@ public class SiteController {
      * @param id product ID.
      * @param name product name.
      * @return JSP page.
+     * @throws Exception error.
      */
     @RequestMapping("/product/{id}")
     public Object product(Model model,
