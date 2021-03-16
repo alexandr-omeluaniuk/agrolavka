@@ -83,7 +83,7 @@ public class MenuCatalogTag extends RequestContextAwareTag {
         StringBuilder sb = new StringBuilder();
         StringBuilder childsSb = new StringBuilder();
         if (groupsMap.containsKey(group.getExternalId())) {
-            childsSb.append("<li class=\"dropdown\"><a href=\"#\"><span>").append(group.getName())
+            childsSb.append("<li class=\"dropdown\"><a href=\"" + UrlProducer.buildProductGroupUrl(group) + "\"><span>").append(group.getName())
                     .append("</span> <i class=\"bi bi-chevron-right\"></i></a><ul>");
             List<ProductsGroup> childs = groupsMap.get(group.getExternalId());
             Collections.sort(childs);
