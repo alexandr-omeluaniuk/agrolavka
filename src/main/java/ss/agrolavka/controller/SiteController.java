@@ -82,11 +82,15 @@ public class SiteController {
             @RequestParam(name = "page", required = false) Integer page,
             @RequestParam(name = "view", required = false) String view) throws Exception {
         String url = request.getRequestURI();
-        String last = url.substring(url.lastIndexOf("/") + 1);
-        DataModel entity = resolveUrlToProductGroup(url);
-        if (entity == null) {
-            entity = productDAO.getProductByUrl(url);
+        model.addAttribute("page", page == null ? 1 : page);
+        model.addAttribute("view", view == null ? "TILES" : view);
+        model.addAttribute("groups", UrlProducer.getProductsGroups());
+        if ("/catalog".equals(url)) {
+            model.addAttribute("title", "Наша продукция");
+            insertSearchResultToPage(model, null, page);
+            return "catalog";
         }
+        DataModel entity = resolveUrlToProductGroup(url);
         if (entity == null) {
             return new ModelAndView("redirect:/");
         }
@@ -94,13 +98,10 @@ public class SiteController {
             ProductsGroup group = (ProductsGroup) entity;
             model.addAttribute("title", group.getName());
             model.addAttribute("group", group);
-            model.addAttribute("page", page == null ? 1 : page);
-            model.addAttribute("view", view == null ? "TILES" : view);
             model.addAttribute("breadcrumbLabel", group.getName());
             List<ProductsGroup> path = UrlProducer.getBreadcrumbPath(group);
             path.remove(group);
             model.addAttribute("breadcrumbPath", path);
-            model.addAttribute("groups", UrlProducer.getProductsGroups());
             insertSearchResultToPage(model, group.getId(), page);
             return "catalog";
         } else if (entity instanceof Product) {
@@ -111,7 +112,6 @@ public class SiteController {
             model.addAttribute("groupId", product.getGroup() != null ? product.getGroup().getId() : null);
             model.addAttribute("breadcrumbLabel", product.getName());
             model.addAttribute("breadcrumbPath", UrlProducer.getBreadcrumbPath(product.getGroup()));
-            model.addAttribute("groups", UrlProducer.getProductsGroups());
             return "product";
         } else {
             return new ModelAndView("redirect:/");
@@ -138,17 +138,17 @@ public class SiteController {
     }
     
     /**
-     * Resolve URL to product group.
+     * Resolve URL to product group or product.
      * @param url url.
-     * @return product group.
+     * @return product group or product.
      */
-    public static synchronized ProductsGroup resolveUrlToProductGroup(String url) {
+    public DataModel resolveUrlToProductGroup(String url) {
         String last = url.substring(url.lastIndexOf("/") + 1);
         for (ProductsGroup group : UrlProducer.getProductsGroups()) {
             if (last.equals(group.getUrl())) {
                 return group;
             }
         }
-        return null;
+        return productDAO.getProductByUrl(last);
     }
 }
