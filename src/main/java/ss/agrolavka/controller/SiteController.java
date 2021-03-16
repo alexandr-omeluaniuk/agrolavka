@@ -50,24 +50,24 @@ public class SiteController {
         model.addAttribute("productsCount", productDAO.count(request));
         return "home";
     }
-    /**
-     * Products catalog page.
-     * @param model data model.
-     * @param page page number.
-     * @param view catalog view type.
-     * @return JSP page.
-     */
-    @RequestMapping("/catalog")
-    public String catalog(Model model,
-            @RequestParam(name = "page", required = false) Integer page,
-            @RequestParam(name = "view", required = false) String view) {
-        model.addAttribute("title", "Товары для сада и огорода");
-        model.addAttribute("page", page == null ? 1 : page);
-        model.addAttribute("view", view == null ? "TILES" : view);
-        model.addAttribute("groups", UrlProducer.getProductsGroups());
-        insertSearchResultToPage(model, null, page);
-        return "catalog";
-    }
+//    /**
+//     * Products catalog page.
+//     * @param model data model.
+//     * @param page page number.
+//     * @param view catalog view type.
+//     * @return JSP page.
+//     */
+//    @RequestMapping("/catalog")
+//    public String catalog(Model model,
+//            @RequestParam(name = "page", required = false) Integer page,
+//            @RequestParam(name = "view", required = false) String view) {
+//        model.addAttribute("title", "Товары для сада и огорода");
+//        model.addAttribute("page", page == null ? 1 : page);
+//        model.addAttribute("view", view == null ? "TILES" : view);
+//        model.addAttribute("groups", UrlProducer.getProductsGroups());
+//        insertSearchResultToPage(model, null, page);
+//        return "catalog";
+//    }
     /**
      * Product group page.
      * @param model data model.

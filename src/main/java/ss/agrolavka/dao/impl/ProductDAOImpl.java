@@ -153,6 +153,7 @@ class ProductDAOImpl implements ProductDAO {
         CriteriaQuery<Product> criteria = cb.createQuery(Product.class);
         Root<Product> c = criteria.from(Product.class);
         criteria.select(c).where(cb.equal(c.get(Product_.url), url));
-        return em.createQuery(criteria).getSingleResult();
+        List<Product> list = em.createQuery(criteria).getResultList();
+        return list.isEmpty() ? null : list.get(0);
     }
 }

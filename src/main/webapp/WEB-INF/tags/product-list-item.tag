@@ -4,13 +4,13 @@
     Author     : alex
 --%>
 
-<%@tag description="put the tag description here" pageEncoding="UTF-8" import="ss.entity.agrolavka.Product, java.net.URLEncoder"%>
+<%@tag description="put the tag description here" pageEncoding="UTF-8" import="ss.entity.agrolavka.Product,ss.agrolavka.util.UrlProducer"%>
 
 <%-- The list of normal or fragment attributes can be specified here: --%>
 <%@attribute name="product" required="true" type="Product"%>
 
 <%-- any content can be specified here e.g.: --%>
-<a href="/product/${product.getId()}?name=<%= URLEncoder.encode(product.getName(), "UTF-8") %>">
+<a href="<%= UrlProducer.buildProductUrl(product) %>">
     <div class="product-item border-bottom mb-2 p-1">
         <img src="/api/agrolavka/public/product-image/${product.id}" style="max-width: 60px;"></img>
         <div style="flex: 1">

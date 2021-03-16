@@ -10,6 +10,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import ss.entity.agrolavka.Product;
 import ss.entity.agrolavka.ProductsGroup;
 
 /**
@@ -54,6 +55,14 @@ public class UrlProducer {
             sb.append("/").append(token);
         });
         return sb.toString();
+    }
+    /**
+     * Build product URL.
+     * @param product product.
+     * @return full URL.
+     */
+    public static synchronized String buildProductUrl(Product product) {
+        return buildProductGroupUrl(product.getGroup()) + "/" + product.getUrl();
     }
     /**
      * Get breadcrumbs path.
