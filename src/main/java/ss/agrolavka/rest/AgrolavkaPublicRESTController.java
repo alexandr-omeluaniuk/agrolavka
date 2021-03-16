@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ss.agrolavka.constants.ImageStubs;
 import ss.agrolavka.dao.ProductDAO;
+import ss.agrolavka.util.UrlProducer;
 import ss.agrolavka.wrapper.ProductsSearchRequest;
 import ss.entity.agrolavka.Product;
 import ss.martin.platform.dao.CoreDAO;
@@ -69,6 +70,7 @@ class AgrolavkaPublicRESTController {
         List<Product> list = productDAO.search(request);
         for (Product product : list) {
             product.setBuyPrice(null);
+            product.setUrl(UrlProducer.buildProductUrl(product));
         }
         result.put("data", list);
         result.put("count", productDAO.count(request));

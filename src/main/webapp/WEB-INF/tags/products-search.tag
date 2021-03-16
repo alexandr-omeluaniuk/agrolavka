@@ -105,8 +105,7 @@
                                 data.forEach(product => {
                                     sb += 
                                         '<li>'
-                                            + '<a class="dropdown-item" href="/product/' + product.id + '?name='
-                                                    + encodeURIComponent(product.name) + '">'
+                                            + '<a class="dropdown-item" href="' + product.url + '">'
                                                 + '<div class="d-flex w-100 justify-content-between">'
                                                     + '<h6 class="mb-1">' + highlightText(product.name, searchText) + '</h6>'
                                                     + '<small style="margin-left: 10px; min-width: 80px; text-align: right;"' 

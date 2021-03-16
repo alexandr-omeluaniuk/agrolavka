@@ -5,7 +5,6 @@
  */
 package ss.agrolavka.tag;
 
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -21,6 +20,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.tags.RequestContextAwareTag;
 import ss.agrolavka.dao.ProductDAO;
+import ss.agrolavka.util.UrlProducer;
 import ss.entity.agrolavka.ProductsGroup;
 
 /**
@@ -93,8 +93,7 @@ public class MenuCatalogTag extends RequestContextAwareTag {
             childsSb.append("</ul></li>");
             sb.append(childsSb);
         } else if (!group.getProducts().isEmpty()) {
-            sb.append(String.format("<li><a href=\"/catalog/%s?name=%s\">%s</a></li>", group.getId(),
-                    URLEncoder.encode(group.getName(), "UTF-8"), group.getName()));
+            sb.append("<li><a href=\"" + UrlProducer.buildProductGroupUrl(group) + "\">" + group.getName() + "</a></li>");
         }
         return sb.toString();
     }
