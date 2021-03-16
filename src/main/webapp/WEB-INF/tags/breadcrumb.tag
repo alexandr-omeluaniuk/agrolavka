@@ -4,7 +4,8 @@
     Author     : alex
 --%>
 
-<%@tag description="put the tag description here" pageEncoding="UTF-8"%>
+<%@tag description="put the tag description here" pageEncoding="UTF-8" 
+       import="ss.agrolavka.util.UrlProducer,ss.entity.agrolavka.ProductsGroup"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <%-- The list of normal or fragment attributes can be specified here: --%>
@@ -29,13 +30,19 @@
     </style>
     <nav aria-label="breadcrumb" class="agrolavka-breadcrumb">
         <ol class="breadcrumb">
-            <c:forEach var="group" items="${groups}">
-                <li class="breadcrumb-item">
-                    <a href="/catalog/${group.id}?name=${group.getName()}">
-                        <small>${group.getName()}</small>
-                    </a>
-                </li>
-            </c:forEach>
+            <% 
+                if (groups != null) {
+                    for (ProductsGroup group : groups) { 
+            %>
+                        <li class="breadcrumb-item">
+                            <a href="<%= UrlProducer.buildProductGroupUrl(group) %>">
+                                <small><%= group.getName() %></small>
+                            </a>
+                        </li>
+            <%
+                    }
+                }
+            %>
             <li class="breadcrumb-item active" aria-current="page">
                 <small>${label}</small>
             </li>

@@ -45,7 +45,7 @@ public class UrlProducer {
     }
     
     public static synchronized String buildProductGroupUrl(ProductsGroup group) {
-        StringBuilder sb = new StringBuilder();
+        StringBuilder sb = new StringBuilder("/catalog");
         List<String> parts = new ArrayList<>();
         ProductsGroup current = group;
         while (current != null) {

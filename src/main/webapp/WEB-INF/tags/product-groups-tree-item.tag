@@ -51,7 +51,7 @@
     </c:when>    
     <c:otherwise>
         <li>
-            <a href="/catalog<%= UrlProducer.buildProductGroupUrl(group) %>" 
+            <a href="<%= UrlProducer.buildProductGroupUrl(group) %>" 
                     class="d-inline-flex align-items-center rounded ${group.getId().equals(groupId) ? "active" : ""}">
                 ${group.name}
             </a>
