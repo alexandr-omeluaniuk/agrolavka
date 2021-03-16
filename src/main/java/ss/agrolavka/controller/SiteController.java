@@ -91,7 +91,7 @@ public class SiteController {
         if (entity instanceof ProductsGroup) {
             ProductsGroup group = (ProductsGroup) entity;
             model.addAttribute("title", group.getName());
-            model.addAttribute("groupId", group.getId());
+            model.addAttribute("group", group);
             model.addAttribute("page", page == null ? 1 : page);
             model.addAttribute("view", view == null ? "TILES" : view);
             model.addAttribute("breadcrumbLabel", group.getName());

@@ -27,7 +27,7 @@
                 </header>
                 <div class="row justify-content-center" style="width: 100%">
                     <div class="col-lg-3 col-md-12 intro-info order-lg-first order-last catalog-desktop">
-                        <t:product-groups-tree groups="${catalog}" groupId="${groupId}"></t:product-groups-tree>
+                        <t:product-groups-tree groups="${catalog}" groupId="${group.id}"></t:product-groups-tree>
                     </div>
                     
                     <div class="col-lg-3 col-md-12 intro-info order-lg-first order-last catalog-mobile">
@@ -39,7 +39,7 @@
                     <div class="col-lg-9 col-md-12 intro-info order-lg-first order-last">
                         <t:breadcrumb label="${breadcrumbLabel}" groups="${breadcrumbPath}"></t:breadcrumb>
                         <t:products-search-result searchResult="${searchResult}" pages="${searchResultPages}"
-                                                  page="${page}" view="${view}" groupId="${groupId}">
+                                                  page="${page}" view="${view}" group="${group}">
                             
                         </t:products-search-result>
                     </div>
