@@ -156,7 +156,7 @@ public class DataUpdater {
         LOG.info("products [" + products.size() + "]");
         Map<String, Product> productsMap = new HashMap<>();
         for (Product product : products) {
-            product.setUrl(transliterate(product.getUrl()));
+            product.setUrl(transliterate(product.getName()));
             productsMap.put(product.getExternalId(), product);
         }
         Set<String> actualProductsIDs = productsMap.keySet();
