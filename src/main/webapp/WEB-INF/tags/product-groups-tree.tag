@@ -9,7 +9,7 @@
        import="java.lang.*,java.util.*,ss.entity.agrolavka.ProductsGroup"%>
 
 <%-- The list of normal or fragment attributes can be specified here: --%>
-<%@attribute name="groups" required="true" type="Set<ProductsGroup>"%>
+<%@attribute name="groups" required="true" type="List<ProductsGroup>"%>
 <%@attribute name="groupId" required="false" type="Long"%>
 <%
     Map<String, List<ProductsGroup>> groupsMap = new HashMap<>();

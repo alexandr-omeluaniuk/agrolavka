@@ -68,7 +68,7 @@ public class SiteController {
         model.addAttribute("title", "Товары для сада и огорода");
         model.addAttribute("page", page == null ? 1 : page);
         model.addAttribute("view", view == null ? "TILES" : view);
-        model.addAttribute("catalog", productDAO.getCatalogProductGroups());
+        model.addAttribute("groups", UrlProducer.getProductsGroups());
         insertSearchResultToPage(model, null, page);
         return "catalog";
     }
@@ -98,7 +98,7 @@ public class SiteController {
             List<ProductsGroup> path = UrlProducer.getBreadcrumbPath(group);
             path.remove(group);
             model.addAttribute("breadcrumbPath", path);
-            model.addAttribute("catalog", productDAO.getCatalogProductGroups());
+            model.addAttribute("groups", UrlProducer.getProductsGroups());
             insertSearchResultToPage(model, group.getId(), page);
             return "catalog";
         } else if (entity instanceof Product) {
@@ -109,7 +109,7 @@ public class SiteController {
             model.addAttribute("groupId", product.getGroup() != null ? product.getGroup().getId() : null);
             model.addAttribute("breadcrumbLabel", product.getName());
             model.addAttribute("breadcrumbPath", UrlProducer.getBreadcrumbPath(product.getGroup()));
-            model.addAttribute("catalog", productDAO.getCatalogProductGroups());
+            model.addAttribute("groups", UrlProducer.getProductsGroups());
             return "product";
         } else {
             return new ModelAndView("redirect:/");

@@ -93,4 +93,8 @@ public class UrlProducer {
         Collections.reverse(path);
         return path;
     }
+    
+    public static synchronized List<ProductsGroup> getProductsGroups() {
+        return ALL_GROUPS;
+    }
 }
