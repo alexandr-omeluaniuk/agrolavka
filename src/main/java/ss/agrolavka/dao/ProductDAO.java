@@ -40,4 +40,10 @@ public interface ProductDAO {
      * @param groupExternalIds group external IDs.
      */
     void deleteProductsByNotProductGroupIDs(Set<String> groupExternalIds);
+    /**
+     * Get product by URL.
+     * @param url url.
+     * @return product.
+     */
+    Product getProductByUrl(String url);
 }

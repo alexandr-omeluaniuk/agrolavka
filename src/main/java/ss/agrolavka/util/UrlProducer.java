@@ -11,7 +11,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import ss.entity.agrolavka.ProductsGroup;
-import ss.entity.martin.DataModel;
 
 /**
  * URL producer.
@@ -57,20 +56,6 @@ public class UrlProducer {
         return sb.toString();
     }
     /**
-     * Resolve URL to entity.
-     * @param url url.
-     * @return Product or ProductGroup entity.
-     */
-    public static synchronized DataModel resolveUrlToEntity(String url) {
-        String last = url.substring(url.lastIndexOf("/") + 1);
-        for (ProductsGroup group : ALL_GROUPS) {
-            if (last.equals(group.getUrl())) {
-                return group;
-            }
-        }
-        return null;
-    }
-    /**
      * Get breadcrumbs path.
      * @param group leaf group.
      * @return path.
@@ -93,7 +78,10 @@ public class UrlProducer {
         Collections.reverse(path);
         return path;
     }
-    
+    /**
+     * Get product groups.
+     * @return product groups.
+     */
     public static synchronized List<ProductsGroup> getProductsGroups() {
         return ALL_GROUPS;
     }

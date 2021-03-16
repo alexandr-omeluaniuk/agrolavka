@@ -146,4 +146,13 @@ class ProductDAOImpl implements ProductDAO {
         }
         em.flush();
     }
+    @Override
+    @Transactional(propagation = Propagation.SUPPORTS)
+    public Product getProductByUrl(String url) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Product> criteria = cb.createQuery(Product.class);
+        Root<Product> c = criteria.from(Product.class);
+        criteria.select(c).where(cb.equal(c.get(Product_.url), url));
+        return em.createQuery(criteria).getSingleResult();
+    }
 }

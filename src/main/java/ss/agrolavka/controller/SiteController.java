@@ -23,7 +23,6 @@ import ss.agrolavka.wrapper.ProductsSearchRequest;
 import ss.entity.agrolavka.Product;
 import ss.entity.agrolavka.ProductsGroup;
 import ss.entity.martin.DataModel;
-import ss.martin.platform.dao.CoreDAO;
 
 /**
  * Site static pages controller.
@@ -33,9 +32,6 @@ import ss.martin.platform.dao.CoreDAO;
 public class SiteController {
     /** Logger. */
     private static final Logger LOG = LoggerFactory.getLogger(SiteController.class);
-    /** Core DAO. */
-    @Autowired
-    private CoreDAO coreDAO;
     /** Product DAO. */
     @Autowired
     private ProductDAO productDAO;
@@ -79,12 +75,18 @@ public class SiteController {
      * @param page page number.
      * @param view catalog view type.
      * @return JSP page.
+     * @throws Exception error.
      */
     @RequestMapping("/catalog/**")
     public Object productsGroup(Model model, HttpServletRequest request,
             @RequestParam(name = "page", required = false) Integer page,
             @RequestParam(name = "view", required = false) String view) throws Exception {
-        DataModel entity = UrlProducer.resolveUrlToEntity(request.getRequestURI());
+        String url = request.getRequestURI();
+        String last = url.substring(url.lastIndexOf("/") + 1);
+        DataModel entity = resolveUrlToProductGroup(url);
+        if (entity == null) {
+            entity = productDAO.getProductByUrl(url);
+        }
         if (entity == null) {
             return new ModelAndView("redirect:/");
         }
@@ -133,5 +135,20 @@ public class SiteController {
             model.addAttribute("searchResult", new ArrayList<Product>());
             model.addAttribute("searchResultPages", 0);
         }
+    }
+    
+    /**
+     * Resolve URL to product group.
+     * @param url url.
+     * @return product group.
+     */
+    public static synchronized ProductsGroup resolveUrlToProductGroup(String url) {
+        String last = url.substring(url.lastIndexOf("/") + 1);
+        for (ProductsGroup group : UrlProducer.getProductsGroups()) {
+            if (last.equals(group.getUrl())) {
+                return group;
+            }
+        }
+        return null;
     }
 }
