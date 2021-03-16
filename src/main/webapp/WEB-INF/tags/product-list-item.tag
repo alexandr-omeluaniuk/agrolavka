@@ -12,7 +12,7 @@
 <%-- any content can be specified here e.g.: --%>
 <a href="<%= UrlProducer.buildProductUrl(product) %>">
     <div class="product-item border-bottom mb-2 p-1">
-        <img src="/api/agrolavka/public/product-image/${product.id}" style="max-width: 60px;"></img>
+        <img src="/api/agrolavka/public/product-image/${product.id}" style="max-width: 60px; object-fit: contain;"></img>
         <div style="flex: 1">
             <h6 class="text-dark">${product.name}</h6>
             <small class="text-muted text-nowrap product-description">${product.description}</small>

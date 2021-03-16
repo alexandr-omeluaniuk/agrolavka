@@ -17,10 +17,10 @@
                     <h3>Наша продукция</h3>
                     <c:choose>
                         <c:when test="${title}">
-                            <p class="text-uppercase">Товары для сада и огорода</p>
+                            <p class="text-uppercase text-muted">Товары для сада и огорода</p>
                         </c:when>    
                         <c:otherwise>
-                            <p class="fs-3 text-uppercase fst-italic">${title}</p>
+                            <p class="text-uppercase text-muted">${title}</p>
                         </c:otherwise>
                     </c:choose>
                     
