@@ -11,6 +11,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import javax.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,7 @@ import ss.agrolavka.AgrolavkaConfiguration;
 import ss.agrolavka.dao.ExternalEntityDAO;
 import ss.agrolavka.dao.ProductDAO;
 import ss.agrolavka.service.MySkladIntegrationService;
+import ss.agrolavka.util.UrlProducer;
 import ss.entity.agrolavka.PriceType;
 import ss.entity.agrolavka.Product;
 import ss.entity.agrolavka.ProductsGroup;
@@ -55,6 +57,15 @@ public class DataUpdater {
     /** Agrolavka configuration. */
     @Autowired
     private AgrolavkaConfiguration configuration;
+    
+    @PostConstruct
+    protected void init() {
+        try {
+            UrlProducer.updateCatalog(coreDAO.getAll(ProductsGroup.class));
+        } catch (Exception ex) {
+            LOG.error("Update URL producer catalog - fail!");
+        }
+    }
     /**
      * Import MySklad data.
      */
@@ -68,6 +79,7 @@ public class DataUpdater {
             importProductGroups();
             importProducts();
             importImages();
+            UrlProducer.updateCatalog(coreDAO.getAll(ProductsGroup.class));
             LOG.info("===============================================================================================");
         } catch (Exception e) {
             LOG.error("Import MySklad data - fail!", e);

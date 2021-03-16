@@ -6,7 +6,8 @@
 
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
-<%@tag description="put the tag description here" pageEncoding="UTF-8" import="ss.entity.agrolavka.ProductsGroup,java.util.*"%>
+<%@tag description="put the tag description here" pageEncoding="UTF-8" 
+       import="ss.entity.agrolavka.ProductsGroup,java.util.*,ss.agrolavka.util.UrlProducer"%>
 
 <%-- The list of normal or fragment attributes can be specified here: --%>
 <%@attribute name="group" required="true" type="ProductsGroup"%>
@@ -50,7 +51,7 @@
     </c:when>    
     <c:otherwise>
         <li>
-            <a href="/catalog/${group.id}?name=${group.name}" 
+            <a href="/catalog<%= UrlProducer.buildProductGroupUrl(group) %>" 
                     class="d-inline-flex align-items-center rounded ${group.getId().equals(groupId) ? "active" : ""}">
                 ${group.name}
             </a>
