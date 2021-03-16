@@ -6,22 +6,23 @@
 package ss.agrolavka.controller;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import ss.agrolavka.constants.SiteConstants;
 import ss.agrolavka.dao.ProductDAO;
+import ss.agrolavka.util.UrlProducer;
 import ss.agrolavka.wrapper.ProductsSearchRequest;
 import ss.entity.agrolavka.Product;
 import ss.entity.agrolavka.ProductsGroup;
+import ss.entity.martin.DataModel;
 import ss.martin.platform.dao.CoreDAO;
 
 /**
@@ -74,82 +75,47 @@ public class SiteController {
     /**
      * Product group page.
      * @param model data model.
-     * @param groupId product group ID.
+     * @param request HTTP request.
      * @param page page number.
      * @param view catalog view type.
      * @return JSP page.
      */
-    @RequestMapping("/catalog/{groupId}")
-    public Object productsGroup(Model model,
-            @PathVariable("groupId") Long groupId,
+    @RequestMapping("/catalog/**")
+    public Object productsGroup(Model model, HttpServletRequest request,
             @RequestParam(name = "page", required = false) Integer page,
             @RequestParam(name = "view", required = false) String view) throws Exception {
-        ProductsGroup group = coreDAO.findById(groupId, ProductsGroup.class);
-        if (group == null) {
+        DataModel entity = UrlProducer.resolveUrlToEntity(request.getRequestURI());
+        if (entity == null) {
             return new ModelAndView("redirect:/");
         }
-        model.addAttribute("title", group.getName());
-        model.addAttribute("groupId", groupId);
-        model.addAttribute("page", page == null ? 1 : page);
-        model.addAttribute("view", view == null ? "TILES" : view);
-        model.addAttribute("breadcrumbLabel", group.getName());
-        List<ProductsGroup> path = getPath(group);
-        path.remove(group);
-        model.addAttribute("breadcrumbPath", path);
-        model.addAttribute("catalog", productDAO.getCatalogProductGroups());
-        insertSearchResultToPage(model, groupId, page);
-        return "catalog";
-    }
-    /**
-     * Product detail page.
-     * @param model data model.
-     * @param id product ID.
-     * @param name product name.
-     * @return JSP page.
-     * @throws Exception error.
-     */
-    @RequestMapping("/product/{id}")
-    public Object product(Model model,
-            @PathVariable("id") Long id,
-            @RequestParam(value = "name", required = false) String name) throws Exception {
-        Product product = coreDAO.findById(id, Product.class);
-        if (product == null) {
+        if (entity instanceof ProductsGroup) {
+            ProductsGroup group = (ProductsGroup) entity;
+            model.addAttribute("title", group.getName());
+            model.addAttribute("groupId", group.getId());
+            model.addAttribute("page", page == null ? 1 : page);
+            model.addAttribute("view", view == null ? "TILES" : view);
+            model.addAttribute("breadcrumbLabel", group.getName());
+            List<ProductsGroup> path = UrlProducer.getBreadcrumbPath(group);
+            path.remove(group);
+            model.addAttribute("breadcrumbPath", path);
+            model.addAttribute("catalog", productDAO.getCatalogProductGroups());
+            insertSearchResultToPage(model, group.getId(), page);
+            return "catalog";
+        } else if (entity instanceof Product) {
+            Product product = (Product) entity;
+            model.addAttribute("title", product.getName());
+            model.addAttribute("id", product.getId());
+            model.addAttribute("product", product);
+            model.addAttribute("groupId", product.getGroup() != null ? product.getGroup().getId() : null);
+            model.addAttribute("breadcrumbLabel", product.getName());
+            model.addAttribute("breadcrumbPath", UrlProducer.getBreadcrumbPath(product.getGroup()));
+            model.addAttribute("catalog", productDAO.getCatalogProductGroups());
+            return "product";
+        } else {
             return new ModelAndView("redirect:/");
         }
-        model.addAttribute("title", name);
-        model.addAttribute("id", id);
-        model.addAttribute("product", product);
-        model.addAttribute("groupId", product.getGroup() != null ? product.getGroup().getId() : null);
-        model.addAttribute("breadcrumbLabel", name);
-        model.addAttribute("breadcrumbPath", getPath(product.getGroup()));
-        model.addAttribute("catalog", productDAO.getCatalogProductGroups());
-        return "product";
     }
     // ================================================ PRIVATE =======================================================
-    /**
-     * Get breadcrumbs path.
-     * @param group leaf group.
-     * @return path.
-     * @throws Exception error. 
-     */
-    private List<ProductsGroup> getPath(ProductsGroup group) throws Exception {
-        List<ProductsGroup> allGroups = coreDAO.getAll(ProductsGroup.class);
-        List<ProductsGroup> path = new ArrayList<>();
-        ProductsGroup current = group;
-        while (current != null) {
-            path.add(current);
-            final String parentId = current.getParentId();
-            if (parentId != null) {
-                current = allGroups.stream().filter(g -> {
-                    return parentId.equals(g.getExternalId());
-                }).findFirst().get();
-            } else {
-                current = null;
-            }
-        }
-        Collections.reverse(path);
-        return path;
-    }
     
     private void insertSearchResultToPage(Model model, Long groupId, Integer page) {
         try {
