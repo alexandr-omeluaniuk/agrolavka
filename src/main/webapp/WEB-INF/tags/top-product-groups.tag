@@ -15,8 +15,12 @@
         inset: unset !important;
         transform: none !important;
         width: 100%;
-        top: 38px !important;
+        top: 40px !important;
         min-height: 200px;
+        box-shadow: 0 5px 20px rgb(0 0 0 / 50%);
+    }
+    .top-categories-dropdown ul {
+        list-style: none;
     }
 </style>
 <div id="subheader" class="collapse show" aria-expanded="true">
@@ -26,12 +30,55 @@
                 List<ProductsGroup> topCategories = UrlProducer.getTopCategories();
                 for (ProductsGroup group : topCategories) {
             %>
-            <button type="button" class="btn btn-success dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><%= group.getName() %></button>
+            <button type="button" class="btn btn-success" data-bs-toggle="dropdown" aria-expanded="false"><%= group.getName() %></button>
             <%
                 }
             %>
-            <ul class="dropdown-menu top-categories-dropdown shadow-sm" aria-labelledby="dropdownMenuButton1">
-                TODO: content
+            <ul class="dropdown-menu top-categories-dropdown p-4">
+                <div class="row">
+                    <div class="col-sm">
+                        <a href="#"><h6 class="text-muted fw-bold">Категория 1</h6></a>
+                        <ul class="mb-4">
+                            <a href="#"><li><small class="text-dark">- Подкатегория</small></li></a>
+                            <a href="#"><li><small class="text-dark">- Подкатегория</small></li></a>
+                            <a href="#"><li><small class="text-dark">- Подкатегория</small></li></a>
+                            <a href="#"><li><small class="text-dark">- Подкатегория</small></li></a>
+                            <a href="#"><li><small class="text-dark">- Подкатегория</small></li></a>
+                            <a href="#"><li><small class="text-dark">- Подкатегория</small></li></a>
+                        </ul>
+                        <a href="#"><h6 class="text-muted fw-bold">Категория X</h6></a>
+                        <ul class="mb-4">
+                            <a href="#"><li><small class="text-dark">- Подкатегория</small></li></a>
+                            <a href="#"><li><small class="text-dark">- Подкатегория</small></li></a>
+                            <a href="#"><li><small class="text-dark">- Подкатегория</small></li></a>
+                            <a href="#"><li><small class="text-dark">- Подкатегория</small></li></a>
+                            <a href="#"><li><small class="text-dark">- Подкатегория</small></li></a>
+                            <a href="#"><li><small class="text-dark">- Подкатегория</small></li></a>
+                        </ul>
+                    </div>
+                    <div class="col-sm">
+                        <a href="#"><h6 class="text-muted fw-bold">Категория 2</h6></a>
+                        <ul class="mb-4">
+                            <a href="#"><li><small class="text-dark">- Подкатегория</small></li></a>
+                            <a href="#"><li><small class="text-dark">- Подкатегория</small></li></a>
+                            <a href="#"><li><small class="text-dark">- Подкатегория</small></li></a>
+                            <a href="#"><li><small class="text-dark">- Подкатегория</small></li></a>
+                            <a href="#"><li><small class="text-dark">- Подкатегория</small></li></a>
+                            <a href="#"><li><small class="text-dark">- Подкатегория</small></li></a>
+                        </ul>
+                    </div>
+                    <div class="col-sm">
+                        <a href="#"><h6 class="text-muted fw-bold">Категория 3</h6></a>
+                        <ul class="mb-4">
+                            <a href="#"><li><small class="text-dark">- Подкатегория</small></li></a>
+                            <a href="#"><li><small class="text-dark">- Подкатегория</small></li></a>
+                            <a href="#"><li><small class="text-dark">- Подкатегория</small></li></a>
+                            <a href="#"><li><small class="text-dark">- Подкатегория</small></li></a>
+                            <a href="#"><li><small class="text-dark">- Подкатегория</small></li></a>
+                            <a href="#"><li><small class="text-dark">- Подкатегория</small></li></a>
+                        </ul>
+                    </div>
+                </div>
             </ul>
         </div>
         
