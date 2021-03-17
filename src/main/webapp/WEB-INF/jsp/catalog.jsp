@@ -26,14 +26,8 @@
                     
                 </header>
                 <div class="row justify-content-center" style="width: 100%">
-                    <div class="col-lg-3 col-md-12 intro-info order-lg-first order-last catalog-desktop">
+                    <div class="col-lg-3 col-md-12 intro-info order-lg-first order-last">
                         <t:product-groups-tree groups="${groups}" groupId="${group.id}"></t:product-groups-tree>
-                    </div>
-                    
-                    <div class="col-lg-3 col-md-12 intro-info order-lg-first order-last catalog-mobile">
-                        <button class="btn btn-outline-info" style="width: 100%" id="mobile-catalog-button">
-                            <span><i class="fas fa-seedling nav-icon"></i> Каталог товаров</span></i>
-                        </button>
                     </div>
 
                     <div class="col-lg-9 col-md-12 intro-info order-lg-first order-last">

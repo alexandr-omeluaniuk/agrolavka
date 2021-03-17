@@ -10,11 +10,13 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import ss.entity.agrolavka.Product;
 import ss.entity.agrolavka.ProductsGroup;
 
 /**
  * URL producer.
+ * Works like cache also.
  * @author alex
  */
 public class UrlProducer {
@@ -22,7 +24,10 @@ public class UrlProducer {
     private static final Map<String, ProductsGroup> GROUPS_PARENT_MAP = new HashMap<>();
     /** All groups. */
     private static final List<ProductsGroup> ALL_GROUPS = new ArrayList<>();
-    
+    /**
+     * Update catalog data.
+     * @param groups product groups.
+     */
     public static synchronized void updateCatalog(List<ProductsGroup> groups) {
         GROUPS_PARENT_MAP.clear();
         ALL_GROUPS.clear();
@@ -36,6 +41,17 @@ public class UrlProducer {
             String parentId = group.getParentId();
             GROUPS_PARENT_MAP.put(group.getExternalId(), parentId == null ? null : externalIdsMap.get(parentId));
         }
+    }
+    /**
+     * Get top categories.
+     * @return top categories.
+     */
+    public static synchronized List<ProductsGroup> getTopCategories() {
+        List<ProductsGroup> topCategories = ALL_GROUPS.stream().filter(group -> {
+            return group.isTopCategory() != null && group.isTopCategory();
+        }).collect(Collectors.toList());
+        Collections.sort(topCategories);
+        return topCategories;
     }
     /**
      * Build product group URL.
