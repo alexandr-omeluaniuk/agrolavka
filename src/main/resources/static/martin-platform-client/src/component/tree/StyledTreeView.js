@@ -10,12 +10,20 @@ import { makeStyles } from '@material-ui/core/styles';
 import TreeView from '@material-ui/lab/TreeView';
 import TreeItem from '@material-ui/lab/TreeItem';
 import Icon from '@material-ui/core/Icon';
+import Typography from '@material-ui/core/Typography';
 import { TreeNode } from '../../util/model/TreeNode';
 
 const useStyles = makeStyles({
     root: {
         flexGrow: 1,
         width: '100%'
+    },
+    label: {
+        display: 'flex',
+        alignItems: 'center'
+    },
+    labelText: {
+        flex: 1
     }
 });
 
@@ -23,14 +31,24 @@ function StyledTreeView(props) {
     const classes = useStyles();
     const { data, onSelect } = props;
     // ----------------------------------------------------- METHODS ----------------------------------------------------------------------
+    const renderLabel = (treeNode) => {
+        return (
+                <div className={classes.label}>
+                    <Typography variant={'h6'} className={classes.labelText}>
+                        {treeNode.name}
+                    </Typography>
+                    {treeNode.icon ? treeNode.icon : null}
+                </div>
+        );
+    };
     const renderTree = (treeNode) => (
-        <TreeItem key={treeNode.id} nodeId={treeNode.id} label={treeNode.name} onClick={() => onSelect(treeNode)}>
+        <TreeItem key={treeNode.id} nodeId={treeNode.id} label={renderLabel(treeNode)} onClick={() => onSelect(treeNode)}>
             {Array.isArray(treeNode.getChildren()) ? treeNode.getChildren().map((node) => renderTree(node)) : null}
         </TreeItem>
     );
     // ----------------------------------------------------- RENDERING --------------------------------------------------------------------
     return (
-            <TreeView className={classes.root} defaultCollapseIcon={(<Icon>expand_more</Icon>)} 
+            <TreeView className={classes.root} defaultCollapseIcon={(<Icon>expand_more</Icon>)}
                 defaultExpandIcon={(<Icon>chevron_right</Icon>)}>
                 {data.length > 0 ? data.map((node, idx) => {
                     return renderTree(node);

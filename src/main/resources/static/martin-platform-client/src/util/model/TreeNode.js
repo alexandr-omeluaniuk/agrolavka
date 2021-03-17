@@ -9,6 +9,7 @@ export class TreeNode {
     constructor(id, name, children) {
         this.id = `${id}`;
         this.name = name;
+        this.icon = null;
     }
     
     setChildren(children) {
@@ -29,5 +30,10 @@ export class TreeNode {
     
     getId() {
         return this.id;
+    }
+    
+    setIcon(icon) {
+        this.icon = icon;
+        return this;
     }
 }

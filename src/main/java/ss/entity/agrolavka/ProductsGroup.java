@@ -48,6 +48,10 @@ public class ProductsGroup extends ExternalEntity implements Serializable, Compa
     @Size(max = 255)
     @Column(name = "url", length = 255, unique = true)
     private String url;
+    /** Top category. */
+    @FormField
+    @Column(name = "is_top_category")
+    private Boolean topCategory;
     // =============================================== SET & GET ======================================================
     /**
      * @return the name
@@ -96,6 +100,18 @@ public class ProductsGroup extends ExternalEntity implements Serializable, Compa
      */
     public void setUrl(String url) {
         this.url = url;
+    }
+    /**
+     * @return the topCategory
+     */
+    public Boolean isTopCategory() {
+        return topCategory;
+    }
+    /**
+     * @param topCategory the topCategory to set
+     */
+    public void setTopCategory(Boolean topCategory) {
+        this.topCategory = topCategory;
     }
     // ================================================================================================================
     @Override

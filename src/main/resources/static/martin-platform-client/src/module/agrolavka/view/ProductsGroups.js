@@ -53,6 +53,9 @@ const useStyles = makeStyles(theme => ({
     },
     deleteGroup: {
         color: theme.palette.error.main
+    },
+    favoriteIcon: {
+        color: theme.palette.secondary.main
     }
 }));
 
@@ -89,6 +92,9 @@ function ProductsGroups(props) {
         const recursiveWalkTree = (productGroup) => {
             const node = new TreeNode(productGroup.id, productGroup.name);
             node.setOrigin(productGroup);
+            if (productGroup.topCategory) {
+                node.setIcon(<Icon className={classes.favoriteIcon}>favorite</Icon>);
+            }
             const children = [];
             const childProductGroups = map[productGroup.externalId];
             if (childProductGroups) {
@@ -167,10 +173,12 @@ function ProductsGroups(props) {
             setFormConfig(new FormConfig([
                 new FormField('id', TYPES.ID).hide(),
                 new FormField('name', TYPES.TEXTFIELD, t('m_agrolavka:products_groups.product_group_name'))
-                        .setGrid({xs: 12}).validation([
+                        .setGrid({xs: 12, md: 9}).validation([
                     new Validator(VALIDATORS.REQUIRED),
                     new Validator(VALIDATORS.MAX_LENGTH, {length: 255})
-                ])
+                ]),
+                new FormField('topCategory', TYPES.BOOLEAN, t('m_agrolavka:products_groups.product_group_top_category'))
+                        .setGrid({xs: 12, md: 3})
             ]));
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps

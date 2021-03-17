@@ -19,6 +19,7 @@
         "new_group": "Create new product group",
         "edit_group": "Edit",
         "delete_group": "Delete",
-        "product_group_name": "Name"
+        "product_group_name": "Name",
+        "product_group_top_category": "Toolbar category"
     }
 }
