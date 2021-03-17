@@ -35,6 +35,10 @@ h1, h2, h3, h4, h5, h6 {
   font-family: "Montserrat", sans-serif;
 }
 
+section {
+    padding-top: 200px;
+}
+
 /*--------------------------------------------------------------
 # Back to top button
 --------------------------------------------------------------*/
@@ -80,11 +84,16 @@ h1, h2, h3, h4, h5, h6 {
 /*--------------------------------------------------------------
 # Header
 --------------------------------------------------------------*/
+#subheader {
+    transition: all 0.5s;
+    width: 100%
+}
+
 #header {
   background: #fff;
   transition: all 0.5s;
   z-index: 997;
-  height: 90px;
+  height: 160px;
 }
 
 #header.header-transparent {
@@ -582,64 +591,6 @@ section {
   content: '';
   background-color: #ebf1fa;
   transition: .5s;
-}
-
-/* Services Section
---------------------------------*/
-#products {
-  padding: 60px 0 40px 0;
-}
-
-#products .box {
-  padding: 30px;
-  position: relative;
-  overflow: hidden;
-  border-radius: 10px;
-  margin: 0 10px 40px 10px;
-  background: #fff;
-  box-shadow: 0 10px 29px 0 rgba(68, 88, 144, 0.1);
-  transition: all 0.3s ease-in-out;
-  text-align: center;
-}
-
-#products .box:hover {
-  transform: scale(1.1);
-}
-
-#products .icon {
-  margin: 0 auto 15px auto;
-  padding-top: 12px;
-  display: inline-block;
-  text-align: center;
-  border-radius: 50%;
-  width: 60px;
-  height: 60px;
-}
-
-#products .icon i {
-  font-size: 36px;
-  line-height: 0;
-}
-
-#products .title {
-  font-weight: 700;
-  margin-bottom: 15px;
-  font-size: 18px;
-}
-
-#products .title a {
-  color: #111;
-}
-
-#products .box:hover .title a {
-  color: #1bb1dc;
-}
-
-#products .description {
-  font-size: 14px;
-  line-height: 28px;
-  margin-bottom: 0;
-  text-align: left;
 }
 
 /* Why Us Section

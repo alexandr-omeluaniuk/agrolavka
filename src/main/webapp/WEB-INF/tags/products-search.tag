@@ -29,8 +29,7 @@
         border-color: #7952b3;
     }
     #products-search {
-        border-top-right-radius: .25rem;
-        border-bottom-right-radius: .25rem;
+        
     }
     #products-search-results-list h6 {
         max-width: 400px;

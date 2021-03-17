@@ -10,7 +10,7 @@
 
 <t:app title="Агролавка | ${title}">
     <main id="main">
-        <section id="products" class="services" style="padding-top: 120px;">
+        <section class="services">
             <div class="container">
                 <header class="section-header">
                     <h3>${title}</h3>

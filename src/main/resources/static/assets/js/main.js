@@ -83,13 +83,16 @@
     /**
      * Toggle .header-scrolled class to #header when page is scrolled
      */
-    let selectHeader = select('#header')
+    let selectHeader = select('#header');
+    let subheader = select('#subheader');
     if (selectHeader) {
         const headerScrolled = () => {
             if (window.scrollY > 40) {
-                selectHeader.classList.add('header-scrolled')
+                selectHeader.classList.add('header-scrolled');
+                subheader.classList.remove('show');
             } else {
-                selectHeader.classList.remove('header-scrolled')
+                selectHeader.classList.remove('header-scrolled');
+                subheader.classList.add('show');
             }
         }
         window.addEventListener('load', headerScrolled)
