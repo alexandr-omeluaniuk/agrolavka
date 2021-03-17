@@ -36,7 +36,42 @@
             %>
             <ul class="dropdown-menu top-categories-dropdown p-4">
                 <div class="row">
-                    <div class="col-sm">
+                    <% 
+                        Map<String, List<ProductsGroup>> tree = UrlProducer.getCategoriesTree();
+                        for (ProductsGroup group : topCategories) {
+                            if (tree.containsKey(group.getExternalId())) {
+                                for (ProductsGroup subgroup : tree.get(group.getExternalId())) {
+                    %>
+                    <div class="col-sm-4">
+                        <a href="<%= UrlProducer.buildProductGroupUrl(subgroup) %>">
+                            <h6 class="text-muted fw-bold"><%= subgroup.getName() %></h6>
+                        </a>
+                        <%
+                            if (tree.containsKey(subgroup.getExternalId())) {
+                        %>
+                            <ul class="mb-4">
+                        <%
+                                for (ProductsGroup secondLevelGroup : tree.get(subgroup.getExternalId())) {
+                        %>
+                            <a href="<%= UrlProducer.buildProductGroupUrl(secondLevelGroup) %>">
+                                <li>
+                                    <small class="text-dark">- <%= secondLevelGroup.getName() %></small>
+                                </li>
+                            </a>
+                        <%
+                                }
+                        %>
+                            </ul>
+                        <%
+                            }
+                        %>
+                    </div>
+                    <%
+                                }
+                            }
+                        }
+                    %>
+                    <!--div class="col-sm">
                         <a href="#"><h6 class="text-muted fw-bold">Категория 1</h6></a>
                         <ul class="mb-4">
                             <a href="#"><li><small class="text-dark">- Подкатегория</small></li></a>
@@ -77,7 +112,7 @@
                             <a href="#"><li><small class="text-dark">- Подкатегория</small></li></a>
                             <a href="#"><li><small class="text-dark">- Подкатегория</small></li></a>
                         </ul>
-                    </div>
+                    </div-->
                 </div>
             </ul>
         </div>

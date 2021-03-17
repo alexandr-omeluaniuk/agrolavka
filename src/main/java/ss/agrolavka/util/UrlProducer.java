@@ -54,6 +54,22 @@ public class UrlProducer {
         return topCategories;
     }
     /**
+     * Get categories tree.
+     * @return categories tree.
+     */
+    public static synchronized Map<String, List<ProductsGroup>> getCategoriesTree() {
+        Map<String, List<ProductsGroup>> tree = new HashMap<>();
+        for (ProductsGroup group : ALL_GROUPS) {
+            if (group.getParentId() != null) {
+                if (!tree.containsKey(group.getParentId())) {
+                    tree.put(group.getParentId(), new ArrayList<>());
+                }
+                tree.get(group.getParentId()).add(group);
+            }
+        }
+        return tree;
+    }
+    /**
      * Build product group URL.
      * @param group product group.
      * @return full URL.
