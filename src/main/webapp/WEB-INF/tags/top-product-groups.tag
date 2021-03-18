@@ -33,6 +33,10 @@
     .category-level-2 {
         margin-left: 16px;
     }
+    .category-level-1:hover, .category-level-2:hover {
+        color: rgb(121,82,179) !important;
+        border-bottom: 1px dotted rgb(121,82,179);
+    }
 </style>
 <div id="subheader" class="collapse show" aria-expanded="true">
     <div class="d-flex align-items-center d-none d-lg-block dropdown">
@@ -97,7 +101,9 @@
                                 if (firstLevelCategoriesKeys.contains(linkedGroup.getExternalId())) {
                                 %> 
                                     <a href="<%= UrlProducer.buildProductGroupUrl(linkedGroup) %>">
-                                        <h6 class="text-muted fw-bold category-level-1"><%= linkedGroup.getName() %></h6>
+                                        <h6 class="text-muted fw-bold">
+                                            <span class="category-level-1"><%= linkedGroup.getName() %></span>
+                                        </h6>
                                     </a>
                                 <%
                                 } else {
