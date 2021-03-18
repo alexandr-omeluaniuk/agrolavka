@@ -15,7 +15,7 @@
         inset: unset !important;
         transform: none !important;
         width: 100%;
-        top: 46px !important;
+        top: 48px !important;
         min-height: 200px;
         box-shadow: 0 5px 20px rgb(0 0 0 / 50%);
     }
@@ -28,7 +28,7 @@
 </style>
 <div id="subheader" class="collapse show" aria-expanded="true">
     <div class="d-flex align-items-center p-2 d-none d-lg-block dropdown">
-        <div class="btn-group" role="group" aria-label="Избранные категории" style="width: 100%">
+        <div class="btn-group shadow-sm" role="group" aria-label="Избранные категории" style="width: 100%">
             <% 
                 List<ProductsGroup> topCategories = UrlProducer.getTopCategories();
                 for (ProductsGroup group : topCategories) {
@@ -38,7 +38,11 @@
                 }
             %>
         </div>
-        <ul class="dropdown-menu top-categories-dropdown p-4">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="open-subcatalog-trigger" style="display: none;"
+                data-bs-toggle="dropdown" aria-expanded="false">
+            Открыть подкаталог
+        </button>
+        <ul class="dropdown-menu top-categories-dropdown p-4" aria-labelledby="open-subcatalog-trigger">
             <%
                 Map<String, List<ProductsGroup>> tree = UrlProducer.getCategoriesTree();
                 for (ProductsGroup group : topCategories) {
@@ -64,22 +68,13 @@
                                 <small class="text-dark">- <%= secondLevelGroup.getName() %></small>
                             </li>
                         </a>
-                    <%
-                            }
-                    %>
+                    <% } %>
                         </ul>
-                    <%
-                        }
-                    %>
+                    <% } %>
                 </div>
-                <%
-                        }
-                    }
-                %>
+                <% } } %>
             </div>
-            <%
-                }
-            %>
+            <% } %>
         </ul>
     </div>
 </div>
@@ -87,11 +82,19 @@
     (function () {
         "use strict";
         
+        //const dropdown = document.querySelector('#subheader .top-categories-dropdown');
+        const dropdownTrigger = document.querySelector("#open-subcatalog-trigger");
+        
+        
         document.querySelectorAll('#subheader .btn-group .btn').forEach(el => {
             el.addEventListener('click', function (e) {
-                console.log(e.target.getAttribute("product-group"));
-                const menu = document.querySelector(".top-categories-dropdown");
-                menu.classList.add('show');
+                const selectedCategory = e.target.getAttribute("product-group");
+                document.querySelectorAll(".top-categories-dropdown div[product-group]").forEach(el => {
+                    el.style.display = el.getAttribute("product-group") === selectedCategory ? '' : 'none';
+                });
+                const dropdown = new bootstrap.Dropdown(dropdownTrigger);
+                dropdown.show();
+                e.stopPropagation();
             });
         });
         
