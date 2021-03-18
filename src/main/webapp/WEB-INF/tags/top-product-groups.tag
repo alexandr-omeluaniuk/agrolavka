@@ -15,7 +15,7 @@
         inset: unset !important;
         transform: none !important;
         width: 100%;
-        top: 48px !important;
+        top: 40px !important;
         min-height: 200px;
         box-shadow: 0 5px 20px rgb(0 0 0 / 50%);
     }
@@ -25,9 +25,17 @@
     #subheader {
         font-family: 'Comfortaa', cursive;
     }
+    #subheader .btn-success {
+        background-color: rgb(76, 175, 80);
+        border-color: #289e06;
+    }
+    #subheader .btn-success:focus {
+        font-weight: bold;
+        box-shadow: rgb(0 0 0 / 20%) 0px 3px 1px -2px, rgb(0 0 0 / 14%) 0px 2px 2px 0px, rgb(0 0 0 / 12%) 0px 1px 5px 0px;
+    }
 </style>
 <div id="subheader" class="collapse show" aria-expanded="true">
-    <div class="d-flex align-items-center p-2 d-none d-lg-block dropdown">
+    <div class="d-flex align-items-center d-none d-lg-block dropdown">
         <div class="btn-group shadow-sm" role="group" aria-label="Избранные категории" style="width: 100%">
             <% 
                 List<ProductsGroup> topCategories = UrlProducer.getTopCategories();
@@ -94,7 +102,11 @@
             el.addEventListener('click', function (e) {
                 const selectedCategory = e.target.getAttribute("product-group");
                 document.querySelectorAll(".top-categories-dropdown div[product-group]").forEach(el => {
-                    el.style.display = el.getAttribute("product-group") === selectedCategory ? '' : 'none';
+                    if (el.getAttribute("product-group") === selectedCategory) {
+                        el.classList.remove('d-none');
+                    } else {
+                        el.classList.add('d-none');
+                    }
                 });
                 const dropdown = new bootstrap.Dropdown(dropdownTrigger);
                 dropdown.show();
