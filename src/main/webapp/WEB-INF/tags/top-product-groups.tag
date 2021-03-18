@@ -64,58 +64,55 @@
                         Collections.sort(listLevel1);
                         List<ProductsGroup> listLevel1WithoutChilds = new ArrayList();
                         List<ProductsGroup> listLevel1WithChilds = new ArrayList();
-                        int totalLinks = 0;
                         for (ProductsGroup subgroup : listLevel1) {
                             if (tree.containsKey(subgroup.getExternalId())) {
                                 listLevel1WithChilds.add(subgroup);
-                                totalLinks += tree.get(subgroup.getExternalId()).size();
                             } else {
                                 listLevel1WithoutChilds.add(subgroup);
-                                totalLinks++;
                             }
                         }
                         listLevel1.clear();
                         listLevel1.addAll(listLevel1WithoutChilds);
-                        listLevel1.addAll(listLevel1WithChilds);
-                        while (totalLinks % columns != 0) {
-                            totalLinks++;
+                        for (ProductsGroup pg : listLevel1WithChilds) {
+                            listLevel1.add(pg);
+                            List<ProductsGroup> childs = tree.get(pg.getExternalId());
+                            Collections.sort(childs);
+                            for (ProductsGroup pgChild : childs) {
+                                listLevel1.add(pgChild);
+                            }
                         }
+                        int linksInColumn = Double.valueOf(Math.ceil((double) listLevel1.size() / (double) columns)).intValue();
                         // group by columns
-                        for (int counter = 0; counter < totalLinks; counter++) {
-                            if (counter % columns == 0) {
+                        for (int counter = 0; counter < linksInColumn * columns; counter++) {
+                            if (counter % linksInColumn == 0) {
+                                if (counter > 0) {
+                                    out.print("</div>");
+                                }
                                 out.print("<div class=\"col-sm-4\">");
                             }
-                            ProductsGroup subgroup = listLevel1.size() > counter ? listLevel1.get(counter) : null;
-                            if (subgroup != null) { %>
-                                <a href="<%= UrlProducer.buildProductGroupUrl(subgroup) %>">
-                                    <h6 class="text-muted fw-bold"><%= subgroup.getName() %></h6>
+                            ProductsGroup linkedGroup = listLevel1.size() > counter ? listLevel1.get(counter) : null;
+                            if (linkedGroup != null) {
+                            %> 
+                                <a href="<%= UrlProducer.buildProductGroupUrl(linkedGroup) %>">
+                                    <h6 class="text-muted fw-bold"><%= linkedGroup.getName() %></h6>
                                 </a>
-                                <%
-                                if (tree.containsKey(subgroup.getExternalId())) {
-                                    List<ProductsGroup> listLevel2 = tree.get(subgroup.getExternalId());
-                                    Collections.sort(listLevel2);
-                                    for (ProductsGroup secondLevelGroup : listLevel2) {
-                                    %>
-                                        <a href="<%= UrlProducer.buildProductGroupUrl(secondLevelGroup) %>">
-                                            <li>
-                                                <small class="text-dark">- <%= secondLevelGroup.getName() %></small>
-                                            </li>
-                                        </a>
-                                    <%
-                                    }
-                                }
+                            <%
                             }
-                            if (counter % columns == 0) {
-                                out.print("</div>");
-                            }
-                            counter++;
-                        } 
+                        }
+                        out.print("</div>");
                     }%>
             </div>
             <% } %>
         </ul>
     </div>
 </div>
+        
+        
+        <!--a href="">
+                                            <li>
+                                                <small class="text-dark">- </small>
+                                            </li>
+                                        </a-->
 <script>
     (function () {
         "use strict";
