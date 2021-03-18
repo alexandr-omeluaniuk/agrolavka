@@ -50,7 +50,9 @@
             <div class="row" product-group="<%= group.getId() %>">
                 <% 
                     if (tree.containsKey(group.getExternalId())) {
-                        for (ProductsGroup subgroup : tree.get(group.getExternalId())) {
+                        List<ProductsGroup> listLevel1 = tree.get(group.getExternalId());
+                        Collections.sort(listLevel1);
+                        for (ProductsGroup subgroup : listLevel1) {
                 %>
                 <div class="col-sm-4">
                     <a href="<%= UrlProducer.buildProductGroupUrl(subgroup) %>">
@@ -61,7 +63,9 @@
                     %>
                         <ul class="mb-4">
                     <%
-                            for (ProductsGroup secondLevelGroup : tree.get(subgroup.getExternalId())) {
+                        List<ProductsGroup> listLevel2 = tree.get(subgroup.getExternalId());
+                        Collections.sort(listLevel2);
+                        for (ProductsGroup secondLevelGroup : listLevel2) {
                     %>
                         <a href="<%= UrlProducer.buildProductGroupUrl(secondLevelGroup) %>">
                             <li>
