@@ -16,7 +16,7 @@
         transform: none !important;
         width: 100%;
         top: 40px !important;
-        min-height: 200px;
+        min-height: 100px;
         box-shadow: 0 5px 20px rgb(0 0 0 / 50%);
     }
     .top-categories-dropdown ul {
@@ -58,33 +58,59 @@
             <div class="row" product-group="<%= group.getId() %>">
                 <% 
                     if (tree.containsKey(group.getExternalId())) {
+                        final int columns = 3;
                         List<ProductsGroup> listLevel1 = tree.get(group.getExternalId());
+                        // sort
                         Collections.sort(listLevel1);
+                        List<ProductsGroup> listLevel1WithoutChilds = new ArrayList();
+                        List<ProductsGroup> listLevel1WithChilds = new ArrayList();
+                        int totalLinks = 0;
                         for (ProductsGroup subgroup : listLevel1) {
-                %>
-                <div class="col-sm-4">
-                    <a href="<%= UrlProducer.buildProductGroupUrl(subgroup) %>">
-                        <h6 class="text-muted fw-bold"><%= subgroup.getName() %></h6>
-                    </a>
-                    <%
-                        if (tree.containsKey(subgroup.getExternalId())) {
-                    %>
-                        <ul class="mb-4">
-                    <%
-                        List<ProductsGroup> listLevel2 = tree.get(subgroup.getExternalId());
-                        Collections.sort(listLevel2);
-                        for (ProductsGroup secondLevelGroup : listLevel2) {
-                    %>
-                        <a href="<%= UrlProducer.buildProductGroupUrl(secondLevelGroup) %>">
-                            <li>
-                                <small class="text-dark">- <%= secondLevelGroup.getName() %></small>
-                            </li>
-                        </a>
-                    <% } %>
-                        </ul>
-                    <% } %>
-                </div>
-                <% } } %>
+                            if (tree.containsKey(subgroup.getExternalId())) {
+                                listLevel1WithChilds.add(subgroup);
+                                totalLinks += tree.get(subgroup.getExternalId()).size();
+                            } else {
+                                listLevel1WithoutChilds.add(subgroup);
+                                totalLinks++;
+                            }
+                        }
+                        listLevel1.clear();
+                        listLevel1.addAll(listLevel1WithoutChilds);
+                        listLevel1.addAll(listLevel1WithChilds);
+                        while (totalLinks % columns != 0) {
+                            totalLinks++;
+                        }
+                        // group by columns
+                        for (int counter = 0; counter < totalLinks; counter++) {
+                            if (counter % columns == 0) {
+                                out.print("<div class=\"col-sm-4\">");
+                            }
+                            ProductsGroup subgroup = listLevel1.size() > counter ? listLevel1.get(counter) : null;
+                            if (subgroup != null) { %>
+                                <a href="<%= UrlProducer.buildProductGroupUrl(subgroup) %>">
+                                    <h6 class="text-muted fw-bold"><%= subgroup.getName() %></h6>
+                                </a>
+                                <%
+                                if (tree.containsKey(subgroup.getExternalId())) {
+                                    List<ProductsGroup> listLevel2 = tree.get(subgroup.getExternalId());
+                                    Collections.sort(listLevel2);
+                                    for (ProductsGroup secondLevelGroup : listLevel2) {
+                                    %>
+                                        <a href="<%= UrlProducer.buildProductGroupUrl(secondLevelGroup) %>">
+                                            <li>
+                                                <small class="text-dark">- <%= secondLevelGroup.getName() %></small>
+                                            </li>
+                                        </a>
+                                    <%
+                                    }
+                                }
+                            }
+                            if (counter % columns == 0) {
+                                out.print("</div>");
+                            }
+                            counter++;
+                        } 
+                    }%>
             </div>
             <% } %>
         </ul>
