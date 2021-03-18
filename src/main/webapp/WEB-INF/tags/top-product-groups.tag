@@ -64,7 +64,9 @@
                         Collections.sort(listLevel1);
                         List<ProductsGroup> listLevel1WithoutChilds = new ArrayList();
                         List<ProductsGroup> listLevel1WithChilds = new ArrayList();
+                        Set<String> firstLevelCategoriesKeys = new HashSet();
                         for (ProductsGroup subgroup : listLevel1) {
+                            firstLevelCategoriesKeys.add(subgroup.getExternalId());
                             if (tree.containsKey(subgroup.getExternalId())) {
                                 listLevel1WithChilds.add(subgroup);
                             } else {
@@ -92,11 +94,21 @@
                             }
                             ProductsGroup linkedGroup = listLevel1.size() > counter ? listLevel1.get(counter) : null;
                             if (linkedGroup != null) {
-                            %> 
-                                <a href="<%= UrlProducer.buildProductGroupUrl(linkedGroup) %>">
-                                    <h6 class="text-muted fw-bold"><%= linkedGroup.getName() %></h6>
-                                </a>
-                            <%
+                                if (firstLevelCategoriesKeys.contains(linkedGroup.getExternalId())) {
+                                %> 
+                                    <a href="<%= UrlProducer.buildProductGroupUrl(linkedGroup) %>">
+                                        <h6 class="text-muted fw-bold"><%= linkedGroup.getName() %></h6>
+                                    </a>
+                                <%
+                                } else {
+                                %>
+                                    <a href="<%= UrlProducer.buildProductGroupUrl(linkedGroup) %>">
+                                        <li>
+                                            <small class="text-dark">- <%= linkedGroup.getName() %></small>
+                                        </li>
+                                    </a>
+                                <%
+                                }
                             }
                         }
                         out.print("</div>");
