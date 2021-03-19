@@ -184,6 +184,22 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
     public void updateProductsGroup(ProductsGroup group) throws Exception {
         request("/entity/productfolder/" + group.getExternalId(), "PUT", group.toMySkladJSON().toString());
     }
+    @Override
+    public Map<String, Product> getStock(int offset, int limit) throws Exception {
+        String response = request("/report/stock/all?limit=" + limit + "&offset=" + offset, "GET", null);
+        JSONObject json = new JSONObject(response);
+        JSONArray rows = json.getJSONArray("rows");
+        Map<String, Product> result = new HashMap<>();
+        for (int i = 0; i < rows.length(); i++) {
+            JSONObject row = rows.getJSONObject(i);
+            Product product = new Product();
+            product.setCode(row.getString("code"));
+            product.setName(row.getString("name"));
+            product.setQuantity(row.getDouble("quantity"));
+            result.put(product.getCode(), product);
+        }
+        return result;
+    }
     // ============================================= PRIVATE ==========================================================
     /**
      * Request data from MySklad with predefined headers.

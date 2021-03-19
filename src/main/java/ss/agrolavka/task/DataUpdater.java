@@ -164,10 +164,12 @@ public class DataUpdater {
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     private void importProducts() throws Exception {
         List<Product> products = new ArrayList<>();
+        Map<String, Product> stock = new HashMap<>();
         int offset = 0;
         while (offset < 5000) {
             LOG.info("products portion: " + offset + " - " + (offset + 1000));
             List<Product> chunk = mySkladIntegrationService.getProducts(offset, 1000);
+            stock.putAll(mySkladIntegrationService.getStock(offset, 1000));
             products.addAll(chunk);
             offset += 1000;
         }
@@ -190,6 +192,7 @@ public class DataUpdater {
         Set<String> existProductsIDs = new HashSet<>();
         for (Product eProduct : existProducts) {
             Product actualProduct = productsMap.get(eProduct.getExternalId());
+            Product stockProduct = stock.get(actualProduct.getCode());
             eProduct.setName(actualProduct.getName());
             eProduct.setPrice(actualProduct.getPrice());
             eProduct.setGroup(actualProduct.getGroup());
@@ -198,6 +201,7 @@ public class DataUpdater {
             eProduct.setDescription(actualProduct.getDescription());
             eProduct.setCode(actualProduct.getCode());
             eProduct.setUrl(actualProduct.getUrl());
+            eProduct.setQuantity(stockProduct != null ? stockProduct.getQuantity() : 0);
             existProductsIDs.add(eProduct.getExternalId());
             LOG.trace("update product: " + eProduct);
         }

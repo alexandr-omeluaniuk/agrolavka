@@ -82,6 +82,9 @@ public class Product extends ExternalEntity implements Serializable {
     @Size(max = 255)
     @Column(name = "url", length = 255, unique = true)
     private String url;
+    /** Quantity. */
+    @Column(name = "quantity")
+    private Double quantity;
     // ============================================== SET & GET =======================================================
     /**
      * @return the name
@@ -191,6 +194,18 @@ public class Product extends ExternalEntity implements Serializable {
      */
     public void setUrl(String url) {
         this.url = url;
+    }
+    /**
+     * @return the quantity
+     */
+    public Double getQuantity() {
+        return quantity;
+    }
+    /**
+     * @param quantity the quantity to set
+     */
+    public void setQuantity(Double quantity) {
+        this.quantity = quantity;
     }
     // ================================================================================================================
     @Override
