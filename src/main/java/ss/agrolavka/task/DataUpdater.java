@@ -122,9 +122,15 @@ public class DataUpdater {
         List<ProductsGroup> productGroups = mySkladIntegrationService.getProductGroups();
         LOG.info("product groups [" + productGroups.size() + "]");
         Map<String, ProductsGroup> groupsMap = new HashMap<>();
+        Set<String> unique = new HashSet<>();
         for (ProductsGroup productGroup : productGroups) {
-            productGroup.setUrl(UrlProducer.transliterate(productGroup.getName()));
+            String t = UrlProducer.transliterate(productGroup.getName());
+            while (unique.contains(t)) {
+                t += "-alt";
+            }
+            productGroup.setUrl(t);
             groupsMap.put(productGroup.getExternalId(), productGroup);
+            unique.add(t);
         }
         Set<String> actualGroupIDs = groupsMap.keySet();
         Set<String> deleteNotIn = new HashSet<>(groupsMap.keySet());
@@ -166,10 +172,16 @@ public class DataUpdater {
             offset += 1000;
         }
         LOG.info("products [" + products.size() + "]");
+        Set<String> unique = new HashSet<>();
         Map<String, Product> productsMap = new HashMap<>();
         for (Product product : products) {
-            product.setUrl(UrlProducer.transliterate(product.getName()));
+            String t = UrlProducer.transliterate(product.getName());
+            while (unique.contains(t)) {
+                t += "-alt";
+            }
+            product.setUrl(t);
             productsMap.put(product.getExternalId(), product);
+            unique.add(t);
         }
         Set<String> actualProductsIDs = productsMap.keySet();
         Set<String> deleteNotIn = new HashSet<>(productsMap.keySet());
