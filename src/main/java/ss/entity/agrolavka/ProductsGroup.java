@@ -52,6 +52,11 @@ public class ProductsGroup extends ExternalEntity implements Serializable, Compa
     @FormField
     @Column(name = "is_top_category")
     private Boolean topCategory;
+    /** Font awesome icon. */
+    @FormField
+    @Size(max = 255)
+    @Column(name = "fa_icon", length = 255)
+    private String faIcon;
     // =============================================== SET & GET ======================================================
     /**
      * @return the name
@@ -112,6 +117,18 @@ public class ProductsGroup extends ExternalEntity implements Serializable, Compa
      */
     public void setTopCategory(Boolean topCategory) {
         this.topCategory = topCategory;
+    }
+    /**
+     * @return the faIcon
+     */
+    public String getFaIcon() {
+        return faIcon;
+    }
+    /**
+     * @param faIcon the faIcon to set
+     */
+    public void setFaIcon(String faIcon) {
+        this.faIcon = faIcon;
     }
     // ================================================================================================================
     @Override

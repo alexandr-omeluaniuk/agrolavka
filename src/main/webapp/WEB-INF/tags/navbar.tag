@@ -13,7 +13,7 @@
     <div class="container d-flex flex-column">
 
         <div class="d-flex align-items-center p-2" style="width: 100%;">
-            <h1 class="logo me-auto d-none d-lg-block" id="agrolavka-brand">
+            <h1 class="logo me-auto d-none d-xl-block" id="agrolavka-brand">
                 <a href="/" class="d-flex align-items-center">
                     <i class="fas fa-carrot agrolavka-logo"></i> Агролавка
                 </a>

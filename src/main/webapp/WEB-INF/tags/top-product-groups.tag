@@ -37,6 +37,12 @@
         color: rgb(121,82,179) !important;
         border-bottom: 1px dotted rgb(121,82,179);
     }
+    .top-categories-dropdown h6 {
+        margin-top: .5rem;
+    }
+    .top-category-icon {
+        margin-right: 7px;
+    }
 </style>
 <div id="subheader" class="collapse show" aria-expanded="true">
     <div class="d-flex align-items-center d-none d-lg-block dropdown">
@@ -45,7 +51,12 @@
                 List<ProductsGroup> topCategories = UrlProducer.getTopCategories();
                 for (ProductsGroup group : topCategories) {
             %>
-            <button type="button" class="btn btn-success" product-group="<%= group.getId() %>"><%= group.getName() %></button>
+            <button type="button" class="btn btn-success" product-group="<%= group.getId() %>">
+                <% if (group.getFaIcon() != null) {%> 
+                    <i class="top-category-icon <%= group.getFaIcon() %>"></i>
+                <% } %>
+                <%= group.getName() %>
+            </button>
             <%
                 }
             %>
@@ -78,7 +89,6 @@
                             }
                         }
                         listLevel1.clear();
-                        listLevel1.addAll(listLevel1WithoutChilds);
                         for (ProductsGroup pg : listLevel1WithChilds) {
                             listLevel1.add(pg);
                             List<ProductsGroup> childs = tree.get(pg.getExternalId());
@@ -87,6 +97,13 @@
                                 listLevel1.add(pgChild);
                             }
                         }
+                        if (!listLevel1WithoutChilds.isEmpty()) {
+                            ProductsGroup divider = new ProductsGroup();
+                            divider.setName("разное");
+                            divider.setId(-1L);
+                            listLevel1.add(divider);
+                        }
+                        listLevel1.addAll(listLevel1WithoutChilds);
                         int linksInColumn = Double.valueOf(Math.ceil((double) listLevel1.size() / (double) columns)).intValue();
                         // group by columns
                         for (int counter = 0; counter < linksInColumn * columns; counter++) {
@@ -98,7 +115,14 @@
                             }
                             ProductsGroup linkedGroup = listLevel1.size() > counter ? listLevel1.get(counter) : null;
                             if (linkedGroup != null) {
-                                if (firstLevelCategoriesKeys.contains(linkedGroup.getExternalId())) {
+                                if (linkedGroup.getId() == -1) {
+                                %>
+                                    <h6 class="text-muted fw-bold">
+                                        <span><%= linkedGroup.getName() %></span>
+                                    </h6>
+                                <%
+                                } else if (firstLevelCategoriesKeys.contains(linkedGroup.getExternalId()) 
+                                        && tree.containsKey(linkedGroup.getExternalId())) {
                                 %> 
                                     <a href="<%= UrlProducer.buildProductGroupUrl(linkedGroup) %>">
                                         <h6 class="text-muted fw-bold">
@@ -135,23 +159,23 @@
     (function () {
         "use strict";
         
-        //const dropdown = document.querySelector('#subheader .top-categories-dropdown');
         const dropdownTrigger = document.querySelector("#open-subcatalog-trigger");
-        
         
         document.querySelectorAll('#subheader .btn-group .btn').forEach(el => {
             el.addEventListener('click', function (e) {
+                e.stopPropagation();
                 const selectedCategory = e.target.getAttribute("product-group");
-                document.querySelectorAll(".top-categories-dropdown div[product-group]").forEach(el => {
+                const slides = document.querySelectorAll(".top-categories-dropdown div[product-group]");
+                slides.forEach(el => {
+                    el.classList.add('d-none');
+                });
+                slides.forEach(el => {
                     if (el.getAttribute("product-group") === selectedCategory) {
                         el.classList.remove('d-none');
-                    } else {
-                        el.classList.add('d-none');
                     }
                 });
                 const dropdown = new bootstrap.Dropdown(dropdownTrigger);
                 dropdown.show();
-                e.stopPropagation();
             });
         });
         
