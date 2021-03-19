@@ -124,17 +124,27 @@ function ProductsGroups(props) {
         if (data.id) {
             data.parentId = record.parentId;
             data.externalId = record.externalId;
-            dataService.put('/platform/entity/ss.entity.agrolavka.ProductsGroup', data).then(() => {
-                setProductGroups(null);
+            dataService.put('/platform/entity/ss.entity.agrolavka.ProductsGroup', data).then((group) => {
+                const updated = [];
+                productGroups.forEach(pg => {
+                    updated.push(group.id === pg.id ? group : pg);
+                });
+                setProductGroups(updated);
                 setFormDisabled(false);
                 setFormOpen(false);
+                setSelectedProductGroup(group);
             });
         } else {
             if (selectedProductGroup) {
                 data.parentId = selectedProductGroup.externalId;
             }
-            dataService.post('/platform/entity/ss.entity.agrolavka.ProductsGroup', data).then(() => {
-                setProductGroups(null);
+            dataService.post('/platform/entity/ss.entity.agrolavka.ProductsGroup', data).then((group) => {
+                const updated = [];
+                productGroups.forEach(pg => {
+                    updated.push(pg);
+                });
+                updated.push(group);
+                setProductGroups(updated);
                 setFormDisabled(false);
                 setFormOpen(false);
             });
@@ -173,8 +183,12 @@ function ProductsGroups(props) {
             setFormConfig(new FormConfig([
                 new FormField('id', TYPES.ID).hide(),
                 new FormField('name', TYPES.TEXTFIELD, t('m_agrolavka:products_groups.product_group_name'))
-                        .setGrid({xs: 12, md: 9}).validation([
+                        .setGrid({xs: 12, md: 6}).validation([
                     new Validator(VALIDATORS.REQUIRED),
+                    new Validator(VALIDATORS.MAX_LENGTH, {length: 255})
+                ]),
+                new FormField('faIcon', TYPES.TEXTFIELD, t('m_agrolavka:products_groups.product_group_fa_icon'))
+                        .setGrid({xs: 12, md: 3}).validation([
                     new Validator(VALIDATORS.MAX_LENGTH, {length: 255})
                 ]),
                 new FormField('topCategory', TYPES.BOOLEAN, t('m_agrolavka:products_groups.product_group_top_category'))

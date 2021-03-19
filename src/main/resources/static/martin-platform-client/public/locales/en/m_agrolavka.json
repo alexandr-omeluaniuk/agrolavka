@@ -20,6 +20,7 @@
         "edit_group": "Edit",
         "delete_group": "Delete",
         "product_group_name": "Name",
-        "product_group_top_category": "Toolbar category"
+        "product_group_top_category": "Toolbar category",
+        "product_group_fa_icon": "Font Awesome icon"
     }
 }
