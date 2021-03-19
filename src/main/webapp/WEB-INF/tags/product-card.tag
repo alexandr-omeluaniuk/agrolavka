@@ -13,6 +13,11 @@
 <%-- any content can be specified here e.g.: --%>
 <a href="<%= UrlProducer.buildProductUrl(product) %>">
     <div class="card mb-5 bg-body rounded product-card">
+        <div class="ribbon ribbon-top-left">
+            <span class="${product.quantity > 0 ? 'bg-success' : 'bg-danger'}">
+                <small>${product.quantity > 0 ? 'в наличии' : 'под заказ'}</small>
+            </span>
+        </div>
         <div class="card-img-top product-image" style="background-image: url('/api/agrolavka/public/product-image/${product.id}')"></div>
         <div class="card-body">
             <h6 class="card-title text-dark" style="min-height: 60px">${product.name}</h6>

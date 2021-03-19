@@ -29,6 +29,11 @@
     <div class="row">
         <div class="col-sm-12">
             <div class="card shadow-sm mb-2 me-4 bg-body rounded float-start">
+                <div class="ribbon ribbon-top-left">
+                    <span class="${product.quantity > 0 ? 'bg-success' : 'bg-danger'}">
+                        <small>${product.quantity > 0 ? 'в наличии' : 'под заказ'}</small>
+                    </span>
+                </div>
                 <div class="card-img-top product-image" 
                      style="background-image: url('/api/agrolavka/public/product-image/${product.getId()}')"></div>
                 <div class="card-body">
