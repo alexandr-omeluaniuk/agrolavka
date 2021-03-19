@@ -57,6 +57,9 @@
         font-weight: bold;
         color: rgba(0,0,0,0.85);
     }
+    .pgt-root a:hover {
+        color: rgb(121,82,179);
+    }
 </style>
 <nav class="pgt-root">
     <h4><i class="fas fa-seedling nav-icon"></i> Каталог товаров</h4>

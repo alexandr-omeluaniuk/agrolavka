@@ -17,6 +17,9 @@
 
 <%-- any content can be specified here e.g.: --%>
 <style>
+    .products-search-result a {
+        font-family: "Open Sans", sans-serif;
+    }
     @media (max-width: 992px) {
         .products-search-result {
             margin-top: 16px;

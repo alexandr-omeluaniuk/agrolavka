@@ -53,7 +53,7 @@
             %>
             <button type="button" class="btn btn-success" product-group="<%= group.getId() %>">
                 <% if (group.getFaIcon() != null) {%> 
-                    <i class="top-category-icon <%= group.getFaIcon() %>"></i>
+                    <i class="top-category-icon <%= group.getFaIcon() %>" product-group="<%= group.getId() %>"></i>
                 <% } %>
                 <%= group.getName() %>
             </button>

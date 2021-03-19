@@ -15,15 +15,21 @@ body {
 }
 
 a {
-  color: #1bb1dc;
+  color: #212529;
   text-decoration: none;
   transition: 0.5s;
+  font-family: 'Comfortaa', cursive;
 }
 
 a:hover, a:active, a:focus {
-  color: #0a98c0;
+  font-family: 'Comfortaa', cursive;
+  color: rgb(121,82,179);
   outline: none;
   text-decoration: none;
+}
+
+a.nav-link:hover {
+    color: rgb(121,82,179);
 }
 
 p {
@@ -138,7 +144,7 @@ section {
 }
 
 #header .social-links a {
-  color: #555186;
+  color: #212529;
   transition: 0.3s;
   line-height: 0;
   margin-left: 15px;
@@ -149,7 +155,7 @@ section {
 }
 
 #header .social-links a:hover {
-  color: #1bb1dc;
+  color: rgb(121,82,179);
 }
 
 @media (max-width: 992px) {
@@ -218,7 +224,7 @@ section {
 }
 
 .navbar a:hover, .navbar .active, .navbar li:hover > a {
-  color: #1bb1dc;
+  color: rgb(121,82,179);
 }
 
 .navbar .dropdown ul {
@@ -284,6 +290,7 @@ section {
 
 .agrolavka-logo {
     color: orange;
+    margin-bottom: 10px;
 }
 
 /**
