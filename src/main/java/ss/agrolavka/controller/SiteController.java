@@ -50,6 +50,10 @@ public class SiteController {
         model.addAttribute("productsCount", productDAO.count(request));
         return "home";
     }
+    @RequestMapping("/product/**")
+    public Object productsGroup() {
+        return new ModelAndView("redirect:/");
+    }
     /**
      * Product group page.
      * @param model data model.
