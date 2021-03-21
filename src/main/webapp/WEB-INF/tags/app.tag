@@ -29,7 +29,7 @@
 
         <title>${title}</title>
         <meta content="Все для сада и огорода" name="description">
-        <meta content="Семена растений, капельный полив, грунты, инвентарь, сад и огород" name="keywords">
+        <meta content="Семена растений, капельный полив, сад и огород, средства защиты растений, удобрения" name="keywords">
 
         <!-- Favicons -->
         <link href="/favicon.svg?" rel="icon">

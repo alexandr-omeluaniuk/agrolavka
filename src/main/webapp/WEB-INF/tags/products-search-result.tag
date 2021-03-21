@@ -47,12 +47,6 @@
         height: 0;
         padding-top: 100%;
     }
-    .product-item {
-        display: flex;
-    }
-    .product-item:hover {
-        box-shadow: rgb(0 0 0 / 20%) 0px 2px 1px -1px, rgb(0 0 0 / 14%) 0px 1px 1px 0px, rgb(0 0 0 / 12%) 0px 1px 3px 0px !important;
-    }
     .product-description {
         max-width: 600px;
         text-overflow: ellipsis;
@@ -82,9 +76,11 @@
                         </div>
                     </c:when>
                     <c:otherwise>
-                        <c:forEach items="${searchResult}" var="product">
-                            <t:product-list-item product="${product}"></t:product-list-item>
-                        </c:forEach>
+                        <div class="list-group mb-3">
+                            <c:forEach items="${searchResult}" var="product">
+                                <t:product-list-item product="${product}"></t:product-list-item>
+                            </c:forEach>
+                        </div>
                     </c:otherwise>
                 </c:choose>
             </c:otherwise>
