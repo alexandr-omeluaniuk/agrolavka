@@ -18,7 +18,7 @@
             ${product.name}</h6>
         <small class="text-dark fw-bold"><%= String.format("%.2f", product.getPrice())%> BYN</small>
     </div>
-    <c:if test="${product.description.trim().length() > 0}">
+    <% if (product.getDescription() != null && !product.getDescription().trim().isEmpty()) { %>
         <small class="text-muted text-nowrap product-description">${product.description}</small>
-    </c:if>
+    <% } %>
 </a>
