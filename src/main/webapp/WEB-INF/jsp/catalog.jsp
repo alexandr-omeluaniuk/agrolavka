@@ -25,7 +25,7 @@
                     </c:choose>
                     
                 </header>
-                <div class="row justify-content-center" style="width: 100%">
+                <div class="row justify-content-center">
                     <div class="col-lg-3 col-md-12 intro-info order-lg-first order-last">
                         <t:product-groups-tree groups="${groups}" groupId="${group.id}"></t:product-groups-tree>
                     </div>

@@ -5,7 +5,7 @@
 --%>
 
 <%@tag description="put the tag description here" pageEncoding="UTF-8" 
-       import="java.lang.*,java.util.*,ss.entity.agrolavka.*,ss.agrolavka.constants.SiteConstants"%>
+       import="java.lang.*,java.util.*,ss.entity.agrolavka.*"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%-- The list of normal or fragment attributes can be specified here: --%>
@@ -73,21 +73,13 @@
             <c:otherwise>
                 <c:choose>
                     <c:when test="${'TILES' == view}">
-                        <% int counter = 0; %>
-                        <c:forEach step="1" begin="1" end="${SiteConstants.SEARCH_RESULT_TILES_ROWS}">
-                            <div class="row">
-                                <c:forEach step="1" begin="1" end="${SiteConstants.SEARCH_RESULT_TILES_COLUMNS}">
-                                    <div class="col-sm">
-                                        <% if (searchResult.size() > counter) { %>
-                                            <t:product-card product="<%= searchResult.get(counter) %>"></t:product-card>
-                                        <% } %>
-                                    </div>
-                                    <% 
-                                        counter++;
-                                    %>
-                                </c:forEach>
-                            </div>
-                        </c:forEach>
+                        <div class="row">
+                            <c:forEach items="${searchResult}" var="product">
+                                <div class="col-sm-12 col-md-6 col-lg-6 col-xl-4">
+                                    <t:product-card product="${product}"></t:product-card>
+                                </div>
+                            </c:forEach>
+                        </div>
                     </c:when>
                     <c:otherwise>
                         <c:forEach items="${searchResult}" var="product">

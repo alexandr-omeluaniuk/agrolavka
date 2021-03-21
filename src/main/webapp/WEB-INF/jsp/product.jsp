@@ -16,7 +16,7 @@
                     <h3>${title}</h3>
                     <p class="text-uppercase text-muted">${product.group.name}</p>
                 </header>
-                <div class="row justify-content-center" style="width: 100%">
+                <div class="row justify-content-center">
                     <div class="col-lg-3 col-md-12 intro-info order-lg-first order-last">
                         <t:product-groups-tree groups="${groups}" groupId="${groupId}"></t:product-groups-tree>
                     </div>
