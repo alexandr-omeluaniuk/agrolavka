@@ -21,6 +21,7 @@
         "delete_group": "Удалить",
         "product_group_name": "Название",
         "product_group_top_category": "Показать в тулбаре",
-        "product_group_fa_icon": "Font Awesome иконка"
+        "product_group_fa_icon": "Font Awesome иконка",
+        "product_group_description": "Описание"
     }
 }

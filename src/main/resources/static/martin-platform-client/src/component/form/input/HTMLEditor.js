@@ -35,9 +35,9 @@ const useStyles = makeStyles(theme => ({
 function HTMLEditor (props) {
     const classes = useStyles();
     const { label, name, required, helperText, value, onChangeFieldValue, labelWidth, rows } = props;
-    const [showSourceCode, setShowSourceCode] = React.useState(false);
+    const [showSourceCode, setShowSourceCode] = React.useState(true);
     return (
-            <Paper className={classes.container} elevation={1}>
+            <Paper className={classes.container} elevation={0}>
                 <div className={classes.toolbar}>
                     <Tooltip title={'Source code'}>
                         <IconButton onClick={() => {
