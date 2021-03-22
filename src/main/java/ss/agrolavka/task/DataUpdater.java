@@ -143,6 +143,7 @@ public class DataUpdater {
             eGroup.setName(actualGroup.getName());
             eGroup.setParentId(actualGroup.getParentId());
             eGroup.setUrl(actualGroup.getUrl());
+            eGroup.setDescription(actualGroup.getDescription());
             existGroupsIDs.add(eGroup.getExternalId());
         }
         LOG.info("update product groups [" + existGroups.size() + "]");

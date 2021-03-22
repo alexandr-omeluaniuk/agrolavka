@@ -57,6 +57,11 @@ public class ProductsGroup extends ExternalEntity implements Serializable, Compa
     @Size(max = 255)
     @Column(name = "fa_icon", length = 255)
     private String faIcon;
+    /** Description. */
+    @FormField
+    @Size(max = 4096)
+    @Column(name = "description", length = 4096)
+    private String description;
     // =============================================== SET & GET ======================================================
     /**
      * @return the name
@@ -130,6 +135,18 @@ public class ProductsGroup extends ExternalEntity implements Serializable, Compa
     public void setFaIcon(String faIcon) {
         this.faIcon = faIcon;
     }
+    /**
+     * @return the description
+     */
+    public String getDescription() {
+        return description;
+    }
+    /**
+     * @param description the description to set
+     */
+    public void setDescription(String description) {
+        this.description = description;
+    }
     // ================================================================================================================
     @Override
     public int hashCode() {
@@ -173,6 +190,7 @@ public class ProductsGroup extends ExternalEntity implements Serializable, Compa
     public JSONObject toMySkladJSON() {
         JSONObject json = new JSONObject();
         json.put("name", getName());
+        json.put("description", getDescription() == null ? "" : getDescription());
         if (getParentId() != null) {
             JSONObject meta = new JSONObject();
             meta.put("href", "https://online.moysklad.ru/api/remap/1.2/entity/productfolder/" + getParentId());
