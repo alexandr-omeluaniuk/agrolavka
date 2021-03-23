@@ -15,6 +15,8 @@
 <html lang="ru">
     
     <head>
+        <meta charset="utf-8">
+        <meta content="width=device-width, initial-scale=1.0" name="viewport">
         <!-- Global site tag (gtag.js) - Google Analytics -->
         <script async src="https://www.googletagmanager.com/gtag/js?id=UA-190622177-1"></script>
         <script>
@@ -35,9 +37,6 @@
         }
         </script>
         <jsp:invoke fragment="structuredData"/>
-
-        <meta charset="utf-8">
-        <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
         <title>${title}</title>
         <meta name="title" content="Все для сада и огорода">

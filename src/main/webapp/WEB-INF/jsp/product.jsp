@@ -16,7 +16,7 @@
           "@type": "Product",
           "name": "${product.name}",
           "image": [
-            "https://agrolavka.by/api/agrolavka/public/product-image/${product.id}",
+            "https://agrolavka.by/api/agrolavka/public/product-image/${product.id}"
            ],
           "description": "${product.description}",
           "offers": {
