@@ -1037,7 +1037,7 @@ section {
     padding-top: 100%;
     width: 300px;
 }
-.product-description {
+.product-text {
     white-space: pre-line;
     text-align: justify;
 }
@@ -1082,7 +1082,7 @@ section {
     .products-search-result {
         margin-top: 16px;
     }
-    .product-description {
+    .products-search-result .product-description {
         max-width: 300px;
     }
 }
@@ -1105,7 +1105,7 @@ section {
     height: 0;
     padding-top: 100%;
 }
-.product-description {
+.products-search-result .product-description {
     max-width: 600px;
     text-overflow: ellipsis;
     overflow: hidden;

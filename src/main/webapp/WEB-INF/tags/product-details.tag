@@ -29,7 +29,7 @@
                 </div>
             </div>
             <h4>${product.name}</h4>
-            <p class="product-description">${product.description}</p>
+            <p class="product-text">${product.description}</p>
         </div>
     </div>
 </article>
