@@ -10,7 +10,7 @@
 <%-- The list of normal or fragment attributes can be specified here: --%>
 
 <%-- any content can be specified here e.g.: --%>
-<div id="subheader" class="collapse show" aria-expanded="true">
+<div id="subheader" class="collapse show">
     <div class="d-flex align-items-center d-none d-lg-block dropdown">
         <div class="btn-group shadow-sm" role="group" aria-label="Избранные категории" style="width: 100%">
             <% 

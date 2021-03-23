@@ -31,9 +31,9 @@
 <%-- any content can be specified here e.g.: --%>
 <nav class="pgt-root">
     <h4><i class="fas fa-seedling nav-icon"></i> Каталог товаров</h4>
-    <ul class="list-unstyled mb-0 py-3 pt-md-1">
+    <div class="mb-0 py-3 pt-md-1 d-flex flex-column">
         <c:forEach items="${catalogRoots}" var="root">
             <t:product-groups-tree-item group="${root}" catalogMap="${catalogMap}" groupId="${groupId}"/>
         </c:forEach>
-    </ul>
+    </div>
 </nav>

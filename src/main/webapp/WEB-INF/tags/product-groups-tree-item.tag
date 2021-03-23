@@ -42,19 +42,17 @@
             <i class="fas fa-chevron-right pgt-expand-icon"></i> ${group.name}
         </button>
         <div class="collapse ${expanded ? "show" : ""}" id="product-group-item-${group.id}" style="margin-left: 1.4rem">
-            <ul class="list-unstyled fw-normal pb-1 small">
+            <div class="fw-normal pb-1 small d-flex flex-column">
                 <c:forEach items="${catalogMap.get(group.getExternalId())}" var="child">
                     <t:product-groups-tree-item group="${child}" catalogMap="${catalogMap}" groupId="${groupId}"/>
                 </c:forEach>
-            </ul>
+            </div>
         </div>
     </c:when>    
     <c:otherwise>
-        <li>
-            <a href="<%= UrlProducer.buildProductGroupUrl(group) %>" 
-                    class="d-inline-flex align-items-center rounded ${group.getId().equals(groupId) ? "active" : ""}">
-                ${group.name}
-            </a>
-        </li>
+        <a href="<%= UrlProducer.buildProductGroupUrl(group) %>" 
+                class="d-inline-flex align-items-center rounded ${group.getId().equals(groupId) ? "active" : ""}">
+            <h6 class="mb-0"><small>${group.name}</small></h6>
+        </a>
     </c:otherwise>
 </c:choose>
