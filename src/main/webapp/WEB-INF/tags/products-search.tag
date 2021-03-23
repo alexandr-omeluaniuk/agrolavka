@@ -10,43 +10,6 @@
 <%@attribute name="message"%>
 
 <%-- any content can be specified here e.g.: --%>
-<style>
-    #products-search-container {
-        margin-bottom: 0 !important;
-        margin-right: 12px;
-        margin-left: 12px;
-    }
-    #products-search-results-list {
-        padding: 0;
-        margin-top: 0px;
-        max-height: calc(100vh - 100px);
-        overflow-y: auto;
-    }
-    #products-search:focus {
-        color: rgb(121,82,179);
-        border-color: #1bb1dc;
-        box-shadow: 0 0 0 3px rgb(121 82 179 / 25%);
-        border-color: #7952b3;
-    }
-    #products-search {
-        
-    }
-    #products-search-results-list h6 {
-        max-width: 400px;
-        white-space: pre-line;
-        font-size: .9rem;
-    }
-    #products-search-results-list .text-muted {
-        font-size: .8rem;
-    }
-    #products-search-results-list .highlighted-text {
-        color: rgb(121,82,179);
-        background-color: rgba(121,82,179,.07);
-    }
-    #products-search-results-list a {
-        font-family: "Open Sans", sans-serif;
-    }
-</style>
 <div class="input-group mb-3" id="products-search-container">
     <input type="search" class="form-control" aria-label="Поиск товаров" id="products-search" placeholder="Быстрый поиск"
            autocomplete="off">

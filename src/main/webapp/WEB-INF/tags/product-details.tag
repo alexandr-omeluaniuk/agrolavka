@@ -10,21 +10,6 @@
 <%@attribute name="product" required="true" type="ss.entity.agrolavka.Product"%>
 
 <%-- any content can be specified here e.g.: --%>
-<style>
-    .product-image {
-        display: block;
-        background-size: cover;
-        background-repeat: no-repeat;
-        background-position: center;
-        height: 0;
-        padding-top: 100%;
-        width: 300px;
-    }
-    .product-description {
-        white-space: pre-line;
-        text-align: justify;
-    }
-</style>
 <article>
     <div class="row">
         <div class="col-sm-12">

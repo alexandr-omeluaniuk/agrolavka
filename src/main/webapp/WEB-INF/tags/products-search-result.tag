@@ -16,44 +16,6 @@
 <%@attribute name="group" required="false" type="ProductsGroup"%>
 
 <%-- any content can be specified here e.g.: --%>
-<style>
-    .products-search-result a {
-        font-family: "Open Sans", sans-serif;
-    }
-    @media (max-width: 992px) {
-        .products-search-result {
-            margin-top: 16px;
-        }
-        .product-description {
-            max-width: 300px;
-        }
-    }
-    .products-toolbar {
-        margin-bottom: 10px;
-    }
-    .product-card {
-        position: relative;
-        box-shadow: rgb(0 0 0 / 20%) 0px 2px 1px -1px, rgb(0 0 0 / 14%) 0px 1px 1px 0px, rgb(0 0 0 / 12%) 0px 1px 3px 0px;
-    }
-    .product-card:hover {
-        cursor: pointer;
-        box-shadow: rgb(0 0 0 / 20%) 0px 3px 3px -2px, rgb(0 0 0 / 14%) 0px 3px 4px 0px, rgb(0 0 0 / 12%) 0px 1px 8px 0px !important;
-    }
-    .product-image {
-        display: block;
-        background-size: cover;
-        background-repeat: no-repeat;
-        background-position: center;
-        height: 0;
-        padding-top: 100%;
-    }
-    .product-description {
-        max-width: 600px;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        display: inline-block;
-    }
-</style>
 <div class="row products-search-result">
     <div class="col-sm-12">
         <% String url = ss.agrolavka.util.UrlProducer.buildProductGroupUrl(group); %>
