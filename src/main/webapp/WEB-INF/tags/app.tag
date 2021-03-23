@@ -31,7 +31,7 @@
           "@context": "https://schema.org",
           "@type": "Organization",
           "url": "https://agrolavka.by",
-          "logo": "http://agrolavka.by/assets/img/apple-touch-icon.png"
+          "logo": "https://agrolavka.by/assets/img/apple-touch-icon.png"
         }
         </script>
         <jsp:invoke fragment="structuredData"/>

@@ -98,6 +98,8 @@ public class SiteController {
             model.addAttribute("groupId", product.getGroup() != null ? product.getGroup().getId() : null);
             model.addAttribute("breadcrumbLabel", product.getName());
             model.addAttribute("breadcrumbPath", UrlProducer.getBreadcrumbPath(product.getGroup()));
+            model.addAttribute("productPrice", String.format("%.2f", product.getPrice()));
+            model.addAttribute("productURL", "https://agrolavka.by" + request.getRequestURI());
             return "product";
         } else {
             return new ModelAndView("redirect:/");
