@@ -33,6 +33,7 @@
                     <t:highlights/>
                 </div>
             </div>
+        </div>
     </section>
     <!--main id="main">
         <section>

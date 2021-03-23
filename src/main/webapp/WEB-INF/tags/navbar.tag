@@ -28,7 +28,7 @@
                     </li>
                     <li>
                         <a class="nav-link" href="/catalog">
-                            <span><i class="fas fa-seedling nav-icon"></i> Наша продукция</span></i>
+                            <span><i class="fas fa-seedling nav-icon"></i> Наша продукция</span>
                         </a>
                     </li>
                     <li>

@@ -17,9 +17,9 @@
                 List<ProductsGroup> topCategories = UrlProducer.getTopCategories();
                 for (ProductsGroup group : topCategories) {
             %>
-            <button type="button" class="btn btn-success" product-group="<%= group.getId() %>">
+            <button type="button" class="btn btn-success" data-product-group="<%= group.getId() %>">
                 <% if (group.getFaIcon() != null) {%> 
-                    <i class="top-category-icon <%= group.getFaIcon() %>" product-group="<%= group.getId() %>"></i>
+                    <i class="top-category-icon <%= group.getFaIcon() %>" data-product-group="<%= group.getId() %>"></i>
                 <% } %>
                 <%= group.getName() %>
             </button>
@@ -31,12 +31,12 @@
                 data-bs-toggle="dropdown" aria-expanded="false">
             Открыть подкаталог
         </button>
-        <ul class="dropdown-menu top-categories-dropdown p-4" aria-labelledby="open-subcatalog-trigger">
+        <div class="dropdown-menu top-categories-dropdown p-4" aria-labelledby="open-subcatalog-trigger">
             <%
                 Map<String, List<ProductsGroup>> tree = UrlProducer.getCategoriesTree();
                 for (ProductsGroup group : topCategories) {
             %>
-            <div class="row" product-group="<%= group.getId() %>">
+            <div class="row" data-product-group="<%= group.getId() %>">
                 <% 
                     if (tree.containsKey(group.getExternalId())) {
                         final int columns = 3;
@@ -99,9 +99,9 @@
                                 } else {
                                 %>
                                     <a href="<%= UrlProducer.buildProductGroupUrl(linkedGroup) %>">
-                                        <li>
+                                        <p class="mb-0">
                                             <small class="text-dark category-level-2">- <%= linkedGroup.getName() %></small>
-                                        </li>
+                                        </p>
                                     </a>
                                 <%
                                 }
@@ -111,7 +111,7 @@
                     }%>
             </div>
             <% } %>
-        </ul>
+        </div>
     </div>
 </div>
         
@@ -130,13 +130,13 @@
         document.querySelectorAll('#subheader .btn-group .btn').forEach(el => {
             el.addEventListener('click', function (e) {
                 e.stopPropagation();
-                const selectedCategory = e.target.getAttribute("product-group");
-                const slides = document.querySelectorAll(".top-categories-dropdown div[product-group]");
+                const selectedCategory = e.target.getAttribute("data-product-group");
+                const slides = document.querySelectorAll(".top-categories-dropdown div[data-product-group]");
                 slides.forEach(el => {
                     el.classList.add('d-none');
                 });
                 slides.forEach(el => {
-                    if (el.getAttribute("product-group") === selectedCategory) {
+                    if (el.getAttribute("data-product-group") === selectedCategory) {
                         el.classList.remove('d-none');
                     }
                 });
