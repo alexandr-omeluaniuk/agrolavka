@@ -8,6 +8,7 @@
 
 <%-- The list of normal or fragment attributes can be specified here: --%>
 <%@attribute name="title" required="true"%>
+<%@attribute name="structuredData" fragment="true" required="false"%>
 
 <%-- any content can be specified here e.g.: --%>
 <!DOCTYPE html>
@@ -23,6 +24,17 @@
 
                 gtag('config', 'UA-190622177-1');
         </script>
+        
+        <!-- Google structured data -->
+        <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          "url": "https://agrolavka.by",
+          "logo": "http://agrolavka.by/assets/img/apple-touch-icon.png"
+        }
+        </script>
+        <jsp:invoke fragment="structuredData"/>
 
         <meta charset="utf-8">
         <meta content="width=device-width, initial-scale=1.0" name="viewport">

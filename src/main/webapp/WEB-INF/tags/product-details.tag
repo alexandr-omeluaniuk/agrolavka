@@ -19,7 +19,7 @@
                         <small>${product.quantity > 0 ? 'в наличии' : 'под заказ'}</small>
                     </span>
                 </div>
-                <div class="card-img-top product-image" 
+                <div class="card-img-top agr-product-image-details" 
                      style="background-image: url('/api/agrolavka/public/product-image/${product.getId()}')"></div>
                 <div class="card-body">
                     <div class="d-flex justify-content-between">

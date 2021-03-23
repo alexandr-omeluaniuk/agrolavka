@@ -2,6 +2,8 @@
 ---
 server:
   port: 9090
+  tomcat:
+    additional-tld-skip-patterns: "*.jar"
 application:
   version: 1.0
 spring:

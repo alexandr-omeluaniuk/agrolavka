@@ -6,7 +6,6 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
-<%@taglib prefix="cmp" uri="/WEB-INF/tlds/components.tld"%>
 
 <t:app title="Агролавка | ${title}">
     <main id="main">
