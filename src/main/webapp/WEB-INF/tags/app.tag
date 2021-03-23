@@ -8,6 +8,7 @@
 
 <%-- The list of normal or fragment attributes can be specified here: --%>
 <%@attribute name="title" required="true"%>
+<%@attribute name="metaDescription" required="true"%>
 <%@attribute name="structuredData" fragment="true" required="false"%>
 
 <%-- any content can be specified here e.g.: --%>
@@ -40,7 +41,7 @@
 
         <title>${title}</title>
         <meta name="title" content="Все для сада и огорода">
-        <meta name="description" content="Большой выбор семян, удобрений, средств для защиты растений. Комплектующие для капельного полива. Зоотовары. Приглашаем за покупками.">
+        <meta name="description" content="${metaDescription}">
         
         <!-- Open Graph / Facebook -->
         <meta property="og:type" content="website">

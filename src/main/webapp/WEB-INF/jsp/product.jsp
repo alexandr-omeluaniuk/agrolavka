@@ -7,7 +7,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 
-<t:app title="Агролавка | ${title}">
+<t:app title="Агролавка | ${title}" metaDescription="${product.group.name}, ${product.name}">
     
     <jsp:attribute name="structuredData">
         <script type="application/ld+json">
