@@ -43,7 +43,7 @@ public class SiteController {
      */
     @RequestMapping("/")
     public String home(Model model) throws Exception {
-        model.addAttribute("title", "Главная");
+        model.addAttribute("title", "Все для сада и огорода");
         ProductsSearchRequest request = new ProductsSearchRequest();
         request.setPage(1);
         request.setPageSize(Integer.MAX_VALUE);

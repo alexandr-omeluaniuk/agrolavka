@@ -28,9 +28,23 @@
         <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
         <title>${title}</title>
-        <meta content="Все для сада и огорода" name="description">
-        <meta content="Семена растений, капельный полив, сад и огород, средства защиты растений, удобрения" name="keywords">
+        <meta name="title" content="Все для сада и огорода">
+        <meta name="description" content="Большой выбор семян, удобрений, средств для защиты растений. Комплектующие для капельного полива. Зоотовары. Приглашаем за покупками.">
+        
+        <!-- Open Graph / Facebook -->
+        <meta property="og:type" content="website">
+        <meta property="og:url" content="https://agrolavka.by/">
+        <meta property="og:title" content="Все для сада и огорода">
+        <meta property="og:description" content="Большой выбор семян, удобрений, средств для защиты растений. Комплектующие для капельного полива. Зоотовары. Приглашаем за покупками.">
+        <meta property="og:image" content="https://agrolavka.by/assets/img/agrolavka-location.jpg">
 
+        <!-- Twitter -->
+        <meta property="twitter:card" content="summary_large_image">
+        <meta property="twitter:url" content="https://agrolavka.by/">
+        <meta property="twitter:title" content="Все для сада и огорода">
+        <meta property="twitter:description" content="Большой выбор семян, удобрений, средств для защиты растений. Комплектующие для капельного полива. Зоотовары. Приглашаем за покупками.">
+        <meta property="twitter:image" content="https://agrolavka.by/assets/img/agrolavka-location.jpg">
+        
         <!-- Favicons -->
         <link href="/favicon.svg?" rel="icon">
         <link href="/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
