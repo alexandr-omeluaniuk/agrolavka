@@ -34,7 +34,7 @@
                         <div class="col-lg-9 col-md-12 intro-info order-lg-first order-last">
                             <t:breadcrumb label="${breadcrumbLabel}" groups="${breadcrumbPath}"></t:breadcrumb>
                             <t:products-search-result searchResult="${searchResult}" pages="${searchResultPages}"
-                                                      page="${page}" view="${view}" group="${group}">
+                                                      page="${page}" view="${view}" sort="${sort}" group="${group}">
 
                             </t:products-search-result>
                         </div>

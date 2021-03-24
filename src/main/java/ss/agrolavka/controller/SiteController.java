@@ -70,10 +70,12 @@ public class SiteController {
     @RequestMapping("/catalog/**")
     public Object productsGroup(Model model, HttpServletRequest request,
             @RequestParam(name = "page", required = false) Integer page,
-            @RequestParam(name = "view", required = false) String view) throws Exception {
+            @RequestParam(name = "view", required = false) String view,
+            @RequestParam(name = "sort", required = false) String sort) throws Exception {
         String url = request.getRequestURI();
         model.addAttribute("page", page == null ? 1 : page);
         model.addAttribute("view", view == null ? "TILES" : view);
+        model.addAttribute("sort", sort == null ? "alphabet" : sort);
         model.addAttribute("groups", UrlProducer.getProductsGroups());
         if ("/catalog".equals(url)) {
             model.addAttribute("title", "Каталог");

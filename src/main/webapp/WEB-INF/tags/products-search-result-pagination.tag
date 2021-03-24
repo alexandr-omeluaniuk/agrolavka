@@ -12,6 +12,7 @@
 <%@attribute name="pages" required="true" type="Integer"%>
 <%@attribute name="page" required="true" type="Integer"%>
 <%@attribute name="view" required="true" type="String"%>
+<%@attribute name="sort" required="true" type="String"%>
 <%@attribute name="url" required="true" type="String"%>
 
 <%-- any content can be specified here e.g.: --%>
@@ -40,11 +41,11 @@
     String renderPage(Integer page, Integer currentPage) {
         StringBuilder sb = new StringBuilder();
         sb.append("<li class=\"page-item ").append(currentPage.equals(page) ? "active" : "")
-                .append("\"><a class=\"page-link\" href=\"").append(createLink(page, null))
+                .append("\"><a class=\"page-link\" href=\"").append(createLink(page, null, null))
                 .append("\">").append(page).append("</a></li>");
         return sb.toString();
     }
-    String createLink(Integer pageParam, String viewParam) {
+    String createLink(Integer pageParam, String viewParam, String sortParam) {
         List<String> params = new ArrayList();
         if (pageParam != null) {
             params.add("page=" + pageParam);
@@ -55,6 +56,11 @@
             params.add("view=" + viewParam);
         } else if (view != null && !view.isEmpty()) {
             params.add("view=" + view);
+        }
+        if (sortParam != null) {
+            params.add("sort=" + sortParam);
+        } else if (sort != null && !sort.isEmpty()) {
+            params.add("sort=" + sort);
         }
         StringBuilder sb = new StringBuilder();
         if (!params.isEmpty()) {
@@ -73,23 +79,23 @@
             <nav aria-label="Page navigation" class="d-flex justify-content-start">
                 <ul class="pagination" style="margin-bottom: 0;">
                     <li class="page-item ${page == 1 ? " disabled" : ""}">
-                        <a class="page-link" href="<%= createLink(1, null) %>" aria-label="Первая страница">
+                        <a class="page-link" href="<%= createLink(1, null, null) %>" aria-label="Первая страница">
                             <i class="fas fa-angle-double-left"></i>
                         </a>
                     </li>
                     <li class="page-item ${page == 1 ? " disabled" : ""}">
-                        <a class="page-link" href="<%= createLink(page - 1, null) %>" aria-label="Назад">
+                        <a class="page-link" href="<%= createLink(page - 1, null, null) %>" aria-label="Назад">
                             <i class="fas fa-angle-left"></i>
                         </a>
                     </li>
                     <%= outputPagination() %>
                     <li class="page-item ${page == pages ? " disabled" : ""}">
-                        <a class="page-link" href="<%= createLink(page + 1, null) %>" aria-label="Вперед">
+                        <a class="page-link" href="<%= createLink(page + 1, null, null) %>" aria-label="Вперед">
                             <i class="fas fa-angle-right"></i>
                         </a>
                     </li>
                     <li class="page-item ${page == pages ? " disabled" : ""}">
-                        <a class="page-link" href="<%= createLink(pages, null) %>" aria-label="Последняя страница">
+                        <a class="page-link" href="<%= createLink(pages, null, null) %>" aria-label="Последняя страница">
                             <i class="fas fa-angle-double-right"></i>
                         </a>
                     </li>
@@ -99,10 +105,28 @@
     </div>
     <div class="col-sm-12 col-md-6 d-flex justify-content-end">
         <div class="btn-group">
-            <a href="<%= createLink(null, "TILES") %>" class="btn btn-outline-info ${"TILES".equals(view) ? "active" : ""}">
+            <div class="dropdown">
+                <button class="btn btn-outline-info dropdown-toggle" type="button" id="sort-products" 
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                    <c:choose>
+                        <c:when test="${sort == 'alphabet'}"><i class="fas fa-sort-alpha-up"></i> по алфавиту</c:when>
+                        <c:when test="${sort == 'cheap'}"><i class="fas fa-sort-numeric-up"></i> сначала дешевые</c:when>
+                        <c:when test="${sort == 'expensive'}"><i class="fas fa-sort-numeric-down"></i> сначала дорогие</c:when>
+                    </c:choose>
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="sort-products">
+                    <li><a class="dropdown-item" href="<%= createLink(null, null, "alphabet") %>">
+                            <i class="fas fa-sort-alpha-up"></i> по алфавиту</a></li>
+                    <li><a class="dropdown-item" href="<%= createLink(null, null, "cheap") %>">
+                            <i class="fas fa-sort-numeric-up"></i> сначала дешевые</a></li>
+                    <li><a class="dropdown-item" href="<%= createLink(null, null, "expensive") %>">
+                            <i class="fas fa-sort-numeric-down"></i> сначала дорогие</a></li>
+                </ul>
+            </div>
+            <a href="<%= createLink(null, "TILES", null) %>" class="btn btn-outline-info ${"TILES".equals(view) ? "active" : ""}">
                 <i class="fas fa-th" ${"TILES".equals(view) ? " style=\"color: white;\"" : ""}></i>
             </a>
-            <a href="<%= createLink(null, "LIST") %>" class="btn btn-outline-info ${"LIST".equals(view) ? "active" : ""}">
+            <a href="<%= createLink(null, "LIST", null) %>" class="btn btn-outline-info ${"LIST".equals(view) ? "active" : ""}">
                 <i class="fas fa-list" ${"LIST".equals(view) ? " style=\"color: white;\"" : ""}></i>
             </a>
         </div>

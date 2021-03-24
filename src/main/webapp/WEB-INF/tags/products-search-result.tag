@@ -13,13 +13,14 @@
 <%@attribute name="pages" required="true" type="Integer"%>
 <%@attribute name="page" required="true" type="Integer"%>
 <%@attribute name="view" required="true" type="String"%>
+<%@attribute name="sort" required="true" type="String"%>
 <%@attribute name="group" required="false" type="ProductsGroup"%>
 
 <%-- any content can be specified here e.g.: --%>
 <div class="row products-search-result">
     <div class="col-sm-12">
         <% String url = ss.agrolavka.util.UrlProducer.buildProductGroupUrl(group); %>
-        <t:products-search-result-pagination pages="${pages}" page="${page}" view="${view}" url="<%= url %>">
+        <t:products-search-result-pagination pages="${pages}" page="${page}" view="${view}" sort="${sort}" url="<%= url %>">
             
         </t:products-search-result-pagination>
         <c:choose>
@@ -47,7 +48,7 @@
                 </c:choose>
             </c:otherwise>
         </c:choose>
-        <t:products-search-result-pagination pages="${pages}" page="${page}" view="${view}" url="<%= url %>">
+        <t:products-search-result-pagination pages="${pages}" page="${page}" view="${view}" sort="${sort}" url="<%= url %>">
             
         </t:products-search-result-pagination>
     </div>
