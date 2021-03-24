@@ -49,17 +49,17 @@
         List<String> params = new ArrayList();
         if (pageParam != null) {
             params.add("page=" + pageParam);
-        } else if (page != null) {
+        } else if (page != null && page != 1) {
             params.add("page=" + page);
         }
         if (viewParam != null) {
             params.add("view=" + viewParam);
-        } else if (view != null && !view.isEmpty()) {
+        } else if (view != null && !view.isEmpty() && !"TILES".equals(view)) {
             params.add("view=" + view);
         }
         if (sortParam != null) {
             params.add("sort=" + sortParam);
-        } else if (sort != null && !sort.isEmpty()) {
+        } else if (sort != null && !sort.isEmpty() && !"alphabet".equals(sort)) {
             params.add("sort=" + sort);
         }
         StringBuilder sb = new StringBuilder();
