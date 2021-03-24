@@ -89,12 +89,39 @@ public class UrlProducer {
         return sb.toString();
     }
     /**
+     * Build product group meta description.
+     * @param group product group.
+     * @return meta description.
+     */
+    public static synchronized String buildProductGroupDescriptionMeta(ProductsGroup group) {
+        StringBuilder sb = new StringBuilder("Каталог");
+        List<String> parts = new ArrayList<>();
+        ProductsGroup current = group;
+        while (current != null) {
+            parts.add(current.getName());
+            current = GROUPS_PARENT_MAP.get(current.getExternalId());
+        }
+        Collections.reverse(parts);
+        parts.forEach(token -> {
+            sb.append(",").append(token);
+        });
+        return sb.toString();
+    }
+    /**
      * Build product URL.
      * @param product product.
      * @return full URL.
      */
     public static synchronized String buildProductUrl(Product product) {
         return buildProductGroupUrl(product.getGroup()) + "/" + product.getUrl();
+    }
+    /**
+     * Build product description meta.
+     * @param product product.
+     * @return product description meta.
+     */
+    public static synchronized String buildProductDescriptionMeta(Product product) {
+        return buildProductGroupDescriptionMeta(product.getGroup()) + "," + product.getName();
     }
     /**
      * Get breadcrumbs path.

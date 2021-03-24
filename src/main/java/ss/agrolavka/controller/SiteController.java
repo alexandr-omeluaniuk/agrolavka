@@ -73,6 +73,7 @@ public class SiteController {
         model.addAttribute("groups", UrlProducer.getProductsGroups());
         if ("/catalog".equals(url)) {
             model.addAttribute("title", "Каталог");
+            model.addAttribute("metaDescription", "Каталог товаров для сада и огорода");
             insertSearchResultToPage(model, null, page);
             return "catalog";
         }
@@ -89,6 +90,7 @@ public class SiteController {
             path.remove(group);
             model.addAttribute("breadcrumbPath", path);
             insertSearchResultToPage(model, group.getId(), page);
+            model.addAttribute("metaDescription", UrlProducer.buildProductGroupDescriptionMeta(group));
             return "catalog";
         } else if (entity instanceof Product) {
             Product product = (Product) entity;
@@ -100,6 +102,7 @@ public class SiteController {
             model.addAttribute("breadcrumbPath", UrlProducer.getBreadcrumbPath(product.getGroup()));
             model.addAttribute("productPrice", String.format("%.2f", product.getPrice()));
             model.addAttribute("productURL", "https://agrolavka.by" + request.getRequestURI());
+            model.addAttribute("metaDescription", UrlProducer.buildProductDescriptionMeta(product));
             return "product";
         } else {
             return new ModelAndView("redirect:/");

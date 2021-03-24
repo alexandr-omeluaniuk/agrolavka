@@ -8,7 +8,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 
-<t:app title="Агролавка | ${title}" metaDescription="${group.name}">
+<t:app title="Агролавка | ${title}" metaDescription="${metaDescription}">
     
     <jsp:body>
         <main id="main">
