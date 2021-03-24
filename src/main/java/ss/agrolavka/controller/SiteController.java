@@ -80,7 +80,7 @@ public class SiteController {
         if ("/catalog".equals(url)) {
             model.addAttribute("title", "Каталог");
             model.addAttribute("metaDescription", "Каталог товаров для сада и огорода");
-            insertSearchResultToPage(model, null, page);
+            insertSearchResultToPage(model, null, page, sort);
             return "catalog";
         }
         DataModel entity = resolveUrlToProductGroup(url);
@@ -95,7 +95,7 @@ public class SiteController {
             List<ProductsGroup> path = UrlProducer.getBreadcrumbPath(group);
             path.remove(group);
             model.addAttribute("breadcrumbPath", path);
-            insertSearchResultToPage(model, group.getId(), page);
+            insertSearchResultToPage(model, group.getId(), page, sort);
             model.addAttribute("metaDescription", UrlProducer.buildProductGroupDescriptionMeta(group));
             return "catalog";
         } else if (entity instanceof Product) {
@@ -121,13 +121,23 @@ public class SiteController {
     }
     // ================================================ PRIVATE =======================================================
     
-    private void insertSearchResultToPage(Model model, Long groupId, Integer page) {
+    private void insertSearchResultToPage(Model model, Long groupId, Integer page, String sort) {
         try {
             ProductsSearchRequest searchRequest = new ProductsSearchRequest();
             searchRequest.setGroupId(groupId);
             searchRequest.setPage(page == null ? 1 : page);
             int pageSize = SiteConstants.SEARCH_RESULT_TILES_COLUMNS * SiteConstants.SEARCH_RESULT_TILES_ROWS;
             searchRequest.setPageSize(pageSize);
+            if ("alphabet".equals(sort)) {
+                searchRequest.setOrder("asc");
+                searchRequest.setOrderBy("name");
+            } else if ("cheap".equals(sort)) {
+                searchRequest.setOrder("asc");
+                searchRequest.setOrderBy("price");
+            } else if ("expensive".equals(sort)) {
+                searchRequest.setOrder("desc");
+                searchRequest.setOrderBy("price");
+            }
             model.addAttribute("searchResult", productDAO.search(searchRequest));
             Long count = productDAO.count(searchRequest);
             model.addAttribute(
