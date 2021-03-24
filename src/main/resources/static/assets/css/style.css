@@ -5,6 +5,9 @@
 * License: https://bootstrapmade.com/license/
 */
 @import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;500&display=swap');
+:root {
+  --palette-primary-color: #6f42c1;
+}
 /*--------------------------------------------------------------
 # General
 --------------------------------------------------------------*/
@@ -23,13 +26,13 @@ a {
 
 a:hover, a:active, a:focus {
   font-family: 'Comfortaa', cursive;
-  color: rgb(121,82,179);
+  color: var(--palette-primary-color);
   outline: none;
   text-decoration: none;
 }
 
 a.nav-link:hover {
-    color: rgb(121,82,179);
+    color: var(--palette-primary-color);
 }
 
 p {
@@ -155,7 +158,7 @@ section {
 }
 
 #header .social-links a:hover {
-  color: rgb(121,82,179);
+  color: var(--palette-primary-color);
 }
 
 @media (max-width: 992px) {
@@ -224,7 +227,7 @@ section {
 }
 
 .navbar a:hover, .navbar .active, .navbar li:hover > a {
-  color: rgb(121,82,179);
+  color: var(--palette-primary-color);
 }
 
 .navbar .dropdown ul {
@@ -1024,7 +1027,7 @@ section {
     }
 }
 .agrolavka-breadcrumb a:hover {
-    border-bottom: 1px dotted rgb(121,82,179);
+    border-bottom: 1px dotted var(--palette-primary-color);
 }
 
 /** Product details. */
@@ -1066,12 +1069,16 @@ section {
     background-color: rgba(121,82,179,0.1);
     font-weight: bold;
 }
-.pgt-root .active {
+.pgt-root .active small {
     font-weight: bold;
     color: rgba(0,0,0,0.85);
 }
+.pgt-root a small {
+    font-family: 'Comfortaa', cursive;
+}
+
 .pgt-root a:hover {
-    color: rgb(121,82,179);
+    color: var(--palette-primary-color);
 }
 
 /** Product search result. */
@@ -1125,7 +1132,7 @@ section {
     overflow-y: auto;
 }
 #products-search:focus {
-    color: rgb(121,82,179);
+    color: var(--palette-primary-color);
     border-color: #1bb1dc;
     box-shadow: 0 0 0 3px rgb(121 82 179 / 25%);
     border-color: #7952b3;
@@ -1142,7 +1149,7 @@ section {
     font-size: .8rem;
 }
 #products-search-results-list .highlighted-text {
-    color: rgb(121,82,179);
+    color: var(--palette-primary-color);
     background-color: rgba(121,82,179,.07);
 }
 #products-search-results-list a {
@@ -1173,8 +1180,8 @@ section {
     margin-left: 16px;
 }
 .category-level-1:hover, .category-level-2:hover {
-    color: rgb(121,82,179) !important;
-    border-bottom: 1px dotted rgb(121,82,179);
+    color: var(--palette-primary-color) !important;
+    border-bottom: 1px dotted var(--palette-primary-color);
 }
 .top-categories-dropdown h6 {
     margin-top: .5rem;

@@ -68,7 +68,7 @@
     }
 %>
 <div class="row products-toolbar">
-    <div class="col-6 d-flex justify-content-start">
+    <div class="col-sm-12 col-md-6 d-flex justify-content-start">
         <c:if test="${pages > 1}">
             <nav aria-label="Page navigation" class="d-flex justify-content-start">
                 <ul class="pagination" style="margin-bottom: 0;">
@@ -97,7 +97,7 @@
             </nav>
         </c:if>
     </div>
-    <div class="col-6 d-flex justify-content-end">
+    <div class="col-sm-12 col-md-6 d-flex justify-content-end">
         <div class="btn-group">
             <a href="<%= createLink(null, "TILES") %>" class="btn btn-outline-info ${"TILES".equals(view) ? "active" : ""}">
                 <i class="fas fa-th" ${"TILES".equals(view) ? " style=\"color: white;\"" : ""}></i>
