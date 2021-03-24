@@ -1,1 +1,1 @@
-Sitemap: http://agrolavka.by/sitemap.xml
+Sitemap: https://agrolavka.by/sitemap.xml

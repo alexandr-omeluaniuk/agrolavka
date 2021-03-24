@@ -73,7 +73,6 @@ public class Product extends ExternalEntity implements Serializable {
     @Column(name = "description", length = 65535)
     private String description;
     /** Code. */
-    @FormField
     @Size(max = 255)
     @Column(name = "code", length = 255)
     private String code;

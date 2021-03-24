@@ -130,7 +130,9 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
         JSONObject json = new JSONObject(response);
         if (json.has("rows")) {
             JSONArray rows = json.getJSONArray("rows");
-            request("/entity/product/" + product.getExternalId() + "/images/delete", "POST", rows.toString());
+            if (rows.length() > 0) {
+                request("/entity/product/" + product.getExternalId() + "/images/delete", "POST", rows.toString());
+            }
         }
     }
     @Override
