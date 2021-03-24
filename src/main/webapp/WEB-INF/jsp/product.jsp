@@ -24,7 +24,7 @@
             "url": "${productURL}",
             "priceCurrency": "BYN",
             "price": "${productPrice}",
-            "priceValidUntil": "2021-05-01",
+            "priceValidUntil": "${priceValidUntil}",
             "itemCondition": "https://schema.org/UsedCondition",
             "availability": "https://schema.org/InStock"
           }

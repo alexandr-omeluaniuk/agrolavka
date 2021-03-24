@@ -5,7 +5,11 @@
  */
 package ss.agrolavka.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
@@ -103,6 +107,11 @@ public class SiteController {
             model.addAttribute("productPrice", String.format("%.2f", product.getPrice()));
             model.addAttribute("productURL", "https://agrolavka.by" + request.getRequestURI());
             model.addAttribute("metaDescription", UrlProducer.buildProductDescriptionMeta(product));
+            Calendar calendar = new GregorianCalendar();
+            calendar.setTime(new Date());
+            calendar.add(Calendar.MONTH, 1);
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            model.addAttribute("priceValidUntil", sdf.format(calendar.getTime()));
             return "product";
         } else {
             return new ModelAndView("redirect:/");
