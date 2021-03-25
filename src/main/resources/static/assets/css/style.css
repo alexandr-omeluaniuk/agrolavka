@@ -1157,4 +1157,8 @@ section {
     justify-content: center;
     margin-right: 10px;
 }
+.agr-highlight-img {
+    max-width: 100%;
+    height: auto;
+}
 
