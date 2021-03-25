@@ -7,6 +7,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;500&display=swap');
 :root {
   --palette-primary-color: #6f42c1;
+  --palette-brand-color: #e89a0a;
 }
 /*--------------------------------------------------------------
 # General
@@ -1125,7 +1126,7 @@ section {
 }
 /** Highlights. */
 #agr-highlights {
-    height: 100vh;
+    min-height: 100vh;
     padding-top: 160px;
 }
 #agr-highlights:before {
@@ -1136,10 +1137,24 @@ section {
     bottom: 0;
     content: "";
     display: block;
-    opacity: .2;
+    opacity: .15;
     z-index: -1;
     position: absolute;
     background-size: cover;
     background-position: center center;
+}
+.agr-brand-text {
+    color: var(--palette-brand-color);
+}
+.agr-highlight-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 20px;
+    background-color: var(--palette-brand-color);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 10px;
 }
 

@@ -12,12 +12,13 @@
     <jsp:body>
         <main>
             <div id="agr-highlights" class="carousel carousel-dark slide" data-bs-ride="carousel">
+                <div class="carousel-indicators">
+                    <button type="button" data-bs-target="#agr-highlights" data-bs-slide-to="0" class="active" 
+                            aria-current="true" aria-label="Слайд 1"></button>
+                </div>
                 <div class="carousel-inner">
                     <div class="carousel-item active" data-bs-interval="10000">
                         <t:highlights/>
-                    </div>
-                    <div class="carousel-item">
-                        Slide 2
                     </div>
                 </div>
                 <button class="carousel-control-prev" type="button" data-bs-target="#agr-highlights" data-bs-slide="prev">
