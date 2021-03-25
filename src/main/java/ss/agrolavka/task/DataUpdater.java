@@ -203,6 +203,7 @@ public class DataUpdater {
             eProduct.setCode(actualProduct.getCode());
             eProduct.setUrl(actualProduct.getUrl());
             eProduct.setQuantity(stockProduct != null ? stockProduct.getQuantity() : 0);
+            eProduct.setUpdated(actualProduct.getUpdated());
             existProductsIDs.add(eProduct.getExternalId());
             LOG.trace("update product: " + eProduct);
         }

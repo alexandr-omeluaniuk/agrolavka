@@ -19,7 +19,7 @@
         <div class="col-sm-12 intro-info order-lg-first order-last">
             <h3 class="text-center">Более <span class="purecounter fw-bold" data-purecounter-end="${productsCount}"></span> наименований, приглашаем за покупками!</h3>
             <hr/>
-            <div class="row d-none d-md-flex">
+            <div class="row">
                 <div class="col-md-3">
                     <img src="/assets/img/highlights/2.jpg" class="rounded mx-auto d-block agr-highlight-img" alt="...">
                 </div>

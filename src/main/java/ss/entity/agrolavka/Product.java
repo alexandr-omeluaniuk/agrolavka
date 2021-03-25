@@ -8,6 +8,7 @@ package ss.entity.agrolavka;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -19,6 +20,8 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import org.json.JSONArray;
@@ -84,6 +87,10 @@ public class Product extends ExternalEntity implements Serializable {
     /** Quantity. */
     @Column(name = "quantity")
     private Double quantity;
+    /** Updated. */
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "updated")
+    private Date updated;
     // ============================================== SET & GET =======================================================
     /**
      * @return the name
@@ -205,6 +212,18 @@ public class Product extends ExternalEntity implements Serializable {
      */
     public void setQuantity(Double quantity) {
         this.quantity = quantity;
+    }
+    /**
+     * @return the updated
+     */
+    public Date getUpdated() {
+        return updated;
+    }
+    /**
+     * @param updated the updated to set
+     */
+    public void setUpdated(Date updated) {
+        this.updated = updated;
     }
     // ================================================================================================================
     @Override

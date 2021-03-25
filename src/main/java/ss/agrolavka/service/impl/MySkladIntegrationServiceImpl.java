@@ -9,6 +9,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.HashMap;
@@ -336,12 +337,16 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
      * @param productGroupsMap product groups map.
      * @return product model.
      */
-    private Product fromJSON(JSONObject item, Map<String, ProductsGroup> productGroupsMap) {
+    private Product fromJSON(JSONObject item, Map<String, ProductsGroup> productGroupsMap) throws Exception {
         Product product = new Product();
         product.setExternalId(item.getString("id"));
         product.setName(item.getString("name"));
         if (item.has("article")) {
             product.setArticle(item.getString("article"));
+        }
+        if (item.has("updated")) {
+            String dateStr = item.getString("updated");
+            product.setUpdated(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(dateStr.split("\\.")[0]));
         }
         if (item.has("code")) {
             product.setCode(item.getString("code"));
