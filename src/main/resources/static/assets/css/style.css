@@ -402,10 +402,7 @@ section {
     margin-right: 8px;
 }
 
-/*--------------------------------------------------------------
-# Hero Section
---------------------------------------------------------------*/
-#hero {
+/*#hero {
   width: 100%;
   position: relative;
   padding-top: 160px;
@@ -426,71 +423,8 @@ section {
     position: absolute;
     background-size: cover;
     background-position: center center;
-}
+}*/
 
-@media (max-width: 991px) {
-  #hero {
-    min-height: 100vh;
-    height: auto;
-    padding: 100px 0 60px 0;
-  }
-  #hero .container {
-    height: auto !important;
-  }
-  #hero .intro-img {
-    width: 80%;
-  }
-}
-
-@media (min-width: 992px) {
-  #hero .intro-info {
-
-  }
-}
-
-@media (max-width: 991px) {
-  #hero .intro-info {
-    text-align: center;
-    padding-top: 40px;
-  }
-}
-
-#hero .intro-info h2 {
-  color: #413e66;
-  margin-bottom: 40px;
-  font-size: 48px;
-  font-weight: 700;
-}
-
-#hero .intro-info h2 span {
-  color: #1bb1dc;
-}
-
-@media (max-width: 991px) {
-  #hero .intro-info h2 {
-    font-size: 34px;
-    margin-bottom: 30px;
-  }
-}
-
-#hero .intro-info .btn-get-started, #hero .intro-info .btn-services {
-  font-family: "Montserrat", sans-serif;
-  font-size: 13px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  display: inline-block;
-  padding: 10px 32px;
-  border-radius: 4px;
-  transition: 0.5s;
-  color: #fff;
-  background: #1bb1dc;
-  color: #fff;
-}
-
-#hero .intro-info .btn-get-started:hover, #hero .intro-info .btn-services:hover {
-  background: #0a98c0;
-}
 
 /*--------------------------------------------------------------
 # Sections
@@ -1188,5 +1122,24 @@ section {
 }
 .top-category-icon {
     margin-right: 7px;
+}
+/** Highlights. */
+#agr-highlights {
+    height: 100vh;
+    padding-top: 160px;
+}
+#agr-highlights:before {
+    background-image: url("../img/home-bg.jpg");
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    content: "";
+    display: block;
+    opacity: .2;
+    z-index: -1;
+    position: absolute;
+    background-size: cover;
+    background-position: center center;
 }
 
