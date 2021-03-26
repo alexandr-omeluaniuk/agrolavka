@@ -4,15 +4,17 @@
     Author     : alex
 --%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@tag description="put the tag description here" pageEncoding="UTF-8" 
        import="ss.entity.agrolavka.Product,ss.agrolavka.util.UrlProducer"%>
 
 <%-- The list of normal or fragment attributes can be specified here: --%>
 <%@attribute name="product" required="true" type="Product"%>
+<%@attribute name="mini" required="false" type="Boolean"%>
 
 <%-- any content can be specified here e.g.: --%>
 <a href="<%= UrlProducer.buildProductUrl(product) %>">
-    <div class="card mb-5 bg-body rounded product-card">
+    <div class="card ${mini ? 'mb-3 mini' : 'mb-5'} bg-body rounded product-card">
         <div class="ribbon ribbon-top-left">
             <span class="${product.quantity > 0 ? 'bg-success' : 'bg-danger'}">
                 <small>${product.quantity > 0 ? 'в наличии' : 'под заказ'}</small>
@@ -20,10 +22,21 @@
         </div>
         <div class="card-img-top product-image" style="background-image: url('/api/agrolavka/public/product-image/${product.id}')"></div>
         <div class="card-body">
-            <h6 class="card-title text-dark" style="min-height: 60px">${product.name}</h6>
+            <h6 class="card-title text-dark" style="min-height: ${mini ? '30px' : '60px'}">${product.name}</h6>
             <div class="d-flex justify-content-between align-items-center">
-                <span class="card-subtitle text-muted fs-6">Цена</span>
-                <span class="text-dark fw-bold"><%= String.format("%.2f", product.getPrice()) %> BYN</span>
+                <c:if test="${!mini}">
+                    <span class="card-subtitle text-muted fs-6">Цена</span>
+                </c:if>
+                <c:if test="${mini}">
+                    <div></div>
+                </c:if>
+                <span class="text-dark fw-bold">
+                    <%
+                        String price = String.format("%.2f", product.getPrice());
+                        String[] parts = price.split("\\.");
+                        out.print(parts[0] + ".");
+                        out.print("<small>" + parts[1] + "</small>");
+                    %> <small class="text-muted">BYN</small></span>
             </div>
         </div>
     </div>

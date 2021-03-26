@@ -19,11 +19,11 @@
                             aria-current="true" aria-label="Новинки"></button>
                 </div>
                 <div class="carousel-inner">
-                    <div class="carousel-item active" data-bs-interval="10000">
+                    <div class="carousel-item active">
                         <t:highlights/>
                     </div>
-                    <div class="carousel-item" data-bs-interval="10000">
-                        <t:new_products/>
+                    <div class="carousel-item">
+                        <t:new_products newProducts="${newProducts}"/>
                     </div>
                 </div>
                 <button class="carousel-control-prev" type="button" data-bs-target="#agr-highlights" data-bs-slide="prev">

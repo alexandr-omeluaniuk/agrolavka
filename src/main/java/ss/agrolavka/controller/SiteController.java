@@ -52,6 +52,12 @@ public class SiteController {
         request.setPage(1);
         request.setPageSize(Integer.MAX_VALUE);
         model.addAttribute("productsCount", productDAO.count(request));
+        ProductsSearchRequest searchRequest = new ProductsSearchRequest();
+        searchRequest.setPage(1);
+        searchRequest.setPageSize(12);
+        searchRequest.setOrder("desc");
+        searchRequest.setOrderBy("created_date");
+        model.addAttribute("newProducts", productDAO.search(searchRequest));
         return "home";
     }
     @RequestMapping("/product/**")
@@ -64,6 +70,7 @@ public class SiteController {
      * @param request HTTP request.
      * @param page page number.
      * @param view catalog view type.
+     * @param sort sort by.
      * @return JSP page.
      * @throws Exception error.
      */

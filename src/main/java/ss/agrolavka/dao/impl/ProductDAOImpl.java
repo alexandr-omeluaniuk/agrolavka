@@ -30,6 +30,7 @@ import ss.entity.agrolavka.Product;
 import ss.entity.agrolavka.Product_;
 import ss.entity.agrolavka.ProductsGroup;
 import ss.entity.agrolavka.ProductsGroup_;
+import ss.entity.martin.EntityAudit_;
 import ss.martin.platform.dao.CoreDAO;
 
 /**
@@ -56,10 +57,19 @@ class ProductDAOImpl implements ProductDAO {
         List<Predicate> predicates = createSearchCriteria(cb, c, request);
         criteria.select(c).where(predicates.toArray(new Predicate[0]));
         if (request.getOrder() != null && request.getOrderBy() != null) {
-            if ("asc".equals(request.getOrder())) {
-                criteria.orderBy(cb.asc(c.get(request.getOrderBy())));
+            if ("created_date".equals(request.getOrderBy())) {
+                criteria.where(cb.greaterThan(c.get(Product_.quantity), 0d));
+                if ("asc".equals(request.getOrder())) {
+                    criteria.orderBy(cb.asc(c.get(EntityAudit_.createdDate)));
+                } else {
+                    criteria.orderBy(cb.desc(c.get(EntityAudit_.createdDate)));
+                }
             } else {
-                criteria.orderBy(cb.desc(c.get(request.getOrderBy())));
+                if ("asc".equals(request.getOrder())) {
+                    criteria.orderBy(cb.asc(c.get(request.getOrderBy())));
+                } else {
+                    criteria.orderBy(cb.desc(c.get(request.getOrderBy())));
+                }
             }
         }
         return em.createQuery(criteria)
