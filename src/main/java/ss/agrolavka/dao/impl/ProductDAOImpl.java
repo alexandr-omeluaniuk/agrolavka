@@ -47,6 +47,9 @@ class ProductDAOImpl implements ProductDAO {
     @Override
     @Transactional(propagation = Propagation.SUPPORTS)
     public List<Product> search(ProductsSearchRequest request) throws Exception {
+        if (request.getPage() == null || request.getPage() < 1) {
+            request.setPage(1);
+        }
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Product> criteria = cb.createQuery(Product.class);
         Root<Product> c = criteria.from(Product.class);

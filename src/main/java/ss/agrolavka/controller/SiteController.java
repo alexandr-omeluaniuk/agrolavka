@@ -120,7 +120,13 @@ public class SiteController {
         }
     }
     // ================================================ PRIVATE =======================================================
-    
+    /**
+     * Insert search result to page.
+     * @param model page model.
+     * @param groupId product group ID.
+     * @param page page number.
+     * @param sort sort by.
+     */
     private void insertSearchResultToPage(Model model, Long groupId, Integer page, String sort) {
         try {
             ProductsSearchRequest searchRequest = new ProductsSearchRequest();

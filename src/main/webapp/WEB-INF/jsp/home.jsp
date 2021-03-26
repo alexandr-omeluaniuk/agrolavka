@@ -14,11 +14,16 @@
             <div id="agr-highlights" class="carousel carousel-dark slide" data-bs-ride="carousel">
                 <div class="carousel-indicators">
                     <button type="button" data-bs-target="#agr-highlights" data-bs-slide-to="0" class="active" 
-                            aria-current="true" aria-label="Слайд 1"></button>
+                            aria-current="true" aria-label="Вступление"></button>
+                    <button type="button" data-bs-target="#agr-highlights" data-bs-slide-to="1" 
+                            aria-current="true" aria-label="Новинки"></button>
                 </div>
                 <div class="carousel-inner">
                     <div class="carousel-item active" data-bs-interval="10000">
                         <t:highlights/>
+                    </div>
+                    <div class="carousel-item" data-bs-interval="10000">
+                        <t:new_products/>
                     </div>
                 </div>
                 <button class="carousel-control-prev" type="button" data-bs-target="#agr-highlights" data-bs-slide="prev">
@@ -38,9 +43,13 @@
                     <p class="lead">
                         Магазин Агролавка – это самые востребованные товары, которые делают жизнь комфортнее, приятнее и радостнее. 
                         У нас широко представлены всевозможные товары для приусадебного участка и дачи, 
-                        товары для дома и конечно же товары для настоящих фермеров. 
+                        товары для дома и конечно же товары для настоящих фермеров.<br/>
                         У нас вы можете приобрести самые современные системы капельного полива, орошения, удобрения, 
-                        средства для защиты растений от насекомых и других вредителей и другие товары. 
+                        средства для защиты растений от насекомых и других вредителей.<br/>
+                        Продажа товаров для сада и огорода – одно из главных направлений деятельности магазина Agrolavka.by. 
+                        Мы предлагаем широкий ассортимент товаров по уходу за приусадебным участком, обработке почвы, 
+                        защиты растений от болезней. У нас вы можете купить современные виды удобрений и грунтов, 
+                        которые позволят вашим растениям порадовать вас хорошим урожаем!
                     </p>
                 </div>
                 <div class="col-md-5">
