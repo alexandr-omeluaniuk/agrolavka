@@ -13,7 +13,9 @@
         "product_article": "Артикул",
         "product_description": "Описание",
         "product_code": "Код товара",
-        "synchronize": "Синхонизировать данные c программой Мой Склад"
+        "synchronize": "Синхонизировать данные c программой Мой Склад",
+        "product_seo_title": "Название страницы товара на сайте (SEO)",
+        "product_seo_description": "Описание страницы товара на сайте (SEO)"
     },
     "products_groups": {
         "new_group": "Создать новую группу товаров",
@@ -22,6 +24,8 @@
         "product_group_name": "Название",
         "product_group_top_category": "Показать в тулбаре",
         "product_group_fa_icon": "Font Awesome иконка",
-        "product_group_description": "Описание"
+        "product_group_description": "Описание",
+        "product_group_seo_title": "Название страницы категории товаров на сайте (SEO)",
+        "product_group_seo_description": "Описание страницы категории товаров на сайте (SEO)"
     }
 }

@@ -13,7 +13,9 @@
         "product_article": "Article",
         "product_description": "Description",
         "product_code": "Code",
-        "synchronize": "Synchronize MySklad data"
+        "synchronize": "Synchronize MySklad data",
+        "product_seo_title": "SEO and site page title",
+        "product_seo_description": "SEO meta description content"
     },
     "products_groups": {
         "new_group": "Create new product group",
@@ -22,6 +24,8 @@
         "product_group_name": "Name",
         "product_group_top_category": "Toolbar category",
         "product_group_fa_icon": "Font Awesome icon",
-        "product_group_description": "Description"
+        "product_group_description": "Description",
+        "product_group_seo_title": "SEO and site page title",
+        "product_group_seo_description": "SEO meta description content"
     }
 }

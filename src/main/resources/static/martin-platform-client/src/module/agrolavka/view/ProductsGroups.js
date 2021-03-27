@@ -196,7 +196,16 @@ function ProductsGroups(props) {
                 new FormField('description', TYPES.HTML_EDITOR, t('m_agrolavka:products_groups.product_group_description'))
                         .setGrid({xs: 12}).validation([
                     new Validator(VALIDATORS.MAX_LENGTH, {length: 4096})
-                ]).setAttributes({ rows: 6, labelWidth: 200 })
+                ]).setAttributes({ rows: 6, labelWidth: 200 }),
+                new FormField('seoTitle', TYPES.TEXTFIELD, t('m_agrolavka:products_groups.product_group_seo_title'))
+                        .setGrid({xs: 12}).validation([
+                    new Validator(VALIDATORS.MAX_LENGTH, {length: 255})
+                ]),
+                new FormField('seoDescription', TYPES.TEXTFIELD, t('m_agrolavka:products_groups.product_group_seo_description'))
+                        .setGrid({xs: 12})
+                        .validation([
+                    new Validator(VALIDATORS.MAX_LENGTH, {length: 255})
+                ])
             ]));
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
