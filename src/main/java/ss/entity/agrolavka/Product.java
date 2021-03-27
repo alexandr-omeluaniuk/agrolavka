@@ -91,6 +91,16 @@ public class Product extends ExternalEntity implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "updated")
     private Date updated;
+    /** SEO title. */
+    @FormField
+    @Size(max = 255)
+    @Column(name = "seo_title", length = 255)
+    private String seoTitle;
+    /** SEO description. */
+    @FormField
+    @Size(max = 255)
+    @Column(name = "seo_description", length = 255)
+    private String seoDescription;
     // ============================================== SET & GET =======================================================
     /**
      * @return the name
@@ -224,6 +234,30 @@ public class Product extends ExternalEntity implements Serializable {
      */
     public void setUpdated(Date updated) {
         this.updated = updated;
+    }
+    /**
+     * @return the seoTitle
+     */
+    public String getSeoTitle() {
+        return seoTitle;
+    }
+    /**
+     * @param seoTitle the seoTitle to set
+     */
+    public void setSeoTitle(String seoTitle) {
+        this.seoTitle = seoTitle;
+    }
+    /**
+     * @return the seoDescription
+     */
+    public String getSeoDescription() {
+        return seoDescription;
+    }
+    /**
+     * @param seoDescription the seoDescription to set
+     */
+    public void setSeoDescription(String seoDescription) {
+        this.seoDescription = seoDescription;
     }
     // ================================================================================================================
     @Override

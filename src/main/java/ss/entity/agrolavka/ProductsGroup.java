@@ -62,6 +62,16 @@ public class ProductsGroup extends ExternalEntity implements Serializable, Compa
     @Size(max = 4096)
     @Column(name = "description", length = 4096)
     private String description;
+    /** SEO title. */
+    @FormField
+    @Size(max = 255)
+    @Column(name = "seo_title", length = 255)
+    private String seoTitle;
+    /** SEO description. */
+    @FormField
+    @Size(max = 255)
+    @Column(name = "seo_description", length = 255)
+    private String seoDescription;
     // =============================================== SET & GET ======================================================
     /**
      * @return the name
@@ -146,6 +156,30 @@ public class ProductsGroup extends ExternalEntity implements Serializable, Compa
      */
     public void setDescription(String description) {
         this.description = description;
+    }
+    /**
+     * @return the seoTitle
+     */
+    public String getSeoTitle() {
+        return seoTitle;
+    }
+    /**
+     * @param seoTitle the seoTitle to set
+     */
+    public void setSeoTitle(String seoTitle) {
+        this.seoTitle = seoTitle;
+    }
+    /**
+     * @return the seoDescription
+     */
+    public String getSeoDescription() {
+        return seoDescription;
+    }
+    /**
+     * @param seoDescription the seoDescription to set
+     */
+    public void setSeoDescription(String seoDescription) {
+        this.seoDescription = seoDescription;
     }
     // ================================================================================================================
     @Override

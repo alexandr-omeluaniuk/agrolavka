@@ -116,14 +116,6 @@ public class UrlProducer {
         return buildProductGroupUrl(product.getGroup()) + "/" + product.getUrl();
     }
     /**
-     * Build product description meta.
-     * @param product product.
-     * @return product description meta.
-     */
-    public static synchronized String buildProductDescriptionMeta(Product product) {
-        return buildProductGroupDescriptionMeta(product.getGroup()) + "," + product.getName();
-    }
-    /**
      * Get breadcrumbs path.
      * @param group leaf group.
      * @return path.

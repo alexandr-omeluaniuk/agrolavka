@@ -60,9 +60,9 @@ public class SiteController {
         model.addAttribute("newProducts", productDAO.search(searchRequest));
         return "home";
     }
-    @RequestMapping("/product/**")
-    public Object productsGroup() {
-        return new ModelAndView("redirect:/");
+    @RequestMapping("/error/page-not-found")
+    public String error404(Model model) throws Exception {
+        return "error/404";
     }
     /**
      * Product group page.
@@ -87,27 +87,38 @@ public class SiteController {
         if ("/catalog".equals(url)) {
             model.addAttribute("title", "Каталог");
             model.addAttribute("metaDescription", "Каталог товаров для сада и огорода");
-            insertSearchResultToPage(model, null, page, sort);
+            insertSearchResultToPage(model, null, page, sort == null ? "alphabet" : sort);
             return "catalog";
         }
         DataModel entity = resolveUrlToProductGroup(url);
         if (entity == null) {
-            return new ModelAndView("redirect:/");
+            return new ModelAndView("redirect:/error/page-not-found");
         }
         if (entity instanceof ProductsGroup) {
             ProductsGroup group = (ProductsGroup) entity;
-            model.addAttribute("title", group.getName());
+            model.addAttribute("title", group.getSeoTitle() != null ? group.getSeoTitle() : group.getName());
             model.addAttribute("group", group);
             model.addAttribute("breadcrumbLabel", group.getName());
             List<ProductsGroup> path = UrlProducer.getBreadcrumbPath(group);
             path.remove(group);
             model.addAttribute("breadcrumbPath", path);
             insertSearchResultToPage(model, group.getId(), page, sort);
-            model.addAttribute("metaDescription", UrlProducer.buildProductGroupDescriptionMeta(group));
+            String description = group.getDescription();
+            String meta = "Купить " + group.getName();
+            if (group.getSeoDescription() != null && !group.getSeoDescription().isBlank()) {
+                meta = group.getSeoDescription();
+            } else {
+                if (description != null) {
+                    meta = ", " + (description.length() > 255 ? description.substring(0, 255) : description);
+                }
+            }
+            model.addAttribute("metaDescription", meta);
             return "catalog";
         } else if (entity instanceof Product) {
             Product product = (Product) entity;
-            model.addAttribute("title", product.getName());
+            model.addAttribute("title", product.getSeoTitle() != null
+                    ? product.getSeoTitle() : "Купить " + product.getGroup().getName() + " " + product.getName()
+                    + ". Способ применения, инструкция, описание " + product.getName());
             model.addAttribute("id", product.getId());
             model.addAttribute("product", product);
             model.addAttribute("groupId", product.getGroup() != null ? product.getGroup().getId() : null);
@@ -115,7 +126,16 @@ public class SiteController {
             model.addAttribute("breadcrumbPath", UrlProducer.getBreadcrumbPath(product.getGroup()));
             model.addAttribute("productPrice", String.format("%.2f", product.getPrice()));
             model.addAttribute("productURL", "https://agrolavka.by" + request.getRequestURI());
-            model.addAttribute("metaDescription", UrlProducer.buildProductDescriptionMeta(product));
+            String description = product.getDescription();
+            String meta = "Купить " + product.getName();
+            if (product.getSeoDescription() != null && !product.getSeoDescription().isBlank()) {
+                meta = product.getSeoDescription();
+            } else {
+                if (description != null) {
+                    meta = ", " + (description.length() > 255 ? description.substring(0, 255) : description);
+                }
+            }
+            model.addAttribute("metaDescription", meta);
             Calendar calendar = new GregorianCalendar();
             calendar.setTime(new Date());
             calendar.add(Calendar.MONTH, 1);
@@ -123,7 +143,7 @@ public class SiteController {
             model.addAttribute("priceValidUntil", sdf.format(calendar.getTime()));
             return "product";
         } else {
-            return new ModelAndView("redirect:/");
+            return new ModelAndView("redirect:/error/page-not-found");
         }
     }
     // ================================================ PRIVATE =======================================================
