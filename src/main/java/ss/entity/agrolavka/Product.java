@@ -49,12 +49,10 @@ public class Product extends ExternalEntity implements Serializable {
     @Column(name = "price", nullable = false)
     private Double price;
     /** Buy price. */
-    @FormField
     @NotNull
     @Column(name = "buy_price")
     private Double buyPrice;
     /** Article number. */
-    @FormField
     @Size(max = 255)
     @Column(name = "article", length = 255)
     private String article;

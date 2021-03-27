@@ -8,7 +8,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 
-<t:app title="${title}" metaDescription="${metaDescription}">
+<t:app title="${title}" metaDescription="${metaDescription}" canonical="${canonical}">
     
     <jsp:body>
         <main id="main">

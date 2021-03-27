@@ -60,8 +60,12 @@ public class SiteController {
         model.addAttribute("newProducts", productDAO.search(searchRequest));
         return "home";
     }
+    /**
+     * Page not found.
+     * @return page name.
+     */
     @RequestMapping("/error/page-not-found")
-    public String error404(Model model) throws Exception {
+    public String error404() {
         return "error/404";
     }
     /**
@@ -85,6 +89,7 @@ public class SiteController {
         model.addAttribute("sort", sort == null ? "alphabet" : sort);
         model.addAttribute("groups", UrlProducer.getProductsGroups());
         if ("/catalog".equals(url)) {
+            model.addAttribute("canonical", url  + (page != null ? "?page=" + page : ""));
             model.addAttribute("title", "Каталог");
             model.addAttribute("metaDescription", "Каталог товаров для сада и огорода");
             insertSearchResultToPage(model, null, page, sort == null ? "alphabet" : sort);
@@ -95,6 +100,7 @@ public class SiteController {
             return new ModelAndView("redirect:/error/page-not-found");
         }
         if (entity instanceof ProductsGroup) {
+            model.addAttribute("canonical", url + (page != null ? "?page=" + page : ""));
             ProductsGroup group = (ProductsGroup) entity;
             model.addAttribute("title", group.getSeoTitle() != null ? group.getSeoTitle() : group.getName());
             model.addAttribute("group", group);
@@ -115,6 +121,7 @@ public class SiteController {
             model.addAttribute("metaDescription", meta);
             return "catalog";
         } else if (entity instanceof Product) {
+            model.addAttribute("canonical", url);
             Product product = (Product) entity;
             model.addAttribute("title", product.getSeoTitle() != null
                     ? product.getSeoTitle() : "Купить " + product.getGroup().getName() + " " + product.getName()

@@ -9,6 +9,7 @@
 <%-- The list of normal or fragment attributes can be specified here: --%>
 <%@attribute name="title" required="true"%>
 <%@attribute name="metaDescription" required="true"%>
+<%@attribute name="canonical" required="true" type="String"%>
 <%@attribute name="structuredData" fragment="true" required="false"%>
 
 <%-- any content can be specified here e.g.: --%>
@@ -42,7 +43,7 @@
         <title>${title}</title>
         <meta name="title" content="Все для сада и огорода">
         <meta name="description" content="${metaDescription}">
-        
+        <link rel="canonical" href="${canonical}"/>
         <!-- Open Graph / Facebook -->
         <meta property="og:type" content="website">
         <meta property="og:url" content="https://agrolavka.by/">
