@@ -22,7 +22,7 @@
         </div>
         <div class="card-img-top product-image" style="background-image: url('/api/agrolavka/public/product-image/${product.id}')"></div>
         <div class="card-body">
-            <h6 class="card-title text-dark" style="min-height: ${mini ? '30px' : '60px'}">${product.name}</h6>
+            <h6 class="card-title text-dark" style="min-height: ${mini ? '50px' : '60px'}">${product.name}</h6>
             <div class="d-flex justify-content-between align-items-center">
                 <c:if test="${!mini}">
                     <span class="card-subtitle text-muted fs-6">Цена</span>

@@ -109,7 +109,7 @@ public class SiteController {
                 meta = group.getSeoDescription();
             } else {
                 if (description != null) {
-                    meta = ", " + (description.length() > 255 ? description.substring(0, 255) : description);
+                    meta = (description.length() > 255 ? description.substring(0, 255) : description);
                 }
             }
             model.addAttribute("metaDescription", meta);
@@ -132,7 +132,7 @@ public class SiteController {
                 meta = product.getSeoDescription();
             } else {
                 if (description != null) {
-                    meta = ", " + (description.length() > 255 ? description.substring(0, 255) : description);
+                    meta = (description.length() > 255 ? description.substring(0, 255) : description);
                 }
             }
             model.addAttribute("metaDescription", meta);

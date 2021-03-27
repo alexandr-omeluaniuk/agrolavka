@@ -7,7 +7,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 
-<t:app title="Агролавка | ${title}" metaDescription="${metaDescription}">
+<t:app title="${title}" metaDescription="${metaDescription}">
     
     <jsp:attribute name="structuredData">
         <script type="application/ld+json">
@@ -37,7 +37,7 @@
             <section class="services">
                 <div class="container">
                     <header class="section-header">
-                        <h3>${title}</h3>
+                        <h3>${product.name}</h3>
                         <p class="text-uppercase text-muted">${product.group.name}</p>
                     </header>
                     <div class="row justify-content-center">
