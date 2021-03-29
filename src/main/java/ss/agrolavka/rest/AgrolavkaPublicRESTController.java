@@ -66,6 +66,8 @@ class AgrolavkaPublicRESTController {
         request.setPage(1);
         request.setPageSize(20);
         request.setText(searchText);
+        request.setOrder("asc");
+        request.setOrderBy("name");
         Map<String, Object> result = new HashMap<>();
         List<Product> list = productDAO.search(request);
         for (Product product : list) {

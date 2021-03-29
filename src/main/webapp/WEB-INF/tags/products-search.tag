@@ -68,13 +68,19 @@
                                 sb = noResult;
                             } else {
                                 data.forEach(product => {
+                                    const price = parseFloat(product.price).toFixed(2);
+                                    const priceRub = price.split('.')[0];
+                                    const priceCent = price.split('.')[1];
                                     sb += 
-                                        '<li>'
+                                        '<li class="agr-product-search-link">'
                                             + '<a class="dropdown-item" href="' + product.url + '">'
                                                 + '<div class="d-flex w-100 justify-content-between">'
                                                     + '<h6 class="mb-1">' + highlightText(product.name, searchText) + '</h6>'
                                                     + '<small style="margin-left: 10px; min-width: 80px; text-align: right;"' 
-                                                        + 'class="fw-bold">' + parseFloat(product.price).toFixed(2) + ' BYN</small>'
+                                                        + 'class="fw-bold">' + priceRub
+                                                        + '.<span style="font-size: .9em; margin-right: 5px;">' + priceCent + '</span>'
+                                                        + '<span class="text-muted">BYN</span>'
+                                                    + '</small>'
                                                 + '</div>'
                                                 + '<div class="d-flex justify-content-between">'
                                                     + '<small class="text-muted">' + (product.group ? product.group.name : '') + '</small>'
