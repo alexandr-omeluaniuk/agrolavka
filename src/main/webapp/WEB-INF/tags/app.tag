@@ -56,11 +56,12 @@
         <meta property="og:locale" content="ru_RU">
 
         <!-- Twitter -->
-        <meta property="twitter:card" content="summary_large_image">
-        <meta property="twitter:url" content="https://agrolavka.by">
-        <meta property="twitter:title" content="Все для сада и огорода">
-        <meta property="twitter:description" content="Большой выбор семян, удобрений, средств для защиты растений. Комплектующие для капельного полива. Зоотовары. Приглашаем за покупками.">
-        <meta property="twitter:image" content="https://agrolavka.by/assets/img/agrolavka-location.jpg">
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:site" content="insales.ru">
+        <meta name="twitter:url" content="https://agrolavka.by">
+        <meta name="twitter:title" content="Все для сада и огорода">
+        <meta name="twitter:description" content="Большой выбор семян, удобрений, средств для защиты растений. Комплектующие для капельного полива. Зоотовары. Приглашаем за покупками.">
+        <meta name="twitter:image" content="https://agrolavka.by/assets/img/agrolavka-location.jpg">
         
         <!-- Favicons -->
         <link href="/favicon.svg?" rel="icon">
