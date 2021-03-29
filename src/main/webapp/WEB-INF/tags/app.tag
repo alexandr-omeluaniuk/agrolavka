@@ -46,14 +46,18 @@
         <link rel="canonical" href="${canonical}"/>
         <!-- Open Graph / Facebook -->
         <meta property="og:type" content="website">
-        <meta property="og:url" content="https://agrolavka.by/">
+        <meta property="og:site_name" content="Агролавка">
+        <meta property="og:url" content="https://agrolavka.by">
         <meta property="og:title" content="Все для сада и огорода">
         <meta property="og:description" content="Большой выбор семян, удобрений, средств для защиты растений. Комплектующие для капельного полива. Зоотовары. Приглашаем за покупками.">
         <meta property="og:image" content="https://agrolavka.by/assets/img/agrolavka-location.jpg">
+        <meta property="og:image:width" content="908">
+        <meta property="og:image:height" content="920">
+        <meta property="og:locale" content="ru_RU">
 
         <!-- Twitter -->
         <meta property="twitter:card" content="summary_large_image">
-        <meta property="twitter:url" content="https://agrolavka.by/">
+        <meta property="twitter:url" content="https://agrolavka.by">
         <meta property="twitter:title" content="Все для сада и огорода">
         <meta property="twitter:description" content="Большой выбор семян, удобрений, средств для защиты растений. Комплектующие для капельного полива. Зоотовары. Приглашаем за покупками.">
         <meta property="twitter:image" content="https://agrolavka.by/assets/img/agrolavka-location.jpg">
