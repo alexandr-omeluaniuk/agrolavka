@@ -54,7 +54,8 @@
                     </p>
                 </div>
                 <div class="col-md-5">
-                    <img class="img-fluid mx-auto" width="500" height="500" src="/assets/img/agrolavka-location.jpg"/>
+                    <img class="img-fluid mx-auto" width="500" height="500" src="/assets/img/agrolavka-location.jpg"
+                         alt="Фото магазина Агролавка"/>
                 </div>
             </div>
         </div>

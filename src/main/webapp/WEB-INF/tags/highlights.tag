@@ -21,25 +21,25 @@
             <hr/>
             <div class="row">
                 <div class="col-md-3">
-                    <img src="/assets/img/highlights/2.jpg" class="rounded mx-auto d-block agr-highlight-img" alt="...">
+                    <img src="/assets/img/highlights/2.jpg" class="rounded mx-auto d-block agr-highlight-img" alt="Большой выбор семян в магазине Агролавка">
                 </div>
                 <div class="col-md-3">
-                    <img src="/assets/img/highlights/3.jpg" class="rounded mx-auto d-block agr-highlight-img" alt="...">
+                    <img src="/assets/img/highlights/3.jpg" class="rounded mx-auto d-block agr-highlight-img" alt="Большой выбор семян в магазине Агролавка">
                 </div>
                 <div class="col-md-3">
-                    <img src="/assets/img/highlights/4.jpg" class="rounded mx-auto d-block agr-highlight-img" alt="...">
+                    <img src="/assets/img/highlights/4.jpg" class="rounded mx-auto d-block agr-highlight-img" alt="Большой выбор удобрений в магазине Агролавка">
                 </div>
                 <div class="col-md-3">
-                    <img src="/assets/img/highlights/5.jpg" class="rounded mx-auto d-block agr-highlight-img" alt="...">
+                    <img src="/assets/img/highlights/5.jpg" class="rounded mx-auto d-block agr-highlight-img" alt="Большой выбор семян в магазине Агролавка">
                 </div>
             </div>
             <hr/>
             <div class="row">
                 <div class="col-sm-12 col-md-4 align-items-center d-flex flex-column">
-                    <h4 class="agr-brand-text fw-bold d-flex align-items-center">
-                        <div class="agr-highlight-icon"><i class="fas fa-dollar-sign"></i></div>
-                        Выгодные цены
-                    </h4>
+                    <div class="agr-brand-text d-flex align-items-center justify-content-start">
+                        <div class="agr-highlight-icon"><i class="fas fa-dollar-sign fw-bold fs-4"></i></div>
+                        <h4 class="fw-bold">Выгодные цены</h4>
+                    </div>
                     <ul>
                         <li>Оптовые скидки и акции</li>
                         <li>Дисконтная программа</li>
@@ -47,10 +47,10 @@
                     </ul>
                 </div>
                 <div class="col-sm-12 col-md-4 align-items-center d-flex flex-column">
-                    <h4 class="agr-brand-text fw-bold d-flex align-items-center">
-                        <div class="agr-highlight-icon"><i class="fas fa-star"></i></div>
-                        100% Гарантия качества
-                    </h4>
+                    <div class="agr-brand-text fw-bold d-flex align-items-center justify-content-start">
+                        <div class="agr-highlight-icon"><i class="fas fa-star fw-bold fs-4"></i></div>
+                        <h4 class="fw-bold">100% Гарантия качества</h4>
+                    </div>
                     <ul>
                         <li>Проверенные производители</li>
                         <li>Контроль качества товара</li>
@@ -58,10 +58,10 @@
                     </ul>
                 </div>
                 <div class="col-sm-12 col-md-4 align-items-center d-flex flex-column">
-                    <h4 class="agr-brand-text fw-bold d-flex align-items-center">
-                        <div class="agr-highlight-icon"><i class="fas fa-thumbs-up"></i></div>
-                        Отличный сервис
-                    </h4>
+                    <div class="agr-brand-text fw-bold d-flex align-items-center justify-content-start">
+                        <div class="agr-highlight-icon"><i class="fas fa-thumbs-up fw-bold fs-4"></i></div>
+                        <h4 class="fw-bold">Отличный сервис</h4>
+                    </div>
                     <ul>
                         <li>Большой ассортимент</li>
                         <li>Вежливые продавцы</li>

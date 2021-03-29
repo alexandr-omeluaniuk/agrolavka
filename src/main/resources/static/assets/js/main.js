@@ -163,14 +163,14 @@
         }
     });
     
-    document.querySelector('body').addEventListener('click', function(evt) {
-        const li = evt.target.closest(".agr-product-search-link");
-        if (li) {
-            const link = li.querySelector('a');
-            if (link.getAttribute('href')) {
-                window.location.href = link.getAttribute('href');
-            }
-        }
-    }, true);
+//    document.querySelector('body').addEventListener('click', function(evt) {
+//        const li = evt.target.closest(".agr-product-search-link");
+//        if (li) {
+//            const link = li.querySelector('a');
+//            if (link.getAttribute('href')) {
+//                window.location.href = link.getAttribute('href');
+//            }
+//        }
+//    }, true);
     
 })();
