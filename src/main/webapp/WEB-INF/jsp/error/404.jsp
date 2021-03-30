@@ -9,7 +9,7 @@
 <!DOCTYPE html>
 <t:app title="Страница не найдена" metaDescription="Страница не найдена или перемещена в другое место" canonical="/error/page-not-found">
     <jsp:body>
-        <main style="height: calc(100vh - 260px);" class="d-flex justify-content-center align-items-center container">
+        <main class="d-flex justify-content-center align-items-center container">
             <div class="row">
                 <div class="col-12">
                     <div class="alert alert-danger" role="alert">

@@ -24,7 +24,13 @@
                 <div class="card-body">
                     <div class="d-flex justify-content-between">
                         <small>Цена</small>
-                        <b><% out.print(String.format("%.2f", product.getPrice()));%> BYN</b>
+                        <span class="text-dark fw-bold">
+                        <%
+                            String price = String.format("%.2f", product.getPrice());
+                            String[] parts = price.split("\\.");
+                            out.print(parts[0] + ".");
+                            out.print("<small>" + parts[1] + "</small>");
+                        %> <small class="text-muted">BYN</small></span>
                     </div>
                 </div>
             </div>
