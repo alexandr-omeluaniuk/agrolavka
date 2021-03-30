@@ -8,6 +8,7 @@
 :root {
   --palette-primary-color: #6f42c1;
   --palette-brand-color: #e89a0a;
+  --palette-active-color: rgb(121 82 179 / 70%);
 }
 /*--------------------------------------------------------------
 # General
@@ -109,7 +110,7 @@ section {
   background: #fff;
   transition: all 0.5s;
   z-index: 997;
-  height: 130px;
+  height: 150px;
 }
 
 #header.header-transparent {
@@ -174,7 +175,7 @@ section {
     letter-spacing: 1px;
   }
   #header {
-      height: 64px;
+      height: 96px;
   }
   #header.header-scrolled {
       height: 56px;
@@ -1000,7 +1001,7 @@ section {
     text-decoration: none;
 }
 .pgt-root .btn:focus {
-    box-shadow: 0 0 0 1px rgb(121 82 179 / 70%);
+    box-shadow: 0 0 0 1px var(--palette-active-color);
     background-color: rgba(121,82,179,0.1);
     font-weight: bold;
 }
@@ -1066,7 +1067,6 @@ section {
 /** Products search. */
 #products-search-container {
     margin-bottom: 0 !important;
-    margin-right: 12px;
     margin-left: 12px;
 }
 #products-search-results-list {
@@ -1171,9 +1171,9 @@ section {
     max-width: 100%;
     height: auto;
 }
-.agr-product-search-link button:active {
-    color: inherit !important;
-    text-decoration: inherit !important;
-    background-color: #f5f5f5;
+.agr-product-search-link a:active {
+    color: inherit;
+    text-decoration: inherit;
+    background-color: var(--palette-active-color);
 }
 

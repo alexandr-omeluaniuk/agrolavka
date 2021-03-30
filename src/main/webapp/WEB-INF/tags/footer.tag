@@ -48,6 +48,12 @@
                             <strong>Телефон:</strong> <a href="tel:+375298713758">+375 29 871-37-58</a><br>
                             <!--strong>Email:</strong> info@example.com<br-->
                         </p>
+                        <h4>Время работы</h4>
+                        <p>
+                            <small class="text-muted"><b>пн-пт</b> <span class="text-dark">09:00 - 18:30</span></small><br/>
+                            <small class="text-muted"><b>сб</b> <span class="text-dark">09:00 - 16:00</span></small><br/>
+                            <small class="text-muted"><b>вс</b> <span class="text-dark">10:00 - 14:00</span></small>
+                        </p>
                     </div>
                 </div>
 

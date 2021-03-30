@@ -85,14 +85,17 @@
      */
     let selectHeader = select('#header');
     let subheader = select('#subheader');
+    let subheaderTop = select('#subheader-top');
     if (selectHeader) {
         const headerScrolled = () => {
             if (window.scrollY > 40) {
                 selectHeader.classList.add('header-scrolled');
                 subheader.classList.remove('show');
+                subheaderTop.classList.remove('show');
             } else {
                 selectHeader.classList.remove('header-scrolled');
                 subheader.classList.add('show');
+                subheaderTop.classList.add('show');
             }
         }
         window.addEventListener('load', headerScrolled)
