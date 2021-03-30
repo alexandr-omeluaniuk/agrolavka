@@ -163,16 +163,4 @@
         }
     });
     
-//    document.querySelector('body').addEventListener('click', function(evt) {
-//        console.log(evt);
-//        const li = evt.target.closest(".agr-product-search-link");
-//        if (li) {
-//            const link = li.querySelector('button');
-//            if (link.getAttribute('href')) {
-//                console.log('FIRE');
-//                //window.location.href = link.getAttribute('href');
-//            }
-//        }
-//    }, true);
-    
 })();

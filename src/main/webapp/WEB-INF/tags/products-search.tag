@@ -39,12 +39,12 @@
             }
         });
 
-        document.querySelector('#products-search').addEventListener('blur', function (e) {
-            setTimeout(() => {
+        document.querySelector('#products-search-container').addEventListener('blur', function (e) {
+            if (e.relatedTarget === null) {
                 const searchResultOutput = document.querySelector('#products-search-results-list');
                 searchResultOutput.classList.remove("show");
                 searchResultOutput.classList.remove("list-group");
-            }, 100);
+            }
         }, true);
 
         document.querySelector('#products-search').addEventListener('input', function (e) {
