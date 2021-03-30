@@ -14,4 +14,6 @@ public class SiteConstants {
     public static final int SEARCH_RESULT_TILES_COLUMNS = 3;
     /** Rows. */
     public static final int SEARCH_RESULT_TILES_ROWS = 5;
+    /** Cart session attribute. */
+    public static final String CART_SESSION_ATTRIBUTE = "CART";
 }

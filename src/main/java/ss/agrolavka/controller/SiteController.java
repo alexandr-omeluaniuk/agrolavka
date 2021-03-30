@@ -61,6 +61,15 @@ public class SiteController {
         return "home";
     }
     /**
+     * Cart page.
+     * @param model page model.
+     * @return page.
+     */
+    @RequestMapping("/cart")
+    public String cart(Model model) {
+        return "cart";
+    }
+    /**
      * Page not found.
      * @return page name.
      */

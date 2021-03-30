@@ -11,7 +11,7 @@
        metaDescription="Большой выбор семян, удобрений, средств для защиты растений. Комплектующие для капельного полива. Зоотовары. Приглашаем за покупками.">
 
     <jsp:body>
-        <main>
+        <main class="agr-background">
             <div id="agr-highlights" class="carousel carousel-dark slide d-none d-md-block" data-bs-ride="carousel">
                 <div class="carousel-indicators">
                     <button type="button" data-bs-target="#agr-highlights" data-bs-slide-to="0" class="active" 
