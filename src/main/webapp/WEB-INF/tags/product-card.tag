@@ -38,6 +38,9 @@
                         out.print("<small>" + parts[1] + "</small>");
                     %> <small class="text-muted">BYN</small></span>
             </div>
+            <button class="btn btn-sm btn-success w-100 mt-1">
+                <i class="fas fa-cart-plus me-2"></i> В корзину
+            </button>
         </div>
     </div>
 </a>

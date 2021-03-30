@@ -46,7 +46,8 @@ public class SiteController {
      * @throws Exception error.
      */
     @RequestMapping("/")
-    public String home(Model model) throws Exception {
+    public String home(Model model, HttpServletRequest httpRequest) throws Exception {
+        insertCartDataToModel(httpRequest, model);
         model.addAttribute("title", "Все для сада и огорода");
         ProductsSearchRequest request = new ProductsSearchRequest();
         request.setPage(1);
@@ -66,7 +67,8 @@ public class SiteController {
      * @return page.
      */
     @RequestMapping("/cart")
-    public String cart(Model model) {
+    public String cart(Model model, HttpServletRequest httpRequest) {
+        insertCartDataToModel(httpRequest, model);
         return "cart";
     }
     /**
@@ -74,7 +76,8 @@ public class SiteController {
      * @return page name.
      */
     @RequestMapping("/error/page-not-found")
-    public String error404() {
+    public String error404(Model model, HttpServletRequest httpRequest) {
+        insertCartDataToModel(httpRequest, model);
         return "error/404";
     }
     /**
@@ -92,6 +95,7 @@ public class SiteController {
             @RequestParam(name = "page", required = false) Integer page,
             @RequestParam(name = "view", required = false) String view,
             @RequestParam(name = "sort", required = false) String sort) throws Exception {
+        insertCartDataToModel(request, model);
         String url = request.getRequestURI();
         model.addAttribute("page", page == null ? 1 : page);
         model.addAttribute("view", view == null ? "TILES" : view);
@@ -197,13 +201,12 @@ public class SiteController {
             model.addAttribute("searchResultPages", 0);
         }
     }
-    
     /**
      * Resolve URL to product group or product.
      * @param url url.
      * @return product group or product.
      */
-    public DataModel resolveUrlToProductGroup(String url) {
+    private DataModel resolveUrlToProductGroup(String url) {
         String last = url.substring(url.lastIndexOf("/") + 1);
         for (ProductsGroup group : UrlProducer.getProductsGroups()) {
             if (last.equals(group.getUrl())) {
@@ -211,5 +214,9 @@ public class SiteController {
             }
         }
         return productDAO.getProductByUrl(last);
+    }
+    
+    private void insertCartDataToModel(HttpServletRequest request, Model model) {
+    
     }
 }
