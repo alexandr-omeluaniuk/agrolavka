@@ -182,10 +182,6 @@ section {
   }
 }
 
-.social-icon {
-    font-size: 1.5em;
-}
-
 /*--------------------------------------------------------------
 # Navigation Menu
 --------------------------------------------------------------*/
@@ -1175,5 +1171,16 @@ section {
     color: inherit;
     text-decoration: inherit;
     background-color: var(--palette-active-color);
+}
+.agr-nav-icon-link {
+    font-size: 1.4rem;
+}
+.agr-cart-badge {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background-color: var(--palette-primary-color);
+    padding: .3em .4em;
+    font-size: .7em;
 }
 

@@ -43,8 +43,8 @@
                         </ul>
                         <i class="bi bi-list mobile-nav-toggle"></i>
                     </nav>
-                    <div class="social-links d-none d-lg-block">
-                        <a href="https://www.instagram.com/agrolavka.by"><i class="fab fa-instagram social-icon"></i></a>
+                    <div class="social-links d-none d-lg-flex align-items-center">
+                        <a href="https://www.instagram.com/agrolavka.by"><i class="agr-nav-icon-link fab fa-instagram"></i></a>
                     </div>
                 </div>
             </div>
@@ -57,6 +57,10 @@
                 </a>
             </h1>        
             <t:products-search></t:products-search>
+            <a href="/cart" class="ms-3" style="position: relative;">
+                <span class="badge rounded-pill agr-cart-badge">10</span>
+                <i class="agr-nav-icon-link fas fa-cart-arrow-down"></i>
+            </a>
         </div>
             
         <t:top-product-groups></t:top-product-groups>
