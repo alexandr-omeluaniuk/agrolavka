@@ -1159,4 +1159,11 @@ section {
     padding: .3em .4em;
     font-size: .7em;
 }
+.agr-cart-position-description {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+}
 
