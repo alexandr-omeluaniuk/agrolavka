@@ -12,13 +12,10 @@
     
     <jsp:body>
         <main class="container">
-            <h3 class="fw-bold"><i class="fas fa-cart-arrow-down me-2"></i>Корзина</h3>
-            <hr/>
-            <ul class="list-group mb-5">
-                <c:forEach items="${cart.positions}" var="position">
-                    <t:cart-item position="${position}"/>
-                </c:forEach>
-            </ul>
+            <h3 class="fw-bold mb-5"><i class="fas fa-cart-arrow-down me-2"></i>Корзина</h3>
+            <c:forEach items="${cart.positions}" var="position">
+                <t:cart-item position="${position}"/>
+            </c:forEach>
         </main>
     </jsp:body>
     

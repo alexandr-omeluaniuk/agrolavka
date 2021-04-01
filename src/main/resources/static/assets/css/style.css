@@ -1166,4 +1166,10 @@ section {
     -webkit-line-clamp: 4;
     -webkit-box-orient: vertical;
 }
+.agr-cart-position-image {
+    padding-top: 70px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
 

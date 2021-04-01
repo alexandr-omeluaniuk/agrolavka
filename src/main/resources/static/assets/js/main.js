@@ -197,8 +197,8 @@
                     button.setAttribute('data-remove', '');
                     cartBadge.innerHTML = cart.positions.length;
                     button.innerHTML = '<i class="fas fa-minus-circle me-2"></i> Из корзины';
-                    button.classList.remove('btn-success');
-                    button.classList.add('btn-danger');
+                    button.classList.remove('btn-outline-success');
+                    button.classList.add('btn-outline-danger');
                 });
             }
         }).catch(error => {
@@ -225,8 +225,8 @@
                     button.setAttribute('data-add', '');
                     cartBadge.innerHTML = cart.positions.length;
                     button.innerHTML = '<i class="fas fa-cart-plus me-2"></i> В корзину';
-                    button.classList.add('btn-success');
-                    button.classList.remove('btn-danger');
+                    button.classList.add('btn-outline-success');
+                    button.classList.remove('btn-outline-danger');
                 });
             }
         }).catch(error => {
