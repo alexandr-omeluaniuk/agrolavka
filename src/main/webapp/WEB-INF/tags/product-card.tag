@@ -16,7 +16,7 @@
 
 <%-- any content can be specified here e.g.: --%>
 <a href="<%= UrlProducer.buildProductUrl(product) %>">
-    <div class="card ${mini ? 'mb-3 mini' : 'mb-5'} bg-body rounded product-card">
+    <div class="card mb-4 bg-body rounded product-card">
         <div class="ribbon ribbon-top-left">
             <span class="${product.quantity > 0 ? 'bg-success' : 'bg-danger'}">
                 <small>${product.quantity > 0 ? 'в наличии' : 'под заказ'}</small>

@@ -47,7 +47,17 @@
 
                         <div class="col-lg-9 col-md-12 intro-info order-lg-first order-last">
                             <t:breadcrumb label="${breadcrumbLabel}" groups="${breadcrumbPath}"></t:breadcrumb>
-                            <t:product-details product="${product}"></t:product-details>
+                            <article>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="float-start me-4" style="width: 300px;">
+                                            <t:product-card product="${product}" cart="${cart}"/>
+                                        </div>
+                                        <h4>${product.name}</h4>
+                                        <p class="product-text">${product.description}</p>
+                                    </div>
+                                </div>
+                            </article>
                         </div>
                     </div>
                 </div>
