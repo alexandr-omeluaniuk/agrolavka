@@ -58,7 +58,7 @@ public class SiteController {
         model.addAttribute("productsCount", productDAO.count(request));
         ProductsSearchRequest searchRequest = new ProductsSearchRequest();
         searchRequest.setPage(1);
-        searchRequest.setPageSize(12);
+        searchRequest.setPageSize(4);
         searchRequest.setOrder("desc");
         searchRequest.setOrderBy("created_date");
         model.addAttribute("newProducts", productDAO.search(searchRequest));

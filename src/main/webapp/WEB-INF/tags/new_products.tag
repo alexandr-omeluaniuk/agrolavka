@@ -25,14 +25,14 @@
             <%
                 for (int i = 0; i < newProducts.size(); i++) {
                     Product product = newProducts.get(i);
-                    if (i % 6 == 0) {
+                    if (i % 4 == 0) {
                         if (i > 0) {
                             out.print("</div>");
                         }
                         out.print("<div class=\"row\">");
                     }
             %>
-                <div class="col-sm-2">
+                <div class="col-sm-3">
                     <t:product-card product="<%= product %>" mini="true" cart="${cart}"/>
                 </div>
             <%

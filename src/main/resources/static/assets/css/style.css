@@ -1122,6 +1122,9 @@ section {
     margin-right: 7px;
 }
 /** Highlights. */
+#agr-highlights {
+    min-height: calc(100vh - 170px);
+}
 .agr-brand-text {
     color: var(--palette-brand-color);
 }
