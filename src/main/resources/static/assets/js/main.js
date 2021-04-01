@@ -166,37 +166,72 @@
         }
     });
     
-    /** Add to cart listener */
+    /** Agrolavka listeners. */
     document.querySelector('body').addEventListener('click', function(evt) {
         const addToCartBtn = evt.target.closest("[data-product-id][data-add]");
+        const removeFromCartCartBtn = evt.target.closest("[data-product-id][data-remove]");
         if (addToCartBtn) {
-            evt.preventDefault();
-            evt.stopPropagation();
-            const button = addToCartBtn;
-            button.setAttribute('disabled', 'true');
-            const cartBadge = select('.agr-cart-badge');
-            fetch('/api/agrolavka/public/cart/' + button.getAttribute('data-product-id'), {
-                method: 'PUT',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                }
-            }).then(function (response) {
-                if (response.ok) {
-                    response.json().then(cart => {
-                        button.removeAttribute('disabled');
-                        button.removeAttribute('data-add');
-                        button.setAttribute('data-remove', '');
-                        cartBadge.innerHTML = cart.positions.length;
-                        button.innerHTML = '<i class="fas fa-minus-circle me-2"></i> Из корзины';
-                        button.classList.remove('btn-success');
-                        button.classList.add('btn-danger');
-                    });
-                }
-            }).catch(error => {
-                console.error('HTTP error occurred: ' + error);
-            });
+            addToCartListener(evt, addToCartBtn);
+        }
+        if (removeFromCartCartBtn) {
+            removeFromCartListener(evt, removeFromCartCartBtn);
         }
     }, true);
+    
+    var addToCartListener = function(evt, button) {
+        evt.preventDefault();
+        evt.stopPropagation();
+        button.setAttribute('disabled', 'true');
+        const cartBadge = select('.agr-cart-badge');
+        fetch('/api/agrolavka/public/cart/' + button.getAttribute('data-product-id'), {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        }).then(function (response) {
+            if (response.ok) {
+                response.json().then(cart => {
+                    button.removeAttribute('disabled');
+                    button.removeAttribute('data-add');
+                    button.setAttribute('data-remove', '');
+                    cartBadge.innerHTML = cart.positions.length;
+                    button.innerHTML = '<i class="fas fa-minus-circle me-2"></i> Из корзины';
+                    button.classList.remove('btn-success');
+                    button.classList.add('btn-danger');
+                });
+            }
+        }).catch(error => {
+            console.error('HTTP error occurred: ' + error);
+        });
+    };
+    
+    var removeFromCartListener = function(evt, button) {
+        evt.preventDefault();
+        evt.stopPropagation();
+        button.setAttribute('disabled', 'true');
+        const cartBadge = select('.agr-cart-badge');
+        fetch('/api/agrolavka/public/cart/' + button.getAttribute('data-product-id'), {
+            method: 'DELETE',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        }).then(function (response) {
+            if (response.ok) {
+                response.json().then(cart => {
+                    button.removeAttribute('disabled');
+                    button.removeAttribute('data-remove');
+                    button.setAttribute('data-add', '');
+                    cartBadge.innerHTML = cart.positions.length;
+                    button.innerHTML = '<i class="fas fa-cart-plus me-2"></i> В корзину';
+                    button.classList.add('btn-success');
+                    button.classList.remove('btn-danger');
+                });
+            }
+        }).catch(error => {
+            console.error('HTTP error occurred: ' + error);
+        });
+    };
     
 })();
