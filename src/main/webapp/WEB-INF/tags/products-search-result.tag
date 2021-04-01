@@ -15,6 +15,7 @@
 <%@attribute name="view" required="true" type="String"%>
 <%@attribute name="sort" required="true" type="String"%>
 <%@attribute name="group" required="false" type="ProductsGroup"%>
+<%@attribute name="cart" required="true" type="Order"%>
 
 <%-- any content can be specified here e.g.: --%>
 <div class="row products-search-result">
@@ -33,7 +34,7 @@
                         <div class="row">
                             <c:forEach items="${searchResult}" var="product">
                                 <div class="col-sm-12 col-md-6 col-lg-6 col-xl-4">
-                                    <t:product-card product="${product}"></t:product-card>
+                                    <t:product-card product="${product}" cart="${cart}"></t:product-card>
                                 </div>
                             </c:forEach>
                         </div>

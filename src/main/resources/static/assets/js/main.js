@@ -166,4 +166,37 @@
         }
     });
     
+    /** Add to cart listener */
+    document.querySelector('body').addEventListener('click', function(evt) {
+        const addToCartBtn = evt.target.closest("[data-product-id][data-add]");
+        if (addToCartBtn) {
+            evt.preventDefault();
+            evt.stopPropagation();
+            const button = addToCartBtn;
+            button.setAttribute('disabled', 'true');
+            const cartBadge = select('.agr-cart-badge');
+            fetch('/api/agrolavka/public/cart/' + button.getAttribute('data-product-id'), {
+                method: 'PUT',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                }
+            }).then(function (response) {
+                if (response.ok) {
+                    response.json().then(cart => {
+                        button.removeAttribute('disabled');
+                        button.removeAttribute('data-add');
+                        button.setAttribute('data-remove', '');
+                        cartBadge.innerHTML = cart.positions.length;
+                        button.innerHTML = '<i class="fas fa-minus-circle me-2"></i> Из корзины';
+                        button.classList.remove('btn-success');
+                        button.classList.add('btn-danger');
+                    });
+                }
+            }).catch(error => {
+                console.error('HTTP error occurred: ' + error);
+            });
+        }
+    }, true);
+    
 })();

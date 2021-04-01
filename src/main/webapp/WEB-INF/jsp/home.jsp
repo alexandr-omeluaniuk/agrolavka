@@ -24,7 +24,7 @@
                         <t:highlights/>
                     </div>
                     <div class="carousel-item">
-                        <t:new_products newProducts="${newProducts}"/>
+                        <t:new_products newProducts="${newProducts}" cart="${cart}"/>
                     </div>
                 </div>
                 <button class="carousel-control-prev" type="button" data-bs-target="#agr-highlights" data-bs-slide="prev">

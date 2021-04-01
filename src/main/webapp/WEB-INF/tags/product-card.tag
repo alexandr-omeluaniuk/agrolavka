@@ -4,13 +4,15 @@
     Author     : alex
 --%>
 
+<%@tag import="java.util.Objects"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@tag description="put the tag description here" pageEncoding="UTF-8" 
-       import="ss.entity.agrolavka.Product,ss.agrolavka.util.UrlProducer"%>
+       import="ss.entity.agrolavka.*,ss.agrolavka.util.UrlProducer"%>
 
 <%-- The list of normal or fragment attributes can be specified here: --%>
 <%@attribute name="product" required="true" type="Product"%>
 <%@attribute name="mini" required="false" type="Boolean"%>
+<%@attribute name="cart" required="true" type="Order"%>
 
 <%-- any content can be specified here e.g.: --%>
 <a href="<%= UrlProducer.buildProductUrl(product) %>">
@@ -38,9 +40,30 @@
                         out.print("<small>" + parts[1] + "</small>");
                     %> <small class="text-muted">BYN</small></span>
             </div>
-            <button class="btn btn-sm btn-success w-100 mt-1">
+            <%
+                boolean inCart = false;
+                for (OrderPosition pos : cart.getPositions()) {
+                    if (Objects.equals(product.getId(), pos.getProductId())) {
+                        inCart = true;
+                        break;
+                    }
+                }
+            %>
+            <%
+                if (!inCart) {
+            %>
+            <button class="btn btn-sm btn-success w-100 mt-1" data-product-id="${product.id}" data-add="">
                 <i class="fas fa-cart-plus me-2"></i> В корзину
             </button>
+            <%
+                } else {
+            %>
+            <button class="btn btn-sm btn-danger w-100 mt-1" data-product-id="${product.id}" data-remove="">
+                <i class="fas fa-minus-circle me-2"></i> Из корзины
+            </button>
+            <%
+                }
+            %>
         </div>
     </div>
 </a>

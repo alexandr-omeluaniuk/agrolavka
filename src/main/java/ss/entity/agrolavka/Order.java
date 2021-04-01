@@ -6,7 +6,7 @@
 package ss.entity.agrolavka;
 
 import java.util.Date;
-import java.util.List;
+import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -32,7 +32,7 @@ public class Order extends DataModel{
     /** Order positions. */
     @Size(min = 1)
     @OneToMany(fetch = FetchType.EAGER, orphanRemoval = true, cascade = CascadeType.ALL, mappedBy = "order")
-    private List<OrderPosition> positions;
+    private Set<OrderPosition> positions;
     /** Address. */
     @OneToOne(fetch = FetchType.EAGER, orphanRemoval = true, cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id")
@@ -46,13 +46,13 @@ public class Order extends DataModel{
     /**
      * @return the positions
      */
-    public List<OrderPosition> getPositions() {
+    public Set<OrderPosition> getPositions() {
         return positions;
     }
     /**
      * @param positions the positions to set
      */
-    public void setPositions(List<OrderPosition> positions) {
+    public void setPositions(Set<OrderPosition> positions) {
         this.positions = positions;
     }
     /**

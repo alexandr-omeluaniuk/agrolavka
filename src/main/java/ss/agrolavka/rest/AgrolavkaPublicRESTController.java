@@ -5,12 +5,12 @@
  */
 package ss.agrolavka.rest;
 
-import java.util.ArrayList;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -93,22 +93,20 @@ class AgrolavkaPublicRESTController {
      */
     @RequestMapping(value = "/cart/{id}", method = RequestMethod.PUT,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public void addToCart(@PathVariable("id") Long id, HttpServletRequest request) throws Exception {
+    public Order addToCart(@PathVariable("id") Long id, HttpServletRequest request) throws Exception {
         Product product = coreDAO.findById(id, Product.class);
+        Order order = (Order) request.getSession(true).getAttribute(SiteConstants.CART_SESSION_ATTRIBUTE);
         if (product != null) {
-            Order order = (Order) request.getSession(true).getAttribute(SiteConstants.CART_SESSION_ATTRIBUTE);
-            if (order == null) {
-                order = new Order();
-                order.setPositions(new ArrayList<>());
-            }
             OrderPosition position = new OrderPosition();
             position.setOrder(order);
             position.setPrice(product.getPrice());
             position.setQuantity(1);
             position.setProduct(product);
+            position.setProductId(product.getId());
             order.getPositions().add(position);
             request.getSession().setAttribute(SiteConstants.CART_SESSION_ATTRIBUTE, order);
         }
+        return order;
     }
     /**
      * Remove product from cart.
@@ -118,12 +116,13 @@ class AgrolavkaPublicRESTController {
      */
     @RequestMapping(value = "/cart/{id}", method = RequestMethod.DELETE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public void removeFromCart(@PathVariable("id") Long id, HttpServletRequest request) throws Exception {
+    public Order removeFromCart(@PathVariable("id") Long id, HttpServletRequest request) throws Exception {
         Order order = (Order) request.getSession(true).getAttribute(SiteConstants.CART_SESSION_ATTRIBUTE);
-        List<OrderPosition> positions = order.getPositions().stream().filter(pos -> {
+        Set<OrderPosition> positions = order.getPositions().stream().filter(pos -> {
             return !Objects.equals(pos.getProductId(), id);
-        }).collect(Collectors.toList());
+        }).collect(Collectors.toSet());
         order.setPositions(positions);
         request.getSession().setAttribute(SiteConstants.CART_SESSION_ATTRIBUTE, order);
+        return order;
     }
 }

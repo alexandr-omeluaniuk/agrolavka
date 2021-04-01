@@ -112,7 +112,7 @@ public class OrderPosition extends DataModel{
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (getId() != null ? getId().hashCode() : 0);
+        hash += (getProductId() != null ? getProductId().hashCode() : 0);
         return hash;
     }
     @Override
@@ -122,8 +122,8 @@ public class OrderPosition extends DataModel{
             return false;
         }
         OrderPosition other = (OrderPosition) object;
-        if ((this.getId() == null && other.getId() != null)
-                || (this.getId() != null && !this.getId().equals(other.getId()))) {
+        if ((this.getProductId() == null && other.getProductId() != null)
+                || (this.getProductId() != null && !this.getProductId().equals(other.getProductId()))) {
             return false;
         }
         return true;

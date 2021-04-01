@@ -5,8 +5,9 @@
 --%>
 
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
-<%@tag description="Product highlights" pageEncoding="UTF-8" import="ss.entity.agrolavka.Product"%>
+<%@tag description="Product highlights" pageEncoding="UTF-8" import="ss.entity.agrolavka.*"%>
 <%@attribute name="newProducts" required="true" type="java.util.List<Product>"%>
+<%@attribute name="cart" required="true" type="Order"%>
 
 <%-- The list of normal or fragment attributes can be specified here: --%>
 
@@ -32,7 +33,7 @@
                     }
             %>
                 <div class="col-sm-2">
-                    <t:product-card product="<%= product %>" mini="true"/>
+                    <t:product-card product="<%= product %>" mini="true" cart="${cart}"/>
                 </div>
             <%
                 }
