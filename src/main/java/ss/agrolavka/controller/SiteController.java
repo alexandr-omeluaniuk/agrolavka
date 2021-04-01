@@ -42,6 +42,7 @@ public class SiteController {
     /**
      * Home page.
      * @param model data model.
+     * @param httpRequest HTTP request.
      * @return JSP page.
      * @throws Exception error.
      */
@@ -64,6 +65,7 @@ public class SiteController {
     /**
      * Cart page.
      * @param model page model.
+     * @param httpRequest HTTP request.
      * @return page.
      */
     @RequestMapping("/cart")
@@ -73,6 +75,8 @@ public class SiteController {
     }
     /**
      * Page not found.
+     * @param model page model.
+     * @param httpRequest HTTP request.
      * @return page name.
      */
     @RequestMapping("/error/page-not-found")

@@ -5,10 +5,14 @@
  */
 package ss.agrolavka.rest;
 
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
+import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Propagation;
@@ -19,9 +23,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ss.agrolavka.constants.ImageStubs;
+import ss.agrolavka.constants.SiteConstants;
 import ss.agrolavka.dao.ProductDAO;
 import ss.agrolavka.util.UrlProducer;
 import ss.agrolavka.wrapper.ProductsSearchRequest;
+import ss.entity.agrolavka.Order;
+import ss.entity.agrolavka.OrderPosition;
 import ss.entity.agrolavka.Product;
 import ss.martin.platform.dao.CoreDAO;
 
@@ -77,5 +84,46 @@ class AgrolavkaPublicRESTController {
         result.put("data", list);
         result.put("count", productDAO.count(request));
         return result;
+    }
+    /**
+     * Add product to cart.
+     * @param id product ID.
+     * @param request HTTP request.
+     * @throws Exception error.
+     */
+    @RequestMapping(value = "/cart/{id}", method = RequestMethod.PUT,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public void addToCart(@PathVariable("id") Long id, HttpServletRequest request) throws Exception {
+        Product product = coreDAO.findById(id, Product.class);
+        if (product != null) {
+            Order order = (Order) request.getSession(true).getAttribute(SiteConstants.CART_SESSION_ATTRIBUTE);
+            if (order == null) {
+                order = new Order();
+                order.setPositions(new ArrayList<>());
+            }
+            OrderPosition position = new OrderPosition();
+            position.setOrder(order);
+            position.setPrice(product.getPrice());
+            position.setQuantity(1);
+            position.setProduct(product);
+            order.getPositions().add(position);
+            request.getSession().setAttribute(SiteConstants.CART_SESSION_ATTRIBUTE, order);
+        }
+    }
+    /**
+     * Remove product from cart.
+     * @param id product ID.
+     * @param request HTTP request.
+     * @throws Exception error.
+     */
+    @RequestMapping(value = "/cart/{id}", method = RequestMethod.DELETE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public void removeFromCart(@PathVariable("id") Long id, HttpServletRequest request) throws Exception {
+        Order order = (Order) request.getSession(true).getAttribute(SiteConstants.CART_SESSION_ATTRIBUTE);
+        List<OrderPosition> positions = order.getPositions().stream().filter(pos -> {
+            return !Objects.equals(pos.getProductId(), id);
+        }).collect(Collectors.toList());
+        order.setPositions(positions);
+        request.getSession().setAttribute(SiteConstants.CART_SESSION_ATTRIBUTE, order);
     }
 }
