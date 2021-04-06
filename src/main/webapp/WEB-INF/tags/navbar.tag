@@ -57,10 +57,10 @@
                 </a>
             </h1>        
             <t:products-search></t:products-search>
-            <a href="/cart" class="ms-3" style="position: relative;">
+            <!--a href="/cart" class="ms-3" style="position: relative;">
                 <span class="badge rounded-pill agr-cart-badge">${cart.positions.size()}</span>
                 <i class="agr-nav-icon-link fas fa-cart-arrow-down"></i>
-            </a>
+            </a-->
         </div>
             
         <t:top-product-groups></t:top-product-groups>
