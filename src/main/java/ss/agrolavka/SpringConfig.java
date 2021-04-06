@@ -38,7 +38,7 @@ public class SpringConfig implements WebMvcConfigurer {
         registry.addResourceHandler("/robots.txt").addResourceLocations("classpath:/static/robots.txt");
 //        registry.addResourceHandler("/.well-known/pki-validation/**")
 //                .addResourceLocations("classpath:/static/");
-        registry.addResourceHandler("/**").addResourceLocations("classpath:/static/martin-platform-client/build/");     
+        registry.addResourceHandler("/admin/**").addResourceLocations("classpath:/static/martin-platform-client/build/");
     }
     /**
      * Forward some URLs to index page.
@@ -50,7 +50,7 @@ public class SpringConfig implements WebMvcConfigurer {
         return new WebMvcConfigurer() {
             @Override
             public void addViewControllers(ViewControllerRegistry registry) {
-                final String forward = "forward:/index.html";
+                final String forward = "forward:/admin/index.html";
                 registry.addViewController("/admin").setViewName(forward);
                 registry.addViewController(configuration.getNavigation().getLoginPage()).setViewName(forward);
                 registry.addViewController(configuration.getNavigation().getRegistrationVerification() + "/**")

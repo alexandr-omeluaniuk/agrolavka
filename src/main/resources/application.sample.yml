@@ -46,8 +46,8 @@ platform:
   navigation:
     login: /login
     logout: /logout
-    loginPage: /welcome
+    loginPage: /admin/welcome
     protectedRest: /api/agrolavka/protected/**
     publicRest: /api/agrolavka/public/**
-    registrationVerification: /verification
-    views: /martin
+    registrationVerification: /admin/verification
+    views: /admin/app

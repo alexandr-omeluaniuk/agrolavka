@@ -4,13 +4,13 @@
  * and open the template in the editor.
  */
 
-const context = '';
+const context = '/admin';
 
 const AppURLs = {
     context: context,
-    api: context + '/api',
+    api: '/api',
     welcome: context + '/welcome',
-    app: context + '/martin',
+    app: context + '/app',
     registration: context + '/verification/:validationString'
 };
 
