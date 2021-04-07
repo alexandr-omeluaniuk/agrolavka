@@ -315,6 +315,9 @@
         if (cartBadge) {
             cartBadge.innerHTML = cart.positions.length;
         }
+        if (cart.positions.length === 0) {
+            window.location.reload();
+        }
     };
     
 })();
