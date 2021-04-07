@@ -5,7 +5,7 @@
 --%>
 
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page contentType="text/html" pageEncoding="UTF-8" import="ss.entity.agrolavka.*"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <!DOCTYPE html>
 <t:app title="Корзина" metaDescription="Ваши покупки в магазине Агролавка" canonical="/cart">
@@ -18,6 +18,14 @@
                     <c:forEach items="${cart.positions}" var="position">
                         <t:cart-item position="${position}"/>
                     </c:forEach>
+                    <hr/>
+                    <div class="d-flex justify-content-between">
+                        <h5 class="fw-bold">Общая сумма</h5>
+                        <span class="text-dark fw-bold me-2">
+                            ${totalInteger}.<small>${totalDecimal}</small>
+                            <small class="text-muted">BYN</small>
+                        </span>
+                    </div>
                 </c:when>    
                 <c:otherwise>
                     <div class="alert alert-warning" role="alert">

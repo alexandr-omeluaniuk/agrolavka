@@ -26,6 +26,7 @@ import ss.agrolavka.dao.ProductDAO;
 import ss.agrolavka.util.UrlProducer;
 import ss.agrolavka.wrapper.ProductsSearchRequest;
 import ss.entity.agrolavka.Order;
+import ss.entity.agrolavka.OrderPosition;
 import ss.entity.agrolavka.Product;
 import ss.entity.agrolavka.ProductsGroup;
 import ss.entity.martin.DataModel;
@@ -233,6 +234,14 @@ public class SiteController {
             order.setPositions(new HashSet<>());
             request.getSession().setAttribute(SiteConstants.CART_SESSION_ATTRIBUTE, order);
         }
+        Double total = 0d;
+        for (OrderPosition pos : order.getPositions()) {
+            total += pos.getPrice() * pos.getQuantity();
+        }
+        String totalStr = String.format("%.2f", total);
+        String[] parts = totalStr.split("\\.");
         model.addAttribute("cart", order);
+        model.addAttribute("totalInteger", parts[0]);
+        model.addAttribute("totalDecimal", parts[1]);
     }
 }
