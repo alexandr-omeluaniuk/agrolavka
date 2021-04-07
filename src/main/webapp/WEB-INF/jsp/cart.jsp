@@ -13,9 +13,19 @@
     <jsp:body>
         <main class="container">
             <h3 class="fw-bold mb-5"><i class="fas fa-cart-arrow-down me-2"></i>Корзина</h3>
-            <c:forEach items="${cart.positions}" var="position">
-                <t:cart-item position="${position}"/>
-            </c:forEach>
+            <c:choose>
+                <c:when test="${cart.positions.size() > 0}">
+                    <c:forEach items="${cart.positions}" var="position">
+                        <t:cart-item position="${position}"/>
+                    </c:forEach>
+                </c:when>    
+                <c:otherwise>
+                    <div class="alert alert-warning" role="alert">
+                        Ваша корзина пуста
+                    </div>
+                </c:otherwise>
+            </c:choose>
+            
         </main>
     </jsp:body>
     

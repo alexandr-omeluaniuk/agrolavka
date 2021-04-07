@@ -169,12 +169,16 @@
     /** Agrolavka listeners. */
     document.querySelector('body').addEventListener('click', function(evt) {
         const addToCartBtn = evt.target.closest("[data-product-id][data-add]");
-        const removeFromCartCartBtn = evt.target.closest("[data-product-id][data-remove]");
         if (addToCartBtn) {
             addToCartListener(evt, addToCartBtn);
         }
+        const removeFromCartCartBtn = evt.target.closest("[data-product-id][data-remove]");
         if (removeFromCartCartBtn) {
             removeFromCartListener(evt, removeFromCartCartBtn);
+        }
+        const cartRemoveProductBtn = evt.target.closest("[data-product-id][data-remove-product-from-cart]");
+        if (cartRemoveProductBtn) {
+            cartRemoveProductListener(evt, cartRemoveProductBtn);
         }
     }, true);
     
@@ -227,6 +231,27 @@
                     button.innerHTML = '<i class="fas fa-cart-plus me-2"></i> В корзину';
                     button.classList.add('btn-outline-success');
                     button.classList.remove('btn-outline-danger');
+                });
+            }
+        }).catch(error => {
+            console.error('HTTP error occurred: ' + error);
+        });
+    };
+    
+    var cartRemoveProductListener = function (evt, button) {
+        button.setAttribute('disabled', 'true');
+        const cartBadge = select('.agr-cart-badge');
+        fetch('/api/agrolavka/public/cart/' + button.getAttribute('data-product-id'), {
+            method: 'DELETE',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        }).then(function (response) {
+            if (response.ok) {
+                response.json().then(cart => {
+                    button.closest(".card").remove();
+                    cartBadge.innerHTML = cart.positions.length;
                 });
             }
         }).catch(error => {
