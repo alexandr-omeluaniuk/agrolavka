@@ -26,6 +26,11 @@
                             <small class="text-muted">BYN</small>
                         </span>
                     </div>
+                    <div class="d-flex justify-content-end mb-4 mt-4">
+                        <button class="btn btn-success">
+                            <i class="fas fa-truck me-2"></i> Оформить заказ
+                        </button>
+                    </div>
                 </c:when>    
                 <c:otherwise>
                     <div class="alert alert-warning" role="alert">

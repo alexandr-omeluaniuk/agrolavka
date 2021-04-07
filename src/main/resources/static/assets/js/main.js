@@ -271,6 +271,7 @@
                 response.json().then(cart => {
                     button.closest(".card").remove();
                     cartBadge.innerHTML = cart.positions.length;
+                    _updateCartTotal(cart);
                 });
             }
         }).catch(error => {
@@ -306,7 +307,7 @@
         const totalLabel = document.querySelector("[data-total-price]");
         const totalStr = parseFloat(total).toFixed(2);
         const parts = totalStr.split(".");
-        totalLabel.innerHTML = parts[0] + '.<small>' + parts[1] + '</small><small class="text-muted">BYN</small>';
+        totalLabel.innerHTML = parts[0] + '.<small>' + parts[1] + '</small> <small class="text-muted">BYN</small>';
     };
     
 })();
