@@ -57,9 +57,13 @@
                 </a>
             </h1>        
             <t:products-search></t:products-search>
-            <a href="/cart" class="ms-3" style="position: relative;">
-                <span class="badge rounded-pill agr-cart-badge">${cart.positions.size()}</span>
-                <i class="agr-nav-icon-link fas fa-cart-arrow-down"></i>
+            <a href="/cart" class="btn btn-success ms-3 d-flex align-items-center" style="font-family: inherit;">
+                <i class="fas fa-shopping-cart" style="position: relative;">
+                    <span class="badge rounded-pill agr-cart-badge">${cart.positions.size()}</span>
+                </i>
+                <span class="text-light fw-bold ms-2" data-cart-price>
+                    ${totalInteger}.<small>${totalDecimal}</small>
+                </span>
             </a>
         </div>
             

@@ -205,7 +205,6 @@
         evt.preventDefault();
         evt.stopPropagation();
         button.setAttribute('disabled', 'true');
-        const cartBadge = select('.agr-cart-badge');
         fetch('/api/agrolavka/public/cart/' + button.getAttribute('data-product-id'), {
             method: 'PUT',
             headers: {
@@ -218,7 +217,7 @@
                     button.removeAttribute('disabled');
                     button.removeAttribute('data-add');
                     button.setAttribute('data-remove', '');
-                    cartBadge.innerHTML = cart.positions.length;
+                    _updateCartTotal(cart);
                     button.innerHTML = '<i class="fas fa-minus-circle me-2"></i> Из корзины';
                     button.classList.remove('btn-outline-success');
                     button.classList.add('btn-outline-danger');
@@ -233,7 +232,6 @@
         evt.preventDefault();
         evt.stopPropagation();
         button.setAttribute('disabled', 'true');
-        const cartBadge = select('.agr-cart-badge');
         fetch('/api/agrolavka/public/cart/' + button.getAttribute('data-product-id'), {
             method: 'DELETE',
             headers: {
@@ -246,7 +244,7 @@
                     button.removeAttribute('disabled');
                     button.removeAttribute('data-remove');
                     button.setAttribute('data-add', '');
-                    cartBadge.innerHTML = cart.positions.length;
+                    _updateCartTotal(cart);
                     button.innerHTML = '<i class="fas fa-cart-plus me-2"></i> В корзину';
                     button.classList.add('btn-outline-success');
                     button.classList.remove('btn-outline-danger');
@@ -259,7 +257,6 @@
     
     var cartRemoveProductListener = function (evt, button) {
         button.setAttribute('disabled', 'true');
-        const cartBadge = select('.agr-cart-badge');
         fetch('/api/agrolavka/public/cart/' + button.getAttribute('data-product-id'), {
             method: 'DELETE',
             headers: {
@@ -270,7 +267,7 @@
             if (response.ok) {
                 response.json().then(cart => {
                     button.closest(".card").remove();
-                    cartBadge.innerHTML = cart.positions.length;
+                    
                     _updateCartTotal(cart);
                 });
             }
@@ -305,9 +302,19 @@
             total += p.price * p.quantity;
         });
         const totalLabel = document.querySelector("[data-total-price]");
+        const cartTotalLabel = document.querySelector("[data-cart-price]");
         const totalStr = parseFloat(total).toFixed(2);
         const parts = totalStr.split(".");
-        totalLabel.innerHTML = parts[0] + '.<small>' + parts[1] + '</small> <small class="text-muted">BYN</small>';
+        if (totalLabel) {
+            totalLabel.innerHTML = parts[0] + '.<small>' + parts[1] + '</small> <small class="text-muted">BYN</small>';
+        }
+        if (cartTotalLabel) {
+            cartTotalLabel.innerHTML = parts[0] + '.<small>' + parts[1] + '</small>'
+        }
+        const cartBadge = select('.agr-cart-badge');
+        if (cartBadge) {
+            cartBadge.innerHTML = cart.positions.length;
+        }
     };
     
 })();

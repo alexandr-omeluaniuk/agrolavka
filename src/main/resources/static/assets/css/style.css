@@ -1148,16 +1148,13 @@ section {
     text-decoration: inherit;
     background-color: var(--palette-active-color);
 }
-.agr-nav-icon-link {
-    font-size: 1.4rem;
-}
 .agr-cart-badge {
-    position: absolute;
-    top: -10px;
-    right: -10px;
+    position: absolute !important;
+    top: -10px !important;
+    left: 10px;
     background-color: var(--palette-primary-color);
     padding: .3em .4em;
-    font-size: .7em;
+    font-size: .8em;
 }
 .agr-cart-position-description {
     overflow: hidden;

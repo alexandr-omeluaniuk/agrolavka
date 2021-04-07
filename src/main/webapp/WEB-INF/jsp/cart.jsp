@@ -18,18 +18,20 @@
                     <c:forEach items="${cart.positions}" var="position">
                         <t:cart-item position="${position}"/>
                     </c:forEach>
-                    <hr/>
-                    <div class="d-flex justify-content-between mt-4 mb-4">
-                        <h5 class="fw-bold ms-2">Общая сумма</h5>
-                        <span class="text-dark fw-bold me-2" data-total-price>
-                            ${totalInteger}.<small>${totalDecimal}</small>
-                            <small class="text-muted">BYN</small>
-                        </span>
-                    </div>
-                    <div class="d-flex justify-content-end mb-4 mt-4">
-                        <a class="btn btn-success" href="/order">
-                            <i class="fas fa-truck me-2"></i> Оформить заказ
-                        </a>
+                    <div id="cart-footer">
+                        <hr/>
+                        <div class="d-flex justify-content-between mt-4 mb-4">
+                            <h5 class="fw-bold ms-2">Общая сумма</h5>
+                            <span class="text-dark fw-bold me-2" data-total-price>
+                                ${totalInteger}.<small>${totalDecimal}</small>
+                                <small class="text-muted">BYN</small>
+                            </span>
+                        </div>
+                        <div class="d-flex justify-content-end mb-4 mt-4">
+                            <a class="btn btn-success" href="/order">
+                                <i class="fas fa-truck me-2"></i> Оформить заказ
+                            </a>
+                        </div>
                     </div>
                 </c:when>    
                 <c:otherwise>
