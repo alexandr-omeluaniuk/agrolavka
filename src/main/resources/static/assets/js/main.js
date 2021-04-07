@@ -290,12 +290,23 @@
         }).then(function (response) {
             if (response.ok) {
                 response.json().then(cart => {
-                    console.log(cart);
+                    _updateCartTotal(cart);
                 });
             }
         }).catch(error => {
             console.error('HTTP error occurred: ' + error);
         });
+    };
+    
+    var _updateCartTotal = function (cart) {
+        let total = 0;
+        cart.positions.forEach(p => {
+            total += p.price * p.quantity;
+        });
+        const totalLabel = document.querySelector("[data-total-price]");
+        const totalStr = parseFloat(total).toFixed(2);
+        const parts = totalStr.split(".");
+        totalLabel.innerHTML = parts[0] + '.<small>' + parts[1] + '</small><small class="text-muted">BYN</small>';
     };
     
 })();

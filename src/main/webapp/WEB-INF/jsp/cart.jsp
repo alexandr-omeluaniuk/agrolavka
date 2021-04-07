@@ -19,9 +19,9 @@
                         <t:cart-item position="${position}"/>
                     </c:forEach>
                     <hr/>
-                    <div class="d-flex justify-content-between">
+                    <div class="d-flex justify-content-between mt-4 mb-4">
                         <h5 class="fw-bold ms-2">Общая сумма</h5>
-                        <span class="text-dark fw-bold me-2">
+                        <span class="text-dark fw-bold me-2" data-total-price>
                             ${totalInteger}.<small>${totalDecimal}</small>
                             <small class="text-muted">BYN</small>
                         </span>
