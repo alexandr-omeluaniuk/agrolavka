@@ -20,7 +20,7 @@
                     </c:forEach>
                     <hr/>
                     <div class="d-flex justify-content-between">
-                        <h5 class="fw-bold">Общая сумма</h5>
+                        <h5 class="fw-bold ms-2">Общая сумма</h5>
                         <span class="text-dark fw-bold me-2">
                             ${totalInteger}.<small>${totalDecimal}</small>
                             <small class="text-muted">BYN</small>
