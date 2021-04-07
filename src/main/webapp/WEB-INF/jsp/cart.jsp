@@ -12,7 +12,7 @@
     
     <jsp:body>
         <main class="container">
-            <h3 class="fw-bold mb-5"><i class="fas fa-cart-arrow-down me-2"></i>Корзина</h3>
+            <h3 class="fw-bold mb-5 mt-2 text-center"><i class="fas fa-cart-arrow-down me-2"></i>Корзина</h3>
             <c:choose>
                 <c:when test="${cart.positions.size() > 0}">
                     <c:forEach items="${cart.positions}" var="position">
@@ -27,9 +27,9 @@
                         </span>
                     </div>
                     <div class="d-flex justify-content-end mb-4 mt-4">
-                        <button class="btn btn-success">
+                        <a class="btn btn-success" href="/order">
                             <i class="fas fa-truck me-2"></i> Оформить заказ
-                        </button>
+                        </a>
                     </div>
                 </c:when>    
                 <c:otherwise>

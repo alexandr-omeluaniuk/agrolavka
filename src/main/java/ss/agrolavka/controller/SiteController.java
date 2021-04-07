@@ -77,6 +77,17 @@ public class SiteController {
         return "cart";
     }
     /**
+     * Order.
+     * @param model page model.
+     * @param httpRequest HTTP request.
+     * @return page.
+     */
+    @RequestMapping("/order")
+    public String order(Model model, HttpServletRequest httpRequest) {
+        insertCartDataToModel(httpRequest, model);
+        return "order";
+    }
+    /**
      * Page not found.
      * @param model page model.
      * @param httpRequest HTTP request.
