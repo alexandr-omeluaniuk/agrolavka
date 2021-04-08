@@ -14,55 +14,71 @@
         <main class="container">
             <h3 class="fw-bold mb-5 mt-2 text-center">Оформление заказа</h3>
             <div class="row">
-                <div class="col-sm-12 col-md-9">
+                <div class="col-sm-12 col-md-9 mb-4">
 
-                    <form>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="delivery" id="self-delivery">
-                            <label class="form-check-label fw-bold" for="self-delivery">
-                                Самовывоз из магазина Агролавка
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="delivery" id="remote-delivery" checked>
-                            <label class="form-check-label fw-bold" for="remote-delivery">
-                                Доставка
-                            </label>
-                        </div>
+                    <form class="needs-validation" novalidate id="order-form">
                         <fieldset>
-                            <hr/>
-                            <legend class="col-form-label col-sm-2 pt-0 fw-bolder">Адрес доставки</legend>
-                            <div class="row">
-                                <div class="col-sm-12 col-md-9">
-                                    <div class="form-floating mb-3">
-                                        <input type="text" class="form-control" id="address-city" placeholder="Брест">
-                                        <label for="address-city">Населенный пункт</label>
-                                    </div>
-                                </div>
-                                <div class="col-sm-12 col-md-3">
-                                    <div class="form-floating mb-3">
-                                        <input type="text" class="form-control" id="address-postcode" placeholder="224033">
-                                        <label for="address-postcode">Почтовый индекс</label>
-                                    </div>
+                            <legend class="col-form-label pt-0 fw-bolder mb-2">
+                                Контактные данные
+                            </legend>
+                            <div class="input-group mb-3 has-validation">
+                                <span class="input-group-text" id="order-phone-number"><i class="fas fa-phone-alt"></i></span>
+                                <input type="text" class="form-control" placeholder="Номер телефона" required
+                                       aria-label="Номер телефона" aria-describedby="order-phone-number"
+                                       data-format="* (***) ***-**-**" data-mask="_ (___) ___-__-__"
+                                       pattern="8\s\([0-9][0-9][0-9]\)\s[0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]">
+                                <div class="invalid-feedback">
+                                    Обязательно для заполнения
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-sm-12 col-md-6">
-                                    <div class="form-floating mb-3">
-                                        <input type="text" class="form-control" id="address-street" placeholder="Рябиновая">
-                                        <label for="address-street">Улица</label>
+                        </fieldset>
+                        <fieldset>
+                            <legend class="col-form-label pt-0 fw-bolder mb-2">Доставка</legend>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="delivery" id="self-delivery" checked>
+                                <label class="form-check-label" for="self-delivery">
+                                    Самовывоз из магазина Агролавка
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="delivery" id="remote-delivery">
+                                <label class="form-check-label" for="remote-delivery">
+                                    Доставка по адресу
+                                </label>
+                            </div>
+                            <div class="mt-3 d-none">
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-9">
+                                        <div class="form-floating mb-3">
+                                            <input type="text" class="form-control" id="address-city" placeholder="Брест">
+                                            <label for="address-city">Населенный пункт</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 col-md-3">
+                                        <div class="form-floating mb-3">
+                                            <input type="text" class="form-control" id="address-postcode" placeholder="224033">
+                                            <label for="address-postcode">Почтовый индекс</label>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="col-sm-12 col-md-3">
-                                    <div class="form-floating mb-3">
-                                        <input type="text" class="form-control" id="address-house" placeholder="31">
-                                        <label for="address-house">Дом</label>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-6">
+                                        <div class="form-floating mb-3">
+                                            <input type="text" class="form-control" id="address-street" placeholder="Рябиновая">
+                                            <label for="address-street">Улица</label>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-sm-12 col-md-3">
-                                    <div class="form-floating mb-3">
-                                        <input type="text" class="form-control" id="address-flat" placeholder="5555">
-                                        <label for="address-flat">Квартира</label>
+                                    <div class="col-sm-12 col-md-3">
+                                        <div class="form-floating mb-3">
+                                            <input type="text" class="form-control" id="address-house" placeholder="31">
+                                            <label for="address-house">Дом</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 col-md-3">
+                                        <div class="form-floating mb-3">
+                                            <input type="text" class="form-control" id="address-flat" placeholder="5555">
+                                            <label for="address-flat">Квартира</label>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -70,7 +86,7 @@
                     </form>
 
                 </div>
-                <div class="col-sm-12 col-md-3">
+                <div class="col-sm-12 col-md-3 mb-4">
 
                     <div class="card">
                         <div class="card-body">
@@ -106,7 +122,7 @@
                         </div>
                     </div>
 
-                    <button class="btn btn-success w-100 mt-4">
+                    <button class="btn btn-success w-100 mt-4" id="order-confirm">
                         <i class="fas fa-check me-2"></i>Заказать
                     </button>
 
@@ -117,3 +133,61 @@
     </jsp:body>
 
 </t:app>
+
+<script>
+    (function () {
+        "use strict";
+
+        function doFormat(x, pattern, mask) {
+            var strippedValue = x.replace(/[^0-9]/g, "");
+            var chars = strippedValue.split('');
+            var count = 0;
+
+            var formatted = '';
+            for (var i = 0; i < pattern.length; i++) {
+                const c = pattern[i];
+                if (chars[count]) {
+                    if (/\*/.test(c)) {
+                        formatted += chars[count];
+                        count++;
+                    } else {
+                        formatted += c;
+                    }
+                } else if (mask) {
+                    if (mask.split('')[i])
+                        formatted += mask.split('')[i];
+                }
+            }
+            return formatted;
+        }
+
+        document.querySelectorAll('[data-mask]').forEach(function (e) {
+            function format(elem) {
+                const val = doFormat(elem.value, elem.getAttribute('data-format'));
+                elem.value = doFormat(elem.value, elem.getAttribute('data-format'), elem.getAttribute('data-mask'));
+
+                if (elem.createTextRange) {
+                    var range = elem.createTextRange();
+                    range.move('character', val.length);
+                    range.select();
+                } else if (elem.selectionStart) {
+                    elem.focus();
+                    elem.setSelectionRange(val.length, val.length);
+                }
+            }
+            e.addEventListener('keyup', function () {
+                format(e);
+            });
+            format(e)
+        });
+
+        document.querySelector("#order-confirm").addEventListener('click', function (event) {
+            var form = document.querySelector('#order-form');
+            if (!form.checkValidity()) {
+                event.preventDefault()
+                event.stopPropagation()
+            }
+            form.classList.add('was-validated');
+        });
+    })();
+</script>
