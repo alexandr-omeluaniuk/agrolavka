@@ -24,7 +24,8 @@
                                 <div class="form-floating mb-3">
                                     <input type="text" class="form-control" placeholder="Номер телефона" required
                                        data-format="* (***) ***-**-**" data-mask="_ (___) ___-__-__" id="order-mobile"
-                                       pattern="8\s\([0-9][0-9][0-9]\)\s[0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]">
+                                       pattern="8\s\([0-9][0-9][0-9]\)\s[0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]"
+                                       name="phone">
                                     <label for="order-mobile">Номер мобильного телефона</label>
                                 </div>
                         </fieldset>
@@ -47,13 +48,14 @@
                                     <div class="col-sm-12 col-md-9">
                                         <div class="form-floating mb-3">
                                             <input type="text" class="form-control" id="address-city" placeholder="Брест" required
-                                                   readonly>
+                                                   readonly name="city">
                                             <label for="address-city">Населенный пункт</label>
                                         </div>
                                     </div>
                                     <div class="col-sm-12 col-md-3">
                                         <div class="form-floating mb-3">
-                                            <input type="text" class="form-control" id="address-postcode" placeholder="224033">
+                                            <input type="text" class="form-control" id="address-postcode" placeholder="224033"
+                                                   name="postcode">
                                             <label for="address-postcode">Почтовый индекс</label>
                                         </div>
                                     </div>
@@ -62,20 +64,20 @@
                                     <div class="col-sm-12 col-md-6">
                                         <div class="form-floating mb-3">
                                             <input type="text" class="form-control" id="address-street" placeholder="Рябиновая" required
-                                                   readonly>
+                                                   readonly name="street">
                                             <label for="address-street">Улица</label>
                                         </div>
                                     </div>
                                     <div class="col-sm-12 col-md-3">
                                         <div class="form-floating mb-3">
                                             <input type="text" class="form-control" id="address-house" placeholder="31" required
-                                                   readonly>
+                                                   readonly name="house">
                                             <label for="address-house">Дом</label>
                                         </div>
                                     </div>
                                     <div class="col-sm-12 col-md-3">
                                         <div class="form-floating mb-3">
-                                            <input type="text" class="form-control" id="address-flat" placeholder="5555">
+                                            <input type="text" class="form-control" id="address-flat" placeholder="5555" name="flat">
                                             <label for="address-flat">Квартира</label>
                                         </div>
                                     </div>
@@ -186,7 +188,11 @@
                 event.preventDefault()
                 event.stopPropagation()
             } else {
-                console.log('SUBMIT');
+                const formData = {};
+                form.querySelectorAll("input").forEach(input => {
+                    formData[input.getAttribute("name")] = input.value;
+                });
+                console.log(formData);
             }
             form.classList.add('was-validated');
         });
