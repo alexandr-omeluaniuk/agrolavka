@@ -42,6 +42,11 @@ public class Order extends DataModel{
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created", nullable = false)
     private Date created;
+    /** Phone number. */
+    @NotNull
+    @Size(max = 255)
+    @Column(name = "phone", nullable = false, length = 255)
+    private String phone;
     // =============================================== SET & GET ======================================================
     /**
      * @return the positions
@@ -78,6 +83,18 @@ public class Order extends DataModel{
      */
     public void setCreated(Date created) {
         this.created = created;
+    }
+    /**
+     * @return the phone
+     */
+    public String getPhone() {
+        return phone;
+    }
+    /**
+     * @param phone the phone to set
+     */
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
     // ================================================================================================================
     @Override

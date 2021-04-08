@@ -18,6 +18,7 @@ import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -27,6 +28,7 @@ import ss.agrolavka.constants.SiteConstants;
 import ss.agrolavka.dao.ProductDAO;
 import ss.agrolavka.util.UrlProducer;
 import ss.agrolavka.wrapper.ProductsSearchRequest;
+import ss.entity.agrolavka.Address;
 import ss.entity.agrolavka.Order;
 import ss.entity.agrolavka.OrderPosition;
 import ss.entity.agrolavka.Product;
@@ -145,6 +147,31 @@ class AgrolavkaPublicRESTController {
         }).findFirst().get();
         position.setQuantity(quantity > 0 ? quantity : 1);
         request.getSession().setAttribute(SiteConstants.CART_SESSION_ATTRIBUTE, order);
+        return order;
+    }
+    /**
+     * Confirm order.
+     * @param request HTTP request.
+     * @param formValues form values.
+     * @return order.
+     * @throws Exception error.
+     */
+    @RequestMapping(value = "/order", method = RequestMethod.POST,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public Order confirmOrder(HttpServletRequest request, @RequestBody() Map<String, Object> formValues)
+            throws Exception {
+        Order order = (Order) request.getSession(true).getAttribute(SiteConstants.CART_SESSION_ATTRIBUTE);
+        order.setPhone((String) formValues.get("phone"));
+        if (formValues.containsKey("city")) {
+            Address address = new Address();
+            address.setCity((String) formValues.get("city"));
+            address.setHouse((String) formValues.get("house"));
+            address.setStreet((String) formValues.get("street"));
+            address.setPostcode((String) formValues.get("postcode"));
+            address.setFlat((String) formValues.get("flat"));
+            order.setAddress(address);
+        }
+        order = coreDAO.create(order);
         return order;
     }
 }

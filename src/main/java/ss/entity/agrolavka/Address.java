@@ -35,6 +35,10 @@ public class Address extends DataModel {
     @Size(max = 255)
     @Column(name = "house", length = 255)
     private String house;
+    /** Flat. */
+    @Size(max = 255)
+    @Column(name = "flat", length = 255)
+    private String flat;
     /** Postcode. */
     @Size(max = 6)
     @Column(name = "postcode", length = 6)
@@ -103,6 +107,18 @@ public class Address extends DataModel {
      */
     public void setRecipient(String recipient) {
         this.recipient = recipient;
+    }
+    /**
+     * @return the flat
+     */
+    public String getFlat() {
+        return flat;
+    }
+    /**
+     * @param flat the flat to set
+     */
+    public void setFlat(String flat) {
+        this.flat = flat;
     }
     // ================================================================================================================
     @Override
