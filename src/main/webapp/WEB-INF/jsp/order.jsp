@@ -21,16 +21,12 @@
                             <legend class="col-form-label pt-0 fw-bolder mb-2">
                                 Контактные данные
                             </legend>
-                            <div class="input-group mb-3 has-validation">
-                                <span class="input-group-text" id="order-phone-number"><i class="fas fa-phone-alt"></i></span>
-                                <input type="text" class="form-control" placeholder="Номер телефона" required
-                                       aria-label="Номер телефона" aria-describedby="order-phone-number"
-                                       data-format="* (***) ***-**-**" data-mask="_ (___) ___-__-__"
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" placeholder="Номер телефона" required
+                                       data-format="* (***) ***-**-**" data-mask="_ (___) ___-__-__" id="order-mobile"
                                        pattern="8\s\([0-9][0-9][0-9]\)\s[0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]">
-                                <div class="invalid-feedback">
-                                    Обязательно для заполнения
+                                    <label for="order-mobile">Номер мобильного телефона</label>
                                 </div>
-                            </div>
                         </fieldset>
                         <fieldset>
                             <legend class="col-form-label pt-0 fw-bolder mb-2">Доставка</legend>
@@ -46,11 +42,12 @@
                                     Доставка по адресу
                                 </label>
                             </div>
-                            <div class="mt-3 d-none">
+                            <div class="mt-3 d-none" id="order-address">
                                 <div class="row">
                                     <div class="col-sm-12 col-md-9">
                                         <div class="form-floating mb-3">
-                                            <input type="text" class="form-control" id="address-city" placeholder="Брест">
+                                            <input type="text" class="form-control" id="address-city" placeholder="Брест" required
+                                                   readonly>
                                             <label for="address-city">Населенный пункт</label>
                                         </div>
                                     </div>
@@ -64,13 +61,15 @@
                                 <div class="row">
                                     <div class="col-sm-12 col-md-6">
                                         <div class="form-floating mb-3">
-                                            <input type="text" class="form-control" id="address-street" placeholder="Рябиновая">
+                                            <input type="text" class="form-control" id="address-street" placeholder="Рябиновая" required
+                                                   readonly>
                                             <label for="address-street">Улица</label>
                                         </div>
                                     </div>
                                     <div class="col-sm-12 col-md-3">
                                         <div class="form-floating mb-3">
-                                            <input type="text" class="form-control" id="address-house" placeholder="31">
+                                            <input type="text" class="form-control" id="address-house" placeholder="31" required
+                                                   readonly>
                                             <label for="address-house">Дом</label>
                                         </div>
                                     </div>
@@ -186,8 +185,27 @@
             if (!form.checkValidity()) {
                 event.preventDefault()
                 event.stopPropagation()
+            } else {
+                console.log('SUBMIT');
             }
             form.classList.add('was-validated');
+        });
+
+        document.querySelectorAll('input[name="delivery"]').forEach(el => {
+            el.addEventListener('change', function (event) {
+                const address = document.querySelector('#order-address');
+                if (event.target.id === "self-delivery") {
+                    address.classList.add("d-none");
+                    address.querySelectorAll('input[required]').forEach(input => {
+                        input.setAttribute("readonly", "true");
+                    });
+                } else {
+                    address.classList.remove("d-none");
+                    address.querySelectorAll('input[required]').forEach(input => {
+                        input.removeAttribute("readonly");
+                    });
+                }
+            });
         });
     })();
 </script>
