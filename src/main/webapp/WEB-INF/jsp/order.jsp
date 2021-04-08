@@ -13,122 +13,132 @@
     <jsp:body>
         <main class="container">
             <h3 class="fw-bold mb-5 mt-2 text-center">Оформление заказа</h3>
-            <div class="row">
-                <div class="col-sm-12 col-md-9 mb-4">
+            
+            <c:choose>
+                <c:when test="${cart.positions.size() == 0}">
+                    <div class="alert alert-success d-none" role="alert">
+                        <p>Спасибо за Вашу покупку!<br/>В ближайшее время наш оператор перезвонит Вам по указанному Вами номеру.</p>
+                    </div>
+                </c:when>    
+                <c:otherwise>
+                    <div class="row">
+                        <div class="col-sm-12 col-md-9 mb-4">
 
-                    <form class="needs-validation" novalidate id="order-form">
-                        <fieldset>
-                            <legend class="col-form-label pt-0 fw-bolder mb-2">
-                                Контактные данные
-                            </legend>
-                                <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" placeholder="Номер телефона" required
-                                       data-format="* (***) ***-**-**" data-mask="_ (___) ___-__-__" id="order-mobile"
-                                       pattern="8\s\([0-9][0-9][0-9]\)\s[0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]"
-                                       name="phone">
-                                    <label for="order-mobile">Номер мобильного телефона</label>
-                                </div>
-                        </fieldset>
-                        <fieldset>
-                            <legend class="col-form-label pt-0 fw-bolder mb-2">Доставка</legend>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="delivery" id="self-delivery" checked>
-                                <label class="form-check-label" for="self-delivery">
-                                    Самовывоз из магазина Агролавка
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="delivery" id="remote-delivery">
-                                <label class="form-check-label" for="remote-delivery">
-                                    Доставка по адресу
-                                </label>
-                            </div>
-                            <div class="mt-3 d-none" id="order-address">
-                                <div class="row">
-                                    <div class="col-sm-12 col-md-9">
+                            <form class="needs-validation" novalidate id="order-form">
+                                <fieldset>
+                                    <legend class="col-form-label pt-0 fw-bolder mb-2">
+                                        Контактные данные
+                                    </legend>
                                         <div class="form-floating mb-3">
-                                            <input type="text" class="form-control" id="address-city" placeholder="Брест" required
-                                                   readonly name="city">
-                                            <label for="address-city">Населенный пункт</label>
+                                            <input type="text" class="form-control" placeholder="Номер телефона" required
+                                               data-format="* (***) ***-**-**" data-mask="_ (___) ___-__-__" id="order-mobile"
+                                               pattern="8\s\([0-9][0-9][0-9]\)\s[0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]"
+                                               name="phone">
+                                            <label for="order-mobile">Номер мобильного телефона</label>
+                                        </div>
+                                </fieldset>
+                                <fieldset>
+                                    <legend class="col-form-label pt-0 fw-bolder mb-2">Доставка</legend>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="delivery" id="self-delivery" checked>
+                                        <label class="form-check-label" for="self-delivery">
+                                            Самовывоз из магазина Агролавка
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="delivery" id="remote-delivery">
+                                        <label class="form-check-label" for="remote-delivery">
+                                            Доставка по адресу
+                                        </label>
+                                    </div>
+                                    <div class="mt-3 d-none" id="order-address">
+                                        <div class="row">
+                                            <div class="col-sm-12 col-md-9">
+                                                <div class="form-floating mb-3">
+                                                    <input type="text" class="form-control" id="address-city" placeholder="Брест" required
+                                                           readonly name="city">
+                                                    <label for="address-city">Населенный пункт</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-12 col-md-3">
+                                                <div class="form-floating mb-3">
+                                                    <input type="text" class="form-control" id="address-postcode" placeholder="224033"
+                                                           name="postcode">
+                                                    <label for="address-postcode">Почтовый индекс</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-floating mb-3">
+                                                    <input type="text" class="form-control" id="address-street" placeholder="Рябиновая" required
+                                                           readonly name="street">
+                                                    <label for="address-street">Улица</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-12 col-md-3">
+                                                <div class="form-floating mb-3">
+                                                    <input type="text" class="form-control" id="address-house" placeholder="31" required
+                                                           readonly name="house">
+                                                    <label for="address-house">Дом</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-12 col-md-3">
+                                                <div class="form-floating mb-3">
+                                                    <input type="text" class="form-control" id="address-flat" placeholder="5555" name="flat">
+                                                    <label for="address-flat">Квартира</label>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="col-sm-12 col-md-3">
-                                        <div class="form-floating mb-3">
-                                            <input type="text" class="form-control" id="address-postcode" placeholder="224033"
-                                                   name="postcode">
-                                            <label for="address-postcode">Почтовый индекс</label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-sm-12 col-md-6">
-                                        <div class="form-floating mb-3">
-                                            <input type="text" class="form-control" id="address-street" placeholder="Рябиновая" required
-                                                   readonly name="street">
-                                            <label for="address-street">Улица</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-12 col-md-3">
-                                        <div class="form-floating mb-3">
-                                            <input type="text" class="form-control" id="address-house" placeholder="31" required
-                                                   readonly name="house">
-                                            <label for="address-house">Дом</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-12 col-md-3">
-                                        <div class="form-floating mb-3">
-                                            <input type="text" class="form-control" id="address-flat" placeholder="5555" name="flat">
-                                            <label for="address-flat">Квартира</label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </fieldset>
-                    </form>
+                                </fieldset>
+                            </form>
 
-                </div>
-                <div class="col-sm-12 col-md-3 mb-4">
+                        </div>
+                        <div class="col-sm-12 col-md-3 mb-4">
 
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between">
-                                <span class="text-muted">Товаров на</span>
-                                <div>
-                                    <span class="text-dark fw-bold me-2">
-                                        ${totalInteger}.<small>${totalDecimal}</small>
-                                        <small class="text-muted">BYN</small>
-                                    </span>
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between">
+                                        <span class="text-muted">Товаров на</span>
+                                        <div>
+                                            <span class="text-dark fw-bold me-2">
+                                                ${totalInteger}.<small>${totalDecimal}</small>
+                                                <small class="text-muted">BYN</small>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <!--hr/>
+                                    <div class="d-flex justify-content-between">
+                                        <span class="text-muted">Доставка</span>
+                                        <div>
+                                            <span class="text-dark fw-bold me-2">
+                                                0.<small>00</small>
+                                                <small class="text-muted">BYN</small>
+                                            </span>
+                                        </div>
+                                    </div-->
+                                    <hr/>
+                                    <div class="d-flex justify-content-between">
+                                        <span class="text-dark">Итого</span>
+                                        <div>
+                                            <span class="text-dark fw-bold me-2">
+                                                ${totalInteger}.<small>${totalDecimal}</small>
+                                                <small class="text-muted">BYN</small>
+                                            </span>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <hr/>
-                            <div class="d-flex justify-content-between">
-                                <span class="text-muted">Доставка</span>
-                                <div>
-                                    <span class="text-dark fw-bold me-2">
-                                        0.<small>00</small>
-                                        <small class="text-muted">BYN</small>
-                                    </span>
-                                </div>
-                            </div>
-                            <hr/>
-                            <div class="d-flex justify-content-between">
-                                <span class="text-dark">Итого</span>
-                                <div>
-                                    <span class="text-dark fw-bold me-2">
-                                        ${totalInteger}.<small>${totalDecimal}</small>
-                                        <small class="text-muted">BYN</small>
-                                    </span>
-                                </div>
-                            </div>
+
+                            <button class="btn btn-success w-100 mt-4" id="order-confirm">
+                                <i class="fas fa-check me-2"></i>Заказать
+                            </button>
+
                         </div>
                     </div>
-
-                    <button class="btn btn-success w-100 mt-4" id="order-confirm">
-                        <i class="fas fa-check me-2"></i>Заказать
-                    </button>
-
-                </div>
-            </div>
+                </c:otherwise>
+            </c:choose>
 
         </main>
     </jsp:body>
@@ -181,21 +191,38 @@
             });
             format(e)
         });
-
-        document.querySelector("#order-confirm").addEventListener('click', function (event) {
-            var form = document.querySelector('#order-form');
-            if (!form.checkValidity()) {
-                event.preventDefault()
-                event.stopPropagation()
-            } else {
-                const formData = {};
-                form.querySelectorAll("input").forEach(input => {
-                    formData[input.getAttribute("name")] = input.value;
-                });
-                console.log(formData);
-            }
-            form.classList.add('was-validated');
-        });
+        const submitOrderButton = document.querySelector("#order-confirm");
+        if (submitOrderButton) {
+            submitOrderButton.addEventListener('click', function (event) {
+                var form = document.querySelector('#order-form');
+                if (!form.checkValidity()) {
+                    event.preventDefault()
+                    event.stopPropagation()
+                } else {
+                    const formData = {};
+                    form.querySelectorAll("input").forEach(input => {
+                        formData[input.getAttribute("name")] = input.value;
+                    });
+                    fetch('/api/agrolavka/public/order', {
+                        method: 'POST',
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(formData)
+                    }).then(function (response) {
+                        if (response.ok) {
+                            response.json().then(json => {
+                                window.location.reload();
+                            });
+                        }
+                    }).catch(error => {
+                        console.error('HTTP error occurred: ' + error);
+                    });
+                }
+                form.classList.add('was-validated');
+            });
+        }
 
         document.querySelectorAll('input[name="delivery"]').forEach(el => {
             el.addEventListener('change', function (event) {

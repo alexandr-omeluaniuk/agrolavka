@@ -6,7 +6,9 @@
 package ss.agrolavka.rest;
 
 import java.util.Base64;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -160,8 +162,9 @@ class AgrolavkaPublicRESTController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public Order confirmOrder(HttpServletRequest request, @RequestBody() Map<String, Object> formValues)
             throws Exception {
-        Order order = (Order) request.getSession(true).getAttribute(SiteConstants.CART_SESSION_ATTRIBUTE);
+        final Order order = (Order) request.getSession(true).getAttribute(SiteConstants.CART_SESSION_ATTRIBUTE);
         order.setPhone((String) formValues.get("phone"));
+        order.setCreated(new Date());
         if (formValues.containsKey("city")) {
             Address address = new Address();
             address.setCity((String) formValues.get("city"));
@@ -171,7 +174,10 @@ class AgrolavkaPublicRESTController {
             address.setFlat((String) formValues.get("flat"));
             order.setAddress(address);
         }
-        order = coreDAO.create(order);
-        return order;
+        Order savedOrder = coreDAO.create(order);
+        Order neworder = new Order();
+        neworder.setPositions(new HashSet<>());
+        request.getSession().setAttribute(SiteConstants.CART_SESSION_ATTRIBUTE, neworder);
+        return savedOrder;
     }
 }

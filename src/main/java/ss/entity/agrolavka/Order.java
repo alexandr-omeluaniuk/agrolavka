@@ -27,7 +27,7 @@ import ss.entity.martin.DataModel;
  */
 @Entity
 @Table(name = "customer_order")
-public class Order extends DataModel{
+public class Order extends DataModel {
     // =============================================== FIELDS =========================================================
     /** Order positions. */
     @Size(min = 1)
