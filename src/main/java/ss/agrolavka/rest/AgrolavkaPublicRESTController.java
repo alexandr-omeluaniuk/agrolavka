@@ -158,6 +158,7 @@ class AgrolavkaPublicRESTController {
      * @return order.
      * @throws Exception error.
      */
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     @RequestMapping(value = "/order", method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public Order confirmOrder(HttpServletRequest request, @RequestBody() Map<String, Object> formValues)
