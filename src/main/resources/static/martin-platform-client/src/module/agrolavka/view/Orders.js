@@ -36,7 +36,6 @@ function Orders() {
         const newTableConfig = new TableConfig(t('m_agrolavka:agrolavka.orders'), apiUrl, [
             //new TableColumn('name', t('m_agrolavka:products.product_name')).setSortable(),
             new TableColumn('id', t('m_agrolavka:orders.order_number'), (row) => {
-                console.log(row);
                 let num = row.id.toString();
                 while (num.length < 5) num = "0" + num;
                 return num;
