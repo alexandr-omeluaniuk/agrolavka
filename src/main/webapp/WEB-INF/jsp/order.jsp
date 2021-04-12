@@ -36,13 +36,14 @@
                                     <legend class="col-form-label pt-0 fw-bolder mb-2">
                                         Контактные данные
                                     </legend>
-                                        <div class="form-floating mb-3">
-                                            <input type="text" class="form-control" placeholder="Номер телефона" required
-                                               data-format="* (***) ***-**-**" data-mask="_ (___) ___-__-__" id="order-mobile"
-                                               pattern="8\s\([0-9][0-9][0-9]\)\s[0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]"
-                                               name="phone">
-                                            <label for="order-mobile">Номер мобильного телефона</label>
-                                        </div>
+                                    <label for="order-mobile" class="mb-1">Номер мобильного телефона</label>
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text">+375</span>
+                                        <input type="text" class="form-control" placeholder="Номер телефона" required
+                                           data-format="(**) ***-**-**" data-mask="(__) ___-__-__" id="order-mobile"
+                                           pattern="\([0-9][0-9]\)\s[0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]"
+                                           name="phone">
+                                    </div>
                                 </fieldset>
                                 <fieldset>
                                     <legend class="col-form-label pt-0 fw-bolder mb-2">Доставка</legend>

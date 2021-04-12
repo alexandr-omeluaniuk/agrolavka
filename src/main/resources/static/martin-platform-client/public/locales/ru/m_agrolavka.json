@@ -28,5 +28,9 @@
         "product_group_description": "Описание",
         "product_group_seo_title": "Название страницы категории товаров на сайте (SEO)",
         "product_group_seo_description": "Описание страницы категории товаров на сайте (SEO)"
+    },
+    "orders": {
+        "order_number": "Номер",
+        "mobile_phone": "Мобильный телефон"
     }
 }

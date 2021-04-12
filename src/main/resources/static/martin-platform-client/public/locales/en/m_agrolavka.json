@@ -28,5 +28,9 @@
         "product_group_description": "Description",
         "product_group_seo_title": "SEO and site page title",
         "product_group_seo_description": "SEO meta description content"
+    },
+    "orders": {
+        "order_number": "Order Nr.",
+        "mobile_phone": "Mobile"
     }
 }
