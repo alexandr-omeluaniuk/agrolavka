@@ -166,7 +166,7 @@ class AgrolavkaPublicRESTController {
         final Order order = (Order) request.getSession(true).getAttribute(SiteConstants.CART_SESSION_ATTRIBUTE);
         order.setPhone((String) formValues.get("phone"));
         order.setCreated(new Date());
-        if (formValues.containsKey("city")) {
+        if (formValues.containsKey("city") && !formValues.get("city").toString().isBlank()) {
             Address address = new Address();
             address.setCity((String) formValues.get("city"));
             address.setHouse((String) formValues.get("house"));

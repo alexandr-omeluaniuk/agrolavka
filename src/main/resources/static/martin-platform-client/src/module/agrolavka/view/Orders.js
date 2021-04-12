@@ -28,7 +28,10 @@ function Orders() {
             return;
         }
         const apiUrl = new ApiURL(
-                '/platform/entity/ss.entity.agrolavka.Order'
+                '/platform/entity/ss.entity.agrolavka.Order',
+                null,
+                null,
+                '/agrolavka/protected/order'
         );
         const newTableConfig = new TableConfig(t('m_agrolavka:agrolavka.orders'), apiUrl, [
             //new TableColumn('name', t('m_agrolavka:products.product_name')).setSortable(),
@@ -40,7 +43,14 @@ function Orders() {
             }).width('100px').setSortable(),
             new TableColumn('id', t('m_agrolavka:orders.order_number'), (row) => {
                 return <Link href={'tel:+375' + row.phone.replace(/\D/g,'')} color="secondary">{row.phone}</Link>;
-            }).width('170px')
+            }).width('170px'),
+            new TableColumn('id', t('m_agrolavka:orders.address'), (row) => {
+                const adr = row.address;
+                if (adr) {
+                    return `${adr.postcode ? adr.postcode + ' ' : ''}${adr.city}, ${adr.street} д.${adr.house} ${adr.flat ? 'кв.' + adr.flat : ''}`;
+                }
+                return '';
+            })
 //            new TableColumn('code', t('m_agrolavka:products.product_code')).setSortable().width('160px').alignment(ALIGN_RIGHT),
 //            new TableColumn('article', t('m_agrolavka:products.product_article')).setSortable().width('160px').alignment(ALIGN_RIGHT),
 //            new TableColumn('buyPrice', t('m_agrolavka:products.product_buy_price'), (row) => {
@@ -50,7 +60,7 @@ function Orders() {
 //                return parseFloat(row.price).toFixed(2);
 //            }).setSortable().width('100px').alignment(ALIGN_RIGHT)
         ], new FormConfig([
-            
+            new FormField('id', TYPES.ID).hide()
         ])).setElevation(1);
         setTableConfig(newTableConfig);
         // eslint-disable-next-line react-hooks/exhaustive-deps
