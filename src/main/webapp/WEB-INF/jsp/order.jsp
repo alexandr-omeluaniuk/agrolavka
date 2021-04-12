@@ -16,8 +16,15 @@
             
             <c:choose>
                 <c:when test="${cart.positions.size() == 0}">
-                    <div class="alert alert-success d-none" role="alert">
-                        <p>Спасибо за Вашу покупку!<br/>В ближайшее время наш оператор перезвонит Вам по указанному Вами номеру.</p>
+                    <div class="alert alert-success" role="alert">
+                        <h5><i class="fas fa-check-circle me-2"></i>Большое спасибо за Ваш заказ!</h5>
+                        <hr/>
+                        <p>
+                            В ближайшее время наш оператор перезвонит Вам по указанному Вами номеру, чтобы уточнить детали заказа.
+                        </p>
+                        <div class="d-flex justify-content-end">
+                            <a href="/">На главную <i class="fas fa-chevron-right ms-2"></i></a>
+                        </div>
                     </div>
                 </c:when>    
                 <c:otherwise>
