@@ -1,7 +1,8 @@
 {
     "title": "Agrolavka",
     "agrolavka": {
-        "products": "Products"
+        "products": "Products",
+        "orders": "Orders"
     },
     "products": {
         "product_groups": "Product groups",

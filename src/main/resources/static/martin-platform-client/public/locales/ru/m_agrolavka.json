@@ -1,7 +1,8 @@
 {
     "title": "Agrolavka",
     "agrolavka": {
-        "products": "Товары"
+        "products": "Товары",
+        "orders": "Заказы"
     },
     "products": {
         "product_groups": "Категория товара",
