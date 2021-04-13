@@ -16,4 +16,6 @@ public class SiteConstants {
     public static final int SEARCH_RESULT_TILES_ROWS = 5;
     /** Cart session attribute. */
     public static final String CART_SESSION_ATTRIBUTE = "CART";
+    /** Firebase topic: Agrolavka orders. */
+    public static final String FIREBASE_TOPIC_ORDERS = "AGROLAVKA_ORDERS";
 }
