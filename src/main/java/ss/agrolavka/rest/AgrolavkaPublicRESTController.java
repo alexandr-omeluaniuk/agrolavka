@@ -35,6 +35,8 @@ import ss.entity.agrolavka.Order;
 import ss.entity.agrolavka.OrderPosition;
 import ss.entity.agrolavka.Product;
 import ss.martin.platform.dao.CoreDAO;
+import ss.martin.platform.service.FirebaseClient;
+import ss.martin.platform.wrapper.PushNotification;
 
 /**
  * Public REST controller.
@@ -49,6 +51,9 @@ class AgrolavkaPublicRESTController {
     /** Product DAO. */
     @Autowired
     private ProductDAO productDAO;
+    /** Firebase client. */
+    @Autowired
+    private FirebaseClient firebaseClient;
     /**
      * Get product image.
      * @param id product ID.
@@ -164,6 +169,10 @@ class AgrolavkaPublicRESTController {
     public Order confirmOrder(HttpServletRequest request, @RequestBody() Map<String, Object> formValues)
             throws Exception {
         final Order order = (Order) request.getSession(true).getAttribute(SiteConstants.CART_SESSION_ATTRIBUTE);
+        Double total = 0d;
+        for (OrderPosition pos : order.getPositions()) {
+            total += pos.getQuantity() * pos.getPrice();
+        }
         order.setPhone((String) formValues.get("phone"));
         order.setCreated(new Date());
         if (formValues.containsKey("city") && !formValues.get("city").toString().isBlank()) {
@@ -179,6 +188,14 @@ class AgrolavkaPublicRESTController {
         Order neworder = new Order();
         neworder.setPositions(new HashSet<>());
         request.getSession().setAttribute(SiteConstants.CART_SESSION_ATTRIBUTE, neworder);
+        PushNotification notification = new PushNotification();
+        notification.setTitle("Поступил новый заказ");
+        notification.setBody("Потенциальная сумма заказа - " + String.format("%.2f", total)
+                + ". Номер заказа: " + neworder.getId());
+        notification.setTtlInSeconds("30");
+        notification.setClickAction("https://agrolavka.by/admin/app/agrolavka/orders");
+        notification.setClickActionLabel("Открыть");
+        firebaseClient.sendTopicNotification(notification, SiteConstants.FIREBASE_TOPIC_ORDERS);
         return savedOrder;
     }
 }
