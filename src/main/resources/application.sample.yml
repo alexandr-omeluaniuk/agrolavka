@@ -51,3 +51,5 @@ platform:
     publicRest: /api/agrolavka/public/**
     registrationVerification: /admin/verification
     views: /admin/app
+  #firebase
+  firebaseConfigFilePath: /path/to/service.json
