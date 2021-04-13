@@ -15,6 +15,7 @@ import Icon from '@material-ui/core/Icon';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import { SharedDataService } from './../../../service/SharedDataService';
+import { requestFirebaseToken } from '../../../conf/firebase';
 
 let dataService = new DataService();
 
@@ -28,12 +29,23 @@ function Orders() {
     const [tableConfig, setTableConfig] = React.useState(null);
     // ------------------------------------------------------- METHODS --------------------------------------------------------------------
     const toolbarBefore = () => {
-        return (
+        const notificationsOn = SharedDataService.permissions && SharedDataService.permissions.hasFirebaseToken;
+        return notificationsOn ? (
+                <Tooltip title={t('m_agrolavka:orders.disable_notifications')}>
+                    <IconButton onClick={() => {
+                        alert('TODO: unsubscribe notifications');
+                    }}>
+                        <Icon color="primary">notifications_off</Icon>
+                    </IconButton>
+                </Tooltip>
+                ) : (
                 <Tooltip title={t('m_agrolavka:orders.enable_notifications')}>
                     <IconButton onClick={() => {
-                        Notification.requestPermission().then((result) => {
-                            if (result === 'granted') {
-                                SharedDataService.showNotification(t('m_agrolavka:orders.enable_notifications_success'), '', 'success');
+                        requestFirebaseToken((token) => {
+                            if (token) {
+                                dataService.put('/agrolavka/protected/order/notifications/subscribe').then(() => {
+                                    SharedDataService.showNotification(t('m_agrolavka:orders.enable_notifications_success'), '', 'success');
+                                });
                             }
                         });
                     }}>

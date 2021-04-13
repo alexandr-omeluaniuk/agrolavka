@@ -34,6 +34,7 @@
         "mobile_phone": "Мобильный телефон",
         "address": "Адрес",
         "enable_notifications": "Включить уведомления",
-        "enable_notifications_success": "Уведомления включены"
+        "enable_notifications_success": "Уведомления включены",
+        "disable_notifications": "Выключить уведомления"
     }
 }

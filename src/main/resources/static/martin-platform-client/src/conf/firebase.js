@@ -38,9 +38,9 @@ export function requestFirebaseToken(successCallback) {
                 if (currentToken) {
                     console.log(currentToken);
                     // Send the token to your server and update the UI if necessary
-                    dataService.put('/platform/security/firebase-token', currentToken).then(() => {
+                    dataService.put('/platform/security/firebase-notifications/subscribe', currentToken).then(() => {
                         console.log('Firebase token saved...');
-                        successCallback();
+                        successCallback(currentToken);
                     });
                 } else {
                     // Show permission request UI

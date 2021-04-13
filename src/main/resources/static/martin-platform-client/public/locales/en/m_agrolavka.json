@@ -34,6 +34,7 @@
         "mobile_phone": "Mobile",
         "address": "Address",
         "enable_notifications": "Enable notifications",
-        "enable_notifications_success": "Notifications have been enabled!"
+        "enable_notifications_success": "Notifications have been enabled!",
+        "disable_notifications": "Notifications have been turned off"
     }
 }

@@ -57,11 +57,9 @@ class DataService {
             body: payload ? JSON.stringify(payload) : null
         }).then(function(response) {
             if (response.ok) {
-                try {
-                    return response.json();
-                } catch (e) {
-                    return {};
-                }
+                return response.text().then(function(text) {
+                    return text ? JSON.parse(text) : {};
+                });
             } else if (response.status === 401) {
                 window.location.href = AppURLs.welcome;
             } else {
