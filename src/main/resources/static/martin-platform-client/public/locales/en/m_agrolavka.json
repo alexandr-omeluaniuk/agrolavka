@@ -31,6 +31,9 @@
     },
     "orders": {
         "order_number": "Order Nr.",
-        "mobile_phone": "Mobile"
+        "mobile_phone": "Mobile",
+        "address": "Address",
+        "enable_notifications": "Enable notifications",
+        "enable_notifications_success": "Notifications have been enabled!"
     }
 }

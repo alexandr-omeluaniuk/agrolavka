@@ -11,6 +11,10 @@ import { TableConfig, TableColumn, FormConfig, FormField, Validator, ALIGN_RIGHT
 import { TYPES, VALIDATORS } from '../../../service/DataTypeService';
 import DataTable from '../../../component/datatable/DataTable';
 import Link from '@material-ui/core/Link';
+import Icon from '@material-ui/core/Icon';
+import IconButton from '@material-ui/core/IconButton';
+import Tooltip from '@material-ui/core/Tooltip';
+import { SharedDataService } from './../../../service/SharedDataService';
 
 let dataService = new DataService();
 
@@ -22,6 +26,22 @@ function Orders() {
     const classes = useStyles();
     const { t } = useTranslation();
     const [tableConfig, setTableConfig] = React.useState(null);
+    // ------------------------------------------------------- METHODS --------------------------------------------------------------------
+    const toolbarBefore = () => {
+        return (
+                <Tooltip title={t('m_agrolavka:orders.enable_notifications')}>
+                    <IconButton onClick={() => {
+                        Notification.requestPermission().then((result) => {
+                            if (result === 'granted') {
+                                SharedDataService.showNotification(t('m_agrolavka:orders.enable_notifications_success'), '', 'success');
+                            }
+                        });
+                    }}>
+                        <Icon color="primary">notifications</Icon>
+                    </IconButton>
+                </Tooltip>
+        );
+    };
     // ------------------------------------------------------- HOOKS ----------------------------------------------------------------------
     useEffect(() => {
         if (tableConfig !== null) {
@@ -48,7 +68,7 @@ function Orders() {
                 if (adr) {
                     return `${adr.postcode ? adr.postcode + ' ' : ''}${adr.city}, ${adr.street} д.${adr.house} ${adr.flat ? 'кв.' + adr.flat : ''}`;
                 }
-                return '';
+                return 'Самовывоз';
             })
 //            new TableColumn('code', t('m_agrolavka:products.product_code')).setSortable().width('160px').alignment(ALIGN_RIGHT),
 //            new TableColumn('article', t('m_agrolavka:products.product_article')).setSortable().width('160px').alignment(ALIGN_RIGHT),
@@ -60,7 +80,7 @@ function Orders() {
 //            }).setSortable().width('100px').alignment(ALIGN_RIGHT)
         ], new FormConfig([
             new FormField('id', TYPES.ID).hide()
-        ])).setElevation(1);
+        ])).setElevation(1).setToolbarActionsBefore(toolbarBefore());
         setTableConfig(newTableConfig);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [tableConfig]);

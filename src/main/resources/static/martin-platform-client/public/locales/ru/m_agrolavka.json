@@ -31,6 +31,9 @@
     },
     "orders": {
         "order_number": "Номер",
-        "mobile_phone": "Мобильный телефон"
+        "mobile_phone": "Мобильный телефон",
+        "address": "Адрес",
+        "enable_notifications": "Включить уведомления",
+        "enable_notifications_success": "Уведомления включены"
     }
 }

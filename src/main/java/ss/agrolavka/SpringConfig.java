@@ -36,6 +36,7 @@ public class SpringConfig implements WebMvcConfigurer {
         registry.addResourceHandler("/favicon.svg").addResourceLocations("classpath:/static/favicon.svg");
         registry.addResourceHandler("/sitemap.xml").addResourceLocations("classpath:/static/sitemap.xml");
         registry.addResourceHandler("/robots.txt").addResourceLocations("classpath:/static/robots.txt");
+        registry.addResourceHandler("/firebase-messaging-sw.js").addResourceLocations("classpath:/static/assets/js/firebase-messaging-sw.js");
 //        registry.addResourceHandler("/.well-known/pki-validation/**")
 //                .addResourceLocations("classpath:/static/");
         registry.addResourceHandler("/admin/**").addResourceLocations("classpath:/static/martin-platform-client/build/");
