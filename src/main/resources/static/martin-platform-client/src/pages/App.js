@@ -12,6 +12,9 @@ import DataService from '../service/DataService';
 import { SharedDataService } from '../service/SharedDataService';
 import { DESKTOP_MENU_OPEN } from '../conf/local-storage-keys';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
+import firebase from "firebase/app";
+import "firebase/analytics";
+import "firebase/messaging";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -60,6 +63,7 @@ function App() {
                 history.listen(location => {
                     setCurrentModule(SessionService.getCurrentModule());
                 });
+                requestFirebaseToken(permissions);
             });
         }
         return () => {
@@ -74,6 +78,45 @@ function App() {
         //setOpen(false);
         if (currentModule) {
             document.title = t(`m_${currentModule.getId()}:title`) + ' | ' + label;
+        }
+    };
+    
+    const requestFirebaseToken = (permissions) => {
+        // Your web app's Firebase configuration
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+        var firebaseConfig = {
+            apiKey: "AIzaSyCNsi-R0xLTquWz74PdTEUG9f2OtTHvbjk",
+            authDomain: "agrolavka-2aecb.firebaseapp.com",
+            projectId: "agrolavka-2aecb",
+            storageBucket: "agrolavka-2aecb.appspot.com",
+            messagingSenderId: "1028755576776",
+            appId: "1:1028755576776:web:605e8cfe6046bb58c412fd",
+            measurementId: "G-7TE8WCK7XF"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        firebase.analytics();
+        const messaging = firebase.messaging();
+        // Get registration token. Initially this makes a network call, once retrieved
+        // subsequent calls to getToken will return from cache.
+        if (!permissions.hasFirebaseToken) {
+            messaging.getToken({ vapidKey: 'BAzvWieDywMujonB48CqlSTDcWmpO7J-eaOg_B3LSkT5rOiTBEj_9MAq0FUupJf2jEx_62mka304PorWUd8nFXk' })
+                    .then((currentToken) => {
+                if (currentToken) {
+                    console.log(currentToken);
+                    // Send the token to your server and update the UI if necessary
+                    dataService.put('/platform/security/firebase-token', currentToken).then(() => {
+                        console.log('Firebase token saved...');
+                    });
+                } else {
+                    // Show permission request UI
+                    console.log('No registration token available. Request permission to generate one.');
+                    // ...
+                }
+            }).catch((err) => {
+                console.log('An error occurred while retrieving token. ', err);
+                // ...
+            });
         }
     };
     // ------------------------------------------------------------ RENDERING -------------------------------------------------------------
