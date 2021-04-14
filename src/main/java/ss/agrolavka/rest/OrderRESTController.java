@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import ss.agrolavka.constants.SiteConstants;
 import ss.entity.agrolavka.Order;
+import ss.entity.agrolavka.OrderPosition;
+import ss.entity.agrolavka.Product;
 import ss.entity.martin.SystemUser;
 import ss.martin.platform.dao.CoreDAO;
 import ss.martin.platform.security.SecurityContext;
@@ -41,6 +43,20 @@ public class OrderRESTController {
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
     public void search(@PathVariable("id") Long id)throws Exception {
         coreDAO.delete(id, Order.class);
+    }
+    /**
+     * Get order.
+     * @param id order ID.
+     * @return order.
+     * @throws Exception error.
+     */
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Order get(@PathVariable("id") Long id)throws Exception {
+        Order order = coreDAO.findById(id, Order.class);
+        for (OrderPosition pos : order.getPositions()) {
+            pos.setProduct(coreDAO.findById(pos.getProductId(), Product.class));
+        }
+        return order;
     }
     /**
      * Subscribe order notifications.

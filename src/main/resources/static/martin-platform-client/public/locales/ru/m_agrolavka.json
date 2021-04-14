@@ -37,5 +37,8 @@
         "enable_notifications_success": "Уведомления включены",
         "disable_notifications": "Выключить уведомления",
         "order_total": "Сумма"
+    },
+    "order": {
+        "title": "Заказ № {{num}}"
     }
 }
