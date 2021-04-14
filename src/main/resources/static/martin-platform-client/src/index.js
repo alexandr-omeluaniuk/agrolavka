@@ -11,6 +11,7 @@ import Notification from './component/util/Notification';
 import { createTheme } from './conf/theme';
 import { SharedDataService } from './service/SharedDataService';
 import './conf/i18next-config';
+import 'moment/locale/ru';
 
 import App from './pages/App';
 import Welcome from './pages/Welcome';
