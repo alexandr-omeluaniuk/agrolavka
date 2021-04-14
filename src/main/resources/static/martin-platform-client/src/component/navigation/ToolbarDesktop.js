@@ -22,7 +22,7 @@
  * THE SOFTWARE.
  */
 
-import React from 'react';
+import React, { useContext } from 'react';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import { drawerWidth } from '../../conf/theme';
@@ -34,6 +34,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import { DESKTOP_MENU_OPEN } from '../../conf/local-storage-keys'; 
+import { ToolbarContext } from '../../context/ToolbarContext';
 
 const useStyles = makeStyles(theme => ({
     appBar: {
@@ -71,7 +72,8 @@ const useStyles = makeStyles(theme => ({
 
 function ToolbarDesktop(props) {
     const classes = useStyles();
-    const { title, icon, open, setOpen, setAnchorElAccount, currentModule } = props;
+    const { open, setOpen, setAnchorElAccount, currentModule } = props;
+    const { title, icon } = useContext(ToolbarContext);
     const { t } = useTranslation();
     // ---------------------------------------------------- RENDER ------------------------------------------------------------------------
     const desktopToolbarStyle = clsx({

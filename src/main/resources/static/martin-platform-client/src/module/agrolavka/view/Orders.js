@@ -16,6 +16,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import { SharedDataService } from './../../../service/SharedDataService';
 import { requestFirebaseToken } from '../../../conf/firebase';
 import AppURLs from '../../../conf/app-urls';
+import { NavLink } from "react-router-dom";
 
 let dataService = new DataService();
 
@@ -64,7 +65,7 @@ function Orders() {
             new TableColumn('id', t('m_agrolavka:orders.order_number'), (row) => {
                 let num = row.id.toString();
                 while (num.length < 5) num = "0" + num;
-                return <Link href={AppURLs.app + '/agrolavka/order/' + row.id} color="primary">{num}</Link>;
+                return <NavLink to={AppURLs.app + '/agrolavka/order/' + row.id} color="primary">{num}</NavLink>;
             }).width('100px').setSortable(),
             new TableColumn('id', t('m_agrolavka:orders.order_number'), (row) => {
                 return <Link href={'tel:+375' + row.phone.replace(/\D/g,'')} color="primary">{row.phone}</Link>;

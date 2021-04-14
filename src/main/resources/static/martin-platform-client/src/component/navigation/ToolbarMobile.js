@@ -22,7 +22,7 @@
  * THE SOFTWARE.
  */
 
-import React from 'react';
+import React, { useContext } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { drawerWidth } from '../../conf/theme';
 import { useTranslation } from 'react-i18next';
@@ -32,6 +32,7 @@ import Icon from '@material-ui/core/Icon';
 import Toolbar from '@material-ui/core/Toolbar';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
+import { ToolbarContext } from '../../context/ToolbarContext';
 
 const useStyles = makeStyles(theme => ({
     appBar: {
@@ -74,7 +75,8 @@ const useStyles = makeStyles(theme => ({
 
 function ToolbarMobile(props) {
     const classes = useStyles();
-    const { title, icon, setOpen, setAnchorElAccount, currentModule } = props;
+    const { setOpen, setAnchorElAccount, currentModule } = props;
+    const { title, icon } = useContext(ToolbarContext);
     const { t } = useTranslation();
     // ---------------------------------------------------- RENDER ------------------------------------------------------------------------
     return (

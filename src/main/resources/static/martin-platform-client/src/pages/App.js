@@ -12,6 +12,7 @@ import DataService from '../service/DataService';
 import { SharedDataService } from '../service/SharedDataService';
 import { DESKTOP_MENU_OPEN } from '../conf/local-storage-keys';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
+import { ToolbarContext } from '../context/ToolbarContext';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -36,7 +37,7 @@ function App() {
     useEffect(() => {
         if (currentModule) {
             const item = currentModule.getCurrentItem();
-            if (item) {
+            if (item && item.id) {
                 setItemAttributes(t(currentModule.getLabelKey(item)), item.getIcon());
             }
         }
@@ -71,7 +72,6 @@ function App() {
     const setItemAttributes = (label, icon) => {
         setTitle(label);
         setIcon(icon);
-        //setOpen(false);
         if (currentModule) {
             document.title = t(`m_${currentModule.getId()}:title`) + ' | ' + label;
         }
@@ -81,20 +81,22 @@ function App() {
         return null;
     }
     return (
-            <Router history={history}>
-                <div className={classes.root}>
-                    <CssBaseline />
-                    <AppToolbar title={title} open={open} setOpen={setOpen} icon={icon} currentModule={currentModule}
-                        permissions={permissions} setItemAttributes={setItemAttributes}/>
-                    <SideNavBar open={open} currentModule={currentModule} setOpen={setOpen} onItemSelected={(label, icon) => {
-                        setItemAttributes(label, icon);
-                        if (isMobile) {
-                            setOpen(false);
-                        }
-                    }}/>
-                    {routes ? <MainContent routes={routes} open={open} currentModule={currentModule}/> : null}
-                </div>
-            </Router>
+            <ToolbarContext.Provider value={{title: title, setTitle: setTitle, icon: icon, setIcon: setIcon}}>
+                <Router history={history}>
+                    <div className={classes.root}>
+                        <CssBaseline />
+                        <AppToolbar open={open} setOpen={setOpen} currentModule={currentModule}
+                            permissions={permissions} setItemAttributes={setItemAttributes}/>
+                        <SideNavBar open={open} currentModule={currentModule} setOpen={setOpen} onItemSelected={(label, icon) => {
+                            setItemAttributes(label, icon);
+                            if (isMobile) {
+                                setOpen(false);
+                            }
+                        }}/>
+                        {routes ? <MainContent routes={routes} open={open} currentModule={currentModule}/> : null}
+                    </div>
+                </Router>
+            </ToolbarContext.Provider>
     );
 }
 

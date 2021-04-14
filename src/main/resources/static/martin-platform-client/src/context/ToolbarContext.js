@@ -3,5 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+import React from 'react'
 
-const ToolbarTitle = React.createContext('');
+export const ToolbarContext = React.createContext({
+    title: '',
+    setTitle: () => {},
+    icon: '',
+    setIcon: () => {}
+});
+

@@ -41,7 +41,7 @@ const useStyles = makeStyles(theme => ({
 
 function AppToolbar(props) {
     const classes = useStyles();
-    const { title, icon, open, setOpen, currentModule, permissions, setItemAttributes } = props;
+    const { open, setOpen, currentModule, permissions, setItemAttributes } = props;
     const [anchorElAccount, setAnchorElAccount] = React.useState(null);
     const isMobile = useMediaQuery(useTheme().breakpoints.down('sm'));
     // ---------------------------------------------------- HOOKS -------------------------------------------------------------------------
@@ -65,9 +65,9 @@ function AppToolbar(props) {
     return (
             <React.Fragment>
                 {isMobile ? 
-                    <ToolbarMobile title={title} icon={icon} setOpen={setOpen} setAnchorElAccount={setAnchorElAccount}
+                    <ToolbarMobile setOpen={setOpen} setAnchorElAccount={setAnchorElAccount}
                         currentModule={currentModule}/>
-                    : <ToolbarDesktop title={title} icon={icon} open={isOpen} setOpen={setOpen} setAnchorElAccount={setAnchorElAccount}
+                    : <ToolbarDesktop open={isOpen} setOpen={setOpen} setAnchorElAccount={setAnchorElAccount}
                         currentModule={currentModule}/>}
                 {accountSettings()}
             </React.Fragment>
