@@ -87,6 +87,9 @@ function NavItem(props) {
             {children ? expandButton : listIcon}
         </ListItem>
     );
+    if (itemId === null) {
+        return null;
+    }
     return (
             <React.Fragment>
                 {!children ? (
