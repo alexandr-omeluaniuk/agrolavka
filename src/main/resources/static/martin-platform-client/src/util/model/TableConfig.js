@@ -48,6 +48,11 @@ export class TableConfig {
         this.disablePaging = true;
         return this;
     }
+    
+    setLastRow(lastRow) {
+        this.lastRow = lastRow;
+        return this;
+    }
 }
 
 export class TableColumn {

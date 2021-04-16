@@ -120,6 +120,11 @@ function DataTableBody (props) {
                     {tableRow(rowData)}
                 </React.Fragment>
             ))}
+            {tableConfig.lastRow ? (
+            <TableRow>
+                <TableCell colSpan={tableConfig.columns.length + actionColumns}>{tableConfig.lastRow(data)}</TableCell>
+            </TableRow>
+            ) : null}
         </TableBody>
     );
 }

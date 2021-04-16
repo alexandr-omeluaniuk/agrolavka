@@ -15,6 +15,7 @@ import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
 import Avatar from '@material-ui/core/Avatar';
+import Typography from '@material-ui/core/Typography';
 import moment from 'moment';
 import { WAITING_FOR_APPROVAL, APPROVED, DELIVERY, CLOSED } from '../constants/OrderStatus';
 import DataTable from '../../../component/datatable/DataTable';
@@ -40,6 +41,13 @@ const useStyles = makeStyles(theme => ({
     },
     image: {
         borderRadius: 0
+    },
+    lastRow: {
+        display: 'flex',
+        justifyContent: 'space-between',
+        marginTop: theme.spacing(2),
+        marginBottom: theme.spacing(2),
+        alignItems: 'center'
     }
 }));
 
@@ -70,8 +78,8 @@ function Order(props) {
             setTableConfig(new TableConfig(t('m_agrolavka:order.positions'), new ApiURL(
                         '/agrolavka/protected/order/positions/' + order.id,
                         '/agrolavka/protected/order/position/' + id,
-                        '/agrolavka/protected/order/position',
-                        '/agrolavka/protected/order/position/' + id
+                        '/platform/entity/ss.entity.agrolavka.OrderPosition',
+                        '/platform/entity/ss.entity.agrolavka.OrderPosition'
                     ), [
                 new TableColumn('avatar', '', (row) => {
                     return <Avatar className={classes.image} alt={row.name}
@@ -98,8 +106,19 @@ function Order(props) {
                 new FormField('price', TYPES.MONEY, t('m_agrolavka:order.position.price')).setGrid({xs: 12, md: 6}).validation([
                     new Validator(VALIDATORS.REQUIRED),
                     new Validator(VALIDATORS.MIN, {size: 0})
-                ]).setAttributes({ decimalScale: 2, suffix: ' BYN', align: 'right' })
-            ])).setElevation(0).disablePagination());
+                ]).setAttributes({ decimalScale: 2, suffix: ' BYN', align: 'left' })
+            ])).setElevation(0).disablePagination().setLastRow((data) => {
+                let total = 0;
+                data.forEach(pos => {
+                    total += pos.quantity * pos.price;
+                });
+                return (
+                        <div className={classes.lastRow}>
+                            <Typography variant={'h5'}>{t('m_agrolavka:order.total')}</Typography>
+                            <Price price={total}/>
+                        </div>
+                );
+            }));
         }
     }, [order, classes.image, id, t]);
     // -------------------------------------------------------- RENDERING -----------------------------------------------------------------

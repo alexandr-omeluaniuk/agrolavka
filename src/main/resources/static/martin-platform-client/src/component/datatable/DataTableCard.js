@@ -43,7 +43,7 @@ const useStyles = makeStyles(theme => ({
         paddingBottom: 0,
         paddingLeft: theme.spacing(2),
         paddingRight: theme.spacing(2),
-        paddingTop: theme.spacing(1),
+        paddingTop: theme.spacing(1)
     },
     col: {
         display: 'flex',
@@ -121,7 +121,7 @@ function DataTableCard (props) {
             <div key={idx} className={classes.fullWidth}>
                 {innerContent}
             </div>
-        )
+        );
     });
     
     if (additionalActions.length > 3) {
@@ -171,7 +171,7 @@ function DataTableCard (props) {
                                     {columnUI}
                                 </Grid>
                             </Grid>
-                        )
+                        );
                     })}
                 </Grid>
                 {actionButton.length > 0 ? (

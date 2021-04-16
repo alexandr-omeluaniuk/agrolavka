@@ -16,6 +16,7 @@ import javax.persistence.Transient;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import ss.entity.martin.DataModel;
+import ss.martin.platform.anno.security.FormField;
 
 /**
  * Order position.
@@ -23,7 +24,7 @@ import ss.entity.martin.DataModel;
  */
 @Entity
 @Table(name = "customer_order_position")
-public class OrderPosition extends DataModel{
+public class OrderPosition extends DataModel {
     // ========================================== FIELDS ==============================================================
     /** Order. */
     @NotNull
@@ -37,11 +38,13 @@ public class OrderPosition extends DataModel{
     private Long productId;
     /** Product price. */
     @NotNull
+    @FormField
     @Column(name = "price", nullable = false)
     private Double price;
     /** Quantity. */
     @NotNull
     @Min(1)
+    @FormField
     @Column(name = "quantity", nullable = false)
     private Integer quantity;
     /** Product. */

@@ -35,6 +35,7 @@ function DataTableBodyMobile (props) {
             {data.map((rowData, idx) => (
                 <DataTableCard tableConfig={tableConfig} rowData={rowData} idx={idx} key={idx}/>
             ))}
+            {tableConfig.lastRow ? tableConfig.lastRow(data) : null}
             </div>
     );
 }
