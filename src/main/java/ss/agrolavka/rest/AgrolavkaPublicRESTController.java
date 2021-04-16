@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ss.agrolavka.constants.ImageStubs;
+import ss.agrolavka.constants.OrderStatus;
 import ss.agrolavka.constants.SiteConstants;
 import ss.agrolavka.dao.ProductDAO;
 import ss.agrolavka.util.UrlProducer;
@@ -175,6 +176,7 @@ class AgrolavkaPublicRESTController {
         }
         order.setPhone((String) formValues.get("phone"));
         order.setCreated(new Date());
+        order.setStatus(OrderStatus.WAITING_FOR_APPROVAL);
         if (formValues.containsKey("city") && !formValues.get("city").toString().isBlank()) {
             Address address = new Address();
             address.setCity((String) formValues.get("city"));

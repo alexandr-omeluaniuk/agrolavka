@@ -10,6 +10,8 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
@@ -19,6 +21,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import ss.agrolavka.constants.OrderStatus;
 import ss.entity.martin.DataModel;
 
 /**
@@ -47,6 +50,11 @@ public class Order extends DataModel {
     @Size(max = 255)
     @Column(name = "phone", nullable = false, length = 255)
     private String phone;
+    /** Order status. */
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false)
+    private OrderStatus status;
     // =============================================== SET & GET ======================================================
     /**
      * @return the positions
@@ -95,6 +103,18 @@ public class Order extends DataModel {
      */
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+    /**
+     * @return the status
+     */
+    public OrderStatus getStatus() {
+        return status;
+    }
+    /**
+     * @param status the status to set
+     */
+    public void setStatus(OrderStatus status) {
+        this.status = status;
     }
     // ================================================================================================================
     @Override

@@ -7,8 +7,11 @@ import React, { useEffect, useContext } from 'react';
 import { ToolbarContext } from '../../../context/ToolbarContext';
 import DataService from '../../../service/DataService';
 import { useTranslation } from 'react-i18next';
+import Icon from '@material-ui/core/Icon';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
+import CardContent from '@material-ui/core/CardContent';
+import Avatar from '@material-ui/core/Avatar';
 import moment from 'moment';
 
 const dataService = new DataService();
@@ -32,15 +35,21 @@ function Order(props) {
             setTitle(t('m_agrolavka:order.title', {num: getNum(data)}));
         });
     }, [id, setIcon, setTitle, t]);
+    // -------------------------------------------------------- RENDERING -----------------------------------------------------------------
+    const avatar = () => {
+        
+    };
     if (!order) {
         return null;
     }
     return (
             <Card>
-                <CardHeader title={t('m_agrolavka:order.title', {num: getNum(order)})} 
+                <CardHeader title={t('m_agrolavka:order.title', {num: getNum(order)})} avatar={avatar()}
                         subheader={moment(order.created).locale('ru').format('LLL')}>
-            
                 </CardHeader>
+                <CardContent>
+            
+                </CardContent>
             </Card>
     );
 }
