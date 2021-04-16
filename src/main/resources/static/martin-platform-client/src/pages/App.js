@@ -61,6 +61,9 @@ function App() {
                 history.listen(location => {
                     setCurrentModule(SessionService.getCurrentModule());
                 });
+                if ('serviceWorker' in navigator) {
+                    navigator.serviceWorker.register('/firebase-messaging-sw.js');
+                }
             });
         }
         return () => {

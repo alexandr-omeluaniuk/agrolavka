@@ -52,15 +52,15 @@
             <%
                 if (!inCart) {
             %>
-            <!--button class="btn btn-sm btn-outline-success w-100 mt-1" data-product-id="${product.id}" data-add="">
+            <button class="btn btn-sm btn-outline-success w-100 mt-1" data-product-id="${product.id}" data-add="">
                 <i class="fas fa-cart-plus me-2"></i> В корзину
-            </button-->
+            </button>
             <%
                 } else {
             %>
-            <!--button class="btn btn-sm btn-outline-danger w-100 mt-1" data-product-id="${product.id}" data-remove="">
+            <button class="btn btn-sm btn-outline-danger w-100 mt-1" data-product-id="${product.id}" data-remove="">
                 <i class="fas fa-minus-circle me-2"></i> Из корзины
-            </button-->
+            </button>
             <%
                 }
             %>
