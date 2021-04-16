@@ -9,6 +9,8 @@ import { ToolbarContext } from '../../../context/ToolbarContext';
 import DataService from '../../../service/DataService';
 import { useTranslation } from 'react-i18next';
 import Icon from '@material-ui/core/Icon';
+import IconButton from '@material-ui/core/IconButton';
+import Tooltip from '@material-ui/core/Tooltip';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
@@ -19,6 +21,7 @@ import DataTable from '../../../component/datatable/DataTable';
 import { TableConfig, TableColumn, FormConfig, FormField, Validator, ALIGN_RIGHT, ApiURL } from '../../../util/model/TableConfig';
 import { TYPES, VALIDATORS } from '../../../service/DataTypeService';
 import Price from '../component/Price';
+import { NavLink } from "react-router-dom";
 
 const dataService = new DataService();
 
@@ -113,12 +116,23 @@ function Order(props) {
         }
         return <Avatar className={classes[order.status]}><Icon>{icon}</Icon></Avatar>;
     };
+    const actions = () => {
+        return (
+                <NavLink to={'/admin/app/agrolavka/orders'}>
+                    <Tooltip title={t('m_agrolavka:order.close')}>
+                        <IconButton>
+                            <Icon color="primary">chevron_left</Icon>
+                        </IconButton>
+                    </Tooltip>
+                </NavLink>
+        );
+    };
     if (!order || !tableConfig) {
         return null;
     }
     return (
             <Card>
-                <CardHeader title={t('m_agrolavka:order.title', {num: getNum(order)})} avatar={avatar()}
+                <CardHeader title={t('m_agrolavka:order.title', {num: getNum(order)})} avatar={avatar()} action={actions()}
                         subheader={t('m_agrolavka:order.created') + ': '  + moment(order.created).locale('ru').format('DD MMMM yyyy HH:mm')}>
                 </CardHeader>
                 <CardContent>

@@ -54,6 +54,7 @@
             "quantity": "Quantity",
             "price": "Price",
             "subtotal": "Subtotal"
-        }
+        },
+        "close": "Close"
     }
 }

@@ -189,7 +189,7 @@ function DataTable(props) {
                         </Table>
                     </TableContainer>
                 )}
-                {pagination()}
+                {tableConfig.disablePaging ? null : pagination()}
             </Paper>
             {isMobile ? null : (
                 <FormControlLabel control={<Switch checked={dense} onChange={handleChangeDense} />} label={t('component.datatable.dense_padding')} />
