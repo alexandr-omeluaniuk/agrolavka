@@ -18,6 +18,7 @@ import { requestFirebaseToken } from '../../../conf/firebase';
 import AppURLs from '../../../conf/app-urls';
 import { NavLink } from "react-router-dom";
 import moment from 'moment';
+import Price from '../component/Price';
 
 let dataService = new DataService();
 
@@ -89,7 +90,7 @@ function Orders() {
                 row.positions.forEach(pos => {
                     total += pos.quantity * pos.price;
                 });
-                return parseFloat(total).toFixed(2) + ' BYN';
+                return <Price price={total} />;
             }).width('170px').alignment(ALIGN_RIGHT)
         ], new FormConfig([
             new FormField('id', TYPES.ID).hide()

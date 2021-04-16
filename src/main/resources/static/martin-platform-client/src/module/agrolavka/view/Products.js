@@ -18,6 +18,7 @@ import { TableConfig, TableColumn, FormConfig, FormField, Validator, ALIGN_RIGHT
 import { TYPES, VALIDATORS } from '../../../service/DataTypeService';
 import DataTable from '../../../component/datatable/DataTable';
 import ProductsGroups from './ProductsGroups';
+import Price from '../component/Price';
 
 let dataService = new DataService();
 
@@ -106,12 +107,11 @@ function Products() {
                 return row.group ? row.group.name : '';
             }).width('200px'),
             new TableColumn('code', t('m_agrolavka:products.product_code')).setSortable().width('160px').alignment(ALIGN_RIGHT),
-            new TableColumn('article', t('m_agrolavka:products.product_article')).setSortable().width('160px').alignment(ALIGN_RIGHT),
             new TableColumn('buyPrice', t('m_agrolavka:products.product_buy_price'), (row) => {
-                return parseFloat(row.buyPrice).toFixed(2);
+                return <Price price={row.buyPrice}/>;
             }).setSortable().width('100px').alignment(ALIGN_RIGHT),
             new TableColumn('price', t('m_agrolavka:products.product_price'), (row) => {
-                return parseFloat(row.price).toFixed(2);
+                return <Price price={row.price}/>;
             }).setSortable().width('100px').alignment(ALIGN_RIGHT)
         ], new FormConfig([
             new FormField('id', TYPES.ID).hide(),

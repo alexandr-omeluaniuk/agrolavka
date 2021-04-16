@@ -18,6 +18,7 @@ import { WAITING_FOR_APPROVAL, APPROVED, DELIVERY, CLOSED } from '../constants/O
 import DataTable from '../../../component/datatable/DataTable';
 import { TableConfig, TableColumn, FormConfig, FormField, Validator, ALIGN_RIGHT } from '../../../util/model/TableConfig';
 import { TYPES, VALIDATORS } from '../../../service/DataTypeService';
+import Price from '../component/Price';
 
 const dataService = new DataService();
 
@@ -89,10 +90,10 @@ function Order(props) {
             return row.quantity;
         }).setSortable().width('100px').alignment(ALIGN_RIGHT),
         new TableColumn('price', t('m_agrolavka:order.position.price'), (row) => {
-            return parseFloat(row.price).toFixed(2) + ' BYN';
+            return <Price price={row.price} />;
         }).setSortable().width('160px').alignment(ALIGN_RIGHT),
         new TableColumn('price', t('m_agrolavka:order.position.subtotal'), (row) => {
-            return parseFloat(row.price * row.quantity).toFixed(2) + ' BYN';
+            return <Price price={row.price * row.quantity} />;
         }).setSortable().width('160px').alignment(ALIGN_RIGHT)
     ], new FormConfig([
         new FormField('id', TYPES.ID).hide(),
