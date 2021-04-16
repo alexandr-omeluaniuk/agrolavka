@@ -19,6 +19,6 @@ export const modules = function () {
     const modules = [common, core, administrator, agrolavka];
     const permissions = SharedDataService.getPermissions();
     return modules.filter(m => {
-        return m.isPermitted(permissions.standardRole);
+        return m.isPermitted(permissions ? permissions.standardRole : '');
     });
 };

@@ -26,6 +26,5 @@
   "start_url": "/admin/app/common/applications",
   "display": "standalone",
   "theme_color": "#ffa500",
-  "background_color": "#ffffff",
-  "gcm_sender_id": "1028755576776"
+  "background_color": "#ffffff"
 }

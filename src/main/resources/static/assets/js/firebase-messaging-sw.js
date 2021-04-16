@@ -21,53 +21,30 @@ firebase.initializeApp({
     appId: "1:1028755576776:web:605e8cfe6046bb58c412fd",
     measurementId: "G-7TE8WCK7XF"
 });
-//
-//// Retrieve an instance of Firebase Messaging so that it can handle background
-//// messages.
-//const messaging = firebase.messaging();
-//
-//// Handle incoming messages. Called when:
-//// - a message is received while the app has focus
-//// - the user clicks on an app notification created by a service worker
-////   `messaging.onBackgroundMessage` handler.
-//messaging.onMessage((payload) => {
-//    console.log('Message received. ', payload);
-//    // ...
-//});
-//
-//messaging.onBackgroundMessage((payload) => {
-//    console.log('[firebase-messaging-sw.js] Received background message ', payload);
-//    // Customize notification here
-//    const notificationTitle = 'Background Message Title';
-//    const notificationOptions = {
-//        body: 'Background Message body.',
-//        icon: '/firebase-logo.png'
-//    };
-//
-//    self.registration.showNotification(notificationTitle,
-//            notificationOptions);
-//});
-
+console.log('Firebase init completed...');
+// Retrieve an instance of Firebase Messaging so that it can handle background
+// messages.
 const messaging = firebase.messaging();
-messaging.setBackgroundMessageHandler(function(payload) {
-  const promiseChain = clients
-    .matchAll({
-      type: "window",
-      includeUncontrolled: true
-    })
-    .then(windowClients => {
-      for (let i = 0; i < windowClients.length; i++) {
-        const windowClient = windowClients[i];
-        windowClient.postMessage(payload);
-      }
-    })
-    .then(() => {
-      return registration.showNotification("my notification title");
-    });
-  return promiseChain;
-});
-self.addEventListener('notificationclick', function(event) {
-  // do what you want
+// Handle incoming messages. Called when:
+// - a message is received while the app has focus
+// - the user clicks on an app notification created by a service worker
+//   `messaging.onBackgroundMessage` handler.
+messaging.onMessage((payload) => {
+  console.log('Message received. ', payload);
   // ...
 });
+
+messaging.onBackgroundMessage((payload) => {
+  console.log('[firebase-messaging-sw.js] Received background message ', payload);
+  // Customize notification here
+  const notificationTitle = 'Background Message Title';
+  const notificationOptions = {
+    body: 'Background Message body.',
+    icon: '/firebase-logo.png'
+  };
+
+  self.registration.showNotification(notificationTitle,
+    notificationOptions);
+});
+
 
