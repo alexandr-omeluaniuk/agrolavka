@@ -45,7 +45,7 @@ export class TableConfig {
     }
     
     disablePagination() {
-        this.disablePagination = true;
+        this.disablePaging = true;
         return this;
     }
 }

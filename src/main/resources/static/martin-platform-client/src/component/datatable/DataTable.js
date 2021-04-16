@@ -60,17 +60,17 @@ function DataTable(props) {
         setPage(0);
     }, [tableConfig]);
     useEffect(() => {
-        let params = `?page=${page + 1}&page_size=${rowsPerPage}`;
+        let params = tableConfig.disablePaging ? '?' : `?page=${page + 1}&page_size=${rowsPerPage}`;
         if (order && orderBy) {
             params += `&order=${order}&order_by=${orderBy}`;
         }
-        if (tableConfig.apiUrl instanceof ApiURL) {
+        if (tableConfig.apiUrl instanceof ApiURL && tableConfig.apiUrl.getGetExtraParams()) {
             params += '&' + tableConfig.apiUrl.getGetExtraParams();
         }
         dataService.get(`${tableConfig.apiUrl instanceof ApiURL ? tableConfig.apiUrl.getUrl : tableConfig.apiUrl}${params}`).then(resp => {
             if (resp) {
-                setData(resp.data);
-                setTotal(resp.total);
+                setData(tableConfig.disablePaging ? resp : resp.data);
+                setTotal(tableConfig.disablePaging ? resp.length : resp.total);
             }
         });
         // eslint-disable-next-line react-hooks/exhaustive-deps

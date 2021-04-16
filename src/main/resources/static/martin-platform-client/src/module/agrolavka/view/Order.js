@@ -45,6 +45,7 @@ function Order(props) {
     const id = props.match.params.id;
     const { setTitle, setIcon } = useContext(ToolbarContext);
     const [order, setOrder] = React.useState(null);
+    const [tableConfig, setTableConfig] = React.useState(null);
     const { t } = useTranslation();
     // -------------------------------------------------------- METHODS -------------------------------------------------------------------
     const getNum = (order) => {
@@ -61,6 +62,43 @@ function Order(props) {
             setTitle(t('m_agrolavka:order.title', {num: getNum(data)}));
         });
     }, [id, setIcon, setTitle, t]);
+    useEffect(() => {
+        if (order) {
+            setTableConfig(new TableConfig(t('m_agrolavka:order.positions'), new ApiURL(
+                        '/agrolavka/protected/order/positions/' + order.id,
+                        '/agrolavka/protected/order/position/' + id,
+                        '/agrolavka/protected/order/position',
+                        '/agrolavka/protected/order/position/' + id
+                    ), [
+                new TableColumn('avatar', '', (row) => {
+                    return <Avatar className={classes.image} alt={row.name}
+                            src={`/api/agrolavka/public/product-image/${row.productId}?timestamp=${new Date().getTime()}`} />;
+                }).setSortable().width('40px'),
+                new TableColumn('name', t('m_agrolavka:order.position.name'), (row) => {
+                    return row.product.name;
+                }).setSortable(),
+                new TableColumn('quantity', t('m_agrolavka:order.position.quantity'), (row) => {
+                    return row.quantity;
+                }).setSortable().width('100px').alignment(ALIGN_RIGHT),
+                new TableColumn('price', t('m_agrolavka:order.position.price'), (row) => {
+                    return <Price price={row.price} />;
+                }).setSortable().width('160px').alignment(ALIGN_RIGHT),
+                new TableColumn('total', t('m_agrolavka:order.position.subtotal'), (row) => {
+                    return <Price price={row.price * row.quantity} />;
+                }).setSortable().width('160px').alignment(ALIGN_RIGHT)
+            ], new FormConfig([
+                new FormField('id', TYPES.ID).hide(),
+                new FormField('quantity', TYPES.INTEGER_NUMBER, t('m_agrolavka:order.position.quantity')).setGrid({xs: 12, md: 6}).validation([
+                    new Validator(VALIDATORS.REQUIRED),
+                    new Validator(VALIDATORS.MIN, {size: 1})
+                ]),
+                new FormField('price', TYPES.MONEY, t('m_agrolavka:order.position.price')).setGrid({xs: 12, md: 6}).validation([
+                    new Validator(VALIDATORS.REQUIRED),
+                    new Validator(VALIDATORS.MIN, {size: 0})
+                ]).setAttributes({ decimalScale: 2, suffix: ' BYN', align: 'right' })
+            ])).setElevation(0).disablePagination());
+        }
+    }, [order, classes.image, id, t]);
     // -------------------------------------------------------- RENDERING -----------------------------------------------------------------
     const avatar = () => {
         let icon;
@@ -75,42 +113,9 @@ function Order(props) {
         }
         return <Avatar className={classes[order.status]}><Icon>{icon}</Icon></Avatar>;
     };
-    if (!order) {
+    if (!order || !tableConfig) {
         return null;
     }
-    const tableConfig = new TableConfig(t('m_agrolavka:order.positions'), new ApiURL(
-                '/agrolavka/protected/order/positions/' + order.id,
-                '/agrolavka/protected/order/position/' + id,
-                '/agrolavka/protected/order/position',
-                '/agrolavka/protected/order/position/' + id
-            ), [
-        new TableColumn('avatar', '', (row) => {
-            return <Avatar className={classes.image} alt={row.name}
-                    src={`/api/agrolavka/public/product-image/${row.productId}?timestamp=${new Date().getTime()}`} />;
-        }).setSortable().width('40px'),
-        new TableColumn('name', t('m_agrolavka:order.position.name'), (row) => {
-            return row.product.name;
-        }).setSortable(),
-        new TableColumn('quantity', t('m_agrolavka:order.position.quantity'), (row) => {
-            return row.quantity;
-        }).setSortable().width('100px').alignment(ALIGN_RIGHT),
-        new TableColumn('price', t('m_agrolavka:order.position.price'), (row) => {
-            return <Price price={row.price} />;
-        }).setSortable().width('160px').alignment(ALIGN_RIGHT),
-        new TableColumn('total', t('m_agrolavka:order.position.subtotal'), (row) => {
-            return <Price price={row.price * row.quantity} />;
-        }).setSortable().width('160px').alignment(ALIGN_RIGHT)
-    ], new FormConfig([
-        new FormField('id', TYPES.ID).hide(),
-        new FormField('quantity', TYPES.INTEGER_NUMBER, t('m_agrolavka:order.position.quantity')).setGrid({xs: 12, md: 6}).validation([
-            new Validator(VALIDATORS.REQUIRED),
-            new Validator(VALIDATORS.MIN, {size: 1})
-        ]),
-        new FormField('price', TYPES.MONEY, t('m_agrolavka:order.position.price')).setGrid({xs: 12, md: 6}).validation([
-            new Validator(VALIDATORS.REQUIRED),
-            new Validator(VALIDATORS.MIN, {size: 0})
-        ]).setAttributes({ decimalScale: 2, suffix: ' BYN', align: 'right' })
-    ])).setElevation(0).disablePagination();
     return (
             <Card>
                 <CardHeader title={t('m_agrolavka:order.title', {num: getNum(order)})} avatar={avatar()}
