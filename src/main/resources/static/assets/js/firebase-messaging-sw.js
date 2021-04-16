@@ -6,21 +6,21 @@
 // Give the service worker access to Firebase Messaging.
 // Note that you can only use Firebase Messaging here. Other Firebase libraries
 // are not available in the service worker.
-//importScripts('https://www.gstatic.com/firebasejs/8.4.1/firebase-app.js');
-//importScripts('https://www.gstatic.com/firebasejs/8.4.1/firebase-messaging.js');
+importScripts('https://www.gstatic.com/firebasejs/8.4.1/firebase-app.js');
+importScripts('https://www.gstatic.com/firebasejs/8.4.1/firebase-messaging.js');
 //
 //// Initialize the Firebase app in the service worker by passing in
 //// your app's Firebase config object.
 //// https://firebase.google.com/docs/web/setup#config-object
-//firebase.initializeApp({
-//    apiKey: "AIzaSyCNsi-R0xLTquWz74PdTEUG9f2OtTHvbjk",
-//    authDomain: "agrolavka-2aecb.firebaseapp.com",
-//    projectId: "agrolavka-2aecb",
-//    storageBucket: "agrolavka-2aecb.appspot.com",
-//    messagingSenderId: "1028755576776",
-//    appId: "1:1028755576776:web:605e8cfe6046bb58c412fd",
-//    measurementId: "G-7TE8WCK7XF"
-//});
+firebase.initializeApp({
+    apiKey: "AIzaSyCNsi-R0xLTquWz74PdTEUG9f2OtTHvbjk",
+    authDomain: "agrolavka-2aecb.firebaseapp.com",
+    projectId: "agrolavka-2aecb",
+    storageBucket: "agrolavka-2aecb.appspot.com",
+    messagingSenderId: "1028755576776",
+    appId: "1:1028755576776:web:605e8cfe6046bb58c412fd",
+    measurementId: "G-7TE8WCK7XF"
+});
 //
 //// Retrieve an instance of Firebase Messaging so that it can handle background
 //// messages.
@@ -47,4 +47,27 @@
 //    self.registration.showNotification(notificationTitle,
 //            notificationOptions);
 //});
+
+const messaging = firebase.messaging();
+messaging.setBackgroundMessageHandler(function(payload) {
+  const promiseChain = clients
+    .matchAll({
+      type: "window",
+      includeUncontrolled: true
+    })
+    .then(windowClients => {
+      for (let i = 0; i < windowClients.length; i++) {
+        const windowClient = windowClients[i];
+        windowClient.postMessage(payload);
+      }
+    })
+    .then(() => {
+      return registration.showNotification("my notification title");
+    });
+  return promiseChain;
+});
+self.addEventListener('notificationclick', function(event) {
+  // do what you want
+  // ...
+});
 
