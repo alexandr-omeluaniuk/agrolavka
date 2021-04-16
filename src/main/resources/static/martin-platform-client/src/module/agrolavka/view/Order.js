@@ -68,7 +68,6 @@ function Order(props) {
     useEffect(() => {
         dataService.get('/agrolavka/protected/order/' + id).then(data => {
             setOrder(data);
-            console.log(data);
             setIcon('payments');
             setTitle(t('m_agrolavka:order.title', {num: getNum(data)}));
         });
@@ -77,7 +76,7 @@ function Order(props) {
         if (order) {
             setTableConfig(new TableConfig(t('m_agrolavka:order.positions'), new ApiURL(
                         '/agrolavka/protected/order/positions/' + order.id,
-                        '/agrolavka/protected/order/position/' + id,
+                        null,
                         '/platform/entity/ss.entity.agrolavka.OrderPosition',
                         '/platform/entity/ss.entity.agrolavka.OrderPosition'
                     ), [
