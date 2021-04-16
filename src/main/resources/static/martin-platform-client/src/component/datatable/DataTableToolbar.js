@@ -88,11 +88,13 @@ function DataTableToolbar(props) {
                                     </IconButton>
                                 </Tooltip>) : null 
                             }
-                            <Tooltip title={t('component.datatable.refresh')}>
-                                <IconButton aria-label="refresh" onClick={onRefresh}>
-                                    <Icon color="secondary">loop</Icon>
-                                </IconButton>
-                            </Tooltip>
+                            {tableConfig instanceof Array ? (
+                                <Tooltip title={t('component.datatable.refresh')}>
+                                    <IconButton aria-label="refresh" onClick={onRefresh}>
+                                        <Icon color="secondary">loop</Icon>
+                                    </IconButton>
+                                </Tooltip>
+                            ) : null}
                             {toolbarActionsAfter}
                         </Grid>
                     </Grid>

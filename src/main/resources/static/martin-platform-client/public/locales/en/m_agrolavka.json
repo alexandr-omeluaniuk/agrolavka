@@ -47,6 +47,13 @@
             "APPROVED": "Approved",
             "DELIVERY": "Delivery",
             "CLOSED": "Closed"
+        },
+        "positions": "Positions",
+        "position": {
+            "name": "Name",
+            "quantity": "Quantity",
+            "price": "Price",
+            "subtotal": "Subtotal"
         }
     }
 }

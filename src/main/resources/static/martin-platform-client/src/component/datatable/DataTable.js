@@ -60,19 +60,24 @@ function DataTable(props) {
         setPage(0);
     }, [tableConfig]);
     useEffect(() => {
-        let params = `?page=${page + 1}&page_size=${rowsPerPage}`;
-        if (order && orderBy) {
-            params += `&order=${order}&order_by=${orderBy}`;
-        }
-        if (tableConfig.apiUrl instanceof ApiURL) {
-            params += '&' + tableConfig.apiUrl.getGetExtraParams();
-        }
-        dataService.get(`${tableConfig.apiUrl instanceof ApiURL ? tableConfig.apiUrl.getUrl : tableConfig.apiUrl}${params}`).then(resp => {
-            if (resp) {
-                setData(resp.data);
-                setTotal(resp.total);
+        if (tableConfig.apiUrl instanceof Array) {
+            setData(tableConfig.apiUrl);
+            setTotal(tableConfig.apiUrl.length);
+        } else {
+            let params = `?page=${page + 1}&page_size=${rowsPerPage}`;
+            if (order && orderBy) {
+                params += `&order=${order}&order_by=${orderBy}`;
             }
-        });
+            if (tableConfig.apiUrl instanceof ApiURL) {
+                params += '&' + tableConfig.apiUrl.getGetExtraParams();
+            }
+            dataService.get(`${tableConfig.apiUrl instanceof ApiURL ? tableConfig.apiUrl.getUrl : tableConfig.apiUrl}${params}`).then(resp => {
+                if (resp) {
+                    setData(resp.data);
+                    setTotal(resp.total);
+                }
+            });
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [load, tableConfig, page, rowsPerPage, order, orderBy]);
 //    useEffect(() => {
