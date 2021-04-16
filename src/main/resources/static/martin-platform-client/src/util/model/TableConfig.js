@@ -43,6 +43,11 @@ export class TableConfig {
         this.toolbarActionsAfter = el;
         return this;
     }
+    
+    disablePagination() {
+        this.disablePagination = true;
+        return this;
+    }
 }
 
 export class TableColumn {

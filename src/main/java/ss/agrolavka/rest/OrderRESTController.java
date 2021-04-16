@@ -53,9 +53,6 @@ public class OrderRESTController {
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public Order get(@PathVariable("id") Long id)throws Exception {
         Order order = coreDAO.findById(id, Order.class);
-        for (OrderPosition pos : order.getPositions()) {
-            pos.setProduct(coreDAO.findById(pos.getProductId(), Product.class));
-        }
         return order;
     }
     /**
@@ -68,5 +65,19 @@ public class OrderRESTController {
         Set<SystemUser> users = new HashSet<>();
         users.add(SecurityContext.currentUser());
         firebaseClient.subscribeUsersToTopic(SiteConstants.FIREBASE_TOPIC_ORDERS, users);
+    }
+    /**
+     * Get order positions.
+     * @param id order ID.
+     * @return order positions.
+     * @throws Exception error.
+     */
+    @RequestMapping(value = "/positions/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Set<OrderPosition> getPositions(@PathVariable("id") Long id)throws Exception {
+        Order order = coreDAO.findById(id, Order.class);
+        for (OrderPosition pos : order.getPositions()) {
+            pos.setProduct(coreDAO.findById(pos.getProductId(), Product.class));
+        }
+        return order.getPositions();
     }
 }

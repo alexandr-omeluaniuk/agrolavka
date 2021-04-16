@@ -16,7 +16,7 @@ import Avatar from '@material-ui/core/Avatar';
 import moment from 'moment';
 import { WAITING_FOR_APPROVAL, APPROVED, DELIVERY, CLOSED } from '../constants/OrderStatus';
 import DataTable from '../../../component/datatable/DataTable';
-import { TableConfig, TableColumn, FormConfig, FormField, Validator, ALIGN_RIGHT } from '../../../util/model/TableConfig';
+import { TableConfig, TableColumn, FormConfig, FormField, Validator, ALIGN_RIGHT, ApiURL } from '../../../util/model/TableConfig';
 import { TYPES, VALIDATORS } from '../../../service/DataTypeService';
 import Price from '../component/Price';
 
@@ -78,7 +78,12 @@ function Order(props) {
     if (!order) {
         return null;
     }
-    const tableConfig = new TableConfig(t('m_agrolavka:order.positions'), order.positions, [
+    const tableConfig = new TableConfig(t('m_agrolavka:order.positions'), new ApiURL(
+                '/agrolavka/protected/order/positions/' + order.id,
+                '/agrolavka/protected/order/position/' + id,
+                '/agrolavka/protected/order/position',
+                '/agrolavka/protected/order/position/' + id
+            ), [
         new TableColumn('avatar', '', (row) => {
             return <Avatar className={classes.image} alt={row.name}
                     src={`/api/agrolavka/public/product-image/${row.productId}?timestamp=${new Date().getTime()}`} />;
@@ -92,12 +97,20 @@ function Order(props) {
         new TableColumn('price', t('m_agrolavka:order.position.price'), (row) => {
             return <Price price={row.price} />;
         }).setSortable().width('160px').alignment(ALIGN_RIGHT),
-        new TableColumn('price', t('m_agrolavka:order.position.subtotal'), (row) => {
+        new TableColumn('total', t('m_agrolavka:order.position.subtotal'), (row) => {
             return <Price price={row.price * row.quantity} />;
         }).setSortable().width('160px').alignment(ALIGN_RIGHT)
     ], new FormConfig([
         new FormField('id', TYPES.ID).hide(),
-    ])).setElevation(0);
+        new FormField('quantity', TYPES.INTEGER_NUMBER, t('m_agrolavka:order.position.quantity')).setGrid({xs: 12, md: 6}).validation([
+            new Validator(VALIDATORS.REQUIRED),
+            new Validator(VALIDATORS.MIN, {size: 1})
+        ]),
+        new FormField('price', TYPES.MONEY, t('m_agrolavka:order.position.price')).setGrid({xs: 12, md: 6}).validation([
+            new Validator(VALIDATORS.REQUIRED),
+            new Validator(VALIDATORS.MIN, {size: 0})
+        ]).setAttributes({ decimalScale: 2, suffix: ' BYN', align: 'right' })
+    ])).setElevation(0).disablePagination();
     return (
             <Card>
                 <CardHeader title={t('m_agrolavka:order.title', {num: getNum(order)})} avatar={avatar()}
