@@ -17,6 +17,7 @@ import { SharedDataService } from './../../../service/SharedDataService';
 import { requestFirebaseToken } from '../../../conf/firebase';
 import AppURLs from '../../../conf/app-urls';
 import { NavLink } from "react-router-dom";
+import moment from 'moment';
 
 let dataService = new DataService();
 
@@ -77,6 +78,12 @@ function Orders() {
                 }
                 return 'Самовывоз';
             }),
+            new TableColumn('status', t('m_agrolavka:order.status'), (row) => {
+                return t('m_agrolavka:order.statusConst.' + row.status);
+            }),
+            new TableColumn('created', t('m_agrolavka:order.created'), (row) => {
+                return moment(row.created).locale('ru').format('DD.MM.yyyy HH:mm');
+            }).width('160px').setSortable().alignment(ALIGN_RIGHT),
             new TableColumn('total', t('m_agrolavka:orders.order_total'), (row) => {
                 let total = 0;
                 row.positions.forEach(pos => {

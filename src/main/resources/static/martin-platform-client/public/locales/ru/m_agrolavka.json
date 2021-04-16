@@ -39,6 +39,14 @@
         "order_total": "Сумма"
     },
     "order": {
-        "title": "Заказ № {{num}}"
+        "title": "Заказ № {{num}}",
+        "status": "Статус",
+        "created": "Создан",
+        "statusConst": {
+            "WAITING_FOR_APPROVAL": "В ожидании подтверждения",
+            "APPROVED": "Подтвержден",
+            "DELIVERY": "В процессе доставки",
+            "CLOSED": "Закрыт"
+        }
     }
 }

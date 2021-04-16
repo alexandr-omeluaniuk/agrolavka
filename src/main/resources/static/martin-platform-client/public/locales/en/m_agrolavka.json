@@ -39,6 +39,14 @@
         "order_total": "Total sum"
     },
     "order": {
-        "title": "Order # {{num}}"
+        "title": "Order # {{num}}",
+        "status": "Status",
+        "created": "Created",
+        "statusConst": {
+            "WAITING_FOR_APPROVAL": "Waiting for approval",
+            "APPROVED": "Approved",
+            "DELIVERY": "Delivery",
+            "CLOSED": "Closed"
+        }
     }
 }
