@@ -12,10 +12,9 @@ import { SharedDataService } from '../service/SharedDataService';
 
 const dataService = new DataService();
 
-export function requestFirebaseToken(successCallback) {
-    if (SharedDataService.permissions && SharedDataService.permissions.hasFirebaseToken) {
-        successCallback();
-    }
+var messaging = null;
+
+export function initFirebase() {
     // Your web app's Firebase configuration
     // For Firebase JS SDK v7.20.0 and later, measurementId is optional
     var firebaseConfig = {
@@ -30,7 +29,31 @@ export function requestFirebaseToken(successCallback) {
     // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
     firebase.analytics();
-    const messaging = firebase.messaging();
+    messaging = firebase.messaging();
+    console.log('Firebase init completed...');
+}
+
+export function deleteFirebaseToken(successCallback) {
+    // Delete registration token.
+    messaging.getToken().then((currentToken) => {
+        console.log('delete the next token: ' + currentToken);
+        messaging.deleteToken(currentToken).then(() => {
+            console.log('Firebase token deleted.');
+            dataService.put('/platform/security/firebase-notifications/unsubscribe', currentToken).then(() => {
+                successCallback();
+            });
+        }).catch((err) => {
+            console.log('Unable to delete token. ', err);
+        });
+    }).catch((err) => {
+        console.log('Error retrieving registration token. ', err);
+    });
+}
+
+export function requestFirebaseToken(successCallback) {
+    if (SharedDataService.permissions && SharedDataService.permissions.hasFirebaseToken) {
+        successCallback();
+    }
     // Get registration token. Initially this makes a network call, once retrieved
     // subsequent calls to getToken will return from cache.
     messaging.getToken({vapidKey: 'BAzvWieDywMujonB48CqlSTDcWmpO7J-eaOg_B3LSkT5rOiTBEj_9MAq0FUupJf2jEx_62mka304PorWUd8nFXk'})
@@ -48,6 +71,6 @@ export function requestFirebaseToken(successCallback) {
                     // ...
                 }
             }).catch((err) => {
-                console.log('An error occurred while retrieving token. ', err);
-            });
+        console.log('An error occurred while retrieving token. ', err);
+    });
 }

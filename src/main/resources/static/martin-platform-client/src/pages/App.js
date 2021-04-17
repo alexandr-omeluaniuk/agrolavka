@@ -13,6 +13,7 @@ import { SharedDataService } from '../service/SharedDataService';
 import { DESKTOP_MENU_OPEN } from '../conf/local-storage-keys';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { ToolbarContext } from '../context/ToolbarContext';
+import { initFirebase } from '../conf/firebase';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -61,9 +62,7 @@ function App() {
                 history.listen(location => {
                     setCurrentModule(SessionService.getCurrentModule());
                 });
-                if ('serviceWorker' in navigator) {
-                    navigator.serviceWorker.register('/firebase-messaging-sw.js');
-                }
+                initFirebase();
             });
         }
         return () => {

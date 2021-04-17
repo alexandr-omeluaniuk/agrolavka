@@ -14,7 +14,7 @@ import Icon from '@material-ui/core/Icon';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import { SharedDataService } from './../../../service/SharedDataService';
-import { requestFirebaseToken } from '../../../conf/firebase';
+import { requestFirebaseToken, deleteFirebaseToken } from '../../../conf/firebase';
 import AppURLs from '../../../conf/app-urls';
 import { NavLink } from "react-router-dom";
 import moment from 'moment';
@@ -31,7 +31,9 @@ function Orders() {
         return notificationsOn ? (
                 <Tooltip title={t('m_agrolavka:orders.disable_notifications')}>
                     <IconButton onClick={() => {
-                        alert('TODO: unsubscribe notifications');
+                        deleteFirebaseToken(() => {
+                            SharedDataService.showNotification(t('m_agrolavka:orders.disable_notifications_success'), '', 'success');
+                        });
                     }}>
                         <Icon color="primary">notifications_off</Icon>
                     </IconButton>

@@ -35,7 +35,8 @@
         "address": "Address",
         "enable_notifications": "Enable notifications",
         "enable_notifications_success": "Notifications have been enabled!",
-        "disable_notifications": "Notifications have been turned off",
+        "disable_notifications": "Disable notifications",
+        "disable_notifications_success": "Notifications have been turned off",
         "order_total": "Total sum"
     },
     "order": {

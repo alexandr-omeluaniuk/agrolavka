@@ -36,6 +36,7 @@
         "enable_notifications": "Включить уведомления",
         "enable_notifications_success": "Уведомления включены",
         "disable_notifications": "Выключить уведомления",
+        "disable_notifications_success": "Уведомления отключены",
         "order_total": "Сумма"
     },
     "order": {
