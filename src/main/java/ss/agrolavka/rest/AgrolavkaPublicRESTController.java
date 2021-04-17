@@ -193,7 +193,7 @@ class AgrolavkaPublicRESTController {
         PushNotification notification = new PushNotification();
         notification.setTitle("Поступил новый заказ");
         notification.setBody("Потенциальная сумма заказа - " + String.format("%.2f", total)
-                + ". Номер заказа: " + savedOrder.getId());
+                + " BYN. Номер заказа: " + savedOrder.getId());
         notification.setTtlInSeconds(String.valueOf(60 * 60));
         notification.setIcon("https://agrolavka.by/favicon.svg");
         notification.setClickAction("https://agrolavka.by/admin/app/agrolavka/order/" + savedOrder.getId());

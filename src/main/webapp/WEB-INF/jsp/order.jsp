@@ -202,12 +202,12 @@
         const submitOrderButton = document.querySelector("#order-confirm");
         if (submitOrderButton) {
             submitOrderButton.addEventListener('click', function (event) {
-                submitOrderButton.setAttribute('disabled', 'true');
                 var form = document.querySelector('#order-form');
                 if (!form.checkValidity()) {
                     event.preventDefault()
                     event.stopPropagation()
                 } else {
+                    submitOrderButton.setAttribute('disabled', 'true');
                     const formData = {};
                     form.querySelectorAll("input").forEach(input => {
                         formData[input.getAttribute("name")] = input.value;
