@@ -71,11 +71,7 @@ function DataTableCard (props) {
             </Tooltip>
         ));
     }
-    let isDeleteVisible = true;
-    if (tableConfig.ajax && tableConfig.ajax.delete && tableConfig.ajax.delete.isVisible) {
-        isDeleteVisible = tableConfig.ajax.delete.isVisible(rowData);
-    }
-    if (onDeleteRecord && isDeleteVisible) {
+    if (onDeleteRecord) {
         actions.push((
             <Tooltip title={t('common.delete')} key={2}>
                 <IconButton aria-label="delete record" className={classes.deleteButton}
@@ -109,7 +105,7 @@ function DataTableCard (props) {
     });
     
     const actionButton = tableConfig.columns.filter(c => {
-        return c.type === 'action-button';
+        return c.type === 'action';
     }).map((column, idx) => {
         let innerContent;
         if (column.renderer) {

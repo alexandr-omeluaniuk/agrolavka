@@ -77,6 +77,11 @@ export class TableColumn {
         return this;
     }
     
+    asAction() {
+       this.type = 'action';
+       return this;
+    }
+    
     _toggleSortDirection() {
         if (this._sort_direction === null) {
             this._sort_direction = SORT_ASC;

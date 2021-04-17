@@ -21,7 +21,7 @@ const useStyles = makeStyles(theme => ({
 
 function DataTableBodyMobile (props) {
     const classes = useStyles();
-    const { tableConfig, data } = props;
+    const { tableConfig, onEditRecord, onDeleteRecord, data } = props;
     if (data === null) {
         return (
                 <div style={{position: 'relative', height: '150px'}}>
@@ -33,7 +33,8 @@ function DataTableBodyMobile (props) {
     return (
             <div className={classes.pageContent}>
             {data.map((rowData, idx) => (
-                <DataTableCard tableConfig={tableConfig} rowData={rowData} idx={idx} key={idx}/>
+                <DataTableCard tableConfig={tableConfig} rowData={rowData} idx={idx} key={idx}
+                    onDeleteRecord={onDeleteRecord} onEditRecord={onEditRecord}/>
             ))}
             {tableConfig.lastRow ? tableConfig.lastRow(data) : null}
             </div>
