@@ -195,10 +195,9 @@ class AgrolavkaPublicRESTController {
         notification.setBody("Потенциальная сумма заказа - " + String.format("%.2f", total)
                 + ". Номер заказа: " + savedOrder.getId());
         notification.setTtlInSeconds(String.valueOf(60 * 60));
-        notification.setIcon("/favicon.svg");
-        notification.setClickAction("/admin/app/agrolavka/order/" + savedOrder.getId());
+        notification.setIcon("https://agrolavka.by/favicon.svg");
+        notification.setClickAction("https://agrolavka.by/admin/app/agrolavka/order/" + savedOrder.getId());
         notification.setClickActionLabel("Открыть");
-        notification.setData("Agrolavka custom data");
         firebaseClient.sendTopicNotification(notification, SiteConstants.FIREBASE_TOPIC_ORDERS);
         return savedOrder;
     }

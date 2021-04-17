@@ -82,7 +82,6 @@ function AccountMenu (props) {
                         <ListItem button onClick={(e) => {
                             if ('serviceWorker' in navigator) {
                                 navigator.serviceWorker.ready.then((registration) => {
-                                    console.log(registration);
                                     registration.update();
                                     SharedDataService.showNotification(t('component.account_menu.update_success'), '', 'success');
                                 }).catch((error) => {
