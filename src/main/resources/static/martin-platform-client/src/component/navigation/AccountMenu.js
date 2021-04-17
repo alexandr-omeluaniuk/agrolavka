@@ -15,6 +15,7 @@ import Divider from '@material-ui/core/Divider';
 import { NavLink } from "react-router-dom";
 import AppURLs from '../../conf/app-urls';
 import { common } from '../../module/common/module';
+import { SharedDataService } from './../../service/SharedDataService';
 
 let dataService = new DataService();
 
@@ -78,6 +79,24 @@ function AccountMenu (props) {
                             );
                         })}
                         <Divider variant="middle" className={classes.divider}/>
+                        <ListItem button onClick={(e) => {
+                            if ('serviceWorker' in navigator) {
+                                navigator.serviceWorker.ready.then((registration) => {
+                                    console.log(registration);
+                                    registration.update();
+                                    SharedDataService.showNotification(t('component.account_menu.update_success'), '', 'success');
+                                }).catch((error) => {
+                                    console.error(error.message);
+                                });
+                                onItemClick();
+                            }
+                            //serviceWorkerRegistration.update();
+                        }}>
+                            <ListItemIcon>
+                                <Icon>update</Icon>
+                            </ListItemIcon>
+                            <ListItemText primary={t('component.account_menu.update')}/>
+                        </ListItem>
                         <ListItem button onClick={(e) => {
                             dataService.logout().then(() => {
                                 window.location.href = AppURLs.welcome;

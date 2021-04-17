@@ -63,7 +63,9 @@
                 }
             },
             "applications": "Applications",
-            "logout": "Logout"
+            "logout": "Logout",
+            "update": "Update application",
+            "update_success": "Application has been updated successfully!"
         },
         "finish_registration": {
             "title": "Please, finish your registration",
