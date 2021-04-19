@@ -28,7 +28,12 @@ import Divider from '@material-ui/core/Divider';
 import List from '@material-ui/core/List';
 import { drawerWidth } from '../../conf/theme';
 import Typography from "@material-ui/core/Typography";
+import Icon from '@material-ui/core/Icon';
+import IconButton from '@material-ui/core/IconButton';
+import Tooltip from '@material-ui/core/Tooltip';
 import { useTranslation } from 'react-i18next';
+import AppURLs from '../../conf/app-urls';
+import { NavLink } from "react-router-dom";
 
 const useStyles = makeStyles(theme => ({
     title: {
@@ -77,7 +82,7 @@ const useStyles = makeStyles(theme => ({
     brandContainer: {
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'flex-start',
+        justifyContent: 'space-between',
         padding: '0 8px',
         ...theme.mixins.toolbar
     },
@@ -109,6 +114,15 @@ export default function SideNavBarMobile(props) {
             keepMounted: true // Better open performance on mobile.
         }}>
             <div className={classes.brandContainer}>
+                <NavLink to={AppURLs.app + '/common/applications'} onClick={() => {
+                    setOpen(false);
+                }}>
+                    <Tooltip title={t(`component.account_menu.applications`)}>
+                        <IconButton>
+                            <Icon color="primary">apps</Icon>
+                        </IconButton>
+                    </Tooltip>
+                </NavLink>
                 {moduleTitle}
             </div>
             <Divider />

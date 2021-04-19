@@ -29,7 +29,12 @@ import Divider from '@material-ui/core/Divider';
 import List from '@material-ui/core/List';
 import { drawerWidth } from '../../conf/theme';
 import Typography from "@material-ui/core/Typography";
+import Icon from '@material-ui/core/Icon';
+import IconButton from '@material-ui/core/IconButton';
+import Tooltip from '@material-ui/core/Tooltip';
+import { NavLink } from "react-router-dom";
 import { useTranslation } from 'react-i18next';
+import AppURLs from '../../conf/app-urls';
 
 const useStyles = makeStyles(theme => ({
     title: {
@@ -85,7 +90,7 @@ const useStyles = makeStyles(theme => ({
     brandContainer: {
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'flex-start',
+        justifyContent: 'space-between',
         padding: '0 8px',
         ...theme.mixins.toolbar
     },
@@ -113,6 +118,13 @@ function SideNavBarDesktop(props) {
                 paper: clsx(classes.drawerPaper, classes.drawerPaperDesktop)
             }} open={open}>
             <div className={classes.brandContainer}>
+                <NavLink to={AppURLs.app + '/common/applications'}>
+                    <Tooltip title={t(`component.account_menu.applications`)}>
+                        <IconButton>
+                            <Icon color="primary">apps</Icon>
+                        </IconButton>
+                    </Tooltip>
+                </NavLink>
                 {moduleTitle}
             </div>
             <Divider variant="middle"/>
