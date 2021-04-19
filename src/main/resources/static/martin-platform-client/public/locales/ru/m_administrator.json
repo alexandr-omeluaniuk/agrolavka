@@ -18,7 +18,8 @@
             "ACTIVE": "Активный",
             "INACTIVE": "Декактивирован",
             "REGISTRATION": "В процессе регистрации"
-        }
+        },
+        "open_registration_link": "Открыть ссылку регистрации"
     },
     "email_templates": {
         "subject": "Тема письма",

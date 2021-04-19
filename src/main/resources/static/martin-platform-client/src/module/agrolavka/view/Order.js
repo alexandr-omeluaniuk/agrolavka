@@ -119,7 +119,7 @@ function Order(props) {
                 );
             }));
         }
-    }, [order, classes.image, id, t]);
+    }, [order, classes.image, classes.lastRow, id, t]);
     // -------------------------------------------------------- RENDERING -----------------------------------------------------------------
     const avatar = () => {
         let icon;

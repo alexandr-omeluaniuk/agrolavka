@@ -18,7 +18,8 @@
             "ACTIVE": "Active",
             "INACTIVE": "Inactive",
             "REGISTRATION": "Registration"
-        }
+        },
+        "open_registration_link": "Open registration link"
     },
     "email_templates": {
         "subject": "Email subject",

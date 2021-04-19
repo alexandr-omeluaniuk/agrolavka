@@ -170,11 +170,6 @@ function DataTableCard (props) {
                         );
                     })}
                 </Grid>
-                {actionButton.length > 0 ? (
-                    <CardActions>
-                        {actionButton}
-                    </CardActions>
-                ) : null}
             </CardContent>
             
             {additionalActions.length > 3 ? (
