@@ -71,10 +71,10 @@ function Orders() {
                 while (num.length < 5) num = "0" + num;
                 return <NavLink to={AppURLs.app + '/agrolavka/order/' + row.id} color="primary">{num}</NavLink>;
             }).width('100px').setSortable(),
-            new TableColumn('id', t('m_agrolavka:orders.order_number'), (row) => {
+            new TableColumn('phone', t('m_agrolavka:orders.order_number'), (row) => {
                 return <Link href={'tel:+375' + row.phone.replace(/\D/g,'')} color="primary">{row.phone}</Link>;
             }).width('170px'),
-            new TableColumn('id', t('m_agrolavka:orders.address'), (row) => {
+            new TableColumn('address', t('m_agrolavka:orders.address'), (row) => {
                 const adr = row.address;
                 if (adr) {
                     return `${adr.postcode ? adr.postcode + ' ' : ''}${adr.city}, ${adr.street} д.${adr.house} ${adr.flat ? 'кв.' + adr.flat : ''}`;
