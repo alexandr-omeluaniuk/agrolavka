@@ -29,10 +29,12 @@
                                 <ul>
                                     <li><a href="/">Главная</a></li>
                                     <li><a href="/catalog">Каталог</a></li>
+                                    <li>
+                                        <a href="https://www.instagram.com/agrolavka.by" class="instagram">
+                                        <img src="/assets/img/instagram.ico" alt="Instagram"/>
+                                        </a>
+                                    </li>
                                 </ul>
-                            </div>
-                            <div class="social-links">
-                                <a href="https://www.instagram.com/agrolavka.by" class="instagram"><i class="bi bi-instagram"></i></a>
                             </div>
                         </div>
                     </div>
@@ -46,7 +48,7 @@
                             г.Дрогичин, 225612<br>
                             Республика Беларусь <br>
                             <strong>Телефон:</strong> <a href="tel:+375298713758">+375 29 871-37-58</a><br>
-                            <!--strong>Email:</strong> info@example.com<br-->
+                            <strong>Email:</strong> <a href="mailto:sergej4ikk@mail.ru">sergej4ikk@mail.ru</a><br>
                         </p>
                         <h4>Время работы</h4>
                         <p>

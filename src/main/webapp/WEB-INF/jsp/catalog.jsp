@@ -14,7 +14,7 @@
         <main>
             <div class="container">
                 <header class="section-header">
-                    <h3>Наша продукция</h3>
+                    <h3>Каталог товаров</h3>
                     <c:choose>
                         <c:when test="${title}">
                             <p class="text-uppercase text-muted">Товары для сада и огорода</p>

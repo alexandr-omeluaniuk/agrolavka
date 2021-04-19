@@ -32,7 +32,7 @@
                             </li>
                             <li>
                                 <a class="nav-link" href="/catalog">
-                                    <span><i class="fas fa-seedling nav-icon"></i> Наша продукция</span>
+                                    <span><i class="fas fa-seedling nav-icon"></i> Каталог товаров</span>
                                 </a>
                             </li>
                             <li>
@@ -44,7 +44,9 @@
                         <i class="bi bi-list mobile-nav-toggle"></i>
                     </nav>
                     <div class="social-links d-none d-lg-flex align-items-center">
-                        <a href="https://www.instagram.com/agrolavka.by"><i class="agr-nav-icon-link fab fa-instagram"></i></a>
+                        <a href="https://www.instagram.com/agrolavka.by">
+                            <img src="/assets/img/instagram.ico" alt="Instagram"/>
+                        </a>
                     </div>
                 </div>
             </div>
