@@ -1,6 +1,8 @@
 /src/main/resources/application.yml
 /src/main/resources/application.bak.yml
 /src/main/resources/static/martin-platform-client/nbproject/private/
+/src/main/resources/static/admin/nbproject/private/
 /src/main/resources/application.prod.yml
 /src/main/resources/application.dev.yml
 /src/main/resources/static/martin-platform-client/.eslintcache
+/src/main/resources/static/admin/.eslintcache

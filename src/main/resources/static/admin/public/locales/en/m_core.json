@@ -1,0 +1,12 @@
+{
+    "title": "Administration",
+    "core": {
+        "subscriptions": "Subscriptions",
+        "users": "Users"
+    },
+    "organization_name": "Organization name",
+    "subscription_start_date": "Started",
+    "subscription_expiration_date": "Expiration date",
+    "subscription_active": "Active",
+    "subscription_admin_email": "Administrator email"
+}

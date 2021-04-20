@@ -1,0 +1,62 @@
+{
+    "title": "Agrolavka",
+    "agrolavka": {
+        "products": "Товары",
+        "orders": "Заказы"
+    },
+    "products": {
+        "product_groups": "Категория товара",
+        "product_name": "Название",
+        "product_price": "Отпускная цена",
+        "product_buy_price": "Закупочная цена",
+        "product_images": "Изображения",
+        "all_product_groups": "Все",
+        "product_article": "Артикул",
+        "product_description": "Описание",
+        "product_code": "Код товара",
+        "synchronize": "Синхонизировать данные c программой Мой Склад",
+        "product_seo_title": "Название страницы товара на сайте (SEO)",
+        "product_seo_description": "Описание страницы товара на сайте (SEO)"
+    },
+    "products_groups": {
+        "new_group": "Создать новую группу товаров",
+        "edit_group": "Редактировать",
+        "delete_group": "Удалить",
+        "product_group_name": "Название",
+        "product_group_top_category": "Показать в тулбаре",
+        "product_group_fa_icon": "Font Awesome иконка",
+        "product_group_description": "Описание",
+        "product_group_seo_title": "Название страницы категории товаров на сайте (SEO)",
+        "product_group_seo_description": "Описание страницы категории товаров на сайте (SEO)"
+    },
+    "orders": {
+        "order_number": "Номер",
+        "mobile_phone": "Мобильный телефон",
+        "address": "Адрес",
+        "enable_notifications": "Включить уведомления",
+        "enable_notifications_success": "Уведомления включены",
+        "disable_notifications": "Выключить уведомления",
+        "disable_notifications_success": "Уведомления отключены",
+        "order_total": "Сумма"
+    },
+    "order": {
+        "title": "Заказ № {{num}}",
+        "status": "Статус",
+        "created": "Создан",
+        "statusConst": {
+            "WAITING_FOR_APPROVAL": "В ожидании подтверждения",
+            "APPROVED": "Подтвержден",
+            "DELIVERY": "В процессе доставки",
+            "CLOSED": "Закрыт"
+        },
+        "positions": "Корзина покупателя",
+        "position": {
+            "name": "Наименование",
+            "quantity": "Количество",
+            "price": "Цена",
+            "subtotal": "Сумма"
+        },
+        "close": "Закрыть",
+        "total": "Общая сумма"
+    }
+}

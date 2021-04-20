@@ -1,5 +1,5 @@
 #!/bin/bash
-cd src/main/resources/static/martin-platform-client
+cd src/main/resources/static/admin
 npm run build
 cd ../../../../../
 /home/alex/netbeans-12.0/netbeans/java/maven/bin/mvn clean install

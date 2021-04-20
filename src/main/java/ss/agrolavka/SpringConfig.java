@@ -32,9 +32,9 @@ public class SpringConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler(configuration.getNavigation().getLoginPage())
-                .addResourceLocations("classpath:/static/martin-platform-client/build/");
+                .addResourceLocations("classpath:/static/admin/build/");
         registry.addResourceHandler(configuration.getNavigation().getRegistrationVerification())
-                .addResourceLocations("classpath:/static/martin-platform-client/build/");
+                .addResourceLocations("classpath:/static/admin/build/");
         registry.addResourceHandler("/assets/**").addResourceLocations("classpath:/static/assets/");
         registry.addResourceHandler("/favicon.svg").addResourceLocations("classpath:/static/favicon.svg");
         registry.addResourceHandler("/sitemap.xml").addResourceLocations("classpath:/static/sitemap.xml");
@@ -42,7 +42,7 @@ public class SpringConfig implements WebMvcConfigurer {
         registry.addResourceHandler("/firebase-messaging-sw.js").addResourceLocations("classpath:/static/assets/js/firebase-messaging-sw.js");
 //        registry.addResourceHandler("/.well-known/pki-validation/**")
 //                .addResourceLocations("classpath:/static/");
-        registry.addResourceHandler("/admin/**").addResourceLocations("classpath:/static/martin-platform-client/build/");
+        registry.addResourceHandler("/admin/**").addResourceLocations("classpath:/static/admin/build/");
     }
     /**
      * Forward some URLs to index page.
