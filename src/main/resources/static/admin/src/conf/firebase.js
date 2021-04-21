@@ -51,7 +51,7 @@ export function requestFirebaseToken() {
         messaging.getToken({vapidKey: 'BAzvWieDywMujonB48CqlSTDcWmpO7J-eaOg_B3LSkT5rOiTBEj_9MAq0FUupJf2jEx_62mka304PorWUd8nFXk'})
                 .then((currentToken) => {
                     if (currentToken) {
-                        console.log(currentToken);
+                        //console.log(currentToken);
                         resolve(currentToken);
                     } else {
                         // Show permission request UI

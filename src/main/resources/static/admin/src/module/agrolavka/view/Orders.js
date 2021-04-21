@@ -19,6 +19,7 @@ import AppURLs from '../../../conf/app-urls';
 import { NavLink } from "react-router-dom";
 import moment from 'moment';
 import Price from '../component/Price';
+import { ORDER_CREATED } from '../constants/NotificationTopics';
 
 let dataService = new DataService();
 
@@ -28,13 +29,13 @@ function Orders() {
     // ------------------------------------------------------- METHODS --------------------------------------------------------------------
     const toolbarBefore = () => {
         const notificationsOn = SharedDataService.permissions && SharedDataService.permissions.userAgent
-                && SharedDataService.permissions.userAgent.firebaseToken;
+                && SharedDataService.permissions.userAgent.notificationSubscriptions.filter(s => s.topic === ORDER_CREATED).length > 0;
         return notificationsOn ? (
                 <Tooltip title={t('m_agrolavka:orders.disable_notifications')}>
                     <IconButton onClick={() => {
-                        requestFirebaseToken.then(token => {
+                        requestFirebaseToken().then(token => {
                             if (token) {
-                                dataService.put(`/platform/firebase/topic/subscribe${token}/agrolavka_order_created`).then(() => {
+                                dataService.put(`/platform/firebase/topic/unsubscribe/${token}/${ORDER_CREATED}`).then(() => {
                                     SharedDataService.showNotification(t('m_agrolavka:orders.disable_notifications_success'), '', 'success');
                                 });
                             }
@@ -46,9 +47,9 @@ function Orders() {
                 ) : (
                 <Tooltip title={t('m_agrolavka:orders.enable_notifications')}>
                     <IconButton onClick={() => {
-                        requestFirebaseToken.then(token => {
+                        requestFirebaseToken().then(token => {
                             if (token) {
-                                dataService.put(`/platform/firebase/topic/subscribe${token}/agrolavka_order_created`).then(() => {
+                                dataService.put(`/platform/firebase/topic/subscribe/${token}/${ORDER_CREATED}`).then(() => {
                                     SharedDataService.showNotification(t('m_agrolavka:orders.enable_notifications_success'), '', 'success');
                                 });
                             }

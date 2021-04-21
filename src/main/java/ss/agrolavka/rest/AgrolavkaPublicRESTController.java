@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -194,7 +195,7 @@ class AgrolavkaPublicRESTController {
         notification.setTitle("Поступил новый заказ");
         notification.setBody("Потенциальная сумма заказа - " + String.format("%.2f", total)
                 + " BYN. Номер заказа: " + savedOrder.getId());
-        notification.setTtlInSeconds(String.valueOf(60 * 60));
+        notification.setTtlInSeconds(String.valueOf(TimeUnit.DAYS.toSeconds(1)));
         notification.setIcon("https://agrolavka.by/favicon.svg");
         notification.setClickAction("https://agrolavka.by/admin/app/agrolavka/order/" + savedOrder.getId());
         notification.setClickActionLabel("Открыть");
