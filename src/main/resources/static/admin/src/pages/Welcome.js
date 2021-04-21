@@ -58,7 +58,7 @@ const useStyles = makeStyles(theme => ({
             zIndex: "-1",
             content: '""',
             display: "block",
-            opacity: `.2`,
+            opacity: `.7`,
             backgroundImage: `url(${background})`,
             backgroundPosition: 'center center',
             backgroundSize: 'cover'

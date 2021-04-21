@@ -41,6 +41,9 @@ function App() {
             if (item && item.id) {
                 setItemAttributes(t(currentModule.getLabelKey(item)), item.getIcon());
             }
+        } else {
+            setTitle(t('component.account_menu.applications'));
+            setIcon('widgets');
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currentModule]);
