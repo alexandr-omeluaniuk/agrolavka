@@ -198,7 +198,7 @@ class AgrolavkaPublicRESTController {
         notification.setIcon("https://agrolavka.by/favicon.svg");
         notification.setClickAction("https://agrolavka.by/admin/app/agrolavka/order/" + savedOrder.getId());
         notification.setClickActionLabel("Открыть");
-        firebaseClient.sendTopicNotification(notification, SiteConstants.FIREBASE_TOPIC_ORDERS);
+        firebaseClient.sendTopicNotification(notification, SiteConstants.FIREBASE_TOPIC_ORDER_CREATED);
         return savedOrder;
     }
 }

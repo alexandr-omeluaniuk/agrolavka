@@ -14,7 +14,7 @@ import Icon from '@material-ui/core/Icon';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import { SharedDataService } from './../../../service/SharedDataService';
-import { requestFirebaseToken, deleteFirebaseToken } from '../../../conf/firebase';
+import { requestFirebaseToken } from '../../../conf/firebase';
 import AppURLs from '../../../conf/app-urls';
 import { NavLink } from "react-router-dom";
 import moment from 'moment';
@@ -27,12 +27,17 @@ function Orders() {
     const [tableConfig, setTableConfig] = React.useState(null);
     // ------------------------------------------------------- METHODS --------------------------------------------------------------------
     const toolbarBefore = () => {
-        const notificationsOn = SharedDataService.permissions && SharedDataService.permissions.hasFirebaseToken;
+        const notificationsOn = SharedDataService.permissions && SharedDataService.permissions.userAgent
+                && SharedDataService.permissions.userAgent.firebaseToken;
         return notificationsOn ? (
                 <Tooltip title={t('m_agrolavka:orders.disable_notifications')}>
                     <IconButton onClick={() => {
-                        deleteFirebaseToken(() => {
-                            SharedDataService.showNotification(t('m_agrolavka:orders.disable_notifications_success'), '', 'success');
+                        requestFirebaseToken.then(token => {
+                            if (token) {
+                                dataService.put(`/platform/firebase/topic/subscribe${token}/agrolavka_order_created`).then(() => {
+                                    SharedDataService.showNotification(t('m_agrolavka:orders.disable_notifications_success'), '', 'success');
+                                });
+                            }
                         });
                     }}>
                         <Icon color="primary">notifications_off</Icon>
@@ -41,9 +46,9 @@ function Orders() {
                 ) : (
                 <Tooltip title={t('m_agrolavka:orders.enable_notifications')}>
                     <IconButton onClick={() => {
-                        requestFirebaseToken((token) => {
+                        requestFirebaseToken.then(token => {
                             if (token) {
-                                dataService.put('/agrolavka/protected/order/notifications/subscribe').then(() => {
+                                dataService.put(`/platform/firebase/topic/subscribe${token}/agrolavka_order_created`).then(() => {
                                     SharedDataService.showNotification(t('m_agrolavka:orders.enable_notifications_success'), '', 'success');
                                 });
                             }

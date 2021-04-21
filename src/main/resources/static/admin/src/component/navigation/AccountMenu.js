@@ -60,7 +60,7 @@ function AccountMenu (props) {
     );
     return (
             <Card>
-                <CardHeader title={permissions.fullname} subheader={'TODO: Role'} avatar={avatar}/>
+                <CardHeader title={permissions.fullname} subheader={''} avatar={avatar}/>
                 <CardContent className={classes.content}>
                     <List component="nav">
                         <Divider variant="middle" className={classes.divider}/>

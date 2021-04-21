@@ -5,7 +5,6 @@
  */
 package ss.agrolavka.rest;
 
-import java.util.HashSet;
 import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -13,14 +12,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import ss.agrolavka.constants.SiteConstants;
 import ss.entity.agrolavka.Order;
 import ss.entity.agrolavka.OrderPosition;
 import ss.entity.agrolavka.Product;
-import ss.entity.martin.SystemUser;
 import ss.martin.platform.dao.CoreDAO;
-import ss.martin.platform.security.SecurityContext;
-import ss.martin.platform.service.FirebaseClient;
 
 /**
  * Order REST controller.
@@ -32,9 +27,6 @@ public class OrderRESTController {
     /** Core DAO. */
     @Autowired
     private CoreDAO coreDAO;
-    /** Firebase client. */
-    @Autowired
-    private FirebaseClient firebaseClient;
     /**
      * Delete order.
      * @param id order ID.
@@ -54,17 +46,6 @@ public class OrderRESTController {
     public Order get(@PathVariable("id") Long id)throws Exception {
         Order order = coreDAO.findById(id, Order.class);
         return order;
-    }
-    /**
-     * Subscribe order notifications.
-     * @throws Exception error.
-     */
-    @RequestMapping(value = "/notifications/subscribe", method = RequestMethod.PUT,
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public void subscribeNotifications() throws Exception {
-        Set<SystemUser> users = new HashSet<>();
-        users.add(SecurityContext.currentUser());
-        firebaseClient.subscribeUsersToTopic(SiteConstants.FIREBASE_TOPIC_ORDERS, users);
     }
     /**
      * Get order positions.
