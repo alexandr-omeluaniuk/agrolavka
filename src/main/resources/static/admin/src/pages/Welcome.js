@@ -45,17 +45,27 @@ let dataService = new DataService();
 
 const useStyles = makeStyles(theme => ({
     background: {
-        position: 'absolute',
-        left: 0,
-        right: 0,
-        top: 0,
-        bottom: 0,
+        height: '100vh',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundImage: `url(${background})`,
-        backgroundPosition: 'center center',
-        backgroundSize: '100% 100%'
+        '&:after': {
+            position: 'absolute',
+            left: 0,
+            right: 0,
+            top: 0,
+            bottom: 0,
+            zIndex: "-1",
+            content: '""',
+            display: "block",
+            opacity: `.2`,
+            backgroundImage: `url(${background})`,
+            backgroundPosition: 'center center',
+            backgroundSize: 'cover'
+        }
+    },
+    card: {
+        backgroundColor: 'white'
     }
 }));
 
@@ -83,7 +93,7 @@ export default function Welcome() {
             <div className={classes.background}>
                 <Container component="main" maxWidth="xs">
                     <CssBaseline />
-                    <Card raised>
+                    <Card raised className={classes.card}>
                         <CardHeader title={(<Typography variant="h5" align="center">{t('component.welcome.title')}</Typography>)}/>
                         <CardContent>
                             <Form onSubmitAction={doLogin} formConfig={formConfig}/>

@@ -16,7 +16,6 @@ import Icon from '@material-ui/core/Icon';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
-import CardActions from '@material-ui/core/CardActions';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 
@@ -102,22 +101,6 @@ function DataTableCard (props) {
         return <React.Fragment key={idx}>
                     {col.renderer(rowData, data)}
                 </React.Fragment>;
-    });
-    
-    const actionButton = tableConfig.columns.filter(c => {
-        return c.type === 'action';
-    }).map((column, idx) => {
-        let innerContent;
-        if (column.renderer) {
-            innerContent = column.renderer(rowData, data);
-        } else {
-            innerContent = rowData[column.name];
-        }
-        return (
-            <div key={idx} className={classes.fullWidth}>
-                {innerContent}
-            </div>
-        );
     });
     
     if (additionalActions.length > 3) {
