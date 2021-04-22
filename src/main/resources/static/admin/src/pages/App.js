@@ -8,8 +8,6 @@ import AppToolbar from '../component/navigation/AppToolbar';
 import SideNavBar from '../component/navigation/SideNavBar';
 import MainContent from '../component/navigation/MainContent';
 import useAuth from '../hooks/useAuth';
-import DataService from '../service/DataService';
-import { SharedDataService } from '../service/SharedDataService';
 import { DESKTOP_MENU_OPEN } from '../conf/local-storage-keys';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { ToolbarContext } from '../context/ToolbarContext';
@@ -21,12 +19,10 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-const dataService = new DataService();
-
 function App() {
     const classes = useStyles();
     const { t } = useTranslation();
-    const { getCurrentModule, getAllRoutes } = useAuth();
+    const { getCurrentModule, getAllRoutes, permissions } = useAuth();
     let isMenuOpen = localStorage.getItem(DESKTOP_MENU_OPEN);
     const isMobile = useMediaQuery(useTheme().breakpoints.down('sm'));
     const [title, setTitle] = React.useState('');
@@ -34,7 +30,6 @@ function App() {
     const [icon, setIcon] = React.useState(null);
     const [routes, setRoutes] = React.useState(null);
     const [currentModule, setCurrentModule] = React.useState(null);
-    const [permissions, setPermissions] = React.useState(null);
     // --------------------------------------------------------- HOOKS --------------------------------------------------------------------
     useEffect(() => {
         if (currentModule) {
@@ -57,23 +52,16 @@ function App() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isMobile]);
     useEffect(() => {
-        if (permissions === null) {
-            dataService.get(`/platform/security/permissions`).then(permissions => {
-                setPermissions(permissions);
-                SharedDataService.permissions = permissions;
-                setRoutes(getAllRoutes());
+        if (permissions !== null && routes === null) {
+            setRoutes(getAllRoutes());
+            setCurrentModule(getCurrentModule());
+            history.listen(location => {
                 setCurrentModule(getCurrentModule());
-                history.listen(location => {
-                    setCurrentModule(getCurrentModule());
-                });
-                initFirebase();
             });
+            initFirebase();
         }
-        return () => {
-            dataService.abort();
-        };
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [permissions]);
+    }, [permissions, routes]);
     // ------------------------------------------------------------ METHODS ---------------------------------------------------------------
     const setItemAttributes = (label, icon) => {
         setTitle(label);
