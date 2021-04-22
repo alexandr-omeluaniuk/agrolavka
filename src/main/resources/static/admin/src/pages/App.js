@@ -7,7 +7,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import AppToolbar from '../component/navigation/AppToolbar';
 import SideNavBar from '../component/navigation/SideNavBar';
 import MainContent from '../component/navigation/MainContent';
-import SessionService from '../service/SessionService';
+import useAuth from '../hooks/useAuth';
 import DataService from '../service/DataService';
 import { SharedDataService } from '../service/SharedDataService';
 import { DESKTOP_MENU_OPEN } from '../conf/local-storage-keys';
@@ -26,6 +26,7 @@ const dataService = new DataService();
 function App() {
     const classes = useStyles();
     const { t } = useTranslation();
+    const { getCurrentModule, getAllRoutes } = useAuth();
     let isMenuOpen = localStorage.getItem(DESKTOP_MENU_OPEN);
     const isMobile = useMediaQuery(useTheme().breakpoints.down('sm'));
     const [title, setTitle] = React.useState('');
@@ -60,10 +61,10 @@ function App() {
             dataService.get(`/platform/security/permissions`).then(permissions => {
                 setPermissions(permissions);
                 SharedDataService.permissions = permissions;
-                setRoutes(SessionService.getAllRoutes());
-                setCurrentModule(SessionService.getCurrentModule());
+                setRoutes(getAllRoutes());
+                setCurrentModule(getCurrentModule());
                 history.listen(location => {
-                    setCurrentModule(SessionService.getCurrentModule());
+                    setCurrentModule(getCurrentModule());
                 });
                 initFirebase();
             });
