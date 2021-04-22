@@ -16,7 +16,6 @@
  */
 
 import AppURLs from '../conf/app-urls';
-import useNotification from '../hooks/useNotification';
 import { history } from '../index';
 
 class DataService {
@@ -65,8 +64,7 @@ class DataService {
                 history.push(AppURLs.welcome);
             } else {
                 response.json().then(errJson => {
-                    const { showNotification } = useNotification();
-                    showNotification(errJson.message, errJson.details, 'error');
+                    DataService.showNotification(errJson.message, errJson.details, 'error');
                 });
             }
         }).catch(error => {

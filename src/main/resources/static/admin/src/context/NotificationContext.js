@@ -4,8 +4,9 @@
  * and open the template in the editor.
  */
 
-import React, { createContext } from 'react';
+import React, { createContext, useEffect, useCallback } from 'react';
 import Notification from '../component/util/Notification';
+import DataService from '../service/DataService';
 
 export const NotificationContext = createContext({
     showNotification: () => {
@@ -20,13 +21,19 @@ export const NotificationProvider = ({ children }) => {
     const [notificationType, setNotificationType] = React.useState('info');
     const [notificationDuration, setNotificationDuration] = React.useState(6000);
     
-    const showNotification = (msg, details, type, duration) => {
+    const showNotification = useCallback((msg, details, type, duration) => {
         setNotificationMessage(msg);
         setNotificationDetails(details);
         setNotificationType(type ? type : 'info');
         setOpenNotification(true);
         setNotificationDuration(duration ? duration : 6000);
-    };
+    }, []);
+    
+    useEffect(() => {
+        if (!DataService.showNotification) {
+            DataService.showNotification = showNotification;
+        }
+    }, [showNotification]);
     
     return (
             <NotificationContext.Provider value={{showNotification: showNotification}}>

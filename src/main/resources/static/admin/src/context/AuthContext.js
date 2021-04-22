@@ -134,7 +134,7 @@ export const AuthProvider = ({ children }) => {
     }, [state.permissions, state.initialization]);
     // ------------------------------------------------------------- RENDERING ------------------------------------------------------------
     return (
-            <AuthContext.Provider value={{...state, getCurrentModule, getAllRoutes, login, logout}}>
+            <AuthContext.Provider value={{...state, getCurrentModule, getAllRoutes, login, logout, updatePermissions}}>
                 {children}
             </AuthContext.Provider>
     );

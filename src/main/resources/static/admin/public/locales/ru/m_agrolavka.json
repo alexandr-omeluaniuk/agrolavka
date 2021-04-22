@@ -33,9 +33,9 @@
         "order_number": "Номер",
         "mobile_phone": "Мобильный телефон",
         "address": "Адрес",
-        "enable_notifications": "Включить уведомления",
+        "enable_notifications": "Уведомления выключены. Нажмите чтобы включить уведомления",
         "enable_notifications_success": "Уведомления включены",
-        "disable_notifications": "Выключить уведомления",
+        "disable_notifications": "Уведомления выключены. Нажмите чтобы выключить уведомления",
         "disable_notifications_success": "Уведомления отключены",
         "order_total": "Сумма"
     },

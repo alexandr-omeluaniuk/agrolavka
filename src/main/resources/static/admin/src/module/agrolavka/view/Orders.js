@@ -5,6 +5,7 @@
  */
 import React, { useEffect } from 'react';
 import DataService from '../../../service/DataService';
+import { makeStyles } from '@material-ui/core/styles';
 import { useTranslation } from 'react-i18next';
 import { TableConfig, TableColumn, FormConfig, FormField, ALIGN_RIGHT, ApiURL } from '../../../util/model/TableConfig';
 import { TYPES } from '../../../service/DataTypeService';
@@ -24,27 +25,39 @@ import useNotification from '../../../hooks/useNotification';
 
 let dataService = new DataService();
 
+const useStyles = makeStyles(theme => ({
+    notificationsOn: {
+        color: theme.palette.success.main
+    },
+    notificationsOff: {
+        color: theme.palette.error.main
+    }
+}));
+
 function Orders() {
     const { t } = useTranslation();
-    const [tableConfig, setTableConfig] = React.useState(null);
-    const { permissions } = useAuth();
+    const { permissions, updatePermissions } = useAuth();
     const { showNotification } = useNotification();
+    const classes = useStyles();
+    const [tableConfig, setTableConfig] = React.useState(null);
+    const [notificationsOn, setNotificationsOn] = React.useState(null);
     // ------------------------------------------------------- METHODS --------------------------------------------------------------------
     const toolbarBefore = () => {
-        const notificationsOn = permissions && permissions.userAgent
-                && permissions.userAgent.notificationSubscriptions.filter(s => s.topic === ORDER_CREATED).length > 0;
         return notificationsOn ? (
                 <Tooltip title={t('m_agrolavka:orders.disable_notifications')}>
                     <IconButton onClick={() => {
                         requestFirebaseToken().then(token => {
                             if (token) {
                                 dataService.put(`/platform/firebase/topic/unsubscribe/${token}/${ORDER_CREATED}`).then(() => {
-                                    showNotification(t('m_agrolavka:orders.disable_notifications_success'), '', 'success');
+                                    updatePermissions(() => {
+                                        showNotification(t('m_agrolavka:orders.disable_notifications_success'), '', 'success');
+                                        setNotificationsOn(false);
+                                    });
                                 });
                             }
                         });
                     }}>
-                        <Icon color="primary">notifications_off</Icon>
+                        <Icon className={classes.notificationsOn}>notifications</Icon>
                     </IconButton>
                 </Tooltip>
                 ) : (
@@ -53,21 +66,21 @@ function Orders() {
                         requestFirebaseToken().then(token => {
                             if (token) {
                                 dataService.put(`/platform/firebase/topic/subscribe/${token}/${ORDER_CREATED}`).then(() => {
-                                    showNotification(t('m_agrolavka:orders.enable_notifications_success'), '', 'success');
+                                    updatePermissions(() => {
+                                        showNotification(t('m_agrolavka:orders.enable_notifications_success'), '', 'success');
+                                        setNotificationsOn(true);
+                                    });
                                 });
                             }
                         });
                     }}>
-                        <Icon color="primary">notifications</Icon>
+                        <Icon className={classes.notificationsOff}>notifications_off</Icon>
                     </IconButton>
                 </Tooltip>
         );
     };
-    // ------------------------------------------------------- HOOKS ----------------------------------------------------------------------
-    useEffect(() => {
-        if (tableConfig !== null) {
-            return;
-        }
+    
+    const updateTable = () => {
         const apiUrl = new ApiURL(
                 '/platform/entity/ss.entity.agrolavka.Order',
                 null,
@@ -107,8 +120,18 @@ function Orders() {
             new FormField('id', TYPES.ID).hide()
         ])).setElevation(1).setToolbarActionsBefore(toolbarBefore());
         setTableConfig(newTableConfig);
+    };
+    // ------------------------------------------------------- HOOKS ----------------------------------------------------------------------
+    useEffect(() => {
+        updateTable();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [tableConfig]);
+    }, [notificationsOn]);
+    useEffect(() => {
+        if (notificationsOn === null && permissions && permissions.userAgent) {
+            setNotificationsOn(permissions.userAgent.notificationSubscriptions.filter(s => s.topic === ORDER_CREATED).length > 0);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [notificationsOn]);
     // ------------------------------------------------------- RENDERING ------------------------------------------------------------------
     if (tableConfig === null) {
         return null;
