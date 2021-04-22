@@ -54,9 +54,9 @@ function Application() {
     return (
             <Suspense fallback={ < Spinner open = {true} / > }>
                 {displayApp ? (
-                    <AuthProvider>
-                        <ThemeProvider theme={theme}>
-                            <NotificationProvider>
+                    <ThemeProvider theme={theme}>
+                        <NotificationProvider>
+                            <AuthProvider>
                                 <ErrorBoundary>
                                     <Router history={history}>
                                         <Switch>
@@ -69,9 +69,9 @@ function Application() {
                                         </Switch>
                                     </Router>
                                 </ErrorBoundary>
-                            </NotificationProvider>
-                        </ThemeProvider>
-                    </AuthProvider>
+                            </AuthProvider>
+                        </NotificationProvider>
+                    </ThemeProvider>
                 ) : <Spinner open={true}/>}
             </Suspense>
     );

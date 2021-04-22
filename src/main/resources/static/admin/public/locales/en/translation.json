@@ -42,7 +42,8 @@
             "title": "Welcome",
             "sign_in": "Sign in",
             "username": "Email",
-            "password": "Password"
+            "password": "Password",
+            "login_fail": "Invalid login or password"
         },
         "account_menu": {
             "profile": "My profile",

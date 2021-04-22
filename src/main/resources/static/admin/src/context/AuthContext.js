@@ -6,7 +6,9 @@
 
 import React, { createContext, useReducer, useEffect } from 'react';
 import { Route, Redirect } from "react-router-dom";
+import { useTranslation } from 'react-i18next';
 import useModules from '../hooks/useModules';
+import useNotification from '../hooks/useNotification';
 import AppURLs from '../conf/app-urls';
 import { history } from '../index';
 import DataService from '../service/DataService';
@@ -56,15 +58,21 @@ const reducer = (state, action) => {
 };
 
 export const AuthProvider = ({ children }) => {
+    const { t } = useTranslation();
     const [state, dispatch] = useReducer(reducer, initialAuthState);
     const modules = useModules(state.permissions);
+    const { showNotification } = useNotification();
     // ------------------------------------------------------------- METHODS --------------------------------------------------------------
     const login = (data) => {
         dataService.login(data).then((authResponse) => {
             console.log(authResponse);
-            updatePermissions(() => {
-                history.push(AppURLs.app);
-            });
+            if (authResponse) {
+                updatePermissions(() => {
+                    history.push(AppURLs.app);
+                });
+            } else {
+                showNotification(t('component.welcome.login_fail'), '', 'warning');
+            }
         });
     };
     
