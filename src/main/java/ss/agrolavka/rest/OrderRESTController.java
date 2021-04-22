@@ -33,7 +33,7 @@ public class OrderRESTController {
      * @throws Exception error.
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public void search(@PathVariable("id") Long id)throws Exception {
+    public void delete(@PathVariable("id") Long id)throws Exception {
         coreDAO.delete(id, Order.class);
     }
     /**
