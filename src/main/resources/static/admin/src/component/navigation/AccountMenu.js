@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { useTranslation } from 'react-i18next';
 import Card from '@material-ui/core/Card';
@@ -16,6 +16,7 @@ import AppURLs from '../../conf/app-urls';
 import { common } from '../../module/common/module';
 import useAuth from '../../hooks/useAuth';
 import useNotification from '../../hooks/useNotification';
+import { ToolbarContext } from '../../context/ToolbarContext';
 
 const useStyles = makeStyles(theme => ({
     navLink: {
@@ -42,6 +43,7 @@ function AccountMenu (props) {
     const { onItemClick, permissions } = props;
     const [applications, setApplications] = React.useState(null);
     const { showNotification } = useNotification();
+    const { title, icon } = useContext(ToolbarContext);
     // ===================================================== HOOKS ========================================================================
     useEffect(() => {
         if (!applications) {
@@ -87,7 +89,7 @@ function AccountMenu (props) {
                                 }).catch((error) => {
                                     console.error(error.message);
                                 });
-                                onItemClick();
+                                onItemClick(title, icon);
                             }
                             //serviceWorkerRegistration.update();
                         }}>
