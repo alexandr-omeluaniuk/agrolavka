@@ -17,6 +17,7 @@
 
 import AppURLs from '../conf/app-urls';
 import { SharedDataService } from './SharedDataService';
+import { history } from '../index';
 
 class DataService {
     
@@ -61,7 +62,7 @@ class DataService {
                     return text ? JSON.parse(text) : {};
                 });
             } else if (response.status === 401) {
-                window.location.href = AppURLs.welcome;
+                history.push(AppURLs.welcome);
             } else {
                 response.json().then(errJson => {
                     if (SharedDataService.showNotification) {

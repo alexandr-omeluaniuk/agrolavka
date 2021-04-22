@@ -3,22 +3,21 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 import { common } from '../module/common/module';
 import { core } from '../module/core/module';
 import { administrator } from '../module/admin/module';
 import { agrolavka } from '../module/agrolavka/module';
-import { SharedDataService } from '../service/SharedDataService';
 
-/**
- * Modules metadata.
- * 'id' values must be unique inside module.
- * @type Array
- */
-export const modules = function () {
+function useModules(permissions) {
     const modules = [common, core, administrator, agrolavka];
-    const permissions = SharedDataService.getPermissions();
-    return modules.filter(m => {
-        return m.isPermitted(permissions ? permissions.standardRole : '');
-    });
-};
+    if (!permissions) {
+        return [];
+    } else {
+        return modules.filter(m => {
+            return m.isPermitted(permissions ? permissions.standardRole : '');
+        });
+    }
+}
+
+export default useModules;
+

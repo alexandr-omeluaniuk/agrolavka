@@ -4,9 +4,9 @@
  * and open the template in the editor.
  */
 
-import React, { createContext, useReducer } from 'react';
+import React, { createContext, useReducer, useEffect } from 'react';
 import { Route, Redirect } from "react-router-dom";
-import { modules } from '../conf/modules';
+import useModules from '../hooks/useModules';
 import AppURLs from '../conf/app-urls';
 import { history } from '../index';
 import DataService from '../service/DataService';
@@ -14,7 +14,8 @@ import DataService from '../service/DataService';
 const dataService = new DataService();
 
 const initialAuthState = {
-    permissions: null
+    permissions: null,
+    initialization: false
 };
 
 export const AuthContext = createContext({
@@ -28,14 +29,23 @@ const reducer = (state, action) => {
             const { permissions } = action.payload;
             return {
                 ...state,
-                permissions: permissions
+                permissions: permissions,
+                initialization: true
             };
         }
         case 'LOGOUT':
         {
             return {
                 ...state,
-                permissions: null
+                permissions: null,
+                initialization: true
+            };
+        }
+        case 'INITIALIZATION':
+        {
+            return {
+                ...state,
+                initialization: true
             };
         }
         default:
@@ -47,12 +57,14 @@ const reducer = (state, action) => {
 
 export const AuthProvider = ({ children }) => {
     const [state, dispatch] = useReducer(reducer, initialAuthState);
+    const modules = useModules(state.permissions);
     // ------------------------------------------------------------- METHODS --------------------------------------------------------------
     const login = (data) => {
         dataService.login(data).then((authResponse) => {
             console.log(authResponse);
-            history.push(AppURLs.app);
-            updatePermissions();
+            updatePermissions(() => {
+                history.push(AppURLs.app);
+            });
         });
     };
     
@@ -63,14 +75,17 @@ export const AuthProvider = ({ children }) => {
         });
     };
     
-    const updatePermissions = () => {
+    const updatePermissions = (callback) => {
         dataService.get(`/platform/security/permissions`).then(permissions => {
             dispatch({ type: 'PERMISSIONS', payload: {permissions}});
+            if (callback) {
+                callback(permissions);
+            }
         });
     };
     
     const getCurrentModule = () => {
-        const apps = modules().filter(m => m.isVisible());
+        const apps = modules.filter(m => m.isVisible());
         let currentModule = null;
         let internalAppUrl = window.location.pathname.replace(AppURLs.app, '');
         if (internalAppUrl) {
@@ -85,7 +100,7 @@ export const AuthProvider = ({ children }) => {
     const getAllRoutes = () => {
         let routes = [];
         let rootURL = AppURLs.app;
-        modules().forEach(module => {
+        modules.forEach(module => {
             _visitItemRoutes(module, routes, rootURL);
         });
         return routes;
@@ -109,6 +124,14 @@ export const AuthProvider = ({ children }) => {
             }
         }
     };
+    // ------------------------------------------------------------- HOOKS ----------------------------------------------------------------
+    useEffect(() => {
+        if (state.permissions === null && !state.initialization) {
+            dispatch({ type: 'INITIALIZATION', payload: {}});
+            updatePermissions();
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [state.permissions, state.initialization]);
     // ------------------------------------------------------------- RENDERING ------------------------------------------------------------
     return (
             <AuthContext.Provider value={{...state, getCurrentModule, getAllRoutes, login, logout}}>

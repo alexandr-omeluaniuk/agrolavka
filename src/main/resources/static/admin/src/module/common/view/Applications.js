@@ -18,7 +18,8 @@ import Typography from '@material-ui/core/Typography';
 import { history } from '../../../index';
 import AppURLs from '../../../conf/app-urls';
 import DataService from '../../../service/DataService';
-import { modules } from '../../../conf/modules';
+import useModules from '../../../hooks/useModules';
+import useAuth from '../../../hooks/useAuth';
 
 const dataService = new DataService();
 
@@ -49,6 +50,8 @@ function Applications(props) {
     const classes = useStyles();
     const { t } = useTranslation();
     const [applications, setApplications] = React.useState(null);
+    const { permissions } = useAuth();
+    const modules = useModules(permissions);
     // ============================================================ METHODS ===============================================================
     const openApplication = (app) => {
         history.push(AppURLs.app + app.path);
@@ -56,7 +59,7 @@ function Applications(props) {
     // ============================================================ HOOKS =================================================================
     useEffect(() => {
         if (!applications) {
-            setApplications(modules().filter(m => m.isVisible()));
+            setApplications(modules.filter(m => m.isVisible()));
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [applications]);
