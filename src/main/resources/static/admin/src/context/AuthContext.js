@@ -23,17 +23,6 @@ export const AuthContext = createContext({
 
 const reducer = (state, action) => {
     switch (action.type) {
-//        case 'INITIALISE':
-//        {
-//            const {isAuthenticated, user} = action.payload;
-//
-//            return {
-//                ...state,
-//                isAuthenticated,
-//                isInitialised: true,
-//                user
-//            };
-//        }
         case 'PERMISSIONS':
         {
             const { permissions } = action.payload;
@@ -42,14 +31,13 @@ const reducer = (state, action) => {
                 permissions: permissions
             };
         }
-//        case 'LOGOUT':
-//        {
-//            return {
-//                ...state,
-//                isAuthenticated: false,
-//                user: null
-//            };
-//        }
+        case 'LOGOUT':
+        {
+            return {
+                ...state,
+                permissions: null
+            };
+        }
         default:
         {
             return {...state};
@@ -65,6 +53,13 @@ export const AuthProvider = ({ children }) => {
             console.log(authResponse);
             history.push(AppURLs.app);
             updatePermissions();
+        });
+    };
+    
+    const logout = () => {
+        dataService.logout().then(() => {
+            window.location.href = AppURLs.welcome;
+            dispatch({ type: 'LOGOUT', payload: {}});
         });
     };
     
@@ -116,7 +111,7 @@ export const AuthProvider = ({ children }) => {
     };
     // ------------------------------------------------------------- RENDERING ------------------------------------------------------------
     return (
-            <AuthContext.Provider value={{...state, getCurrentModule, getAllRoutes, login}}>
+            <AuthContext.Provider value={{...state, getCurrentModule, getAllRoutes, login, logout}}>
                 {children}
             </AuthContext.Provider>
     );

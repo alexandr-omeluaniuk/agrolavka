@@ -6,7 +6,6 @@ import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
 import Avatar from '@material-ui/core/Avatar';
 import Icon from '@material-ui/core/Icon';
-import DataService from '../../service/DataService';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
@@ -16,8 +15,7 @@ import { NavLink } from "react-router-dom";
 import AppURLs from '../../conf/app-urls';
 import { common } from '../../module/common/module';
 import { SharedDataService } from './../../service/SharedDataService';
-
-let dataService = new DataService();
+import useAuth from '../../hooks/useAuth';
 
 const useStyles = makeStyles(theme => ({
     navLink: {
@@ -40,6 +38,7 @@ const useStyles = makeStyles(theme => ({
 function AccountMenu (props) {
     const classes = useStyles();
     const { t } = useTranslation();
+    const { logout } = useAuth();
     const { onItemClick, permissions } = props;
     const [applications, setApplications] = React.useState(null);
     // ===================================================== HOOKS ========================================================================
@@ -97,9 +96,7 @@ function AccountMenu (props) {
                             <ListItemText primary={t('component.account_menu.update')}/>
                         </ListItem>
                         <ListItem button onClick={(e) => {
-                            dataService.logout().then(() => {
-                                window.location.href = AppURLs.welcome;
-                            });
+                            logout();
                         }}>
                             <ListItemIcon>
                                 <Icon>power_settings_new</Icon>
