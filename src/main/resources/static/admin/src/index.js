@@ -7,10 +7,9 @@ import { createBrowserHistory } from "history";
 import AppURLs from './conf/app-urls';
 import Spinner from './component/util/Spinner';
 import ErrorBoundary from './component/util/ErrorBoundary';
-import Notification from './component/util/Notification';
 import { createTheme } from './conf/theme';
 import { AuthProvider } from './context/AuthContext';
-import { SharedDataService } from './service/SharedDataService';
+import { NotificationProvider } from './context/NotificationContext';
 import './conf/i18next-config';
 import 'moment/locale/ru';
 
@@ -40,23 +39,9 @@ const indexRoutes = [{
 
 function Application() {
     const [theme, setTheme] = React.useState(null);
-    const [openNotification, setOpenNotification] = React.useState(false);
-    const [notificationMessage, setNotificationMessage] = React.useState(null);
-    const [notificationDetails, setNotificationDetails] = React.useState(null);
-    const [notificationType, setNotificationType] = React.useState('info');
-    const [notificationDuration, setNotificationDuration] = React.useState(6000);
-
-    const showNotification = (msg, details, type, duration) => {
-        setNotificationMessage(msg);
-        setNotificationDetails(details);
-        setNotificationType(type ? type : 'info');
-        setOpenNotification(true);
-        setNotificationDuration(duration ? duration : 6000);
-    };
     
     useEffect(() => {
         if (!theme) {
-            SharedDataService.showNotification = showNotification;
             setTheme(createTheme());
             changeTheme = (newtheme) => {
                 setTheme(newtheme);
@@ -71,20 +56,20 @@ function Application() {
                 {displayApp ? (
                     <AuthProvider>
                         <ThemeProvider theme={theme}>
-                            <ErrorBoundary>
-                                <Router history={history}>
-                                    <Switch>
-                                        {indexRoutes.map((prop, key) => {
-                                            return <Route path={prop.path} component={prop.component} key={key} />;
-                                        })}
-                                        <Route exact path={AppURLs.context} key={'index-root'}>
-                                            <Redirect to={AppURLs.app}/>
-                                        </Route>
-                                    </Switch>
-                                </Router>
-                            </ErrorBoundary>
-                            <Notification open={openNotification} setOpen={setOpenNotification} message={notificationMessage} 
-                                    details={notificationDetails} severity={notificationType} duration={notificationDuration}/>
+                            <NotificationProvider>
+                                <ErrorBoundary>
+                                    <Router history={history}>
+                                        <Switch>
+                                            {indexRoutes.map((prop, key) => {
+                                                return <Route path={prop.path} component={prop.component} key={key} />;
+                                            })}
+                                            <Route exact path={AppURLs.context} key={'index-root'}>
+                                                <Redirect to={AppURLs.app}/>
+                                            </Route>
+                                        </Switch>
+                                    </Router>
+                                </ErrorBoundary>
+                            </NotificationProvider>
                         </ThemeProvider>
                     </AuthProvider>
                 ) : <Spinner open={true}/>}

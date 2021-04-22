@@ -14,8 +14,8 @@ import Divider from '@material-ui/core/Divider';
 import { NavLink } from "react-router-dom";
 import AppURLs from '../../conf/app-urls';
 import { common } from '../../module/common/module';
-import { SharedDataService } from './../../service/SharedDataService';
 import useAuth from '../../hooks/useAuth';
+import useNotification from '../../hooks/useNotification';
 
 const useStyles = makeStyles(theme => ({
     navLink: {
@@ -41,6 +41,7 @@ function AccountMenu (props) {
     const { logout } = useAuth();
     const { onItemClick, permissions } = props;
     const [applications, setApplications] = React.useState(null);
+    const { showNotification } = useNotification();
     // ===================================================== HOOKS ========================================================================
     useEffect(() => {
         if (!applications) {
@@ -82,7 +83,7 @@ function AccountMenu (props) {
                             if ('serviceWorker' in navigator) {
                                 navigator.serviceWorker.ready.then((registration) => {
                                     registration.update();
-                                    SharedDataService.showNotification(t('component.account_menu.update_success'), '', 'success');
+                                    showNotification(t('component.account_menu.update_success'), '', 'success');
                                 }).catch((error) => {
                                     console.error(error.message);
                                 });

@@ -16,7 +16,7 @@
  */
 
 import AppURLs from '../conf/app-urls';
-import { SharedDataService } from './SharedDataService';
+import useNotification from '../hooks/useNotification';
 import { history } from '../index';
 
 class DataService {
@@ -65,9 +65,8 @@ class DataService {
                 history.push(AppURLs.welcome);
             } else {
                 response.json().then(errJson => {
-                    if (SharedDataService.showNotification) {
-                        SharedDataService.showNotification(errJson.message, errJson.details, 'error');
-                    }
+                    const { showNotification } = useNotification();
+                    showNotification(errJson.message, errJson.details, 'error');
                 });
             }
         }).catch(error => {
