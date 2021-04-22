@@ -22,7 +22,7 @@
  * THE SOFTWARE.
  */
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Box from '@material-ui/core/Box';
 import Card from '@material-ui/core/Card';
@@ -35,13 +35,10 @@ import Copyright from '../component/Copyright';
 import { useTranslation } from 'react-i18next';
 import Form from '../component/form/Form';
 import { TYPES, VALIDATORS } from '../service/DataTypeService'
-import DataService from '../service/DataService';
-import { history } from '../index';
-import AppURLs from '../conf/app-urls';
 import { FormField, FormConfig, Validator, FormSubmit } from '../util/model/TableConfig';
 import background from '../assets/images/login-background.jpg';
+import useAuth from '../hooks/useAuth';
 
-let dataService = new DataService();
 
 const useStyles = makeStyles(theme => ({
     background: {
@@ -72,15 +69,9 @@ const useStyles = makeStyles(theme => ({
 export default function Welcome() {
     const classes = useStyles();
     const { t } = useTranslation();
-    useEffect(() => {
-        return () => {
-            dataService.abort();
-        };
-    }, []);
+    const { login } = useAuth();
     const doLogin = (data) => {
-        dataService.login(data).then(() => {
-            history.push(AppURLs.app);
-        });
+        login(data);
     };
     let formConfig = new FormConfig([
         new FormField('username', TYPES.TEXTFIELD, t('component.welcome.sign_in'))

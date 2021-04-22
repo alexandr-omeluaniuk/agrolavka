@@ -9,6 +9,7 @@ import Spinner from './component/util/Spinner';
 import ErrorBoundary from './component/util/ErrorBoundary';
 import Notification from './component/util/Notification';
 import { createTheme } from './conf/theme';
+import { AuthProvider } from './context/AuthContext';
 import { SharedDataService } from './service/SharedDataService';
 import './conf/i18next-config';
 import 'moment/locale/ru';
@@ -68,22 +69,24 @@ function Application() {
     return (
             <Suspense fallback={ < Spinner open = {true} / > }>
                 {displayApp ? (
-                    <ThemeProvider theme={theme}>
-                        <ErrorBoundary>
-                            <Router history={history}>
-                                <Switch>
-                                    {indexRoutes.map((prop, key) => {
-                                        return <Route path={prop.path} component={prop.component} key={key} />;
-                                    })}
-                                    <Route exact path={AppURLs.context} key={'index-root'}>
-                                        <Redirect to={AppURLs.app}/>
-                                    </Route>
-                                </Switch>
-                            </Router>
-                        </ErrorBoundary>
-                        <Notification open={openNotification} setOpen={setOpenNotification} message={notificationMessage} 
-                                details={notificationDetails} severity={notificationType} duration={notificationDuration}/>
-                    </ThemeProvider>
+                    <AuthProvider>
+                        <ThemeProvider theme={theme}>
+                            <ErrorBoundary>
+                                <Router history={history}>
+                                    <Switch>
+                                        {indexRoutes.map((prop, key) => {
+                                            return <Route path={prop.path} component={prop.component} key={key} />;
+                                        })}
+                                        <Route exact path={AppURLs.context} key={'index-root'}>
+                                            <Redirect to={AppURLs.app}/>
+                                        </Route>
+                                    </Switch>
+                                </Router>
+                            </ErrorBoundary>
+                            <Notification open={openNotification} setOpen={setOpenNotification} message={notificationMessage} 
+                                    details={notificationDetails} severity={notificationType} duration={notificationDuration}/>
+                        </ThemeProvider>
+                    </AuthProvider>
                 ) : <Spinner open={true}/>}
             </Suspense>
     );
