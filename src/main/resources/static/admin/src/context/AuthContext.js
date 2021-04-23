@@ -82,6 +82,8 @@ export const AuthProvider = ({ children }) => {
     
     const logout = () => {
         dataService.logout().then(() => {
+            localStorage.removeItem('access_token');
+            DataService.jwt = null;
             window.location.href = AppURLs.welcome;
             dispatch({ type: 'LOGOUT', payload: {}});
         });
