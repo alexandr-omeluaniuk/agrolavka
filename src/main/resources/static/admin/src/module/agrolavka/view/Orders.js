@@ -123,7 +123,9 @@ function Orders() {
     };
     // ------------------------------------------------------- HOOKS ----------------------------------------------------------------------
     useEffect(() => {
-        updateTable();
+        if (notificationsOn !== null) {
+            updateTable();
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [notificationsOn]);
     useEffect(() => {
