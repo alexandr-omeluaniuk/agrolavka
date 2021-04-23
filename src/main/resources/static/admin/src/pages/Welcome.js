@@ -36,7 +36,7 @@ import { useTranslation } from 'react-i18next';
 import Form from '../component/form/Form';
 import { TYPES, VALIDATORS } from '../service/DataTypeService'
 import { FormField, FormConfig, Validator, FormSubmit } from '../util/model/TableConfig';
-import background from '../assets/images/login-background.jpg';
+import background from '../assets/images/main-background.jpg';
 import useAuth from '../hooks/useAuth';
 
 

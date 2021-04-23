@@ -34,7 +34,7 @@
     }
   ],
   "start_url": "/admin/app/common/applications",
-  "display": "standalone",
+  "display": "fullscreen",
   "theme_color": "#ffa500",
   "background_color": "#ffffff"
 }
