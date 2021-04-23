@@ -35,7 +35,7 @@
         "address": "Адрес",
         "enable_notifications": "Уведомления выключены. Нажмите чтобы включить уведомления",
         "enable_notifications_success": "Уведомления включены",
-        "disable_notifications": "Уведомления выключены. Нажмите чтобы выключить уведомления",
+        "disable_notifications": "Уведомления включены. Нажмите чтобы выключить уведомления",
         "disable_notifications_success": "Уведомления отключены",
         "order_total": "Сумма"
     },
