@@ -53,3 +53,6 @@ platform:
     views: /admin/app
   #firebase
   firebaseConfigFilePath: /path/to/service.json
+  jwt:
+    secret: 0dsgj30h0gh2308hgfd79gh9dg9fhd9gh89h23293bb0sdf
+    validityPeriodInHours: 8

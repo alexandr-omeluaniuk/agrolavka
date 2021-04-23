@@ -13,6 +13,8 @@ import AppURLs from '../conf/app-urls';
 import { history } from '../index';
 import DataService from '../service/DataService';
 
+DataService.jwt = localStorage.getItem('access_token') ? localStorage.getItem('access_token') : null;
+
 const dataService = new DataService();
 
 const initialAuthState = {
@@ -67,6 +69,8 @@ export const AuthProvider = ({ children }) => {
         dataService.login(data).then((authResponse) => {
             console.log(authResponse);
             if (authResponse) {
+                DataService.jwt = authResponse.jwt;
+                localStorage.setItem('access_token', authResponse.jwt);
                 updatePermissions(() => {
                     history.push(AppURLs.app);
                 });

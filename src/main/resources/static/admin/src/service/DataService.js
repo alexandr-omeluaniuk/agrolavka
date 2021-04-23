@@ -47,13 +47,17 @@ class DataService {
     }
     _request = (method, url, payload) => {
         let signal = this.abortController.signal;
+        const headers = {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        };
+        if (DataService.jwt) {
+            headers['Authorization'] = 'Bearer ' + DataService.jwt;
+        }
         return fetch(url, {
             method: method,
             signal: signal,
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
+            headers: headers,
             body: payload ? JSON.stringify(payload) : null
         }).then(function(response) {
             if (response.ok) {
