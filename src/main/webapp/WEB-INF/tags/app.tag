@@ -75,7 +75,7 @@
         <!-- MDB -->
         <link href="/assets/vendor/MDB5-STANDARD-UI-KIT-Free-3.5.0/css/mdb.min.css" rel="stylesheet"/>
 
-        <!-- Template Main CSS File -->
+        <!-- Main CSS File -->
         <link href="/assets/css/style-mb.css" rel="stylesheet">
     </head>
 
@@ -87,6 +87,8 @@
         <!-- Vendor JS Files -->
         <script type="text/javascript" src="/assets/vendor/MDB5-STANDARD-UI-KIT-Free-3.5.0/js/mdb.min.js"></script>
         <script type="text/javascript" src="/assets/vendor/purecounter/purecounter.js"></script>
+        <!-- Main CSS File -->
+        <script type="text/javascript" src="/assets/js/main-mb.js"></script>
     </body>
 
 </html>

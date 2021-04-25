@@ -31,20 +31,37 @@ and open the template in the editor.
     background-position: center center;
 }
 .carousel-item:nth-child(3) {
-    background-image: url('https://mdbootstrap.com/img/Photos/Others/images/78.jpg');
+    background-image: url('/assets/img/intro/delivery.jpg');
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center center;
 }
 
 /* Height for devices larger than 576px */
-#introCarousel {
-    margin-top: -58.59px;
+@media (min-width: 992px) {
+    #introCarousel {
+        margin-top: -58.59px;
+    }
+    #introCarousel,
+    .carousel-inner,
+    .carousel-item,
+    .carousel-item.active {
+        height: 50vh;
+    }
 }
-#introCarousel,
-.carousel-inner,
-.carousel-item,
-.carousel-item.active {
-    height: 50vh;
+
+@media (max-width: 992px) {
+    #introCarousel:not([data-expanded="true"]) {
+        margin-top: -58.59px;
+    }
+    #introCarousel,
+    .carousel-inner,
+    .carousel-item,
+    .carousel-item.active {
+        height: 100vh;
+    }
+    nav[data-expanded="true"] {
+        background-color: #00000085;
+    }
 }
 

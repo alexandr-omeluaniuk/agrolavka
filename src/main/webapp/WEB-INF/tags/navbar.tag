@@ -49,5 +49,5 @@
     </nav>
     <!-- Navbar -->
 
-    <t:highlights/>
+    <t:intro/>
 </header>

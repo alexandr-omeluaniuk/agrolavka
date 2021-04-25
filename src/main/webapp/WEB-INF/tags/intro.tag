@@ -47,17 +47,11 @@
 
         <!-- Single item -->
         <div class="carousel-item">
-            <div class="mask" style="
-                 background: linear-gradient(
-                 45deg,
-                 rgba(29, 236, 197, 0.7),
-                 rgba(91, 14, 214, 0.7) 100%
-                 );
-                 ">
+            <div class="mask" style="background-color: rgba(0, 0, 0, 0.4);">
                 <div class="d-flex justify-content-center align-items-center h-100">
                     <div class="text-white text-center">
-                        <h2>And cover it with any mask</h2>
-                        <a class="btn btn-outline-light btn-lg m-2" href="https://mdbootstrap.com/docs/standard/content-styles/masks/" target="_blank" role="button">Learn about masks</a>
+                        <h1>Доставка в кратчайшие сроки по всей Беларуси</h1>
+                        <a class="btn btn-outline-light btn-lg m-2" href="/delivery" role="button">Условия доставки</a>
                     </div>
                 </div>
             </div>
