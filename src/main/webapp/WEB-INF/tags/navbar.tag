@@ -11,7 +11,7 @@
 <%-- any content can be specified here e.g.: --%>
 <header>
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark d-none d-lg-block" style="z-index: 2000;">
+    <nav class="navbar navbar-expand-lg navbar-dark" style="z-index: 2000;">
         <div class="container-fluid">
             <!-- Navbar brand -->
             <a href="/" class="navbar-brand nav-link">
@@ -19,7 +19,8 @@
                     <i class="fas fa-carrot agrolavka-logo me-2"></i>Агролавка
                 </strong>
             </a>
-            <button class="navbar-toggler" type="button" data-mdb-toggle="collapse" data-mdb-target="#navbarExample01" aria-controls="navbarExample01" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-mdb-toggle="collapse"
+                    data-mdb-target="#navbarExample01" aria-controls="navbarExample01" aria-expanded="false" aria-label="Toggle navigation">
                 <i class="fas fa-bars"></i>
             </button>
             <div class="collapse navbar-collapse" id="navbarExample01">

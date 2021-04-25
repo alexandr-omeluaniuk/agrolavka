@@ -25,10 +25,9 @@
             <div class="mask" style="background-color: rgba(0, 0, 0, 0.6);">
                 <div class="d-flex justify-content-center align-items-center h-100">
                     <div class="text-white text-center">
-                        <h1 class="mb-3">Learn Bootstrap 5 with MDB</h1>
-                        <h5 class="mb-4">Best &amp; free guide of responsive web design</h5>
-                        <a class="btn btn-outline-light btn-lg m-2" href="https://www.youtube.com/watch?v=c9B4TPnak1A" role="button" rel="nofollow" target="_blank">Start tutorial</a>
-                        <a class="btn btn-outline-light btn-lg m-2" href="https://mdbootstrap.com/docs/standard/" target="_blank" role="button">Download MDB UI KIT</a>
+                        <h1 class="mb-3">Более <span class="purecounter fw-bold" data-purecounter-end="${productsCount}"></span> наименований, приглашаем за покупками!</h1>
+                        <h5 class="mb-4">выгодные цены, акции и скидки</h5>
+                        <a class="btn btn-outline-light btn-lg m-2" href="/catalog" role="button" >Перейти в каталог товаров</a>
                     </div>
                 </div>
             </div>
@@ -39,7 +38,8 @@
             <div class="mask" style="background-color: rgba(0, 0, 0, 0.3);">
                 <div class="d-flex justify-content-center align-items-center h-100">
                     <div class="text-white text-center">
-                        <h2>You can place here any content</h2>
+                        <h1>Воспользуйтесь нашей дисконтной программой</h1>
+                        <h5>скидки от 3% до 7% на все товары, кроме акционных</h5>
                     </div>
                 </div>
             </div>
