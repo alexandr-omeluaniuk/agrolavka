@@ -67,23 +67,16 @@
         <link href="/favicon.svg?" rel="icon">
         <link href="/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
 
-        <!-- Google Fonts -->
-        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i" rel="stylesheet">
 
         <!-- Vendor CSS Files -->
-        <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-        <link href="/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
         <link href="/assets/vendor/fontawesome-free-5.15.2-web/css/all.css" rel="stylesheet">
+        <!-- Google Fonts -->
+        <!--link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet"/-->
+        <!-- MDB -->
+        <link href="/assets/vendor/MDB5-STANDARD-UI-KIT-Free-3.5.0/css/mdb.min.css" rel="stylesheet"/>
 
         <!-- Template Main CSS File -->
-        <link href="/assets/css/style.css" rel="stylesheet">
-
-        <!-- =======================================================
-        * Template Name: Rapid - v4.0.1
-        * Template URL: https://bootstrapmade.com/rapid-multipurpose-bootstrap-business-template/
-        * Author: BootstrapMade.com
-        * License: https://bootstrapmade.com/license/
-        ======================================================== -->
+        <link href="/assets/css/style-mb.css" rel="stylesheet">
     </head>
 
     <body>
@@ -91,15 +84,9 @@
         <jsp:doBody/>
         <t:footer></t:footer>
 
-        <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
-
         <!-- Vendor JS Files -->
-        <script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-        <script src="/assets/vendor/purecounter/purecounter.js"></script>
-
-        <!-- Template Main JS File -->
-        <script src="/assets/js/main.js"></script>
-
+        <script type="text/javascript" src="/assets/vendor/MDB5-STANDARD-UI-KIT-Free-3.5.0/js/mdb.min.js"></script>
+        <script type="text/javascript" src="/assets/vendor/purecounter/purecounter.js"></script>
     </body>
 
 </html>
