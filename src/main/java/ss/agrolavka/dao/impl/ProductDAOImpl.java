@@ -15,6 +15,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.CriteriaUpdate;
 import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Join;
 import javax.persistence.criteria.JoinType;
@@ -26,6 +27,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import ss.agrolavka.dao.ProductDAO;
 import ss.agrolavka.wrapper.ProductsSearchRequest;
+import ss.entity.agrolavka.Discount;
 import ss.entity.agrolavka.Product;
 import ss.entity.agrolavka.Product_;
 import ss.entity.agrolavka.ProductsGroup;
@@ -168,5 +170,15 @@ class ProductDAOImpl implements ProductDAO {
         criteria.select(c).where(cb.equal(c.get(Product_.url), url));
         List<Product> list = em.createQuery(criteria).getResultList();
         return list.isEmpty() ? null : list.get(0);
+    }
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public void resetDiscounts() {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaUpdate<Product> criteria = cb.createCriteriaUpdate(Product.class);
+        Root<Product> c = criteria.from(Product.class);
+        Expression<Discount> expr = cb.nullLiteral(Discount.class);
+        criteria.set(c.get(Product_.discount), expr);
+        em.createQuery(criteria).executeUpdate();
     }
 }

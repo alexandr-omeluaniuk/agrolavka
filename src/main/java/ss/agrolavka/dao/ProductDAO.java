@@ -46,4 +46,8 @@ public interface ProductDAO {
      * @return product.
      */
     Product getProductByUrl(String url);
+    /**
+     * Reset discounts.
+     */
+    void resetDiscounts();
 }

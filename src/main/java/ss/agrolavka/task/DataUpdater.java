@@ -24,6 +24,7 @@ import ss.agrolavka.dao.ExternalEntityDAO;
 import ss.agrolavka.dao.ProductDAO;
 import ss.agrolavka.service.MySkladIntegrationService;
 import ss.agrolavka.util.UrlProducer;
+import ss.entity.agrolavka.Discount;
 import ss.entity.agrolavka.PriceType;
 import ss.entity.agrolavka.Product;
 import ss.entity.agrolavka.ProductsGroup;
@@ -164,6 +165,18 @@ public class DataUpdater {
     }
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     private void importProducts() throws Exception {
+        productDAO.resetDiscounts();
+        coreDAO.massDelete(coreDAO.getAll(Discount.class));
+        List<Discount> discounts = mySkladIntegrationService.getDiscounts();
+        Map<String, Discount> discountsMap = new HashMap();
+        for (Discount discount : discounts) {
+            discount.getProducts().forEach(p -> {
+                discountsMap.put(p.getExternalId(), discount);
+            });
+            discount.setProducts(null);
+        }
+        coreDAO.massCreate(discounts);
+        LOG.info("discounts [" + discounts.size() + "]");
         List<Product> products = new ArrayList<>();
         Map<String, Product> stock = new HashMap<>();
         int offset = 0;
@@ -183,6 +196,7 @@ public class DataUpdater {
                 t += "-alt";
             }
             product.setUrl(t);
+            product.setDiscount(discountsMap.get(product.getExternalId()));
             productsMap.put(product.getExternalId(), product);
             unique.add(t);
         }
@@ -204,6 +218,7 @@ public class DataUpdater {
             eProduct.setUrl(actualProduct.getUrl());
             eProduct.setQuantity(stockProduct != null ? stockProduct.getQuantity() : 0);
             eProduct.setUpdated(actualProduct.getUpdated());
+            eProduct.setDiscount(actualProduct.getDiscount());
             existProductsIDs.add(eProduct.getExternalId());
             LOG.trace("update product: " + eProduct);
         }
