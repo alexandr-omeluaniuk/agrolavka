@@ -27,6 +27,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import ss.agrolavka.AgrolavkaConfiguration;
 import ss.agrolavka.service.MySkladIntegrationService;
+import ss.entity.agrolavka.Discount;
 import ss.entity.agrolavka.PriceType;
 import ss.entity.agrolavka.Product;
 import ss.entity.agrolavka.ProductsGroup;
@@ -205,6 +206,35 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
             result.put(product.getCode(), product);
         }
         return result;
+    }
+    @Override
+    public List<Discount> getDiscounts() throws Exception {
+        String response = request("/entity/discount", "GET", null);
+        JSONObject json = new JSONObject(response);
+        JSONArray rows = json.getJSONArray("rows");
+        List<Discount> discounts = new ArrayList();
+        for (int i = 0; i < rows.length(); i++) {
+            JSONObject row = rows.getJSONObject(i);
+            if (row.getBoolean("active") && row.getBoolean("allAgents")
+                    && !row.getBoolean("allProducts") && row.has("assortment")) {
+                Discount discount = new Discount();
+                discount.setExternalId(row.getString("id"));
+                discount.setName(row.getString("name"));
+                discount.setProducts(new ArrayList());
+                discount.setDiscount(row.getDouble("discount"));
+                JSONArray assortment = row.getJSONArray("assortment");
+                for (int j = 0; j < assortment.length(); j++) {
+                    JSONObject productData = assortment.getJSONObject(j).getJSONObject("meta");
+                    Product product = new Product();
+                    String link = productData.getString("href");
+                    String productId = link.substring(link.lastIndexOf("/") + 1);
+                    product.setExternalId(productId);
+                    discount.getProducts().add(product);
+                }
+                discounts.add(discount);
+            }
+        }
+        return discounts;
     }
     // ============================================= PRIVATE ==========================================================
     /**

@@ -7,6 +7,7 @@ package ss.agrolavka.service;
 
 import java.util.List;
 import java.util.Map;
+import ss.entity.agrolavka.Discount;
 import ss.entity.agrolavka.PriceType;
 import ss.entity.agrolavka.Product;
 import ss.entity.agrolavka.ProductsGroup;
@@ -103,4 +104,10 @@ public interface MySkladIntegrationService {
      * @throws Exception error.
      */
     Map<String, Product> getStock(int offset, int limit) throws Exception;
+    /**
+     * Get discounts.
+     * @return discounts.
+     * @throws Exception error.
+     */
+    List<Discount> getDiscounts() throws Exception;
 }

@@ -99,6 +99,10 @@ public class Product extends ExternalEntity implements Serializable {
     @Size(max = 255)
     @Column(name = "seo_description", length = 255)
     private String seoDescription;
+    /** Discount. */
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "discount_id")
+    private Discount discount;
     // ============================================== SET & GET =======================================================
     /**
      * @return the name
@@ -256,6 +260,18 @@ public class Product extends ExternalEntity implements Serializable {
      */
     public void setSeoDescription(String seoDescription) {
         this.seoDescription = seoDescription;
+    }
+    /**
+     * @return the discount
+     */
+    public Discount getDiscount() {
+        return discount;
+    }
+    /**
+     * @param discount the discount to set
+     */
+    public void setDiscount(Discount discount) {
+        this.discount = discount;
     }
     // ================================================================================================================
     @Override
