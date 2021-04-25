@@ -71,7 +71,7 @@
         <!-- Vendor CSS Files -->
         <link href="/assets/vendor/fontawesome-free-5.15.2-web/css/all.css" rel="stylesheet">
         <!-- Google Fonts -->
-        <!--link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet"/-->
+        <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet"/>
         <!-- MDB -->
         <link href="/assets/vendor/MDB5-STANDARD-UI-KIT-Free-3.5.0/css/mdb.min.css" rel="stylesheet"/>
 
