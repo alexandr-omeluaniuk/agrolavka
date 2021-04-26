@@ -21,8 +21,8 @@
                     <div class="col-sm-4">
                         <h4>Полезные ссылки</h4>
                         <ul class="list-unstyled">
-                            <li><a href="/">Главная</a></li>
-                            <li><a href="/catalog">Каталог товаров</a></li>
+                            <li><a class="text-dark" href="/">Главная</a></li>
+                            <li><a class="text-dark" href="/catalog">Каталог товаров</a></li>
                             <li>
                                 <a href="https://www.instagram.com/agrolavka.by" class="instagram">
                                     <img src="/assets/img/instagram.ico" alt="Instagram"/>

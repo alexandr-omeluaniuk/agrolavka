@@ -11,7 +11,7 @@
 <div class="input-group" id="agr-quick-search-container">
     <input type="search" class="form-control" aria-label="Поиск товаров" id="products-search" placeholder="Быстрый поиск"
            autocomplete="off">
-    <ul class="dropdown-menu shadow-sm" aria-labelledby="agr-quick-search-container" id="products-search-results-list"></ul>
+    <ul class="dropdown-menu" aria-labelledby="agr-quick-search-container" id="products-search-results-list"></ul>
     <span class="input-group-text"><i class="fas fa-search" style="color:white;"></i></span>
 </div>
 
