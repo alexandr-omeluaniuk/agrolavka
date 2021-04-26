@@ -7,12 +7,14 @@
 <%@tag description="put the tag description here" pageEncoding="UTF-8"%>
 
 <%-- The list of normal or fragment attributes can be specified here: --%>
+<%@attribute name="message"%>
+
 <%-- any content can be specified here e.g.: --%>
-<div class="input-group" id="agr-quick-search-container">
+<div class="input-group mb-3" id="products-search-container">
     <input type="search" class="form-control" aria-label="Поиск товаров" id="products-search" placeholder="Быстрый поиск"
            autocomplete="off">
-    <ul class="dropdown-menu shadow-sm" aria-labelledby="agr-quick-search-container" id="products-search-results-list"></ul>
-    <span class="input-group-text"><i class="fas fa-search" style="color:white;"></i></span>
+    <ul class="dropdown-menu shadow-sm" aria-labelledby="products-search-container" id="products-search-results-list"></ul>
+    <span class="input-group-text"><i class="fas fa-search"></i></span>
 </div>
 
 <script>
@@ -37,7 +39,7 @@
             }
         });
 
-        document.querySelector('#agr-quick-search-container').addEventListener('blur', function (e) {
+        document.querySelector('#products-search-container').addEventListener('blur', function (e) {
             if (e.relatedTarget === null) {
                 const searchResultOutput = document.querySelector('#products-search-results-list');
                 searchResultOutput.classList.remove("show");

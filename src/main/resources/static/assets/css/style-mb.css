@@ -37,7 +37,6 @@ and open the template in the editor.
     background-position: center center;
 }
 
-/* Height for devices larger than 576px */
 @media (min-width: 992px) {
     #introCarousel {
         margin-top: -58.59px;
@@ -47,6 +46,10 @@ and open the template in the editor.
     .carousel-item,
     .carousel-item.active {
         height: 50vh;
+    }
+    .agr-quick-search-lg {
+        width: 400px;
+        margin-right: 10px;
     }
 }
 
@@ -63,5 +66,33 @@ and open the template in the editor.
     nav[data-expanded="true"] {
         background-color: #00000085;
     }
+    .agr-quick-search-xs {
+        min-width: 300px;
+    }
+}
+
+#products-search-results-list {
+    padding: 0;
+    margin-top: 0px;
+    max-height: calc(100vh - 100px);
+    overflow-y: auto;
+    z-index: 9999;
+}
+#products-search-results-list h6 {
+    max-width: 400px;
+    white-space: pre-line;
+    font-size: .9rem;
+}
+#products-search-results-list .text-muted {
+    font-size: .8rem;
+}
+#products-search-results-list .highlighted-text {
+    color: var(--bs-purple);
+    background-color: rgba(121,82,179,.07);
+}
+#products-search:focus {
+    color: var(--bs-purple);
+    border-color: white;
+    box-shadow: 0 0 0 3px rgb(121 82 179 / 25%);
 }
 
