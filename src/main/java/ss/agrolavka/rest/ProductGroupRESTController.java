@@ -37,8 +37,6 @@ public class ProductGroupRESTController {
     @RequestMapping(value = "/image/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public EntityImage getProductGroupImage(@PathVariable("id") Long id) throws Exception {
         EntityImage image = coreDAO.findById(id, ProductsGroup.class).getImage();
-        System.out.println(image.getName());
-        System.out.println(image.getData().length);
         return image;
     }
 }

@@ -47,7 +47,6 @@ class ProductsGroupEntityListener implements PlatformEntityListener<ProductsGrou
 
     @Override
     public void preUpdate(ProductsGroup entity) throws Exception {
-        System.out.println(entity.getImage());
         ProductsGroup entityFromDB = coreDAO.findById(entity.getId(), ProductsGroup.class);
         entityFromDB.setImage(entity.getImage());
         coreDAO.update(entityFromDB);
