@@ -72,6 +72,7 @@ public class ProductsGroup extends ExternalEntity implements Serializable, Compa
     @Column(name = "seo_description", length = 255)
     private String seoDescription;
     /** Image. */
+    @FormField
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "image_id")
@@ -176,6 +177,7 @@ public class ProductsGroup extends ExternalEntity implements Serializable, Compa
     /**
      * @return the image
      */
+    @JsonIgnore
     public EntityImage getImage() {
         return image;
     }

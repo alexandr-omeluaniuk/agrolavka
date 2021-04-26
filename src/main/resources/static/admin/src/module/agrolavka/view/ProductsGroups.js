@@ -157,8 +157,12 @@ function ProductsGroups(props) {
     };
     const onEditGroup = () => {
         setFormTitle(t('m_agrolavka:products_groups.edit_group'));
-        dataService.get('/agrolavka/protected/product-group/image/' + record.id).then(image => {
-            selectedProductGroup.image = `data:${image.type};base64,${image.data}`;
+        dataService.get('/agrolavka/protected/product-group/image/' + selectedProductGroup.id).then(image => {
+            console.log(image);
+            if (image && image.data) {
+                image.data = `data:${image.type};base64,${image.data}`;
+                selectedProductGroup.image = image;
+            }
             setRecord(selectedProductGroup);
             setFormOpen(true);
         });
