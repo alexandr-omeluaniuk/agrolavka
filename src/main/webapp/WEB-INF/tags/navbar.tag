@@ -9,9 +9,13 @@
 
 <%-- The list of normal or fragment attributes can be specified here: --%>
 <%-- any content can be specified here e.g.: --%>
+<%
+    String uri = request.getRequestURI();
+    Boolean isIntroVisible = uri.endsWith("home.jsp");
+%>
 <header>
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark" style="z-index: 2000;">
+    <nav class="navbar navbar-expand-lg navbar-dark <%= !isIntroVisible ? "agr-bg-dark" : ""%>" style="z-index: 2000;">
         <div class="container-fluid">
             <!-- Navbar brand -->
             <a href="/" class="navbar-brand nav-link">
@@ -48,6 +52,5 @@
         </div>
     </nav>
     <!-- Navbar -->
-
-    <t:intro/>
+    <t:intro visible="<%= isIntroVisible %>"/>
 </header>

@@ -53,10 +53,6 @@ public class SiteController {
     public String home(Model model, HttpServletRequest httpRequest) throws Exception {
         insertCartDataToModel(httpRequest, model);
         model.addAttribute("title", "Все для сада и огорода");
-        ProductsSearchRequest request = new ProductsSearchRequest();
-        request.setPage(1);
-        request.setPageSize(Integer.MAX_VALUE);
-        model.addAttribute("productsCount", productDAO.count(request));
         ProductsSearchRequest searchRequest = new ProductsSearchRequest();
         searchRequest.setPage(1);
         searchRequest.setPageSize(4);
@@ -72,7 +68,7 @@ public class SiteController {
      * @return page.
      */
     @RequestMapping("/cart")
-    public String cart(Model model, HttpServletRequest httpRequest) {
+    public String cart(Model model, HttpServletRequest httpRequest) throws Exception {
         insertCartDataToModel(httpRequest, model);
         return "cart";
     }
@@ -83,7 +79,7 @@ public class SiteController {
      * @return page.
      */
     @RequestMapping("/order")
-    public String order(Model model, HttpServletRequest httpRequest) {
+    public String order(Model model, HttpServletRequest httpRequest) throws Exception {
         insertCartDataToModel(httpRequest, model);
         return "order";
     }
@@ -94,7 +90,7 @@ public class SiteController {
      * @return page name.
      */
     @RequestMapping("/error/page-not-found")
-    public String error404(Model model, HttpServletRequest httpRequest) {
+    public String error404(Model model, HttpServletRequest httpRequest) throws Exception {
         insertCartDataToModel(httpRequest, model);
         return "error/404";
     }
@@ -238,7 +234,7 @@ public class SiteController {
      * @param request HTTP request.
      * @param model page model.
      */
-    private void insertCartDataToModel(HttpServletRequest request, Model model) {
+    private void insertCartDataToModel(HttpServletRequest request, Model model) throws Exception {
         Order order = (Order) request.getSession(true).getAttribute(SiteConstants.CART_SESSION_ATTRIBUTE);
         if (order == null) {
             order = new Order();
@@ -254,5 +250,9 @@ public class SiteController {
         model.addAttribute("cart", order);
         model.addAttribute("totalInteger", parts[0]);
         model.addAttribute("totalDecimal", parts[1]);
+        ProductsSearchRequest requestX = new ProductsSearchRequest();
+        requestX.setPage(1);
+        requestX.setPageSize(Integer.MAX_VALUE);
+        model.addAttribute("productsCount", productDAO.count(requestX));
     }
 }

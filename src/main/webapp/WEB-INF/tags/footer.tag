@@ -21,10 +21,10 @@
                     <div class="col-sm-4">
                         <h4>Полезные ссылки</h4>
                         <ul class="list-unstyled">
-                            <li><a class="text-dark" href="/">Главная</a></li>
-                            <li><a class="text-dark" href="/catalog">Каталог товаров</a></li>
+                            <li class="mb-2"><a class="text-dark" href="/">Главная</a></li>
+                            <li class="mb-2"><a class="text-dark" href="/catalog">Каталог товаров</a></li>
                             <li>
-                                <a href="https://www.instagram.com/agrolavka.by" class="instagram">
+                                <a href="https://www.instagram.com/agrolavka.by">
                                     <img src="/assets/img/instagram.ico" alt="Instagram"/>
                                 </a>
                             </li>
@@ -39,14 +39,14 @@
                     ул.Мелиоративная, 61 <br>
                     г.Дрогичин, 225612<br>
                     Республика Беларусь <br>
-                    <strong>Телефон:</strong> <a href="tel:+375298713758">+375 29 871-37-58</a><br>
-                    <strong>Email:</strong> <a href="mailto:sergej4ikk@mail.ru">sergej4ikk@mail.ru</a><br>
+                    <strong>Телефон:</strong> <a class="text-dark" href="tel:+375298713758">+375 29 871-37-58</a><br>
+                    <strong>Email:</strong> <a class="text-dark" href="mailto:sergej4ikk@mail.ru">sergej4ikk@mail.ru</a><br>
                 </p>
                 <h4>Время работы</h4>
                 <p>
-                    <small class="text-muted"><b>пн-пт</b> <span class="text-dark">09:00 - 18:30</span></small><br/>
-                    <small class="text-muted"><b>сб</b> <span class="text-dark">09:00 - 16:00</span></small><br/>
-                    <small class="text-muted"><b>вс</b> <span class="text-dark">10:00 - 14:00</span></small>
+                    <small class="text-muted"><b>понедельник - пятница</b> <span class="text-dark float-end">09:00 - 18:30</span></small><br/>
+                    <small class="text-muted"><b>суббота</b> <span class="text-dark float-end">09:00 - 16:00</span></small><br/>
+                    <small class="text-muted"><b>воскресенье</b> <span class="text-dark float-end">10:00 - 14:00</span></small>
                 </p>
             </div>
 

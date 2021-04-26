@@ -18,7 +18,9 @@
     function navbarToggleButtonClick(button) {
         const expanded = button.getAttribute('aria-expanded') === 'true';
         const intro = document.querySelector('#introCarousel');
-        intro.setAttribute('data-expanded', expanded);
+        if (intro) {
+            intro.setAttribute('data-expanded', expanded);
+        }
         const navbar = document.querySelector('.navbar');
         navbar.setAttribute('data-expanded', expanded);
     }
