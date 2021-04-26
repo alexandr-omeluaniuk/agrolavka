@@ -74,8 +74,8 @@ public class ProductsGroup extends ExternalEntity implements Serializable, Compa
     /** Images. */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinTable(name = "product_images",
-            joinColumns = @JoinColumn(name = "product_id", referencedColumnName = "id"),
+    @JoinTable(name = "product_group_images",
+            joinColumns = @JoinColumn(name = "product_group_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "image_id", referencedColumnName = "id"))
     private List<EntityImage> images;
     // =============================================== SET & GET ======================================================
