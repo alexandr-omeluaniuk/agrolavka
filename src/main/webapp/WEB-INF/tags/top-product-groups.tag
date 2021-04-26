@@ -25,7 +25,8 @@
         <%
             }
         %>
-        
-
     </div>
+    
+    <h6 class="mb-2 mt-5"><strong>а также множество других товаров для сада и огорода</strong></h6>
+    <a class="btn btn-outline-dark btn-lg m-2" href="/catalog" role="button" >Перейти в каталог товаров</a>
 </section>

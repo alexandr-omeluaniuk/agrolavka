@@ -9,7 +9,7 @@
 <%-- The list of normal or fragment attributes can be specified here: --%>
 
 <%-- any content can be specified here e.g.: --%>
-<footer class="bg-light" id="footer">
+<footer class="bg-light shadow-1-strong" id="footer">
     <div class="container pt-4">
         <div class="row">
             <div class="col-lg-9">
