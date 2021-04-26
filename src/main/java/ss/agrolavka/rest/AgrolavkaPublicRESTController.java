@@ -36,6 +36,7 @@ import ss.entity.agrolavka.Address;
 import ss.entity.agrolavka.Order;
 import ss.entity.agrolavka.OrderPosition;
 import ss.entity.agrolavka.Product;
+import ss.entity.agrolavka.ProductsGroup;
 import ss.martin.platform.dao.CoreDAO;
 import ss.martin.platform.service.FirebaseClient;
 import ss.martin.platform.wrapper.PushNotification;
@@ -68,6 +69,20 @@ class AgrolavkaPublicRESTController {
     public byte[] getProductImage(@PathVariable("id") Long id) throws Exception {
         Product product = coreDAO.findById(id, Product.class);
         return product != null && !product.getImages().isEmpty() ? product.getImages().get(0).getData()
+                : Base64.getDecoder().decode(ImageStubs.NO_PRODUCT_IMAGE);
+    }
+    /**
+     * Get products group image.
+     * @param id products group ID.
+     * @return products group image.
+     * @throws Exception error.
+     */
+    @RequestMapping(value = "/products-group-image/{id}", method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    @Transactional(propagation = Propagation.SUPPORTS)
+    public byte[] getProductsGroupImage(@PathVariable("id") Long id) throws Exception {
+        ProductsGroup productsGroup = coreDAO.findById(id, ProductsGroup.class);
+        return productsGroup != null && !productsGroup.getImages().isEmpty() ? productsGroup.getImages().get(0).getData()
                 : Base64.getDecoder().decode(ImageStubs.NO_PRODUCT_IMAGE);
     }
     /**

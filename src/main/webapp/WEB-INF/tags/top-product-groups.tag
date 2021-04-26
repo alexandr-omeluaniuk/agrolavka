@@ -6,6 +6,7 @@
 
 <%@tag description="put the tag description here" pageEncoding="UTF-8"
        import="ss.agrolavka.util.UrlProducer,ss.entity.agrolavka.ProductsGroup,java.util.*"%>
+<%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 
 <%-- The list of normal or fragment attributes can be specified here: --%>
 
@@ -19,25 +20,7 @@
             for (ProductsGroup group : topCategories) {
         %>
         <div class="col-lg col-md col-sm-12">
-            <div class="card">
-                <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
-                    <img
-                        src="https://mdbootstrap.com/img/new/standard/nature/184.jpg"
-                        class="img-fluid"
-                        />
-                    <a href="#!">
-                        <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
-                    </a>
-                </div>
-                <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <p class="card-text">
-                        Some quick example text to build on the card title and make up the bulk of the
-                        card's content.
-                    </p>
-                    <a href="#!" class="btn btn-primary">Button</a>
-                </div>
-            </div>
+            <t:products-group-card group="<%= group %>"/>
         </div>
         <%
             }
