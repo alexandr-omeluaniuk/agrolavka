@@ -47,10 +47,6 @@ and open the template in the editor.
     .carousel-item.active {
         height: 50vh;
     }
-    .agr-quick-search-lg {
-        width: 400px;
-        margin-right: 10px;
-    }
 }
 
 @media (max-width: 992px) {
@@ -66,9 +62,11 @@ and open the template in the editor.
     nav[data-expanded="true"] {
         background-color: #00000085;
     }
-    .agr-quick-search-xs {
-        min-width: 300px;
-    }
+}
+
+#agr-quick-search-container {
+    width: 400px;
+    margin-right: 10px;
 }
 
 #products-search-results-list {

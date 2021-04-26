@@ -14,14 +14,11 @@
     <nav class="navbar navbar-expand-lg navbar-dark" style="z-index: 2000;">
         <div class="container-fluid">
             <!-- Navbar brand -->
-            <a href="/" class="navbar-brand nav-link d-none d-lg-block">
+            <a href="/" class="navbar-brand nav-link">
                 <strong class="d-flex justify-content-center align-items-center">
                     <i class="fas fa-carrot"></i><span class="ms-2">Агролавка</span>
                 </strong>
             </a>
-            <div class="d-block d-lg-none agr-quick-search-xs">
-                <t:products-search />
-            </div>
             <button class="navbar-toggler" type="button" data-mdb-toggle="collapse"
                     data-mdb-target="#navbarExample01" aria-controls="navbarExample01" aria-expanded="false" aria-label="Toggle navigation">
                 <i class="fas fa-bars"></i>
@@ -38,9 +35,7 @@
                         <a class="nav-link" href="#footer">Контакты</a>
                     </li>
                 </ul>
-                <div class="d-none d-lg-block agr-quick-search-lg">
-                    <t:products-search />
-                </div>
+                <t:products-search />
                 <ul class="navbar-nav d-flex flex-row">
                     <!-- Icons -->
                     <li class="nav-item me-3 me-lg-0">
