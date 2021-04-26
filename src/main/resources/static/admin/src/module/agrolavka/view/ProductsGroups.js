@@ -157,12 +157,11 @@ function ProductsGroups(props) {
     };
     const onEditGroup = () => {
         setFormTitle(t('m_agrolavka:products_groups.edit_group'));
-        dataService.get('/agrolavka/protected/product-group/image/' + selectedProductGroup.id).then(image => {
-            console.log(image);
-            if (image && image.data) {
-                image.data = `data:${image.type};base64,${image.data}`;
-                selectedProductGroup.image = image;
-            }
+        dataService.get('/agrolavka/protected/product-group/images/' + selectedProductGroup.id).then(images => {
+            images.forEach(i => {
+                i.data = `data:${i.type};base64,${i.data}`;
+            });
+            selectedProductGroup.images = images;
             setRecord(selectedProductGroup);
             setFormOpen(true);
         });
@@ -209,7 +208,7 @@ function ProductsGroups(props) {
                         .validation([
                     new Validator(VALIDATORS.MAX_LENGTH, {length: 255})
                 ]),
-                new FormField('image', TYPES.IMAGE, t('m_agrolavka:products_groups.image')).setGrid({xs: 12})
+                new FormField('images', TYPES.IMAGES, t('m_agrolavka:products_groups.image')).setGrid({xs: 12})
             ]));
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps

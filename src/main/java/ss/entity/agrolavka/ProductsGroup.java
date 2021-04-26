@@ -14,8 +14,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -71,12 +71,13 @@ public class ProductsGroup extends ExternalEntity implements Serializable, Compa
     @Size(max = 255)
     @Column(name = "seo_description", length = 255)
     private String seoDescription;
-    /** Image. */
-    @FormField
+    /** Images. */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "image_id")
-    private EntityImage image;
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinTable(name = "product_images",
+            joinColumns = @JoinColumn(name = "product_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "image_id", referencedColumnName = "id"))
+    private List<EntityImage> images;
     // =============================================== SET & GET ======================================================
     /**
      * @return the name
@@ -175,17 +176,16 @@ public class ProductsGroup extends ExternalEntity implements Serializable, Compa
         this.seoDescription = seoDescription;
     }
     /**
-     * @return the image
+     * @return the images
      */
-    @JsonIgnore
-    public EntityImage getImage() {
-        return image;
+    public List<EntityImage> getImages() {
+        return images;
     }
     /**
-     * @param image the image to set
+     * @param images the images to set
      */
-    public void setImage(EntityImage image) {
-        this.image = image;
+    public void setImages(List<EntityImage> images) {
+        this.images = images;
     }
     // ================================================================================================================
     @Override

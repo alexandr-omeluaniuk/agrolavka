@@ -5,6 +5,7 @@
  */
 package ss.agrolavka.rest;
 
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Propagation;
@@ -34,9 +35,10 @@ public class ProductGroupRESTController {
      * @throws Exception error.
      */
     @Transactional(propagation = Propagation.SUPPORTS)
-    @RequestMapping(value = "/image/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public EntityImage getProductGroupImage(@PathVariable("id") Long id) throws Exception {
-        EntityImage image = coreDAO.findById(id, ProductsGroup.class).getImage();
-        return image;
+    @RequestMapping(value = "/images/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<EntityImage> getProductGroupImage(@PathVariable("id") Long id) throws Exception {
+        List<EntityImage> images = coreDAO.findById(id, ProductsGroup.class).getImages();
+        int size = images.size();
+        return images;
     }
 }
