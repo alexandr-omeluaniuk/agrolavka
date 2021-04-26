@@ -6,17 +6,21 @@
 package ss.entity.agrolavka;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import org.json.JSONObject;
+import ss.entity.martin.EntityImage;
 import ss.martin.platform.anno.security.FormField;
 
 /**
@@ -52,11 +56,6 @@ public class ProductsGroup extends ExternalEntity implements Serializable, Compa
     @FormField
     @Column(name = "is_top_category")
     private Boolean topCategory;
-    /** Font awesome icon. */
-    @FormField
-    @Size(max = 255)
-    @Column(name = "fa_icon", length = 255)
-    private String faIcon;
     /** Description. */
     @FormField
     @Size(max = 4096)
@@ -72,6 +71,11 @@ public class ProductsGroup extends ExternalEntity implements Serializable, Compa
     @Size(max = 255)
     @Column(name = "seo_description", length = 255)
     private String seoDescription;
+    /** Image. */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "image_id")
+    private EntityImage image;
     // =============================================== SET & GET ======================================================
     /**
      * @return the name
@@ -134,18 +138,6 @@ public class ProductsGroup extends ExternalEntity implements Serializable, Compa
         this.topCategory = topCategory;
     }
     /**
-     * @return the faIcon
-     */
-    public String getFaIcon() {
-        return faIcon;
-    }
-    /**
-     * @param faIcon the faIcon to set
-     */
-    public void setFaIcon(String faIcon) {
-        this.faIcon = faIcon;
-    }
-    /**
      * @return the description
      */
     public String getDescription() {
@@ -180,6 +172,18 @@ public class ProductsGroup extends ExternalEntity implements Serializable, Compa
      */
     public void setSeoDescription(String seoDescription) {
         this.seoDescription = seoDescription;
+    }
+    /**
+     * @return the image
+     */
+    public EntityImage getImage() {
+        return image;
+    }
+    /**
+     * @param image the image to set
+     */
+    public void setImage(EntityImage image) {
+        this.image = image;
     }
     // ================================================================================================================
     @Override

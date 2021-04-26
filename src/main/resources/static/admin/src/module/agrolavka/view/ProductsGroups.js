@@ -183,12 +183,8 @@ function ProductsGroups(props) {
             setFormConfig(new FormConfig([
                 new FormField('id', TYPES.ID).hide(),
                 new FormField('name', TYPES.TEXTFIELD, t('m_agrolavka:products_groups.product_group_name'))
-                        .setGrid({xs: 12, md: 6}).validation([
+                        .setGrid({xs: 12, md: 9}).validation([
                     new Validator(VALIDATORS.REQUIRED),
-                    new Validator(VALIDATORS.MAX_LENGTH, {length: 255})
-                ]),
-                new FormField('faIcon', TYPES.TEXTFIELD, t('m_agrolavka:products_groups.product_group_fa_icon'))
-                        .setGrid({xs: 12, md: 3}).validation([
                     new Validator(VALIDATORS.MAX_LENGTH, {length: 255})
                 ]),
                 new FormField('topCategory', TYPES.BOOLEAN, t('m_agrolavka:products_groups.product_group_top_category'))
@@ -205,7 +201,8 @@ function ProductsGroups(props) {
                         .setGrid({xs: 12})
                         .validation([
                     new Validator(VALIDATORS.MAX_LENGTH, {length: 255})
-                ])
+                ]),
+                new FormField('image', TYPES.IMAGE, t('m_agrolavka:products_groups.image')).setGrid({xs: 12})
             ]));
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps

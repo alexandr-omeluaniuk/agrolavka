@@ -27,7 +27,8 @@
         "product_group_fa_icon": "Font Awesome icon",
         "product_group_description": "Description",
         "product_group_seo_title": "SEO and site page title",
-        "product_group_seo_description": "SEO meta description content"
+        "product_group_seo_description": "SEO meta description content",
+        "image": "Photo"
     },
     "orders": {
         "order_number": "Order Nr.",

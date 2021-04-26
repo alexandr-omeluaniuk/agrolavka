@@ -51,7 +51,7 @@ function HTMLEditor (props) {
                     <div className={classes.row}>
                         <FormControl variant={'outlined'} fullWidth required={required}>
                             <InputLabel>{label}</InputLabel>
-                            <OutlinedInput value={value} multiline={true} rows={rows} onChange={(e) => {
+                            <OutlinedInput value={value ? value : ''} multiline={true} rows={rows} onChange={(e) => {
                                 onChangeFieldValue(name, e.target.value);
                             }} labelWidth={labelWidth}/>
                             {helperText ? <FormHelperText variant={'outlined'} error={true}>{helperText}</FormHelperText> : null}

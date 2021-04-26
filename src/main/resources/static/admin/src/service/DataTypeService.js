@@ -21,6 +21,7 @@ export let TYPES = {
     MULTIPLESELECT: 'MULTIPLESELECT',
     FILE: 'FILE',
     IMAGES: 'IMAGES',
+    IMAGE: 'IMAGE',
     PASSWORD: 'PASSWORD',
     TIME: 'TIME',
     DATE: 'DATE',
@@ -118,6 +119,14 @@ export class DataTypeService {
                 });
             });
             return images;
+        } else if (value && field.type === TYPES.IMAGE) {
+            return {
+                id: value.id,
+                name: value.name,
+                size: value.size,
+                data: value.data,
+                type: value.type
+            };
         }
         return value;
     }
