@@ -15,7 +15,7 @@
 %>
 <header>
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark <%= !isIntroVisible ? "agr-bg-dark" : ""%>" style="z-index: 2000;">
+    <nav class="navbar navbar-expand-lg navbar-dark <%= !isIntroVisible ? "agr-bg-dark shadow-2-strong" : ""%>" style="z-index: 2000;">
         <div class="container-fluid">
             <!-- Navbar brand -->
             <a href="/" class="navbar-brand nav-link">

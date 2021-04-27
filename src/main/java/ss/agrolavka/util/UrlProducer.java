@@ -146,6 +146,15 @@ public class UrlProducer {
         return ALL_GROUPS;
     }
     /**
+     * Get root product groups.
+     * @return root product groups.
+     */
+    public static synchronized List<ProductsGroup> getRootProductGroups() {
+        return ALL_GROUPS.stream().filter(group -> {
+            return group.getParentId() == null;
+        }).collect(Collectors.toList());
+    }
+    /**
      * Transliterate Russian text.
      * @param message russian text.
      * @return transliterated text.

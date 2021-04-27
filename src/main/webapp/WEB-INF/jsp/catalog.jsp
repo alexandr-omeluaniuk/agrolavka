@@ -11,32 +11,26 @@
 <t:app title="${title}" metaDescription="${metaDescription}" canonical="${canonical}">
     
     <jsp:body>
-        <main>
+        <main class="mb-5 mt-5 min-vh-100">
             <div class="container">
-                <header class="section-header">
-                    <h3>Каталог товаров</h3>
+                <h3 class="text-center mb-4">${group != null ? group.name : 'Каталог товаров'}</h3>
+                <c:choose>
+                    <c:when test="${group != null}">
+                        <p class="text-muted text-justify">${group.description}</p>
+                    </c:when>    
+                    <c:otherwise>
+                        <p class="text-uppercase text-muted text-center">Товары для сада и огорода</p>
+                    </c:otherwise>
+                </c:choose>
+                <div class="row">
                     <c:choose>
-                        <c:when test="${title}">
-                            <p class="text-uppercase text-muted">Товары для сада и огорода</p>
+                        <c:when test="${group != null}">
+                            Display group subgroups
                         </c:when>    
                         <c:otherwise>
-                            <p class="text-uppercase text-muted">${title}</p>
+                            Display root groups
                         </c:otherwise>
                     </c:choose>
-
-                </header>
-                <div class="row justify-content-center">
-                    <div class="col-lg-3 col-md-12 intro-info order-lg-first order-last">
-                        <t:product-groups-tree groups="${groups}" groupId="${group.id}"></t:product-groups-tree>
-                    </div>
-
-                    <div class="col-lg-9 col-md-12 intro-info order-lg-first order-last">
-                        <t:breadcrumb label="${breadcrumbLabel}" groups="${breadcrumbPath}"></t:breadcrumb>
-                        <t:products-search-result searchResult="${searchResult}" pages="${searchResultPages}"
-                                                  page="${page}" view="${view}" sort="${sort}" group="${group}" cart="${cart}">
-
-                        </t:products-search-result>
-                    </div>
                 </div>
             </div>
         </main>

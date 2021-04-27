@@ -117,8 +117,9 @@ public class SiteController {
         model.addAttribute("groups", UrlProducer.getProductsGroups());
         if ("/catalog".equals(url)) {
             model.addAttribute("canonical", url  + (page != null ? "?page=" + page : ""));
-            model.addAttribute("title", "Каталог");
+            model.addAttribute("title", "Широкий выбор товаров для сада и огорода");
             model.addAttribute("metaDescription", "Каталог товаров для сада и огорода");
+            model.addAttribute("categories", UrlProducer.getRootProductGroups());
             insertSearchResultToPage(model, null, page, sort == null ? "alphabet" : sort);
             return "catalog";
         }
@@ -146,6 +147,7 @@ public class SiteController {
                 }
             }
             model.addAttribute("metaDescription", meta);
+            model.addAttribute("categories", UrlProducer.getCategoriesTree().get(group.getExternalId()));
             return "catalog";
         } else if (entity instanceof Product) {
             model.addAttribute("canonical", url);
