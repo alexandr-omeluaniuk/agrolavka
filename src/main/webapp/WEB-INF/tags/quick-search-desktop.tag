@@ -8,7 +8,7 @@
 
 <%-- The list of normal or fragment attributes can be specified here: --%>
 <%-- any content can be specified here e.g.: --%>
-<div class="input-group" id="agr-quick-search-container">
+<div class="input-group me-2" id="agr-quick-search-container">
     <input type="search" class="form-control" aria-label="Поиск товаров" id="products-search" placeholder="Быстрый поиск"
            autocomplete="off">
     <ul class="dropdown-menu" aria-labelledby="agr-quick-search-container" id="products-search-results-list"></ul>

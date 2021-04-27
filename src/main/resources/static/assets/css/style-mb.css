@@ -64,31 +64,27 @@ and open the template in the editor.
     }
 }
 
-#agr-quick-search-container {
-    width: 400px;
-    margin-right: 10px;
-}
-
-#products-search-results-list {
+#products-search-results-list, #agr-quick-search-result-mobile {
     padding: 0;
     margin-top: 0px;
     max-height: calc(100vh - 100px);
     overflow-y: auto;
     z-index: 9999;
+    width: 100%;
 }
-#products-search-results-list h6 {
+#products-search-results-list h6, #agr-quick-search-result-mobile h6 {
     max-width: 400px;
     white-space: pre-line;
     font-size: .9rem;
 }
-#products-search-results-list .text-muted {
+#products-search-results-list .text-muted, #agr-quick-search-result-mobile .text-muted {
     font-size: .8rem;
 }
-#products-search-results-list .highlighted-text {
+#products-search-results-list .highlighted-text, #agr-quick-search-result-mobile .highlighted-text {
     color: var(--bs-purple);
     background-color: rgba(121,82,179,.07);
 }
-#products-search:focus {
+#products-search:focus, #agr-quick-search-input-mobile:focus {
     color: var(--bs-purple);
     border-color: white;
     box-shadow: 0 0 0 3px rgb(121 82 179 / 25%);
