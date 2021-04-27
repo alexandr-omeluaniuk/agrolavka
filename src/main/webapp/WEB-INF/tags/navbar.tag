@@ -11,7 +11,7 @@
 <%-- any content can be specified here e.g.: --%>
 <header>
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark agr-bg-dark shadow-2-strong" style="z-index: 2000;">
+    <nav class="navbar navbar-expand-lg navbar-dark agr-navbar shadow-2-strong">
         <div class="container-fluid">
             <!-- Navbar brand -->
             <a href="/" class="navbar-brand nav-link d-none d-lg-block">

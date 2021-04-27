@@ -7,8 +7,19 @@ and open the template in the editor.
     Created on : Apr 25, 2021, 4:16:21 PM
     Author     : alex
 */
-.navbar .nav-link {
+:root {
+    --agr-background-color: #000000ba;
+}
+.agr-navbar .nav-link {
     color: #fff !important;
+}
+.agr-navbar {
+    background-color: #00000085;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 2000;
 }
 .arg-top-navbar {
     transition: all 0.5s;
@@ -63,7 +74,7 @@ and open the template in the editor.
         height: 100vh;
     }
     nav[data-expanded="true"] {
-        background-color: #00000085;
+        background-color: var(--agr-background-color);
     }
 }
 
@@ -100,16 +111,11 @@ and open the template in the editor.
     height: 0;
     padding-top: 100%;
 }
-.agr-bg-dark {
-    background-color: #00000085;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-}
 .agr-cart-badge {
     position: absolute !important;
     top: -12px !important;
     left: -16px;
 }
-
+#footer {
+    background-color: var(--agr-background-color) !important;
+}
