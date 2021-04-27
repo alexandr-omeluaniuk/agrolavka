@@ -14,15 +14,20 @@
     <nav class="navbar navbar-expand-lg navbar-dark agr-bg-dark shadow-2-strong" style="z-index: 2000;">
         <div class="container-fluid">
             <!-- Navbar brand -->
-            <a href="/" class="navbar-brand nav-link">
+            <a href="/" class="navbar-brand nav-link d-none d-lg-block">
                 <strong class="d-flex justify-content-center align-items-center">
                     <i class="fas fa-carrot"></i><span class="ms-2">Агролавка</span>
                 </strong>
             </a>
-            <button class="navbar-toggler" type="button" data-mdb-toggle="collapse"
-                    data-mdb-target="#navbarExample01" aria-controls="navbarExample01" aria-expanded="false" aria-label="Toggle navigation">
-                <i class="fas fa-bars"></i>
-            </button>
+            <div class="d-lg-none w-100">
+                <div class="d-flex align-items-center justify-content-between">
+                    <t:products-search-mobile />
+                    <button class="navbar-toggler" type="button" data-mdb-toggle="collapse"
+                            data-mdb-target="#navbarExample01" aria-controls="navbarExample01" aria-expanded="false" aria-label="Toggle navigation">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
             <div class="collapse navbar-collapse" id="navbarExample01">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item active">
@@ -35,15 +40,10 @@
                         <a class="nav-link" href="#footer">Контакты</a>
                     </li>
                 </ul>
-                <t:products-search />
-                <a href="/cart" class="btn btn-outline-light d-flex align-items-center me-2">
-                    <i class="fas fa-shopping-cart" style="position: relative;">
-                        <span class="badge rounded-pill agr-cart-badge">${cart.positions.size()}</span>
-                    </i>
-                    <span class="text-light fw-bold ms-2" data-cart-price>
-                        ${totalInteger}.<small>${totalDecimal}</small>
-                    </span>
-                </a>
+                <div class="d-none d-lg-flex">
+                    <t:products-search />
+                    <t:cart cart="${cart}" totalDecimal="${totalDecimal}" totalInteger="${totalInteger}"/>
+                </div>
                 <ul class="navbar-nav d-flex flex-row">
                     <!-- Icons -->
                     <li class="nav-item me-3 me-lg-0">
