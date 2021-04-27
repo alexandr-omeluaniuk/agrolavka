@@ -103,22 +103,10 @@ and open the template in the editor.
 }
 .agr-bg-dark {
     background-color: #00000085;
-}
-.agr-bg-dark .container-fluid {
-    z-index: 5000;
-}
-.agr-bg-dark:before {
-    content: "";
-    background-image: url('/assets/img/intro/catalog.jpg');
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center center;
-    position: absolute;
+    position: fixed;
+    top: 0;
     left: 0;
     right: 0;
-    bottom: 0;
-    top: 0;
-    opacity: .1;
 }
 .agr-cart-badge {
     position: absolute !important;

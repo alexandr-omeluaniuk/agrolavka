@@ -12,7 +12,8 @@
 
     <jsp:body>
         <main class="mt-5 mb-5">
-            <div class="container">
+            <t:intro visible="true"/>
+            <div class="container pt-5">
 
                 <!--Section: Content-->
                 <t:top-product-groups />

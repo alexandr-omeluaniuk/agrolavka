@@ -9,13 +9,9 @@
 
 <%-- The list of normal or fragment attributes can be specified here: --%>
 <%-- any content can be specified here e.g.: --%>
-<%
-    String uri = request.getRequestURI();
-    Boolean isIntroVisible = uri.endsWith("home.jsp");
-%>
 <header>
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark <%= !isIntroVisible ? "agr-bg-dark shadow-2-strong" : ""%>" style="z-index: 2000;">
+    <nav class="navbar navbar-expand-lg navbar-dark agr-bg-dark shadow-2-strong" style="z-index: 2000;">
         <div class="container-fluid">
             <!-- Navbar brand -->
             <a href="/" class="navbar-brand nav-link">
@@ -40,7 +36,7 @@
                     </li>
                 </ul>
                 <t:products-search />
-                <a href="/cart" class="btn btn-outline-light d-flex align-items-center">
+                <a href="/cart" class="btn btn-outline-light d-flex align-items-center me-2">
                     <i class="fas fa-shopping-cart" style="position: relative;">
                         <span class="badge rounded-pill agr-cart-badge">${cart.positions.size()}</span>
                     </i>
@@ -60,5 +56,4 @@
         </div>
     </nav>
     <!-- Navbar -->
-    <t:intro visible="<%= isIntroVisible %>"/>
 </header>
