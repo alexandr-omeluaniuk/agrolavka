@@ -41,7 +41,7 @@
                     </li>
                 </ul>
                 <div class="d-none d-lg-flex">
-                    <t:products-search />
+                    <t:quick-search-desktop />
                     <t:cart cart="${cart}" totalDecimal="${totalDecimal}" totalInteger="${totalInteger}"/>
                 </div>
                 <ul class="navbar-nav d-flex flex-row">
