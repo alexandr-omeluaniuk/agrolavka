@@ -20,13 +20,14 @@
                 </strong>
             </a>
             <div class="d-lg-none w-100">
-                <div class="d-flex align-items-center justify-content-between mb-2">
-                    <a class="nav-link" href="tel:+375298713758"><i class="fas fa-phone-alt"></i> +375 29 871-37-58 (МТС)</a>
-                    <button class="navbar-toggler" type="button" data-mdb-toggle="collapse"
-                            data-mdb-target="#navbarExample01" aria-controls="navbarExample01" aria-expanded="false" aria-label="Toggle navigation">
-                        <i class="fas fa-bars"></i>
-                    </button>
-                    
+                <div class="collapse show arg-top-navbar">
+                    <div class="d-flex align-items-center justify-content-between mb-2">
+                        <a class="nav-link" href="tel:+375298713758"><i class="fas fa-phone-alt"></i> +375 29 871-37-58 (МТС)</a>
+                        <button class="navbar-toggler" type="button" data-mdb-toggle="collapse"
+                                data-mdb-target="#navbarExample01" aria-controls="navbarExample01" aria-expanded="false" aria-label="Toggle navigation">
+                            <i class="fas fa-bars"></i>
+                        </button>
+                    </div>
                 </div>
                 <div class="d-flex align-items-center justify-content-between">
                     <t:quick-search-mobile />

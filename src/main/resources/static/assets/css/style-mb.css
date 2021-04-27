@@ -10,6 +10,9 @@ and open the template in the editor.
 .navbar .nav-link {
     color: #fff !important;
 }
+.arg-top-navbar {
+    transition: all 0.5s;
+}
 /* Carousel styling */
 #introCarousel,
 .carousel-inner,

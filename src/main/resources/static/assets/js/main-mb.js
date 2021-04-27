@@ -11,6 +11,15 @@
         
     });
     
+    document.addEventListener('scroll', function () {
+        const topNavbar = document.querySelector('.arg-top-navbar');
+        if (window.scrollY > 40) {
+            topNavbar.classList.remove('show');
+        } else {
+            topNavbar.classList.add('show');
+        }
+    });
+    
     // ===================================================== LISTENERS ====================================================================
 })();
 
