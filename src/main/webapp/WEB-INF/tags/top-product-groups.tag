@@ -12,7 +12,7 @@
 
 <%-- any content can be specified here e.g.: --%>
 <section class="text-center">
-    <h4 class="mb-5"><strong>Наша специализация</strong></h4>
+    <h4 class="mb-4"><strong>Наша основная специализация это</strong></h4>
 
     <div class="row">
         <% 
@@ -27,6 +27,6 @@
         %>
     </div>
     
-    <h6 class="mb-2 mt-5"><strong>а также множество других товаров для сада и огорода</strong></h6>
+    <h6 class="mb-2 mt-4"><strong>а также множество других товаров для сада и огорода</strong></h6>
     <a class="btn btn-outline-dark btn-lg m-2" href="/catalog" role="button" >Перейти в каталог товаров</a>
 </section>
