@@ -15,8 +15,19 @@
 <%-- any content can be specified here e.g.: --%>
 <c:if test="${label != null}">
     <% String divider = "--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);"; %>
-    <nav aria-label="breadcrumb" class="agrolavka-breadcrumb" style="<%= divider %>">
+    <nav aria-label="breadcrumb" style="<%= divider %>">
         <ol class="breadcrumb">
+            <%
+                if (groups != null) {
+            %>
+                <li class="breadcrumb-item">
+                    <a href="/catalog">
+                        <small>Каталог</small>
+                    </a>
+                </li>
+            <%
+                }
+            %>
             <% 
                 if (groups != null) {
                     for (ProductsGroup group : groups) { 

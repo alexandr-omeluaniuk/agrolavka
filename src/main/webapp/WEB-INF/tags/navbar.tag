@@ -40,6 +40,14 @@
                     </li>
                 </ul>
                 <t:products-search />
+                <a href="/cart" class="btn btn-outline-light d-flex align-items-center">
+                    <i class="fas fa-shopping-cart" style="position: relative;">
+                        <span class="badge rounded-pill agr-cart-badge">${cart.positions.size()}</span>
+                    </i>
+                    <span class="text-light fw-bold ms-2" data-cart-price>
+                        ${totalInteger}.<small>${totalDecimal}</small>
+                    </span>
+                </a>
                 <ul class="navbar-nav d-flex flex-row">
                     <!-- Icons -->
                     <li class="nav-item me-3 me-lg-0">

@@ -120,4 +120,9 @@ and open the template in the editor.
     top: 0;
     opacity: .1;
 }
+.agr-cart-badge {
+    position: absolute !important;
+    top: -12px !important;
+    left: -16px;
+}
 

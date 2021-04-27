@@ -22,16 +22,8 @@
                         <p class="text-uppercase text-muted text-center">Товары для сада и огорода</p>
                     </c:otherwise>
                 </c:choose>
-                <div class="row">
-                    <c:choose>
-                        <c:when test="${group != null}">
-                            Display group subgroups
-                        </c:when>    
-                        <c:otherwise>
-                            Display root groups
-                        </c:otherwise>
-                    </c:choose>
-                </div>
+                <t:breadcrumb label="${breadcrumbLabel}" groups="${breadcrumbPath}"/>
+                <t:categories-grid categories="${categories}" />
             </div>
         </main>
     </jsp:body>
