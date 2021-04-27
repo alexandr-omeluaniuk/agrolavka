@@ -1,5 +1,5 @@
 <%-- 
-    Document   : products-search
+    Document   : quick-search-mobile
     Created on : Feb 23, 2021, 7:16:20 PM
     Author     : alex
 --%>
@@ -9,9 +9,9 @@
 <%-- The list of normal or fragment attributes can be specified here: --%>
 <%-- any content can be specified here e.g.: --%>
 <div class="input-group me-2" id="agr-quick-search-container-mobile">
-    <input type="search" class="form-control" aria-label="Поиск товаров" id="products-search" placeholder="Быстрый поиск"
+    <input type="search" class="form-control" aria-label="Поиск товаров" id="agr-quick-search-input-mobile" placeholder="Быстрый поиск"
            autocomplete="off">
-    <ul class="dropdown-menu" aria-labelledby="agr-quick-search-container-mobile" id="products-search-results-list"></ul>
+    <ul class="dropdown-menu" aria-labelledby="agr-quick-search-container-mobile" id="agr-quick-search-result-mobile"></ul>
     <span class="input-group-text"><i class="fas fa-search" style="color:white;"></i></span>
 </div>
 
@@ -29,8 +29,8 @@
             }
         }
         
-        document.querySelector('#products-search').addEventListener('focus', function (e) {
-            const searchResultOutput = document.querySelector('#products-search-results-list');
+        document.querySelector('#agr-quick-search-input-mobile').addEventListener('focus', function (e) {
+            const searchResultOutput = document.querySelector('#agr-quick-search-result-mobile');
             if (searchResultOutput.innerHTML) {
                 searchResultOutput.classList.add("show");
                 searchResultOutput.classList.add("list-group");
@@ -39,15 +39,15 @@
 
         document.querySelector('#agr-quick-search-container-mobile').addEventListener('blur', function (e) {
             if (e.relatedTarget === null) {
-                const searchResultOutput = document.querySelector('#products-search-results-list');
+                const searchResultOutput = document.querySelector('#agr-quick-search-result-mobile');
                 searchResultOutput.classList.remove("show");
                 searchResultOutput.classList.remove("list-group");
             }
         }, true);
 
-        document.querySelector('#products-search').addEventListener('input', function (e) {
+        document.querySelector('#agr-quick-search-input-mobile').addEventListener('input', function (e) {
             const searchText = this.value;
-            const searchResultOutput = document.querySelector('#products-search-results-list');
+            const searchResultOutput = document.querySelector('#agr-quick-search-result-mobile');
             const noResult = '<li><a class="dropdown-item text-muted" href="#">По вашему запросу ничего не найдено</a></li>';
             if (searchText) {
                 fetch('/api/agrolavka/public/search?searchText=' + searchText, {

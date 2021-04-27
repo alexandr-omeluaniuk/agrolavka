@@ -21,7 +21,7 @@
             </a>
             <div class="d-lg-none w-100">
                 <div class="d-flex align-items-center justify-content-between">
-                    <t:products-search-mobile />
+                    <t:quick-search-mobile />
                     <button class="navbar-toggler" type="button" data-mdb-toggle="collapse"
                             data-mdb-target="#navbarExample01" aria-controls="navbarExample01" aria-expanded="false" aria-label="Toggle navigation">
                         <i class="fas fa-bars"></i>
