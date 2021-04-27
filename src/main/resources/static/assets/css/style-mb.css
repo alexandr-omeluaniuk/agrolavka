@@ -22,7 +22,9 @@ and open the template in the editor.
     z-index: 2000;
 }
 .arg-top-navbar {
-    transition: all 0.5s;
+    transition: all .3s;
+    height: 41px;
+    opacity: 1;
 }
 /* Carousel styling */
 #introCarousel,
@@ -74,6 +76,9 @@ and open the template in the editor.
         height: 100vh;
     }
     nav[data-expanded="true"] {
+        background-color: var(--agr-background-color);
+    }
+    .agr-navbar {
         background-color: var(--agr-background-color);
     }
 }

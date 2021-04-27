@@ -20,7 +20,7 @@
                 </strong>
             </a>
             <div class="d-lg-none w-100">
-                <div class="collapse show arg-top-navbar">
+                <div class="arg-top-navbar">
                     <div class="d-flex align-items-center justify-content-between mb-2">
                         <a class="nav-link" href="tel:+375298713758"><i class="fas fa-phone-alt"></i> +375 29 871-37-58 (МТС)</a>
                         <button class="navbar-toggler" type="button" data-mdb-toggle="collapse"

@@ -13,10 +13,12 @@
     
     document.addEventListener('scroll', function () {
         const topNavbar = document.querySelector('.arg-top-navbar');
-        if (window.scrollY > 40) {
-            topNavbar.classList.remove('show');
+        if (window.scrollY > 80) {
+            topNavbar.style.opacity = 0;
+            topNavbar.style.height = 0;
         } else {
-            topNavbar.classList.add('show');
+            topNavbar.style.opacity = 1;
+            topNavbar.style.height = '41px';
         }
     });
     
