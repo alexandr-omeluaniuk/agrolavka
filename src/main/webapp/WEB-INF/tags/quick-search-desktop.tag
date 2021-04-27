@@ -30,6 +30,8 @@
         }
         
         document.querySelector('#agr-quick-search-input-desktop').addEventListener('focus', function (e) {
+            const container = document.querySelector('#agr-quick-search-container-desktop');
+            container.style.width = (window.innerWidth - 700) + 'px';
             const searchResultOutput = document.querySelector('#agr-quick-search-result-desktop');
             if (searchResultOutput.innerHTML) {
                 searchResultOutput.classList.add("show");
@@ -39,6 +41,8 @@
 
         document.querySelector('#agr-quick-search-container-desktop').addEventListener('blur', function (e) {
             if (e.relatedTarget === null) {
+                const container = document.querySelector('#agr-quick-search-container-desktop');
+                container.style.width = null;
                 const searchResultOutput = document.querySelector('#agr-quick-search-result-desktop');
                 searchResultOutput.classList.remove("show");
                 searchResultOutput.classList.remove("list-group");

@@ -77,7 +77,10 @@ and open the template in the editor.
         background-color: var(--agr-background-color);
     }
 }
-
+#agr-quick-search-container-desktop {
+    width: 300px;
+    transition: all .5s;
+}
 #agr-quick-search-result-desktop, #agr-quick-search-result-mobile {
     padding: 0;
     margin-top: 0px;
