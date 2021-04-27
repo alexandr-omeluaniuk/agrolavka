@@ -10,16 +10,25 @@
     document.querySelector('body').addEventListener('click', function (evt) {
         
     });
-    
+    let previuosScrollPosition = null;
     document.addEventListener('scroll', function () {
         const topNavbar = document.querySelector('.arg-top-navbar');
-        if (window.scrollY > 80) {
-            topNavbar.style.opacity = 0;
-            topNavbar.style.height = 0;
-        } else {
+        let currentScrollDirection = null;
+        if (previuosScrollPosition !== null) {
+            if (previuosScrollPosition > window.scrollY) {
+                currentScrollDirection = 'UP';
+            } else if (previuosScrollPosition < window.scrollY) {
+                currentScrollDirection = 'DOWN';
+            }
+        }
+        if (window.scrollY < 80 || currentScrollDirection === 'UP') {
             topNavbar.style.opacity = 1;
             topNavbar.style.height = '41px';
+        } else if (currentScrollDirection === 'DOWN') {
+            topNavbar.style.opacity = 0;
+            topNavbar.style.height = 0;
         }
+        previuosScrollPosition = window.scrollY;
     });
     
     // ===================================================== LISTENERS ====================================================================
