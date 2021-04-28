@@ -13,7 +13,7 @@
 <%@attribute name="group" required="true" type="ProductsGroup"%>
 
 <%-- any content can be specified here e.g.: --%>
-<div class="card shadow-1-strong mb-4">
+<div class="card shadow-1-strong mb-4 hover-shadow">
     <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
         <div class="card-img-top agr-card-image" style="background-image: url('/api/agrolavka/public/products-group-image/${group.id}')"></div>
         <a href="<%= UrlProducer.buildProductGroupUrl(group)%>">

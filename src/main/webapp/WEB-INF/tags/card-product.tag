@@ -14,7 +14,8 @@
 <%@attribute name="cart" required="true" type="Order"%>
 
 <%-- any content can be specified here e.g.: --%>
-<div class="card shadow-1-strong mb-4">
+<a href="<%= UrlProducer.buildProductUrl(product) %>">
+<div class="card shadow-1-strong mb-4 hover-shadow">
     <div class="ribbon ribbon-top-left">
         <span class="${product.quantity > 0 ? 'bg-success' : 'bg-danger'}">
             <small>${product.quantity > 0 ? 'в наличии' : 'под заказ'}</small>
@@ -22,9 +23,9 @@
     </div>
     <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
         <div class="card-img-top agr-card-image" style="background-image: url('/api/agrolavka/public/product-image/${product.id}')"></div>
-        <a href="<%= UrlProducer.buildProductUrl(product) %>">
-            <div class="mask" style="background-color: rgba(0, 0, 0, 0.05)"></div>
-        </a>
+        
+            <!--div class="mask" style="background-color: rgba(0, 0, 0, 0.05)"></div-->
+        
         <div class="card-body" style="min-height: 100px;">
             <h6 class="card-title text-dark" style="min-height: 60px;">${product.name}</h6>
             <div class="d-flex justify-content-between align-items-center">
@@ -49,13 +50,13 @@
             <%
                 if (!inCart) {
             %>
-            <button class="btn btn-sm btn-success w-100 mt-1" data-product-id="${product.id}" data-add="" style="z-index: 9000;">
+            <button class="btn btn-sm btn-outline-success w-100 mt-1" data-product-id="${product.id}" data-add="" style="z-index: 9000;">
                 <i class="fas fa-cart-plus me-2"></i> В корзину
             </button>
             <%
                 } else {
             %>
-            <button class="btn btn-sm btn-danger w-100 mt-1" data-product-id="${product.id}" data-remove="" style="z-index: 9000;">
+            <button class="btn btn-sm btn-outline-danger w-100 mt-1" data-product-id="${product.id}" data-remove="" style="z-index: 9000;">
                 <i class="fas fa-minus-circle me-2"></i> Из корзины
             </button>
             <%
@@ -64,3 +65,4 @@
         </div>
     </div>
 </div>
+        </a>
