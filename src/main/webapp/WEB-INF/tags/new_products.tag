@@ -14,7 +14,7 @@
 <%-- any content can be specified here e.g.: --%>
 <section class="text-center">
     <h4 class="mb-4"><strong>Новинки</strong></h4>
-    <p>Последнее поступление товаров</p>
+    <h6 class="mb-3">Последнее поступление товаров</h6>
 
     <div class="row">
         <%

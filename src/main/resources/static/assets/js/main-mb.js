@@ -164,21 +164,21 @@
         cart.positions.forEach(p => {
             total += p.price * p.quantity;
         });
-        const totalLabel = document.querySelector("[data-total-price]");
-        const cartTotalLabel = document.querySelector("[data-cart-price]");
+        const totalLabels = document.querySelectorAll("[data-total-price]");
+        const cartTotalLabels = document.querySelectorAll("[data-cart-price]");
         const totalStr = parseFloat(total).toFixed(2);
         const parts = totalStr.split(".");
-        if (totalLabel) {
-            totalLabel.innerHTML = parts[0] + '.<small>' + parts[1] + '</small> <small class="text-muted">BYN</small>';
-        }
-        if (cartTotalLabel) {
-            cartTotalLabel.innerHTML = parts[0] + '.<small>' + parts[1] + '</small>';
-        }
-        const cartBadge = document.querySelector('.agr-cart-badge');
-        if (cartBadge) {
-            cartBadge.innerHTML = cart.positions.length;
-        }
-        if (cart.positions.length === 0) {
+        totalLabels.forEach(el => {
+            el.innerHTML = parts[0] + '.<small>' + parts[1] + '</small> <small class="text-muted">BYN</small>';
+        });
+        cartTotalLabels.forEach(el => {
+            el.innerHTML = parts[0] + '.<small>' + parts[1] + '</small>';
+        });
+        const cartBadges = document.querySelectorAll('.agr-cart-badge');
+        cartBadges.forEach(el => {
+            el.innerHTML = cart.positions.length;
+        });
+        if (cart.positions.length === 0 && window.location.pathname === '/cart') {
             window.location.reload();
         }
     };
