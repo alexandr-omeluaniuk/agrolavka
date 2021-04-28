@@ -20,7 +20,7 @@
             for (ProductsGroup group : topCategories) {
         %>
         <div class="col-lg col-md col-sm-12">
-            <t:products-group-card group="<%= group %>"/>
+            <t:card-category group="<%= group %>"/>
         </div>
         <%
             }

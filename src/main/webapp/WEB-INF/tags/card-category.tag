@@ -17,7 +17,7 @@
     <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
         <div class="card-img-top agr-card-image" style="background-image: url('/api/agrolavka/public/products-group-image/${group.id}')"></div>
         <a href="<%= UrlProducer.buildProductGroupUrl(group)%>">
-            <div class="mask" style="background-color: rgba(251, 251, 251, 0.15)"></div>
+            <div class="mask" style="background-color: rgba(0, 0, 0, 0.05)"></div>
         </a>
         <div class="card-body" style="min-height: 100px;">
             <h5 class="card-title">${group.name}</h5>

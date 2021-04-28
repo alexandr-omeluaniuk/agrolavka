@@ -16,7 +16,7 @@
 <div class="row">
     <c:forEach items="${categories}" var="group">
         <div class="col-lg-3 col-md-4 col-sm-12">
-            <t:products-group-card group="${group}"/>
+            <t:card-category group="${group}"/>
         </div>
     </c:forEach>
 </div>

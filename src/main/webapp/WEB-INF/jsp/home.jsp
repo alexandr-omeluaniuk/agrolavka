@@ -19,6 +19,10 @@
                 <t:top-product-groups />
                 
                 <hr class="my-5" />
+                
+                <t:new_products cart="${cart}" newProducts="${newProducts}"/>
+                
+                <hr class="my-5" />
                 <!--Section: Content-->
                 <section>
                     <div class="row">

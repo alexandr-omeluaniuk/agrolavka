@@ -12,33 +12,27 @@
 <%-- The list of normal or fragment attributes can be specified here: --%>
 
 <%-- any content can be specified here e.g.: --%>
-<div class="container h-100">
-    <div class="row d-flex justify-content-center">
-        <div class="col-lg-12 intro-info order-lg-first order-last">
-            <h1 class="text-center">Новинки</h1>
-        </div>
-    </div>
-    <div class="row d-flex justify-content-center">
-        <div class="col-sm-12 intro-info order-lg-first order-last">
-            <h3 class="text-center">Последнее поступление товаров</h3>
-            <hr/>
-            <%
-                for (int i = 0; i < newProducts.size(); i++) {
-                    Product product = newProducts.get(i);
-                    if (i % 4 == 0) {
-                        if (i > 0) {
-                            out.print("</div>");
-                        }
-                        out.print("<div class=\"row\">");
+<section class="text-center">
+    <h4 class="mb-4"><strong>Новинки</strong></h4>
+    <p>Последнее поступление товаров</p>
+
+    <div class="row">
+        <%
+            for (int i = 0; i < newProducts.size(); i++) {
+                Product product = newProducts.get(i);
+                if (i % 4 == 0) {
+                    if (i > 0) {
+                        out.print("</div>");
                     }
-            %>
-                <div class="col-sm-3">
-                    <t:product-card product="<%= product %>" mini="true" cart="${cart}"/>
-                </div>
-            <%
+                    out.print("<div class=\"row\">");
                 }
-                out.print("</div>");
-            %>
-        </div>
+        %>
+            <div class="col-sm-3">
+                <t:card-product product="<%= product %>" cart="${cart}"/>
+            </div>
+        <%
+            }
+            out.print("</div>");
+        %>
     </div>
-</div>
+</section>
