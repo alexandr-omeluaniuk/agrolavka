@@ -27,7 +27,7 @@
                     out.print("<div class=\"row\">");
                 }
         %>
-            <div class="col-sm-3">
+            <div class="col-sm-6 col-md-6 col-lg-3">
                 <t:card-product product="<%= product %>" cart="${cart}"/>
             </div>
         <%

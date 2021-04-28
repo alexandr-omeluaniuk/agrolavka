@@ -15,6 +15,11 @@
 
 <%-- any content can be specified here e.g.: --%>
 <div class="card shadow-1-strong mb-4">
+    <div class="ribbon ribbon-top-left">
+        <span class="${product.quantity > 0 ? 'bg-success' : 'bg-danger'}">
+            <small>${product.quantity > 0 ? 'в наличии' : 'под заказ'}</small>
+        </span>
+    </div>
     <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
         <div class="card-img-top agr-card-image" style="background-image: url('/api/agrolavka/public/product-image/${product.id}')"></div>
         <a href="<%= UrlProducer.buildProductUrl(product) %>">
@@ -44,13 +49,13 @@
             <%
                 if (!inCart) {
             %>
-            <button class="btn btn-sm btn-outline-success w-100 mt-1" data-product-id="${product.id}" data-add="">
+            <button class="btn btn-sm btn-success w-100 mt-1" data-product-id="${product.id}" data-add="" style="z-index: 9000;">
                 <i class="fas fa-cart-plus me-2"></i> В корзину
             </button>
             <%
                 } else {
             %>
-            <button class="btn btn-sm btn-outline-danger w-100 mt-1" data-product-id="${product.id}" data-remove="">
+            <button class="btn btn-sm btn-danger w-100 mt-1" data-product-id="${product.id}" data-remove="" style="z-index: 9000;">
                 <i class="fas fa-minus-circle me-2"></i> Из корзины
             </button>
             <%
