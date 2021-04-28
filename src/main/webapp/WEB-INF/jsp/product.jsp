@@ -33,35 +33,28 @@
     </jsp:attribute>
     
     <jsp:body>
-        <main id="main">
-            <section class="services">
-                <div class="container">
-                    <header class="section-header">
-                        <h3>${product.name}</h3>
-                        <p class="text-uppercase text-muted">${product.group.name}</p>
-                    </header>
-                    <div class="row justify-content-center">
-                        <div class="col-lg-3 col-md-12 intro-info order-lg-first order-last">
-                            <t:product-groups-tree groups="${groups}" groupId="${groupId}"></t:product-groups-tree>
-                        </div>
-
-                        <div class="col-lg-9 col-md-12 intro-info order-lg-first order-last">
-                            <t:breadcrumb label="${breadcrumbLabel}" groups="${breadcrumbPath}"></t:breadcrumb>
-                            <article>
-                                <div class="row">
-                                    <div class="col-sm-12">
-                                        <div class="float-start me-4" style="width: 300px;">
-                                            <t:product-card product="${product}" cart="${cart}"/>
-                                        </div>
-                                        <h4>${product.name}</h4>
-                                        <p class="product-text">${product.description}</p>
-                                    </div>
+        
+        <main class="mb-5 mt-5 pt-5 min-vh-100">
+            <div class="container">
+                
+                <section>
+                    <h3 class="text-center mb-4">${product.name}</h3>
+                    <h5 class="text-center text-muted text-uppercase mb-4">${product.group.name}</h5>
+                    <t:breadcrumb label="${breadcrumbLabel}" groups="${breadcrumbPath}"></t:breadcrumb>
+                    <article>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="float-start me-4" style="width: 300px;">
+                                    <t:card-product product="${product}" cart="${cart}"/>
                                 </div>
-                            </article>
+                                <h4>${product.name}</h4>
+                                <p class="text-justify">${product.description}</p>
+                            </div>
                         </div>
-                    </div>
-                </div>
-            </section>
+                    </article>
+                </section>
+                
+            </div>
         </main>
     </jsp:body>
     

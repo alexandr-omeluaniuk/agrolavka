@@ -124,6 +124,10 @@ and open the template in the editor.
     top: -12px !important;
     left: -16px;
 }
+.agr-link {
+    color: var(--bs-purple);
+    transition: all 1s;
+}
 #footer {
     background-color: var(--agr-background-color) !important;
 }
@@ -155,13 +159,6 @@ and open the template in the editor.
     font-weight: bold;
 }
 
-.hover-shadow:hover {
-    -webkit-box-shadow: 0 8px 17px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%) !important;
-    box-shadow: 0 8px 17px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%) !important;
-    -webkit-transition: all .3s ease-in-out !important;
-    transition: all .3s ease-in-out !important;
-}
-
 /* top left*/
 .ribbon-top-left {
     top: -4px;
@@ -184,4 +181,16 @@ and open the template in the editor.
     right: -25px;
     top: 30px;
     transform: rotate(-45deg);
+}
+
+/** =================================================== FRAMEWORKK ======================================================================*/
+.hover-shadow:hover {
+    -webkit-box-shadow: 0 8px 17px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%) !important;
+    box-shadow: 0 8px 17px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%) !important;
+    -webkit-transition: all .3s ease-in-out !important;
+    transition: all .3s ease-in-out !important;
+}
+
+.text-justify {
+    text-align: justify;
 }

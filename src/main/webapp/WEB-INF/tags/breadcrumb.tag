@@ -21,7 +21,7 @@
                 if (groups != null) {
             %>
                 <li class="breadcrumb-item">
-                    <a href="/catalog">
+                    <a href="/catalog" class="agr-link">
                         <small>Каталог</small>
                     </a>
                 </li>
@@ -33,7 +33,7 @@
                     for (ProductsGroup group : groups) { 
             %>
                         <li class="breadcrumb-item">
-                            <a href="<%= UrlProducer.buildProductGroupUrl(group) %>">
+                            <a href="<%= UrlProducer.buildProductGroupUrl(group) %>" class="agr-link">
                                 <small><%= group.getName() %></small>
                             </a>
                         </li>
