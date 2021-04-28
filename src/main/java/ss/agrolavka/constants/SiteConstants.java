@@ -11,9 +11,9 @@ package ss.agrolavka.constants;
  */
 public class SiteConstants {
     /** Columns. */
-    public static final int SEARCH_RESULT_TILES_COLUMNS = 3;
+    public static final int SEARCH_RESULT_TILES_COLUMNS = 4;
     /** Rows. */
-    public static final int SEARCH_RESULT_TILES_ROWS = 5;
+    public static final int SEARCH_RESULT_TILES_ROWS = 6;
     /** Cart session attribute. */
     public static final String CART_SESSION_ATTRIBUTE = "CART";
     /** Firebase topic: Agrolavka orders. */
