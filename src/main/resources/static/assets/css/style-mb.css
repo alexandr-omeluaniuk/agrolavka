@@ -129,7 +129,7 @@ and open the template in the editor.
 }
 /** ============================================== RIBBON ============================================================================== */
 .ribbon {
-    z-index: 3000;
+    z-index: 500;
     width: 120px;
     height: 120px;
     overflow: hidden;
