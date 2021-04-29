@@ -73,11 +73,11 @@
         return sb.toString();
     }
 %>
-<div class="row products-toolbar">
+<div class="row mb-3 mt-3">
     <div class="col-sm-12 col-md-6 d-flex justify-content-start">
         <c:if test="${pages > 1}">
             <nav aria-label="Page navigation" class="d-flex justify-content-start">
-                <ul class="pagination" style="margin-bottom: 0;">
+                <ul class="pagination pagination-circle" style="margin-bottom: 0;">
                     <li class="page-item ${page == 1 ? " disabled" : ""}">
                         <a class="page-link" href="<%= createLink(1, null, null) %>" aria-label="Первая страница">
                             <i class="fas fa-angle-double-left"></i>

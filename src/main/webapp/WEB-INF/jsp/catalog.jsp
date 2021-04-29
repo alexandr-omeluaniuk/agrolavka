@@ -27,15 +27,13 @@
                     <t:breadcrumb label="${breadcrumbLabel}" groups="${breadcrumbPath}"/>
                     <t:categories-grid categories="${categories}" />
                 </section>
-                
-                <hr class="my-5" />
-                
-                <section>
-                    <h3 class="text-center mb-4">Список продукции в данной категории товаров</h3>
-                    <t:products-search-result searchResult="${searchResult}" pages="${searchResultPages}"
-                                                  page="${page}" view="${view}" sort="${sort}" group="${group}" cart="${cart}">
-                    </t:products-search-result>
-                </section>
+                <c:if test="${!categories}">
+                    <section class="pt-4 pb-4">
+                        <t:products-search-result searchResult="${searchResult}" pages="${searchResultPages}"
+                                                      page="${page}" view="${view}" sort="${sort}" group="${group}" cart="${cart}">
+                        </t:products-search-result>
+                    </section>
+                </c:if>
                 
             </div>
         </main>

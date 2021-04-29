@@ -128,6 +128,9 @@ and open the template in the editor.
     color: var(--bs-purple);
     transition: all 1s;
 }
+.agr-link:hover {
+    color: var(--agr-background-color);
+}
 #footer {
     background-color: var(--agr-background-color) !important;
 }
@@ -193,4 +196,8 @@ and open the template in the editor.
 
 .text-justify {
     text-align: justify;
+}
+
+.page-item.active .page-link {
+    background-color: var(--bs-purple);
 }

@@ -24,7 +24,7 @@
         <div class="carousel-inner">
             <!-- Single item -->
             <div class="carousel-item active">
-                <div class="mask" style="background-color: rgba(0, 0, 0, 0.6);">
+                <div class="mask" style="background-color: rgba(0, 0, 0, 0.5);">
                     <div class="d-flex justify-content-center align-items-center h-100">
                         <div class="text-white text-center">
                             <h1 class="mb-3">Более <span class="purecounter fw-bold" data-purecounter-end="${productsCount}"></span> наименований, приглашаем за покупками!</h1>
