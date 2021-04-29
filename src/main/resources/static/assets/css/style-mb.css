@@ -198,7 +198,9 @@ and open the template in the editor.
 .text-justify {
     text-align: justify;
 }
-
+.text-right {
+    text-align: right;
+}
 .page-item.active .page-link {
     background-color: var(--bs-purple);
 }

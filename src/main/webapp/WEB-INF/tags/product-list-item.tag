@@ -16,9 +16,6 @@
         <h6 class="mb-1">
             <img src="/api/agrolavka/public/product-image/${product.id}" style="width: 40px; height: 40px; object-fit: contain;" class="me-2"></img>
             ${product.name}</h6>
-        <small class="text-dark fw-bold"><%= String.format("%.2f", product.getPrice())%> BYN</small>
+        <small class="text-dark fw-bold text-right"><%= String.format("%.2f", product.getPrice())%> BYN</small>
     </div>
-    <% if (product.getDescription() != null && !product.getDescription().trim().isEmpty()) { %>
-        <small class="text-muted text-nowrap product-description">${product.description}</small>
-    <% } %>
 </a>
