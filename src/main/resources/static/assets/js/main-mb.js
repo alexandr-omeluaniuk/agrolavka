@@ -45,13 +45,13 @@
         }
         const cartQuantityPlusBtn = evt.target.closest("[data-product-quantity-plus]");
         if (cartQuantityPlusBtn) {
-            const input = cartQuantityPlusBtn.closest(".input-group").querySelector("[data-product-quantity]");
+            const input = cartQuantityPlusBtn.closest("div").querySelector("[data-product-quantity]");
             input.value = parseInt(input.value) + 1;
             cartProductQuantityChangeListener(evt, input);
         }
         const cartQuantityMinusBtn = evt.target.closest("[data-product-quantity-minus]");
         if (cartQuantityMinusBtn) {
-            const input = cartQuantityMinusBtn.closest(".input-group").querySelector("[data-product-quantity]");
+            const input = cartQuantityMinusBtn.closest("div").querySelector("[data-product-quantity]");
             input.value = parseInt(input.value) > 1 ? parseInt(input.value) - 1 : parseInt(input.value);
             cartProductQuantityChangeListener(evt, input);
         }

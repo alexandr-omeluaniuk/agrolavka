@@ -27,20 +27,18 @@
 
             <div class="col-sm-12 col-md-4 col-lg-3 d-flex flex-column">
                 <div class="d-flex justify-content-end">
-                    <div class="input-group mb-3" style="max-width: 200px;">
-                        <button class="btn btn-outline-secondary" type="button" data-product-quantity-plus>
-                            <i class="fas fa-plus"></i>
-                        </button>
-                        <input type="number" class="form-control" aria-label="Количество" min="1" value="${position.quantity}"
-                               data-product-id="${position.product.id}" data-product-quantity>
-                        <button class="btn btn-outline-secondary" type="button" data-product-quantity-minus>
-                            <i class="fas fa-minus"></i>
-                        </button>
-                        <button class="btn btn-outline-danger" data-remove-product-from-cart data-product-id="${position.product.id}"
-                                type="button">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </div>
+                    <button class="btn btn-primary btn-floating me-2" type="button" data-product-quantity-plus>
+                        <i class="fas fa-plus"></i>
+                    </button>
+                    <input type="number" class="form-control" aria-label="Количество" min="1" value="${position.quantity}"
+                           data-product-id="${position.product.id}" data-product-quantity style="flex: 1">
+                    <button class="btn btn-primary btn-floating me-2 ms-2" type="button" data-product-quantity-minus>
+                        <i class="fas fa-minus"></i>
+                    </button>
+                    <button class="btn btn-danger btn-floating" data-remove-product-from-cart data-product-id="${position.product.id}"
+                            type="button">
+                        <i class="fas fa-trash"></i>
+                    </button>
                 </div>
 
                 <div style="flex: 1;" class="d-flex justify-content-end align-items-end">
