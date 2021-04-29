@@ -126,7 +126,7 @@ class AgrolavkaPublicRESTController {
         if (product != null) {
             OrderPosition position = new OrderPosition();
             position.setOrder(order);
-            position.setPrice(product.getPrice());
+            position.setPrice(product.getDiscountPrice());
             position.setQuantity(1);
             position.setProduct(product);
             position.setProductId(product.getId());

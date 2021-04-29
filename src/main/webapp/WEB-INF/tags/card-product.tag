@@ -5,7 +5,7 @@
 --%>
 
 <%@tag import="java.util.Objects"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@tag description="put the tag description here" pageEncoding="UTF-8" 
        import="ss.entity.agrolavka.*,ss.agrolavka.util.UrlProducer"%>
 
@@ -29,8 +29,8 @@
         
         <div class="card-body" style="min-height: 100px;">
             <h6 class="card-title text-dark" style="min-height: 60px;">${product.name}</h6>
-            <div class="d-flex align-items-center mb-2">
-                <span class="card-subtitle text-muted fs-6" style="flex: 1">Цена</span>
+            <div class="d-flex align-items-center mb-2" style="min-height: 35px;">
+                <span class="text-muted fs-6" style="flex: 1">Цена</span>
                 <span class="fw-bold ${not empty product.discount ? 'text-decoration-line-through text-muted me-2' : 'text-dark'}">
                     <%
                         String price = String.format("%.2f", product.getPrice());
@@ -40,6 +40,7 @@
                     %> <small class="text-muted">BYN</small></span>
                 <c:if test="${not empty product.discount}">
                     <button class="btn btn-sm btn-danger btn-rounded fs-6">
+                        <i class="fas fa-fire me-2"></i>
                         <%
                             String priceWithDiscount = String.format("%.2f", product.getDiscountPrice());
                             String[] priceWithDiscountParts = priceWithDiscount.split("\\.");

@@ -130,6 +130,8 @@ and open the template in the editor.
     position: absolute !important;
     top: -12px !important;
     left: -16px;
+    font-size: .8rem;
+    font-family: var(--mdb-font-roboto);
 }
 .agr-link {
     color: var(--bs-purple);
