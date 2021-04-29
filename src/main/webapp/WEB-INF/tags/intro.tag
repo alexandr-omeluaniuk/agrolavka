@@ -27,8 +27,8 @@
                 <div class="mask" style="background-color: rgba(0, 0, 0, 0.5);">
                     <div class="d-flex justify-content-center align-items-center h-100">
                         <div class="text-white text-center">
-                            <h1 class="mb-3">Более <span class="purecounter fw-bold" data-purecounter-end="${productsCount}"></span> наименований, приглашаем за покупками!</h1>
-                            <h5 class="mb-4">выгодные цены, акции и скидки</h5>
+                            <h1>Более <span class="purecounter fw-bold" data-purecounter-end="${productsCount}"></span> наименований, приглашаем за покупками!</h1>
+                            <h5>выгодные цены, акции и скидки</h5>
                             <a class="btn btn-outline-light btn-lg m-2" href="/catalog" role="button" >Перейти в каталог товаров</a>
                         </div>
                     </div>
@@ -42,6 +42,7 @@
                         <div class="text-white text-center">
                             <h1>Воспользуйтесь нашей дисконтной программой</h1>
                             <h5>скидки от 3% до 7% на все товары, кроме акционных</h5>
+                            <a class="btn btn-outline-light btn-lg m-2" href="/discount" role="button">Условия предоставления скидок</a>
                         </div>
                     </div>
                 </div>
@@ -53,6 +54,7 @@
                     <div class="d-flex justify-content-center align-items-center h-100">
                         <div class="text-white text-center">
                             <h1>Доставка в кратчайшие сроки по всей Беларуси</h1>
+                            <h5>курьерская доставка или пересылка почтой</h5>
                             <a class="btn btn-outline-light btn-lg m-2" href="/delivery" role="button">Условия доставки</a>
                         </div>
                     </div>
