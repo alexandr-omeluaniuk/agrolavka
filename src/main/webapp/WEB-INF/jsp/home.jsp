@@ -11,7 +11,7 @@
        metaDescription="Большой выбор семян, удобрений, средств для защиты растений. Комплектующие для капельного полива. Зоотовары. Приглашаем за покупками.">
 
     <jsp:body>
-        <main class="min-vh-100">
+        <main class="min-vh-100" id="home">
             <t:intro visible="true"/>
             <div class="container pt-5">
 

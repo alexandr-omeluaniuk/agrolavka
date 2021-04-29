@@ -55,6 +55,9 @@ and open the template in the editor.
 }
 
 @media (min-width: 992px) {
+    main:not(#home) {
+        margin-top: 100px;
+    }
     #introCarousel {
         margin-top: -58.59px;
     }
@@ -67,6 +70,9 @@ and open the template in the editor.
 }
 
 @media (max-width: 992px) {
+    main:not(#home) {
+        margin-top: 140px;
+    }
     #introCarousel:not([data-expanded="true"]) {
         margin-top: -58.59px;
     }
