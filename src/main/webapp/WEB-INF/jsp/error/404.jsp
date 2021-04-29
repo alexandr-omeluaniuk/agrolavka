@@ -9,13 +9,13 @@
 <!DOCTYPE html>
 <t:app title="Страница не найдена" metaDescription="Страница не найдена или перемещена в другое место" canonical="/error/page-not-found">
     <jsp:body>
-        <main class="d-flex justify-content-center align-items-center container">
+        <main class="d-flex justify-content-center align-items-center container min-vh-100">
             <div class="row">
                 <div class="col-12">
                     <div class="alert alert-danger" role="alert">
-                        <i class="fas fa-exclamation-triangle" style="margin-right: 10px;"></i>
+                        <i class="fas fa-exclamation-triangle me-2"></i>
                         Упс... Страница не найдена. Возможно она была удалена или перемещена в другое место.<br/><br/>
-                        <a href="/">Вернуться на главную</a>
+                        <a href="/" class="agr-link">Вернуться на главную</a>
                     </div>
                 </div>
             </div>
