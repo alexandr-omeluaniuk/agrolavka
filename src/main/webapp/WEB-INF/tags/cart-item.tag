@@ -10,7 +10,7 @@
 <%@attribute name="position" required="true" type="OrderPosition"%>
 
 <%-- any content can be specified here e.g.: --%>
-<div class="card mb-4">
+<div class="card mb-4 shadow-1-strong">
     <div class="card-body">
         <div class="row">
 

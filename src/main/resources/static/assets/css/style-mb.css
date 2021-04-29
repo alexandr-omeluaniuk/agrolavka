@@ -132,6 +132,19 @@ and open the template in the editor.
 .agr-link:hover {
     color: var(--agr-background-color);
 }
+.agr-cart-position-description {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+}
+.agr-cart-position-image {
+    padding-top: 70px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
 #footer {
     background-color: var(--agr-background-color) !important;
 }
