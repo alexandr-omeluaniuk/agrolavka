@@ -300,6 +300,14 @@ public class Product extends ExternalEntity implements Serializable {
                 + ", article=" + (getArticle() == null ? "" : getArticle()) + " ]";
     }
     
+    public Double getDiscountPrice() {
+        if (this.getDiscount() != null) {
+            return this.getPrice() - (this.getPrice() * this.getDiscount().getDiscount() / 100);
+        } else {
+            return this.getPrice();
+        }
+    }
+    
     public JSONObject toMySkladJSON(PriceType priceType) {
         JSONObject json = new JSONObject();
         json.put("name", getName());

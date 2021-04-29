@@ -24,8 +24,8 @@
                             <li class="mb-2"><a class="text-white" href="/">Главная</a></li>
                             <li class="mb-2"><a class="text-white" href="/catalog">Каталог товаров</a></li>
                             <li>
-                                <a href="https://www.instagram.com/agrolavka.by">
-                                    <img src="/assets/img/instagram.ico" alt="Instagram"/>
+                                <a href="https://www.instagram.com/agrolavka.by" class="btn btn-outline-light btn-floating">
+                                    <i class="fab fa-instagram"></i>
                                 </a>
                             </li>
                         </ul>

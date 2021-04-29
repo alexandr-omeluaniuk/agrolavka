@@ -44,8 +44,8 @@
                     <article>
                         <div class="row">
                             <div class="col-sm-12">
-                                <div class="float-start me-4" style="width: 300px;">
-                                    <t:card-product product="${product}" cart="${cart}"/>
+                                <div class="float-start me-4" style="width: 350px;">
+                                    <t:card-product product="${product}" cart="${cart}" noHover="true"/>
                                 </div>
                                 <h4>${product.name}</h4>
                                 <p class="text-justify">${product.description}</p>
