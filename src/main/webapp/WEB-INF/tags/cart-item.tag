@@ -19,7 +19,7 @@
             </div>
 
             <div class="col-sm-12 col-md-6 col-lg-8 ps-3 pe-3">
-                <a href="<%= UrlProducer.buildProductUrl(position.getProduct())%>"><h6>${position.product.name}</h6></a>
+                <a href="<%= UrlProducer.buildProductUrl(position.getProduct())%>" class="agr-link"><h6>${position.product.name}</h6></a>
                 <small class="text-muted agr-cart-position-description mb-2">
                     ${position.product.description}
                 </small>
