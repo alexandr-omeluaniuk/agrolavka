@@ -34,7 +34,7 @@
     
     <jsp:body>
         
-        <main class="mb-5 mt-5 pt-5 min-vh-100">
+        <main class="min-vh-100">
             <div class="container">
                 
                 <section>

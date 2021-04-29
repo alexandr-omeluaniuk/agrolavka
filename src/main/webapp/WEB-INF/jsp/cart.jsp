@@ -11,7 +11,7 @@
 <t:app title="Корзина" metaDescription="Ваши покупки в магазине Агролавка" canonical="/cart">
     
     <jsp:body>
-        <main class="mt-5 mb-5 pt-5 min-vh-100">
+        <main class="min-vh-100">
             <div class="container">
                 <section>
                     <h3 class="text-center mb-4"><i class="fas fa-shopping-cart me-2"></i>Корзина</h3>
