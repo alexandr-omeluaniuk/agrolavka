@@ -9,6 +9,7 @@ and open the template in the editor.
 */
 :root {
     --agr-background-color: #000000ba;
+    --agr-bs-purple-dark: #563296;
 }
 .agr-navbar .nav-link {
     color: #fff !important;
@@ -200,4 +201,20 @@ and open the template in the editor.
 
 .page-item.active .page-link {
     background-color: var(--bs-purple);
+}
+.btn-primary {
+    background-color: var(--bs-purple);
+}
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active {
+    background-color: var(--agr-bs-purple-dark);
+}
+.btn-outline-primary {
+    border-color: var(--agr-bs-purple-dark);
+}
+.btn-outline-primary:hover {
+    border-color: var(--bs-purple);
+}
+.btn-outline-primary.active {
+    border-color: var(--bs-purple);
+    color: var(--bs-purple);
 }

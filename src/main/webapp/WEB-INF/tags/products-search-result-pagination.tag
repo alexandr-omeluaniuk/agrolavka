@@ -104,30 +104,30 @@
         </c:if>
     </div>
     <div class="col-sm-12 col-md-6 d-flex justify-content-end">
+        <div class="dropdown me-2">
+            <button class="btn btn-primary dropdown-toggle" type="button" id="sort-products" 
+                    data-mdb-toggle="dropdown" aria-expanded="false">
+                <c:choose>
+                    <c:when test="${sort == 'alphabet'}"><i class="fas fa-sort-alpha-up"></i> по алфавиту</c:when>
+                    <c:when test="${sort == 'cheap'}"><i class="fas fa-sort-numeric-up"></i> сначала дешевые</c:when>
+                    <c:when test="${sort == 'expensive'}"><i class="fas fa-sort-numeric-down"></i> сначала дорогие</c:when>
+                </c:choose>
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="sort-products">
+                <li><a class="dropdown-item" href="<%= createLink(null, null, "alphabet") %>">
+                        <i class="fas fa-sort-alpha-up"></i> по алфавиту</a></li>
+                <li><a class="dropdown-item" href="<%= createLink(null, null, "cheap") %>">
+                        <i class="fas fa-sort-numeric-up"></i> сначала дешевые</a></li>
+                <li><a class="dropdown-item" href="<%= createLink(null, null, "expensive") %>">
+                        <i class="fas fa-sort-numeric-down"></i> сначала дорогие</a></li>
+            </ul>
+        </div>
         <div class="btn-group">
-            <div class="dropdown">
-                <button class="btn btn-outline-info dropdown-toggle" type="button" id="sort-products" 
-                        data-bs-toggle="dropdown" aria-expanded="false">
-                    <c:choose>
-                        <c:when test="${sort == 'alphabet'}"><i class="fas fa-sort-alpha-up"></i> по алфавиту</c:when>
-                        <c:when test="${sort == 'cheap'}"><i class="fas fa-sort-numeric-up"></i> сначала дешевые</c:when>
-                        <c:when test="${sort == 'expensive'}"><i class="fas fa-sort-numeric-down"></i> сначала дорогие</c:when>
-                    </c:choose>
-                </button>
-                <ul class="dropdown-menu" aria-labelledby="sort-products">
-                    <li><a class="dropdown-item" href="<%= createLink(null, null, "alphabet") %>">
-                            <i class="fas fa-sort-alpha-up"></i> по алфавиту</a></li>
-                    <li><a class="dropdown-item" href="<%= createLink(null, null, "cheap") %>">
-                            <i class="fas fa-sort-numeric-up"></i> сначала дешевые</a></li>
-                    <li><a class="dropdown-item" href="<%= createLink(null, null, "expensive") %>">
-                            <i class="fas fa-sort-numeric-down"></i> сначала дорогие</a></li>
-                </ul>
-            </div>
-            <a href="<%= createLink(null, "TILES", null) %>" class="btn btn-outline-info ${"TILES".equals(view) ? "active" : ""}">
-                <i class="fas fa-th" ${"TILES".equals(view) ? " style=\"color: white;\"" : ""}></i>
+            <a href="<%= createLink(null, "TILES", null) %>" class="btn ${"TILES".equals(view) ? "btn-outline-primary active" : "btn-primary"}">
+                <i class="fas fa-th"></i>
             </a>
-            <a href="<%= createLink(null, "LIST", null) %>" class="btn btn-outline-info ${"LIST".equals(view) ? "active" : ""}">
-                <i class="fas fa-list" ${"LIST".equals(view) ? " style=\"color: white;\"" : ""}></i>
+            <a href="<%= createLink(null, "LIST", null) %>" class="btn ${"LIST".equals(view) ? "btn-outline-primary active" : "btn-primary"}">
+                <i class="fas fa-list"></i>
             </a>
         </div>
     </div>

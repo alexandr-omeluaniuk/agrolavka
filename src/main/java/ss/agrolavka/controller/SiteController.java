@@ -206,6 +206,9 @@ public class SiteController {
             } else if ("expensive".equals(sort)) {
                 searchRequest.setOrder("desc");
                 searchRequest.setOrderBy("price");
+            } else {
+                searchRequest.setOrder("asc");
+                searchRequest.setOrderBy("name");
             }
             model.addAttribute("searchResult", productDAO.search(searchRequest));
             Long count = productDAO.count(searchRequest);
