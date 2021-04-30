@@ -34,7 +34,7 @@
                     <t:cart cart="${cart}" totalDecimal="${totalDecimal}" totalInteger="${totalInteger}"/>
                 </div>
             </div>
-            <div class="collapse navbar-collapse" id="agr-navbar">
+            <div class="collapse navbar-collapse justify-content-end" id="agr-navbar">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item active">
                         <a class="nav-link" aria-current="page" href="/">Главная</a>

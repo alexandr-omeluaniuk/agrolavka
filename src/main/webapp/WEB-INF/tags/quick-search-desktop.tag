@@ -31,7 +31,9 @@
         
         document.querySelector('#agr-quick-search-input-desktop').addEventListener('focus', function (e) {
             const container = document.querySelector('#agr-quick-search-container-desktop');
-            container.style.width = (window.innerWidth - 950) + 'px';
+            const navLinks = document.querySelector('.navbar-nav');
+            navLinks.style.display = 'none';
+            container.style.width = (window.innerWidth - 400) + 'px';
             const searchResultOutput = document.querySelector('#agr-quick-search-result-desktop');
             if (searchResultOutput.innerHTML) {
                 searchResultOutput.classList.add("show");
@@ -46,6 +48,10 @@
                 const searchResultOutput = document.querySelector('#agr-quick-search-result-desktop');
                 searchResultOutput.classList.remove("show");
                 searchResultOutput.classList.remove("list-group");
+                setTimeout(() => {
+                    const navLinks = document.querySelector('.navbar-nav');
+                    navLinks.style.display = null;
+                }, 300);
             }
         }, true);
 
