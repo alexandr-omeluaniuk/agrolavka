@@ -64,6 +64,12 @@
         }
     }, true);
     
+    document.querySelectorAll('.nav-link', document.querySelector('#agr-navbar')).forEach(navLink => {
+        navLink.addEventListener('click', function () {
+            document.querySelector('button[data-mdb-target="#agr-navbar"]').click();
+        });
+    });
+    
     var addToCartListener = function(evt, button) {
         evt.preventDefault();
         evt.stopPropagation();

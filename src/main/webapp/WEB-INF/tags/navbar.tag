@@ -24,7 +24,7 @@
                     <div class="d-flex align-items-center justify-content-between mb-2">
                         <a class="nav-link" href="tel:+375298713758"><i class="fas fa-phone-alt"></i> +375 29 871-37-58 (МТС)</a>
                         <button class="navbar-toggler" type="button" data-mdb-toggle="collapse"
-                                data-mdb-target="#navbarExample01" aria-controls="navbarExample01" aria-expanded="false" aria-label="Toggle navigation">
+                                data-mdb-target="#agr-navbar" aria-controls="agr-navbar" aria-expanded="false" aria-label="Toggle navigation">
                             <i class="fas fa-bars"></i>
                         </button>
                     </div>
@@ -34,13 +34,16 @@
                     <t:cart cart="${cart}" totalDecimal="${totalDecimal}" totalInteger="${totalInteger}"/>
                 </div>
             </div>
-            <div class="collapse navbar-collapse" id="navbarExample01">
+            <div class="collapse navbar-collapse" id="agr-navbar">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item active">
                         <a class="nav-link" aria-current="page" href="/">Главная</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/catalog">Каталог товаров</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/delivery">Доставка</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#footer">Контакты</a>

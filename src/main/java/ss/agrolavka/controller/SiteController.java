@@ -66,6 +66,7 @@ public class SiteController {
      * @param model page model.
      * @param httpRequest HTTP request.
      * @return page.
+     * @throws Exception error.
      */
     @RequestMapping("/cart")
     public String cart(Model model, HttpServletRequest httpRequest) throws Exception {
@@ -77,11 +78,24 @@ public class SiteController {
      * @param model page model.
      * @param httpRequest HTTP request.
      * @return page.
+     * @throws Exception error.
      */
     @RequestMapping("/order")
     public String order(Model model, HttpServletRequest httpRequest) throws Exception {
         insertCartDataToModel(httpRequest, model);
         return "order";
+    }
+    /**
+     * Delivery page.
+     * @param model page model.
+     * @param httpRequest HTTP request.
+     * @return page.
+     * @throws Exception error. 
+     */
+    @RequestMapping("/delivery")
+    public String delivery(Model model, HttpServletRequest httpRequest) throws Exception {
+        insertCartDataToModel(httpRequest, model);
+        return "delivery";
     }
     /**
      * Page not found.

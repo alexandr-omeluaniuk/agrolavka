@@ -15,8 +15,6 @@
 <section class="text-center">
     <h4 class="mb-4"><strong>Новинки</strong></h4>
     <h6 class="mb-3">Последнее поступление товаров</h6>
-
-    <div class="row">
         <%
             for (int i = 0; i < newProducts.size(); i++) {
                 Product product = newProducts.get(i);
@@ -34,5 +32,4 @@
             }
             out.print("</div>");
         %>
-    </div>
 </section>
