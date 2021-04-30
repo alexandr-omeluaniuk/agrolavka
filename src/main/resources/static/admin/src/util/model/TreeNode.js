@@ -10,6 +10,7 @@ export class TreeNode {
         this.id = `${id}`;
         this.name = name;
         this.icon = null;
+        this.avatar = null;
     }
     
     setChildren(children) {
@@ -34,6 +35,11 @@ export class TreeNode {
     
     setIcon(icon) {
         this.icon = icon;
+        return this;
+    }
+    
+    setAvatar(ava) {
+        this.avatar = ava;
         return this;
     }
 }

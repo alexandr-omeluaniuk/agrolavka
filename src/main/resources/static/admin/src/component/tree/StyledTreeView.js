@@ -34,7 +34,8 @@ function StyledTreeView(props) {
     const renderLabel = (treeNode) => {
         return (
                 <div className={classes.label}>
-                    <Typography variant={'h6'} className={classes.labelText}>
+                    {treeNode.avatar ? treeNode.avatar : null}
+                    <Typography variant={'subtitle1'} className={classes.labelText}>
                         {treeNode.name}
                     </Typography>
                     {treeNode.icon ? treeNode.icon : null}

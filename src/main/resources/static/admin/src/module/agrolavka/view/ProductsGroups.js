@@ -11,6 +11,7 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import Icon from '@material-ui/core/Icon';
+import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import StyledTreeView from '../../../component/tree/StyledTreeView';
@@ -56,6 +57,10 @@ const useStyles = makeStyles(theme => ({
     },
     favoriteIcon: {
         color: theme.palette.secondary.main
+    },
+    small: {
+        width: theme.spacing(3),
+        height: theme.spacing(3)
     }
 }));
 
@@ -95,6 +100,7 @@ function ProductsGroups(props) {
             if (productGroup.topCategory) {
                 node.setIcon(<Icon className={classes.favoriteIcon}>favorite</Icon>);
             }
+            node.setAvatar(<Avatar className={classes.small} src={'/api/agrolavka/public/products-group-image/' + productGroup.id} />);
             const children = [];
             const childProductGroups = map[productGroup.externalId];
             if (childProductGroups) {
