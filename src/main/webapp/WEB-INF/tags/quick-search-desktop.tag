@@ -31,7 +31,7 @@
         
         document.querySelector('#agr-quick-search-input-desktop').addEventListener('focus', function (e) {
             const container = document.querySelector('#agr-quick-search-container-desktop');
-            container.style.width = (window.innerWidth - 900) + 'px';
+            container.style.width = (window.innerWidth - 950) + 'px';
             const searchResultOutput = document.querySelector('#agr-quick-search-result-desktop');
             if (searchResultOutput.innerHTML) {
                 searchResultOutput.classList.add("show");
