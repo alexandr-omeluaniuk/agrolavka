@@ -15,7 +15,7 @@
         <main class="min-vh-100">
             <div class="container">
                     
-                <section>
+                <section class="mb-5">
                     <div class="row">
                         <div class="col-md-4 gx-5 mb-4">
                             <div class="bg-image hover-overlay ripple shadow-2-strong" data-mdb-ripple-color="light">
@@ -60,17 +60,66 @@
                     
                     <hr class="my-3"/>
                             
-                    <h3 class="text-center">Способы и регионы доставки товаров</h3>
+                    <h3 class="text-center mb-4 mt-4">Способы и регионы доставки товаров</h3>
                     
                     <div class="row">
+                        
                         <div class="col-sm-12 col-md-4">
-                            <div class="card">
-                                <div class="card-header bg-white py-3">
-                                    <p class="text-uppercase small mb-2"><strong>Самовывоз</strong></p>
-                                    <h5 class="mb-0">Бесплатно</h5>
+                            <div class="card shadow-1-strong mb-3">
+                                <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
+                                    <h5 class="mb-3 mt-3 text-center text-dark"><strong>Самовывоз</strong></h5>
+                                    <div class="card-img-top agr-card-image" style="background-image: url('/assets/img/delivery/selfpickup.jpg')"></div>
+                                    <div class="mask" style="background-color: rgba(0, 0, 0, 0.05)"></div>
+                                    
+                                </div>
+                                <div class="card-body">
+                                    <small class="mb-0 text-dark">Бесплатно, из магазина, 
+                                        <a class="agr-link" href="#footer">расположенного в г.Дрогичине</a></small>
                                 </div>
                             </div>
                         </div>
+                        
+                        <div class="col-sm-12 col-md-4">
+                            <div class="card shadow-1-strong mb-3">
+                                <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
+                                    <h5 class="mb-3 mt-3 text-center text-dark"><strong>Почта</strong></h5>
+                                    <div class="card-img-top agr-card-image" style="background-image: url('/assets/img/delivery/post.jpg')"></div>
+                                    <div class="mask" style="background-color: rgba(0, 0, 0, 0.05)"></div>
+                                    <div class="card-body">
+                                        <p class="text-justify small">
+                                            Во все регионы Беларуси через отделения РУП «Белпочта». 
+                                            Срок доставки: 2-4 рабочих дня с момента отправки посылки, после полной ее комплектации. 
+                                            Отправка осуществляется с понедельника по пятницу.
+                                            Стоимость доставки зависит от почтовых тарифов.
+                                            Оплата при отправке заказа почтой: производится в белорусских рублях и осуществляется на почте при 
+                                            получении заказа. Срок сохранения посылки на почте: первые 7 дней – бесплатно, далее хранение платно, 
+                                            после хранения 30 дней – посылка уходит обратно (возврат). 
+                                            Дисконтная программа распространяется при заказах через почту.
+                                        </p>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                        
+                        <div class="col-sm-12 col-md-4">
+                            <div class="card shadow-1-strong mb-3">
+                                <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
+                                    <h5 class="mb-3 mt-3 text-center text-dark"><strong>Курьер</strong></h5>
+                                    <div class="card-img-top agr-card-image" style="background-image: url('/assets/img/delivery/truck.jpg')"></div>
+                                    <div class="mask" style="background-color: rgba(0, 0, 0, 0.05)"></div>
+                                    <div class="card-body">
+                                        <p class="small text-justify">
+                                            Стоимость доставки зависит от логистики и объема заказа и уточняется при подтверждении заказа.
+                                            Оплата наличными курьеру при доставке.
+                                            Дисконтная программа распространяется при заказах.
+                                        </>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                        
                     </div>
                     
                 </section>
