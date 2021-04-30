@@ -98,6 +98,18 @@ public class SiteController {
         return "delivery";
     }
     /**
+     * Discount page.
+     * @param model page model.
+     * @param httpRequest HTTP request.
+     * @return page.
+     * @throws Exception error. 
+     */
+    @RequestMapping("/discount")
+    public String discount(Model model, HttpServletRequest httpRequest) throws Exception {
+        insertCartDataToModel(httpRequest, model);
+        return "discount";
+    }
+    /**
      * Page not found.
      * @param model page model.
      * @param httpRequest HTTP request.

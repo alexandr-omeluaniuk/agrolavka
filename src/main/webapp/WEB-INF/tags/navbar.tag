@@ -46,6 +46,9 @@
                         <a class="nav-link" href="/delivery">Доставка</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" href="/discount">Скидки</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="#footer">Контакты</a>
                     </li>
                 </ul>

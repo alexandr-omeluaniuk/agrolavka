@@ -64,9 +64,12 @@
         }
     }, true);
     
-    document.querySelectorAll('.nav-link', document.querySelector('#agr-navbar')).forEach(navLink => {
+    const navBar = document.querySelector('#agr-navbar');
+    document.querySelectorAll('.nav-link', navBar).forEach(navLink => {
         navLink.addEventListener('click', function () {
-            document.querySelector('button[data-mdb-target="#agr-navbar"]').click();
+            if (navBar.classList.contains('show')) {
+                document.querySelector('button[data-mdb-target="#agr-navbar"]').click();
+            }
         });
     });
     
