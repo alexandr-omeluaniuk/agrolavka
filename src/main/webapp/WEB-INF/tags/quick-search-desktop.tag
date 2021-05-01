@@ -8,12 +8,16 @@
 
 <%-- The list of normal or fragment attributes can be specified here: --%>
 <%-- any content can be specified here e.g.: --%>
-<div class="input-group me-2" id="agr-quick-search-container-desktop">
+<div class="input-group me-2 d-flex d-lg-none d-xl-flex" id="agr-quick-search-container-desktop">
     <input type="search" class="form-control" aria-label="Поиск товаров" id="agr-quick-search-input-desktop" placeholder="Быстрый поиск"
            autocomplete="off">
     <ul class="dropdown-menu" aria-labelledby="agr-quick-search-container-desktop" id="agr-quick-search-result-desktop"></ul>
     <span class="input-group-text"><i class="fas fa-search" style="color:white;"></i></span>
 </div>
+
+<button type="button" class="btn btn-outline-light d-none d-lg-block d-xl-none btn-floating me-2" id="agr-quick-search-switcher-desktop">
+    <i class="fas fa-search"></i>
+</button>
 
 <script>
     (function () {
@@ -28,8 +32,16 @@
                 return text;
             }
         }
+        const input = document.querySelector('#agr-quick-search-input-desktop');
+        const switcher =  document.querySelector('#agr-quick-search-switcher-desktop');
+        switcher.addEventListener('click', function (e) {
+            const container = document.querySelector('#agr-quick-search-container-desktop');
+            switcher.classList.remove('d-lg-block');
+            container.classList.remove('d-lg-none');
+            input.focus();
+        });
         
-        document.querySelector('#agr-quick-search-input-desktop').addEventListener('focus', function (e) {
+        input.addEventListener('focus', function (e) {
             const container = document.querySelector('#agr-quick-search-container-desktop');
             const navLinks = document.querySelector('.navbar-nav');
             navLinks.style.display = 'none';
@@ -49,6 +61,8 @@
                 searchResultOutput.classList.remove("show");
                 searchResultOutput.classList.remove("list-group");
                 setTimeout(() => {
+                    switcher.classList.add('d-lg-block');
+                    container.classList.add('d-lg-none');
                     const navLinks = document.querySelector('.navbar-nav');
                     navLinks.style.display = null;
                 }, 300);

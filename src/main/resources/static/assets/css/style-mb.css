@@ -58,9 +58,6 @@ and open the template in the editor.
     main:not(#home) {
         margin-top: 100px;
     }
-    #introCarousel {
-        margin-top: -58.59px;
-    }
     #introCarousel,
     .carousel-inner,
     .carousel-item,
@@ -72,9 +69,6 @@ and open the template in the editor.
 @media (max-width: 992px) {
     main:not(#home) {
         margin-top: 140px;
-    }
-    #introCarousel:not([data-expanded="true"]) {
-        margin-top: -58.59px;
     }
     #introCarousel,
     .carousel-inner,
@@ -90,7 +84,7 @@ and open the template in the editor.
     }
 }
 #agr-quick-search-container-desktop {
-    width: 300px;
+    width: 270px;
     transition: all .5s;
 }
 #agr-quick-search-result-desktop, #agr-quick-search-result-mobile {

@@ -54,25 +54,25 @@
                     </div>
                     
                     <div class="row mb-5 mt-4">
-                        <div class="col-sm-6 col-md-6 col-lg-3 gx-5">
+                        <div class="col-sm-6 col-md-6 col-lg-3 gx-5 mb-4">
                             <div class="bg-image hover-overlay ripple shadow-2-strong" data-mdb-ripple-color="light">
                                 <img src="/assets/img/highlights/1.jpg" class="img-fluid" alt="Товары для сада и огорода в магазине Агролавка"/>
                                 <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
                             </div>
                         </div>
-                        <div class="col-sm-6 col-md-6 col-lg-3 gx-5">
+                        <div class="col-sm-6 col-md-6 col-lg-3 gx-5 mb-4">
                             <div class="bg-image hover-overlay ripple shadow-2-strong" data-mdb-ripple-color="light">
                                 <img src="/assets/img/highlights/2.jpg" class="img-fluid" alt="Товары для сада и огорода в магазине Агролавка"/>
                                 <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
                             </div>
                         </div>
-                        <div class="col-sm-6 col-md-6 col-lg-3 gx-5">
+                        <div class="col-sm-6 col-md-6 col-lg-3 gx-5 mb-4">
                             <div class="bg-image hover-overlay ripple shadow-2-strong" data-mdb-ripple-color="light">
                                 <img src="/assets/img/highlights/3.jpg" class="img-fluid" alt="Товары для сада и огорода в магазине Агролавка"/>
                                 <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
                             </div>
                         </div>
-                        <div class="col-sm-6 col-md-6 col-lg-3 gx-5">
+                        <div class="col-sm-6 col-md-6 col-lg-3 gx-5 mb-4">
                             <div class="bg-image hover-overlay ripple shadow-2-strong" data-mdb-ripple-color="light">
                                 <img src="/assets/img/highlights/5.jpg" class="img-fluid" alt="Товары для сада и огорода в магазине Агролавка"/>
                                 <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
