@@ -16,41 +16,40 @@
 
 <%-- any content can be specified here e.g.: --%>
 <a href="<%= UrlProducer.buildProductUrl(product) %>">
-<div class="card shadow-1-strong mb-4 ${noHover ? '' : 'hover-shadow'}">
-    <div class="ribbon ribbon-top-left">
-        <span class="${product.quantity > 0 ? 'bg-success' : 'bg-danger'}">
-            <small>${product.quantity > 0 ? 'в наличии' : 'под заказ'}</small>
-        </span>
-    </div>
-    <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
-        <div class="card-img-top agr-card-image" style="background-image: url('/api/agrolavka/public/product-image/${product.id}')"></div>
-        
-            <!--div class="mask" style="background-color: rgba(0, 0, 0, 0.05)"></div-->
-        
-        <div class="card-body" style="min-height: 100px;">
-            <h6 class="card-title text-dark" style="min-height: 60px;">${product.name}</h6>
-            <div class="d-flex align-items-center mb-2" style="min-height: 35px;">
-                <span class="text-muted fs-6" style="flex: 1; text-align: left;">Цена</span>
-                <span class="fw-bold ${not empty product.discount ? 'text-decoration-line-through text-muted me-2' : 'text-dark'}">
-                    <%
-                        String price = String.format("%.2f", product.getPrice());
-                        String[] parts = price.split("\\.");
-                        out.print(parts[0] + ".");
-                        out.print("<small>" + parts[1] + "</small>");
-                    %> <small class="text-muted">BYN</small></span>
-                <c:if test="${not empty product.discount}">
-                    <button class="btn btn-sm btn-danger btn-rounded fs-6">
-                        <i class="fas fa-fire me-2"></i>
+    <div class="card shadow-1-strong mb-4 ${noHover ? '' : 'hover-shadow'}">
+        <div class="ribbon ribbon-top-left">
+            <span class="${product.quantity > 0 ? 'bg-success' : 'bg-danger'}">
+                <small>${product.quantity > 0 ? 'в наличии' : 'под заказ'}</small>
+            </span>
+        </div>
+        <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
+            <div class="card-img-top agr-card-image" style="background-image: url('/api/agrolavka/public/product-image/${product.id}')"></div>
+
+                <!--div class="mask" style="background-color: rgba(0, 0, 0, 0.05)"></div-->
+
+            <div class="card-body" style="min-height: 100px;">
+                <h6 class="card-title text-dark" style="min-height: 60px;">${product.name}</h6>
+                <div class="d-flex align-items-center mb-2" style="min-height: 35px;">
+                    <span class="text-muted fs-6" style="flex: 1; text-align: left;">Цена</span>
+                    <span class="fw-bold ${not empty product.discount ? 'text-decoration-line-through text-muted me-2' : 'text-dark'}">
                         <%
-                            String priceWithDiscount = String.format("%.2f", product.getDiscountPrice());
-                            String[] priceWithDiscountParts = priceWithDiscount.split("\\.");
-                            out.print(priceWithDiscountParts[0] + ".");
-                            out.print("<small>" + priceWithDiscountParts[1] + "</small>");
-                        %> <small>BYN</small>
-                    </button>
-                </c:if>
-            </div>
-            <form>
+                            String price = String.format("%.2f", product.getPrice());
+                            String[] parts = price.split("\\.");
+                            out.print(parts[0] + ".");
+                            out.print("<small>" + parts[1] + "</small>");
+                        %> <small class="text-muted">BYN</small></span>
+                    <c:if test="${not empty product.discount}">
+                        <button class="btn btn-sm btn-danger btn-rounded fs-6">
+                            <i class="fas fa-fire me-2"></i>
+                            <%
+                                String priceWithDiscount = String.format("%.2f", product.getDiscountPrice());
+                                String[] priceWithDiscountParts = priceWithDiscount.split("\\.");
+                                out.print(priceWithDiscountParts[0] + ".");
+                                out.print("<small>" + priceWithDiscountParts[1] + "</small>");
+                            %> <small>BYN</small>
+                        </button>
+                    </c:if>
+                </div>
                 <%
                     boolean inCart = false;
                     for (OrderPosition pos : cart.getPositions()) {
@@ -75,8 +74,7 @@
                 <%
                     }
                 %>
-            </form>
+            </div>
         </div>
     </div>
-</div>
-        </a>
+</a>
