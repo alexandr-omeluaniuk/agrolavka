@@ -66,7 +66,7 @@
                                 sb = noResult;
                             } else {
                                 data.forEach(product => {
-                                    const price = parseFloat(product.price).toFixed(2);
+                                    const price = parseFloat(product.discountPrice ? product.discountPrice : product.price).toFixed(2);
                                     const priceRub = price.split('.')[0];
                                     const priceCent = price.split('.')[1];
                                     sb += 

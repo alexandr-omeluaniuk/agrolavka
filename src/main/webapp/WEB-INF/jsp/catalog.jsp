@@ -12,7 +12,7 @@
     
     <jsp:body>
         <main class="min-vh-100">
-            <div class="container">
+            <div class="container mb-5">
                 
                 <section>
                     <h3 class="text-center mb-4">${group != null ? group.name : 'Каталог товаров'}</h3>

@@ -50,30 +50,32 @@
                     </button>
                 </c:if>
             </div>
-            <%
-                boolean inCart = false;
-                for (OrderPosition pos : cart.getPositions()) {
-                    if (Objects.equals(product.getId(), pos.getProductId())) {
-                        inCart = true;
-                        break;
+            <form>
+                <%
+                    boolean inCart = false;
+                    for (OrderPosition pos : cart.getPositions()) {
+                        if (Objects.equals(product.getId(), pos.getProductId())) {
+                            inCart = true;
+                            break;
+                        }
                     }
-                }
-            %>
-            <%
-                if (!inCart) {
-            %>
-            <button class="btn btn-outline-success btn-rounded w-100 mt-1" data-product-id="${product.id}" data-add="" style="z-index: 9000;">
-                <i class="fas fa-cart-plus me-2"></i> В корзину
-            </button>
-            <%
-                } else {
-            %>
-            <button class="btn btn-outline-danger btn-rounded w-100 mt-1" data-product-id="${product.id}" data-remove="" style="z-index: 9000;">
-                <i class="fas fa-minus-circle me-2"></i> Из корзины
-            </button>
-            <%
-                }
-            %>
+                %>
+                <%
+                    if (!inCart) {
+                %>
+                <button class="btn btn-outline-success btn-rounded w-100 mt-1" data-product-id="${product.id}" data-add="" style="z-index: 9000;">
+                    <i class="fas fa-cart-plus me-2"></i> В корзину
+                </button>
+                <%
+                    } else {
+                %>
+                <button class="btn btn-outline-danger btn-rounded w-100 mt-1" data-product-id="${product.id}" data-remove="" style="z-index: 9000;">
+                    <i class="fas fa-minus-circle me-2"></i> Из корзины
+                </button>
+                <%
+                    }
+                %>
+            </form>
         </div>
     </div>
 </div>
