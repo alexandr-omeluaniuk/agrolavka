@@ -8,6 +8,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import { ToolbarContext } from '../../../context/ToolbarContext';
 import DataService from '../../../service/DataService';
 import { useTranslation } from 'react-i18next';
+import Divider from '@material-ui/core/Divider';
+import Link from '@material-ui/core/Link';
+import Chip from '@material-ui/core/Chip';
 import Icon from '@material-ui/core/Icon';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
@@ -48,6 +51,13 @@ const useStyles = makeStyles(theme => ({
         marginTop: theme.spacing(2),
         marginBottom: theme.spacing(2),
         alignItems: 'center'
+    },
+    divider: {
+        marginTop: theme.spacing(2),
+        marginBottom: theme.spacing(2)
+    },
+    chip: {
+        margin: theme.spacing(1)
     }
 }));
 
@@ -145,6 +155,39 @@ function Order(props) {
                 </NavLink>
         );
     };
+    const chip = (label, value) => {
+        return (
+                <React.Fragment>
+                    <Typography variant="caption" component="span" color="textSecondary"><b>{label}</b></Typography>
+                    <Typography variant="subtitle1" component="span">{value}</Typography>
+                </React.Fragment>
+        );
+    };
+    const address = () => {
+        const result = [];
+        if (order.address.firstname) {
+            result.push(<Chip label={chip('Имя: ', order.address.firstname)} key={1} color="secondary" className={classes.chip}/>);
+        }
+        if (order.address.lastname) {
+            result.push(<Chip label={chip('Фамилия: ',order.address.lastname)} key={2} color="secondary" className={classes.chip}/>);
+        }
+        if (order.address.city) {
+            result.push(<Chip label={chip('Населенный пункт: ', order.address.city)} key={3} color="secondary" className={classes.chip}/>);
+        }
+        if (order.address.street) {
+            result.push(<Chip label={chip('Улица: ', order.address.street)} key={4} color="secondary" className={classes.chip}/>);
+        }
+        if (order.address.house) {
+            result.push(<Chip label={chip('Дом: ', order.address.house)} key={5} color="secondary" className={classes.chip}/>);
+        }
+        if (order.address.flat) {
+            result.push(<Chip label={chip('Квартира: ', order.address.flat)} key={6} color="secondary" className={classes.chip}/>);
+        }
+        if (order.address.postcode) {
+            result.push(<Chip label={chip('Почтовый индекс: ', order.address.postcode)} key={7} color="secondary" className={classes.chip}/>);
+        }
+        return result;
+    };
     if (!order || !tableConfig) {
         return null;
     }
@@ -154,6 +197,13 @@ function Order(props) {
                         subheader={t('m_agrolavka:order.created') + ': '  + moment(order.created).locale('ru').format('DD MMMM yyyy HH:mm')}>
                 </CardHeader>
                 <CardContent>
+                    <Divider className={classes.divider}/>
+                    <Typography variant={'h6'}>
+                        Контактные данные
+                    </Typography>
+                    <Link href={'tel:+375' + order.phone.replace(/\D/g,'')} color="primary">+375 {order.phone}</Link><br/>
+                    {order.address ? address() : null}
+                    <Divider className={classes.divider}/>
                     <DataTable tableConfig={tableConfig}/>
                 </CardContent>
             </Card>

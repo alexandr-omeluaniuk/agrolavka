@@ -62,6 +62,23 @@
                                                 </label>
                                             </div>
                                             <div class="mt-3 d-none" id="order-address">
+                                                <small class="text-muted mb-2 ms-2">имя и фамилия заполняются только если планируется доставка почтой</small>
+                                                <div class="row">
+                                                    <div class="col-sm-12 col-lg-6">
+                                                        <div class="form-floating mb-3">
+                                                            <input type="text" class="form-control" id="firstname" placeholder="Иван"
+                                                                   name="firstname">
+                                                            <label for="firstname">Имя</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-12 col-lg-6">
+                                                        <div class="form-floating mb-3">
+                                                            <input type="text" class="form-control" id="lastname" placeholder="Иванов"
+                                                                   name="lastname">
+                                                            <label for="lastname">Фамилия</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                                 <div class="row">
                                                     <div class="col-sm-12 col-md-9">
                                                         <div class="form-floating mb-3">

@@ -43,10 +43,14 @@ public class Address extends DataModel {
     @Size(max = 6)
     @Column(name = "postcode", length = 6)
     private String postcode;
-    /** Recipient. */
+    /** First name. */
     @Size(max = 255)
-    @Column(name = "recipient", length = 255)
-    private String recipient;
+    @Column(name = "firstname", length = 255)
+    private String firstname;
+    /** Last name. */
+    @Size(max = 255)
+    @Column(name = "lastname", length = 255)
+    private String lastname;
     // ================================================ SET & GET =====================================================
     /**
      * @return the city
@@ -97,18 +101,6 @@ public class Address extends DataModel {
         this.postcode = postcode;
     }
     /**
-     * @return the recipient
-     */
-    public String getRecipient() {
-        return recipient;
-    }
-    /**
-     * @param recipient the recipient to set
-     */
-    public void setRecipient(String recipient) {
-        this.recipient = recipient;
-    }
-    /**
      * @return the flat
      */
     public String getFlat() {
@@ -119,6 +111,30 @@ public class Address extends DataModel {
      */
     public void setFlat(String flat) {
         this.flat = flat;
+    }
+    /**
+     * @return the firstname
+     */
+    public String getFirstname() {
+        return firstname;
+    }
+    /**
+     * @param firstname the firstname to set
+     */
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
+    /**
+     * @return the lastname
+     */
+    public String getLastname() {
+        return lastname;
+    }
+    /**
+     * @param lastname the lastname to set
+     */
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
     }
     // ================================================================================================================
     @Override

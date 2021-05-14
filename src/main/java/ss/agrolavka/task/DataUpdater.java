@@ -166,7 +166,9 @@ public class DataUpdater {
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     private void importProducts() throws Exception {
         productDAO.resetDiscounts();
-        coreDAO.massDelete(coreDAO.getAll(Discount.class));
+        for (Discount discount : coreDAO.getAll(Discount.class)) {
+            coreDAO.delete(discount.getId(), Discount.class);
+        }
         List<Discount> discounts = mySkladIntegrationService.getDiscounts();
         Map<String, Discount> discountsMap = new HashMap();
         for (Discount discount : discounts) {

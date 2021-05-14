@@ -200,6 +200,8 @@ class AgrolavkaPublicRESTController {
             address.setStreet((String) formValues.get("street"));
             address.setPostcode((String) formValues.get("postcode"));
             address.setFlat((String) formValues.get("flat"));
+            address.setFirstname((String) formValues.get("firstname"));
+            address.setLastname((String) formValues.get("lastname"));
             order.setAddress(address);
         }
         Order savedOrder = coreDAO.create(order);
