@@ -5,7 +5,6 @@
  */
 package ss.agrolavka.rest;
 
-import java.util.Base64;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -16,6 +15,7 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Propagation;
@@ -26,7 +26,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import ss.agrolavka.constants.ImageStubs;
 import ss.agrolavka.constants.OrderStatus;
 import ss.agrolavka.constants.SiteConstants;
 import ss.agrolavka.dao.ProductDAO;
@@ -60,30 +59,34 @@ class AgrolavkaPublicRESTController {
     /**
      * Get product image.
      * @param id product ID.
-     * @return product image.
      * @throws Exception error.
      */
     @RequestMapping(value = "/product-image/{id}", method = RequestMethod.GET,
             produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     @Transactional(propagation = Propagation.SUPPORTS)
-    public byte[] getProductImage(@PathVariable("id") Long id) throws Exception {
+    public void getProductImage(@PathVariable("id") Long id, HttpServletResponse response) throws Exception {
         Product product = coreDAO.findById(id, Product.class);
-        return product != null && !product.getImages().isEmpty() ? product.getImages().get(0).getData()
-                : Base64.getDecoder().decode(ImageStubs.NO_PRODUCT_IMAGE);
+        if (product != null && !product.getImages().isEmpty()) {
+            response.getOutputStream().write(product.getImages().get(0).getData());
+        } else {
+            response.sendRedirect("/assets/img/no-image.png");
+        }
     }
     /**
      * Get products group image.
      * @param id products group ID.
-     * @return products group image.
      * @throws Exception error.
      */
     @RequestMapping(value = "/products-group-image/{id}", method = RequestMethod.GET,
             produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     @Transactional(propagation = Propagation.SUPPORTS)
-    public byte[] getProductsGroupImage(@PathVariable("id") Long id) throws Exception {
+    public void getProductsGroupImage(@PathVariable("id") Long id, HttpServletResponse response) throws Exception {
         ProductsGroup productsGroup = coreDAO.findById(id, ProductsGroup.class);
-        return productsGroup != null && !productsGroup.getImages().isEmpty() ? productsGroup.getImages().get(0).getData()
-                : Base64.getDecoder().decode(ImageStubs.NO_PRODUCT_IMAGE);
+        if (productsGroup != null && !productsGroup.getImages().isEmpty()) {
+            response.getOutputStream().write(productsGroup.getImages().get(0).getData());
+        } else {
+            response.sendRedirect("/assets/img/no-image.png");
+        }
     }
     /**
      * Search product.

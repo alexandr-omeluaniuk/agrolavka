@@ -14,7 +14,7 @@
         {
           "@context": "https://schema.org/",
           "@type": "Product",
-          "name": "${product.name}",
+          "name": "${structuredDataName}",
           "image": [
             "https://agrolavka.by/api/agrolavka/public/product-image/${product.id}"
            ],

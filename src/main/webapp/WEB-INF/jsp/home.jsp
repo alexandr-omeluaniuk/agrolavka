@@ -7,7 +7,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 
-<t:app title="Агролавка | ${title}" canonical="/"
+<t:app title="Агролавка | ${title}" canonical=""
        metaDescription="Большой выбор семян, удобрений, средств для защиты растений. Комплектующие для капельного полива. Зоотовары. Приглашаем за покупками.">
 
     <jsp:body>
@@ -78,7 +78,7 @@
                         </div>
                         <div class="col-sm-6 col-md-6 col-lg-3 gx-5 mb-4">
                             <div class="bg-image hover-overlay ripple shadow-2-strong" data-mdb-ripple-color="light">
-                                <img src="/assets/img/highlights/5.jpg" class="img-fluid"
+                                <img src="/assets/img/highlights/4.jpg" class="img-fluid"
                                      alt="Товары для сада и огорода в магазине Агролавка" height="100"/>
                                 <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
                             </div>

@@ -59,7 +59,7 @@
                 <ul class="navbar-nav d-flex flex-row">
                     <!-- Icons -->
                     <li class="nav-item me-3 me-lg-0">
-                        <a class="nav-link d-flex align-items-center" href="https://www.instagram.com/agrolavka.by" target="_blank">
+                        <a class="nav-link d-flex align-items-center" href="https://www.instagram.com/agrolavka.by" target="_blank" rel="noreferrer">
                             <i class="fab fa-instagram"></i><span class="ms-2 d-block d-lg-none">Инстаграм</span>
                         </a>
                     </li>
