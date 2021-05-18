@@ -73,7 +73,7 @@
         <!-- Google Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet"/>
         <!-- MDB -->
-        <link href="/assets/vendor/MDB5-STANDARD-UI-KIT-Free-3.5.0/css/mdb.min.css" rel="stylesheet"/>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.5.0/mdb.min.css" rel="stylesheet"/>
 
         <!-- Main CSS File -->
         <link href="/assets/css/style-mb.css" rel="stylesheet">
@@ -85,7 +85,7 @@
         <t:footer></t:footer>
 
         <!-- Vendor JS Files -->
-        <script type="text/javascript" src="/assets/vendor/MDB5-STANDARD-UI-KIT-Free-3.5.0/js/mdb.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.5.0/mdb.min.js"></script>
         <script type="text/javascript" src="/assets/vendor/purecounter/purecounter.js"></script>
         <!-- Main CSS File -->
         <script type="text/javascript" src="/assets/js/main-mb.js"></script>
