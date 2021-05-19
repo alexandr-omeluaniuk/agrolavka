@@ -19,7 +19,7 @@
             List<ProductsGroup> topCategories = UrlProducer.getTopCategories();
             for (ProductsGroup group : topCategories) {
         %>
-        <div class="col-lg col-md col-sm-12">
+        <div class="col-lg col-md-6 col-sm-6 col-6">
             <t:card-category group="<%= group %>"/>
         </div>
         <%
