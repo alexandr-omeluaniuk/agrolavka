@@ -33,7 +33,7 @@
                     <c:when test="${'TILES' == view}">
                         <div class="row">
                             <c:forEach items="${searchResult}" var="product">
-                                <div class="col-sm-6 col-md-6 col-lg-4 col-xl-3">
+                                <div class="col-sm-6 col-md-6 col-lg-4 col-xl-3 col-6">
                                     <t:card-product product="${product}" cart="${cart}" />
                                 </div>
                             </c:forEach>

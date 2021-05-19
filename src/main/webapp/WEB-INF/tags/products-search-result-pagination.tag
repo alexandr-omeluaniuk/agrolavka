@@ -74,7 +74,7 @@
     }
 %>
 <div class="row mb-3 mt-3">
-    <div class="col-sm-12 col-md-6 d-flex justify-content-start">
+    <div class="col-sm-12 col-md-6 d-flex justify-content-start mt-3">
         <c:if test="${pages > 1}">
             <nav aria-label="Page navigation" class="d-flex justify-content-start">
                 <ul class="pagination pagination-circle" style="margin-bottom: 0;">
@@ -103,7 +103,7 @@
             </nav>
         </c:if>
     </div>
-    <div class="col-sm-12 col-md-6 d-flex justify-content-end">
+    <div class="col-sm-12 col-md-6 d-flex justify-content-end mt-3">
         <div class="dropdown me-2">
             <button class="btn btn-primary dropdown-toggle" type="button" id="sort-products" 
                     data-mdb-toggle="dropdown" aria-expanded="false">

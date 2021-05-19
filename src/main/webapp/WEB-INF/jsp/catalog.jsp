@@ -28,7 +28,7 @@
                     <t:categories-grid categories="${categories}" />
                 </section>
                 <c:if test="${empty categories}">
-                    <section class="pt-4 pb-4">
+                    <section class="pb-4">
                         <t:products-search-result searchResult="${searchResult}" pages="${searchResultPages}"
                                                       page="${page}" view="${view}" sort="${sort}" group="${group}" cart="${cart}">
                         </t:products-search-result>
