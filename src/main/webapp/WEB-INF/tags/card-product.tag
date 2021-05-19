@@ -28,7 +28,7 @@
                 <!--div class="mask" style="background-color: rgba(0, 0, 0, 0.05)"></div-->
 
             <div class="card-body" style="min-height: 100px;">
-                <h6 class="card-title text-dark" style="min-height: 60px;">${product.name}</h6>
+                <h6 class="card-title text-dark text-left" style="min-height: 60px;">${product.name}</h6>
                 <div class="d-flex align-items-center mb-2" style="min-height: 35px;">
                     <span class="text-muted fs-6" style="flex: 1; text-align: left;">Цена</span>
                     <span class="fw-bold ${not empty product.discount ? 'text-decoration-line-through text-muted me-2' : 'text-dark'}">

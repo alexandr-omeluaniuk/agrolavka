@@ -15,7 +15,7 @@
 <%-- any content can be specified here e.g.: --%>
 <div class="row">
     <c:forEach items="${categories}" var="group">
-        <div class="col-lg-3 col-md-4 col-sm-6">
+        <div class="col-lg-3 col-md-4 col-sm-6 col-6">
             <t:card-category group="${group}"/>
         </div>
     </c:forEach>

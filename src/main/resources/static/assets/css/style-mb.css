@@ -219,6 +219,9 @@ and open the template in the editor.
 .text-right {
     text-align: right;
 }
+.text-left {
+    text-align: left;
+}
 .page-item.active .page-link {
     background-color: var(--bs-purple);
 }
