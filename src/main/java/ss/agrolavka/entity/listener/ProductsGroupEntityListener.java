@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import ss.agrolavka.service.MySkladIntegrationService;
+import ss.agrolavka.util.ImageUtil;
 import ss.agrolavka.util.UrlProducer;
 import ss.entity.agrolavka.ProductsGroup;
 import ss.martin.platform.dao.CoreDAO;
@@ -36,6 +37,7 @@ class ProductsGroupEntityListener implements PlatformEntityListener<ProductsGrou
 
     @Override
     public void prePersist(ProductsGroup entity) throws Exception {
+        new ImageUtil().toThumbnail(entity.getImages());
         entity.setUrl(UrlProducer.transliterate(entity.getName()));
         entity.setExternalId(mySkladIntegrationService.createProductsGroup(entity));
     }
@@ -48,6 +50,7 @@ class ProductsGroupEntityListener implements PlatformEntityListener<ProductsGrou
     @Override
     public void preUpdate(ProductsGroup entity) throws Exception {
         ProductsGroup entityFromDB = coreDAO.findById(entity.getId(), ProductsGroup.class);
+        new ImageUtil().toThumbnail(entity.getImages());
         entityFromDB.setImages(entity.getImages());
         coreDAO.update(entityFromDB);
         entity.setUrl(UrlProducer.transliterate(entity.getName()));

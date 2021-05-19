@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import ss.agrolavka.service.MySkladIntegrationService;
+import ss.agrolavka.util.ImageUtil;
 import ss.entity.agrolavka.Product;
 import ss.martin.platform.dao.CoreDAO;
 import ss.martin.platform.util.PlatformEntityListener;
@@ -36,6 +37,7 @@ class ProductEntityListener implements PlatformEntityListener<Product> {
     @Override
     public void prePersist(Product entity) throws Exception {
         Product mySkladEntity = mySkladIntegrationService.createProduct(entity);
+        new ImageUtil().toThumbnail(entity.getImages());
         entity.setExternalId(mySkladEntity.getExternalId());
         mySkladIntegrationService.attachImagesToProduct(entity);
     }
@@ -44,6 +46,7 @@ class ProductEntityListener implements PlatformEntityListener<Product> {
     public void preUpdate(Product entity) throws Exception {
         mySkladIntegrationService.updateProduct(entity);
         Product entityFromDB = coreDAO.findById(entity.getId(), Product.class);
+        new ImageUtil().toThumbnail(entity.getImages());
         entityFromDB.setImages(entity.getImages());
         coreDAO.update(entityFromDB);
         mySkladIntegrationService.removeProductImages(entity);

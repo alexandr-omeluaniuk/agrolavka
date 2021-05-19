@@ -36,6 +36,7 @@ import ss.entity.agrolavka.Order;
 import ss.entity.agrolavka.OrderPosition;
 import ss.entity.agrolavka.Product;
 import ss.entity.agrolavka.ProductsGroup;
+import ss.entity.martin.EntityImage;
 import ss.martin.platform.dao.CoreDAO;
 import ss.martin.platform.service.FirebaseClient;
 import ss.martin.platform.wrapper.PushNotification;
@@ -61,13 +62,14 @@ class AgrolavkaPublicRESTController {
      * @param id product ID.
      * @throws Exception error.
      */
-    @RequestMapping(value = "/product-image/{id}", method = RequestMethod.GET,
-            produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    @RequestMapping(value = "/product-image/{id}", method = RequestMethod.GET)
     @Transactional(propagation = Propagation.SUPPORTS)
     public void getProductImage(@PathVariable("id") Long id, HttpServletResponse response) throws Exception {
         Product product = coreDAO.findById(id, Product.class);
         if (product != null && !product.getImages().isEmpty()) {
-            response.getOutputStream().write(product.getImages().get(0).getData());
+            EntityImage image = product.getImages().get(0);
+            response.setContentType(image.getType());
+            response.getOutputStream().write(image.getData());
         } else {
             response.sendRedirect("/assets/img/no-image.png");
         }
@@ -77,13 +79,14 @@ class AgrolavkaPublicRESTController {
      * @param id products group ID.
      * @throws Exception error.
      */
-    @RequestMapping(value = "/products-group-image/{id}", method = RequestMethod.GET,
-            produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    @RequestMapping(value = "/products-group-image/{id}", method = RequestMethod.GET)
     @Transactional(propagation = Propagation.SUPPORTS)
     public void getProductsGroupImage(@PathVariable("id") Long id, HttpServletResponse response) throws Exception {
         ProductsGroup productsGroup = coreDAO.findById(id, ProductsGroup.class);
         if (productsGroup != null && !productsGroup.getImages().isEmpty()) {
-            response.getOutputStream().write(productsGroup.getImages().get(0).getData());
+            EntityImage image = productsGroup.getImages().get(0);
+            response.setContentType(image.getType());
+            response.getOutputStream().write(image.getData());
         } else {
             response.sendRedirect("/assets/img/no-image.png");
         }
