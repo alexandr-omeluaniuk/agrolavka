@@ -43,7 +43,7 @@
         <title>${title}</title>
         <meta name="title" content="Все для сада и огорода">
         <meta name="description" content="${metaDescription}">
-        <link rel="canonical" href="${canonical}"/>
+        <link rel="canonical" href="https://agrolavka${canonical}"/>
         <!-- Open Graph / Facebook -->
         <meta property="og:type" content="website">
         <meta property="og:site_name" content="Агролавка">

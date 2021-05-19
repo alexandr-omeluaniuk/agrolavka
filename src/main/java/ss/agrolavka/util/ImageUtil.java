@@ -33,12 +33,14 @@ public class ImageUtil {
                 int height = bufImage.getHeight();
                 int width = bufImage.getWidth();
                 is = Thumbnails.of(new ByteArrayInputStream(image.getData()));
-                if (height < width) {
-                    is.height(THUMBNAIL_MIN_SIZE).toOutputStream(baos);
-                } else {
-                    is.width(THUMBNAIL_MIN_SIZE).toOutputStream(baos);
+                if (height > THUMBNAIL_MIN_SIZE && width > THUMBNAIL_MIN_SIZE) {
+                    if (height < width) {
+                        is.height(THUMBNAIL_MIN_SIZE).toOutputStream(baos);
+                    } else {
+                        is.width(THUMBNAIL_MIN_SIZE).toOutputStream(baos);
+                    }
+                    image.setData(baos.toByteArray());
                 }
-                image.setData(baos.toByteArray());
                 baos.close();
             }
         }

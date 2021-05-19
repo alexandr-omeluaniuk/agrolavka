@@ -23,6 +23,7 @@ import ss.agrolavka.AgrolavkaConfiguration;
 import ss.agrolavka.dao.ExternalEntityDAO;
 import ss.agrolavka.dao.ProductDAO;
 import ss.agrolavka.service.MySkladIntegrationService;
+import ss.agrolavka.util.ImageUtil;
 import ss.agrolavka.util.UrlProducer;
 import ss.entity.agrolavka.Discount;
 import ss.entity.agrolavka.PriceType;
@@ -242,9 +243,11 @@ public class DataUpdater {
     @Transactional(propagation = Propagation.SUPPORTS, rollbackFor = Exception.class)
     private void importImages() throws Exception {
         List<Product> products = coreDAO.getAll(Product.class);
+        ImageUtil imageUtil = new ImageUtil();
         for (Product product : products) {
             try {
                 List<EntityImage> images = mySkladIntegrationService.getProductImages(product.getExternalId());
+                imageUtil.toThumbnail(images);
                 product.setImages(images);
                 coreDAO.update(product);
             } catch (Exception e) {
