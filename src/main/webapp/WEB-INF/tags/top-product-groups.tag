@@ -5,7 +5,7 @@
 --%>
 
 <%@tag description="put the tag description here" pageEncoding="UTF-8"
-       import="ss.agrolavka.util.UrlProducer,ss.entity.agrolavka.ProductsGroup,java.util.*"%>
+       import="ss.agrolavka.util.AppCache,ss.entity.agrolavka.ProductsGroup,java.util.*"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 
 <%-- The list of normal or fragment attributes can be specified here: --%>
@@ -16,7 +16,7 @@
 
     <div class="row">
         <% 
-            List<ProductsGroup> topCategories = UrlProducer.getTopCategories();
+            List<ProductsGroup> topCategories = AppCache.getTopCategories();
             for (ProductsGroup group : topCategories) {
         %>
         <div class="col-lg col-md-6 col-sm-6 col-6">

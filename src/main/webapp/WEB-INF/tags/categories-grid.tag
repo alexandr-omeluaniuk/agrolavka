@@ -4,8 +4,7 @@
     Author     : alex
 --%>
 
-<%@tag description="Categories grid" pageEncoding="UTF-8" 
-       import="ss.agrolavka.util.UrlProducer,ss.entity.agrolavka.ProductsGroup"%>
+<%@tag description="Categories grid" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 

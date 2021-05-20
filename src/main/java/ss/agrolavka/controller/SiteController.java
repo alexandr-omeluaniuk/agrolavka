@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import ss.agrolavka.constants.SiteConstants;
 import ss.agrolavka.dao.ProductDAO;
+import ss.agrolavka.util.AppCache;
 import ss.agrolavka.util.UrlProducer;
 import ss.agrolavka.wrapper.ProductsSearchRequest;
 import ss.entity.agrolavka.Order;
@@ -51,6 +52,7 @@ public class SiteController {
      */
     @RequestMapping("/")
     public String home(Model model, HttpServletRequest httpRequest) throws Exception {
+        System.out.println("==================================================================================");
         insertCartDataToModel(httpRequest, model);
         model.addAttribute("title", "Все для сада и огорода");
         ProductsSearchRequest searchRequest = new ProductsSearchRequest();
@@ -59,6 +61,7 @@ public class SiteController {
         searchRequest.setOrder("desc");
         searchRequest.setOrderBy("created_date");
         model.addAttribute("newProducts", productDAO.search(searchRequest));
+        System.out.println("==================================================================================");
         return "home";
     }
     /**
@@ -140,12 +143,12 @@ public class SiteController {
         model.addAttribute("page", page == null ? 1 : page);
         model.addAttribute("view", view == null ? "TILES" : view);
         model.addAttribute("sort", sort == null ? "alphabet" : sort);
-        model.addAttribute("groups", UrlProducer.getProductsGroups());
+        model.addAttribute("groups", AppCache.getProductsGroups());
         if ("/catalog".equals(url)) {
             model.addAttribute("canonical", url  + (page != null ? "?page=" + page : ""));
             model.addAttribute("title", "Широкий выбор товаров для сада и огорода");
             model.addAttribute("metaDescription", "Каталог товаров для сада и огорода");
-            model.addAttribute("categories", UrlProducer.getRootProductGroups());
+            model.addAttribute("categories", AppCache.getRootProductGroups());
             insertSearchResultToPage(model, null, page, sort == null ? "alphabet" : sort);
             return "catalog";
         }
@@ -173,7 +176,7 @@ public class SiteController {
                 }
             }
             model.addAttribute("metaDescription", meta);
-            model.addAttribute("categories", UrlProducer.getCategoriesTree().get(group.getExternalId()));
+            model.addAttribute("categories", AppCache.getCategoriesTree().get(group.getExternalId()));
             return "catalog";
         } else if (entity instanceof Product) {
             model.addAttribute("canonical", url);
@@ -254,7 +257,7 @@ public class SiteController {
      */
     private DataModel resolveUrlToProductGroup(String url) {
         String last = url.substring(url.lastIndexOf("/") + 1);
-        for (ProductsGroup group : UrlProducer.getProductsGroups()) {
+        for (ProductsGroup group : AppCache.getProductsGroups()) {
             if (last.equals(group.getUrl())) {
                 return group;
             }

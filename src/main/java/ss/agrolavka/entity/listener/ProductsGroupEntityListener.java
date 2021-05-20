@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import ss.agrolavka.service.MySkladIntegrationService;
+import ss.agrolavka.util.AppCache;
 import ss.agrolavka.util.ImageUtil;
 import ss.agrolavka.util.UrlProducer;
 import ss.entity.agrolavka.ProductsGroup;
@@ -44,7 +45,7 @@ class ProductsGroupEntityListener implements PlatformEntityListener<ProductsGrou
     
     @Override
     public void postPersist(ProductsGroup entity) throws Exception {
-        UrlProducer.updateCatalog(coreDAO.getAll(ProductsGroup.class));
+        AppCache.flushCache(coreDAO.getAll(ProductsGroup.class));
     }
 
     @Override
@@ -59,7 +60,7 @@ class ProductsGroupEntityListener implements PlatformEntityListener<ProductsGrou
     
     @Override
     public void postUpdate(ProductsGroup entity) throws Exception {
-        UrlProducer.updateCatalog(coreDAO.getAll(ProductsGroup.class));
+        AppCache.flushCache(coreDAO.getAll(ProductsGroup.class));
     }
 
     @Override

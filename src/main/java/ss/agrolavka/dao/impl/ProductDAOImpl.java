@@ -56,6 +56,7 @@ class ProductDAOImpl implements ProductDAO {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Product> criteria = cb.createQuery(Product.class);
         Root<Product> c = criteria.from(Product.class);
+        c.fetch(Product_.group);
         List<Predicate> predicates = createSearchCriteria(cb, c, request);
         criteria.select(c).where(predicates.toArray(new Predicate[0]));
         if (request.getOrder() != null && request.getOrderBy() != null) {

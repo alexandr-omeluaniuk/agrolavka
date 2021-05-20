@@ -23,6 +23,7 @@ import ss.agrolavka.AgrolavkaConfiguration;
 import ss.agrolavka.dao.ExternalEntityDAO;
 import ss.agrolavka.dao.ProductDAO;
 import ss.agrolavka.service.MySkladIntegrationService;
+import ss.agrolavka.util.AppCache;
 import ss.agrolavka.util.ImageUtil;
 import ss.agrolavka.util.UrlProducer;
 import ss.entity.agrolavka.Discount;
@@ -63,7 +64,7 @@ public class DataUpdater {
     @PostConstruct
     protected void init() {
         try {
-            UrlProducer.updateCatalog(coreDAO.getAll(ProductsGroup.class));
+            AppCache.flushCache(coreDAO.getAll(ProductsGroup.class));
         } catch (Exception ex) {
             LOG.error("Update URL producer catalog - fail!");
         }
@@ -81,7 +82,7 @@ public class DataUpdater {
             importProductGroups();
             importProducts();
             importImages();
-            UrlProducer.updateCatalog(coreDAO.getAll(ProductsGroup.class));
+            AppCache.flushCache(coreDAO.getAll(ProductsGroup.class));
             LOG.info("===============================================================================================");
         } catch (Exception e) {
             LOG.error("Import MySklad data - fail!", e);
