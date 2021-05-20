@@ -292,9 +292,14 @@ public class SiteController {
         model.addAttribute("cart", order);
         model.addAttribute("totalInteger", parts[0]);
         model.addAttribute("totalDecimal", parts[1]);
-        ProductsSearchRequest requestX = new ProductsSearchRequest();
-        requestX.setPage(1);
-        requestX.setPageSize(Integer.MAX_VALUE);
-        model.addAttribute("productsCount", productDAO.count(requestX));
+        Long productsCount = AppCache.getProductsCount();
+        if (productsCount == null) {
+            ProductsSearchRequest requestX = new ProductsSearchRequest();
+            requestX.setPage(1);
+            requestX.setPageSize(Integer.MAX_VALUE);
+            productsCount = productDAO.count(requestX);
+            AppCache.setProductsCount(productsCount);
+        }
+        model.addAttribute("productsCount", productsCount);
     }
 }

@@ -24,7 +24,9 @@ public class AppCache {
     /** All groups. */
     private static final List<ProductsGroup> ALL_GROUPS = new ArrayList<>();
     /** New products. */
-    private static List<Product> NEW_PRODUCTS = null;
+    private static List<Product> newProducts = null;
+    /** Products count. */
+    private static Long productsCount = null;
     /**
      * Update catalog data.
      * @param groups product groups.
@@ -48,14 +50,28 @@ public class AppCache {
      * @return new products.
      */
     public static synchronized List<Product> getNewProducts() {
-        return NEW_PRODUCTS;
+        return newProducts;
     }
     /**
      * Set new products to cache.
-     * @param newProducts new products.
+     * @param products new products.
      */
-    public static synchronized void setNewProducts(List<Product> newProducts) {
-        NEW_PRODUCTS = newProducts;
+    public static synchronized void setNewProducts(List<Product> products) {
+        newProducts = products;
+    }
+    /**
+     * Get products count.
+     * @return products count.
+     */
+    public static synchronized Long getProductsCount() {
+        return productsCount;
+    }
+    /**
+     * Set products count to cache.
+     * @param count products count.
+     */
+    public static synchronized void setProductsCount(Long count) {
+        productsCount = count;
     }
     /**
      * Get top categories.
