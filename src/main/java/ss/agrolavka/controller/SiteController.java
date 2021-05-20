@@ -52,8 +52,6 @@ public class SiteController {
      */
     @RequestMapping("/")
     public String home(Model model, HttpServletRequest httpRequest) throws Exception {
-        long start = System.currentTimeMillis();
-        System.out.println("==================================================================================");
         insertCartDataToModel(httpRequest, model);
         model.addAttribute("title", "Все для сада и огорода");
         List<Product> newProducts = AppCache.getNewProducts();
@@ -67,8 +65,6 @@ public class SiteController {
             newProducts = AppCache.getNewProducts();
         }
         model.addAttribute("newProducts", newProducts);
-        System.out.println("==================================================================================");
-        System.out.println(System.currentTimeMillis() - start);
         return "home";
     }
     /**

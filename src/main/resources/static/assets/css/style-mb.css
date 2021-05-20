@@ -70,6 +70,12 @@ and open the template in the editor.
     h5 {
         font-size: 1rem;
     }
+    h6 {
+        font-size: .9rem;
+    }
+    button[data-product-id] {
+        font-size: .7rem;
+    }
     main:not(#home) {
         margin-top: 140px;
     }
