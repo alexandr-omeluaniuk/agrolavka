@@ -52,16 +52,23 @@ public class SiteController {
      */
     @RequestMapping("/")
     public String home(Model model, HttpServletRequest httpRequest) throws Exception {
+        long start = System.currentTimeMillis();
         System.out.println("==================================================================================");
         insertCartDataToModel(httpRequest, model);
         model.addAttribute("title", "Все для сада и огорода");
-        ProductsSearchRequest searchRequest = new ProductsSearchRequest();
-        searchRequest.setPage(1);
-        searchRequest.setPageSize(4);
-        searchRequest.setOrder("desc");
-        searchRequest.setOrderBy("created_date");
-        model.addAttribute("newProducts", productDAO.search(searchRequest));
+        List<Product> newProducts = AppCache.getNewProducts();
+        if (newProducts == null) {
+            ProductsSearchRequest searchRequest = new ProductsSearchRequest();
+            searchRequest.setPage(1);
+            searchRequest.setPageSize(4);
+            searchRequest.setOrder("desc");
+            searchRequest.setOrderBy("created_date");
+            AppCache.setNewProducts(productDAO.search(searchRequest));
+            newProducts = AppCache.getNewProducts();
+        }
+        model.addAttribute("newProducts", newProducts);
         System.out.println("==================================================================================");
+        System.out.println(System.currentTimeMillis() - start);
         return "home";
     }
     /**

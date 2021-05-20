@@ -5,6 +5,7 @@
  */
 package ss.agrolavka;
 
+import java.util.concurrent.TimeUnit;
 import org.apache.catalina.Context;
 import org.apache.tomcat.util.scan.StandardJarScanner;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactor
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.CacheControl;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
@@ -35,7 +37,8 @@ public class SpringConfig implements WebMvcConfigurer {
                 .addResourceLocations("classpath:/static/admin/build/");
         registry.addResourceHandler(configuration.getNavigation().getRegistrationVerification())
                 .addResourceLocations("classpath:/static/admin/build/");
-        registry.addResourceHandler("/assets/**").addResourceLocations("classpath:/static/assets/");
+        registry.addResourceHandler("/assets/**").addResourceLocations("classpath:/static/assets/")
+                .setCacheControl(CacheControl.maxAge(7, TimeUnit.DAYS));;
         registry.addResourceHandler("/favicon.svg").addResourceLocations("classpath:/static/favicon.svg");
         registry.addResourceHandler("/sitemap.xml").addResourceLocations("classpath:/static/sitemap.xml");
         registry.addResourceHandler("/robots.txt").addResourceLocations("classpath:/static/robots.txt");

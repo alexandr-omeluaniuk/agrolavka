@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import ss.entity.agrolavka.Product;
 import ss.entity.agrolavka.ProductsGroup;
 
 /**
@@ -22,6 +23,8 @@ public class AppCache {
     private static final Map<String, ProductsGroup> GROUPS_PARENT_MAP = new HashMap<>();
     /** All groups. */
     private static final List<ProductsGroup> ALL_GROUPS = new ArrayList<>();
+    /** New products. */
+    private static List<Product> NEW_PRODUCTS = null;
     /**
      * Update catalog data.
      * @param groups product groups.
@@ -39,6 +42,20 @@ public class AppCache {
             String parentId = group.getParentId();
             GROUPS_PARENT_MAP.put(group.getExternalId(), parentId == null ? null : externalIdsMap.get(parentId));
         }
+    }
+    /**
+     * Get new products.
+     * @return new products.
+     */
+    public static synchronized List<Product> getNewProducts() {
+        return NEW_PRODUCTS;
+    }
+    /**
+     * Set new products to cache.
+     * @param newProducts new products.
+     */
+    public static synchronized void setNewProducts(List<Product> newProducts) {
+        NEW_PRODUCTS = newProducts;
     }
     /**
      * Get top categories.
