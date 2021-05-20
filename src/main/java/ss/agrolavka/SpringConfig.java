@@ -38,7 +38,7 @@ public class SpringConfig implements WebMvcConfigurer {
         registry.addResourceHandler(configuration.getNavigation().getRegistrationVerification())
                 .addResourceLocations("classpath:/static/admin/build/");
         registry.addResourceHandler("/assets/**").addResourceLocations("classpath:/static/assets/")
-                .setCacheControl(CacheControl.maxAge(7, TimeUnit.DAYS));;
+                .setCacheControl(CacheControl.maxAge(365, TimeUnit.DAYS));;
         registry.addResourceHandler("/favicon.svg").addResourceLocations("classpath:/static/favicon.svg");
         registry.addResourceHandler("/sitemap.xml").addResourceLocations("classpath:/static/sitemap.xml");
         registry.addResourceHandler("/robots.txt").addResourceLocations("classpath:/static/robots.txt");

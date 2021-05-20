@@ -12,9 +12,9 @@
         <error-code>404</error-code>
         <location>/error/page-not-found</location>
     </error-page>
-    <servlet>
+    <!--servlet>
         <servlet-name>home.jsp</servlet-name>
         <jsp-file>/jsp/home.jsp</jsp-file>
         <load-on-startup>1</load-on-startup>
-    </servlet>
+    </servlet-->
 </web-app>
