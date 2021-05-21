@@ -39,6 +39,7 @@ class ProductsGroupEntityListener implements PlatformEntityListener<ProductsGrou
     @Override
     public void prePersist(ProductsGroup entity) throws Exception {
         new ImageUtil().toThumbnail(entity.getImages());
+        entity.setHasImages(!entity.getImages().isEmpty());
         entity.setUrl(UrlProducer.transliterate(entity.getName()));
         entity.setExternalId(mySkladIntegrationService.createProductsGroup(entity));
     }
@@ -53,6 +54,7 @@ class ProductsGroupEntityListener implements PlatformEntityListener<ProductsGrou
         ProductsGroup entityFromDB = coreDAO.findById(entity.getId(), ProductsGroup.class);
         new ImageUtil().toThumbnail(entity.getImages());
         entityFromDB.setImages(entity.getImages());
+        entityFromDB.setHasImages(!entity.getImages().isEmpty());
         coreDAO.update(entityFromDB);
         entity.setUrl(UrlProducer.transliterate(entity.getName()));
         mySkladIntegrationService.updateProductsGroup(entity);

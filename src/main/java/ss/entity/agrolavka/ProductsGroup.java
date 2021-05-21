@@ -78,6 +78,9 @@ public class ProductsGroup extends ExternalEntity implements Serializable, Compa
             joinColumns = @JoinColumn(name = "product_group_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "image_id", referencedColumnName = "id"))
     private List<EntityImage> images;
+    /** Has images. */
+    @Column(name = "has_images")
+    private Boolean hasImages;
     // =============================================== SET & GET ======================================================
     /**
      * @return the name
@@ -186,6 +189,18 @@ public class ProductsGroup extends ExternalEntity implements Serializable, Compa
      */
     public void setImages(List<EntityImage> images) {
         this.images = images;
+    }
+    /**
+     * @return the hasImages
+     */
+    public Boolean getHasImages() {
+        return hasImages;
+    }
+    /**
+     * @param hasImages the hasImages to set
+     */
+    public void setHasImages(Boolean hasImages) {
+        this.hasImages = hasImages;
     }
     // ================================================================================================================
     @Override

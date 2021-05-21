@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ss.entity.agrolavka.ProductsGroup;
 import ss.entity.martin.EntityImage;
 import ss.martin.platform.dao.CoreDAO;
+import ss.martin.platform.service.EntityService;
 
 /**
  * Product group REST controller.
@@ -28,6 +29,9 @@ public class ProductGroupRESTController {
     /** Core DAO. */
     @Autowired
     private CoreDAO coreDAO;
+    /** Entity service. */
+    @Autowired
+    private EntityService entityService;
     /**
      * Get product group image.
      * @param id product group ID.
@@ -40,5 +44,16 @@ public class ProductGroupRESTController {
         List<EntityImage> images = coreDAO.findById(id, ProductsGroup.class).getImages();
         int size = images.size();
         return images;
+    }
+    /**
+     * Normalize product groups.
+     * @throws Exception error.
+     */
+    @Transactional(propagation = Propagation.REQUIRED)
+    @RequestMapping(value = "/normalize", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+    public void normalizeProductGroups() throws Exception {
+        for (ProductsGroup group : coreDAO.getAll(ProductsGroup.class)) {
+            entityService.update(group);
+        }
     }
 }

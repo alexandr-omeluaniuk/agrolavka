@@ -255,6 +255,7 @@ public class DataUpdater {
                 List<EntityImage> images = mySkladIntegrationService.getProductImages(product.getExternalId());
                 imageUtil.toThumbnail(images);
                 product.setImages(images);
+                product.setHasImages(!product.getImages().isEmpty());
                 coreDAO.update(product);
             } catch (Exception e) {
                 LOG.warn("Can't synchronize product images: " + product, e);

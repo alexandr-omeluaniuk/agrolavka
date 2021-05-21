@@ -60,7 +60,8 @@ const useStyles = makeStyles(theme => ({
     },
     small: {
         width: theme.spacing(3),
-        height: theme.spacing(3)
+        height: theme.spacing(3),
+        marginRight: theme.spacing(1)
     }
 }));
 
@@ -181,6 +182,11 @@ function ProductsGroups(props) {
             setProductGroups(null);
         });
     };
+    const normalize = () => {
+        dataService.put('/agrolavka/protected/product-group/normalize').then(() => {
+            setProductGroups(null);
+        });
+    };
     // -------------------------------------------------------- HOOKS ---------------------------------------------------------------------
     useEffect(() => {
         if (productGroups === null) {
@@ -244,6 +250,11 @@ function ProductsGroups(props) {
                                 </Tooltip>
                             </React.Fragment>
                         ) : null}
+                        <Tooltip title={t('m_agrolavka:products_groups.normalize')}>
+                            <IconButton onClick={normalize}>
+                                <Icon>compress</Icon>
+                            </IconButton>
+                        </Tooltip>
                         <Tooltip title={t('m_agrolavka:products_groups.new_group')}>
                             <IconButton className={classes.newGroup} onClick={onCreateNewGroup}>
                                 <Icon>add</Icon>

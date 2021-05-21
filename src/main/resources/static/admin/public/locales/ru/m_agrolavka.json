@@ -28,7 +28,8 @@
         "product_group_description": "Описание",
         "product_group_seo_title": "Название страницы категории товаров на сайте (SEO)",
         "product_group_seo_description": "Описание страницы категории товаров на сайте (SEO)",
-        "image": "Изображение"
+        "image": "Изображение",
+        "normalize": "Нормализация (сжатие изображений)"
     },
     "orders": {
         "order_number": "Номер",
