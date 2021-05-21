@@ -280,7 +280,7 @@ public class Product extends ExternalEntity implements Serializable {
      * @return the hasImages
      */
     public Boolean getHasImages() {
-        return hasImages;
+        return hasImages == null ? false : hasImages ;
     }
     /**
      * @param hasImages the hasImages to set

@@ -23,7 +23,14 @@
             </span>
         </div>
         <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
-            <div class="card-img-top agr-card-image" style="background-image: url('/api/agrolavka/public/product-image/${product.id}')"></div>
+            <c:choose>
+                <c:when test="${product.hasImages}">
+                    <div class="card-img-top agr-card-image" style="background-image: url('/api/agrolavka/public/product-image/${product.id}')"></div>
+                </c:when>
+                <c:otherwise>
+                    <div class="card-img-top agr-card-image" style="background-image: url('/assets/img/no-image.png')"></div>
+                </c:otherwise>
+            </c:choose>
 
                 <!--div class="mask" style="background-color: rgba(0, 0, 0, 0.05)"></div-->
 

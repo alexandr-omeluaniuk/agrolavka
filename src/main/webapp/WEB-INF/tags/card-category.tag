@@ -15,7 +15,14 @@
 <%-- any content can be specified here e.g.: --%>
 <div class="card shadow-1-strong mb-4 hover-shadow">
     <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
-        <div class="card-img-top agr-card-image" style="background-image: url('/api/agrolavka/public/products-group-image/${group.id}')"></div>
+        <c:choose>
+            <c:when test="${group.hasImages}">
+                <div class="card-img-top agr-card-image" style="background-image: url('/api/agrolavka/public/products-group-image/${group.id}')"></div>
+            </c:when>
+            <c:otherwise>
+                <div class="card-img-top agr-card-image" style="background-image: url('/assets/img/no-image.png')"></div>
+            </c:otherwise>
+        </c:choose>
         <a href="<%= UrlProducer.buildProductGroupUrl(group)%>">
             <div class="mask" style="background-color: rgba(0, 0, 0, 0.05)"></div>
         </a>

@@ -194,7 +194,7 @@ public class ProductsGroup extends ExternalEntity implements Serializable, Compa
      * @return the hasImages
      */
     public Boolean getHasImages() {
-        return hasImages;
+        return hasImages == null ? false : hasImages ;
     }
     /**
      * @param hasImages the hasImages to set
