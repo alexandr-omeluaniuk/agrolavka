@@ -190,6 +190,8 @@ public class SiteController {
             model.addAttribute("id", product.getId());
             model.addAttribute("product", product);
             model.addAttribute("structuredDataName", product.getName().replace("\\", "").replace("\"", "'"));
+            model.addAttribute("structuredDataDescription", product.getDescription()
+                    .replace("\\", "").replace("\"", "'"));
             model.addAttribute("groupId", product.getGroup() != null ? product.getGroup().getId() : null);
             model.addAttribute("breadcrumbLabel", product.getName());
             model.addAttribute("breadcrumbPath", UrlProducer.getBreadcrumbPath(product.getGroup()));

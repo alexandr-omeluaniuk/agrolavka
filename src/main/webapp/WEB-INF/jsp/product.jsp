@@ -18,7 +18,7 @@
           "image": [
             "https://agrolavka.by/api/agrolavka/public/product-image/${product.id}"
            ],
-          "description": "${product.description}",
+          "description": "${structuredDataDescription}",
           "offers": {
             "@type": "Offer",
             "url": "${productURL}",
