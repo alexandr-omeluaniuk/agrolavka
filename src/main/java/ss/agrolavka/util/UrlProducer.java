@@ -117,6 +117,6 @@ public class UrlProducer {
                 }
             }
         }
-        return builder.toString().replace(" ", "-").toLowerCase();
+        return builder.toString().replace(" ", "-").replace(";", "-").toLowerCase();
     }
 }

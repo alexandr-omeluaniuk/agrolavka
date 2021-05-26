@@ -189,7 +189,7 @@ public class SiteController {
                     + ". Способ применения, инструкция, описание " + product.getName());
             model.addAttribute("id", product.getId());
             model.addAttribute("product", product);
-            model.addAttribute("structuredDataName", product.getName().replace("\\", ""));
+            model.addAttribute("structuredDataName", product.getName().replace("\\", "").replace("\"", "'"));
             model.addAttribute("groupId", product.getGroup() != null ? product.getGroup().getId() : null);
             model.addAttribute("breadcrumbLabel", product.getName());
             model.addAttribute("breadcrumbPath", UrlProducer.getBreadcrumbPath(product.getGroup()));
