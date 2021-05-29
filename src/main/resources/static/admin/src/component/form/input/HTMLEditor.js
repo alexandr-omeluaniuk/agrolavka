@@ -45,13 +45,16 @@ function HTMLEditor (props) {
     useEffect(() => {
         if (shadowRef && shadowRef.current && shadowRoot === null) {
             let shadow = shadowRef.current.attachShadow({mode: 'open'});
-            setShadowRoot(shadow);
+            shadow.innerHTML = `
+                <style> @import "https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.5.0/mdb.min.css"; </style>
+                <main></main>
+            `;
+            setShadowRoot(shadow.querySelector('main'));
         }
     }, [shadowRef, shadowRoot]);
     useEffect(() => {
-        console.log(shadowRoot);
         if (shadowRoot) {
-            shadowRoot.innerHTML = `<body>${value !== null && value !== undefined ? value : ''}</body>`;
+            shadowRoot.innerHTML = value !== null && value !== undefined ? value : '';
         }
     }, [value, shadowRoot]);
     // ------------------------------------------- RENDERING ------------------------------------------------------------------------------
