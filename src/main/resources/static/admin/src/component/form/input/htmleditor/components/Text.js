@@ -8,9 +8,23 @@ import AbstractComponent from '../AbstractComponent';
 
 export default class Text extends AbstractComponent {
         
+    constructor(wrapper) {
+        super();
+        this.wrapper = wrapper;
+    }
+        
     edit(state) {
         this.state = state;
-        console.log(this.state);
+        const initiator = this.state.initiator;
+        initiator.innerHTML = `<textarea class="form-control" />`;
+        const textarea = initiator.querySelector('textarea');
+        textarea.addEventListener('blur', (evt) => {
+            const text = textarea.value;
+            initiator.innerHTML = this.wrapper.replaceAll('{text}', text);
+        }, true);
+        setTimeout(() => {
+            textarea.focus();
+        }, 100);
     }
     
 }

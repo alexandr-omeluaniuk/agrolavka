@@ -87,12 +87,12 @@ function HTMLEditorContextMenu(props) {
         if (menu === null) {
             const config = [
                 new MenuPoint('title', t('component.htmleditor.context_menu.headers'), [
-                    new MenuAction(t('component.htmleditor.context_menu.header.h1'), new Text()),
-                    new MenuAction(t('component.htmleditor.context_menu.header.h2'), new Text()),
-                    new MenuAction(t('component.htmleditor.context_menu.header.h3'), new Text()),
-                    new MenuAction(t('component.htmleditor.context_menu.header.h4'), new Text()),
-                    new MenuAction(t('component.htmleditor.context_menu.header.h5'), new Text()),
-                    new MenuAction(t('component.htmleditor.context_menu.header.h6'), new Text())
+                    new MenuAction(t('component.htmleditor.context_menu.header.h1'), new Text('<h1>{text}</h1>')),
+                    new MenuAction(t('component.htmleditor.context_menu.header.h2'), new Text('<h2>{text}</h2>')),
+                    new MenuAction(t('component.htmleditor.context_menu.header.h3'), new Text('<h3>{text}</h3>')),
+                    new MenuAction(t('component.htmleditor.context_menu.header.h4'), new Text('<h4>{text}</h4>')),
+                    new MenuAction(t('component.htmleditor.context_menu.header.h5'), new Text('<h5>{text}</h5>')),
+                    new MenuAction(t('component.htmleditor.context_menu.header.h6'), new Text('<h6>{text}</h6>'))
                 ])
             ];
             setMenu(config);
