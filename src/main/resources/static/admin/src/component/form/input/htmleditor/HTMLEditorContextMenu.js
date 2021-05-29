@@ -45,9 +45,9 @@ class MenuPoint {
 }
 
 class MenuAction extends MenuPoint {
-    constructor(label, onClick) {
+    constructor(label, component) {
         super(null, label, null);
-        this.onClick = onClick;
+        this.component = component;
     }
 }
 
@@ -87,12 +87,12 @@ function HTMLEditorContextMenu(props) {
         if (menu === null) {
             const config = [
                 new MenuPoint('title', t('component.htmleditor.context_menu.headers'), [
-                    new MenuAction(t('component.htmleditor.context_menu.header.h1'), Text),
-                    new MenuAction(t('component.htmleditor.context_menu.header.h2'), Text),
-                    new MenuAction(t('component.htmleditor.context_menu.header.h3'), Text),
-                    new MenuAction(t('component.htmleditor.context_menu.header.h4'), Text),
-                    new MenuAction(t('component.htmleditor.context_menu.header.h5'), Text),
-                    new MenuAction(t('component.htmleditor.context_menu.header.h6'), Text)
+                    new MenuAction(t('component.htmleditor.context_menu.header.h1'), new Text()),
+                    new MenuAction(t('component.htmleditor.context_menu.header.h2'), new Text()),
+                    new MenuAction(t('component.htmleditor.context_menu.header.h3'), new Text()),
+                    new MenuAction(t('component.htmleditor.context_menu.header.h4'), new Text()),
+                    new MenuAction(t('component.htmleditor.context_menu.header.h5'), new Text()),
+                    new MenuAction(t('component.htmleditor.context_menu.header.h6'), new Text())
                 ])
             ];
             setMenu(config);
@@ -102,7 +102,7 @@ function HTMLEditorContextMenu(props) {
     const onMenuPointClick = (menuPoint) => {
         if (menuPoint instanceof MenuAction) {
             handleClose();
-            menuPoint.onClick(state);
+            menuPoint.component.edit(state);
         } else {
             setPrevMenu(menu);
             setMenu(menuPoint.getNestedMenu());

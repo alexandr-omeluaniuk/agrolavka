@@ -4,7 +4,13 @@
  * and open the template in the editor.
  */
 
-export default function Text(state) {
-    console.log('FIRE');
-    console.log(state);
+import AbstractComponent from '../AbstractComponent';
+
+export default class Text extends AbstractComponent {
+        
+    edit(state) {
+        this.state = state;
+        console.log(this.state);
+    }
+    
 }
