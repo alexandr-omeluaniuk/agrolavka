@@ -16,15 +16,22 @@ export default class Text extends AbstractComponent {
     edit(state) {
         this.state = state;
         const initiator = this.state.initiator;
-        initiator.innerHTML = `<textarea class="form-control" />`;
-        const textarea = initiator.querySelector('textarea');
-        textarea.addEventListener('blur', (evt) => {
-            const text = textarea.value;
-            initiator.innerHTML = this.wrapper.replaceAll('{text}', text);
+        this.textarea = this._createElementFromHTML(`<textarea class="form-control" />`);
+        initiator.appendChild(this.textarea);
+        this.textarea.addEventListener('blur', (evt) => {
+            this._finishEditing(evt);
         }, true);
         setTimeout(() => {
-            textarea.focus();
+            this.textarea.focus();
         }, 100);
+    }
+    
+    _finishEditing(evt) {
+        const text = this.textarea.value;
+        const initiator = this.state.initiator;
+        const newElement = this._createElementFromHTML(this.wrapper.replaceAll('{text}', text));
+        initiator.appendChild(newElement);
+        this.textarea.remove();
     }
     
 }

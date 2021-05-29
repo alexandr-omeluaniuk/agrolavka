@@ -13,4 +13,10 @@ export default class AbstractComponent {
     edit(state) {
         throw new Error("Abstract method can't be instantiated.");
     }
+    
+    _createElementFromHTML(htmlString) {
+        var div = document.createElement('div');
+        div.innerHTML = htmlString.trim();
+        return div.firstChild; 
+    }
 }
