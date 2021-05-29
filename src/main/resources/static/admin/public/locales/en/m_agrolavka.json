@@ -2,7 +2,8 @@
     "title": "Agrolavka",
     "agrolavka": {
         "products": "Products",
-        "orders": "Orders"
+        "orders": "Orders",
+        "sandbox": "Sandbox"
     },
     "products": {
         "product_groups": "Product groups",

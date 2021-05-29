@@ -2,7 +2,8 @@
     "title": "Agrolavka",
     "agrolavka": {
         "products": "Товары",
-        "orders": "Заказы"
+        "orders": "Заказы",
+        "sandbox": "Песочница"
     },
     "products": {
         "product_groups": "Категория товара",
