@@ -8,8 +8,6 @@ import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { useTranslation } from 'react-i18next';
 import Icon from '@material-ui/core/Icon';
-import IconButton from '@material-ui/core/IconButton';
-import Tooltip from '@material-ui/core/Tooltip';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
@@ -20,6 +18,11 @@ class MenuPoint {
         this.icon = icon;
         this.label = label;
         this.nestedMenu = nestedMenu;
+        if (nestedMenu) {
+            nestedMenu.forEach(m => {
+                m.parent = this;
+            });
+        }
     }
     
     getId() {
@@ -57,35 +60,50 @@ const useStyles = makeStyles(theme => ({
     },
     itemIcon: {
         minWidth: '40px'
+    },
+    itemIconBack: {
+        marginRight: theme.spacing(2)
     }
 }));
 
 function HTMLEditorContextMenu(props) {
     const { state, setState } = props;
     const [menu, setMenu] = React.useState(null);
+    const [prevMenu, setPrevMenu] = React.useState(null);
     const classes = useStyles();
     const { t } = useTranslation();
     // ---------------------------------------------------------- HOOKS -------------------------------------------------------------------
     useEffect(() => {
         if (menu === null) {
             const config = [
-                new MenuPoint(1, 'title', t('component.htmleditor.toolbar.headers'), [
-                    new MenuPoint(11, null, t('component.htmleditor.toolbar.header.h1')),
-                    new MenuPoint(11, null, t('component.htmleditor.toolbar.header.h2')),
-                    new MenuPoint(11, null, t('component.htmleditor.toolbar.header.h3')),
-                    new MenuPoint(11, null, t('component.htmleditor.toolbar.header.h4')),
-                    new MenuPoint(11, null, t('component.htmleditor.toolbar.header.h5')),
-                    new MenuPoint(11, null, t('component.htmleditor.toolbar.header.h6'))
+                new MenuPoint(1, 'title', t('component.htmleditor.context_menu.headers'), [
+                    new MenuPoint(11, null, t('component.htmleditor.context_menu.header.h1')),
+                    new MenuPoint(11, null, t('component.htmleditor.context_menu.header.h2')),
+                    new MenuPoint(11, null, t('component.htmleditor.context_menu.header.h3')),
+                    new MenuPoint(11, null, t('component.htmleditor.context_menu.header.h4')),
+                    new MenuPoint(11, null, t('component.htmleditor.context_menu.header.h5')),
+                    new MenuPoint(11, null, t('component.htmleditor.context_menu.header.h6'))
                 ])
             ];
             setMenu(config);
         }
     }, [menu, t]);
     // ---------------------------------------------------------- METHODS -----------------------------------------------------------------
+    const onMenuPointClick = (menuPoint) => {
+        if (menuPoint.getNestedMenu()) {
+            setPrevMenu(menu);
+            setMenu(menuPoint.getNestedMenu());
+        } else {
+            console.log('TODO: Action');
+        }
+    };
+    const onMenuBack = (menuPoint, e) => {
+        e.stopPropagation();
+        setMenu(prevMenu);
+    };
     const renderMenuPoint = (menuPoint, idx) => {
-        console.log(menuPoint);
         return (
-                <MenuItem key={idx} value={menuPoint.getId()} className={classes.item}>
+                <MenuItem key={idx} value={menuPoint.getId()} className={classes.item} onClick={(e) => onMenuPointClick(menuPoint)}>
                     <div className={classes.itemContent}>
                         {menuPoint.getIcon() ? (
                             <ListItemIcon classes={{root: classes.itemIcon}}>
@@ -102,6 +120,7 @@ function HTMLEditorContextMenu(props) {
     };
     const handleClose = () => {
         setState(initialState);
+        setMenu(null);
     };
     // ---------------------------------------------------------- RENDERING ---------------------------------------------------------------
     if (!menu) {
@@ -115,6 +134,14 @@ function HTMLEditorContextMenu(props) {
                 {menu.map((menuPoint, idx) => {
                     return renderMenuPoint(menuPoint, idx);
                 })}
+                {menu[0].parent ? (
+                    <MenuItem key={-1} value={null} className={classes.item} onClick={(e) => onMenuBack(menu[0].parent, e)}>
+                        <ListItemIcon classes={{root: classes.itemIcon}}>
+                             <Icon>chevron_left</Icon>
+                             <Typography variant="inherit">{t('component.htmleditor.context_menu.back')}</Typography>
+                        </ListItemIcon>
+                    </MenuItem>
+                ) : null}
             </Menu>
     );
 }

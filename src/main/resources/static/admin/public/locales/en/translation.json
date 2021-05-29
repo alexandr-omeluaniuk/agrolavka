@@ -77,8 +77,8 @@
             "submit": "Finish registration"
         },
         "htmleditor": {
-            "toolbar": {
-                "source_code": "Source code",
+            "context_menu": {
+                "back": "Back",
                 "headers": "Headers",
                 "header": {
                     "h1": "Header 1",
