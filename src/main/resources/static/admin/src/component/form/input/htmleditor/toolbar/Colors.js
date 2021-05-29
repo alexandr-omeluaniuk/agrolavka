@@ -42,17 +42,18 @@ const COLORS = [
 ];
 
 function Colors(props) {
-    const { getSelection } = props;
+    const { getSelection, applyColor } = props;
     const classes = useStyles();
     const { t } = useTranslation();
     const [anchorEl, setAnchorEl] = React.useState(null);
     
     const onChangeColor = (color) => {
         handleClose();
+        applyColor(color);
     };
     
     const handleClick = (event) => {
-        const selected = getSelection();
+        getSelection();
         setAnchorEl(event.currentTarget);
     };
 
@@ -76,7 +77,7 @@ function Colors(props) {
     
     return (
             <React.Fragment>
-                <Tooltip title={'Colors'}>
+                <Tooltip title={t('component.htmleditor.toolbar.colors')}>
                     <IconButton onClick={handleClick}>
                         <Icon>format_color_text</Icon>
                     </IconButton>

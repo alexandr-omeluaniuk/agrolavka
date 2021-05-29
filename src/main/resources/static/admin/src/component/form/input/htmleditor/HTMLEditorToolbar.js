@@ -18,12 +18,12 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function HTMLEditorToolbar(props) {
-    const { getSelection } = props;
+    const { getSelection, applyColor } = props;
     const classes = useStyles();
     return (
             <div className={classes.toolbar}>
                 <div>
-                    <Colors getSelection={getSelection}/>
+                    <Colors getSelection={getSelection} applyColor={applyColor}/>
                 </div>
                 <div>
             

@@ -18,6 +18,12 @@ export default class ComponentsFactory {
     static getComponent(element) {
         const componentClass = element.getAttribute(AbstractComponent.ATTRIBUTE_CLASS);
         const componentType = element.getAttribute(AbstractComponent.ATTRIBUTE_TYPE);
-        return new COMPONENTS[componentClass](componentType);
+        const comp = new COMPONENTS[componentClass](componentType);
+        if (comp) {
+            comp.state = {
+                initiator: element
+            }
+        }
+        return comp;
     }
 }

@@ -97,6 +97,9 @@
                     "edit": "Edit",
                     "delete": "Remove"
                 }
+            },
+            "toolbar": {
+                "colors": "Colors"
             }
         }
     },

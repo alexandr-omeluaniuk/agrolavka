@@ -37,10 +37,40 @@ function HTMLEditor (props) {
     });
     const [shadowRoot, setShadowRoot] = React.useState(null);
     const [shadow, setShadow] = React.useState(null);
+    const [selectionNodes, setSelectionNodes] = React.useState(null);
+    const [selectionStartPosition, setSelectionStartPosition] = React.useState(null);
+    const [selectionEndPosition, setSelectionEndPosition] = React.useState(null);
     const shadowRef = React.useRef(null);
     // ------------------------------------------- METHODS --------------------------------------------------------------------------------
     const getSelection = () => {
-        return shadow.getSelection();
+        const s = shadow.getSelection();
+        const range = s.getRangeAt(0);
+        setSelectionStartPosition(range.startOffset);
+        setSelectionEndPosition(range.endOffset);
+        var _iterator = document.createNodeIterator(
+            s.getRangeAt(0).commonAncestorContainer, NodeFilter.SHOW_TEXT, {
+                acceptNode: function (node) {
+                    return NodeFilter.FILTER_ACCEPT;
+                }
+            }
+        );
+        var _nodes = [];
+        while (_iterator.nextNode()) {
+            if (_nodes.length === 0 && _iterator.referenceNode !== range.startContainer) continue;
+                _nodes.push(_iterator.referenceNode);
+            if (_iterator.referenceNode === range.endContainer) break;
+        }
+        setSelectionNodes(_nodes);
+    };
+    const applyColor = (color) => {
+        selectionNodes.forEach(n => {
+            const style = n.parentNode.getAttribute('style');
+            let styles = style.split(';');
+            styles = styles.filter(s => s.indexOf('color') === -1 && s.length > 0);
+            styles.push('color: ' + color);
+            n.parentNode.setAttribute('style', styles.join(';'));
+            onChangeFieldValue(name, shadow.querySelector('main').innerHTML);
+        });
     };
     // ------------------------------------------- HOOKS ----------------------------------------------------------------------------------
     useEffect(() => {
@@ -95,7 +125,7 @@ function HTMLEditor (props) {
     return (
             <Paper className={classes.container} elevation={0}>
                 {label ? <Typography variant={'h6'}>{label}</Typography> : null}
-                <HTMLEditorToolbar getSelection={getSelection}/>
+                <HTMLEditorToolbar getSelection={getSelection} applyColor={applyColor}/>
                 <div className={classes.row}>
                     <FormControl variant={'outlined'} fullWidth required={required}>
                         <div ref={shadowRef}>
