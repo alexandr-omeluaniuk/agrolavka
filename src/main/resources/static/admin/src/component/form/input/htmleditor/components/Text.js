@@ -6,11 +6,47 @@
 
 import AbstractComponent from '../AbstractComponent';
 
-export default class Text extends AbstractComponent {
-        
-    constructor(wrapper) {
+export const H1 = 'H1';
+export const H2 = 'H2';
+export const H3 = 'H3';
+export const H4 = 'H4';
+export const H5 = 'H5';
+export const H6 = 'H6';
+
+class TextType {
+    
+    constructor(type, template) {
+        this.type = type;
+        this.template = template;
+    }
+    
+    getType() {
+        return this.type;
+    }
+    
+    getTemplate() {
+        return this.template;
+    }
+    
+    wrap(text) {
+        return this.template.replaceAll('{text}', text);
+    }
+}
+
+export const TYPES = [
+    new TextType(H1, '<h1>{text}</h1>'),
+    new TextType(H2, '<h2>{text}</h2>'),
+    new TextType(H3, '<h3>{text}</h3>'),
+    new TextType(H4, '<h4>{text}</h4>'),
+    new TextType(H5, '<h5>{text}</h5>'),
+    new TextType(H6, '<h6>{text}</h6>')
+]; 
+
+export class Text extends AbstractComponent {
+    
+    constructor(type) {
         super();
-        this.wrapper = wrapper;
+        this.textType = TYPES.filter(t => t.getType() === type)[0];
     }
         
     create(state) {
@@ -44,8 +80,9 @@ export default class Text extends AbstractComponent {
     _finishCreation(evt) {
         const text = this.textarea.value;
         const initiator = this.state.initiator;
-        const newElement = this._createElementFromHTML(this.wrapper.replaceAll('{text}', text));
-        newElement.htmlEditorComponent = this;
+        const newElement = this._createElementFromHTML(this.textType.wrap(text));
+        newElement.setAttribute(AbstractComponent.ATTRIBUTE_CLASS, typeof(this));
+        newElement.setAttribute(AbstractComponent.ATTRIBUTE_TYPE, this.textType.getType());
         initiator.appendChild(newElement);
         this.textarea.remove();
     }

@@ -13,7 +13,8 @@ import MenuItem from '@material-ui/core/MenuItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import Typography from '@material-ui/core/Typography';
 
-import Text from './components/Text';
+import AbstractComponent from './AbstractComponent';
+import { Text, H1, H2, H3, H4, H5, H6 } from './components/Text';
 
 class MenuPoint {
     constructor(icon, label, nestedMenu) {
@@ -92,7 +93,7 @@ function HTMLEditorContextMenu(props) {
     // ---------------------------------------------------------- HOOKS -------------------------------------------------------------------
     useEffect(() => {
         let config = [];
-        if (state.initiator && state.initiator.htmlEditorComponent) {
+        if (state.initiator && AbstractComponent.isHTMLEditorComponent(state.initiator)) {
             config = [
                 new MenuAction('edit', t('component.htmleditor.context_menu.action.edit'), onComponentEdit),
                 new MenuAction('delete', t('component.htmleditor.context_menu.action.delete'), onComponentDelete)
@@ -100,20 +101,21 @@ function HTMLEditorContextMenu(props) {
         } else {
             config = [
                 new MenuPoint('title', t('component.htmleditor.context_menu.headers'), [
-                    new MenuComponent(t('component.htmleditor.context_menu.header.h1'), new Text('<h1>{text}</h1>')),
-                    new MenuComponent(t('component.htmleditor.context_menu.header.h2'), new Text('<h2>{text}</h2>')),
-                    new MenuComponent(t('component.htmleditor.context_menu.header.h3'), new Text('<h3>{text}</h3>')),
-                    new MenuComponent(t('component.htmleditor.context_menu.header.h4'), new Text('<h4>{text}</h4>')),
-                    new MenuComponent(t('component.htmleditor.context_menu.header.h5'), new Text('<h5>{text}</h5>')),
-                    new MenuComponent(t('component.htmleditor.context_menu.header.h6'), new Text('<h6>{text}</h6>'))
+                    new MenuComponent(t('component.htmleditor.context_menu.header.h1'), new Text(H1)),
+                    new MenuComponent(t('component.htmleditor.context_menu.header.h2'), new Text(H2)),
+                    new MenuComponent(t('component.htmleditor.context_menu.header.h3'), new Text(H3)),
+                    new MenuComponent(t('component.htmleditor.context_menu.header.h4'), new Text(H4)),
+                    new MenuComponent(t('component.htmleditor.context_menu.header.h5'), new Text(H5)),
+                    new MenuComponent(t('component.htmleditor.context_menu.header.h6'), new Text(H6))
                 ])
             ];
         }
         setMenu(config);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [state]);
     // ---------------------------------------------------------- METHODS -----------------------------------------------------------------
     const onComponentEdit = () => {
-        state.initiator.htmlEditorComponent.edit(state);
+        AbstractComponent.getComponent(state.initiator).edit(state);
     };
     const onComponentDelete = () => {
         state.initiator.remove();
@@ -123,7 +125,6 @@ function HTMLEditorContextMenu(props) {
             handleClose();
             menuPoint.component.create(state);
         } else if (menuPoint instanceof MenuAction) {
-            console.log(menuPoint);
             handleClose();
             menuPoint.action(state);
         } else {
