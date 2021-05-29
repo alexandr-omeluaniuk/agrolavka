@@ -5,13 +5,11 @@
  */
 
 import React, { useEffect } from 'react';
-import InputLabel from '@material-ui/core/InputLabel';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
-import OutlinedInput from '@material-ui/core/OutlinedInput';
 import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/core/styles';
-import HTMLEditorToolbar from './htmleditor/HTMLEditorToolbar';
+import HTMLEditorContextMenu from './htmleditor/HTMLEditorContextMenu';
 
 const useStyles = makeStyles(theme => ({
     container: {
@@ -37,8 +35,8 @@ const useStyles = makeStyles(theme => ({
 
 function HTMLEditor (props) {
     const classes = useStyles();
-    const { label, name, required, helperText, value, onChangeFieldValue, labelWidth, rows } = props;
-    const [showSourceCode, setShowSourceCode] = React.useState(true);
+    const { label, name, required, helperText, value, onChangeFieldValue } = props;
+    const [anchorEl, setAnchorEl] = React.useState(null);
     const [shadowRoot, setShadowRoot] = React.useState(null);
     const shadowRef = React.useRef(null);
     // ------------------------------------------- HOOKS ----------------------------------------------------------------------------------
@@ -47,9 +45,35 @@ function HTMLEditor (props) {
             let shadow = shadowRef.current.attachShadow({mode: 'open'});
             shadow.innerHTML = `
                 <style> @import "https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.5.0/mdb.min.css"; </style>
-                <main></main>
+                <main class="card shadow-1-strong p-3" style="min-height: 100px;"></main>
             `;
-            setShadowRoot(shadow.querySelector('main'));
+            const main = shadow.querySelector('main');
+            main.addEventListener('click', function(evt) {
+//                const target = evt.target;
+//                console.log(evt);
+//                const tag = target.tagName.toLowerCase();
+//                if (tag === 'textarea') {
+//                    return;
+//                }
+//                console.log(tag);
+//                evt.target.innerHTML = `
+//                    <textarea class="form-control" />
+//                `;
+//                evt.target.querySelector('textarea').focus();
+            }, true);
+            main.addEventListener('blur', function (evt) {
+//                const target = evt.target;
+//                const tag = target.tagName.toLowerCase();
+//                if (tag === 'textarea') {
+//                    target.remove();
+//                }
+//                console.log(evt);
+            }, true);
+            main.addEventListener('contextmenu', function (evt) {
+                evt.preventDefault();
+                setAnchorEl(evt.target);
+            }, true);
+            setShadowRoot(main);
         }
     }, [shadowRef, shadowRoot]);
     useEffect(() => {
@@ -60,27 +84,17 @@ function HTMLEditor (props) {
     // ------------------------------------------- RENDERING ------------------------------------------------------------------------------
     return (
             <Paper className={classes.container} elevation={0}>
-                <HTMLEditorToolbar showSourceCode={showSourceCode} setShowSourceCode={setShowSourceCode}/>
-                {showSourceCode ? (
-                    <div className={classes.row}>
-                        <div className={classes.colLeft}>
-                            <FormControl variant={'outlined'} fullWidth required={required}>
-                                <InputLabel>{label}</InputLabel>
-                                <OutlinedInput value={value ? value : ''} multiline={true} rows={rows} onChange={(e) => {
-                                    onChangeFieldValue(name, e.target.value);
-                                }} labelWidth={labelWidth} />
-                                {helperText ? <FormHelperText variant={'outlined'} error={true}>{helperText}</FormHelperText> : null}
-                            </FormControl>
-                        </div>
-                        <div className={classes.colRight} ref={shadowRef}>
-    
-                        </div>
+                <div className={classes.row}>
+                    <div className={classes.colLeft}>
+                        <FormControl variant={'outlined'} fullWidth required={required}>
+                            <div className={classes.colRight} ref={shadowRef}>
+
+                            </div>
+                            {helperText ? <FormHelperText variant={'outlined'} error={true}>{helperText}</FormHelperText> : null}
+                        </FormControl>
                     </div>
-                ) : (
-                    <div className={classes.preview} dangerouslySetInnerHTML={{ __html: value }}>
-    
-                    </div>
-                )}
+                </div>
+                <HTMLEditorContextMenu anchorEl={anchorEl} setAnchorEl={setAnchorEl}/>
             </Paper>
     );
 }
