@@ -38,7 +38,8 @@ function HTMLEditor (props) {
     const { label, name, required, helperText, value, onChangeFieldValue } = props;
     const [contextMenuState, setContextMenuState] = React.useState({
         mouseX: null,
-        mouseY: null
+        mouseY: null,
+        initiator: null
     });
     const [shadowRoot, setShadowRoot] = React.useState(null);
     const shadowRef = React.useRef(null);
@@ -76,7 +77,8 @@ function HTMLEditor (props) {
                 event.preventDefault();
                 setContextMenuState({
                     mouseX: event.clientX - 2,
-                    mouseY: event.clientY - 4
+                    mouseY: event.clientY - 4,
+                    initiator: event.target
                 });
             }, true);
             setShadowRoot(main);

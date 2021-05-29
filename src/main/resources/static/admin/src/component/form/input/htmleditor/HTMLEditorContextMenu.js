@@ -13,6 +13,8 @@ import MenuItem from '@material-ui/core/MenuItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import Typography from '@material-ui/core/Typography';
 
+import Text from './components/Text';
+
 class MenuPoint {
     constructor(icon, label, nestedMenu) {
         this.icon = icon;
@@ -43,14 +45,16 @@ class MenuPoint {
 }
 
 class MenuAction extends MenuPoint {
-    constructor(label) {
+    constructor(label, onClick) {
         super(null, label, null);
+        this.onClick = onClick;
     }
 }
 
 const initialState = {
     mouseX: null,
-    mouseY: null
+    mouseY: null,
+    initiator: null
 };
 
 const useStyles = makeStyles(theme => ({
@@ -83,12 +87,12 @@ function HTMLEditorContextMenu(props) {
         if (menu === null) {
             const config = [
                 new MenuPoint('title', t('component.htmleditor.context_menu.headers'), [
-                    new MenuAction(t('component.htmleditor.context_menu.header.h1')),
-                    new MenuAction(t('component.htmleditor.context_menu.header.h2')),
-                    new MenuAction(t('component.htmleditor.context_menu.header.h3')),
-                    new MenuAction(t('component.htmleditor.context_menu.header.h4')),
-                    new MenuAction(t('component.htmleditor.context_menu.header.h5')),
-                    new MenuAction(t('component.htmleditor.context_menu.header.h6'))
+                    new MenuAction(t('component.htmleditor.context_menu.header.h1'), Text),
+                    new MenuAction(t('component.htmleditor.context_menu.header.h2'), Text),
+                    new MenuAction(t('component.htmleditor.context_menu.header.h3'), Text),
+                    new MenuAction(t('component.htmleditor.context_menu.header.h4'), Text),
+                    new MenuAction(t('component.htmleditor.context_menu.header.h5'), Text),
+                    new MenuAction(t('component.htmleditor.context_menu.header.h6'), Text)
                 ])
             ];
             setMenu(config);
@@ -96,14 +100,15 @@ function HTMLEditorContextMenu(props) {
     }, [menu, t]);
     // ---------------------------------------------------------- METHODS -----------------------------------------------------------------
     const onMenuPointClick = (menuPoint) => {
-        if (menuPoint.getNestedMenu()) {
+        if (menuPoint instanceof MenuAction) {
+            handleClose();
+            menuPoint.onClick(state);
+        } else {
             setPrevMenu(menu);
             setMenu(menuPoint.getNestedMenu());
-        } else {
-            console.log('TODO: Action');
         }
     };
-    const onMenuBack = (menuPoint, e) => {
+    const onMenuBack = (e) => {
         e.stopPropagation();
         setMenu(prevMenu);
     };
@@ -141,7 +146,7 @@ function HTMLEditorContextMenu(props) {
                     return renderMenuPoint(menuPoint, idx);
                 })}
                 {menu[0].parent ? (
-                    <MenuItem key={-1} value={null} className={classes.item} onClick={(e) => onMenuBack(menu[0].parent, e)}>
+                    <MenuItem key={-1} value={null} className={classes.item} onClick={(e) => onMenuBack(e)}>
                         <ListItemIcon classes={{root: classes.itemIcon}}>
                              <Icon>chevron_left</Icon>
                              <Typography variant="inherit">{t('component.htmleditor.context_menu.back')}</Typography>
