@@ -36,7 +36,10 @@ const useStyles = makeStyles(theme => ({
 function HTMLEditor (props) {
     const classes = useStyles();
     const { label, name, required, helperText, value, onChangeFieldValue } = props;
-    const [anchorEl, setAnchorEl] = React.useState(null);
+    const [contextMenuState, setContextMenuState] = React.useState({
+        mouseX: null,
+        mouseY: null
+    });
     const [shadowRoot, setShadowRoot] = React.useState(null);
     const shadowRef = React.useRef(null);
     // ------------------------------------------- HOOKS ----------------------------------------------------------------------------------
@@ -69,9 +72,12 @@ function HTMLEditor (props) {
 //                }
 //                console.log(evt);
             }, true);
-            main.addEventListener('contextmenu', function (evt) {
-                evt.preventDefault();
-                setAnchorEl(evt.target);
+            main.addEventListener('contextmenu', function (event) {
+                event.preventDefault();
+                setContextMenuState({
+                    mouseX: event.clientX - 2,
+                    mouseY: event.clientY - 4
+                });
             }, true);
             setShadowRoot(main);
         }
@@ -94,7 +100,7 @@ function HTMLEditor (props) {
                         </FormControl>
                     </div>
                 </div>
-                <HTMLEditorContextMenu anchorEl={anchorEl} setAnchorEl={setAnchorEl}/>
+                <HTMLEditorContextMenu state={contextMenuState} setState={setContextMenuState}/>
             </Paper>
     );
 }

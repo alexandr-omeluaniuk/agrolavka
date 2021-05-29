@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { useTranslation } from 'react-i18next';
 import Icon from '@material-ui/core/Icon';
@@ -12,28 +12,109 @@ import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
 import Typography from '@material-ui/core/Typography';
 
+class MenuPoint {
+    constructor(id, icon, label, nestedMenu) {
+        this.icon = icon;
+        this.label = label;
+        this.nestedMenu = nestedMenu;
+    }
+    
+    getId() {
+        return this.id;
+    }
+    
+    getLabel() {
+        return this.label;
+    }
+    
+    getNestedMenu() {
+        return this.nestedMenu;
+    }
+    
+    getIcon() {
+        return this.icon;
+    }
+}
+
+const initialState = {
+    mouseX: null,
+    mouseY: null
+};
+
 const useStyles = makeStyles(theme => ({
-    toolbar: {
-        marginBottom: theme.spacing(1),
+    item: {
         display: 'flex',
-        justifyContent: 'space-between'
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        minWidth: '250px'
+    },
+    itemContent: {
+        display: 'flex',
+        alignItems: 'center'
+    },
+    itemIcon: {
+        minWidth: '40px'
     }
 }));
 
 function HTMLEditorContextMenu(props) {
-    const { anchorEl, setAnchorEl } = props;
+    const { state, setState } = props;
+    const [menu, setMenu] = React.useState(null);
     const classes = useStyles();
     const { t } = useTranslation();
+    // ---------------------------------------------------------- HOOKS -------------------------------------------------------------------
+    useEffect(() => {
+        if (menu === null) {
+            const config = [
+                new MenuPoint(1, 'title', t('component.htmleditor.toolbar.headers'), [
+                    new MenuPoint(11, null, t('component.htmleditor.toolbar.header.h1')),
+                    new MenuPoint(11, null, t('component.htmleditor.toolbar.header.h2')),
+                    new MenuPoint(11, null, t('component.htmleditor.toolbar.header.h3')),
+                    new MenuPoint(11, null, t('component.htmleditor.toolbar.header.h4')),
+                    new MenuPoint(11, null, t('component.htmleditor.toolbar.header.h5')),
+                    new MenuPoint(11, null, t('component.htmleditor.toolbar.header.h6'))
+                ])
+            ];
+            setMenu(config);
+        }
+    }, [menu, t]);
+    // ---------------------------------------------------------- METHODS -----------------------------------------------------------------
+    const renderMenuPoint = (menuPoint, idx) => {
+        console.log(menuPoint);
+        return (
+                <MenuItem key={idx} value={menuPoint.getId()} className={classes.item}>
+                    <div className={classes.itemContent}>
+                        {menuPoint.getIcon() ? (
+                            <ListItemIcon classes={{root: classes.itemIcon}}>
+                                <Icon>{menuPoint.getIcon()}</Icon>
+                            </ListItemIcon>
+                        ) : null}
+                        <Typography variant="inherit">{menuPoint.getLabel()}</Typography>
+                    </div>
+                    {menuPoint.getNestedMenu() ? (
+                        <Icon>chevron_right</Icon>
+                    ) : null}
+                </MenuItem>
+        );
+    };
+    const handleClose = () => {
+        setState(initialState);
+    };
+    // ---------------------------------------------------------- RENDERING ---------------------------------------------------------------
+    if (!menu) {
+        return null;
+    }
     return (
-            <Menu anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={() => {setAnchorEl(null);}}>
-                <MenuItem value={'h1'}><Typography variant={'h1'}>{t('component.htmleditor.toolbar.header.h1')}</Typography></MenuItem>
-                <MenuItem value={'h2'}><Typography variant={'h2'}>{t('component.htmleditor.toolbar.header.h2')}</Typography></MenuItem>
-                <MenuItem value={'h3'}><Typography variant={'h3'}>{t('component.htmleditor.toolbar.header.h3')}</Typography></MenuItem>
-                <MenuItem value={'h4'}><Typography variant={'h4'}>{t('component.htmleditor.toolbar.header.h4')}</Typography></MenuItem>
-                <MenuItem value={'h5'}><Typography variant={'h5'}>{t('component.htmleditor.toolbar.header.h5')}</Typography></MenuItem>
-                <MenuItem value={'h6'}><Typography variant={'h6'}>{t('component.htmleditor.toolbar.header.h6')}</Typography></MenuItem>
+            <Menu keepMounted open={state.mouseY !== null} onClose={handleClose} anchorReference="anchorPosition"
+                anchorPosition={
+                    state.mouseY !== null && state.mouseX !== null ? { top: state.mouseY, left: state.mouseX } : undefined
+                }>
+                {menu.map((menuPoint, idx) => {
+                    return renderMenuPoint(menuPoint, idx);
+                })}
             </Menu>
     );
 }
