@@ -14,7 +14,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import Typography from '@material-ui/core/Typography';
 
 class MenuPoint {
-    constructor(id, icon, label, nestedMenu) {
+    constructor(icon, label, nestedMenu) {
         this.icon = icon;
         this.label = label;
         this.nestedMenu = nestedMenu;
@@ -39,6 +39,12 @@ class MenuPoint {
     
     getIcon() {
         return this.icon;
+    }
+}
+
+class MenuAction extends MenuPoint {
+    constructor(label) {
+        super(null, label, null);
     }
 }
 
@@ -76,13 +82,13 @@ function HTMLEditorContextMenu(props) {
     useEffect(() => {
         if (menu === null) {
             const config = [
-                new MenuPoint(1, 'title', t('component.htmleditor.context_menu.headers'), [
-                    new MenuPoint(11, null, t('component.htmleditor.context_menu.header.h1')),
-                    new MenuPoint(11, null, t('component.htmleditor.context_menu.header.h2')),
-                    new MenuPoint(11, null, t('component.htmleditor.context_menu.header.h3')),
-                    new MenuPoint(11, null, t('component.htmleditor.context_menu.header.h4')),
-                    new MenuPoint(11, null, t('component.htmleditor.context_menu.header.h5')),
-                    new MenuPoint(11, null, t('component.htmleditor.context_menu.header.h6'))
+                new MenuPoint('title', t('component.htmleditor.context_menu.headers'), [
+                    new MenuAction(t('component.htmleditor.context_menu.header.h1')),
+                    new MenuAction(t('component.htmleditor.context_menu.header.h2')),
+                    new MenuAction(t('component.htmleditor.context_menu.header.h3')),
+                    new MenuAction(t('component.htmleditor.context_menu.header.h4')),
+                    new MenuAction(t('component.htmleditor.context_menu.header.h5')),
+                    new MenuAction(t('component.htmleditor.context_menu.header.h6'))
                 ])
             ];
             setMenu(config);
@@ -103,7 +109,7 @@ function HTMLEditorContextMenu(props) {
     };
     const renderMenuPoint = (menuPoint, idx) => {
         return (
-                <MenuItem key={idx} value={menuPoint.getId()} className={classes.item} onClick={(e) => onMenuPointClick(menuPoint)}>
+                <MenuItem key={idx} className={classes.item} onClick={(e) => onMenuPointClick(menuPoint)}>
                     <div className={classes.itemContent}>
                         {menuPoint.getIcon() ? (
                             <ListItemIcon classes={{root: classes.itemIcon}}>
