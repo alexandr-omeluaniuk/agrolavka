@@ -10,10 +10,8 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
 import Paper from '@material-ui/core/Paper';
-import Icon from '@material-ui/core/Icon';
-import IconButton from '@material-ui/core/IconButton';
-import Tooltip from '@material-ui/core/Tooltip';
 import { makeStyles } from '@material-ui/core/styles';
+import HTMLEditorToolbar from './htmleditor/HTMLEditorToolbar';
 
 const useStyles = makeStyles(theme => ({
     container: {
@@ -38,15 +36,7 @@ function HTMLEditor (props) {
     const [showSourceCode, setShowSourceCode] = React.useState(true);
     return (
             <Paper className={classes.container} elevation={0}>
-                <div className={classes.toolbar}>
-                    <Tooltip title={'Source code'}>
-                        <IconButton onClick={() => {
-                            setShowSourceCode(!showSourceCode);
-                        }}>
-                            <Icon>{showSourceCode ? 'code' : 'code_off'}</Icon>
-                        </IconButton>
-                    </Tooltip>
-                </div>
+                <HTMLEditorToolbar showSourceCode={showSourceCode} setShowSourceCode={setShowSourceCode}/>
                 {showSourceCode ? (
                     <div className={classes.row}>
                         <FormControl variant={'outlined'} fullWidth required={required}>
