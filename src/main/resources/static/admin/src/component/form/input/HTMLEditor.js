@@ -8,6 +8,7 @@ import React, { useEffect } from 'react';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import HTMLEditorContextMenu from './htmleditor/HTMLEditorContextMenu';
 import ComponentsFactory from './htmleditor/ComponentsFactory';
@@ -21,16 +22,6 @@ const useStyles = makeStyles(theme => ({
     row: {
         flex: 1,
         display: 'flex'
-    },
-    colLeft: {
-        flex: 1
-    },
-    colRight: {
-        flex: 1,
-        padding: theme.spacing(2)
-    },
-    preview: {
-        
     }
 }));
 
@@ -57,7 +48,10 @@ function HTMLEditor (props) {
                 const element = evt.target;
                 if (ComponentsFactory.isHTMLEditorComponent(element)) {
                     ComponentsFactory.getComponent(element).edit({
-                        initiator: element
+                        initiator: element,
+                        onChange: () => {
+                            onChangeFieldValue(name, main.innerHTML);
+                        }
                     });
                 }
             }, true);
@@ -66,11 +60,16 @@ function HTMLEditor (props) {
                 setContextMenuState({
                     mouseX: event.clientX - 2,
                     mouseY: event.clientY - 4,
-                    initiator: event.target
+                    initiator: event.target,
+                    onChange: () => {
+                        onChangeFieldValue(name, main.innerHTML);
+                    }
                 });
             }, true);
             setShadowRoot(main);
+            console.log('HTML editor init completed...');
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [shadowRef, shadowRoot]);
     useEffect(() => {
         if (shadowRoot) {
@@ -80,15 +79,14 @@ function HTMLEditor (props) {
     // ------------------------------------------- RENDERING ------------------------------------------------------------------------------
     return (
             <Paper className={classes.container} elevation={0}>
+                {label ? <Typography variant={'h6'}>{label}</Typography> : null}
                 <div className={classes.row}>
-                    <div className={classes.colLeft}>
-                        <FormControl variant={'outlined'} fullWidth required={required}>
-                            <div className={classes.colRight} ref={shadowRef}>
+                    <FormControl variant={'outlined'} fullWidth required={required}>
+                        <div ref={shadowRef}>
 
-                            </div>
-                            {helperText ? <FormHelperText variant={'outlined'} error={true}>{helperText}</FormHelperText> : null}
-                        </FormControl>
-                    </div>
+                        </div>
+                        {helperText ? <FormHelperText variant={'outlined'} error={true}>{helperText}</FormHelperText> : null}
+                    </FormControl>
                 </div>
                 <HTMLEditorContextMenu state={contextMenuState} setState={setContextMenuState}/>
             </Paper>

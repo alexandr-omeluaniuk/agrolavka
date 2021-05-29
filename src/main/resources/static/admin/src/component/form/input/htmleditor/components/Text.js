@@ -85,6 +85,7 @@ export class Text extends AbstractComponent {
         newElement.setAttribute(AbstractComponent.ATTRIBUTE_TYPE, this.textType.getType());
         initiator.appendChild(newElement);
         this.textarea.remove();
+        this.state.onChange();
     }
     
     _finishEditing(evt) {
@@ -93,6 +94,7 @@ export class Text extends AbstractComponent {
         initiator.style.display = null;
         initiator.innerHTML = text;
         this.textarea.remove();
+        this.state.onChange();
     }
     
 }
