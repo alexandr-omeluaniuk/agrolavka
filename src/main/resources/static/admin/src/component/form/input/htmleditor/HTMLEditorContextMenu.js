@@ -44,10 +44,17 @@ class MenuPoint {
     }
 }
 
-class MenuAction extends MenuPoint {
+class MenuComponent extends MenuPoint {
     constructor(label, component) {
         super(null, label, null);
         this.component = component;
+    }
+}
+
+class MenuAction extends MenuPoint {
+    constructor(icon, label, action) {
+        super(icon, label, null);
+        this.action = action;
     }
 }
 
@@ -84,25 +91,41 @@ function HTMLEditorContextMenu(props) {
     const { t } = useTranslation();
     // ---------------------------------------------------------- HOOKS -------------------------------------------------------------------
     useEffect(() => {
-        if (menu === null) {
-            const config = [
+        let config = [];
+        if (state.initiator && state.initiator.htmlEditorComponent) {
+            config = [
+                new MenuAction('edit', t('component.htmleditor.context_menu.action.edit'), onComponentEdit),
+                new MenuAction('delete', t('component.htmleditor.context_menu.action.delete'), onComponentDelete)
+            ];
+        } else {
+            config = [
                 new MenuPoint('title', t('component.htmleditor.context_menu.headers'), [
-                    new MenuAction(t('component.htmleditor.context_menu.header.h1'), new Text('<h1>{text}</h1>')),
-                    new MenuAction(t('component.htmleditor.context_menu.header.h2'), new Text('<h2>{text}</h2>')),
-                    new MenuAction(t('component.htmleditor.context_menu.header.h3'), new Text('<h3>{text}</h3>')),
-                    new MenuAction(t('component.htmleditor.context_menu.header.h4'), new Text('<h4>{text}</h4>')),
-                    new MenuAction(t('component.htmleditor.context_menu.header.h5'), new Text('<h5>{text}</h5>')),
-                    new MenuAction(t('component.htmleditor.context_menu.header.h6'), new Text('<h6>{text}</h6>'))
+                    new MenuComponent(t('component.htmleditor.context_menu.header.h1'), new Text('<h1>{text}</h1>')),
+                    new MenuComponent(t('component.htmleditor.context_menu.header.h2'), new Text('<h2>{text}</h2>')),
+                    new MenuComponent(t('component.htmleditor.context_menu.header.h3'), new Text('<h3>{text}</h3>')),
+                    new MenuComponent(t('component.htmleditor.context_menu.header.h4'), new Text('<h4>{text}</h4>')),
+                    new MenuComponent(t('component.htmleditor.context_menu.header.h5'), new Text('<h5>{text}</h5>')),
+                    new MenuComponent(t('component.htmleditor.context_menu.header.h6'), new Text('<h6>{text}</h6>'))
                 ])
             ];
-            setMenu(config);
         }
-    }, [menu, t]);
+        setMenu(config);
+    }, [state]);
     // ---------------------------------------------------------- METHODS -----------------------------------------------------------------
+    const onComponentEdit = () => {
+        state.initiator.htmlEditorComponent.edit(state);
+    };
+    const onComponentDelete = () => {
+        state.initiator.remove();
+    };
     const onMenuPointClick = (menuPoint) => {
-        if (menuPoint instanceof MenuAction) {
+        if (menuPoint instanceof MenuComponent) {
             handleClose();
-            menuPoint.component.edit(state);
+            menuPoint.component.create(state);
+        } else if (menuPoint instanceof MenuAction) {
+            console.log(menuPoint);
+            handleClose();
+            menuPoint.action(state);
         } else {
             setPrevMenu(menu);
             setMenu(menuPoint.getNestedMenu());

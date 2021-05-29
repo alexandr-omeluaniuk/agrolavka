@@ -5,11 +5,17 @@
  */
 
 export default class AbstractComponent {
+        
     constructor() {
         if (this.constructor === AbstractComponent) {
             throw new Error("Abstract class can't be instantiated.");
         }
     }
+    
+    create(state) {
+        throw new Error("Abstract method can't be instantiated.");
+    }
+    
     edit(state) {
         throw new Error("Abstract method can't be instantiated.");
     }
