@@ -10,6 +10,7 @@ import FormControl from '@material-ui/core/FormControl';
 import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/core/styles';
 import HTMLEditorContextMenu from './htmleditor/HTMLEditorContextMenu';
+import ComponentsFactory from './htmleditor/ComponentsFactory';
 
 const useStyles = makeStyles(theme => ({
     container: {
@@ -53,25 +54,12 @@ function HTMLEditor (props) {
             `;
             const main = shadow.querySelector('main');
             main.addEventListener('click', function(evt) {
-//                const target = evt.target;
-//                console.log(evt);
-//                const tag = target.tagName.toLowerCase();
-//                if (tag === 'textarea') {
-//                    return;
-//                }
-//                console.log(tag);
-//                evt.target.innerHTML = `
-//                    <textarea class="form-control" />
-//                `;
-//                evt.target.querySelector('textarea').focus();
-            }, true);
-            main.addEventListener('blur', function (evt) {
-//                const target = evt.target;
-//                const tag = target.tagName.toLowerCase();
-//                if (tag === 'textarea') {
-//                    target.remove();
-//                }
-//                console.log(evt);
+                const element = evt.target;
+                if (ComponentsFactory.isHTMLEditorComponent(element)) {
+                    ComponentsFactory.getComponent(element).edit({
+                        initiator: element
+                    });
+                }
             }, true);
             main.addEventListener('contextmenu', function (event) {
                 event.preventDefault();

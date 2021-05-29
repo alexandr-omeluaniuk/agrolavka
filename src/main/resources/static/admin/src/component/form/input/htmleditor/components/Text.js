@@ -81,7 +81,7 @@ export class Text extends AbstractComponent {
         const text = this.textarea.value;
         const initiator = this.state.initiator;
         const newElement = this._createElementFromHTML(this.textType.wrap(text));
-        newElement.setAttribute(AbstractComponent.ATTRIBUTE_CLASS, typeof(this));
+        newElement.setAttribute(AbstractComponent.ATTRIBUTE_CLASS, this.constructor.name);
         newElement.setAttribute(AbstractComponent.ATTRIBUTE_TYPE, this.textType.getType());
         initiator.appendChild(newElement);
         this.textarea.remove();

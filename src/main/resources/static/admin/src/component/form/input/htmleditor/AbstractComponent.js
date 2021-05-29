@@ -9,15 +9,6 @@ export default class AbstractComponent {
     static ATTRIBUTE_CLASS = 'data-html-editor-component-class';
     static ATTRIBUTE_TYPE = 'data-html-editor-component-type';
         
-    static isHTMLEditorComponent(element) {
-        return element.getAttribute(AbstractComponent.ATTRIBUTE_CLASS) ? true : false;
-    }
-    
-    static getComponent(element) {
-        const componentClass = element.getAttribute(AbstractComponent.ATTRIBUTE_CLASS);
-        
-    }
-        
     constructor() {
         if (this.constructor === AbstractComponent) {
             throw new Error("Abstract class can't be instantiated.");

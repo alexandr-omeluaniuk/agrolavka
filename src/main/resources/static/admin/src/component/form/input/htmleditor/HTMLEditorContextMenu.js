@@ -13,7 +13,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import Typography from '@material-ui/core/Typography';
 
-import AbstractComponent from './AbstractComponent';
+import ComponentsFactory from './ComponentsFactory';
 import { Text, H1, H2, H3, H4, H5, H6 } from './components/Text';
 
 class MenuPoint {
@@ -93,7 +93,7 @@ function HTMLEditorContextMenu(props) {
     // ---------------------------------------------------------- HOOKS -------------------------------------------------------------------
     useEffect(() => {
         let config = [];
-        if (state.initiator && AbstractComponent.isHTMLEditorComponent(state.initiator)) {
+        if (state.initiator && ComponentsFactory.isHTMLEditorComponent(state.initiator)) {
             config = [
                 new MenuAction('edit', t('component.htmleditor.context_menu.action.edit'), onComponentEdit),
                 new MenuAction('delete', t('component.htmleditor.context_menu.action.delete'), onComponentDelete)
@@ -115,7 +115,7 @@ function HTMLEditorContextMenu(props) {
     }, [state]);
     // ---------------------------------------------------------- METHODS -----------------------------------------------------------------
     const onComponentEdit = () => {
-        AbstractComponent.getComponent(state.initiator).edit(state);
+        ComponentsFactory.getComponent(state.initiator).edit(state);
     };
     const onComponentDelete = () => {
         state.initiator.remove();
