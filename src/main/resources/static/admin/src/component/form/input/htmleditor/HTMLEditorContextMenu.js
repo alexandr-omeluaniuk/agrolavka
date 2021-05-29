@@ -14,7 +14,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import Typography from '@material-ui/core/Typography';
 
 import ComponentsFactory from './ComponentsFactory';
-import { Text, H1, H2, H3, H4, H5, H6 } from './components/Text';
+import { Text, H1, H2, H3, H4, H5, H6, P, SPAN } from './components/Text';
 
 class MenuPoint {
     constructor(icon, label, nestedMenu) {
@@ -100,13 +100,17 @@ function HTMLEditorContextMenu(props) {
             ];
         } else {
             config = [
-                new MenuPoint('title', t('component.htmleditor.context_menu.headers'), [
+                new MenuPoint('format_list_numbered', t('component.htmleditor.context_menu.headers'), [
                     new MenuComponent(t('component.htmleditor.context_menu.header.h1'), new Text(H1)),
                     new MenuComponent(t('component.htmleditor.context_menu.header.h2'), new Text(H2)),
                     new MenuComponent(t('component.htmleditor.context_menu.header.h3'), new Text(H3)),
                     new MenuComponent(t('component.htmleditor.context_menu.header.h4'), new Text(H4)),
                     new MenuComponent(t('component.htmleditor.context_menu.header.h5'), new Text(H5)),
                     new MenuComponent(t('component.htmleditor.context_menu.header.h6'), new Text(H6))
+                ]),
+                new MenuPoint('title', t('component.htmleditor.context_menu.texts'), [
+                    new MenuComponent(t('component.htmleditor.context_menu.text.p'), new Text(P)),
+                    new MenuComponent(t('component.htmleditor.context_menu.text.span'), new Text(SPAN))
                 ])
             ];
         }

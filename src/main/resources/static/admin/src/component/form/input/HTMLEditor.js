@@ -10,8 +10,10 @@ import FormControl from '@material-ui/core/FormControl';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+import HTMLEditorToolbar from './htmleditor/HTMLEditorToolbar';
 import HTMLEditorContextMenu from './htmleditor/HTMLEditorContextMenu';
 import ComponentsFactory from './htmleditor/ComponentsFactory';
+import AbstractComponent from './htmleditor/AbstractComponent';
 
 const useStyles = makeStyles(theme => ({
     container: {
@@ -34,17 +36,29 @@ function HTMLEditor (props) {
         initiator: null
     });
     const [shadowRoot, setShadowRoot] = React.useState(null);
+    const [shadow, setShadow] = React.useState(null);
     const shadowRef = React.useRef(null);
+    // ------------------------------------------- METHODS --------------------------------------------------------------------------------
+    const getSelection = () => {
+        return shadow.getSelection();
+    };
     // ------------------------------------------- HOOKS ----------------------------------------------------------------------------------
     useEffect(() => {
         if (shadowRef && shadowRef.current && shadowRoot === null) {
             let shadow = shadowRef.current.attachShadow({mode: 'open'});
             shadow.innerHTML = `
-                <style> @import "https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.5.0/mdb.min.css"; </style>
+                <style>
+                    @import "https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.5.0/mdb.min.css";
+                    [${AbstractComponent.ATTRIBUTE_CLASS}]:hover {
+                        cursor: pointer;
+                        box-shadow: rgb(0 0 0 / 20%) 0px 2px 1px -1px, rgb(0 0 0 / 14%) 0px 1px 1px 0px, rgb(0 0 0 / 12%) 0px 1px 3px 0px;
+                        transition: .3s all;
+                    }
+                </style>
                 <main class="card shadow-1-strong p-3" style="min-height: 100px;"></main>
             `;
             const main = shadow.querySelector('main');
-            main.addEventListener('click', function(evt) {
+            main.addEventListener('dblclick', function(evt) {
                 const element = evt.target;
                 if (ComponentsFactory.isHTMLEditorComponent(element)) {
                     ComponentsFactory.getComponent(element).edit({
@@ -67,6 +81,7 @@ function HTMLEditor (props) {
                 });
             }, true);
             setShadowRoot(main);
+            setShadow(shadow);
             console.log('HTML editor init completed...');
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -80,6 +95,7 @@ function HTMLEditor (props) {
     return (
             <Paper className={classes.container} elevation={0}>
                 {label ? <Typography variant={'h6'}>{label}</Typography> : null}
+                <HTMLEditorToolbar getSelection={getSelection}/>
                 <div className={classes.row}>
                     <FormControl variant={'outlined'} fullWidth required={required}>
                         <div ref={shadowRef}>

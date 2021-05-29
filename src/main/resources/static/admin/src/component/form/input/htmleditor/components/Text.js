@@ -13,6 +13,9 @@ export const H4 = 'H4';
 export const H5 = 'H5';
 export const H6 = 'H6';
 
+export const P = 'P';
+export const SPAN = 'SPAN';
+
 class TextType {
     
     constructor(type, template) {
@@ -39,7 +42,9 @@ export const TYPES = [
     new TextType(H3, '<h3>{text}</h3>'),
     new TextType(H4, '<h4>{text}</h4>'),
     new TextType(H5, '<h5>{text}</h5>'),
-    new TextType(H6, '<h6>{text}</h6>')
+    new TextType(H6, '<h6>{text}</h6>'),
+    new TextType(P, '<p>{text}</p>'),
+    new TextType(SPAN, '<span>{text}</span>')
 ]; 
 
 export class Text extends AbstractComponent {
@@ -65,10 +70,10 @@ export class Text extends AbstractComponent {
     edit(state) {
         this.state = state;
         const initiator = this.state.initiator;
-        this.textarea = this._createElementFromHTML(`<textarea class="form-control" />`);
+        this.textarea = this._createElementFromHTML(`<textarea class="form-control" rows="${this.textType.getType() === P ? 7 : 1}"/>`);
         this.textarea.value = initiator.innerHTML;
         initiator.style.display = 'none';
-        initiator.parentElement.appendChild(this.textarea);
+        initiator.after(this.textarea);
         this.textarea.addEventListener('blur', (evt) => {
             this._finishEditing(evt);
         }, true);
