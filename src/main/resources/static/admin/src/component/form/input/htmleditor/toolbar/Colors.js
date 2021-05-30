@@ -75,12 +75,15 @@ function Colors(props) {
         return grid;
     };
     
+    const button = 
+            <IconButton onClick={handleClick}>
+                <Icon>format_color_text</Icon>
+            </IconButton>;
+    
     return (
             <React.Fragment>
                 <Tooltip title={t('component.htmleditor.toolbar.colors')}>
-                    <IconButton onClick={handleClick}>
-                        <Icon>format_color_text</Icon>
-                    </IconButton>
+                    {button}
                 </Tooltip>
                 <Popover open={Boolean(anchorEl)} anchorEl={anchorEl} onClose={handleClose} anchorOrigin={{
                     vertical: 'bottom',

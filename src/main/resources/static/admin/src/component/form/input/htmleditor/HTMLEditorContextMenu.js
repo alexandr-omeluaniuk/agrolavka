@@ -86,7 +86,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function HTMLEditorContextMenu(props) {
-    const { state, setState, saveHTML } = props;
+    const { state, setState, saveHTML, ranges } = props;
     const [menu, setMenu] = React.useState(null);
     const [prevMenu, setPrevMenu] = React.useState(null);
     const classes = useStyles();
@@ -125,10 +125,10 @@ function HTMLEditorContextMenu(props) {
     const onMenuPointClick = (menuPoint) => {
         if (menuPoint instanceof MenuComponent) {
             handleClose();
-            menuPoint.component.action(state);
+            menuPoint.component.applyToSelection(ranges);
         } else if (menuPoint instanceof MenuAction) {
             handleClose();
-            menuPoint.action(state);
+            menuPoint.action();
         } else {
             setPrevMenu(menu);
             setMenu(menuPoint.getNestedMenu());

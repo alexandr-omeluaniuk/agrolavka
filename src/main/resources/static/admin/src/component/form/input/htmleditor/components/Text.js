@@ -54,13 +54,8 @@ export class Text extends AbstractComponent {
         this.textType = TYPES.filter(t => t.getType() === type)[0];
     }
         
-    action(state) {
-//        this.textarea.addEventListener('blur', (evt) => {
-//            this._finishCreation(evt);
-//        }, true);
-//        setTimeout(() => {
-//            this.textarea.focus();
-//        }, 100);
+    applyToSelection(ranges) {
+        console.log(ranges);
     }
     
 //    _finishCreation(evt) {

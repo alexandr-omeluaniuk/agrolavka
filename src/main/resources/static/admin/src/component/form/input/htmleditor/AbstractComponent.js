@@ -15,7 +15,7 @@ export default class AbstractComponent {
         }
     }
     
-    action(state) {
+    applyToSelection(ranges) {
         throw new Error("Abstract method can't be instantiated.");
     }
     

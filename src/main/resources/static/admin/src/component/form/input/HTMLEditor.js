@@ -32,8 +32,7 @@ function HTMLEditor (props) {
     const { label, name, required, helperText, value, onChangeFieldValue } = props;
     const [contextMenuState, setContextMenuState] = React.useState({
         mouseX: null,
-        mouseY: null,
-        initiator: null
+        mouseY: null
     });
     const [shadowRoot, setShadowRoot] = React.useState(null);
     const [shadow, setShadow] = React.useState(null);
@@ -63,7 +62,6 @@ function HTMLEditor (props) {
         setContextMenuState({
             mouseX: event.clientX - 2,
             mouseY: event.clientY - 4,
-            initiator: event.target,
             type: menuType
         });
     };
@@ -107,7 +105,8 @@ function HTMLEditor (props) {
     return (
             <Paper className={classes.container} elevation={0}>
                 {label ? <Typography variant={'h6'}>{label}</Typography> : null}
-                <HTMLEditorToolbar getSelection={getSelection} applyColor={applyColor} openContextMenu={openContextMenu}/>
+                <HTMLEditorToolbar getSelection={getSelection} applyColor={applyColor} openContextMenu={openContextMenu}
+                        ranges={selectionRanges}/>
                 <div className={classes.row}>
                     <FormControl variant={'outlined'} fullWidth required={required}>
                         <div ref={shadowRef}>
@@ -116,7 +115,8 @@ function HTMLEditor (props) {
                         {helperText ? <FormHelperText variant={'outlined'} error={true}>{helperText}</FormHelperText> : null}
                     </FormControl>
                 </div>
-                <HTMLEditorContextMenu state={contextMenuState} setState={setContextMenuState} saveHTML={saveHTML}/>
+                <HTMLEditorContextMenu state={contextMenuState} setState={setContextMenuState} saveHTML={saveHTML}
+                        ranges={selectionRanges}/>
             </Paper>
     );
 }

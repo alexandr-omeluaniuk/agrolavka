@@ -28,8 +28,8 @@ function HTMLEditorToolbar(props) {
     return (
             <div className={classes.toolbar}>
                 <div className={classes.toolbarLeft}>
-                    <Colors getSelection={getSelection} applyColor={applyColor}/>
-                    <Content getSelection={getSelection} openContextMenu={openContextMenu}/>
+                    <Colors getSelection={getSelection} applyColor={applyColor} />
+                    <Content getSelection={getSelection} openContextMenu={openContextMenu} />
                 </div>
                 <div>
             
