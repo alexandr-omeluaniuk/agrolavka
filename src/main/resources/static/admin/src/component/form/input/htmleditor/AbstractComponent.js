@@ -15,7 +15,7 @@ export default class AbstractComponent {
         }
     }
     
-    create(state) {
+    action(state) {
         throw new Error("Abstract method can't be instantiated.");
     }
     

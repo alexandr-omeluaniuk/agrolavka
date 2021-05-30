@@ -101,6 +101,7 @@
             "toolbar": {
                 "colors": "Colors",
                 "content": {
+                    "text": "Format text",
                     "link": "Insert link"
                 }
             }

@@ -54,31 +54,30 @@ export class Text extends AbstractComponent {
         this.textType = TYPES.filter(t => t.getType() === type)[0];
     }
         
-    create(state) {
-        this.state = state;
-        const initiator = this.state.initiator;
-        this.textarea = this._createElementFromHTML(`<textarea class="form-control" />`);
-        initiator.appendChild(this.textarea);
-        this.textarea.addEventListener('blur', (evt) => {
-            this._finishCreation(evt);
-        }, true);
-        setTimeout(() => {
-            this.textarea.focus();
-        }, 100);
+    action(state) {
+//        this.textarea.addEventListener('blur', (evt) => {
+//            this._finishCreation(evt);
+//        }, true);
+//        setTimeout(() => {
+//            this.textarea.focus();
+//        }, 100);
     }
     
-    _finishCreation(evt) {
-        const text = this.textarea.value;
-        const initiator = this.state.initiator;
-        const newElement = this._createElementFromHTML(this.textType.wrap(text));
-        newElement.setAttribute(AbstractComponent.ATTRIBUTE_CLASS, this.constructor.name);
-        newElement.setAttribute(AbstractComponent.ATTRIBUTE_TYPE, this.textType.getType());
-        initiator.appendChild(newElement);
-        this.textarea.remove();
-        this.state.onChange();
-    }
+//    _finishCreation(evt) {
+//        const text = this.textarea.value;
+//        const initiator = this.state.initiator;
+//        const newElement = this._createElementFromHTML(this.textType.wrap(text));
+//        newElement.setAttribute(AbstractComponent.ATTRIBUTE_CLASS, this.constructor.name);
+//        newElement.setAttribute(AbstractComponent.ATTRIBUTE_TYPE, this.textType.getType());
+//        initiator.appendChild(newElement);
+//        this.textarea.remove();
+//        this.state.onChange();
+//    }
     
     static applyColorToSelectedText(color, ranges) {
+        if (!ranges) {
+            return;
+        }
         ranges.forEach(range => {
             const nodes = Text.getTextNodesFromRange(range);
             nodes.forEach(node => {

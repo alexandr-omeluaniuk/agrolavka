@@ -17,12 +17,18 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function Content(props) {
-    const { getSelection } = props;
+    const { getSelection, openContextMenu } = props;
     const classes = useStyles();
     const { t } = useTranslation();
     
     return (
             <div className={classes.root}>
+                <Tooltip title={t('component.htmleditor.toolbar.content.text')}>
+                    <IconButton onClick={(e) => {
+                        getSelection();
+                        openContextMenu(e, 'TEXT');
+                    }}><Icon>title</Icon></IconButton>
+                </Tooltip>
                 <Tooltip title={t('component.htmleditor.toolbar.content.link')}>
                     <IconButton><Icon>insert_link</Icon></IconButton>
                 </Tooltip>

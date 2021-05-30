@@ -12,9 +12,10 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import Typography from '@material-ui/core/Typography';
-
-import ComponentsFactory from './ComponentsFactory';
 import { Text, H1, H2, H3, H4, H5, H6, P, SPAN } from './components/Text';
+
+const TYPE_CONTEXTMENU = 'CONTEXTMENU';
+const TYPE_TEXT = 'TEXT';
 
 class MenuPoint {
     constructor(icon, label, nestedMenu) {
@@ -92,12 +93,12 @@ function HTMLEditorContextMenu(props) {
     const { t } = useTranslation();
     // ---------------------------------------------------------- HOOKS -------------------------------------------------------------------
     useEffect(() => {
-        let config = [];
-        if (state.initiator && ComponentsFactory.isHTMLEditorComponent(state.initiator)) {
+        let config = null;
+        if (state.type === TYPE_CONTEXTMENU) {
             config = [
                 new MenuAction('delete', t('component.htmleditor.context_menu.action.delete'), onComponentDelete)
             ];
-        } else {
+        } else if (state.type === TYPE_TEXT) {
             config = [
                 new MenuPoint('format_list_numbered', t('component.htmleditor.context_menu.headers'), [
                     new MenuComponent(t('component.htmleditor.context_menu.header.h1'), new Text(H1)),
@@ -124,7 +125,7 @@ function HTMLEditorContextMenu(props) {
     const onMenuPointClick = (menuPoint) => {
         if (menuPoint instanceof MenuComponent) {
             handleClose();
-            menuPoint.component.create(state);
+            menuPoint.component.action(state);
         } else if (menuPoint instanceof MenuAction) {
             handleClose();
             menuPoint.action(state);

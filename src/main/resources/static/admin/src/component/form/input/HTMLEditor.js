@@ -13,6 +13,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import HTMLEditorToolbar from './htmleditor/HTMLEditorToolbar';
 import HTMLEditorContextMenu from './htmleditor/HTMLEditorContextMenu';
 import { Text } from './htmleditor/components/Text';
+import AbstractComponent from './htmleditor/AbstractComponent';
 
 const useStyles = makeStyles(theme => ({
     container: {
@@ -58,6 +59,14 @@ function HTMLEditor (props) {
     const saveHTML = () => {
         onChangeFieldValue(name, shadow.querySelector('main').innerHTML);
     };
+    const openContextMenu = (event, menuType) => {
+        setContextMenuState({
+            mouseX: event.clientX - 2,
+            mouseY: event.clientY - 4,
+            initiator: event.target,
+            type: menuType
+        });
+    };
     // ------------------------------------------- HOOKS ----------------------------------------------------------------------------------
     useEffect(() => {
         if (shadowRef && shadowRef.current && shadowRoot === null) {
@@ -65,20 +74,20 @@ function HTMLEditor (props) {
             shadow.innerHTML = `
                 <style>
                     @import "https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.5.0/mdb.min.css";
+                    [${AbstractComponent.ATTRIBUTE_CLASS}]:hover {
+                        cursor: pointer;
+                        box-shadow: rgb(0 0 0 / 20%) 0px 2px 1px -1px, rgb(0 0 0 / 14%) 0px 1px 1px 0px, rgb(0 0 0 / 12%) 0px 1px 3px 0px;
+                        transition: .3s all;
+                    }
                 </style>
-                <main class="card shadow-1-strong p-3" style="min-height: 100px;" role="textbox" contenteditable="true"></main>
+                <main class="card shadow-1-strong p-3" style="min-height: 100px;" role="textbox" contenteditable="true">
+                    
+                </main>
             `;
             const main = shadow.querySelector('main');
             main.addEventListener('contextmenu', function (event) {
                 event.preventDefault();
-                setContextMenuState({
-                    mouseX: event.clientX - 2,
-                    mouseY: event.clientY - 4,
-                    initiator: event.target,
-                    onChange: () => {
-                        onChangeFieldValue(name, main.innerHTML);
-                    }
-                });
+                openContextMenu(event, 'CONTEXTMENU');
             }, true);
             main.addEventListener('blur', function (event) {
                 onChangeFieldValue(name, main.innerHTML);
@@ -98,7 +107,7 @@ function HTMLEditor (props) {
     return (
             <Paper className={classes.container} elevation={0}>
                 {label ? <Typography variant={'h6'}>{label}</Typography> : null}
-                <HTMLEditorToolbar getSelection={getSelection} applyColor={applyColor}/>
+                <HTMLEditorToolbar getSelection={getSelection} applyColor={applyColor} openContextMenu={openContextMenu}/>
                 <div className={classes.row}>
                     <FormControl variant={'outlined'} fullWidth required={required}>
                         <div ref={shadowRef}>
