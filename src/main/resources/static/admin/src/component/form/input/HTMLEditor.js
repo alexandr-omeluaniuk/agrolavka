@@ -55,6 +55,9 @@ function HTMLEditor (props) {
         Text.applyColorToSelectedText(color, selectionRanges);
         saveHTML();
     };
+    const applyFormat = () => {
+        
+    };
     const saveHTML = () => {
         onChangeFieldValue(name, shadow.querySelector('main').innerHTML);
     };
@@ -62,6 +65,7 @@ function HTMLEditor (props) {
         setContextMenuState({
             mouseX: event.clientX - 2,
             mouseY: event.clientY - 4,
+            initiator: event.target,
             type: menuType
         });
     };
@@ -106,7 +110,7 @@ function HTMLEditor (props) {
             <Paper className={classes.container} elevation={0}>
                 {label ? <Typography variant={'h6'}>{label}</Typography> : null}
                 <HTMLEditorToolbar getSelection={getSelection} applyColor={applyColor} openContextMenu={openContextMenu}
-                        ranges={selectionRanges}/>
+                        applyFormat={applyFormat}/>
                 <div className={classes.row}>
                     <FormControl variant={'outlined'} fullWidth required={required}>
                         <div ref={shadowRef}>

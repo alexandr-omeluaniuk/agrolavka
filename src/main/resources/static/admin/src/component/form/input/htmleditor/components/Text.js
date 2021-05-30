@@ -54,8 +54,31 @@ export class Text extends AbstractComponent {
         this.textType = TYPES.filter(t => t.getType() === type)[0];
     }
         
-    applyToSelection(ranges) {
+    call(ranges) {
         console.log(ranges);
+        ranges.forEach(range => {
+            const nodes = Text.getTextNodesFromRange(range);
+            nodes.forEach(node => {
+                const textContent = node.textContent;
+                let startIndex = 0;
+                let endIndex = textContent.length;
+                if (node === range.startContainer && range.startOffset) {
+                    startIndex = range.startOffset;
+                }
+                if (node === range.endContainer && range.endOffset) {
+                    endIndex = range.endOffset;
+                }
+                if (startIndex === 0 && endIndex === textContent.length) {
+                    const newElement = this._createElementFromHTML(this.textType.wrap(textContent));
+                    newElement.setAttribute(AbstractComponent.ATTRIBUTE_CLASS, this.constructor.name);
+                    newElement.setAttribute(AbstractComponent.ATTRIBUTE_TYPE, this.textType.getType());
+                    node.parentNode.replaceChild(newElement, node);
+                } else {
+                    console.log('PARTIAL');
+                    console.dir(node);
+                }
+            });
+        });
     }
     
 //    _finishCreation(evt) {

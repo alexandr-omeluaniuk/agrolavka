@@ -125,7 +125,8 @@ function HTMLEditorContextMenu(props) {
     const onMenuPointClick = (menuPoint) => {
         if (menuPoint instanceof MenuComponent) {
             handleClose();
-            menuPoint.component.applyToSelection(ranges);
+            menuPoint.component.call(ranges);
+            saveHTML();
         } else if (menuPoint instanceof MenuAction) {
             handleClose();
             menuPoint.action();
