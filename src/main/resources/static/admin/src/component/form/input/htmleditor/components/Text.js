@@ -68,29 +68,22 @@ export class Text extends AbstractComponent {
                 if (node === range.endContainer && range.endOffset) {
                     endIndex = range.endOffset;
                 }
+                
                 if (startIndex === 0 && endIndex === textContent.length) {
-                    const newElement = this._createElementFromHTML(this.textType.wrap(textContent));
+                    const newElement = Text._createElementFromHTML(this.textType.wrap(textContent));
                     newElement.setAttribute(AbstractComponent.ATTRIBUTE_CLASS, this.constructor.name);
                     newElement.setAttribute(AbstractComponent.ATTRIBUTE_TYPE, this.textType.getType());
                     node.parentNode.replaceChild(newElement, node);
                 } else {
-                    console.log('PARTIAL');
-                    console.dir(node);
+                    const newElement = Text._createElementFromHTML(this.textType.wrap(textContent.substring(startIndex, endIndex)));
+                    newElement.setAttribute(AbstractComponent.ATTRIBUTE_CLASS, this.constructor.name);
+                    newElement.setAttribute(AbstractComponent.ATTRIBUTE_TYPE, this.textType.getType());
+                    let html = `${textContent.substring(0, startIndex)}${newElement.outerHTML}${textContent.substring(endIndex)}`;
+                    node.parentElement.innerHTML = html;
                 }
             });
         });
     }
-    
-//    _finishCreation(evt) {
-//        const text = this.textarea.value;
-//        const initiator = this.state.initiator;
-//        const newElement = this._createElementFromHTML(this.textType.wrap(text));
-//        newElement.setAttribute(AbstractComponent.ATTRIBUTE_CLASS, this.constructor.name);
-//        newElement.setAttribute(AbstractComponent.ATTRIBUTE_TYPE, this.textType.getType());
-//        initiator.appendChild(newElement);
-//        this.textarea.remove();
-//        this.state.onChange();
-//    }
     
     static applyColorToSelectedText(color, ranges) {
         if (!ranges) {
@@ -109,15 +102,14 @@ export class Text extends AbstractComponent {
                     endIndex = range.endOffset;
                 }
                 if (startIndex === 0 && endIndex === textContent.length) {
-                    if (node.parentNode) {
-                        Text.applyStyleToNode(node.parentNode, 'color', color);
-                    } else {
-                        console.log(node);
-                        // TODO: handle this case
-                    }
+                    Text.applyStyleToNode(node.parentNode, 'color', color);
                 } else {
-                    let span = Text.insertSpan(node, startIndex, endIndex);
-                    Text.applyStyleToNode(span, 'color', color);
+                    const newElement = Text._createElementFromHTML(`<span>${textContent.substring(startIndex, endIndex)}</span>`);
+                    newElement.setAttribute(AbstractComponent.ATTRIBUTE_CLASS, 'Text');
+                    newElement.setAttribute(AbstractComponent.ATTRIBUTE_TYPE, SPAN);
+                    let html = `${textContent.substring(0, startIndex)}${newElement.outerHTML}${textContent.substring(endIndex)}`;
+                    node.parentElement.innerHTML = html;
+                    Text.applyStyleToNode(newElement, 'color', color);
                 }
             });
         });
@@ -129,14 +121,6 @@ export class Text extends AbstractComponent {
         styles = styles.filter(s => s.indexOf(cssProperty) === -1 && s.length > 0);
         styles.push(cssProperty + ': ' + cssValue);
         node.setAttribute('style', styles.join(';'));
-    }
-    
-    static insertSpan(node, startIdx, endIdx) {
-        const textContent = node.textContent;
-        let html = `${textContent.substring(0, startIdx)}<span ${AbstractComponent.ATTRIBUTE_CLASS}="Text" ${AbstractComponent.ATTRIBUTE_TYPE}="${SPAN}">${textContent.substring(startIdx, endIdx)}</span>${textContent.substring(endIdx)}`;
-        const parentNode = node.parentNode;
-        parentNode.innerHTML = html;
-        return parentNode.querySelector('span');
     }
     
     static getTextNodesFromRange(range) {
