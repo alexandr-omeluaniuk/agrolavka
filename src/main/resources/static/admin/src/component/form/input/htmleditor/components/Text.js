@@ -55,42 +55,35 @@ export class Text extends AbstractComponent {
     }
         
     call(ranges) {
-        console.log(ranges);
-        ranges.forEach(range => {
-            const nodes = Text.getTextNodesFromRange(range);
-            nodes.forEach(node => {
-                const textContent = node.textContent;
-                let startIndex = 0;
-                let endIndex = textContent.length;
-                if (node === range.startContainer && range.startOffset) {
-                    startIndex = range.startOffset;
-                }
-                if (node === range.endContainer && range.endOffset) {
-                    endIndex = range.endOffset;
-                }
-                
-                if (startIndex === 0 && endIndex === textContent.length) {
-                    const newElement = Text._createElementFromHTML(this.textType.wrap(textContent));
-                    newElement.setAttribute(AbstractComponent.ATTRIBUTE_CLASS, this.constructor.name);
-                    newElement.setAttribute(AbstractComponent.ATTRIBUTE_TYPE, this.textType.getType());
-                    node.parentNode.replaceChild(newElement, node);
-                } else {
-                    const newElement = Text._createElementFromHTML(this.textType.wrap(textContent.substring(startIndex, endIndex)));
-                    newElement.setAttribute(AbstractComponent.ATTRIBUTE_CLASS, this.constructor.name);
-                    newElement.setAttribute(AbstractComponent.ATTRIBUTE_TYPE, this.textType.getType());
-                    let html = `${textContent.substring(0, startIndex)}${newElement.outerHTML}${textContent.substring(endIndex)}`;
-                    node.parentElement.innerHTML = html;
-                }
-            });
+        Text._applySelection(ranges, (node) => {
+            const textContent = node.textContent;
+            const newElement = Text._createElementFromHTML(this.textType.wrap(textContent));
+            newElement.setAttribute(AbstractComponent.ATTRIBUTE_CLASS, this.constructor.name);
+            newElement.setAttribute(AbstractComponent.ATTRIBUTE_TYPE, this.textType.getType());
+            node.parentNode.replaceChild(newElement, node);
+        }, (node, startIndex, endIndex) => {
+            const nodeInTheMiddle = Text._insertNodeInTheMiddle(node, startIndex, endIndex, this.textType.getType());
+            nodeInTheMiddle.setAttribute(AbstractComponent.ATTRIBUTE_CLASS, this.constructor.name);
+            nodeInTheMiddle.setAttribute(AbstractComponent.ATTRIBUTE_TYPE, this.textType.getType());
         });
     }
     
     static applyColorToSelectedText(color, ranges) {
+        Text._applySelection(ranges, (node) => {
+            Text._applyStyleToNode(node.parentNode, 'color', color);
+            node.parentNode.normalize();
+        }, (node, startIndex, endIndex) => {
+            const span = Text._insertNodeInTheMiddle(node, startIndex, endIndex, 'span');
+            Text._applyStyleToNode(span, 'color', color);
+        });
+    }
+    
+    static _applySelection(ranges, fullElementHandler, partialElementHandler) {
         if (!ranges) {
             return;
         }
         ranges.forEach(range => {
-            const nodes = Text.getTextNodesFromRange(range);
+            const nodes = Text._getTextNodesFromRange(range);
             nodes.forEach(node => {
                 const textContent = node.textContent;
                 let startIndex = 0;
@@ -102,23 +95,24 @@ export class Text extends AbstractComponent {
                     endIndex = range.endOffset;
                 }
                 if (startIndex === 0 && endIndex === textContent.length) {
-                    Text.applyStyleToNode(node.parentNode, 'color', color);
+                    fullElementHandler(node);
                 } else {
-                    const newElement = Text._createElementFromHTML(`<span>${textContent.substring(startIndex, endIndex)}</span>`);
-                    newElement.setAttribute(AbstractComponent.ATTRIBUTE_CLASS, 'Text');
-                    newElement.setAttribute(AbstractComponent.ATTRIBUTE_TYPE, SPAN);
-                    let html = `${textContent.substring(0, startIndex)}${newElement.outerHTML}${textContent.substring(endIndex)}`;
-                    console.log(html);
-                    const parent = node.parentElement;
-                    parent.innerHTML = html;
-                    const span = parent.querySelector('span');
-                    Text.applyStyleToNode(span, 'color', color);
+                    partialElementHandler(node, startIndex, endIndex);
                 }
             });
         });
     }
     
-    static applyStyleToNode(node, cssProperty, cssValue) {
+    static _insertNodeInTheMiddle(node, startIndex, endIndex, tag) {
+        const endNode = node.splitText(endIndex);
+        const middleNode = node.splitText(startIndex);
+        const tagElement = document.createElement(tag);
+        tagElement.appendChild(middleNode);
+        node.parentElement.insertBefore(tagElement, endNode);
+        return tagElement;
+    }
+    
+    static _applyStyleToNode(node, cssProperty, cssValue) {
         const style = node.getAttribute('style');
         let styles = style ? style.split(';') : [];
         styles = styles.filter(s => s.indexOf(cssProperty) === -1 && s.length > 0);
@@ -126,7 +120,7 @@ export class Text extends AbstractComponent {
         node.setAttribute('style', styles.join(';'));
     }
     
-    static getTextNodesFromRange(range) {
+    static _getTextNodesFromRange(range) {
         var _iterator = document.createNodeIterator(
             range.commonAncestorContainer, NodeFilter.SHOW_TEXT, {
                 acceptNode: function (node) {
