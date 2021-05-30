@@ -108,8 +108,11 @@ export class Text extends AbstractComponent {
                     newElement.setAttribute(AbstractComponent.ATTRIBUTE_CLASS, 'Text');
                     newElement.setAttribute(AbstractComponent.ATTRIBUTE_TYPE, SPAN);
                     let html = `${textContent.substring(0, startIndex)}${newElement.outerHTML}${textContent.substring(endIndex)}`;
-                    node.parentElement.innerHTML = html;
-                    Text.applyStyleToNode(newElement, 'color', color);
+                    console.log(html);
+                    const parent = node.parentElement;
+                    parent.innerHTML = html;
+                    const span = parent.querySelector('span');
+                    Text.applyStyleToNode(span, 'color', color);
                 }
             });
         });
