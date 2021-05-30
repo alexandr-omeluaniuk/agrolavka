@@ -85,7 +85,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function HTMLEditorContextMenu(props) {
-    const { state, setState } = props;
+    const { state, setState, saveHTML } = props;
     const [menu, setMenu] = React.useState(null);
     const [prevMenu, setPrevMenu] = React.useState(null);
     const classes = useStyles();
@@ -123,6 +123,7 @@ function HTMLEditorContextMenu(props) {
     };
     const onComponentDelete = () => {
         state.initiator.remove();
+        saveHTML();
     };
     const onMenuPointClick = (menuPoint) => {
         if (menuPoint instanceof MenuComponent) {

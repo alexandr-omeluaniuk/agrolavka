@@ -14,6 +14,7 @@ import HTMLEditorToolbar from './htmleditor/HTMLEditorToolbar';
 import HTMLEditorContextMenu from './htmleditor/HTMLEditorContextMenu';
 import ComponentsFactory from './htmleditor/ComponentsFactory';
 import AbstractComponent from './htmleditor/AbstractComponent';
+import { Text } from './htmleditor/components/Text';
 
 const useStyles = makeStyles(theme => ({
     container: {
@@ -37,40 +38,27 @@ function HTMLEditor (props) {
     });
     const [shadowRoot, setShadowRoot] = React.useState(null);
     const [shadow, setShadow] = React.useState(null);
-    const [selectionNodes, setSelectionNodes] = React.useState(null);
-    const [selectionStartPosition, setSelectionStartPosition] = React.useState(null);
-    const [selectionEndPosition, setSelectionEndPosition] = React.useState(null);
+    const [selectionRanges, setSelectionRanges] = React.useState(null);
     const shadowRef = React.useRef(null);
     // ------------------------------------------- METHODS --------------------------------------------------------------------------------
     const getSelection = () => {
         const s = shadow.getSelection();
-        const range = s.getRangeAt(0);
-        setSelectionStartPosition(range.startOffset);
-        setSelectionEndPosition(range.endOffset);
-        var _iterator = document.createNodeIterator(
-            s.getRangeAt(0).commonAncestorContainer, NodeFilter.SHOW_TEXT, {
-                acceptNode: function (node) {
-                    return NodeFilter.FILTER_ACCEPT;
-                }
-            }
-        );
-        var _nodes = [];
-        while (_iterator.nextNode()) {
-            if (_nodes.length === 0 && _iterator.referenceNode !== range.startContainer) continue;
-                _nodes.push(_iterator.referenceNode);
-            if (_iterator.referenceNode === range.endContainer) break;
+        if (s.rangeCount === 0) {
+            return;
         }
-        setSelectionNodes(_nodes);
+        const ranges = [];
+        for (let i = 0; i < s.rangeCount; i++) {
+            const range = s.getRangeAt(i);
+            ranges.push(range);
+        }
+        setSelectionRanges(ranges);
     };
     const applyColor = (color) => {
-        selectionNodes.forEach(n => {
-            const style = n.parentNode.getAttribute('style');
-            let styles = style.split(';');
-            styles = styles.filter(s => s.indexOf('color') === -1 && s.length > 0);
-            styles.push('color: ' + color);
-            n.parentNode.setAttribute('style', styles.join(';'));
-            onChangeFieldValue(name, shadow.querySelector('main').innerHTML);
-        });
+        Text.applyColorToSelectedText(color, selectionRanges);
+        saveHTML();
+    };
+    const saveHTML = () => {
+        onChangeFieldValue(name, shadow.querySelector('main').innerHTML);
     };
     // ------------------------------------------- HOOKS ----------------------------------------------------------------------------------
     useEffect(() => {
@@ -134,7 +122,7 @@ function HTMLEditor (props) {
                         {helperText ? <FormHelperText variant={'outlined'} error={true}>{helperText}</FormHelperText> : null}
                     </FormControl>
                 </div>
-                <HTMLEditorContextMenu state={contextMenuState} setState={setContextMenuState}/>
+                <HTMLEditorContextMenu state={contextMenuState} setState={setContextMenuState} saveHTML={saveHTML}/>
             </Paper>
     );
 }
