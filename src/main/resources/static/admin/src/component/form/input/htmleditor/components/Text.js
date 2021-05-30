@@ -67,21 +67,6 @@ export class Text extends AbstractComponent {
         }, 100);
     }
     
-    edit(state) {
-        this.state = state;
-        const initiator = this.state.initiator;
-        this.textarea = this._createElementFromHTML(`<textarea class="form-control" rows="${this.textType.getType() === P ? 7 : 1}"/>`);
-        this.textarea.value = initiator.textContent;
-        initiator.style.display = 'none';
-        initiator.after(this.textarea);
-        this.textarea.addEventListener('blur', (evt) => {
-            this._finishEditing(evt);
-        }, true);
-        setTimeout(() => {
-            this.textarea.focus();
-        }, 100);
-    }
-    
     _finishCreation(evt) {
         const text = this.textarea.value;
         const initiator = this.state.initiator;
@@ -89,15 +74,6 @@ export class Text extends AbstractComponent {
         newElement.setAttribute(AbstractComponent.ATTRIBUTE_CLASS, this.constructor.name);
         newElement.setAttribute(AbstractComponent.ATTRIBUTE_TYPE, this.textType.getType());
         initiator.appendChild(newElement);
-        this.textarea.remove();
-        this.state.onChange();
-    }
-    
-    _finishEditing(evt) {
-        const text = this.textarea.value;
-        const initiator = this.state.initiator;
-        initiator.style.display = null;
-        initiator.textContent = text;
         this.textarea.remove();
         this.state.onChange();
     }

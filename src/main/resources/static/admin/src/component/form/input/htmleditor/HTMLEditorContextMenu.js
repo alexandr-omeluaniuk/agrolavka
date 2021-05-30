@@ -95,7 +95,6 @@ function HTMLEditorContextMenu(props) {
         let config = [];
         if (state.initiator && ComponentsFactory.isHTMLEditorComponent(state.initiator)) {
             config = [
-                new MenuAction('edit', t('component.htmleditor.context_menu.action.edit'), onComponentEdit),
                 new MenuAction('delete', t('component.htmleditor.context_menu.action.delete'), onComponentDelete)
             ];
         } else {
@@ -118,9 +117,6 @@ function HTMLEditorContextMenu(props) {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [state]);
     // ---------------------------------------------------------- METHODS -----------------------------------------------------------------
-    const onComponentEdit = () => {
-        ComponentsFactory.getComponent(state.initiator).edit(state);
-    };
     const onComponentDelete = () => {
         state.initiator.remove();
         saveHTML();

@@ -12,8 +12,6 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import HTMLEditorToolbar from './htmleditor/HTMLEditorToolbar';
 import HTMLEditorContextMenu from './htmleditor/HTMLEditorContextMenu';
-import ComponentsFactory from './htmleditor/ComponentsFactory';
-import AbstractComponent from './htmleditor/AbstractComponent';
 import { Text } from './htmleditor/components/Text';
 
 const useStyles = makeStyles(theme => ({
@@ -67,26 +65,10 @@ function HTMLEditor (props) {
             shadow.innerHTML = `
                 <style>
                     @import "https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.5.0/mdb.min.css";
-                    [${AbstractComponent.ATTRIBUTE_CLASS}]:hover {
-                        cursor: pointer;
-                        box-shadow: rgb(0 0 0 / 20%) 0px 2px 1px -1px, rgb(0 0 0 / 14%) 0px 1px 1px 0px, rgb(0 0 0 / 12%) 0px 1px 3px 0px;
-                        transition: .3s all;
-                    }
                 </style>
-                <main class="card shadow-1-strong p-3" style="min-height: 100px;"></main>
+                <main class="card shadow-1-strong p-3" style="min-height: 100px;" role="textbox" contenteditable="true"></main>
             `;
             const main = shadow.querySelector('main');
-            main.addEventListener('dblclick', function(evt) {
-                const element = evt.target;
-                if (ComponentsFactory.isHTMLEditorComponent(element)) {
-                    ComponentsFactory.getComponent(element).edit({
-                        initiator: element,
-                        onChange: () => {
-                            onChangeFieldValue(name, main.innerHTML);
-                        }
-                    });
-                }
-            }, true);
             main.addEventListener('contextmenu', function (event) {
                 event.preventDefault();
                 setContextMenuState({
@@ -98,6 +80,9 @@ function HTMLEditor (props) {
                     }
                 });
             }, true);
+            main.addEventListener('blur', function (event) {
+                onChangeFieldValue(name, main.innerHTML);
+            });
             setShadowRoot(main);
             setShadow(shadow);
             console.log('HTML editor init completed...');
