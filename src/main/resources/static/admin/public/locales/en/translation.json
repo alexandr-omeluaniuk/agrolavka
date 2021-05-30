@@ -99,7 +99,10 @@
                 }
             },
             "toolbar": {
-                "colors": "Colors"
+                "colors": "Colors",
+                "content": {
+                    "link": "Insert link"
+                }
             }
         }
     },

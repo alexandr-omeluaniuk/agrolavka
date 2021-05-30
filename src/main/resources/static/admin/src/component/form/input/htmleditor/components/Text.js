@@ -71,7 +71,7 @@ export class Text extends AbstractComponent {
         this.state = state;
         const initiator = this.state.initiator;
         this.textarea = this._createElementFromHTML(`<textarea class="form-control" rows="${this.textType.getType() === P ? 7 : 1}"/>`);
-        this.textarea.value = initiator.innerHTML;
+        this.textarea.value = initiator.textContent;
         initiator.style.display = 'none';
         initiator.after(this.textarea);
         this.textarea.addEventListener('blur', (evt) => {
@@ -97,7 +97,7 @@ export class Text extends AbstractComponent {
         const text = this.textarea.value;
         const initiator = this.state.initiator;
         initiator.style.display = null;
-        initiator.innerHTML = text;
+        initiator.textContent = text;
         this.textarea.remove();
         this.state.onChange();
     }
@@ -116,7 +116,12 @@ export class Text extends AbstractComponent {
                     endIndex = range.endOffset;
                 }
                 if (startIndex === 0 && endIndex === textContent.length) {
-                    Text.applyStyleToNode(node.parentNode, 'color', color);
+                    if (node.parentNode) {
+                        Text.applyStyleToNode(node.parentNode, 'color', color);
+                    } else {
+                        console.log(node);
+                        // TODO: handle this case
+                    }
                 } else {
                     let span = Text.insertSpan(node, startIndex, endIndex);
                     Text.applyStyleToNode(span, 'color', color);
@@ -137,7 +142,6 @@ export class Text extends AbstractComponent {
         const textContent = node.textContent;
         let html = `${textContent.substring(0, startIdx)}<span ${AbstractComponent.ATTRIBUTE_CLASS}="Text" ${AbstractComponent.ATTRIBUTE_TYPE}="${SPAN}">${textContent.substring(startIdx, endIdx)}</span>${textContent.substring(endIdx)}`;
         const parentNode = node.parentNode;
-        console.log(parentNode);
         parentNode.innerHTML = html;
         return parentNode.querySelector('span');
     }
