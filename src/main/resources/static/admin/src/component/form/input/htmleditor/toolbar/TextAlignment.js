@@ -11,29 +11,36 @@ import Icon from '@material-ui/core/Icon';
 import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 import Tooltip from '@material-ui/core/Tooltip';
+import { Text } from '../components/Text';
 
 const useStyles = makeStyles(theme => ({
     
 }));
 
 function TextAlignment(props) {
-    const { className, getSelection, openContextMenu } = props;
+    const { className, getSelection, ranges, saveHTML } = props;
     const classes = useStyles();
     const { t } = useTranslation();
+    
+    const align = (alignment) => {
+        getSelection();
+        Text.applyAlignmentToSelectedText(alignment, ranges);
+        saveHTML();
+    };
     
     return (
             <ButtonGroup className={className}>
                 <Tooltip title={t('component.htmleditor.toolbar.text_alignment.left')}>
-                    <Button><Icon>format_align_left</Icon></Button>
+                    <Button onClick={() => align('left')}><Icon>format_align_left</Icon></Button>
                 </Tooltip>
                 <Tooltip title={t('component.htmleditor.toolbar.text_alignment.center')}>
-                    <Button><Icon>format_align_center</Icon></Button>
+                    <Button onClick={() => align('center')}><Icon>format_align_center</Icon></Button>
                 </Tooltip>
                 <Tooltip title={t('component.htmleditor.toolbar.text_alignment.right')}>
-                    <Button><Icon>format_align_right</Icon></Button>
+                    <Button onClick={() => align('right')}><Icon>format_align_right</Icon></Button>
                 </Tooltip>
                 <Tooltip title={t('component.htmleditor.toolbar.text_alignment.justify')}>
-                    <Button><Icon>format_align_justify</Icon></Button>
+                    <Button onClick={() => align('justify')}><Icon>format_align_justify</Icon></Button>
                 </Tooltip>
             </ButtonGroup>
     );
