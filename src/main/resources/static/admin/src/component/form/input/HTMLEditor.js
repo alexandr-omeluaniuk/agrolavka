@@ -15,6 +15,7 @@ import HTMLEditorContextMenu from './htmleditor/HTMLEditorContextMenu';
 import AbstractComponent from './htmleditor/AbstractComponent';
 import ComponentsFactory from './htmleditor/ComponentsFactory';
 import { TYPE_CONTEXTMENU } from './htmleditor/HTMLEditorContextMenu';
+import ComponentControl from './htmleditor/ComponentControl';
 
 const useStyles = makeStyles(theme => ({
     container: {
@@ -38,6 +39,10 @@ function HTMLEditor (props) {
     const [shadowRoot, setShadowRoot] = React.useState(null);
     const [shadow, setShadow] = React.useState(null);
     const [selectionRanges, setSelectionRanges] = React.useState(null);
+    
+    const [componentControlOpen, setComponentControlOpen] = React.useState(false);
+    const [componentControlComponent, setComponentControlComponent] = React.useState(null);
+    
     const shadowRef = React.useRef(null);
     // ------------------------------------------- METHODS --------------------------------------------------------------------------------
     const getSelection = () => {
@@ -119,6 +124,8 @@ function HTMLEditor (props) {
                 </div>
                 <HTMLEditorContextMenu state={contextMenuState} setState={setContextMenuState} saveHTML={saveHTML}
                         ranges={selectionRanges}/>
+                <ComponentControl open={componentControlOpen} handleClose={() => {setComponentControlOpen(false)}}
+                        component={componentControlComponent}/>
             </Paper>
     );
 }
