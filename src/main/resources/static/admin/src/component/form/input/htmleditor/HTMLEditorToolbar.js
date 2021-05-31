@@ -34,7 +34,7 @@ function HTMLEditorToolbar(props) {
                 <div className={classes.toolbarLeft}>
                     <Colors getSelection={getSelection} ranges={ranges} saveHTML={saveHTML} className={classes.toolbarSection}/>
                     <Content getSelection={getSelection} openContextMenu={openContextMenu} className={classes.toolbarSection}/>
-                    <TextAlignment className={classes.toolbarSection}/>
+                    <TextAlignment getSelection={getSelection} saveHTML={saveHTML} className={classes.toolbarSection}/>
                 </div>
                 <div>
             

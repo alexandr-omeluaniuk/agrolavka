@@ -78,6 +78,16 @@ export class Text extends AbstractComponent {
         });
     }
     
+    static applyAlignmentToSelectedText(alignment, ranges) {
+        Text._applySelection(ranges, (node) => {
+            Text._applyStyleToNode(node.parentNode, 'text-align', alignment);
+            node.parentNode.normalize();
+        }, (node, startIndex, endIndex) => {
+            const span = Text._insertNodeInTheMiddle(node, startIndex, endIndex, 'span');
+            Text._applyStyleToNode(span, 'text-align', alignment);
+        });
+    }
+    
     static _applySelection(ranges, fullElementHandler, partialElementHandler) {
         if (!ranges) {
             return;

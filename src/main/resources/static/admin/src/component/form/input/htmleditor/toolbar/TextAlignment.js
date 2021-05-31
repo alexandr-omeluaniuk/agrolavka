@@ -5,7 +5,6 @@
  */
 
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import { useTranslation } from 'react-i18next';
 import Icon from '@material-ui/core/Icon';
 import Button from '@material-ui/core/Button';
@@ -13,17 +12,13 @@ import ButtonGroup from '@material-ui/core/ButtonGroup';
 import Tooltip from '@material-ui/core/Tooltip';
 import { Text } from '../components/Text';
 
-const useStyles = makeStyles(theme => ({
-    
-}));
 
 function TextAlignment(props) {
-    const { className, getSelection, ranges, saveHTML } = props;
-    const classes = useStyles();
+    const { className, getSelection, saveHTML } = props;
     const { t } = useTranslation();
     
     const align = (alignment) => {
-        getSelection();
+        const ranges = getSelection();
         Text.applyAlignmentToSelectedText(alignment, ranges);
         saveHTML();
     };

@@ -49,6 +49,7 @@ function HTMLEditor (props) {
             ranges.push(range);
         }
         setSelectionRanges(ranges);
+        return ranges;
     };
     const saveHTML = () => {
         onChangeFieldValue(name, shadow.querySelector('main').innerHTML);
