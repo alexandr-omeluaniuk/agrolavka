@@ -12,7 +12,6 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import HTMLEditorToolbar from './htmleditor/HTMLEditorToolbar';
 import HTMLEditorContextMenu from './htmleditor/HTMLEditorContextMenu';
-import { Text } from './htmleditor/components/Text';
 import AbstractComponent from './htmleditor/AbstractComponent';
 
 const useStyles = makeStyles(theme => ({
@@ -50,13 +49,6 @@ function HTMLEditor (props) {
             ranges.push(range);
         }
         setSelectionRanges(ranges);
-    };
-    const applyColor = (color) => {
-        Text.applyColorToSelectedText(color, selectionRanges);
-        saveHTML();
-    };
-    const applyFormat = () => {
-        
     };
     const saveHTML = () => {
         onChangeFieldValue(name, shadow.querySelector('main').innerHTML);
@@ -110,8 +102,8 @@ function HTMLEditor (props) {
     return (
             <Paper className={classes.container} elevation={0}>
                 {label ? <Typography variant={'h6'}>{label}</Typography> : null}
-                <HTMLEditorToolbar getSelection={getSelection} applyColor={applyColor} openContextMenu={openContextMenu}
-                        applyFormat={applyFormat}/>
+                <HTMLEditorToolbar getSelection={getSelection} openContextMenu={openContextMenu}
+                        ranges={selectionRanges} saveHTML={saveHTML}/>
                 <div className={classes.row}>
                     <FormControl variant={'outlined'} fullWidth required={required}>
                         <div ref={shadowRef}>

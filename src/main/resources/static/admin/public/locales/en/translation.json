@@ -103,6 +103,12 @@
                 "content": {
                     "text": "Format text",
                     "link": "Insert link"
+                },
+                "text_alignment": {
+                    "left": "Left",
+                    "center": "Center",
+                    "right": "Right",
+                    "justify": "Justify"
                 }
             }
         }

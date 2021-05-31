@@ -11,6 +11,7 @@ import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 import Tooltip from '@material-ui/core/Tooltip';
 import Popover from '@material-ui/core/Popover';
+import { Text } from '../components/Text';
 
 const useStyles = makeStyles(theme => ({
     palette: {
@@ -43,7 +44,7 @@ const COLORS = [
 ];
 
 function Colors(props) {
-    const { className, getSelection, applyColor } = props;
+    const { className, getSelection, ranges, saveHTML } = props;
     const classes = useStyles();
     const { t } = useTranslation();
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -56,6 +57,11 @@ function Colors(props) {
     const handleClick = (event) => {
         getSelection();
         setAnchorEl(event.currentTarget);
+    };
+    
+    const applyColor = (color) => {
+        Text.applyColorToSelectedText(color, ranges);
+        saveHTML();
     };
 
     const handleClose = () => {
@@ -82,10 +88,13 @@ function Colors(props) {
             </Button>;
     
     return (
-            <ButtonGroup className={className}>
-                <Tooltip title={t('component.htmleditor.toolbar.colors')}>
-                    {button}
-                </Tooltip>
+            <React.Fragment>
+                <ButtonGroup className={className}>
+                    <Tooltip title={t('component.htmleditor.toolbar.colors')}>
+                        {button}
+                    </Tooltip>
+
+                </ButtonGroup>
                 <Popover open={Boolean(anchorEl)} anchorEl={anchorEl} onClose={handleClose} anchorOrigin={{
                     vertical: 'bottom',
                     horizontal: 'left'
@@ -97,7 +106,7 @@ function Colors(props) {
                         {palette()}
                     </div>
                 </Popover>
-            </ButtonGroup>
+            </React.Fragment>
     );
 }
 
