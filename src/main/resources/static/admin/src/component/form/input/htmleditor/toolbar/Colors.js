@@ -7,7 +7,8 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { useTranslation } from 'react-i18next';
 import Icon from '@material-ui/core/Icon';
-import IconButton from '@material-ui/core/IconButton';
+import Button from '@material-ui/core/Button';
+import ButtonGroup from '@material-ui/core/ButtonGroup';
 import Tooltip from '@material-ui/core/Tooltip';
 import Popover from '@material-ui/core/Popover';
 
@@ -42,7 +43,7 @@ const COLORS = [
 ];
 
 function Colors(props) {
-    const { getSelection, applyColor } = props;
+    const { className, getSelection, applyColor } = props;
     const classes = useStyles();
     const { t } = useTranslation();
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -76,12 +77,12 @@ function Colors(props) {
     };
     
     const button = 
-            <IconButton onClick={handleClick}>
+            <Button onClick={handleClick}>
                 <Icon>format_color_text</Icon>
-            </IconButton>;
+            </Button>;
     
     return (
-            <React.Fragment>
+            <ButtonGroup className={className}>
                 <Tooltip title={t('component.htmleditor.toolbar.colors')}>
                     {button}
                 </Tooltip>
@@ -96,7 +97,7 @@ function Colors(props) {
                         {palette()}
                     </div>
                 </Popover>
-            </React.Fragment>
+            </ButtonGroup>
     );
 }
 

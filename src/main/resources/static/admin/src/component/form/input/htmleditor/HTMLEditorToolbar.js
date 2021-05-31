@@ -7,6 +7,7 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Colors from './toolbar/Colors';
 import Content from './toolbar/Content';
+import TextAlignment from './toolbar/TextAlignment';
 
 const useStyles = makeStyles(theme => ({
     toolbar: {
@@ -19,6 +20,9 @@ const useStyles = makeStyles(theme => ({
     toolbarLeft: {
         display: 'flex',
         alignItems: 'center'
+    },
+    toolbarSection: {
+        marginRight: theme.spacing(1)
     }
 }));
 
@@ -28,8 +32,9 @@ function HTMLEditorToolbar(props) {
     return (
             <div className={classes.toolbar}>
                 <div className={classes.toolbarLeft}>
-                    <Colors getSelection={getSelection} applyColor={applyColor} />
-                    <Content getSelection={getSelection} openContextMenu={openContextMenu} />
+                    <Colors getSelection={getSelection} applyColor={applyColor} className={classes.toolbarSection}/>
+                    <Content getSelection={getSelection} openContextMenu={openContextMenu} className={classes.toolbarSection}/>
+                    <TextAlignment className={classes.toolbarSection}/>
                 </div>
                 <div>
             

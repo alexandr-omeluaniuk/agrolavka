@@ -60,6 +60,7 @@ function HTMLEditor (props) {
     };
     const saveHTML = () => {
         onChangeFieldValue(name, shadow.querySelector('main').innerHTML);
+        setSelectionRanges(null);
     };
     const openContextMenu = (event, menuType) => {
         setContextMenuState({

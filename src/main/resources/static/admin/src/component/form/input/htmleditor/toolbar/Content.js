@@ -4,35 +4,28 @@
  * and open the template in the editor.
  */
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import { useTranslation } from 'react-i18next';
 import Icon from '@material-ui/core/Icon';
-import IconButton from '@material-ui/core/IconButton';
+import ButtonGroup from '@material-ui/core/ButtonGroup';
+import Button from '@material-ui/core/Button';
 import Tooltip from '@material-ui/core/Tooltip';
 
-const useStyles = makeStyles(theme => ({
-    root: {
-        
-    }
-}));
-
 function Content(props) {
-    const { getSelection, openContextMenu } = props;
-    const classes = useStyles();
+    const { className, getSelection, openContextMenu } = props;
     const { t } = useTranslation();
     
     return (
-            <div className={classes.root}>
+            <ButtonGroup className={className}>
                 <Tooltip title={t('component.htmleditor.toolbar.content.text')}>
-                    <IconButton onClick={(e) => {
+                    <Button onClick={(e) => {
                         getSelection();
                         openContextMenu(e, 'TEXT');
-                    }}><Icon>title</Icon></IconButton>
+                    }}><Icon>title</Icon></Button>
                 </Tooltip>
                 <Tooltip title={t('component.htmleditor.toolbar.content.link')}>
-                    <IconButton><Icon>insert_link</Icon></IconButton>
+                    <Button><Icon>insert_link</Icon></Button>
                 </Tooltip>
-            </div>
+            </ButtonGroup>
     );
 }
 
