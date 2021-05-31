@@ -9,6 +9,7 @@ import Icon from '@material-ui/core/Icon';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 import Button from '@material-ui/core/Button';
 import Tooltip from '@material-ui/core/Tooltip';
+import { TYPE_TEXT } from '../HTMLEditorContextMenu';
 
 function Content(props) {
     const { className, getSelection, openContextMenu } = props;
@@ -19,11 +20,13 @@ function Content(props) {
                 <Tooltip title={t('component.htmleditor.toolbar.content.text')}>
                     <Button onClick={(e) => {
                         getSelection();
-                        openContextMenu(e, 'TEXT');
+                        openContextMenu(e, TYPE_TEXT);
                     }}><Icon>title</Icon></Button>
                 </Tooltip>
                 <Tooltip title={t('component.htmleditor.toolbar.content.link')}>
-                    <Button><Icon>insert_link</Icon></Button>
+                    <Button onClick={(e) => {
+                        getSelection();
+                    }}><Icon>insert_link</Icon></Button>
                 </Tooltip>
             </ButtonGroup>
     );

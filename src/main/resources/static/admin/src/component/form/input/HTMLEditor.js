@@ -13,6 +13,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import HTMLEditorToolbar from './htmleditor/HTMLEditorToolbar';
 import HTMLEditorContextMenu from './htmleditor/HTMLEditorContextMenu';
 import AbstractComponent from './htmleditor/AbstractComponent';
+import { TYPE_CONTEXTMENU } from './htmleditor/HTMLEditorContextMenu';
 
 const useStyles = makeStyles(theme => ({
     container: {
@@ -83,7 +84,7 @@ function HTMLEditor (props) {
             const main = shadow.querySelector('main');
             main.addEventListener('contextmenu', function (event) {
                 event.preventDefault();
-                openContextMenu(event, 'CONTEXTMENU');
+                openContextMenu(event, TYPE_CONTEXTMENU);
             }, true);
             main.addEventListener('blur', function (event) {
                 onChangeFieldValue(name, main.innerHTML);

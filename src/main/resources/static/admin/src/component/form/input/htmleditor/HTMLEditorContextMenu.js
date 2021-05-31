@@ -14,8 +14,8 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import Typography from '@material-ui/core/Typography';
 import { Text, H1, H2, H3, H4, H5, H6, P, SPAN } from './components/Text';
 
-const TYPE_CONTEXTMENU = 'CONTEXTMENU';
-const TYPE_TEXT = 'TEXT';
+export const TYPE_CONTEXTMENU = 'CONTEXTMENU';
+export const TYPE_TEXT = 'TEXT';
 
 class MenuPoint {
     constructor(icon, label, nestedMenu) {
