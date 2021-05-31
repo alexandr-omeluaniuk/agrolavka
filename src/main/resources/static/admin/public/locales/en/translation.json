@@ -99,10 +99,10 @@
                 }
             },
             "toolbar": {
-                "colors": "Colors",
+                "colors": "Text color",
                 "content": {
-                    "text": "Format text",
-                    "link": "Insert link"
+                    "text": "Text",
+                    "link": "Link"
                 },
                 "text_alignment": {
                     "left": "Left",
