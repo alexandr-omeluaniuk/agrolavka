@@ -25,7 +25,10 @@ function Content(props) {
                 </Tooltip>
                 <Tooltip title={t('component.htmleditor.toolbar.content.link')}>
                     <Button onClick={(e) => {
-                        getSelection();
+                        const ranges = getSelection();
+                        if (ranges) {
+                            console.log('FIRE');
+                        }
                     }}><Icon>insert_link</Icon></Button>
                 </Tooltip>
             </ButtonGroup>
