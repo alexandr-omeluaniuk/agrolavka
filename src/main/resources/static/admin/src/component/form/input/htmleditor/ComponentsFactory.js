@@ -5,9 +5,10 @@
  */
 
 import { Text } from './components/Text';
+import { Link } from './components/Link';
 import AbstractComponent from './AbstractComponent';
 
-const COMPONENTS = { Text };
+const COMPONENTS = { Text, Link };
 
 export default class ComponentsFactory {
     
@@ -17,13 +18,7 @@ export default class ComponentsFactory {
     
     static getComponent(element) {
         const componentClass = element.getAttribute(AbstractComponent.ATTRIBUTE_CLASS);
-        const componentType = element.getAttribute(AbstractComponent.ATTRIBUTE_TYPE);
-        const comp = new COMPONENTS[componentClass](componentType);
-        if (comp) {
-            comp.state = {
-                initiator: element
-            }
-        }
+        const comp = new COMPONENTS[componentClass]();
         return comp;
     }
 }

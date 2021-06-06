@@ -10,9 +10,10 @@ import ButtonGroup from '@material-ui/core/ButtonGroup';
 import Button from '@material-ui/core/Button';
 import Tooltip from '@material-ui/core/Tooltip';
 import { TYPE_TEXT } from '../HTMLEditorContextMenu';
+import { Link } from '../components/Link';
 
 function Content(props) {
-    const { className, getSelection, openContextMenu } = props;
+    const { className, getSelection, openContextMenu, openComponentControl, saveHTML } = props;
     const { t } = useTranslation();
     
     return (
@@ -27,7 +28,9 @@ function Content(props) {
                     <Button onClick={(e) => {
                         const ranges = getSelection();
                         if (ranges) {
-                            console.log('FIRE');
+                            const component = new Link();
+                            component.initComponentControl({}, ranges, t, saveHTML);
+                            openComponentControl(component);
                         }
                     }}><Icon>insert_link</Icon></Button>
                 </Tooltip>

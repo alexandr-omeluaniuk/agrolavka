@@ -10,10 +10,15 @@ import Form from '../../Form';
 
 function ComponentControl(props) {
     const { open, handleClose, component } = props;
-    
+    if (!component) {
+        return null;
+    }
     return (
             <FormDialog title={component.settingsTitle} open={open} handleClose={handleClose}>
-                <Form formConfig={component.formConfig} onSubmitAction={component.onSubmit} record={component.settings} disabled={false}></Form>
+                <Form formConfig={component.formConfig} onSubmitAction={(data) => {
+                    component.onSubmit(data);
+                    handleClose();
+                }} record={component.settings} disabled={false}></Form>
             </FormDialog>
     );
 }

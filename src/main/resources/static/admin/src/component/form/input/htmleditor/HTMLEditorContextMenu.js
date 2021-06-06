@@ -13,6 +13,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import Typography from '@material-ui/core/Typography';
 import { Text, H1, H2, H3, H4, H5, H6, P, SPAN } from './components/Text';
+import ComponentsFactory from './ComponentsFactory';
 
 export const TYPE_CONTEXTMENU = 'CONTEXTMENU';
 export const TYPE_TEXT = 'TEXT';
@@ -95,9 +96,16 @@ function HTMLEditorContextMenu(props) {
     useEffect(() => {
         let config = null;
         if (state.type === TYPE_CONTEXTMENU) {
-            config = [
-                new MenuAction('delete', t('component.htmleditor.context_menu.action.delete'), onComponentDelete)
-            ];
+            config = [];
+            if (ComponentsFactory.isHTMLEditorComponent(state.initiator)) {
+                var component = ComponentsFactory.getComponent(state.initiator);
+                if (component && component.initComponentControl) {
+                    config.push(new MenuAction('settings', t('component.htmleditor.context_menu.action.settings'), () => {
+                        openComponentControl(component);
+                    }));
+                }
+            }
+            config.push(new MenuAction('delete', t('component.htmleditor.context_menu.action.delete'), onComponentDelete));
         } else if (state.type === TYPE_TEXT) {
             config = [
                 new MenuPoint('format_list_numbered', t('component.htmleditor.context_menu.headers'), [
@@ -118,6 +126,9 @@ function HTMLEditorContextMenu(props) {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [state]);
     // ---------------------------------------------------------- METHODS -----------------------------------------------------------------
+    const openComponentControl = (component) => {
+        
+    };
     const onComponentDelete = () => {
         state.initiator.remove();
         saveHTML();

@@ -94,15 +94,18 @@
                     "span": "Text"
                 },
                 "action": {
-                    "edit": "Edit",
-                    "delete": "Remove"
+                    "delete": "Remove",
+                    "settings": "Settings"
                 }
             },
             "toolbar": {
                 "colors": "Text color",
                 "content": {
                     "text": "Text",
-                    "link": "Link"
+                    "link": "Link",
+                    "links": {
+                        "settings": "Link settings"
+                    }
                 },
                 "text_alignment": {
                     "left": "Left",
@@ -117,6 +120,7 @@
         "required": "Required field",
         "email": "Wrong email address",
         "min_length": "Min {{length}} characters",
-        "max_length": "Max {{length}} characters"
+        "max_length": "Max {{length}} characters",
+        "web_url": "Incorrect URL"
     }
 }

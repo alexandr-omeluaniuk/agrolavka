@@ -40,8 +40,8 @@ function HTMLEditor (props) {
     const [shadow, setShadow] = React.useState(null);
     const [selectionRanges, setSelectionRanges] = React.useState(null);
     
-    const [componentControlOpen, setComponentControlOpen] = React.useState(false);
-    const [componentControlComponent, setComponentControlComponent] = React.useState(null);
+    const [controlOpen, setControlOpen] = React.useState(false);
+    const [controlComponent, setControlComponent] = React.useState(null);
     
     const shadowRef = React.useRef(null);
     // ------------------------------------------- METHODS --------------------------------------------------------------------------------
@@ -69,6 +69,10 @@ function HTMLEditor (props) {
             initiator: event.target,
             type: menuType
         });
+    };
+    const openComponentControl = (component) => {
+        setControlComponent(component);
+        setControlOpen(true);
     };
     // ------------------------------------------- HOOKS ----------------------------------------------------------------------------------
     useEffect(() => {
@@ -113,7 +117,7 @@ function HTMLEditor (props) {
             <Paper className={classes.container} elevation={0}>
                 {label ? <Typography variant={'h6'}>{label}</Typography> : null}
                 <HTMLEditorToolbar getSelection={getSelection} openContextMenu={openContextMenu}
-                        ranges={selectionRanges} saveHTML={saveHTML}/>
+                        ranges={selectionRanges} saveHTML={saveHTML} openComponentControl={openComponentControl}/>
                 <div className={classes.row}>
                     <FormControl variant={'outlined'} fullWidth required={required}>
                         <div ref={shadowRef}>
@@ -124,8 +128,8 @@ function HTMLEditor (props) {
                 </div>
                 <HTMLEditorContextMenu state={contextMenuState} setState={setContextMenuState} saveHTML={saveHTML}
                         ranges={selectionRanges}/>
-                <ComponentControl open={componentControlOpen} handleClose={() => {setComponentControlOpen(false)}}
-                        component={componentControlComponent}/>
+                <ComponentControl open={controlOpen} handleClose={() => {setControlOpen(false)}}
+                        component={controlComponent}/>
             </Paper>
     );
 }

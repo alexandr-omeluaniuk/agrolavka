@@ -10,6 +10,8 @@ export const TIME_FORMAT = 'HH:mm';
 export const DATETIME_FORMAT = 'DD.MM.YYYY HH:mm';
 // eslint-disable-next-line no-useless-escape
 const EMAIL_REGEX = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+// eslint-disable-next-line no-useless-escape
+const WEB_URL_REGEX = /^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)$/i;
 
 export let TYPES = {
     TEXTFIELD: 'TEXTFIELD',
@@ -38,7 +40,8 @@ export let VALIDATORS = {
     MAX: 'MAX',
     EXTENSION: 'EXTENSION',
     EMAIL: 'EMAIL',
-    CUSTOM: 'CUSTOM'
+    CUSTOM: 'CUSTOM',
+    WEB_URL: "WEB_URL"
 };
 
 export class DataTypeService {
@@ -88,6 +91,11 @@ export class DataTypeService {
                 if (v.type === VALIDATORS.EMAIL && value) {
                     if (!EMAIL_REGEX.test(value)) {
                         invalidFields.set(fieldName, t('validation.email'));
+                    }
+                }
+                if (v.type === VALIDATORS.WEB_URL && value) {
+                    if (!WEB_URL_REGEX.test(value)) {
+                        invalidFields.set(fieldName, t('validation.web_url'));
                     }
                 }
             });
