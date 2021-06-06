@@ -8,42 +8,49 @@
 
 <%-- The list of normal or fragment attributes can be specified here: --%>
 <%-- any content can be specified here e.g.: --%>
-<div class="input-group me-2" id="agr-quick-search-container-mobile">
-    <input type="search" class="form-control" aria-label="Поиск товаров" id="agr-quick-search-input-mobile" placeholder="Быстрый поиск"
+<div class="input-group me-2" id="agr-quick-search-container-mobile-trigger">
+    <input type="search" class="form-control" aria-label="Поиск товаров" id="agr-quick-search-input-mobile-trigger" placeholder="Быстрый поиск"
            autocomplete="off">
-    <ul class="dropdown-menu" aria-labelledby="agr-quick-search-container-mobile" id="agr-quick-search-result-mobile"></ul>
-    <span class="input-group-text"><i class="fas fa-search" style="color:white;"></i></span>
+    <span class="input-group-text">
+        <i class="fas fa-search" style="color:white;" data-mdb-toggle="modal" data-mdb-target="#agr-quick-search-mobile-modal"></i>
+    </span>
+</div>
+<div class="modal fade" tabindex="-1" id="agr-quick-search-mobile-modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <input type="search" class="form-control me-2 modal-title" aria-label="Поиск товаров" id="agr-quick-search-input-mobile"
+                       placeholder="Быстрый поиск" autocomplete="off" tabindex="1">
+                <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <ul class="list-group" id="agr-quick-search-result-mobile"></ul>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script>
     (function () {
         "use strict";
-        
+
         function highlightText(text, searchText) {
             const idx = text.toLowerCase().indexOf(searchText.toLowerCase());
             if (searchText.length > 0 && idx !== -1) {
                 return text.substring(0, idx) + '<span class="highlighted-text">' +
-                    text.substring(idx, idx + searchText.length) + '</span>' + text.substring(idx + searchText.length);
+                        text.substring(idx, idx + searchText.length) + '</span>' + text.substring(idx + searchText.length);
             } else {
                 return text;
             }
         }
-        
-        document.querySelector('#agr-quick-search-input-mobile').addEventListener('focus', function (e) {
-            const searchResultOutput = document.querySelector('#agr-quick-search-result-mobile');
-            if (searchResultOutput.innerHTML) {
-                searchResultOutput.classList.add("show");
-                searchResultOutput.classList.add("list-group");
-            }
-        });
 
-        document.querySelector('#agr-quick-search-container-mobile').addEventListener('blur', function (e) {
-            if (e.relatedTarget === null) {
-                const searchResultOutput = document.querySelector('#agr-quick-search-result-mobile');
-                searchResultOutput.classList.remove("show");
-                searchResultOutput.classList.remove("list-group");
-            }
-        }, true);
+        document.querySelector('#agr-quick-search-input-mobile-trigger').addEventListener('focus', function (e) {
+            const modalToggler = document.querySelector('[data-mdb-target="#agr-quick-search-mobile-modal"]');
+            modalToggler.click();
+            setTimeout(() => {
+                document.querySelector('#agr-quick-search-input-mobile').focus();
+            }, 700);
+        });
 
         document.querySelector('#agr-quick-search-input-mobile').addEventListener('input', function (e) {
             const searchText = this.value;
@@ -69,22 +76,22 @@
                                     const price = parseFloat(product.discountPrice ? product.discountPrice : product.price).toFixed(2);
                                     const priceRub = price.split('.')[0];
                                     const priceCent = price.split('.')[1];
-                                    sb += 
-                                        '<li class="agr-product-search-link">'
+                                    sb +=
+                                            '<li class="agr-product-search-link">'
                                             + '<a class="dropdown-item" href="' + product.url + '">'
-                                                + '<div class="d-flex w-100 justify-content-between">'
-                                                    + '<h6 class="mb-1">' + highlightText(product.name, searchText) + '</h6>'
-                                                    + '<small style="margin-left: 10px; min-width: 80px; text-align: right;"' 
-                                                        + 'class="fw-bold">' + priceRub
-                                                        + '.<span style="font-size: .9em; margin-right: 5px;">' + priceCent + '</span>'
-                                                        + '<span class="text-muted">BYN</span>'
-                                                    + '</small>'
-                                                + '</div>'
-                                                + '<div class="d-flex justify-content-between">'
-                                                    + '<small class="text-muted">' + (product.group ? product.group.name : '') + '</small>'
-                                                + '</div>'
+                                            + '<div class="d-flex w-100 justify-content-between">'
+                                            + '<h6 class="mb-1">' + highlightText(product.name, searchText) + '</h6>'
+                                            + '<small style="margin-left: 10px; min-width: 80px; text-align: right;"'
+                                            + 'class="fw-bold">' + priceRub
+                                            + '.<span style="font-size: .9em; margin-right: 5px;">' + priceCent + '</span>'
+                                            + '<span class="text-muted">BYN</span>'
+                                            + '</small>'
+                                            + '</div>'
+                                            + '<div class="d-flex justify-content-between">'
+                                            + '<small class="text-muted">' + (product.group ? product.group.name : '') + '</small>'
+                                            + '</div>'
                                             + '</a>'
-                                        + '</li>';
+                                            + '</li>';
                                 });
                             }
                             searchResultOutput.innerHTML = sb;
@@ -99,6 +106,6 @@
                 searchResultOutput.innerHTML = '';
             }
         });
-        
+
     })();
 </script>

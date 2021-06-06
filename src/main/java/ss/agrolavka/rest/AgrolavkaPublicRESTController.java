@@ -103,7 +103,7 @@ class AgrolavkaPublicRESTController {
             throws Exception {
         ProductsSearchRequest request = new ProductsSearchRequest();
         request.setPage(1);
-        request.setPageSize(20);
+        request.setPageSize(100);
         request.setText(searchText);
         request.setOrder("asc");
         request.setOrderBy("name");
