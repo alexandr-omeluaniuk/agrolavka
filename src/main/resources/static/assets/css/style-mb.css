@@ -214,6 +214,25 @@ and open the template in the editor.
     transform: rotate(-45deg);
 }
 
+@media (max-width: 992px) {
+    .ribbon {
+        width: 80px;
+        height: 80px;
+    }
+    .ribbon span {
+        width: 128px;
+        box-shadow: 0 2px 5px rgb(0 0 0 / 10%);
+    }
+    .ribbon-top-left span {
+        right: -14px;
+        top: 14px;
+        padding: 3px 0;
+    }
+    .ribbon-top-left small {
+        font-size: .7rem;
+    }
+}
+
 /** =================================================== FRAMEWORKK ======================================================================*/
 .hover-shadow:hover {
     -webkit-box-shadow: 0 8px 17px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%) !important;
