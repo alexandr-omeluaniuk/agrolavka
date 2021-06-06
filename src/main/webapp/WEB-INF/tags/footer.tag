@@ -44,9 +44,15 @@
                 </p>
                 <h4>Время работы</h4>
                 <p>
-                    <small><b>понедельник - пятница</b> <span class="float-end">09:00 - 18:30</span></small><br/>
-                    <small><b>суббота</b> <span class="float-end">09:00 - 16:00</span></small><br/>
-                    <small><b>воскресенье</b> <span class="float-end">10:00 - 14:00</span></small>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <small><b>понедельник - пятница</b></small> <small>09:00 - 18:30</small>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <small><b>суббота</b></small> <small>09:00 - 16:00</small>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <small><b>воскресенье</b></small> <small>10:00 - 14:00</small>
+                    </div>
                 </p>
             </div>
 

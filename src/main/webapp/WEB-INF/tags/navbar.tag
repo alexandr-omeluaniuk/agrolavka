@@ -45,13 +45,16 @@
                     <li class="nav-item">
                         <a class="nav-link" href="/delivery">Доставка</a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item d-lg-none d-xl-block">
                         <a class="nav-link" href="/discount">Дисконтная программа</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#footer">Контакты</a>
                     </li>
                 </ul>
+                <div class="d-none d-lg-flex align-items-center me-4">
+                    <a class="text-white" href="tel:+375298713758">+375 29 871-37-58</a><br>
+                </div>
                 <div class="d-none d-lg-flex">
                     <t:quick-search-desktop />
                     <t:cart cart="${cart}" totalDecimal="${totalDecimal}" totalInteger="${totalInteger}"/>

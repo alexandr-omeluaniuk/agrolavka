@@ -8,14 +8,14 @@
 
 <%-- The list of normal or fragment attributes can be specified here: --%>
 <%-- any content can be specified here e.g.: --%>
-<div class="input-group me-2 d-flex d-lg-none d-xl-flex" id="agr-quick-search-container-desktop">
+<div class="input-group me-4 d-lg-none" id="agr-quick-search-container-desktop">
     <input type="search" class="form-control" aria-label="Поиск товаров" id="agr-quick-search-input-desktop" placeholder="Быстрый поиск"
            autocomplete="off">
     <ul class="dropdown-menu" aria-labelledby="agr-quick-search-container-desktop" id="agr-quick-search-result-desktop"></ul>
     <span class="input-group-text"><i class="fas fa-search" style="color:white;"></i></span>
 </div>
 
-<button type="button" class="btn btn-outline-light d-none d-lg-block d-xl-none btn-floating me-2" id="agr-quick-search-switcher-desktop">
+<button type="button" class="btn btn-outline-light d-none d-lg-block btn-floating me-4" id="agr-quick-search-switcher-desktop">
     <i class="fas fa-search"></i>
 </button>
 
@@ -45,7 +45,7 @@
             const container = document.querySelector('#agr-quick-search-container-desktop');
             const navLinks = document.querySelector('.navbar-nav');
             navLinks.style.display = 'none';
-            container.style.width = (window.innerWidth - 400) + 'px';
+            container.style.width = (window.innerWidth - 540) + 'px';
             const searchResultOutput = document.querySelector('#agr-quick-search-result-desktop');
             if (searchResultOutput.innerHTML) {
                 searchResultOutput.classList.add("show");
