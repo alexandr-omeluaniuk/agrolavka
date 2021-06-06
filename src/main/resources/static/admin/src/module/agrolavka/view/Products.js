@@ -130,8 +130,9 @@ function Products() {
 //                new Validator(VALIDATORS.REQUIRED),
 //                new Validator(VALIDATORS.MIN, {size: 0})
 //            ]).setAttributes({ decimalScale: 2, suffix: ' BYN', align: 'right' }),
-            new FormField('description', TYPES.HTML_EDITOR, t('m_agrolavka:products.product_description')).setGrid({xs: 12})
+            new FormField('description', TYPES.TEXTAREA, t('m_agrolavka:products.product_description')).setGrid({xs: 12})
                     .setAttributes({ rows: 6, labelWidth: 200 }),
+            new FormField('htmlDescription', TYPES.HTML_EDITOR, t('m_agrolavka:products.product_description')).setGrid({xs: 12}),
             new FormField('images', TYPES.IMAGES, t('m_agrolavka:products.product_images')).setGrid({xs: 12}),
             new FormField('seoTitle', TYPES.TEXTFIELD, t('m_agrolavka:products.product_seo_title')).setGrid({xs: 12}).validation([
                 new Validator(VALIDATORS.MAX_LENGTH, {length: 255})

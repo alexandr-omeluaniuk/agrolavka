@@ -6,6 +6,7 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <t:app title="${title}" metaDescription="${metaDescription}" canonical="${canonical}">
     
@@ -47,8 +48,7 @@
                                 <div class="float-start me-4" style="width: 350px;">
                                     <t:card-product product="${product}" cart="${cart}" noHover="true"/>
                                 </div>
-                                <h4>${product.name}</h4>
-                                <p class="text-justify">${product.description}</p>
+                                <t:product-description product="${product}"/>
                             </div>
                         </div>
                     </article>

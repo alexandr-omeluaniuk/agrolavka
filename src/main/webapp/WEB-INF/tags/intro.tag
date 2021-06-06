@@ -28,7 +28,7 @@
                     <div class="d-flex justify-content-center align-items-center h-100">
                         <div class="text-white text-center">
                             <h1>Более <span class="purecounter fw-bold" data-purecounter-end="${productsCount}"></span> наименований, приглашаем за покупками!</h1>
-                            <h5>выгодные цены, акции и скидки</h5>
+                            <h5>выгодные и всегда актуальные цены, акции и скидки</h5>
                             <a class="btn btn-outline-light btn-lg m-2" href="/catalog" role="button" >Перейти в каталог товаров</a>
                         </div>
                     </div>

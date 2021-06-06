@@ -98,9 +98,6 @@ function HTMLEditor (props) {
                     openContextMenu(event, TYPE_CONTEXTMENU);
                 }
             }, true);
-            main.addEventListener('blur', function (event) {
-                onChangeFieldValue(name, main.innerHTML);
-            });
             setShadowRoot(main);
             setShadow(shadow);
             console.log('HTML editor init completed...');
@@ -120,7 +117,7 @@ function HTMLEditor (props) {
                         ranges={selectionRanges} saveHTML={saveHTML} openComponentControl={openComponentControl}/>
                 <div className={classes.row}>
                     <FormControl variant={'outlined'} fullWidth required={required}>
-                        <div ref={shadowRef}>
+                        <div ref={shadowRef} onBlur={saveHTML}>
 
                         </div>
                         {helperText ? <FormHelperText variant={'outlined'} error={true}>{helperText}</FormHelperText> : null}
