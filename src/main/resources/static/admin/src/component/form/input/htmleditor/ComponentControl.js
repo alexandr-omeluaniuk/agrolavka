@@ -9,7 +9,7 @@ import FormDialog from '../../../window/FormDialog';
 import Form from '../../Form';
 
 function ComponentControl(props) {
-    const { open, handleClose, component } = props;
+    const { open, handleClose, component, saveHTML } = props;
     if (!component) {
         return null;
     }
@@ -18,6 +18,7 @@ function ComponentControl(props) {
                 <Form formConfig={component.formConfig} onSubmitAction={(data) => {
                     component.onSubmit(data);
                     handleClose();
+                    saveHTML();
                 }} record={component.settings} disabled={false}></Form>
             </FormDialog>
     );

@@ -62,6 +62,10 @@ function HTMLEditor (props) {
         onChangeFieldValue(name, shadow.querySelector('main').innerHTML);
         setSelectionRanges(null);
     };
+    const onBlur = () => {
+        getSelection();
+        saveHTML();
+    };
     const openContextMenu = (event, menuType) => {
         setContextMenuState({
             mouseX: event.clientX - 2,
@@ -98,6 +102,12 @@ function HTMLEditor (props) {
                     openContextMenu(event, TYPE_CONTEXTMENU);
                 }
             }, true);
+//            main.addEventListener('paste', function (event) {
+//                console.log(event);
+//                let clipboardData = event.clipboardData || window.clipboardData;
+//                let pastedData = clipboardData.getData('Text');
+//                main.innerHTML = pastedData;
+//            }, true);
             setShadowRoot(main);
             setShadow(shadow);
             console.log('HTML editor init completed...');
@@ -117,7 +127,7 @@ function HTMLEditor (props) {
                         ranges={selectionRanges} saveHTML={saveHTML} openComponentControl={openComponentControl}/>
                 <div className={classes.row}>
                     <FormControl variant={'outlined'} fullWidth required={required}>
-                        <div ref={shadowRef} onBlur={saveHTML}>
+                        <div ref={shadowRef} onBlur={onBlur}>
 
                         </div>
                         {helperText ? <FormHelperText variant={'outlined'} error={true}>{helperText}</FormHelperText> : null}
@@ -125,8 +135,8 @@ function HTMLEditor (props) {
                 </div>
                 <HTMLEditorContextMenu state={contextMenuState} setState={setContextMenuState} saveHTML={saveHTML}
                         ranges={selectionRanges}/>
-                <ComponentControl open={controlOpen} handleClose={() => {setControlOpen(false)}}
-                        component={controlComponent}/>
+                <ComponentControl open={controlOpen} handleClose={() => {setControlOpen(false);}}
+                        component={controlComponent} saveHTML={saveHTML}/>
             </Paper>
     );
 }

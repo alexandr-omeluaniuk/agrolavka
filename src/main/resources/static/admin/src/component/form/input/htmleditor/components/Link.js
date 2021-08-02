@@ -36,4 +36,4 @@ export class Link extends AbstractComponent {
             nodeInTheMiddle.setAttribute("href", data.url);
         });
     };
-}
+};
