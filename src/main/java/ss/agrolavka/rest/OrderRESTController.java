@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import ss.agrolavka.constants.OrderStatus;
 import ss.entity.agrolavka.Order;
 import ss.entity.agrolavka.OrderPosition;
 import ss.entity.agrolavka.Product;
@@ -54,11 +55,24 @@ public class OrderRESTController {
      * @throws Exception error.
      */
     @RequestMapping(value = "/positions/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Set<OrderPosition> getPositions(@PathVariable("id") Long id)throws Exception {
+    public Set<OrderPosition> getPositions(@PathVariable("id") Long id) throws Exception {
         Order order = coreDAO.findById(id, Order.class);
         for (OrderPosition pos : order.getPositions()) {
             pos.setProduct(coreDAO.findById(pos.getProductId(), Product.class));
         }
         return order.getPositions();
+    }
+    /**
+     * Change order status.
+     * @param id order ID.
+     * @param status status
+     * @throws Exception error.
+     */
+    @RequestMapping(value = "/status/{id}/{status}", method = RequestMethod.PUT,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public void changeOrderStatus(@PathVariable("id") Long id, @PathVariable("status") String status) throws Exception {
+        Order order = coreDAO.findById(id, Order.class);
+        order.setStatus(OrderStatus.valueOf(status));
+        coreDAO.update(order);
     }
 }

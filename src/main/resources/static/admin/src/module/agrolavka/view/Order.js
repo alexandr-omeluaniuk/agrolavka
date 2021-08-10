@@ -19,6 +19,10 @@ import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
+import FormControl from '@material-ui/core/FormControl';
+import InputLabel from '@material-ui/core/InputLabel';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
 import moment from 'moment';
 import { WAITING_FOR_APPROVAL, APPROVED, DELIVERY, CLOSED } from '../constants/OrderStatus';
 import DataTable from '../../../component/datatable/DataTable';
@@ -58,6 +62,14 @@ const useStyles = makeStyles(theme => ({
     },
     chip: {
         margin: theme.spacing(1)
+    },
+    formControl: {
+        width: '100%',
+        marginRight: theme.spacing(2)
+    },
+    actions: {
+        display: 'flex',
+        alignItems: 'center'
     }
 }));
 
@@ -73,6 +85,12 @@ function Order(props) {
         let num = order.id.toString();
         while (num.length < 5) num = "0" + num;
         return num;
+    };
+    const onStatusChanged = (status) => {
+        dataService.put('/agrolavka/protected/order/status/' + id + '/' + status).then(() => {
+            order.status = status;
+            setOrder(JSON.parse(JSON.stringify(order)));
+        });
     };
     // -------------------------------------------------------- HOOKS ---------------------------------------------------------------------
     useEffect(() => {
@@ -146,13 +164,16 @@ function Order(props) {
     };
     const actions = () => {
         return (
-                <NavLink to={'/admin/app/agrolavka/orders'}>
-                    <Tooltip title={t('m_agrolavka:order.close')}>
-                        <IconButton>
-                            <Icon color="primary">chevron_left</Icon>
-                        </IconButton>
-                    </Tooltip>
-                </NavLink>
+                <div className={classes.actions}>
+                    <NavLink to={'/admin/app/agrolavka/orders'}>
+                        <Tooltip title={t('m_agrolavka:order.close')}>
+                            <IconButton>
+                                <Icon color="primary">chevron_left</Icon>
+                            </IconButton>
+                        </Tooltip>
+                    </NavLink>
+                </div>
+                
         );
     };
     const chip = (label, value) => {
@@ -197,6 +218,22 @@ function Order(props) {
                         subheader={t('m_agrolavka:order.created') + ': '  + moment(order.created).locale('ru').format('DD MMMM yyyy HH:mm')}>
                 </CardHeader>
                 <CardContent>
+                    {order ? (
+                            <React.Fragment>
+                                <Divider className={classes.divider}/>
+                                <FormControl variant="outlined" className={classes.formControl}>
+                                    <InputLabel>{t('m_agrolavka:order.status')}</InputLabel>
+                                    <Select value={order.status} onChange={(e) => onStatusChanged(e.target.value)}
+                                            label={t('m_agrolavka:order.status')}>
+                                        <MenuItem value={'WAITING_FOR_APPROVAL'}>
+                                            {t('m_agrolavka:order.statusConst.WAITING_FOR_APPROVAL')}</MenuItem>
+                                        <MenuItem value={'APPROVED'}>{t('m_agrolavka:order.statusConst.APPROVED')}</MenuItem>
+                                        <MenuItem value={'DELIVERY'}>{t('m_agrolavka:order.statusConst.DELIVERY')}</MenuItem>
+                                        <MenuItem value={'CLOSED'}>{t('m_agrolavka:order.statusConst.CLOSED')}</MenuItem>
+                                    </Select>
+                              </FormControl>
+                            </React.Fragment>
+                    ) : null}
                     <Divider className={classes.divider}/>
                     <Typography variant={'h6'}>
                         Контактные данные

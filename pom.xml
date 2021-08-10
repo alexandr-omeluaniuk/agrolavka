@@ -91,7 +91,7 @@
                                 <include>**/sitemap.xml</include>
                                 <include>**/robots.txt</include>
                                 <include>**/robots.txt</include>
-                                <!--include>**/61C994A7C8EDD5A99CE8925C8F0002CF.txt</include-->
+                                <include>**/C14A470CBDF9832392A6DDEDCE098D87.txt</include>
                             </includes>
                         </resource>
                     </resources>
