@@ -47,19 +47,13 @@ class OrderDAOImpl implements OrderDAO {
         List<Predicate> predicates = createSearchCriteria(cb, c, request);
         criteria.select(c).where(predicates.toArray(new Predicate[0]));
         if (request.getOrder() != null && request.getOrderBy() != null) {
-            if ("created".equals(request.getOrderBy())) {
-                if ("asc".equals(request.getOrder())) {
-                    criteria.orderBy(cb.asc(c.get(Order_.created)));
-                } else {
-                    criteria.orderBy(cb.desc(c.get(Order_.created)));
-                }
+            if ("asc".equals(request.getOrder())) {
+                criteria.orderBy(cb.asc(c.get(request.getOrderBy())));
             } else {
-                if ("asc".equals(request.getOrder())) {
-                    criteria.orderBy(cb.asc(c.get(request.getOrderBy())));
-                } else {
-                    criteria.orderBy(cb.desc(c.get(request.getOrderBy())));
-                }
+                criteria.orderBy(cb.desc(c.get(request.getOrderBy())));
             }
+        } else {
+            criteria.orderBy(cb.desc(c.get(Order_.created)));
         }
         return em.createQuery(criteria)
                 .setFirstResult((request.getPage() - 1) * request.getPageSize())

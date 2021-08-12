@@ -82,7 +82,7 @@ function Orders() {
     
     const updateTable = () => {
         const apiUrl = new ApiURL(
-                '/platform/entity/ss.entity.agrolavka.Order',
+                '/agrolavka/protected/order',
                 null,
                 null,
                 '/agrolavka/protected/order'
