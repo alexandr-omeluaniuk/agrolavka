@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import ss.agrolavka.constants.OrderStatus;
+import ss.agrolavka.dao.OrderDAO;
 import ss.entity.agrolavka.Order;
 import ss.entity.agrolavka.OrderPosition;
 import ss.entity.agrolavka.Product;
@@ -28,6 +29,9 @@ public class OrderRESTController {
     /** Core DAO. */
     @Autowired
     private CoreDAO coreDAO;
+    /** Order DAO. */
+    @Autowired
+    private OrderDAO orderDAO;
     /**
      * Delete order.
      * @param id order ID.

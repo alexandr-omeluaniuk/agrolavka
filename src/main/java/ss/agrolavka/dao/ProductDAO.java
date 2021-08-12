@@ -22,7 +22,7 @@ public interface ProductDAO {
      * @return list of products.
      * @throws Exception error.
      */
-    List<Product> search(ProductsSearchRequest request) throws Exception ;
+    List<Product> search(ProductsSearchRequest request) throws Exception;
     /**
      * Count of products.
      * @param request search request.
