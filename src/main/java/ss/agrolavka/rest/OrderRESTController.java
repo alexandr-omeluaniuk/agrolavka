@@ -11,13 +11,16 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ss.agrolavka.constants.OrderStatus;
 import ss.agrolavka.dao.OrderDAO;
+import ss.agrolavka.wrapper.OrderSearchRequest;
 import ss.entity.agrolavka.Order;
 import ss.entity.agrolavka.OrderPosition;
 import ss.entity.agrolavka.Product;
 import ss.martin.platform.dao.CoreDAO;
+import ss.martin.platform.wrapper.EntitySearchResponse;
 
 /**
  * Order REST controller.
@@ -78,5 +81,37 @@ public class OrderRESTController {
         Order order = coreDAO.findById(id, Order.class);
         order.setStatus(OrderStatus.valueOf(status));
         coreDAO.update(order);
+    }
+    /**
+     * Search orders.
+     * @param page page number.
+     * @param pageSize page size.
+     * @param order order direction.
+     * @param orderBy order by field.
+     * @param status order status.
+     * @param text search text.
+     * @return search response.
+     * @throws Exception error.
+     */
+    @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public EntitySearchResponse search(
+            @RequestParam(value = "page", required = false) Integer page,
+            @RequestParam(value = "page_size", required = false) Integer pageSize,
+            @RequestParam(value = "order", required = false) String order,
+            @RequestParam(value = "order_by", required = false) String orderBy,
+            @RequestParam(value = "status", required = false) String status,
+            @RequestParam(value = "text", required = false) String text
+    ) throws Exception {
+        OrderSearchRequest searchRequest = new OrderSearchRequest();
+        searchRequest.setPage(page == null ? 1 : page);
+        searchRequest.setPageSize(pageSize == null ? Integer.MAX_VALUE : pageSize);
+        searchRequest.setOrder(order);
+        searchRequest.setOrderBy(orderBy);
+        searchRequest.setStatus(status);
+        searchRequest.setText(text);
+        EntitySearchResponse response = new EntitySearchResponse();
+        response.setData(orderDAO.search(searchRequest));
+        response.setTotal(orderDAO.count(searchRequest).intValue());
+        return response;
     }
 }
