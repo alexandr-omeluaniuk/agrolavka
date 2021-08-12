@@ -12,6 +12,8 @@ import { TYPES } from '../../../service/DataTypeService';
 import DataTable from '../../../component/datatable/DataTable';
 import Link from '@material-ui/core/Link';
 import Icon from '@material-ui/core/Icon';
+import Grid from '@material-ui/core/Grid';
+import TextField from '@material-ui/core/TextField';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import { requestFirebaseToken } from '../../../conf/firebase';
@@ -22,6 +24,8 @@ import Price from '../component/Price';
 import { ORDER_CREATED } from '../constants/NotificationTopics';
 import useAuth from '../../../hooks/useAuth';
 import useNotification from '../../../hooks/useNotification';
+import Dropdown from '../../../component/form/input/Dropdown';
+import { WAITING_FOR_APPROVAL, APPROVED, DELIVERY, CLOSED} from '../constants/OrderStatus';
 
 let dataService = new DataService();
 
@@ -41,7 +45,32 @@ function Orders() {
     const classes = useStyles();
     const [tableConfig, setTableConfig] = React.useState(null);
     const [notificationsOn, setNotificationsOn] = React.useState(null);
+    const [filterText, setFilterText] = React.useState('');
+    const [filterStatus, setFilterStatus] = React.useState('');
     // ------------------------------------------------------- METHODS --------------------------------------------------------------------
+    const ordersFilter = () => {
+        return (
+                <Grid container spacing={2}>
+                    <Grid item xs={12} md={9}>
+                        <TextField value={filterText} label={t('m_agrolavka:order.search_text')} variant="outlined" fullWidth onChange={(e) => {
+                            setFilterText(e.target.value);
+                        }}/>
+                    </Grid>
+                    <Grid item xs={12} md={3}>
+                        <Dropdown label={t('m_agrolavka:order.status')} value={filterStatus} name={'status'} fullWidth variant={'outlined'} options={[
+                            { label: t('m_agrolavka:order.nostatus'), value: '' },
+                            { label: t('m_agrolavka:order.statusConst.' + WAITING_FOR_APPROVAL), value: WAITING_FOR_APPROVAL },
+                            { label: t('m_agrolavka:order.statusConst.' + APPROVED), value: APPROVED },
+                            { label: t('m_agrolavka:order.statusConst.' + DELIVERY), value: DELIVERY },
+                            { label: t('m_agrolavka:order.statusConst.' + CLOSED), value: CLOSED }
+                        ]} onChange={(e) => {
+                            setFilterStatus(e.target.value);
+                        }}>
+                        </Dropdown>
+                    </Grid>
+                </Grid>
+        );
+    };
     const toolbarBefore = () => {
         return notificationsOn ? (
                 <Tooltip title={t('m_agrolavka:orders.disable_notifications')}>
@@ -87,6 +116,8 @@ function Orders() {
                 null,
                 '/agrolavka/protected/order'
         );
+        apiUrl.addGetExtraParam('status', filterStatus);
+        apiUrl.addGetExtraParam('text', filterText);
         const newTableConfig = new TableConfig(t('m_agrolavka:agrolavka.orders'), apiUrl, [
             new TableColumn('id', t('m_agrolavka:orders.order_number'), (row) => {
                 let num = row.id.toString();
@@ -118,7 +149,7 @@ function Orders() {
             }).width('170px').alignment(ALIGN_RIGHT)
         ], new FormConfig([
             new FormField('id', TYPES.ID).hide()
-        ])).setElevation(1).setToolbarActionsBefore(toolbarBefore());
+        ])).setElevation(1).setFilter(ordersFilter()).setToolbarActionsBefore(toolbarBefore());
         setTableConfig(newTableConfig);
     };
     // ------------------------------------------------------- HOOKS ----------------------------------------------------------------------
@@ -134,6 +165,10 @@ function Orders() {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [notificationsOn]);
+    useEffect(() => {
+        updateTable();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [filterStatus, filterText]);
     // ------------------------------------------------------- RENDERING ------------------------------------------------------------------
     if (tableConfig === null) {
         return null;

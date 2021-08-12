@@ -19,6 +19,7 @@ import javax.persistence.criteria.Root;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import ss.agrolavka.constants.OrderStatus;
 import ss.agrolavka.dao.OrderDAO;
 import ss.agrolavka.wrapper.OrderSearchRequest;
 import ss.entity.agrolavka.Address;
@@ -77,7 +78,17 @@ class OrderDAOImpl implements OrderDAO {
         List<Predicate> predicates = new ArrayList<>();
         Join<Order, Address> address = c.join(Order_.address, JoinType.LEFT);
         if (request.getText() != null && !request.getText().isBlank()) {
-            predicates.add(cb.like(cb.upper(address.get(Address_.city)), "%" + request.getText().toUpperCase() + "%"));
+            predicates.add(cb.or(
+                    cb.like(cb.upper(address.get(Address_.city)), "%" + request.getText().toUpperCase() + "%"),
+                    cb.like(cb.upper(address.get(Address_.street)), "%" + request.getText().toUpperCase() + "%"),
+                    cb.like(cb.upper(address.get(Address_.flat)), "%" + request.getText().toUpperCase() + "%"),
+                    cb.like(cb.upper(address.get(Address_.house)), "%" + request.getText().toUpperCase() + "%"),
+                    cb.like(cb.upper(address.get(Address_.postcode)), "%" + request.getText().toUpperCase() + "%"),
+                    cb.like(cb.upper(c.get(Order_.phone)), "%" + request.getText().toUpperCase() + "%")
+            ));
+        }
+        if (request.getStatus()!= null && !request.getStatus().isBlank()) {
+            predicates.add(cb.equal(c.get(Order_.status), OrderStatus.valueOf(request.getStatus())));
         }
         return predicates;
     }
