@@ -87,8 +87,14 @@ class OrderDAOImpl implements OrderDAO {
                     cb.like(cb.upper(c.get(Order_.phone)), "%" + request.getText().toUpperCase() + "%")
             ));
         }
-        if (request.getStatus()!= null && !request.getStatus().isBlank()) {
+        if (request.getStatus() != null && !request.getStatus().isBlank()) {
             predicates.add(cb.equal(c.get(Order_.status), OrderStatus.valueOf(request.getStatus())));
+        } else {
+            if (!request.isShowClosed()) {
+                predicates.add(cb.notEqual(c.get(Order_.status), OrderStatus.CLOSED));
+            } else {
+                predicates.add(cb.equal(c.get(Order_.status), OrderStatus.CLOSED));
+            }
         }
         return predicates;
     }

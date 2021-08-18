@@ -22,6 +22,8 @@ public class OrderSearchRequest {
     private String text;
     /** Status. */
     private String status;
+    /** Show closed orders. */
+    private boolean showClosed = false;
     /**
      * @return the page
      */
@@ -93,5 +95,17 @@ public class OrderSearchRequest {
      */
     public void setStatus(String status) {
         this.status = status;
+    }
+    /**
+     * @return the showClosed
+     */
+    public boolean isShowClosed() {
+        return showClosed;
+    }
+    /**
+     * @param showClosed the showClosed to set
+     */
+    public void setShowClosed(boolean showClosed) {
+        this.showClosed = showClosed;
     }
 }

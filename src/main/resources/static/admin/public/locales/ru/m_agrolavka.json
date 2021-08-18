@@ -62,6 +62,7 @@
         "close": "Закрыть",
         "total": "Общая сумма",
         "nostatus": "Не выбран",
-        "search_text": "Поиск..."
+        "search_text": "Поиск...",
+        "show_archive": "Архив"
     }
 }

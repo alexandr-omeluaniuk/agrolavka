@@ -90,6 +90,7 @@ public class OrderRESTController {
      * @param orderBy order by field.
      * @param status order status.
      * @param text search text.
+     * @param showClosed show closed orders.
      * @return search response.
      * @throws Exception error.
      */
@@ -100,7 +101,8 @@ public class OrderRESTController {
             @RequestParam(value = "order", required = false) String order,
             @RequestParam(value = "order_by", required = false) String orderBy,
             @RequestParam(value = "status", required = false) String status,
-            @RequestParam(value = "text", required = false) String text
+            @RequestParam(value = "text", required = false) String text,
+            @RequestParam(value = "show_closed", required = false) boolean showClosed
     ) throws Exception {
         OrderSearchRequest searchRequest = new OrderSearchRequest();
         searchRequest.setPage(page == null ? 1 : page);
@@ -109,6 +111,7 @@ public class OrderRESTController {
         searchRequest.setOrderBy(orderBy);
         searchRequest.setStatus(status);
         searchRequest.setText(text);
+        searchRequest.setShowClosed(showClosed);
         EntitySearchResponse response = new EntitySearchResponse();
         response.setData(orderDAO.search(searchRequest));
         response.setTotal(orderDAO.count(searchRequest).intValue());

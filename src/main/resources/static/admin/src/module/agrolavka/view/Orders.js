@@ -16,6 +16,8 @@ import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Switch from '@material-ui/core/Switch';
 import { requestFirebaseToken } from '../../../conf/firebase';
 import AppURLs from '../../../conf/app-urls';
 import { NavLink } from "react-router-dom";
@@ -47,11 +49,12 @@ function Orders() {
     const [notificationsOn, setNotificationsOn] = React.useState(null);
     const [filterText, setFilterText] = React.useState('');
     const [filterStatus, setFilterStatus] = React.useState('');
+    const [filterShowArchive, setFilterShowArchive] = React.useState(false);
     // ------------------------------------------------------- METHODS --------------------------------------------------------------------
     const ordersFilter = () => {
         return (
                 <Grid container spacing={2}>
-                    <Grid item xs={12} md={9}>
+                    <Grid item xs={12} md={6}>
                         <TextField value={filterText} label={t('m_agrolavka:order.search_text')} variant="outlined" fullWidth onChange={(e) => {
                             setFilterText(e.target.value);
                         }}/>
@@ -67,6 +70,13 @@ function Orders() {
                             setFilterStatus(e.target.value);
                         }}>
                         </Dropdown>
+                    </Grid>
+                    <Grid item xs={12} md={3}>
+                        <FormControlLabel control={(
+                            <Switch checked={filterShowArchive} onChange={(e) => {
+                                setFilterShowArchive(e.target.checked);
+                            }}/>
+                        )} label={t('m_agrolavka:order.show_archive')}/>
                     </Grid>
                 </Grid>
         );
@@ -118,6 +128,7 @@ function Orders() {
         );
         apiUrl.addGetExtraParam('status', filterStatus);
         apiUrl.addGetExtraParam('text', filterText);
+        apiUrl.addGetExtraParam('show_closed', filterShowArchive);
         const newTableConfig = new TableConfig(t('m_agrolavka:agrolavka.orders'), apiUrl, [
             new TableColumn('id', t('m_agrolavka:orders.order_number'), (row) => {
                 let num = row.id.toString();
@@ -168,7 +179,7 @@ function Orders() {
     useEffect(() => {
         updateTable();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [filterStatus, filterText]);
+    }, [filterStatus, filterText, filterShowArchive]);
     // ------------------------------------------------------- RENDERING ------------------------------------------------------------------
     if (tableConfig === null) {
         return null;

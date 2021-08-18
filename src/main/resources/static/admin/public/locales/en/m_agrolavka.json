@@ -62,6 +62,7 @@
         "close": "Close",
         "total": "Total",
         "nostatus": "None",
-        "search_text": "Search..."
+        "search_text": "Search...",
+        "show_archive": "Show archive"
     }
 }
