@@ -73,7 +73,7 @@ public class DataUpdater {
     /**
      * Import MySklad data.
      */
-    @Scheduled(cron = "0 0 0 * * *")
+    @Scheduled(cron = "0 0 3 * * *")
     public void importMySkladData() {
         try {
             LOG.info("====================================== MY SKLAD DATA UPDATE ===================================");
