@@ -45,7 +45,7 @@
                     <li class="nav-item">
                         <a class="nav-link" href="/delivery">Доставка</a>
                     </li>
-                    <li class="nav-item d-lg-none d-xl-block">
+                    <li class="nav-item d-lg-none d-xl-none d-xxl-block">
                         <a class="nav-link" href="/discount">Дисконтная программа</a>
                     </li>
                     <li class="nav-item">

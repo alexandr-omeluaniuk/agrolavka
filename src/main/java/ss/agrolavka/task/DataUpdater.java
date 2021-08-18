@@ -5,7 +5,9 @@
  */
 package ss.agrolavka.task;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -33,7 +35,9 @@ import ss.entity.agrolavka.Product;
 import ss.entity.agrolavka.ProductsGroup;
 import ss.entity.martin.EntityImage;
 import ss.martin.platform.dao.CoreDAO;
+import ss.martin.platform.service.EmailService;
 import ss.martin.platform.service.SecurityService;
+import ss.martin.platform.wrapper.EmailRequest;
 
 /**
  * Data updater.
@@ -61,6 +65,9 @@ public class DataUpdater {
     /** Agrolavka configuration. */
     @Autowired
     private AgrolavkaConfiguration configuration;
+    /** Email service. */
+    @Autowired
+    private EmailService emailService;
     
     @PostConstruct
     protected void init() {
@@ -87,6 +94,17 @@ public class DataUpdater {
             LOG.info("===============================================================================================");
         } catch (Exception e) {
             LOG.error("Import MySklad data - fail!", e);
+            EmailRequest email = new EmailRequest();
+            email.setSubject("Import MySklad data - fail!");
+            email.setMessage(new SimpleDateFormat("dd.mm.yyyy HH:mm").format(new Date()));
+            email.setRecipients(new EmailRequest.EmailContact[] {
+                new EmailRequest.EmailContact("Alex", "starshistrelok@gmail.com")
+            });
+            try {
+                emailService.sendEmail(email);
+            } catch (Exception ex) {
+                LOG.error("Can't send email", ex);
+            }
         }
     }
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
