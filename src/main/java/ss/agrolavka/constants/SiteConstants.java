@@ -18,4 +18,6 @@ public class SiteConstants {
     public static final String CART_SESSION_ATTRIBUTE = "CART";
     /** Firebase topic: Agrolavka orders. */
     public static final String FIREBASE_TOPIC_ORDER_CREATED = "agrolavka_order_created";
+    /** Image thumb size. */
+    public static final int IMAGE_THUMB_SIZE = 306;
 }

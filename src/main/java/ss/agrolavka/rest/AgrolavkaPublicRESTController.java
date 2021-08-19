@@ -15,7 +15,6 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Propagation;
@@ -35,8 +34,6 @@ import ss.entity.agrolavka.Address;
 import ss.entity.agrolavka.Order;
 import ss.entity.agrolavka.OrderPosition;
 import ss.entity.agrolavka.Product;
-import ss.entity.agrolavka.ProductsGroup;
-import ss.entity.martin.EntityImage;
 import ss.martin.platform.dao.CoreDAO;
 import ss.martin.platform.service.FirebaseClient;
 import ss.martin.platform.wrapper.PushNotification;
@@ -57,40 +54,40 @@ class AgrolavkaPublicRESTController {
     /** Firebase client. */
     @Autowired
     private FirebaseClient firebaseClient;
-    /**
-     * Get product image.
-     * @param id product ID.
-     * @throws Exception error.
-     */
-    @RequestMapping(value = "/product-image/{id}", method = RequestMethod.GET)
-    @Transactional(propagation = Propagation.SUPPORTS)
-    public void getProductImage(@PathVariable("id") Long id, HttpServletResponse response) throws Exception {
-        Product product = coreDAO.findById(id, Product.class);
-        if (product != null && !product.getImages().isEmpty()) {
-            EntityImage image = product.getImages().get(0);
-            response.setContentType(image.getType());
-            response.getOutputStream().write(image.getData());
-        } else {
-            response.sendRedirect("/assets/img/no-image.png");
-        }
-    }
-    /**
-     * Get products group image.
-     * @param id products group ID.
-     * @throws Exception error.
-     */
-    @RequestMapping(value = "/products-group-image/{id}", method = RequestMethod.GET)
-    @Transactional(propagation = Propagation.SUPPORTS)
-    public void getProductsGroupImage(@PathVariable("id") Long id, HttpServletResponse response) throws Exception {
-        ProductsGroup productsGroup = coreDAO.findById(id, ProductsGroup.class);
-        if (productsGroup != null && !productsGroup.getImages().isEmpty()) {
-            EntityImage image = productsGroup.getImages().get(0);
-            response.setContentType(image.getType());
-            response.getOutputStream().write(image.getData());
-        } else {
-            response.sendRedirect("/assets/img/no-image.png");
-        }
-    }
+//    /**
+//     * Get product image.
+//     * @param id product ID.
+//     * @throws Exception error.
+//     */
+//    @RequestMapping(value = "/product-image/{id}", method = RequestMethod.GET)
+//    @Transactional(propagation = Propagation.SUPPORTS)
+//    public void getProductImage(@PathVariable("id") Long id, HttpServletResponse response) throws Exception {
+//        Product product = coreDAO.findById(id, Product.class);
+//        if (product != null && !product.getImages().isEmpty()) {
+//            EntityImage image = product.getImages().get(0);
+//            response.setContentType(image.getType());
+//            response.getOutputStream().write(image.getData());
+//        } else {
+//            response.sendRedirect("/assets/img/no-image.png");
+//        }
+//    }
+//    /**
+//     * Get products group image.
+//     * @param id products group ID.
+//     * @throws Exception error.
+//     */
+//    @RequestMapping(value = "/products-group-image/{id}", method = RequestMethod.GET)
+//    @Transactional(propagation = Propagation.SUPPORTS)
+//    public void getProductsGroupImage(@PathVariable("id") Long id, HttpServletResponse response) throws Exception {
+//        ProductsGroup productsGroup = coreDAO.findById(id, ProductsGroup.class);
+//        if (productsGroup != null && !productsGroup.getImages().isEmpty()) {
+//            EntityImage image = productsGroup.getImages().get(0);
+//            response.setContentType(image.getType());
+//            response.getOutputStream().write(image.getData());
+//        } else {
+//            response.sendRedirect("/assets/img/no-image.png");
+//        }
+//    }
     /**
      * Search product.
      * @param searchText search text.

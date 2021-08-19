@@ -22,11 +22,11 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import ss.agrolavka.AgrolavkaConfiguration;
+import ss.agrolavka.constants.SiteConstants;
 import ss.agrolavka.dao.ExternalEntityDAO;
 import ss.agrolavka.dao.ProductDAO;
 import ss.agrolavka.service.MySkladIntegrationService;
 import ss.agrolavka.util.AppCache;
-import ss.agrolavka.util.ImageUtil;
 import ss.agrolavka.util.UrlProducer;
 import ss.agrolavka.wrapper.ProductsSearchRequest;
 import ss.entity.agrolavka.Discount;
@@ -36,6 +36,7 @@ import ss.entity.agrolavka.ProductsGroup;
 import ss.entity.martin.EntityImage;
 import ss.martin.platform.dao.CoreDAO;
 import ss.martin.platform.service.EmailService;
+import ss.martin.platform.service.ImageService;
 import ss.martin.platform.service.SecurityService;
 import ss.martin.platform.wrapper.EmailRequest;
 
@@ -68,6 +69,9 @@ public class DataUpdater {
     /** Email service. */
     @Autowired
     private EmailService emailService;
+    /** Image service. */
+    @Autowired
+    private ImageService imageService;
     
     @PostConstruct
     protected void init() {
@@ -267,11 +271,13 @@ public class DataUpdater {
     @Transactional(propagation = Propagation.SUPPORTS, rollbackFor = Exception.class)
     private void importImages() throws Exception {
         List<Product> products = coreDAO.getAll(Product.class);
-        ImageUtil imageUtil = new ImageUtil();
         for (Product product : products) {
             try {
                 List<EntityImage> images = mySkladIntegrationService.getProductImages(product.getExternalId());
-                imageUtil.toThumbnail(images);
+                for (EntityImage image : images) {
+                    image.setImageData(imageService.convertToThumbnail(
+                            image.getImageData(), SiteConstants.IMAGE_THUMB_SIZE));
+                }
                 product.setImages(images);
                 product.setHasImages(!product.getImages().isEmpty());
                 coreDAO.update(product);
