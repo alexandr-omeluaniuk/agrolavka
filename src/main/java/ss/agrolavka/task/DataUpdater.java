@@ -270,8 +270,12 @@ public class DataUpdater {
     }
     @Transactional(propagation = Propagation.SUPPORTS, rollbackFor = Exception.class)
     private void importImages() throws Exception {
+        LOG.info("start images import...");
+        LOG.info("");
         List<Product> products = coreDAO.getAll(Product.class);
+        int counter = 0;
         for (Product product : products) {
+            counter++;
             try {
                 List<EntityImage> images = mySkladIntegrationService.getProductImages(product.getExternalId());
                 for (EntityImage image : images) {
@@ -281,9 +285,16 @@ public class DataUpdater {
                 product.setImages(images);
                 product.setHasImages(!product.getImages().isEmpty());
                 coreDAO.update(product);
+                for (EntityImage image : product.getImages()) {
+                    imageService.saveImageToDisk(image);
+                }
             } catch (Exception e) {
                 LOG.warn("Can't synchronize product images: " + product, e);
             }
+            double progress = counter / products.size();
+            System.out.print("\033[2K");
+            LOG.info("progress: " + String.format("%.2f", progress));
         }
+        LOG.info("images import completed...");
     }
 }
