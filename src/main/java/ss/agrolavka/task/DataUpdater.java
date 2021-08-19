@@ -281,6 +281,7 @@ public class DataUpdater {
                 for (EntityImage image : images) {
                     byte[] thumb = imageService.convertToThumbnail(
                             image.getImageData(), SiteConstants.IMAGE_THUMB_SIZE);
+                    image.setImageData(thumb);
                     image.setFileNameOnDisk(imageService.saveImageToDisk(thumb));
                 }
                 product.setImages(images);
@@ -290,8 +291,7 @@ public class DataUpdater {
                 LOG.warn("Can't synchronize product images: " + product, e);
             }
             double progress = (double) counter / (double) products.size();
-            System.out.print("\033[2K");
-            LOG.info("progress: " + String.format("%.2f", progress));
+            //LOG.info("progress: " + String.format("%.2f", progress));
         }
         LOG.info("images import completed...");
     }
