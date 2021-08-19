@@ -43,7 +43,9 @@ class ProductEntityListener implements PlatformEntityListener<Product> {
     public void prePersist(Product entity) throws Exception {
         Product mySkladEntity = mySkladIntegrationService.createProduct(entity);
         for (EntityImage image : entity.getImages()) {
-            image.setImageData(imageService.convertToThumbnail(image.getImageData(), SiteConstants.IMAGE_THUMB_SIZE));
+            byte[] thumb = imageService.convertToThumbnail(image.getImageData(), SiteConstants.IMAGE_THUMB_SIZE);
+            image.setImageData(thumb);
+            image.setFileNameOnDisk(imageService.saveImageToDisk(thumb));
         }
         entity.setExternalId(mySkladEntity.getExternalId());
         entity.setHasImages(!entity.getImages().isEmpty());
@@ -55,7 +57,9 @@ class ProductEntityListener implements PlatformEntityListener<Product> {
         mySkladIntegrationService.updateProduct(entity);
         Product entityFromDB = coreDAO.findById(entity.getId(), Product.class);
         for (EntityImage image : entity.getImages()) {
-            image.setImageData(imageService.convertToThumbnail(image.getImageData(), SiteConstants.IMAGE_THUMB_SIZE));
+            byte[] thumb = imageService.convertToThumbnail(image.getImageData(), SiteConstants.IMAGE_THUMB_SIZE);
+            image.setImageData(thumb);
+            image.setFileNameOnDisk(imageService.saveImageToDisk(thumb));
         }
         entityFromDB.setImages(entity.getImages());
         entityFromDB.setHasImages(!entity.getImages().isEmpty());

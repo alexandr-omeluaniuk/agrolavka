@@ -44,7 +44,9 @@ class ProductsGroupEntityListener implements PlatformEntityListener<ProductsGrou
     @Override
     public void prePersist(ProductsGroup entity) throws Exception {
         for (EntityImage image : entity.getImages()) {
-            image.setImageData(imageService.convertToThumbnail(image.getImageData(), SiteConstants.IMAGE_THUMB_SIZE));
+            byte[] thumb = imageService.convertToThumbnail(image.getImageData(), SiteConstants.IMAGE_THUMB_SIZE);
+            image.setImageData(thumb);
+            image.setFileNameOnDisk(imageService.saveImageToDisk(thumb));
         }
         entity.setHasImages(!entity.getImages().isEmpty());
         entity.setUrl(UrlProducer.transliterate(entity.getName()));
@@ -60,7 +62,9 @@ class ProductsGroupEntityListener implements PlatformEntityListener<ProductsGrou
     public void preUpdate(ProductsGroup entity) throws Exception {
         ProductsGroup entityFromDB = coreDAO.findById(entity.getId(), ProductsGroup.class);
         for (EntityImage image : entity.getImages()) {
-            image.setImageData(imageService.convertToThumbnail(image.getImageData(), SiteConstants.IMAGE_THUMB_SIZE));
+            byte[] thumb = imageService.convertToThumbnail(image.getImageData(), SiteConstants.IMAGE_THUMB_SIZE);
+            image.setImageData(thumb);
+            image.setFileNameOnDisk(imageService.saveImageToDisk(thumb));
         }
         entityFromDB.setImages(entity.getImages());
         entityFromDB.setHasImages(!entity.getImages().isEmpty());

@@ -279,19 +279,17 @@ public class DataUpdater {
             try {
                 List<EntityImage> images = mySkladIntegrationService.getProductImages(product.getExternalId());
                 for (EntityImage image : images) {
-                    image.setImageData(imageService.convertToThumbnail(
-                            image.getImageData(), SiteConstants.IMAGE_THUMB_SIZE));
+                    byte[] thumb = imageService.convertToThumbnail(
+                            image.getImageData(), SiteConstants.IMAGE_THUMB_SIZE);
+                    image.setFileNameOnDisk(imageService.saveImageToDisk(thumb));
                 }
                 product.setImages(images);
                 product.setHasImages(!product.getImages().isEmpty());
                 coreDAO.update(product);
-                for (EntityImage image : product.getImages()) {
-                    imageService.saveImageToDisk(image);
-                }
             } catch (Exception e) {
                 LOG.warn("Can't synchronize product images: " + product, e);
             }
-            double progress = counter / products.size();
+            double progress = (double) counter / (double) products.size();
             System.out.print("\033[2K");
             LOG.info("progress: " + String.format("%.2f", progress));
         }
