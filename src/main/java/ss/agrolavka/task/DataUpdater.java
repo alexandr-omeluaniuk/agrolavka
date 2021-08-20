@@ -282,7 +282,6 @@ public class DataUpdater {
                     byte[] thumb = imageService.convertToThumbnail(
                             image.getImageData(), SiteConstants.IMAGE_THUMB_SIZE);
                     image.setImageData(thumb);
-                    image.setFileNameOnDisk(imageService.saveImageToDisk(thumb));
                 }
                 product.setImages(images);
                 product.setHasImages(!product.getImages().isEmpty());
