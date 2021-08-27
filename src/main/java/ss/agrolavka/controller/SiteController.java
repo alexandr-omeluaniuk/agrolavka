@@ -58,7 +58,7 @@ public class SiteController {
         if (newProducts == null) {
             ProductsSearchRequest searchRequest = new ProductsSearchRequest();
             searchRequest.setPage(1);
-            searchRequest.setPageSize(4);
+            searchRequest.setPageSize(12);
             searchRequest.setOrder("desc");
             searchRequest.setOrderBy("created_date");
             AppCache.setNewProducts(productDAO.search(searchRequest));

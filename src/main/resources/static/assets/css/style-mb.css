@@ -35,23 +35,31 @@ and open the template in the editor.
     height: 100vh;
 }
 
-.carousel-item:nth-child(1) {
+#introCarousel .carousel-item:nth-child(1) {
     background-image: url('/assets/img/intro/catalog.jpg');
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center center;
 }
-.carousel-item:nth-child(2) {
+#introCarousel .carousel-item:nth-child(2) {
     background-image: url('/assets/img/intro/discount.jpg');
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center center;
 }
-.carousel-item:nth-child(3) {
+#introCarousel .carousel-item:nth-child(3) {
     background-image: url('/assets/img/intro/delivery.jpg');
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center center;
+}
+
+#agr-new-products-carousel .carousel-inner {
+    height: 100%;
+}
+
+#agr-new-products-carousel .carousel-item {
+    height: 100%;
 }
 
 @media (min-width: 992px) {

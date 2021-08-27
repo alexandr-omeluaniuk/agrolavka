@@ -4,6 +4,7 @@
     Author     : alex
 --%>
 
+<%@tag import="java.text.SimpleDateFormat"%>
 <%@tag import="java.util.Objects"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@tag description="put the tag description here" pageEncoding="UTF-8" 
@@ -13,6 +14,7 @@
 <%@attribute name="product" required="true" type="Product"%>
 <%@attribute name="cart" required="true" type="Order"%>
 <%@attribute name="noHover" required="false" type="Boolean"%>
+<%@attribute name="showCreatedDate" required="false" type="Boolean"%>
 
 <%-- any content can be specified here e.g.: --%>
 <a href="<%= UrlProducer.buildProductUrl(product) %>">
@@ -57,6 +59,16 @@
                         </button>
                     </c:if>
                 </div>
+                <c:if test="${showCreatedDate}">
+                    <div class="d-flex align-items-center mb-2">
+                        <small class="text-muted" style="font-size: .8rem; flex: 1; text-align: left;">Добавлено</small>
+                        <small class="text-muted" style="font-size: .8rem">
+                            <%
+                                out.print(new SimpleDateFormat("dd.MM.yyyy").format(product.getCreatedDate()));
+                            %>
+                        </small>
+                    </div>
+                </c:if>
                 <%
                     boolean inCart = false;
                     for (OrderPosition pos : cart.getPositions()) {
