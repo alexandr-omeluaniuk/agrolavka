@@ -17,7 +17,7 @@
           "@type": "Product",
           "name": "${structuredDataName}",
           "image": [
-            "https://agrolavka.by/api/agrolavka/public/product-image/${product.id}"
+            "${product.hasImages ? 'https://agrolavka.by/media/' + product.images.get(0).fileNameOnDisk : 'https://agrolavka.by/assets/img/no-image.png'}"
            ],
           "description": "${structuredDataDescription}",
           "offers": {

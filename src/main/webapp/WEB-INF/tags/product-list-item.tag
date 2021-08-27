@@ -14,7 +14,15 @@
 <a href="<%= UrlProducer.buildProductUrl(product)%>" class="list-group-item list-group-item-action">
     <div class="d-flex w-100 justify-content-between">
         <h6 class="mb-1">
-            <img src="/api/agrolavka/public/product-image/${product.id}" style="width: 40px; height: 40px; object-fit: contain;" class="me-2"></img>
+            <c:choose>
+                <c:when test="${product.hasImages}">
+                    <img src="/media/${product.images.get(0).fileNameOnDisk}" style="width: 40px; height: 40px; object-fit: contain;" class="me-2"></img>
+                </c:when>
+                <c:otherwise>
+                    <img src="/assets/img/no-image.png" style="width: 40px; height: 40px; object-fit: contain;" class="me-2"></img>
+                </c:otherwise>
+            </c:choose>
+            
             ${product.name}</h6>
         <small class="text-dark fw-bold text-right"><%= String.format("%.2f", product.getPrice())%> BYN</small>
     </div>

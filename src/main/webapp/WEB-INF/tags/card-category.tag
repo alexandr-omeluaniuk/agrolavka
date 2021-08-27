@@ -17,7 +17,7 @@
     <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
         <c:choose>
             <c:when test="${group.hasImages}">
-                <div class="card-img-top agr-card-image" style="background-image: url('/api/agrolavka/public/products-group-image/${group.id}')"></div>
+                <div class="card-img-top agr-card-image" style="background-image: url('/media/${group.images.get(0).fileNameOnDisk}')"></div>
             </c:when>
             <c:otherwise>
                 <div class="card-img-top agr-card-image" style="background-image: url('/assets/img/no-image.png')"></div>

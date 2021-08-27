@@ -14,9 +14,18 @@
     <div class="card-body">
         <div class="row">
 
-            <div class="col-md-2 col-lg-1 agr-cart-position-image d-none d-md-block" 
-                 style="background-image: url('/api/agrolavka/public/product-image/${position.product.id}" alt="${position.product.name}');">
-            </div>
+            <c:choose>
+                <c:when test="${position.product.hasImages}">
+                    <div class="col-md-2 col-lg-1 agr-cart-position-image d-none d-md-block" 
+                         style="background-image: url('/media/${position.product.images.get(0).fileNameOnDisk}')" alt="${position.product.name}">
+                    </div>
+                </c:when>
+                <c:otherwise>
+                    <div class="col-md-2 col-lg-1 agr-cart-position-image d-none d-md-block" 
+                         style="background-image: url('/assets/img/no-image.png')" alt="${position.product.name}'">
+                    </div>
+                </c:otherwise>
+            </c:choose>
 
             <div class="col-sm-12 col-md-6 col-lg-8 ps-3 pe-3">
                 <a href="<%= UrlProducer.buildProductUrl(position.getProduct())%>" class="agr-link"><h6>${position.product.name}</h6></a>

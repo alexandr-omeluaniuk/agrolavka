@@ -54,40 +54,6 @@ class AgrolavkaPublicRESTController {
     /** Firebase client. */
     @Autowired
     private FirebaseClient firebaseClient;
-//    /**
-//     * Get product image.
-//     * @param id product ID.
-//     * @throws Exception error.
-//     */
-//    @RequestMapping(value = "/product-image/{id}", method = RequestMethod.GET)
-//    @Transactional(propagation = Propagation.SUPPORTS)
-//    public void getProductImage(@PathVariable("id") Long id, HttpServletResponse response) throws Exception {
-//        Product product = coreDAO.findById(id, Product.class);
-//        if (product != null && !product.getImages().isEmpty()) {
-//            EntityImage image = product.getImages().get(0);
-//            response.setContentType(image.getType());
-//            response.getOutputStream().write(image.getData());
-//        } else {
-//            response.sendRedirect("/assets/img/no-image.png");
-//        }
-//    }
-//    /**
-//     * Get products group image.
-//     * @param id products group ID.
-//     * @throws Exception error.
-//     */
-//    @RequestMapping(value = "/products-group-image/{id}", method = RequestMethod.GET)
-//    @Transactional(propagation = Propagation.SUPPORTS)
-//    public void getProductsGroupImage(@PathVariable("id") Long id, HttpServletResponse response) throws Exception {
-//        ProductsGroup productsGroup = coreDAO.findById(id, ProductsGroup.class);
-//        if (productsGroup != null && !productsGroup.getImages().isEmpty()) {
-//            EntityImage image = productsGroup.getImages().get(0);
-//            response.setContentType(image.getType());
-//            response.getOutputStream().write(image.getData());
-//        } else {
-//            response.sendRedirect("/assets/img/no-image.png");
-//        }
-//    }
     /**
      * Search product.
      * @param searchText search text.
