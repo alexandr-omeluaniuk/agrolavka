@@ -47,7 +47,6 @@ class ProductsGroupEntityListener implements PlatformEntityListener<ProductsGrou
             byte[] thumb = imageService.convertToThumbnail(image.getImageData(), SiteConstants.IMAGE_THUMB_SIZE);
             image.setImageData(thumb);
         }
-        entity.setHasImages(!entity.getImages().isEmpty());
         entity.setUrl(UrlProducer.transliterate(entity.getName()));
         entity.setExternalId(mySkladIntegrationService.createProductsGroup(entity));
     }
@@ -65,7 +64,6 @@ class ProductsGroupEntityListener implements PlatformEntityListener<ProductsGrou
             image.setImageData(thumb);
         }
         entityFromDB.setImages(entity.getImages());
-        entityFromDB.setHasImages(!entity.getImages().isEmpty());
         coreDAO.update(entityFromDB);
         entity.setUrl(UrlProducer.transliterate(entity.getName()));
         mySkladIntegrationService.updateProductsGroup(entity);

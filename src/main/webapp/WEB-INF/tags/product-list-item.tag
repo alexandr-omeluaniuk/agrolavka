@@ -15,7 +15,7 @@
     <div class="d-flex w-100 justify-content-between">
         <h6 class="mb-1">
             <c:choose>
-                <c:when test="${product.hasImages}">
+                <c:when test="${product.images.size() > 0}">
                     <img src="/media/${product.images.get(0).fileNameOnDisk}" style="width: 40px; height: 40px; object-fit: contain;" class="me-2"></img>
                 </c:when>
                 <c:otherwise>

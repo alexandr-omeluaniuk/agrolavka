@@ -110,9 +110,6 @@ public class Product extends ExternalEntity implements Serializable {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "discount_id")
     private Discount discount;
-    /** Has images. */
-    @Column(name = "has_images")
-    private Boolean hasImages;
     // ============================================== SET & GET =======================================================
     /**
      * @return the name
@@ -282,18 +279,6 @@ public class Product extends ExternalEntity implements Serializable {
      */
     public void setDiscount(Discount discount) {
         this.discount = discount;
-    }
-    /**
-     * @return the hasImages
-     */
-    public Boolean getHasImages() {
-        return hasImages == null ? false : hasImages ;
-    }
-    /**
-     * @param hasImages the hasImages to set
-     */
-    public void setHasImages(Boolean hasImages) {
-        this.hasImages = hasImages;
     }
     /**
      * @return the htmlDescription

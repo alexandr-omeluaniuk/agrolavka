@@ -47,7 +47,6 @@ class ProductEntityListener implements PlatformEntityListener<Product> {
             image.setImageData(thumb);
         }
         entity.setExternalId(mySkladEntity.getExternalId());
-        entity.setHasImages(!entity.getImages().isEmpty());
         mySkladIntegrationService.attachImagesToProduct(entity);
     }
     
@@ -60,7 +59,6 @@ class ProductEntityListener implements PlatformEntityListener<Product> {
             image.setImageData(thumb);
         }
         entityFromDB.setImages(entity.getImages());
-        entityFromDB.setHasImages(!entity.getImages().isEmpty());
         coreDAO.update(entityFromDB);
         mySkladIntegrationService.removeProductImages(entity);
         mySkladIntegrationService.attachImagesToProduct(entity);

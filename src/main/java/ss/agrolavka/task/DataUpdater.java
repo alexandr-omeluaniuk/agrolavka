@@ -301,10 +301,8 @@ public class DataUpdater {
                     image.setImageData(thumb);
                 }
                 product.setImages(images);
-                product.setHasImages(!product.getImages().isEmpty());
                 coreDAO.update(product);
             } catch (Exception e) {
-                product.setHasImages(false);
                 LOG.warn("Can't synchronize product images: " + product, e);
                 coreDAO.update(product);
             }

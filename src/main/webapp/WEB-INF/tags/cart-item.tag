@@ -15,7 +15,7 @@
         <div class="row">
 
             <c:choose>
-                <c:when test="${position.product.hasImages}">
+                <c:when test="${position.product.images.size() > 0}">
                     <div class="col-md-2 col-lg-1 agr-cart-position-image d-none d-md-block" 
                          style="background-image: url('/media/${position.product.images.get(0).fileNameOnDisk}')" alt="${position.product.name}">
                     </div>
