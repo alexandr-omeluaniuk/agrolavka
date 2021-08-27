@@ -110,7 +110,7 @@ function Order(props) {
                     ), [
                 new TableColumn('avatar', '', (row) => {
                     return <Avatar className={classes.image} alt={row.name}
-                            src={`/api/agrolavka/public/product-image/${row.productId}?timestamp=${new Date().getTime()}`} />;
+                            src={row.hasImages ? `/media/${row.images[0].fileNameOnDisk}?timestamp=${new Date().getTime()}` : `/assets/img/no-image.png`} />;
                 }).setSortable().width('40px'),
                 new TableColumn('name', t('m_agrolavka:order.position.name'), (row) => {
                     return row.product.name;

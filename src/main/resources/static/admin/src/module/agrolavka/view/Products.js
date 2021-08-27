@@ -100,7 +100,7 @@ function Products() {
                 t('m_agrolavka:agrolavka.products') + (selectedProductGroup ? ` (${selectedProductGroup.name})` : ''), apiUrl, [
             new TableColumn('avatar', '', (row) => {
                 return <Avatar className={classes.image} alt={row.name}
-                        src={`/api/agrolavka/public/product-image/${row.id}?timestamp=${new Date().getTime()}`} />;
+                        src={row.hasImages ? `/media/${row.images[0].fileNameOnDisk}?timestamp=${new Date().getTime()}` : `/assets/img/no-image.png`} />;
             }).setSortable().width('40px'),
             new TableColumn('name', t('m_agrolavka:products.product_name')).setSortable(),
             new TableColumn('group', t('m_agrolavka:products.product_groups'), (row) => {

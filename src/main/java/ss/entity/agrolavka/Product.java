@@ -5,8 +5,6 @@
  */
 package ss.entity.agrolavka;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -24,6 +22,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import ss.entity.martin.EntityImage;
@@ -57,11 +57,12 @@ public class Product extends ExternalEntity implements Serializable {
     @Column(name = "article", length = 255)
     private String article;
     /** Images. */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    //@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinTable(name = "product_images",
             joinColumns = @JoinColumn(name = "product_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "image_id", referencedColumnName = "id"))
+    @Fetch(FetchMode.SUBSELECT)
     private List<EntityImage> images;
     /** Product group. */
     @ManyToOne(fetch = FetchType.EAGER)
@@ -152,7 +153,7 @@ public class Product extends ExternalEntity implements Serializable {
     /**
      * @return the images
      */
-    @JsonIgnore
+    //@JsonIgnore
     public List<EntityImage> getImages() {
         return images;
     }

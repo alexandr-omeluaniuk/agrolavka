@@ -46,7 +46,6 @@ class ProductsGroupEntityListener implements PlatformEntityListener<ProductsGrou
         for (EntityImage image : entity.getImages()) {
             byte[] thumb = imageService.convertToThumbnail(image.getImageData(), SiteConstants.IMAGE_THUMB_SIZE);
             image.setImageData(thumb);
-            image.setFileNameOnDisk(imageService.saveImageToDisk(thumb));
         }
         entity.setHasImages(!entity.getImages().isEmpty());
         entity.setUrl(UrlProducer.transliterate(entity.getName()));
@@ -64,7 +63,6 @@ class ProductsGroupEntityListener implements PlatformEntityListener<ProductsGrou
         for (EntityImage image : entity.getImages()) {
             byte[] thumb = imageService.convertToThumbnail(image.getImageData(), SiteConstants.IMAGE_THUMB_SIZE);
             image.setImageData(thumb);
-            image.setFileNameOnDisk(imageService.saveImageToDisk(thumb));
         }
         entityFromDB.setImages(entity.getImages());
         entityFromDB.setHasImages(!entity.getImages().isEmpty());

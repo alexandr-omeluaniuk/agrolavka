@@ -6,7 +6,6 @@
 package ss.entity.agrolavka;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -19,6 +18,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.json.JSONObject;
 import ss.entity.martin.EntityImage;
 import ss.martin.platform.anno.security.FormField;
@@ -72,11 +73,12 @@ public class ProductsGroup extends ExternalEntity implements Serializable, Compa
     @Column(name = "seo_description", length = 255)
     private String seoDescription;
     /** Images. */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    //@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinTable(name = "product_group_images",
             joinColumns = @JoinColumn(name = "product_group_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "image_id", referencedColumnName = "id"))
+    @Fetch(FetchMode.SUBSELECT)
     private List<EntityImage> images;
     /** Has images. */
     @Column(name = "has_images")

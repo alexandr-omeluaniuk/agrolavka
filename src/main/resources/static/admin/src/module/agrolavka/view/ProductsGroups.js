@@ -101,7 +101,8 @@ function ProductsGroups(props) {
             if (productGroup.topCategory) {
                 node.setIcon(<Icon className={classes.favoriteIcon}>favorite</Icon>);
             }
-            node.setAvatar(<Avatar className={classes.small} src={'/api/agrolavka/public/products-group-image/' + productGroup.id} />);
+            node.setAvatar(<Avatar className={classes.small} src={
+                productGroup.hasImages ? `/media/${productGroup.images[0].fileNameOnDisk}` : `/assets/img/no-image.png`} />);
             const children = [];
             const childProductGroups = map[productGroup.externalId];
             if (childProductGroups) {
@@ -165,6 +166,7 @@ function ProductsGroups(props) {
     const onEditGroup = () => {
         setFormTitle(t('m_agrolavka:products_groups.edit_group'));
         dataService.get('/agrolavka/protected/product-group/images/' + selectedProductGroup.id).then(images => {
+            console.log(images);
             images.forEach(i => {
                 i.data = `data:${i.type};base64,${i.data}`;
             });

@@ -18,6 +18,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.resource.PathResourceResolver;
 import ss.martin.platform.spring.config.PlatformConfiguration;
 
 /**
@@ -38,7 +39,13 @@ public class SpringConfig implements WebMvcConfigurer {
         registry.addResourceHandler(configuration.getNavigation().getRegistrationVerification())
                 .addResourceLocations("classpath:/static/admin/build/");
         registry.addResourceHandler("/assets/**").addResourceLocations("classpath:/static/assets/")
-                .setCacheControl(CacheControl.maxAge(365, TimeUnit.DAYS));;
+                .setCacheControl(CacheControl.maxAge(365, TimeUnit.DAYS));
+        if (configuration.getImagesStoragePath() != null) {
+            System.out.println("file:" + configuration.getImagesStoragePath());
+            registry.addResourceHandler("/media/**")
+                    .addResourceLocations("file:" + configuration.getImagesStoragePath() + "/").resourceChain(true)
+                    .addResolver(new PathResourceResolver());
+        }
         registry.addResourceHandler("/favicon.svg").addResourceLocations("classpath:/static/favicon.svg");
         registry.addResourceHandler("/sitemap.xml").addResourceLocations("classpath:/static/sitemap.xml");
         registry.addResourceHandler("/robots.txt").addResourceLocations("classpath:/static/robots.txt");
