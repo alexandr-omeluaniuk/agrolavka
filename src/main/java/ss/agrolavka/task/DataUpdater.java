@@ -290,7 +290,7 @@ public class DataUpdater {
                 LOG.warn("Can't synchronize product images: " + product, e);
             }
             double progress = (double) counter / (double) products.size();
-            //LOG.info("progress: " + String.format("%.2f", progress));
+            LOG.info("progress: " + String.format("%.2f", progress));
         }
         LOG.info("images import completed...");
     }

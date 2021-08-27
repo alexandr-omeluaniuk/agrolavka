@@ -41,7 +41,6 @@ public class SpringConfig implements WebMvcConfigurer {
         registry.addResourceHandler("/assets/**").addResourceLocations("classpath:/static/assets/")
                 .setCacheControl(CacheControl.maxAge(365, TimeUnit.DAYS));
         if (configuration.getImagesStoragePath() != null) {
-            System.out.println("file:" + configuration.getImagesStoragePath());
             registry.addResourceHandler("/media/**")
                     .addResourceLocations("file:" + configuration.getImagesStoragePath() + "/").resourceChain(true)
                     .addResolver(new PathResourceResolver());
