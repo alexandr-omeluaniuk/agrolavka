@@ -38,6 +38,7 @@ import ss.martin.platform.dao.CoreDAO;
 import ss.martin.platform.service.EmailService;
 import ss.martin.platform.service.ImageService;
 import ss.martin.platform.service.SecurityService;
+import ss.martin.platform.spring.config.PlatformConfiguration;
 import ss.martin.platform.wrapper.EmailRequest;
 
 /**
@@ -66,6 +67,9 @@ public class DataUpdater {
     /** Agrolavka configuration. */
     @Autowired
     private AgrolavkaConfiguration configuration;
+    /** Platform configuration. */
+    @Autowired
+    private PlatformConfiguration platformConfiguration;
     /** Email service. */
     @Autowired
     private EmailService emailService;
@@ -90,6 +94,15 @@ public class DataUpdater {
             LOG.info("====================================== MY SKLAD DATA UPDATE ===================================");
             securityService.backgroundAuthentication(
                     configuration.getBackgroundUserUsername(), configuration.getBackgroundUserPassword());
+//            List<ProductsGroup> dbGroups = coreDAO.getAll(ProductsGroup.class);
+//            for (ProductsGroup pg : dbGroups) {
+//                LOG.info("IMAGES: " + pg.getImages().size());
+//                for (EntityImage img : pg.getImages()) {
+//                    LOG.info(img.getImageData() == null ? "NULL" : (img.getImageData().length + ""));
+//                    img.setFileNameOnDisk(imageService.saveImageToDisk(img.getImageData()));
+//                    coreDAO.update(img);
+//                }
+//            }
             importPriceTypes();
             importProductGroups();
             importProducts();
@@ -104,6 +117,9 @@ public class DataUpdater {
             email.setRecipients(new EmailRequest.EmailContact[] {
                 new EmailRequest.EmailContact("Alex", "starshistrelok@gmail.com")
             });
+            email.setSender(
+                new EmailRequest.EmailContact(platformConfiguration.getSystemEmailContactName(),
+                        platformConfiguration.getSystemEmailContactEmail()));
             try {
                 emailService.sendEmail(email);
             } catch (Exception ex) {
@@ -270,6 +286,7 @@ public class DataUpdater {
     }
     @Transactional(propagation = Propagation.SUPPORTS, rollbackFor = Exception.class)
     private void importImages() throws Exception {
+        long start = System.currentTimeMillis();
         LOG.info("start images import...");
         LOG.info("");
         List<Product> products = coreDAO.getAll(Product.class);
@@ -287,11 +304,14 @@ public class DataUpdater {
                 product.setHasImages(!product.getImages().isEmpty());
                 coreDAO.update(product);
             } catch (Exception e) {
+                product.setHasImages(false);
                 LOG.warn("Can't synchronize product images: " + product, e);
+                coreDAO.update(product);
             }
-            double progress = (double) counter / (double) products.size();
+            double progress = ((double) counter / (double) products.size()) * 100;
             LOG.info("progress: " + String.format("%.2f", progress));
         }
         LOG.info("images import completed...");
+        LOG.info("elapsed time [" + (System.currentTimeMillis() - start) + "] ms");
     }
 }

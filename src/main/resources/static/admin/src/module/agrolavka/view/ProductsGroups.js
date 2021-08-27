@@ -102,7 +102,8 @@ function ProductsGroups(props) {
                 node.setIcon(<Icon className={classes.favoriteIcon}>favorite</Icon>);
             }
             node.setAvatar(<Avatar className={classes.small} src={
-                productGroup.hasImages ? `/media/${productGroup.images[0].fileNameOnDisk}` : `/assets/img/no-image.png`} />);
+                productGroup.images && productGroup.images.length > 0 ? `/media/${productGroup.images[0].fileNameOnDisk}`
+                    : `/assets/img/no-image.png`} />);
             const children = [];
             const childProductGroups = map[productGroup.externalId];
             if (childProductGroups) {

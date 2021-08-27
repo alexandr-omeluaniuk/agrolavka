@@ -189,6 +189,9 @@ public class SiteController {
                     + ". Способ применения, инструкция, описание " + product.getName());
             model.addAttribute("id", product.getId());
             model.addAttribute("product", product);
+            model.addAttribute("structuredImage", product.getImages().isEmpty() 
+                    ? "https://agrolavka.by/assets/img/no-image.png"
+                    : "https://agrolavka.by/media/" + product.getImages().get(0).getFileNameOnDisk());
             model.addAttribute("structuredDataName", product.getName().replace("\\", "").replace("\"", "'"));
             model.addAttribute("structuredDataDescription", product.getDescription() == null
                     ? "" : product.getDescription().replace("\\", "").replace("\"", "'"));

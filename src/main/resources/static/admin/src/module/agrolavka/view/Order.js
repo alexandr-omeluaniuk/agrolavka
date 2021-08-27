@@ -110,7 +110,8 @@ function Order(props) {
                     ), [
                 new TableColumn('avatar', '', (row) => {
                     return <Avatar className={classes.image} alt={row.name}
-                            src={row.hasImages ? `/media/${row.images[0].fileNameOnDisk}?timestamp=${new Date().getTime()}` : `/assets/img/no-image.png`} />;
+                            src={row.images && row.images.length > 0 ? `/media/${row.images[0].fileNameOnDisk}?timestamp=${new Date().getTime()}`
+                                : `/assets/img/no-image.png`} />;
                 }).setSortable().width('40px'),
                 new TableColumn('name', t('m_agrolavka:order.position.name'), (row) => {
                     return row.product.name;
