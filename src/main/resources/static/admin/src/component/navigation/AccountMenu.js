@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { useTranslation } from 'react-i18next';
 import Card from '@material-ui/core/Card';
@@ -15,8 +15,6 @@ import { NavLink } from "react-router-dom";
 import AppURLs from '../../conf/app-urls';
 import { common } from '../../module/common/module';
 import useAuth from '../../hooks/useAuth';
-import useNotification from '../../hooks/useNotification';
-import { ToolbarContext } from '../../context/ToolbarContext';
 
 const useStyles = makeStyles(theme => ({
     navLink: {
@@ -42,8 +40,6 @@ function AccountMenu (props) {
     const { logout } = useAuth();
     const { onItemClick, permissions } = props;
     const [applications, setApplications] = React.useState(null);
-    const { showNotification } = useNotification();
-    const { title, icon } = useContext(ToolbarContext);
     // ===================================================== HOOKS ========================================================================
     useEffect(() => {
         if (!applications) {
@@ -81,23 +77,6 @@ function AccountMenu (props) {
                             );
                         })}
                         <Divider variant="middle" className={classes.divider}/>
-                        <ListItem button onClick={(e) => {
-                            if ('serviceWorker' in navigator) {
-                                navigator.serviceWorker.ready.then((registration) => {
-                                    registration.update();
-                                    showNotification(t('component.account_menu.update_success'), '', 'success');
-                                }).catch((error) => {
-                                    console.error(error.message);
-                                });
-                                onItemClick(title, icon);
-                            }
-                            //serviceWorkerRegistration.update();
-                        }}>
-                            <ListItemIcon>
-                                <Icon>update</Icon>
-                            </ListItemIcon>
-                            <ListItemText primary={t('component.account_menu.update')}/>
-                        </ListItem>
                         <ListItem button onClick={(e) => {
                             logout();
                         }}>
