@@ -5,20 +5,14 @@
  */
 package ss.agrolavka.rest;
 
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ss.agrolavka.dao.ProductDAO;
 import ss.agrolavka.wrapper.ProductsSearchRequest;
-import ss.entity.agrolavka.Product;
-import ss.entity.martin.EntityImage;
 import ss.martin.platform.dao.CoreDAO;
 import ss.martin.platform.wrapper.EntitySearchResponse;
 
@@ -69,18 +63,5 @@ public class ProductRESTController {
         response.setData(productDAO.search(request));
         response.setTotal(productDAO.count(request).intValue());
         return response;
-    }
-    /**
-     * Get product images.
-     * @param id product ID.
-     * @return list of product images.
-     * @throws Exception error. 
-     */
-    @Transactional(propagation = Propagation.SUPPORTS)
-    @RequestMapping(value = "/images/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<EntityImage> getProductImages(@PathVariable("id") Long id) throws Exception {
-        List<EntityImage> images = coreDAO.findById(id, Product.class).getImages();
-        int size = images.size();
-        return images;
     }
 }

@@ -295,8 +295,8 @@ public class DataUpdater {
                 List<EntityImage> images = mySkladIntegrationService.getProductImages(product.getExternalId());
                 for (EntityImage image : images) {
                     byte[] thumb = imageService.convertToThumbnail(
-                            image.getImageData(), SiteConstants.IMAGE_THUMB_SIZE);
-                    image.setImageData(thumb);
+                            image.getData(), SiteConstants.IMAGE_THUMB_SIZE);
+                    image.setData(thumb);
                 }
                 product.setImages(images);
                 coreDAO.update(product);

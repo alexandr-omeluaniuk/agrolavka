@@ -33,6 +33,7 @@ import ss.entity.agrolavka.Product;
 import ss.entity.agrolavka.ProductsGroup;
 import ss.entity.martin.EntityImage;
 import ss.martin.platform.dao.CoreDAO;
+import ss.martin.platform.service.ImageService;
 
 /**
  * My Sklad integration service implementation.
@@ -48,6 +49,9 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
     /** Configuration. */
     @Autowired
     private AgrolavkaConfiguration configuration;
+    /** Image service. */
+    @Autowired
+    private ImageService imageService;
     /** Core DAO. */
     @Autowired
     private CoreDAO coreDAO;
@@ -116,7 +120,7 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
                 EntityImage productImage = new EntityImage();
                 productImage.setName(item.getString("filename"));
                 productImage.setSize(item.getLong("size"));
-                productImage.setImageData(requestData(href, "GET", headers));
+                productImage.setData(requestData(href, "GET", headers));
                 if (item.has("miniature")) {
                     JSONObject miniature = item.getJSONObject("miniature");
                     productImage.setType(miniature.getString("mediaType"));
@@ -173,7 +177,7 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
         for (EntityImage image : product.getImages()) {
             JSONObject payload = new JSONObject();
             payload.put("filename", image.getName());
-            payload.put("content", new String(Base64.getEncoder().encode(image.getImageData()), "UTF-8"));
+            payload.put("content", new String(Base64.getEncoder().encode(imageService.readImageFromDisk(image)), "UTF-8"));
             request("/entity/product/" + product.getExternalId() + "/images", "POST", payload.toString());
         }
     }

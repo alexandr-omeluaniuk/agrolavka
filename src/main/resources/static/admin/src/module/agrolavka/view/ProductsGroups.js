@@ -102,7 +102,8 @@ function ProductsGroups(props) {
                 node.setIcon(<Icon className={classes.favoriteIcon}>favorite</Icon>);
             }
             node.setAvatar(<Avatar className={classes.small} src={
-                productGroup.images && productGroup.images.length > 0 ? `/media/${productGroup.images[0].fileNameOnDisk}`
+                productGroup.images && productGroup.images.length > 0 && productGroup.images[0].fileNameOnDisk
+                    ? `/media/${productGroup.images[0].fileNameOnDisk}?timestamp=${new Date().getTime()}`
                     : `/assets/img/no-image.png`} />);
             const children = [];
             const childProductGroups = map[productGroup.externalId];
@@ -166,15 +167,11 @@ function ProductsGroups(props) {
     };
     const onEditGroup = () => {
         setFormTitle(t('m_agrolavka:products_groups.edit_group'));
-        dataService.get('/agrolavka/protected/product-group/images/' + selectedProductGroup.id).then(images => {
-            console.log(images);
-            images.forEach(i => {
-                i.data = `data:${i.type};base64,${i.data}`;
-            });
-            selectedProductGroup.images = images;
-            setRecord(selectedProductGroup);
-            setFormOpen(true);
+        selectedProductGroup.images.forEach(i => {
+            i.data = `/media/` + i.fileNameOnDisk;
         });
+        setRecord(selectedProductGroup);
+        setFormOpen(true);
     };
     const onDeleteGroup = () => {
         setConfirmDialogOpen(true);

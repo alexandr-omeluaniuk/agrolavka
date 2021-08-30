@@ -144,13 +144,10 @@ function Products() {
             ])
         ]).setBeforeOnEditRecord((record) => {
             return new Promise((resolve) => {
-                dataService.get('/agrolavka/protected/product/images/' + record.id).then(images => {
-                    images.forEach(i => {
-                        i.data = `data:${i.type};base64,${i.data}`;
-                    });
-                    record.images = images;
-                    resolve(record);
+                record.images.forEach(i => {
+                    i.data = `/media/` + i.fileNameOnDisk;
                 });
+                resolve(record);
             });
         })).setElevation(1).setFilter(productsFilter()).setToolbarActionsBefore(toolbarBefore());
         setTableConfig(newTableConfig);
