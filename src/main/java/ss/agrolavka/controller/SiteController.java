@@ -133,26 +133,29 @@ public class SiteController {
      * @param page page number.
      * @param view catalog view type.
      * @param sort sort by.
+     * @param available products os available.
      * @return JSP page.
      * @throws Exception error.
      */
     @RequestMapping("/catalog/**")
-    public Object productsGroup(Model model, HttpServletRequest request,
+    public Object catalog(Model model, HttpServletRequest request,
             @RequestParam(name = "page", required = false) Integer page,
             @RequestParam(name = "view", required = false) String view,
-            @RequestParam(name = "sort", required = false) String sort) throws Exception {
+            @RequestParam(name = "sort", required = false) String sort,
+            @RequestParam(name = "available", required = false) boolean available) throws Exception {
         insertCartDataToModel(request, model);
         String url = request.getRequestURI();
         model.addAttribute("page", page == null ? 1 : page);
         model.addAttribute("view", view == null ? "TILES" : view);
         model.addAttribute("sort", sort == null ? "alphabet" : sort);
+        model.addAttribute("available", available);
         model.addAttribute("groups", AppCache.getProductsGroups());
         if ("/catalog".equals(url)) {
             model.addAttribute("canonical", url  + (page != null ? "?page=" + page : ""));
             model.addAttribute("title", "Широкий выбор товаров для сада и огорода");
             model.addAttribute("metaDescription", "Каталог товаров для сада и огорода");
             model.addAttribute("categories", AppCache.getRootProductGroups());
-            insertSearchResultToPage(model, null, page, sort == null ? "alphabet" : sort);
+            insertSearchResultToPage(model, null, page, sort == null ? "alphabet" : sort, available);
             return "catalog";
         }
         DataModel entity = resolveUrlToProductGroup(url);
@@ -168,7 +171,7 @@ public class SiteController {
             List<ProductsGroup> path = UrlProducer.getBreadcrumbPath(group);
             path.remove(group);
             model.addAttribute("breadcrumbPath", path);
-            insertSearchResultToPage(model, group.getId(), page, sort);
+            insertSearchResultToPage(model, group.getId(), page, sort, available);
             String description = group.getDescription();
             String meta = "Купить " + group.getName();
             if (group.getSeoDescription() != null && !group.getSeoDescription().isBlank()) {
@@ -228,11 +231,12 @@ public class SiteController {
      * @param page page number.
      * @param sort sort by.
      */
-    private void insertSearchResultToPage(Model model, Long groupId, Integer page, String sort) {
+    private void insertSearchResultToPage(Model model, Long groupId, Integer page, String sort, boolean available) {
         try {
             ProductsSearchRequest searchRequest = new ProductsSearchRequest();
             searchRequest.setGroupId(groupId);
             searchRequest.setPage(page == null ? 1 : page);
+            searchRequest.setAvailable(available);
             int pageSize = SiteConstants.SEARCH_RESULT_TILES_COLUMNS * SiteConstants.SEARCH_RESULT_TILES_ROWS;
             searchRequest.setPageSize(pageSize);
             if ("alphabet".equals(sort)) {

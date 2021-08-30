@@ -21,7 +21,8 @@
 <div class="row products-search-result">
     <div class="col-sm-12">
         <% String url = ss.agrolavka.util.UrlProducer.buildProductGroupUrl(group); %>
-        <t:products-search-result-pagination pages="${pages}" page="${page}" view="${view}" sort="${sort}" url="<%= url %>">
+        <t:products-search-result-pagination pages="${pages}" page="${page}" view="${view}" sort="${sort}" url="<%= url %>"
+                                             available="${available}">
             
         </t:products-search-result-pagination>
         <c:choose>
@@ -49,7 +50,8 @@
                 </c:choose>
             </c:otherwise>
         </c:choose>
-        <t:products-search-result-pagination pages="${pages}" page="${page}" view="${view}" sort="${sort}" url="<%= url %>">
+        <t:products-search-result-pagination pages="${pages}" page="${page}" view="${view}" sort="${sort}" url="<%= url %>"
+                                             available="${available}">
             
         </t:products-search-result-pagination>
     </div>

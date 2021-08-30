@@ -11,6 +11,10 @@ and open the template in the editor.
     --agr-background-color: #000000ba;
     --agr-bs-purple-dark: #563296;
 }
+.dropdown-toggle:after  {
+    float: right;
+    margin-top: 8px;
+}
 .agr-navbar .nav-link {
     color: #fff !important;
 }

@@ -24,6 +24,8 @@ public class ProductsSearchRequest {
     private String orderBy;
     /** Code. */
     private String code;
+    /** If true, search products with quantity > 0, otherwise all. */
+    private boolean available = false;
     // =================================================== SET & GET ==================================================
     /**
      * @return the groupId
@@ -108,5 +110,17 @@ public class ProductsSearchRequest {
      */
     public void setCode(String code) {
         this.code = code;
+    }
+    /**
+     * @return the available
+     */
+    public boolean isAvailable() {
+        return available;
+    }
+    /**
+     * @param available the available to set
+     */
+    public void setAvailable(boolean available) {
+        this.available = available;
     }
 }
