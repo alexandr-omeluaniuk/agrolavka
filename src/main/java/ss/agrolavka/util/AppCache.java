@@ -32,6 +32,7 @@ public class AppCache {
      * @param groups product groups.
      */
     public static synchronized void flushCache(List<ProductsGroup> groups) {
+        newProducts = null;
         GROUPS_PARENT_MAP.clear();
         ALL_GROUPS.clear();
         ALL_GROUPS.addAll(groups);

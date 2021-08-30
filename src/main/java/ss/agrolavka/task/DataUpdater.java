@@ -90,19 +90,12 @@ public class DataUpdater {
      */
     @Scheduled(cron = "0 0 3 * * *")
     public void importMySkladData() {
+        int attempts = 0;
         try {
+            attempts++;
             LOG.info("====================================== MY SKLAD DATA UPDATE ===================================");
             securityService.backgroundAuthentication(
                     configuration.getBackgroundUserUsername(), configuration.getBackgroundUserPassword());
-//            List<ProductsGroup> dbGroups = coreDAO.getAll(ProductsGroup.class);
-//            for (ProductsGroup pg : dbGroups) {
-//                LOG.info("IMAGES: " + pg.getImages().size());
-//                for (EntityImage img : pg.getImages()) {
-//                    LOG.info(img.getImageData() == null ? "NULL" : (img.getImageData().length + ""));
-//                    img.setFileNameOnDisk(imageService.saveImageToDisk(img.getImageData()));
-//                    coreDAO.update(img);
-//                }
-//            }
             importPriceTypes();
             importProductGroups();
             importProducts();
@@ -110,20 +103,25 @@ public class DataUpdater {
             AppCache.flushCache(coreDAO.getAll(ProductsGroup.class));
             LOG.info("===============================================================================================");
         } catch (Exception e) {
-            LOG.error("Import MySklad data - fail!", e);
-            EmailRequest email = new EmailRequest();
-            email.setSubject("Import MySklad data - fail!");
-            email.setMessage(new SimpleDateFormat("dd.mm.yyyy HH:mm").format(new Date()));
-            email.setRecipients(new EmailRequest.EmailContact[] {
-                new EmailRequest.EmailContact("Alex", "starshistrelok@gmail.com")
-            });
-            email.setSender(
-                new EmailRequest.EmailContact(platformConfiguration.getSystemEmailContactName(),
-                        platformConfiguration.getSystemEmailContactEmail()));
-            try {
-                emailService.sendEmail(email);
-            } catch (Exception ex) {
-                LOG.error("Can't send email", ex);
+            if (attempts < 5) { // 5 attempts
+                LOG.warn("Import MySklad data - fail! Attempt: " + attempts);
+                importMySkladData();
+            } else {
+                LOG.error("Import MySklad data - fail!", e);
+                EmailRequest email = new EmailRequest();
+                email.setSubject("Import MySklad data - fail!");
+                email.setMessage(new SimpleDateFormat("dd.mm.yyyy HH:mm").format(new Date()));
+                email.setRecipients(new EmailRequest.EmailContact[] {
+                    new EmailRequest.EmailContact("Alex", "starshistrelok@gmail.com")
+                });
+                email.setSender(
+                    new EmailRequest.EmailContact(platformConfiguration.getSystemEmailContactName(),
+                            platformConfiguration.getSystemEmailContactEmail()));
+                try {
+                    emailService.sendEmail(email);
+                } catch (Exception ex) {
+                    LOG.error("Can't send email", ex);
+                }
             }
         }
     }
