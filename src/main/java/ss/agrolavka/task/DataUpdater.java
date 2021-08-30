@@ -88,7 +88,7 @@ public class DataUpdater {
     /**
      * Import MySklad data.
      */
-    @Scheduled(cron = "0 0 3 * * *")
+    @Scheduled(cron = "0 30 2 * * *")
     public void importMySkladData() {
         int attempts = 0;
         try {
@@ -110,7 +110,7 @@ public class DataUpdater {
                 LOG.error("Import MySklad data - fail!", e);
                 EmailRequest email = new EmailRequest();
                 email.setSubject("Import MySklad data - fail!");
-                email.setMessage(new SimpleDateFormat("dd.mm.yyyy HH:mm").format(new Date()));
+                email.setMessage(new SimpleDateFormat("dd.MM.yyyy HH:mm").format(new Date()));
                 email.setRecipients(new EmailRequest.EmailContact[] {
                     new EmailRequest.EmailContact("Alex", "starshistrelok@gmail.com")
                 });
