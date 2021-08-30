@@ -167,6 +167,12 @@ and open the template in the editor.
     background-repeat: no-repeat;
     background-size: cover;
 }
+.agr-quantity {
+    line-height: 0.7rem;
+}
+.agr-product-search-link {
+    border-bottom: 1px solid #ececec;
+}
 #footer {
     background-color: var(--agr-background-color) !important;
 }

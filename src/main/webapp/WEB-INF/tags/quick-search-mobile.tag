@@ -88,7 +88,9 @@
                                             + '</small>'
                                             + '</div>'
                                             + '<div class="d-flex justify-content-between">'
-                                            + '<small class="text-muted">' + (product.group ? product.group.name : '') + '</small>'
+                                                + '<small class="text-muted">' + (product.group ? product.group.name : '') + '</small>'
+                                                + '<span class="agr-quantity badge ' + (product.quantity ? 'bg-success' : 'bg-danger') + '">' 
+                                                        + (product.quantity ? 'в наличии' : 'под заказ') + '</span>'
                                             + '</div>'
                                             + '</a>'
                                             + '</li>';
