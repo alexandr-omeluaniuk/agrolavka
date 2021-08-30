@@ -18,7 +18,7 @@
 
 <%-- any content can be specified here e.g.: --%>
 <a href="<%= UrlProducer.buildProductUrl(product) %>">
-    <div class="card shadow-1-strong mb-4 ${noHover ? '' : 'hover-shadow'}">
+    <div class="card shadow-1-strong mb-4 ${noHover ? '' : 'hover-shadow'} ${product.quantity > 0 ? '' : 'agr-product-not-available'}">
         <div class="ribbon ribbon-top-left">
             <span class="${product.quantity > 0 ? 'bg-success' : 'bg-danger'}">
                 <small>${product.quantity > 0 ? 'в наличии' : 'под заказ'}</small>
