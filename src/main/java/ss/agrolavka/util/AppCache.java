@@ -124,4 +124,16 @@ public class AppCache {
             return group.getParentId() == null;
         }).collect(Collectors.toList());
     }
+    
+    public static int countGroupProducts(ProductsGroup group) {
+        int total = 0;
+        // TODO: calculate
+        return total;
+    }
+    
+    public static int countAvailableGroupProducts(ProductsGroup group) {
+        int total = 0;
+        // TODO: calculate
+        return total;
+    }
 }

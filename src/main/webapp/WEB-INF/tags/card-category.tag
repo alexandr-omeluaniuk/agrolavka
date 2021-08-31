@@ -7,7 +7,7 @@
 <%@tag import="java.util.Objects"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@tag description="put the tag description here" pageEncoding="UTF-8" 
-       import="ss.entity.agrolavka.*,ss.agrolavka.util.UrlProducer"%>
+       import="ss.entity.agrolavka.*,ss.agrolavka.util.UrlProducer,ss.agrolavka.util.AppCache"%>
 
 <%-- The list of normal or fragment attributes can be specified here: --%>
 <%@attribute name="group" required="true" type="ProductsGroup"%>
@@ -26,8 +26,16 @@
         <a href="<%= UrlProducer.buildProductGroupUrl(group)%>">
             <div class="mask" style="background-color: rgba(0, 0, 0, 0.05)"></div>
         </a>
-        <div class="card-body" style="min-height: 100px;">
-            <h5 class="card-title">${group.name}</h5>
+        <div class="card-body">
+            <h6 class="card-title">${group.name}</h6>
+            <div class="d-flex align-items-center justify-content-between mt-2 d-none">
+                <small class="text-muted">Всего наименований</small>
+                <small><%= AppCache.countGroupProducts(group)%></small>
+            </div>
+            <div class="d-flex align-items-center justify-content-between mt-2 d-none">
+                <small class="text-muted">Наименований в наличии</small>
+                <small><%= AppCache.countAvailableGroupProducts(group)%></small>
+            </div>
         </div>
     </div>
 </div>
