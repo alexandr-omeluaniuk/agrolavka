@@ -17,7 +17,9 @@
         "product_code": "Code",
         "synchronize": "Synchronize MySklad data",
         "product_seo_title": "SEO and site page title",
-        "product_seo_description": "SEO meta description content"
+        "product_seo_description": "SEO meta description content",
+        "quantity": "Quantity",
+        "available": "Available"
     },
     "products_groups": {
         "new_group": "Create new product group",

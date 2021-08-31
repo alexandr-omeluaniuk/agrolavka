@@ -17,7 +17,9 @@
         "product_code": "Код товара",
         "synchronize": "Синхонизировать данные c программой Мой Склад",
         "product_seo_title": "Название страницы товара на сайте (SEO)",
-        "product_seo_description": "Описание страницы товара на сайте (SEO)"
+        "product_seo_description": "Описание страницы товара на сайте (SEO)",
+        "quantity": "Кол-во",
+        "available": "В наличии"
     },
     "products_groups": {
         "new_group": "Создать новую группу товаров",

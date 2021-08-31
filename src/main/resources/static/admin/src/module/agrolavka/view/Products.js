@@ -5,6 +5,7 @@
  */
 
 import React, { useEffect } from 'react';
+import clsx from 'clsx';
 import { useTranslation } from 'react-i18next';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
@@ -12,6 +13,8 @@ import Icon from '@material-ui/core/Icon';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import TextField from '@material-ui/core/TextField';
+import Switch from '@material-ui/core/Switch';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Avatar from '@material-ui/core/Avatar';
 import DataService from '../../../service/DataService';
 import { TableConfig, TableColumn, FormConfig, FormField, Validator, ALIGN_RIGHT, ApiURL } from '../../../util/model/TableConfig';
@@ -33,6 +36,22 @@ const useStyles = makeStyles(theme => ({
     },
     image: {
         borderRadius: 0
+    },
+    quantityAvailable: {
+        color: theme.palette.success.main
+    },
+    quantityNotAvailable: {
+        color: theme.palette.error.main
+    },
+    quantityZero: {
+        color: theme.palette.warning.main
+    },
+    productGroup: {
+        color: theme.palette.text.hint
+    },
+    filterAvailable: {
+        display: 'flex',
+        alignItems: 'center'
     }
 }));
 
@@ -43,19 +62,27 @@ function Products() {
     const [tableConfig, setTableConfig] = React.useState(null);
     const [filterProductName, setFilterProductName] = React.useState(null);
     const [filterCode, setFilterCode] = React.useState(null);
+    const [filterAvailable, setFilterAvailable] = React.useState(false);
     // ------------------------------------------------------- METHODS --------------------------------------------------------------------
     const productsFilter = () => {
         return (
                 <Grid container spacing={2}>
-                    <Grid item xs={12} md={9}>
+                    <Grid item xs={12} md={6}>
                         <TextField label={t('m_agrolavka:products.product_name')} variant="outlined" fullWidth onChange={(e) => {
                             setFilterProductName(e.target.value);
                         }}/>
                     </Grid>
-                    <Grid item xs={12} md={3}>
+                    <Grid item xs={6} md={3}>
                         <TextField label={t('m_agrolavka:products.product_code')} variant="outlined" fullWidth onChange={(e) => {
                             setFilterCode(e.target.value);
                         }}/>
+                    </Grid>
+                    <Grid item xs={6} md={3} className={classes.filterAvailable}>
+                        <FormControlLabel label={t('m_agrolavka:products.available')} control={(
+                            <Switch checked={filterAvailable} onChange={(e) => {
+                                setFilterAvailable(e.target.checked);
+                            }}/>
+                        )}/>
                     </Grid>
                 </Grid>
         );
@@ -96,6 +123,7 @@ function Products() {
         }
         apiUrl.addGetExtraParam('search_text', filterProductName ? filterProductName : '');
         apiUrl.addGetExtraParam('code', filterCode ? filterCode : '');
+        apiUrl.addGetExtraParam('available', filterAvailable);
         const newTableConfig = new TableConfig(
                 t('m_agrolavka:agrolavka.products') + (selectedProductGroup ? ` (${selectedProductGroup.name})` : ''), apiUrl, [
             new TableColumn('avatar', '', (row) => {
@@ -103,17 +131,29 @@ function Products() {
                         src={row.images && row.images.length > 0 ? `/media/${row.images[0].fileNameOnDisk}?timestamp=${new Date().getTime()}`
                         : `/assets/img/no-image.png`} />;
             }).setSortable().width('40px'),
-            new TableColumn('name', t('m_agrolavka:products.product_name')).setSortable(),
-            new TableColumn('group', t('m_agrolavka:products.product_groups'), (row) => {
-                return row.group ? row.group.name : '';
-            }).width('200px'),
+            new TableColumn('name', t('m_agrolavka:products.product_name'), (row) => {
+                return (
+                        <React.Fragment>
+                            <span>{row.name}</span><br/>
+                            <small className={classes.productGroup}>{row.group ? row.group.name : ''}</small>
+                        </React.Fragment>
+                );
+            }).setSortable(),
             new TableColumn('code', t('m_agrolavka:products.product_code')).setSortable().width('160px').alignment(ALIGN_RIGHT),
             new TableColumn('buyPrice', t('m_agrolavka:products.product_buy_price'), (row) => {
                 return <Price price={row.buyPrice}/>;
             }).setSortable().width('100px').alignment(ALIGN_RIGHT),
             new TableColumn('price', t('m_agrolavka:products.product_price'), (row) => {
                 return <Price price={row.price}/>;
-            }).setSortable().width('100px').alignment(ALIGN_RIGHT)
+            }).setSortable().width('80px').alignment(ALIGN_RIGHT),
+            new TableColumn('quantity', t('m_agrolavka:products.quantity'), (row) => {
+                    const quantityStyle = clsx({
+                        [classes.quantityZero]: row.quantity === 0,
+                        [classes.quantityNotAvailable]: row.quantity < 0,
+                        [classes.quantityAvailable]: row.quantity > 0
+                    });
+                return <span className={quantityStyle}>{row.quantity}</span>;
+            }).width('100px').alignment(ALIGN_RIGHT)
         ], new FormConfig([
             new FormField('id', TYPES.ID).hide(),
             new FormField('name', TYPES.TEXTFIELD, t('m_agrolavka:products.product_name')).setGrid({xs: 12, md: 9}).validation([
@@ -152,7 +192,7 @@ function Products() {
         })).setElevation(1).setFilter(productsFilter()).setToolbarActionsBefore(toolbarBefore());
         setTableConfig(newTableConfig);
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [selectedProductGroup, filterProductName, filterCode]);
+    }, [selectedProductGroup, filterProductName, filterCode, filterAvailable]);
     // ------------------------------------------------------- RENDERING ------------------------------------------------------------------
     if (tableConfig === null) {
         return null;
