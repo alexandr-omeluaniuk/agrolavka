@@ -14,20 +14,24 @@ var messaging = null;
 export function initFirebase() {
     // Your web app's Firebase configuration
     // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-    var firebaseConfig = {
-        apiKey: "AIzaSyCNsi-R0xLTquWz74PdTEUG9f2OtTHvbjk",
-        authDomain: "agrolavka-2aecb.firebaseapp.com",
-        projectId: "agrolavka-2aecb",
-        storageBucket: "agrolavka-2aecb.appspot.com",
-        messagingSenderId: "1028755576776",
-        appId: "1:1028755576776:web:605e8cfe6046bb58c412fd",
-        measurementId: "G-7TE8WCK7XF"
-    };
-    // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
-    firebase.analytics();
-    messaging = firebase.messaging();
-    console.log('Firebase init completed...');
+    try {
+        var firebaseConfig = {
+            apiKey: "AIzaSyCNsi-R0xLTquWz74PdTEUG9f2OtTHvbjk",
+            authDomain: "agrolavka-2aecb.firebaseapp.com",
+            projectId: "agrolavka-2aecb",
+            storageBucket: "agrolavka-2aecb.appspot.com",
+            messagingSenderId: "1028755576776",
+            appId: "1:1028755576776:web:605e8cfe6046bb58c412fd",
+            measurementId: "G-7TE8WCK7XF"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        firebase.analytics();
+        messaging = firebase.messaging();
+        console.log('Firebase init completed...');
+    } catch (e) {
+        console.error(e);
+    }
 }
 
 export function deleteFirebaseToken(successCallback) {

@@ -12,6 +12,7 @@ import { AuthProvider } from './context/AuthContext';
 import { NotificationProvider } from './context/NotificationContext';
 import './conf/i18next-config';
 import 'moment/locale/ru';
+import withClearCache from "./clear-cache";
 
 import App from './pages/App';
 import Welcome from './pages/Welcome';
@@ -77,7 +78,9 @@ function Application() {
     );
 }
 
-ReactDOM.render(<Application/>, document.getElementById('root'));
+const ClearCacheComponent = withClearCache(Application);
+
+ReactDOM.render(<ClearCacheComponent/>, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
