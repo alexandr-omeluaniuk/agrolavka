@@ -20,6 +20,16 @@ import ss.entity.martin.DataModel;
 @Table(name = "address")
 public class Address extends DataModel {
     // ================================================ FIELDS ========================================================
+    /** Region. */
+    @NotNull
+    @Size(max = 255)
+    @Column(name = "region", length = 255)
+    private String region;
+    /** City. */
+    @NotNull
+    @Size(max = 255)
+    @Column(name = "district", length = 255)
+    private String district;
     /** City. */
     @NotNull
     @Size(max = 255)
@@ -51,6 +61,10 @@ public class Address extends DataModel {
     @Size(max = 255)
     @Column(name = "lastname", length = 255)
     private String lastname;
+    /** Middle name. */
+    @Size(max = 255)
+    @Column(name = "middlename", length = 255)
+    private String middlename;
     // ================================================ SET & GET =====================================================
     /**
      * @return the city
@@ -135,6 +149,42 @@ public class Address extends DataModel {
      */
     public void setLastname(String lastname) {
         this.lastname = lastname;
+    }
+    /**
+     * @return the region
+     */
+    public String getRegion() {
+        return region;
+    }
+    /**
+     * @param region the region to set
+     */
+    public void setRegion(String region) {
+        this.region = region;
+    }
+    /**
+     * @return the district
+     */
+    public String getDistrict() {
+        return district;
+    }
+    /**
+     * @param district the district to set
+     */
+    public void setDistrict(String district) {
+        this.district = district;
+    }
+    /**
+     * @return the middlename
+     */
+    public String getMiddlename() {
+        return middlename;
+    }
+    /**
+     * @param middlename the middlename to set
+     */
+    public void setMiddlename(String middlename) {
+        this.middlename = middlename;
     }
     // ================================================================================================================
     @Override

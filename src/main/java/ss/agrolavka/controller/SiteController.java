@@ -156,7 +156,9 @@ public class SiteController {
             model.addAttribute("title", "Широкий выбор товаров для сада и огорода");
             model.addAttribute("metaDescription", "Каталог товаров для сада и огорода");
             List<ProductsGroup> categories = AppCache.getRootProductGroups();
-            Collections.sort(categories);
+            if (categories != null) {
+                Collections.sort(categories);
+            }
             model.addAttribute("categories", categories);
             insertSearchResultToPage(model, null, page, sort == null ? "alphabet" : sort, available);
             return "catalog";
@@ -186,7 +188,9 @@ public class SiteController {
             }
             model.addAttribute("metaDescription", meta);
             List<ProductsGroup> categories = AppCache.getCategoriesTree().get(group.getExternalId());
-            Collections.sort(categories);
+            if (categories != null) {
+                Collections.sort(categories);
+            }
             model.addAttribute("categories", categories);
             return "catalog";
         } else if (entity instanceof Product) {

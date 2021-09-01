@@ -187,26 +187,35 @@ function Order(props) {
     };
     const address = () => {
         const result = [];
-        if (order.address.firstname) {
-            result.push(<Chip label={chip('Имя: ', order.address.firstname)} key={1} color="secondary" className={classes.chip}/>);
-        }
         if (order.address.lastname) {
-            result.push(<Chip label={chip('Фамилия: ',order.address.lastname)} key={2} color="secondary" className={classes.chip}/>);
+            result.push(<Chip label={chip('Фамилия: ',order.address.lastname)} key={1} color="secondary" className={classes.chip}/>);
+        }
+        if (order.address.firstname) {
+            result.push(<Chip label={chip('Имя: ', order.address.firstname)} key={2} color="secondary" className={classes.chip}/>);
+        }
+        if (order.address.middlename) {
+            result.push(<Chip label={chip('Отчество: ',order.address.middlename)} key={3} color="secondary" className={classes.chip}/>);
+        }
+        if (order.address.region) {
+            result.push(<Chip label={chip('Область: ', order.address.region)} key={4} color="secondary" className={classes.chip}/>);
+        }
+        if (order.address.district) {
+            result.push(<Chip label={chip('Район: ', order.address.district)} key={5} color="secondary" className={classes.chip}/>);
         }
         if (order.address.city) {
-            result.push(<Chip label={chip('Населенный пункт: ', order.address.city)} key={3} color="secondary" className={classes.chip}/>);
+            result.push(<Chip label={chip('Населенный пункт: ', order.address.city)} key={6} color="secondary" className={classes.chip}/>);
         }
         if (order.address.street) {
-            result.push(<Chip label={chip('Улица: ', order.address.street)} key={4} color="secondary" className={classes.chip}/>);
+            result.push(<Chip label={chip('Улица: ', order.address.street)} key={7} color="secondary" className={classes.chip}/>);
         }
         if (order.address.house) {
-            result.push(<Chip label={chip('Дом: ', order.address.house)} key={5} color="secondary" className={classes.chip}/>);
+            result.push(<Chip label={chip('Дом: ', order.address.house)} key={8} color="secondary" className={classes.chip}/>);
         }
         if (order.address.flat) {
-            result.push(<Chip label={chip('Квартира: ', order.address.flat)} key={6} color="secondary" className={classes.chip}/>);
+            result.push(<Chip label={chip('Квартира: ', order.address.flat)} key={9} color="secondary" className={classes.chip}/>);
         }
         if (order.address.postcode) {
-            result.push(<Chip label={chip('Почтовый индекс: ', order.address.postcode)} key={7} color="secondary" className={classes.chip}/>);
+            result.push(<Chip label={chip('Почтовый индекс: ', order.address.postcode)} key={10} color="secondary" className={classes.chip}/>);
         }
         return result;
     };
@@ -240,7 +249,7 @@ function Order(props) {
                         Контактные данные
                     </Typography>
                     <Link href={'tel:+375' + order.phone.replace(/\D/g,'')} color="primary">+375 {order.phone}</Link><br/>
-                    {order.address ? address() : null}
+                    {order.address ? (<React.Fragment><Divider className={classes.divider}/>{address()}</React.Fragment>) : null}
                     <Divider className={classes.divider}/>
                     <DataTable tableConfig={tableConfig}/>
                 </CardContent>

@@ -165,6 +165,8 @@ class AgrolavkaPublicRESTController {
         order.setStatus(OrderStatus.WAITING_FOR_APPROVAL);
         if (formValues.containsKey("city") && !formValues.get("city").toString().isBlank()) {
             Address address = new Address();
+            address.setRegion((String) formValues.get("region"));
+            address.setDistrict((String) formValues.get("district"));
             address.setCity((String) formValues.get("city"));
             address.setHouse((String) formValues.get("house"));
             address.setStreet((String) formValues.get("street"));
@@ -172,6 +174,7 @@ class AgrolavkaPublicRESTController {
             address.setFlat((String) formValues.get("flat"));
             address.setFirstname((String) formValues.get("firstname"));
             address.setLastname((String) formValues.get("lastname"));
+            address.setMiddlename((String) formValues.get("middlename"));
             order.setAddress(address);
         }
         Order savedOrder = coreDAO.create(order);
