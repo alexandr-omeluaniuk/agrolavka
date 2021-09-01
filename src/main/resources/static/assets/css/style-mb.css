@@ -76,6 +76,9 @@ and open the template in the editor.
     .carousel-item.active {
         height: 50vh;
     }
+    .agr-card-body-category {
+        min-height: 89px;
+    }
 }
 
 @media (max-width: 992px) {
@@ -98,13 +101,20 @@ and open the template in the editor.
     .carousel-inner,
     .carousel-item,
     .carousel-item.active {
-        height: 100vh;
+        height: 60vh;
     }
     nav[data-expanded="true"] {
         background-color: var(--agr-background-color);
     }
     .agr-navbar {
         background-color: var(--agr-background-color);
+    }
+    .agr-card-body-category {
+        min-height: 77px;
+    }
+    .my-5 {
+        margin-top: 1.5rem !important;
+        margin-bottom: 1.5rem !important;
     }
 }
 #agr-quick-search-container-desktop {

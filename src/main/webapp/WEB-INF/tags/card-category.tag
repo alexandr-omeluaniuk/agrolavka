@@ -26,16 +26,8 @@
         <a href="<%= UrlProducer.buildProductGroupUrl(group)%>">
             <div class="mask" style="background-color: rgba(0, 0, 0, 0.05)"></div>
         </a>
-        <div class="card-body">
-            <h6 class="card-title">${group.name}</h6>
-            <div class="d-flex align-items-center justify-content-between mt-2 d-none">
-                <small class="text-muted">Всего наименований</small>
-                <small><%= AppCache.countGroupProducts(group)%></small>
-            </div>
-            <div class="d-flex align-items-center justify-content-between mt-2 d-none">
-                <small class="text-muted">Наименований в наличии</small>
-                <small><%= AppCache.countAvailableGroupProducts(group)%></small>
-            </div>
+        <div class="card-body agr-card-body-category">
+            <h6 class="card-title mb-0">${group.name}</h6>
         </div>
     </div>
 </div>
