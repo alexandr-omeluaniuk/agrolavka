@@ -66,6 +66,9 @@ public class SiteController {
             newProducts = AppCache.getNewProducts();
         }
         model.addAttribute("newProducts", newProducts);
+        List<Product> withDiscount = getProductsWithDiscount();
+        List<Product> withDiscountFirst12 = withDiscount.size() > 12 ? withDiscount.subList(0, 12) : withDiscount;
+        model.addAttribute("productsWithDiscount", withDiscountFirst12);
         return "home";
     }
     /**
@@ -315,5 +318,24 @@ public class SiteController {
             AppCache.setProductsCount(productsCount);
         }
         model.addAttribute("productsCount", productsCount);
+    }
+    /**
+     * Get products with discount.
+     * @return products with discount.
+     * @throws Exception error.
+     */
+    private List<Product> getProductsWithDiscount() throws Exception {
+        List<Product> productsWithDiscounts = AppCache.getProductsWithDiscounts();
+        if (productsWithDiscounts == null) {
+            ProductsSearchRequest searchRequest = new ProductsSearchRequest();
+            searchRequest.setPage(1);
+            searchRequest.setPageSize(Integer.MAX_VALUE);
+            searchRequest.setOrder("asc");
+            searchRequest.setOrderBy("name");
+            searchRequest.setWithDiscounts(true);
+            AppCache.setProductsWithDiscounts(productDAO.search(searchRequest));
+            productsWithDiscounts = AppCache.getProductsWithDiscounts();
+        }
+        return productsWithDiscounts;
     }
 }

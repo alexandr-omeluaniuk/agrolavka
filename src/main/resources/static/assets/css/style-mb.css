@@ -66,6 +66,14 @@ and open the template in the editor.
     height: 100%;
 }
 
+#agr-product-discounts-carousel .carousel-inner {
+    height: 100%;
+}
+
+#agr-product-discounts-carousel .carousel-item {
+    height: 100%;
+}
+
 @media (min-width: 992px) {
     main:not(#home) {
         margin-top: 100px;

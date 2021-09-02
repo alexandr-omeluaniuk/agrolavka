@@ -25,6 +25,8 @@ public class AppCache {
     private static final List<ProductsGroup> ALL_GROUPS = new ArrayList<>();
     /** New products. */
     private static List<Product> newProducts = null;
+    /** Product with discounts. */
+    private static List<Product> productWithDiscounts = null;
     /** Products count. */
     private static Long productsCount = null;
     /**
@@ -33,6 +35,7 @@ public class AppCache {
      */
     public static synchronized void flushCache(List<ProductsGroup> groups) {
         newProducts = null;
+        productWithDiscounts = null;
         GROUPS_PARENT_MAP.clear();
         ALL_GROUPS.clear();
         ALL_GROUPS.addAll(groups);
@@ -54,11 +57,25 @@ public class AppCache {
         return newProducts;
     }
     /**
+     * Get products with discounts.
+     * @return  products with discounts.
+     */
+    public static synchronized List<Product> getProductsWithDiscounts() {
+        return productWithDiscounts;
+    }
+    /**
      * Set new products to cache.
      * @param products new products.
      */
     public static synchronized void setNewProducts(List<Product> products) {
         newProducts = products;
+    }
+    /**
+     * Set products with discounts.
+     * @param products products with discounts.
+     */
+    public static synchronized void setProductsWithDiscounts(List<Product> products) {
+        productWithDiscounts = products;
     }
     /**
      * Get products count.

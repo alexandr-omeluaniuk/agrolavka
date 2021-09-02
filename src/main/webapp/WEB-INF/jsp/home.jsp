@@ -4,6 +4,7 @@
     Author     : alex
 --%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 
@@ -18,9 +19,15 @@
                 <!--Section: Content-->
                 <t:top-product-groups />
                 
-                <hr class="my-5" />
-                
-                <t:new_products cart="${cart}" newProducts="${newProducts}"/>
+                <c:if test="${productsWithDiscount.size() > 0}">
+                    <hr class="my-5" />
+                    <t:discounts-highlight products="${productsWithDiscount}"/>
+                </c:if>
+                    
+                <c:if test="${newProducts.size() > 0}">
+                    <hr class="my-5" />
+                    <t:new_products cart="${cart}" newProducts="${newProducts}"/>
+                </c:if>
                 
                 <hr class="my-5" />
                 <!--Section: Content-->

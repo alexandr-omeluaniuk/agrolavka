@@ -140,6 +140,9 @@ class ProductDAOImpl implements ProductDAO {
         if (request.isAvailable()) {
             predicates.add(cb.greaterThan(c.get(Product_.quantity), 0d));
         }
+        if (request.isWithDiscounts()) {
+            predicates.add(cb.isNotNull(c.get(Product_.discount)));
+        }
         return predicates;
     }
     @Transactional(propagation = Propagation.SUPPORTS)

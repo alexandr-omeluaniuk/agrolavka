@@ -26,6 +26,8 @@ public class ProductsSearchRequest {
     private String code;
     /** If true, search products with quantity > 0, otherwise all. */
     private boolean available = false;
+    /** With discounts only. */
+    private boolean withDiscounts = false;
     // =================================================== SET & GET ==================================================
     /**
      * @return the groupId
@@ -122,5 +124,17 @@ public class ProductsSearchRequest {
      */
     public void setAvailable(boolean available) {
         this.available = available;
+    }
+    /**
+     * @return the withDiscounts
+     */
+    public boolean isWithDiscounts() {
+        return withDiscounts;
+    }
+    /**
+     * @param withDiscounts the withDiscounts to set
+     */
+    public void setWithDiscounts(boolean withDiscounts) {
+        this.withDiscounts = withDiscounts;
     }
 }
