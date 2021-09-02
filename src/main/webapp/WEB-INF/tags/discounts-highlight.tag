@@ -4,10 +4,11 @@
     Author     : alex
 --%>
 
-<%@tag description="discount highlight" pageEncoding="UTF-8" import="ss.entity.agrolavka.*"%>
+<%@tag description="discount highlight" pageEncoding="UTF-8" import="ss.entity.agrolavka.*, java.util.*"%>
+<%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 
 <%-- The list of normal or fragment attributes can be specified here: --%>
-<%@attribute name="products" required="true" type="java.util.List<Product>"%>
+<%@attribute name="products" required="true" type="List<Product>"%>
 
 <%-- any content can be specified here e.g.: --%>
 <section class="text-center">
@@ -18,21 +19,37 @@
         <!-- Inner -->
         <div class="carousel-inner p-1">
             <%
+                final int SIZE = 4;
+                List<List<Product>> rows = new ArrayList<>();
+                List<Product> row = new ArrayList<>();
                 for (int i = 0; i < products.size(); i++) {
-                    Product product = products.get(i);
-                    if (i % 4 == 0) {
-                        if (i > 0) {
-                            out.print("</div></div>");
-                        }
-                        out.print("<div class=\"carousel-item " + (i == 0 ? "active" : "") + "\"><div class=\"row\">");
+                    if (row.size() == SIZE) {
+                        rows.add(row);
+                        row = new ArrayList<>();
                     }
-            %>
-            <div class="col-lg col-md-6 col-sm-6 col-6">
-                <t:card-product product="<%= product%>" cart="${cart}" showCreatedDate="true"/>
-            </div>
-            <%
+                    row.add(products.get(i));
                 }
-                out.print("</div>");
+                if (row.size() != SIZE) {
+                    rows.add(row);
+                }
+                for (List<Product> r : rows) {
+                    out.print("<div class=\"carousel-item " + (rows.indexOf(r) == 0 ? "active" : "") + "\"><div class=\"row\">");
+                    for (Product product : r) {
+                        %>
+                            <div class="col-lg col-md-6 col-sm-6 col-6">
+                                <t:card-product product="<%= product%>" cart="${cart}"/>
+                            </div>
+                        <%
+                    }
+                    if (r.size() != SIZE) {
+                        int empty = SIZE - r.size();
+                        while (empty > 0) {
+                            out.print("<div class=\"col-lg col-md-6 col-sm-6 col-6\"></div>");
+                            empty--;
+                        }
+                    }
+                    out.print("</div></div>");
+                }
             %>
         </div>
         <!-- Inner -->
