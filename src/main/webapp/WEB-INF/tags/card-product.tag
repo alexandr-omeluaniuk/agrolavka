@@ -38,31 +38,35 @@
 
             <div class="card-body" style="min-height: 100px;">
                 <h6 class="card-title text-dark text-left" style="min-height: 60px;">${product.name}</h6>
-                <div class="d-flex align-items-center mb-2" style="min-height: 35px;">
-                    <span class="text-muted fs-6" style="flex: 1; text-align: left;">Цена</span>
-                    <span class="fw-bold ${not empty product.discount ? 'text-decoration-line-through text-muted me-2' : 'text-dark'}">
+                <div class="d-flex align-items-center justify-content-between agr-card-line">
+                    <small class="text-muted">Цена</small>
+                    <span class="fw-bold ${not empty product.discount ? 'text-decoration-line-through text-muted' : 'text-dark'}">
                         <%
                             String price = String.format("%.2f", product.getPrice());
                             String[] parts = price.split("\\.");
                             out.print(parts[0] + ".");
                             out.print("<small>" + parts[1] + "</small>");
-                        %> <small class="text-muted">BYN</small></span>
-                    <c:if test="${not empty product.discount}">
-                        <button class="btn btn-sm btn-danger btn-rounded fs-6">
-                            <i class="fas fa-fire me-2"></i>
+                        %> <small class="text-muted">BYN</small>
+                    </span>
+                </div>
+                <c:if test="${not empty product.discount}">
+                    <div class="d-flex align-items-center justify-content-between agr-card-line">
+                        <small class="text-danger"><i class="fas fa-fire me-1"></i> Акция</small>
+                        <div class="text-danger fw-bold">
                             <%
                                 String priceWithDiscount = String.format("%.2f", product.getDiscountPrice());
                                 String[] priceWithDiscountParts = priceWithDiscount.split("\\.");
                                 out.print(priceWithDiscountParts[0] + ".");
                                 out.print("<small>" + priceWithDiscountParts[1] + "</small>");
                             %> <small>BYN</small>
-                        </button>
-                    </c:if>
-                </div>
+                        </div>
+                    </div>
+                </c:if>
+                
                 <c:if test="${showCreatedDate}">
-                    <div class="d-flex align-items-center mb-2">
-                        <small class="text-muted" style="font-size: .8rem; flex: 1; text-align: left;">Добавлено</small>
-                        <small class="text-muted" style="font-size: .8rem">
+                    <div class="d-flex align-items-center justify-content-between mb-1 agr-card-line">
+                        <small class="text-muted">Добавлено</small>
+                        <small class="text-muted">
                             <%
                                 out.print(new SimpleDateFormat("dd.MM.yyyy").format(product.getCreatedDate()));
                             %>
@@ -81,13 +85,13 @@
                 <%
                     if (!inCart) {
                 %>
-                <button class="btn btn-outline-success btn-rounded w-100 mt-1" data-product-id="${product.id}" data-add="" style="z-index: 9000;">
+                <button class="btn btn-outline-success btn-rounded w-100 mt-1 agr-card-button" data-product-id="${product.id}" data-add="" style="z-index: 9000;">
                     <i class="fas fa-cart-plus me-2"></i> В корзину
                 </button>
                 <%
                     } else {
                 %>
-                <button class="btn btn-outline-danger btn-rounded w-100 mt-1" data-product-id="${product.id}" data-remove="" style="z-index: 9000;">
+                <button class="btn btn-outline-danger btn-rounded w-100 mt-1 agr-card-button" data-product-id="${product.id}" data-remove="" style="z-index: 9000;">
                     <i class="fas fa-minus-circle me-2"></i> Из корзины
                 </button>
                 <%
