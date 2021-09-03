@@ -65,4 +65,6 @@
         </button>
     </div>
     
+    <h6 class="mb-2 mt-4"><strong>нажмите, чтобы просмотреть полный список акционных товаров</strong></h6>
+    <a class="btn btn-outline-danger btn-lg m-2" href="/promotions" role="button" ><i class="fas fa-fire me-1"></i> Все товары на акции</a>
 </section>

@@ -91,8 +91,31 @@ public class DataUpdater {
     @Scheduled(cron = "0 30 2 * * *")
     public void importMySkladData() {
         int attempts = 0;
+        while (attempts < 5) {
+            if (doImport()) {
+                return;
+            } else {
+                attempts++;
+            }
+        }
+        EmailRequest email = new EmailRequest();
+        email.setSubject("Import MySklad data - fail!");
+        email.setMessage(new SimpleDateFormat("dd.MM.yyyy HH:mm").format(new Date()));
+        email.setRecipients(new EmailRequest.EmailContact[] {
+            new EmailRequest.EmailContact("Alex", "starshistrelok@gmail.com")
+        });
+        email.setSender(
+            new EmailRequest.EmailContact(platformConfiguration.getSystemEmailContactName(),
+                    platformConfiguration.getSystemEmailContactEmail()));
         try {
-            attempts++;
+            emailService.sendEmail(email);
+        } catch (Exception ex) {
+            LOG.error("Can't send email", ex);
+        }
+    }
+    
+    private boolean doImport() {
+        try {
             LOG.info("====================================== MY SKLAD DATA UPDATE ===================================");
             securityService.backgroundAuthentication(
                     configuration.getBackgroundUserUsername(), configuration.getBackgroundUserPassword());
@@ -102,29 +125,13 @@ public class DataUpdater {
             importImages();
             AppCache.flushCache(coreDAO.getAll(ProductsGroup.class));
             LOG.info("===============================================================================================");
+            return true;
         } catch (Exception e) {
-            if (attempts < 5) { // 5 attempts
-                LOG.warn("Import MySklad data - fail! Attempt: " + attempts);
-                importMySkladData();
-            } else {
-                LOG.error("Import MySklad data - fail!", e);
-                EmailRequest email = new EmailRequest();
-                email.setSubject("Import MySklad data - fail!");
-                email.setMessage(new SimpleDateFormat("dd.MM.yyyy HH:mm").format(new Date()));
-                email.setRecipients(new EmailRequest.EmailContact[] {
-                    new EmailRequest.EmailContact("Alex", "starshistrelok@gmail.com")
-                });
-                email.setSender(
-                    new EmailRequest.EmailContact(platformConfiguration.getSystemEmailContactName(),
-                            platformConfiguration.getSystemEmailContactEmail()));
-                try {
-                    emailService.sendEmail(email);
-                } catch (Exception ex) {
-                    LOG.error("Can't send email", ex);
-                }
-            }
+            LOG.warn("Import MySklad data - fail!", e);
+            return false;
         }
     }
+    
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     private void importPriceTypes() throws Exception {
         List<PriceType> priceTypes = mySkladIntegrationService.getPriceTypes();

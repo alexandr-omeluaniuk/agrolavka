@@ -40,7 +40,11 @@
                         <a class="nav-link" aria-current="page" href="/">Главная</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/catalog">Каталог товаров</a>
+                        <a class="nav-link d-none d-xxl-block" href="/catalog">Каталог товаров</a>
+                        <a class="nav-link d-xxl-none" href="/catalog">Каталог</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/promotions">Акции</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/delivery">Доставка</a>

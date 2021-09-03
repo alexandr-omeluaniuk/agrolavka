@@ -119,6 +119,13 @@ public class SiteController {
         insertCartDataToModel(httpRequest, model);
         return "discount";
     }
+    
+    @RequestMapping("/promotions")
+    public String promotions(Model model, HttpServletRequest httpRequest) throws Exception {
+        insertCartDataToModel(httpRequest, model);
+        model.addAttribute("products", getProductsWithDiscount());
+        return "promotions";
+    }
     /**
      * Page not found.
      * @param model page model.
