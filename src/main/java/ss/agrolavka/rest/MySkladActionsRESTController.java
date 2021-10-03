@@ -5,6 +5,7 @@
  */
 package ss.agrolavka.rest;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import ss.agrolavka.service.BackupService;
 import ss.agrolavka.task.DataUpdater;
 
 /**
@@ -24,6 +26,9 @@ public class MySkladActionsRESTController {
     /** Data updater. */
     @Autowired
     private DataUpdater dataUpdater;
+    /** Backup service. */
+    @Autowired
+    private BackupService backupService;
     /**
      * Synchronize MySklad data.
      * @return empty array.
@@ -33,5 +38,12 @@ public class MySkladActionsRESTController {
     public List synchronizeData() throws Exception {
         dataUpdater.importMySkladData();
         return new ArrayList();
+    }
+    /**
+     * Do data backup.
+     */
+    @RequestMapping(value = "/backup", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+    public File backup() throws Exception {
+        return backupService.doBackup();
     }
 }

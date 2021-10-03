@@ -66,5 +66,6 @@
         "nostatus": "None",
         "search_text": "Search...",
         "show_archive": "Show archive"
-    }
+    },
+    "backup": "Do data backup"
 }

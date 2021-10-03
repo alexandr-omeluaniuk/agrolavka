@@ -89,15 +89,27 @@ function Products() {
     };
     const toolbarBefore = () => {
         return (
-                <Tooltip title={t('m_agrolavka:products.synchronize')}>
-                    <IconButton onClick={synchronizeData}>
-                        <Icon color="primary">sync_alt</Icon>
-                    </IconButton>
-                </Tooltip>
+                <React.Fragment>
+                    <Tooltip title={t('m_agrolavka:backup')}>
+                        <IconButton onClick={backup}>
+                            <Icon color="primary">backup</Icon>
+                        </IconButton>
+                    </Tooltip>
+                    <Tooltip title={t('m_agrolavka:products.synchronize')}>
+                        <IconButton onClick={synchronizeData}>
+                            <Icon color="primary">sync_alt</Icon>
+                        </IconButton>
+                    </Tooltip>
+                </React.Fragment>
         );
     };
     const synchronizeData = () => {
         dataService.put('/agrolavka/protected/mysklad/synchronize').then(resp => {
+            //setProductGroups(null);
+        });
+    };
+    const backup = () => {
+        dataService.put('/agrolavka/protected/mysklad/backup').then(resp => {
             //setProductGroups(null);
         });
     };
