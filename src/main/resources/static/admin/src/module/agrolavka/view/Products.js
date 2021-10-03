@@ -109,8 +109,7 @@ function Products() {
         });
     };
     const backup = () => {
-        dataService.put('/agrolavka/protected/mysklad/backup').then(resp => {
-            //setProductGroups(null);
+        dataService.getFile('/api/agrolavka/protected/mysklad/backup').then(resp => {
         });
     };
     // ------------------------------------------------------- HOOKS ----------------------------------------------------------------------

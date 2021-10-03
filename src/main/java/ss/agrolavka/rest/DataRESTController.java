@@ -6,10 +6,18 @@
 package ss.agrolavka.rest;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,7 +30,7 @@ import ss.agrolavka.task.DataUpdater;
  */
 @RestController
 @RequestMapping("/api/agrolavka/protected/mysklad")
-public class MySkladActionsRESTController {
+public class DataRESTController {
     /** Data updater. */
     @Autowired
     private DataUpdater dataUpdater;
@@ -41,9 +49,15 @@ public class MySkladActionsRESTController {
     }
     /**
      * Do data backup.
+     * @throws Exception error. 
      */
-    @RequestMapping(value = "/backup", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
-    public File backup() throws Exception {
-        return backupService.doBackup();
+    @RequestMapping(value = "/backup", method = RequestMethod.GET, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    public void backup(HttpServletResponse response) throws Exception {
+        File backup = backupService.doBackup();
+        System.out.println(backup.length());
+        response.getOutputStream().write(Files.readAllBytes(Paths.get(backup.toURI())));
+        response.addHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + backup.getName());
+        response.addHeader("ContentType", "application/zip");
+        response.addHeader("Content-Length", backup.length() + "");
     }
 }
