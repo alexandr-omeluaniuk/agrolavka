@@ -54,7 +54,6 @@ public class DataRESTController {
     @RequestMapping(value = "/backup", method = RequestMethod.GET, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     public void backup(HttpServletResponse response) throws Exception {
         File backup = backupService.doBackup();
-        System.out.println(backup.length());
         response.getOutputStream().write(Files.readAllBytes(Paths.get(backup.toURI())));
         response.addHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + backup.getName());
         response.addHeader("ContentType", "application/zip");

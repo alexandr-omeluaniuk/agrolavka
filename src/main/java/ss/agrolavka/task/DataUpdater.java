@@ -73,9 +73,9 @@ public class DataUpdater {
     /** Email service. */
     @Autowired
     private EmailService emailService;
-    /** Image service. */
-    @Autowired
-    private ImageService imageService;
+//    /** Image service. */
+//    @Autowired
+//    private ImageService imageService;
     
     @PostConstruct
     protected void init() {
@@ -122,7 +122,7 @@ public class DataUpdater {
             importPriceTypes();
             importProductGroups();
             importProducts();
-            importImages();
+            //importImages();
             AppCache.flushCache(coreDAO.getAll(ProductsGroup.class));
             LOG.info("===============================================================================================");
             return true;
@@ -289,32 +289,32 @@ public class DataUpdater {
         requestX.setPageSize(Integer.MAX_VALUE);
         AppCache.setProductsCount(productDAO.count(requestX));
     }
-    @Transactional(propagation = Propagation.SUPPORTS, rollbackFor = Exception.class)
-    private void importImages() throws Exception {
-        long start = System.currentTimeMillis();
-        LOG.info("start images import...");
-        LOG.info("");
-        List<Product> products = coreDAO.getAll(Product.class);
-        int counter = 0;
-        for (Product product : products) {
-            counter++;
-            try {
-                List<EntityImage> images = mySkladIntegrationService.getProductImages(product.getExternalId());
-                for (EntityImage image : images) {
-                    byte[] thumb = imageService.convertToThumbnail(
-                            image.getData(), SiteConstants.IMAGE_THUMB_SIZE);
-                    image.setData(thumb);
-                }
-                product.setImages(images);
-                coreDAO.update(product);
-            } catch (Exception e) {
-                LOG.warn("Can't synchronize product images: " + product, e);
-                coreDAO.update(product);
-            }
-            double progress = ((double) counter / (double) products.size()) * 100;
-            LOG.info("progress: " + String.format("%.2f", progress));
-        }
-        LOG.info("images import completed...");
-        LOG.info("elapsed time [" + (System.currentTimeMillis() - start) + "] ms");
-    }
+//    @Transactional(propagation = Propagation.SUPPORTS, rollbackFor = Exception.class)
+//    private void importImages() throws Exception {
+//        long start = System.currentTimeMillis();
+//        LOG.info("start images import...");
+//        LOG.info("");
+//        List<Product> products = coreDAO.getAll(Product.class);
+//        int counter = 0;
+//        for (Product product : products) {
+//            counter++;
+//            try {
+//                List<EntityImage> images = mySkladIntegrationService.getProductImages(product.getExternalId());
+//                for (EntityImage image : images) {
+//                    byte[] thumb = imageService.convertToThumbnail(
+//                            image.getData(), SiteConstants.IMAGE_THUMB_SIZE);
+//                    image.setData(thumb);
+//                }
+//                product.setImages(images);
+//                coreDAO.update(product);
+//            } catch (Exception e) {
+//                LOG.warn("Can't synchronize product images: " + product, e);
+//                coreDAO.update(product);
+//            }
+//            double progress = ((double) counter / (double) products.size()) * 100;
+//            LOG.info("progress: " + String.format("%.2f", progress));
+//        }
+//        LOG.info("images import completed...");
+//        LOG.info("elapsed time [" + (System.currentTimeMillis() - start) + "] ms");
+//    }
 }

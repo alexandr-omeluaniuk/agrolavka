@@ -104,32 +104,32 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
         LOG.debug("loaded products [" + result.size() + "]");
         return result;
     }
-    @Override
-    public List<EntityImage> getProductImages(String productExternalId) throws Exception {
-        List<EntityImage> result = new ArrayList<>();
-        String response = request("/entity/product/" + productExternalId + "/images", "GET", null);
-        Map<String, String> headers = new HashMap<>();
-        headers.put("Authorization", "Bearer " + token);
-        JSONObject json = new JSONObject(response);
-        if (json.has("rows")) {
-            JSONArray rows = json.getJSONArray("rows");
-            for (int i = 0; i < rows.length(); i++) {
-                JSONObject item = rows.getJSONObject(i);
-                JSONObject meta = item.getJSONObject("meta");
-                String href = meta.getString("downloadHref");
-                EntityImage productImage = new EntityImage();
-                productImage.setName(item.getString("filename"));
-                productImage.setSize(item.getLong("size"));
-                productImage.setData(requestData(href, "GET", headers));
-                if (item.has("miniature")) {
-                    JSONObject miniature = item.getJSONObject("miniature");
-                    productImage.setType(miniature.getString("mediaType"));
-                }
-                result.add(productImage);
-            }
-        }
-        return result;
-    }
+//    @Override
+//    public List<EntityImage> getProductImages(String productExternalId) throws Exception {
+//        List<EntityImage> result = new ArrayList<>();
+//        String response = request("/entity/product/" + productExternalId + "/images", "GET", null);
+//        Map<String, String> headers = new HashMap<>();
+//        headers.put("Authorization", "Bearer " + token);
+//        JSONObject json = new JSONObject(response);
+//        if (json.has("rows")) {
+//            JSONArray rows = json.getJSONArray("rows");
+//            for (int i = 0; i < rows.length(); i++) {
+//                JSONObject item = rows.getJSONObject(i);
+//                JSONObject meta = item.getJSONObject("meta");
+//                String href = meta.getString("downloadHref");
+//                EntityImage productImage = new EntityImage();
+//                productImage.setName(item.getString("filename"));
+//                productImage.setSize(item.getLong("size"));
+//                productImage.setData(requestData(href, "GET", headers));
+//                if (item.has("miniature")) {
+//                    JSONObject miniature = item.getJSONObject("miniature");
+//                    productImage.setType(miniature.getString("mediaType"));
+//                }
+//                result.add(productImage);
+//            }
+//        }
+//        return result;
+//    }
     @Override
     public void removeProductImages(Product product) throws Exception {
         String response = request("/entity/product/" + product.getExternalId() + "/images", "GET", null);
@@ -172,15 +172,15 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
         }
         return result;
     }
-    @Override
-    public void attachImagesToProduct(Product product) throws Exception {
-        for (EntityImage image : product.getImages()) {
-            JSONObject payload = new JSONObject();
-            payload.put("filename", image.getName());
-            payload.put("content", new String(Base64.getEncoder().encode(imageService.readImageFromDisk(image)), "UTF-8"));
-            request("/entity/product/" + product.getExternalId() + "/images", "POST", payload.toString());
-        }
-    }
+//    @Override
+//    public void attachImagesToProduct(Product product) throws Exception {
+//        for (EntityImage image : product.getImages()) {
+//            JSONObject payload = new JSONObject();
+//            payload.put("filename", image.getName());
+//            payload.put("content", new String(Base64.getEncoder().encode(imageService.readImageFromDisk(image)), "UTF-8"));
+//            request("/entity/product/" + product.getExternalId() + "/images", "POST", payload.toString());
+//        }
+//    }
     @Override
     public String createProductsGroup(ProductsGroup group) throws Exception {
         String response = request("/entity/productfolder", "POST", group.toMySkladJSON().toString());
