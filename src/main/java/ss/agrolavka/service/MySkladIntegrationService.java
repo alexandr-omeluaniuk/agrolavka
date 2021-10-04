@@ -11,6 +11,7 @@ import ss.entity.agrolavka.Discount;
 import ss.entity.agrolavka.PriceType;
 import ss.entity.agrolavka.Product;
 import ss.entity.agrolavka.ProductsGroup;
+import ss.entity.martin.EntityImage;
 
 /**
  * My Sklad integration service.
@@ -31,13 +32,13 @@ public interface MySkladIntegrationService {
      * @throws Exception error.
      */
     List<Product> getProducts(int offset, int limit) throws Exception;
-//    /**
-//     * Get product images.
-//     * @param productExternalId product external ID.
-//     * @return list of images.
-//     * @throws Exception error.
-//     */
-//    List<EntityImage> getProductImages(String productExternalId) throws Exception;
+    /**
+     * Get product images.
+     * @param productExternalId product external ID.
+     * @return list of images.
+     * @throws Exception error.
+     */
+    List<EntityImage> getProductImages(String productExternalId) throws Exception;
     /**
      * Create product.
      * @param product product.
@@ -58,12 +59,12 @@ public interface MySkladIntegrationService {
      * @throws Exception error.
      */
     void deleteProduct(Product product) throws Exception;
-//    /**
-//     * Attach images to product.
-//     * @param product product with images.
-//     * @throws Exception error.
-//     */
-//    void attachImagesToProduct(Product product) throws Exception;
+    /**
+     * Attach images to product.
+     * @param product product with images.
+     * @throws Exception error.
+     */
+    void attachImagesToProduct(Product product) throws Exception;
     /**
      * Remove product images.
      * @param product product.
