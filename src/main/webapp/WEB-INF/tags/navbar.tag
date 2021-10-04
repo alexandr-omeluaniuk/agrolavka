@@ -21,8 +21,13 @@
             </a>
             <div class="d-lg-none w-100">
                 <div class="arg-top-navbar">
-                    <div class="d-flex align-items-center justify-content-between mb-2">
-                        <a class="nav-link" href="tel:+375298713758"><i class="fas fa-phone-alt"></i> +375 29 871-37-58 (МТС)</a>
+                    <div class="d-flex align-items-center mb-2">
+                        <a href="/" class="navbar-brand nav-link" style="border-right: 1px solid #ffffff70; margin-right: 0;">
+                            <strong class="d-flex justify-content-center align-items-center">
+                                <i class="fas fa-carrot"></i>
+                            </strong>
+                        </a>
+                        <a class="nav-link" href="tel:+375298713758" style="flex: 1"><i class="fas fa-phone-alt"></i> +375 29 871-37-58 (МТС)</a>
                         <button class="navbar-toggler" type="button" data-mdb-toggle="collapse"
                                 data-mdb-target="#agr-navbar" aria-controls="agr-navbar" aria-expanded="false" aria-label="Toggle navigation">
                             <i class="fas fa-bars"></i>
