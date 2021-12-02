@@ -13,6 +13,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -298,6 +299,7 @@ public class DataUpdater {
         int counter = 0;
         for (Product product : products) {
             counter++;
+            List<EntityImage> productImages = new ArrayList<>();
             try {
                 List<EntityImage> images = mySkladIntegrationService.getProductImages(product.getExternalId());
                 for (EntityImage image : images) {
@@ -305,7 +307,14 @@ public class DataUpdater {
                             image.getData(), SiteConstants.IMAGE_THUMB_SIZE);
                     image.setData(thumb);
                 }
-                product.setImages(images);
+                final Set<String> imageKeys = images.stream().map((i) -> i.getSize() + "::" + i.getName())
+                    .collect(Collectors.toSet());
+                final List<EntityImage> restImages = product.getImages().stream().filter(i -> {
+                    return !imageKeys.contains(i.getSize() + "::" + i.getName());
+                }).collect(Collectors.toList());
+                productImages.addAll(restImages);
+                productImages.addAll(images);
+                product.setImages(productImages);
                 coreDAO.update(product);
             } catch (Exception e) {
                 LOG.warn("Can't synchronize product images: " + product, e);

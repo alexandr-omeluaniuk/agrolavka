@@ -72,8 +72,8 @@ class ProductEntityListener implements PlatformEntityListener<Product> {
             }
         }
         entityFromDB.setImages(actualImages);
-        entity.setImages(actualImages);
-        coreDAO.update(entityFromDB);
+        entityFromDB = coreDAO.update(entityFromDB);
+        entity.setImages(entityFromDB.getImages());
         mySkladIntegrationService.removeProductImages(entity);
         mySkladIntegrationService.attachImagesToProduct(entity);
     }

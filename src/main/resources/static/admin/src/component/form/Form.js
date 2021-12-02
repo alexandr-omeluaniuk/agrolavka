@@ -9,6 +9,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import { useTranslation } from 'react-i18next';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
+import Backdrop from '@material-ui/core/Backdrop';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import Icon from '@material-ui/core/Icon';
 import FormField from './FormField';
 import { DataTypeService } from '../../service/DataTypeService';
@@ -23,6 +25,9 @@ const useStyles = makeStyles(theme => ({
     },
     submitIcon: {
         marginRight: theme.spacing(1)
+    },
+    spinner: {
+        zIndex: 2000
     }
 }));
 
@@ -117,36 +122,43 @@ function Form (props) {
     };
     // ========================================================= RENDERING ================================================================
     return (
-            <Grid container spacing={formConfig.spacing}>
-                {formConfig.formFields.filter(f => {
-                    return !(id && f.editable === false); 
-                }).map((field, idx) => {
-                    let style = {};
-                    if (field.hidden) {
-                        style['display'] = 'none';
-                    }
-                    let gridProps = {};
-                    if (field.grid) {
-                        for (let k in field.grid) {
-                            gridProps[k] = _sizeOf(field.grid[k]);
+            <React.Fragment>
+                {disabled ? (
+                    <Backdrop className={classes.backdrop} open={true} onClick={() => {}} className={classes.spinner}>
+                        <CircularProgress color="secondary" />
+                    </Backdrop>
+                ) : null}
+                <Grid container spacing={formConfig.spacing}>
+                    {formConfig.formFields.filter(f => {
+                        return !(id && f.editable === false); 
+                    }).map((field, idx) => {
+                        let style = {};
+                        if (field.hidden) {
+                            style['display'] = 'none';
                         }
-                    }
-                    return (
-                            <Grid item key={idx} {...gridProps} style={style}>
-                                <FormField fieldConfig={field} onChangeFieldValue={onChangeFieldValue} entryId={id} 
-                                        variant={formConfig.variant}
-                                        invalidFields={invalidFields} fieldValue={formData.get(field.name)}/>
-                            </Grid>
-                    );
-                })}
-                <Grid item xs={12} lg={12} sm={12} md={12} className={classes.actions}>
-                    <Button variant={submit.variant} color={submit.color} className={classes.saveButton} 
-                            disabled={invalidFields.size > 0 || disabled} onClick={saveChanges}>
-                        <Icon className={classes.submitIcon}>
-                            {submit.icon}</Icon> {submit.label ? submit.label : t('component.form.save')}
-                    </Button>
+                        let gridProps = {};
+                        if (field.grid) {
+                            for (let k in field.grid) {
+                                gridProps[k] = _sizeOf(field.grid[k]);
+                            }
+                        }
+                        return (
+                                <Grid item key={idx} {...gridProps} style={style}>
+                                    <FormField fieldConfig={field} onChangeFieldValue={onChangeFieldValue} entryId={id} 
+                                            variant={formConfig.variant}
+                                            invalidFields={invalidFields} fieldValue={formData.get(field.name)}/>
+                                </Grid>
+                        );
+                    })}
+                    <Grid item xs={12} lg={12} sm={12} md={12} className={classes.actions}>
+                        <Button variant={submit.variant} color={submit.color} className={classes.saveButton} 
+                                disabled={invalidFields.size > 0 || disabled} onClick={saveChanges}>
+                            <Icon className={classes.submitIcon}>
+                                {submit.icon}</Icon> {submit.label ? submit.label : t('component.form.save')}
+                        </Button>
+                    </Grid>
                 </Grid>
-            </Grid>
+            </React.Fragment>
     );
 }
 
