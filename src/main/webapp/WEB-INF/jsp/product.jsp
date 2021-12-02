@@ -46,7 +46,7 @@
                         <div class="row">
                             <div class="col-sm-12">
                                 <div class="float-start me-4" style="width: 350px;">
-                                    <t:card-product product="${product}" cart="${cart}" noHover="true"/>
+                                    <t:card-product product="${product}" cart="${cart}" noHover="true" showAdditionalPhotos="true"/>
                                 </div>
                                 <t:product-description product="${product}"/>
                             </div>

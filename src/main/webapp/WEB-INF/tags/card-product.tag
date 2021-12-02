@@ -15,6 +15,7 @@
 <%@attribute name="cart" required="true" type="Order"%>
 <%@attribute name="noHover" required="false" type="Boolean"%>
 <%@attribute name="showCreatedDate" required="false" type="Boolean"%>
+<%@attribute name="showAdditionalPhotos" required="false" type="Boolean"%>
 
 <%-- any content can be specified here e.g.: --%>
 <a href="<%= UrlProducer.buildProductUrl(product) %>">
@@ -33,6 +34,31 @@
                     <div class="card-img-top agr-card-image" style="background-image: url('/assets/img/no-image.png')"></div>
                 </c:otherwise>
             </c:choose>
+                    
+            <!-- ================================= Additional images =============================================== -->
+            <c:if test="${showAdditionalPhotos}">
+                <c:if test="${product.images.size() > 1}">
+                    <div class="row p-2">
+                        <div class="col-4">
+                            <c:if test="${product.images.size() > 0}">
+                                <div class="agr-product-photos img-thumbnail agr-photo-active" style="background-image: url('/media/${product.images.get(0).fileNameOnDisk}')"></div>
+                            </c:if>
+                        </div>
+                        <div class="col-4">
+                            <c:if test="${product.images.size() > 1}">
+                                <div class="agr-product-photos img-thumbnail" style="background-image: url('/media/${product.images.get(1).fileNameOnDisk}')"></div>
+                            </c:if>
+                        </div>
+                        <div class="col-4">
+                            <c:if test="${product.images.size() > 2}">
+                                <div class="agr-product-photos img-thumbnail" style="background-image: url('/media/${product.images.get(2).fileNameOnDisk}')"></div>
+                            </c:if>
+                        </div>
+                    </div>
+                </c:if>
+            </c:if>
+            
+            <!-- ================================= Additional images =============================================== -->
 
                 <!--div class="mask" style="background-color: rgba(0, 0, 0, 0.05)"></div-->
 
