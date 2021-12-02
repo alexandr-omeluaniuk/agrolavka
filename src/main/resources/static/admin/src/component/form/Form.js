@@ -124,7 +124,7 @@ function Form (props) {
     return (
             <React.Fragment>
                 {disabled ? (
-                    <Backdrop className={classes.backdrop} open={true} onClick={() => {}} className={classes.spinner}>
+                    <Backdrop open={true} onClick={() => {}} className={classes.spinner}>
                         <CircularProgress color="secondary" />
                     </Backdrop>
                 ) : null}
