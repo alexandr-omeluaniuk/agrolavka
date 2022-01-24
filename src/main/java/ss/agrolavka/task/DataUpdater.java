@@ -321,7 +321,9 @@ public class DataUpdater {
                 coreDAO.update(product);
             }
             double progress = ((double) counter / (double) products.size()) * 100;
-            LOG.info("progress: " + String.format("%.2f", progress));
+            if (counter % 100 == 0) {
+                LOG.info("progress: " + String.format("%.2f", progress));
+            }
         }
         LOG.info("images import completed...");
         LOG.info("elapsed time [" + (System.currentTimeMillis() - start) + "] ms");
