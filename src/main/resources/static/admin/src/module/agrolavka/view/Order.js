@@ -70,6 +70,9 @@ const useStyles = makeStyles(theme => ({
     actions: {
         display: 'flex',
         alignItems: 'center'
+    },
+    comment: {
+        whiteSpace: 'pre'
     }
 }));
 
@@ -246,9 +249,20 @@ function Order(props) {
                     ) : null}
                     <Divider className={classes.divider}/>
                     <Typography variant={'h6'}>
-                        Контактные данные
+                        {t('m_agrolavka:order.contacts')}
                     </Typography>
                     <Link href={'tel:+375' + order.phone.replace(/\D/g,'')} color="primary">+375 {order.phone}</Link><br/>
+                    {order.comment ? (
+                            <React.Fragment>
+                                <Divider className={classes.divider}/>
+                                <Typography variant={'h6'}>
+                                    {t('m_agrolavka:order.comment')}
+                                </Typography>
+                                <Typography variant={'caption'} className={classes.comment}>
+                                    {order.comment}
+                                </Typography>
+                            </React.Fragment>
+                    ) : null}
                     {order.address ? (<React.Fragment><Divider className={classes.divider}/>{address()}</React.Fragment>) : null}
                     <Divider className={classes.divider}/>
                     <DataTable tableConfig={tableConfig}/>

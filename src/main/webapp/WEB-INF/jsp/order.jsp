@@ -46,6 +46,12 @@
                                                    pattern="\([0-9][0-9]\)\s[0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]"
                                                    name="phone">
                                             </div>
+                                            
+                                            <div class="mb-3">
+                                                <label for="comment">Комментарий к заказу</label>
+                                                <textarea type="text" class="form-control" id="comment" name="comment"></textarea>
+                                            </div>
+                                            
                                         </fieldset>
                                         <fieldset>
                                             <legend class="col-form-label pt-0 fw-bolder mb-2">Доставка</legend>
@@ -255,6 +261,9 @@
                     submitOrderButton.setAttribute('disabled', 'true');
                     const formData = {};
                     form.querySelectorAll("input").forEach(input => {
+                        formData[input.getAttribute("name")] = input.value;
+                    });
+                    form.querySelectorAll("textarea").forEach(input => {
                         formData[input.getAttribute("name")] = input.value;
                     });
                     fetch('/api/agrolavka/public/order', {

@@ -50,6 +50,9 @@ public class Order extends DataModel {
     @Size(max = 255)
     @Column(name = "phone", nullable = false, length = 255)
     private String phone;
+    /** Comment. */
+    @Column(name = "comment", length = 10000)
+    private String comment;
     /** Order status. */
     @NotNull
     @Enumerated(EnumType.STRING)
@@ -115,6 +118,18 @@ public class Order extends DataModel {
      */
     public void setStatus(OrderStatus status) {
         this.status = status;
+    }
+    /**
+     * @return the comment
+     */
+    public String getComment() {
+        return comment;
+    }
+    /**
+     * @param comment the comment to set
+     */
+    public void setComment(String comment) {
+        this.comment = comment;
     }
     // ================================================================================================================
     @Override

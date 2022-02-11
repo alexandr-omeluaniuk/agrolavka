@@ -161,6 +161,7 @@ class AgrolavkaPublicRESTController {
             total += pos.getQuantity() * pos.getPrice();
         }
         order.setPhone((String) formValues.get("phone"));
+        order.setComment((String) formValues.get("comment"));
         order.setCreated(new Date());
         order.setStatus(OrderStatus.WAITING_FOR_APPROVAL);
         if (formValues.containsKey("city") && !formValues.get("city").toString().isBlank()) {

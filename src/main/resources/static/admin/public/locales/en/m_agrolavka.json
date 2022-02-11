@@ -65,7 +65,9 @@
         "total": "Total",
         "nostatus": "None",
         "search_text": "Search...",
-        "show_archive": "Show archive"
+        "show_archive": "Show archive",
+        "contacts": "Contacts",
+        "comment": "Comment"
     },
     "backup": "Do data backup"
 }
