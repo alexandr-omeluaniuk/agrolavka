@@ -21,11 +21,17 @@
             }
         }
         if (window.scrollY < 80 || currentScrollDirection === 'UP') {
+            topNavbar.style.display = 'block';
             topNavbar.style.opacity = 1;
             topNavbar.style.height = '41px';
         } else if (currentScrollDirection === 'DOWN') {
             topNavbar.style.opacity = 0;
             topNavbar.style.height = 0;
+            setTimeout(() => {
+                if (topNavbar.style.height === 0 || topNavbar.style.height === '0px') {
+                    topNavbar.style.display = 'none';
+                }
+            }, 300);
         }
         previuosScrollPosition = window.scrollY;
     });

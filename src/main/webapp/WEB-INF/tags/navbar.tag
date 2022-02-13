@@ -45,8 +45,7 @@
                         <a class="nav-link" aria-current="page" href="/">Главная</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link d-none d-xxl-block" href="/catalog">Каталог товаров</a>
-                        <a class="nav-link d-xxl-none" href="/catalog">Каталог</a>
+                        <a class="nav-link" href="/catalog">Каталог</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/promotions">Акции</a>
@@ -60,12 +59,12 @@
                     <li class="nav-item">
                         <a class="nav-link" href="#footer">Контакты</a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item d-lg-none d-xl-none d-xxl-none">
                         <a class="nav-link" href="/feedback">Написать нам</a>
                     </li>
                 </ul>
                 <div class="d-none d-lg-flex align-items-center me-4">
-                    <a class="text-white" href="tel:+375298713758"><i class="fas fa-phone-alt"></i> +375 29 871-37-58</a><br>
+                    <a class="text-white" href="tel:+375298713758"><i class="fas fa-phone-alt"></i> (29) 871-37-58</a><br>
                 </div>
                 <div class="d-none d-lg-flex">
                     <t:quick-search-desktop />
@@ -73,7 +72,7 @@
                 </div>
                 <ul class="navbar-nav d-flex flex-row">
                     <!-- Icons -->
-                    <li class="nav-item me-3 me-lg-0">
+                    <li class="nav-item me-3 ms-3 me-lg-0">
                         <a class="nav-link d-flex align-items-center" href="https://www.instagram.com/agrolavka.by" target="_blank" rel="noreferrer">
                             <i class="fab fa-instagram"></i><span class="ms-2 d-block d-lg-none">Инстаграм</span>
                         </a>

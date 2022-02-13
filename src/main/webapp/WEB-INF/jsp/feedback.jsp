@@ -47,7 +47,7 @@
                             </div>
 
                             <div class="mb-3">
-                                <label for="feedback-contact" class="mb-1">Eсли вы желаете чтобы мы вам ответили - оставьте ваш контакт</label>
+                                <label for="feedback-contact" class="mb-1">Eсли Вы желаете чтобы мы вам ответили - оставьте Ваш контакт</label>
                                 <input type="text" class="form-control" placeholder="Номер телефона или Email" 
                                        id="feedback-contact" name="contact" maxlength="255">
                             </div>
