@@ -119,12 +119,30 @@ public class SiteController {
         insertCartDataToModel(httpRequest, model);
         return "discount";
     }
-    
+    /**
+     * Promotions page.
+     * @param model page model.
+     * @param httpRequest HTTP request.
+     * @return page.
+     * @throws Exception error.
+     */
     @RequestMapping("/promotions")
     public String promotions(Model model, HttpServletRequest httpRequest) throws Exception {
         insertCartDataToModel(httpRequest, model);
         model.addAttribute("products", getProductsWithDiscount());
         return "promotions";
+    }
+    /**
+     * Feedback page.
+     * @param model page model.
+     * @param httpRequest HTTP request.
+     * @return page.
+     * @throws Exception error.
+     */
+    @RequestMapping("/feedback")
+    public String feedback(Model model, HttpServletRequest httpRequest) throws Exception {
+        insertCartDataToModel(httpRequest, model);
+        return "feedback";
     }
     /**
      * Page not found.

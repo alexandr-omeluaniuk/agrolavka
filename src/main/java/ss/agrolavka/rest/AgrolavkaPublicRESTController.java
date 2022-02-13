@@ -31,6 +31,7 @@ import ss.agrolavka.dao.ProductDAO;
 import ss.agrolavka.util.UrlProducer;
 import ss.agrolavka.wrapper.ProductsSearchRequest;
 import ss.entity.agrolavka.Address;
+import ss.entity.agrolavka.Feedback;
 import ss.entity.agrolavka.Order;
 import ss.entity.agrolavka.OrderPosition;
 import ss.entity.agrolavka.Product;
@@ -142,6 +143,20 @@ class AgrolavkaPublicRESTController {
         position.setQuantity(quantity > 0 ? quantity : 1);
         request.getSession().setAttribute(SiteConstants.CART_SESSION_ATTRIBUTE, order);
         return order;
+    }
+    /**
+     * Save feedback.
+     * @param formValues form values.
+     * @throws Exception error.
+     */
+    @RequestMapping(value = "/feedback", method = RequestMethod.POST,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public Feedback saveFeedback(@RequestBody() Map<String, Object> formValues) throws Exception {
+        Feedback feedback = new Feedback();
+        feedback.setContact((String) formValues.get("contact"));
+        feedback.setMessage((String) formValues.get("message"));
+        feedback.setCreated(new Date());
+        return coreDAO.create(feedback);
     }
     /**
      * Confirm order.
