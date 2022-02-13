@@ -3,7 +3,8 @@
     "agrolavka": {
         "products": "Products",
         "orders": "Orders",
-        "sandbox": "Sandbox"
+        "sandbox": "Sandbox",
+        "feedbacks": "Feedbacks"
     },
     "products": {
         "product_groups": "Product groups",
@@ -43,6 +44,12 @@
         "disable_notifications": "Disable notifications",
         "disable_notifications_success": "Notifications have been turned off",
         "order_total": "Total sum"
+    },
+    "feedbacks": {
+        "feedback_number": "Nr.",
+        "contact": "Contact information",
+        "message": "Message",
+        "created": "Created"
     },
     "order": {
         "title": "Order # {{num}}",

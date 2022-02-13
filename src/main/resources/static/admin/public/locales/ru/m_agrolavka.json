@@ -3,7 +3,8 @@
     "agrolavka": {
         "products": "Товары",
         "orders": "Заказы",
-        "sandbox": "Песочница"
+        "sandbox": "Песочница",
+        "feedbacks": "Обратная связь"
     },
     "products": {
         "product_groups": "Категория товара",
@@ -43,6 +44,12 @@
         "disable_notifications": "Уведомления включены. Нажмите чтобы выключить уведомления",
         "disable_notifications_success": "Уведомления отключены",
         "order_total": "Сумма"
+    },
+    "feedbacks": {
+        "feedback_number": "Номер",
+        "contact": "Контактная информация",
+        "message": "Сообщение",
+        "created": "Создано"
     },
     "order": {
         "title": "Заказ № {{num}}",
