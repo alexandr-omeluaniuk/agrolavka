@@ -27,23 +27,16 @@
                     </div>
                 </section>
 
-                <section>
-                    <h3 class="text-center mb-4">Написать нам</h3>
-                    <p class="text-uppercase text-muted text-center">
-                        Помогите улучшить наш сайт
-                    </p>
-                </section>
-
                 <section class="m-2">
                     <form class="needs-validation shadow-1-strong p-4" novalidate id="feedback-form">
                         <fieldset>
                             <legend class="col-form-label pt-0 fw-bolder mb-2">
-                                Форма обратной связи
+                                Напишите нам
                             </legend>
 
                             <div class="mb-3">
                                 <label for="feedback-message">Сообщение</label>
-                                <textarea type="text" class="form-control" id="feedback-message" name="message" rows="9" required maxlength="10000"></textarea>
+                                <textarea type="text" class="form-control" id="feedback-message" name="message" rows="4" required maxlength="10000"></textarea>
                             </div>
 
                             <div class="mb-3">
