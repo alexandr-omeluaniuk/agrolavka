@@ -75,8 +75,8 @@
             submitFeedbackButton.addEventListener('click', function (event) {
                 var form = document.querySelector('#feedback-form');
                 if (!form.checkValidity()) {
-                    event.preventDefault()
-                    event.stopPropagation()
+                    event.preventDefault();
+                    event.stopPropagation();
                 } else {
                     submitFeedbackButton.setAttribute('disabled', 'true');
                     const formData = {};
