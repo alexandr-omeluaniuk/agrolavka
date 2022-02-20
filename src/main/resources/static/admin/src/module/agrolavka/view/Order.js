@@ -86,6 +86,7 @@ function Order(props) {
     const { setTitle, setIcon } = useContext(ToolbarContext);
     const [order, setOrder] = React.useState(null);
     const [tableConfig, setTableConfig] = React.useState(null);
+    const [adminComment, setAdminComment] = React.useState(null);
     const { t } = useTranslation();
     // -------------------------------------------------------- METHODS -------------------------------------------------------------------
     const getNum = (order) => {
@@ -99,8 +100,8 @@ function Order(props) {
             setOrder(JSON.parse(JSON.stringify(order)));
         });
     };
-    const onAdminCommentChanged = (value) => {
-        order.adminComment = value;
+    const onAdminCommentChanged = () => {
+        order.adminComment = adminComment;
         dataService.put('/agrolavka/protected/order', order).then(() => {
             setOrder(JSON.parse(JSON.stringify(order)));
         });
@@ -115,6 +116,7 @@ function Order(props) {
     }, [id, setIcon, setTitle, t]);
     useEffect(() => {
         if (order) {
+            setAdminComment(order.adminComment);
             setTableConfig(new TableConfig(t('m_agrolavka:order.positions'), new ApiURL(
                         '/agrolavka/protected/order/positions/' + order.id,
                         null,
@@ -256,8 +258,10 @@ function Order(props) {
                                     </Select>
                                 </FormControl>
                                 <TextField label={t('m_agrolavka:order.adminComment')} fullWidth={true} 
-                                    onChange={(e) => onAdminCommentChanged(e.target.value)} className={classes.adminComment}
-                                    value={order.adminComment} name={'admin_comment'} multiline variant={'outlined'} rows={4}/>
+                                    onChange={(e) => {
+                                        setAdminComment(e.target.value);
+                                    }} onBlur={onAdminCommentChanged} className={classes.adminComment}
+                                    value={adminComment} name={'admin_comment'} multiline variant={'outlined'} rows={4}/>
                             </React.Fragment>
                     ) : null}
                     <Divider className={classes.divider}/>
