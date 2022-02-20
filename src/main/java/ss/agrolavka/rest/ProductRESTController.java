@@ -39,6 +39,7 @@ public class ProductRESTController {
      * @param code product code.
      * @param groupId group ID.
      * @param available product is available.
+     * @param discounts with discounts.
      * @return products portion.
      * @throws Exception error.
      */
@@ -51,8 +52,9 @@ public class ProductRESTController {
             @RequestParam(value = "search_text", required = false) String searchText,
             @RequestParam(value = "code", required = false) String code,
             @RequestParam(value = "group_id", required = false) Long groupId,
-            @RequestParam(value = "available", required = false) boolean available)
-            throws Exception {
+            @RequestParam(value = "available", required = false) boolean available,
+            @RequestParam(value = "discounts", required = false) boolean discounts
+    ) throws Exception {
         ProductsSearchRequest request = new ProductsSearchRequest();
         request.setPage(page);
         request.setPageSize(pageSize);
@@ -62,6 +64,7 @@ public class ProductRESTController {
         request.setOrderBy(orderBy);
         request.setCode(code);
         request.setAvailable(available);
+        request.setWithDiscounts(discounts);
         EntitySearchResponse response = new EntitySearchResponse();
         response.setData(productDAO.search(request));
         response.setTotal(productDAO.count(request).intValue());

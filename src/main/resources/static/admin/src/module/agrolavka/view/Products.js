@@ -63,6 +63,7 @@ function Products() {
     const [filterProductName, setFilterProductName] = React.useState(null);
     const [filterCode, setFilterCode] = React.useState(null);
     const [filterAvailable, setFilterAvailable] = React.useState(false);
+    const [filterDiscounts, setFilterDiscounts] = React.useState(false);
     // ------------------------------------------------------- METHODS --------------------------------------------------------------------
     const productsFilter = () => {
         return (
@@ -72,15 +73,22 @@ function Products() {
                             setFilterProductName(e.target.value);
                         }}/>
                     </Grid>
-                    <Grid item xs={6} md={3}>
+                    <Grid item xs={12} md={2}>
                         <TextField label={t('m_agrolavka:products.product_code')} variant="outlined" fullWidth onChange={(e) => {
                             setFilterCode(e.target.value);
                         }}/>
                     </Grid>
-                    <Grid item xs={6} md={3} className={classes.filterAvailable}>
+                    <Grid item xs={6} md={2} className={classes.filterAvailable}>
                         <FormControlLabel label={t('m_agrolavka:products.available')} control={(
                             <Switch checked={filterAvailable} onChange={(e) => {
                                 setFilterAvailable(e.target.checked);
+                            }}/>
+                        )}/>
+                    </Grid>
+                    <Grid item xs={6} md={2} className={classes.filterAvailable}>
+                        <FormControlLabel label={t('m_agrolavka:products.discounts')} control={(
+                            <Switch checked={filterDiscounts} onChange={(e) => {
+                                setFilterDiscounts(e.target.checked);
                             }}/>
                         )}/>
                     </Grid>
@@ -135,6 +143,7 @@ function Products() {
         apiUrl.addGetExtraParam('search_text', filterProductName ? filterProductName : '');
         apiUrl.addGetExtraParam('code', filterCode ? filterCode : '');
         apiUrl.addGetExtraParam('available', filterAvailable);
+        apiUrl.addGetExtraParam('discounts', filterDiscounts);
         const newTableConfig = new TableConfig(
                 t('m_agrolavka:agrolavka.products') + (selectedProductGroup ? ` (${selectedProductGroup.name})` : ''), apiUrl, [
             new TableColumn('avatar', '', (row) => {
@@ -202,7 +211,7 @@ function Products() {
         })).setElevation(1).setFilter(productsFilter()).setToolbarActionsBefore(toolbarBefore());
         setTableConfig(newTableConfig);
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [selectedProductGroup, filterProductName, filterCode, filterAvailable]);
+    }, [selectedProductGroup, filterProductName, filterCode, filterAvailable, filterDiscounts]);
     // ------------------------------------------------------- RENDERING ------------------------------------------------------------------
     if (tableConfig === null) {
         return null;
