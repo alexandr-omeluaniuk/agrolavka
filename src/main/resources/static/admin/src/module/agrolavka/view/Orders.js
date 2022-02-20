@@ -11,6 +11,7 @@ import { TableConfig, TableColumn, FormConfig, FormField, ALIGN_RIGHT, ApiURL } 
 import { TYPES } from '../../../service/DataTypeService';
 import DataTable from '../../../component/datatable/DataTable';
 import Link from '@material-ui/core/Link';
+import Badge from '@material-ui/core/Badge';
 import Icon from '@material-ui/core/Icon';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
@@ -133,7 +134,17 @@ function Orders() {
             new TableColumn('id', t('m_agrolavka:orders.order_number'), (row) => {
                 let num = row.id.toString();
                 while (num.length < 5) num = "0" + num;
-                return <NavLink to={AppURLs.app + '/agrolavka/order/' + row.id} color="primary">{num}</NavLink>;
+                const navLink = <NavLink to={AppURLs.app + '/agrolavka/order/' + row.id} color="primary">{num}</NavLink>;
+                return row.adminComment ? (
+                    <Tooltip title={row.adminComment}>
+                        <Badge variant="dot" color="primary" anchorOrigin={{
+                            vertical: 'top',
+                            horizontal: 'left'
+                        }}>
+                            {navLink}
+                        </Badge>
+                    </Tooltip>
+                ) : navLink;
             }).width('100px').setSortable(),
             new TableColumn('phone', t('m_agrolavka:orders.order_number'), (row) => {
                 return <Link href={'tel:+375' + row.phone.replace(/\D/g,'')} color="primary">{row.phone}</Link>;
