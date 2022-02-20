@@ -18,6 +18,7 @@ import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
 import Avatar from '@material-ui/core/Avatar';
+import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -73,6 +74,9 @@ const useStyles = makeStyles(theme => ({
     },
     comment: {
         whiteSpace: 'pre'
+    },
+    adminComment: {
+        marginTop: theme.spacing(2)
     }
 }));
 
@@ -90,8 +94,14 @@ function Order(props) {
         return num;
     };
     const onStatusChanged = (status) => {
-        dataService.put('/agrolavka/protected/order/status/' + id + '/' + status).then(() => {
-            order.status = status;
+        order.status = status;
+        dataService.put('/agrolavka/protected/order', order).then(() => {
+            setOrder(JSON.parse(JSON.stringify(order)));
+        });
+    };
+    const onAdminCommentChanged = (value) => {
+        order.adminComment = value;
+        dataService.put('/agrolavka/protected/order', order).then(() => {
             setOrder(JSON.parse(JSON.stringify(order)));
         });
     };
@@ -244,7 +254,10 @@ function Order(props) {
                                         <MenuItem value={'DELIVERY'}>{t('m_agrolavka:order.statusConst.DELIVERY')}</MenuItem>
                                         <MenuItem value={'CLOSED'}>{t('m_agrolavka:order.statusConst.CLOSED')}</MenuItem>
                                     </Select>
-                              </FormControl>
+                                </FormControl>
+                                <TextField label={t('m_agrolavka:order.adminComment')} fullWidth={true} 
+                                    onChange={(e) => onAdminCommentChanged(e.target.value)} className={classes.adminComment}
+                                    value={order.adminComment} name={'admin_comment'} multiline variant={'outlined'} rows={4}/>
                             </React.Fragment>
                     ) : null}
                     <Divider className={classes.divider}/>

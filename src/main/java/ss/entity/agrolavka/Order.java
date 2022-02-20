@@ -21,6 +21,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import org.hibernate.validator.constraints.Length;
 import ss.agrolavka.constants.OrderStatus;
 import ss.entity.martin.DataModel;
 
@@ -51,8 +52,13 @@ public class Order extends DataModel {
     @Column(name = "phone", nullable = false, length = 255)
     private String phone;
     /** Comment. */
+    @Length(max = 10000)
     @Column(name = "comment", length = 10000)
     private String comment;
+    /** Admin comment. */
+    @Length(max = 3000)
+    @Column(name = "admin_comment", length = 3000)
+    private String adminComment;
     /** Order status. */
     @NotNull
     @Enumerated(EnumType.STRING)
@@ -130,6 +136,18 @@ public class Order extends DataModel {
      */
     public void setComment(String comment) {
         this.comment = comment;
+    }
+    /**
+     * @return the adminComment
+     */
+    public String getAdminComment() {
+        return adminComment;
+    }
+    /**
+     * @param adminComment the adminComment to set
+     */
+    public void setAdminComment(String adminComment) {
+        this.adminComment = adminComment;
     }
     // ================================================================================================================
     @Override

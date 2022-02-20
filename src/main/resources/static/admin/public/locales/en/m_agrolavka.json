@@ -74,7 +74,8 @@
         "search_text": "Search...",
         "show_archive": "Show archive",
         "contacts": "Contacts",
-        "comment": "Comment"
+        "comment": "Comment",
+        "adminComment": "My comment"
     },
     "backup": "Do data backup"
 }

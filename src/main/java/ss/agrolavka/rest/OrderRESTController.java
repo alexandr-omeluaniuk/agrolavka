@@ -9,11 +9,11 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import ss.agrolavka.constants.OrderStatus;
 import ss.agrolavka.dao.OrderDAO;
 import ss.agrolavka.wrapper.OrderSearchRequest;
 import ss.entity.agrolavka.Order;
@@ -70,16 +70,16 @@ public class OrderRESTController {
         return order.getPositions();
     }
     /**
-     * Change order status.
-     * @param id order ID.
-     * @param status status
+     * Update order.
+     * @param orderForm order form.
      * @throws Exception error.
      */
-    @RequestMapping(value = "/status/{id}/{status}", method = RequestMethod.PUT,
+    @RequestMapping(method = RequestMethod.PUT,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public void changeOrderStatus(@PathVariable("id") Long id, @PathVariable("status") String status) throws Exception {
-        Order order = coreDAO.findById(id, Order.class);
-        order.setStatus(OrderStatus.valueOf(status));
+    public void updateOrder(@RequestBody Order orderForm) throws Exception {
+        Order order = coreDAO.findById(orderForm.getId(), Order.class);
+        order.setAdminComment(orderForm.getAdminComment());
+        order.setStatus(orderForm.getStatus());
         coreDAO.update(order);
     }
     /**
