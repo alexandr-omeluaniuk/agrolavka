@@ -75,7 +75,7 @@ class AgrolavkaPublicRESTController {
         List<Product> list = productDAO.search(request);
         for (Product product : list) {
             product.setBuyPrice(null);
-            product.setQuantity(product.getQuantity() > 0 ? 1d : 0d);
+            product.setQuantity(product.getQuantity() != null && product.getQuantity() > 0 ? 1d : 0d);
             product.setUrl(UrlProducer.buildProductUrl(product));
         }
         result.put("data", list);
