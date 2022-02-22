@@ -261,7 +261,7 @@ function Order(props) {
                                     onChange={(e) => {
                                         setAdminComment(e.target.value);
                                     }} onBlur={onAdminCommentChanged} className={classes.adminComment}
-                                    value={adminComment} name={'admin_comment'} multiline variant={'outlined'} rows={4}/>
+                                    value={adminComment ? adminComment : ''} name={'admin_comment'} multiline variant={'outlined'} rows={4}/>
                             </React.Fragment>
                     ) : null}
                     <Divider className={classes.divider}/>

@@ -28,11 +28,17 @@ import { ApiURL } from '../../util/model/TableConfig';
 
 let dataService = new DataService();
 
+const LAST_PAGE_NUMBER = 'last-page-number';
+
 const useStyles = makeStyles(theme => ({
     paperMobile: {
         backgroundColor: '#fff0'
     }
 }));
+
+const getDefaultPage = () => {
+    return sessionStorage.getItem(LAST_PAGE_NUMBER) ? parseInt(sessionStorage.getItem(LAST_PAGE_NUMBER)) : 0;
+};
 
 function DataTable(props) {
     const classes = useStyles();
@@ -51,28 +57,34 @@ function DataTable(props) {
     const [confirmDialogOpen, setConfirmDialogOpen] = React.useState(false);
     const [dense, setDense] = React.useState(
             localStorage.getItem(DENSE_PADDING) && localStorage.getItem(DENSE_PADDING) !== 'false' ? true : false);
-    const [page, setPage] = React.useState(0);
+    const [page, setPage] = React.useState(null);
     const [rowsPerPage, setRowsPerPage] = React.useState(
             localStorage.getItem(ITEMS_PER_PAGE) ? parseInt(localStorage.getItem(ITEMS_PER_PAGE)) : 5);
     const [formDisabled, setFormDisabled] = React.useState(false);
     // ============================================================ HOOKS =================================================================
     useEffect(() => {
-        setPage(0);
+        setPage(getDefaultPage());
     }, [tableConfig]);
     useEffect(() => {
-        let params = tableConfig.disablePaging ? '?' : `?page=${page + 1}&page_size=${rowsPerPage}`;
-        if (order && orderBy) {
-            params += `&order=${order}&order_by=${orderBy}`;
-        }
-        if (tableConfig.apiUrl instanceof ApiURL && tableConfig.apiUrl.getGetExtraParams()) {
-            params += '&' + tableConfig.apiUrl.getGetExtraParams();
-        }
-        dataService.get(`${tableConfig.apiUrl instanceof ApiURL ? tableConfig.apiUrl.getUrl : tableConfig.apiUrl}${params}`).then(resp => {
-            if (resp) {
-                setData(tableConfig.disablePaging ? resp : resp.data);
-                setTotal(tableConfig.disablePaging ? resp.length : resp.total);
+        if (page !== null) {
+            let params = tableConfig.disablePaging ? '?' : `?page=${page + 1}&page_size=${rowsPerPage}`;
+            if (order && orderBy) {
+                params += `&order=${order}&order_by=${orderBy}`;
             }
-        });
+            if (tableConfig.apiUrl instanceof ApiURL && tableConfig.apiUrl.getGetExtraParams()) {
+                params += '&' + tableConfig.apiUrl.getGetExtraParams();
+            }
+            dataService.get(`${tableConfig.apiUrl instanceof ApiURL ? tableConfig.apiUrl.getUrl : tableConfig.apiUrl}${params}`).then(resp => {
+                if (resp) {
+                    setData(tableConfig.disablePaging ? resp : resp.data);
+                    setTotal(tableConfig.disablePaging ? resp.length : resp.total);
+                    const maxPage = Math.floor(resp.total / rowsPerPage);
+                    if (page > maxPage) {
+                        setPage(0);
+                    }
+                }
+            });
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [load, tableConfig, page, rowsPerPage, order, orderBy]);
 //    useEffect(() => {
@@ -150,6 +162,7 @@ function DataTable(props) {
     };
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
+        sessionStorage.setItem(LAST_PAGE_NUMBER, newPage);
     };
     const handleChangeRowsPerPage = (event) => {
         setRowsPerPage(parseInt(event.target.value, 10));
@@ -158,9 +171,10 @@ function DataTable(props) {
     };
     // ============================================================ RENDERING =============================================================
     const pagination = () => {
+        let maxPage = Math.floor(total / rowsPerPage);
         let c = function () {
             return <TablePagination rowsPerPageOptions={[5, 10, 25]} component="div" count={total}
-                    rowsPerPage={rowsPerPage} page={page}
+                    rowsPerPage={rowsPerPage} page={page >= maxPage ? maxPage : page}
                     onChangePage={handleChangePage} onChangeRowsPerPage={handleChangeRowsPerPage}/>;
         };
         return <Paper elevation={tableConfig.getElevation()}>{c()}</Paper>;
