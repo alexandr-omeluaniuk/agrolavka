@@ -129,7 +129,7 @@ function Order(props) {
                                 : `/assets/img/no-image.png`} />;
                 }).setSortable().width('40px'),
                 new TableColumn('name', t('m_agrolavka:order.position.name'), (row) => {
-                    return row.product.name;
+                    return row.product ? row.product.name : '<--->';
                 }).setSortable(),
                 new TableColumn('quantity', t('m_agrolavka:order.position.quantity'), (row) => {
                     return row.quantity;
