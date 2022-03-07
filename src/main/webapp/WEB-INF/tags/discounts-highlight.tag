@@ -29,7 +29,7 @@
                     }
                     row.add(products.get(i));
                 }
-                if (row.size() != SIZE) {
+                if (!rows.contains(row)) {
                     rows.add(row);
                 }
                 for (List<Product> r : rows) {
