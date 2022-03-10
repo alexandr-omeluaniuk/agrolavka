@@ -40,11 +40,9 @@
                                             </legend>
                                             <label for="order-mobile" class="mb-1">Номер мобильного телефона</label>
                                             <div class="input-group mb-3">
-                                                <span class="input-group-text">+375</span>
+                                                <span class="input-group-text"><i class="fa fa-phone-alt"></i></span>
                                                 <input type="text" class="form-control" placeholder="Номер телефона" required
-                                                   data-format="(**) ***-**-**" data-mask="(__) ___-__-__" id="order-mobile"
-                                                   pattern="\([0-9][0-9]\)\s[0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]"
-                                                   name="phone">
+                                                   id="order-mobile" name="phone">
                                             </div>
                                             
                                             <div class="mb-3">
@@ -208,48 +206,6 @@
     (function () {
         "use strict";
 
-        function doFormat(x, pattern, mask) {
-            var strippedValue = x.replace(/[^0-9]/g, "");
-            var chars = strippedValue.split('');
-            var count = 0;
-
-            var formatted = '';
-            for (var i = 0; i < pattern.length; i++) {
-                const c = pattern[i];
-                if (chars[count]) {
-                    if (/\*/.test(c)) {
-                        formatted += chars[count];
-                        count++;
-                    } else {
-                        formatted += c;
-                    }
-                } else if (mask) {
-                    if (mask.split('')[i])
-                        formatted += mask.split('')[i];
-                }
-            }
-            return formatted;
-        }
-
-        document.querySelectorAll('[data-mask]').forEach(function (e) {
-            function format(elem) {
-                const val = doFormat(elem.value, elem.getAttribute('data-format'));
-                elem.value = doFormat(elem.value, elem.getAttribute('data-format'), elem.getAttribute('data-mask'));
-
-                if (elem.createTextRange) {
-                    var range = elem.createTextRange();
-                    range.move('character', val.length);
-                    range.select();
-                } else if (elem.selectionStart) {
-                    elem.focus();
-                    elem.setSelectionRange(val.length, val.length);
-                }
-            }
-            e.addEventListener('keyup', function () {
-                format(e);
-            });
-            format(e)
-        });
         const submitOrderButton = document.querySelector("#order-confirm");
         if (submitOrderButton) {
             submitOrderButton.addEventListener('click', function (event) {
