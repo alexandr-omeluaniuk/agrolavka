@@ -43,7 +43,7 @@ public class EuropostLocation extends DataModel {
     @JsonProperty("Address7Name")
     @NotNull
     @Column(name = "city", length = 255, nullable = false)
-    private String ciry;
+    private String city;
     @JsonProperty("Info1")
     @Column(name = "working_hours", length = 255)
     private String workingHours;
@@ -91,16 +91,16 @@ public class EuropostLocation extends DataModel {
         this.altId = altId;
     }
     /**
-     * @return the ciry
+     * @return the city
      */
-    public String getCiry() {
-        return ciry;
+    public String getCity() {
+        return city;
     }
     /**
-     * @param ciry the ciry to set
+     * @param city the city to set
      */
-    public void setCiry(String ciry) {
-        this.ciry = ciry;
+    public void setCity(String city) {
+        this.city = city;
     }
     /**
      * @return the workingHours
