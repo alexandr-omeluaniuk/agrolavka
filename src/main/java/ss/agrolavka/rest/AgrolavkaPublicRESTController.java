@@ -192,6 +192,8 @@ class AgrolavkaPublicRESTController {
             address.setLastname((String) formValues.get("lastname"));
             address.setMiddlename((String) formValues.get("middlename"));
             order.setAddress(address);
+        } else if (formValues.containsKey("europost_id") && !formValues.get("europost_id").toString().isBlank()) {
+            
         }
         Order savedOrder = coreDAO.create(order);
         Order neworder = new Order();

@@ -23,6 +23,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import ss.entity.martin.DataModel;
 
@@ -31,6 +32,7 @@ import ss.entity.martin.DataModel;
  * @author alex
  */
 @Entity
+@Table(name = "europost_location")
 public class EuropostLocation extends DataModel {
     // ============================================== FIELDS ==========================================================
     @JsonProperty("Address1Id")

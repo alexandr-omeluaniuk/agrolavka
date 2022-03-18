@@ -41,6 +41,10 @@ public class Order extends DataModel {
     @OneToOne(fetch = FetchType.EAGER, orphanRemoval = true, cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id")
     private Address address;
+    /** Europost location. */
+    @OneToOne(fetch = FetchType.EAGER, orphanRemoval = true, cascade = CascadeType.ALL)
+    @JoinColumn(name = "europost_location_snapshot_id")
+    private EuropostLocationSnapshot europostLocationSnapshot;
     /** Created. */
     @NotNull
     @Temporal(TemporalType.TIMESTAMP)
@@ -148,6 +152,18 @@ public class Order extends DataModel {
      */
     public void setAdminComment(String adminComment) {
         this.adminComment = adminComment;
+    }
+    /**
+     * @return the europostLocationSnapshot
+     */
+    public EuropostLocationSnapshot getEuropostLocationSnapshot() {
+        return europostLocationSnapshot;
+    }
+    /**
+     * @param europostLocationSnapshot the europostLocationSnapshot to set
+     */
+    public void setEuropostLocationSnapshot(EuropostLocationSnapshot europostLocationSnapshot) {
+        this.europostLocationSnapshot = europostLocationSnapshot;
     }
     // ================================================================================================================
     @Override

@@ -47,8 +47,8 @@ platform:
     login: /login
     logout: /logout
     loginPage: /admin/welcome
-    protectedRest: /api/agrolavka/protected/**
-    publicRest: /api/agrolavka/public/**
+    protectedRest: /api/agrolavka/protected/*
+    publicRest: /api/agrolavka/public/*
     registrationVerification: /admin/verification
     views: /admin/app
   #firebase
