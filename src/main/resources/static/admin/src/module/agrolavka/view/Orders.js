@@ -151,10 +151,13 @@ function Orders() {
             }).width('170px'),
             new TableColumn('address', t('m_agrolavka:orders.address'), (row) => {
                 const adr = row.address;
+                const europost = row.europostLocationSnapshot;
                 if (adr) {
                     return `${adr.postcode ? adr.postcode + ' ' : ''}${adr.city}, ${adr.street} д.${adr.house} ${adr.flat ? 'кв.' + adr.flat : ''}`;
+                } else if (europost) {
+                    return t('m_agrolavka:orders.delivery_europost');
                 }
-                return 'Самовывоз';
+                return t('m_agrolavka:orders.delivery_self');
             }),
             new TableColumn('status', t('m_agrolavka:order.status'), (row) => {
                 return t('m_agrolavka:order.statusConst.' + row.status);

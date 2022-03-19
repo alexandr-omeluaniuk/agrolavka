@@ -16,7 +16,7 @@
     <div class="input-group me-4 d-lg-none d-xl-flex" id="agr-europost-location-dropdown">
         <span class="input-group-text"><i class="fas fa-mail-bulk"></i></span>
         <input type="search" class="form-control" aria-label="Отделения Европочты" placeholder="Выберите отделение Европочты"
-               autocomplete="chrome-off" id="agr-europost-location-input" name="europostLocationName" required
+               autocomplete="chrome-off" id="agr-europost-location-input" name="europostLocationName" required readonly
                style="border-top-right-radius: 0.25rem; border-bottom-right-radius: 0.25rem;">
         <ul class="dropdown-menu w-100" aria-labelledby="agr-europost-locations-list" id="agr-europost-locations-list"
                 style="overflow-y: auto; max-height: 500px;">

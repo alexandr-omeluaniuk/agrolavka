@@ -234,6 +234,12 @@ function Order(props) {
         }
         return result;
     };
+    const europost = () => {
+        const result = [];
+        result.push(<Chip label={chip(t('m_agrolavka:orders.delivery_europost'))} key={1} color="secondary" className={classes.chip}/>);
+        result.push(<Chip label={chip(order.europostLocationSnapshot.WarehouseName)} key={2} color="secondary" className={classes.chip}/>);
+        return result;
+    };
     if (!order || !tableConfig) {
         return null;
     }
@@ -268,7 +274,7 @@ function Order(props) {
                     <Typography variant={'h6'}>
                         {t('m_agrolavka:order.contacts')}
                     </Typography>
-                    <Link href={'tel:+375' + order.phone.replace(/\D/g,'')} color="primary">+375 {order.phone}</Link><br/>
+                    <Link href={'tel:+375' + order.phone.replace(/\D/g,'')} color="primary">{order.phone}</Link><br/>
                     {order.comment ? (
                             <React.Fragment>
                                 <Divider className={classes.divider}/>
@@ -281,6 +287,7 @@ function Order(props) {
                             </React.Fragment>
                     ) : null}
                     {order.address ? (<React.Fragment><Divider className={classes.divider}/>{address()}</React.Fragment>) : null}
+                    {order.europostLocationSnapshot ? (<React.Fragment><Divider className={classes.divider}/>{europost()}</React.Fragment>) : null}
                     <Divider className={classes.divider}/>
                     <DataTable tableConfig={tableConfig}/>
                 </CardContent>
