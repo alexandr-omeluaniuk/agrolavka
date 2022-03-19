@@ -19,32 +19,25 @@ package ss.agrolavka.service.impl;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.beans.factory.config.BeanDefinition;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import ss.agrolavka.service.BackupService;
-import ss.martin.platform.service.EmailService;
 import ss.martin.platform.spring.config.PlatformConfiguration;
-import ss.martin.platform.wrapper.EmailRequest;
 
 /**
  * Backup service implementation.
  * @author alex
  */
 @Service
-@Scope(BeanDefinition.SCOPE_SINGLETON)
 public class BackupServiceImpl implements BackupService {
     /** Logger. */
     private static final Logger LOG = LoggerFactory.getLogger(MySkladIntegrationServiceImpl.class);
-    
+    /** Backup directory. */
     private static final File BACKUP_DIR = new File("/tmp/agrolavka");
     /** DB username. */
     @Value("${spring.datasource.username}")

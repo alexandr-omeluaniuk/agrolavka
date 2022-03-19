@@ -12,32 +12,27 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import ss.agrolavka.constants.OrderStatus;
 import ss.agrolavka.constants.SiteConstants;
 import ss.agrolavka.dao.ProductDAO;
+import ss.agrolavka.service.OrderService;
 import ss.agrolavka.util.UrlProducer;
+import ss.agrolavka.wrapper.OrderDetailsWrapper;
 import ss.agrolavka.wrapper.ProductsSearchRequest;
-import ss.entity.agrolavka.Address;
 import ss.entity.agrolavka.Feedback;
 import ss.entity.agrolavka.Order;
 import ss.entity.agrolavka.OrderPosition;
 import ss.entity.agrolavka.Product;
 import ss.martin.platform.dao.CoreDAO;
-import ss.martin.platform.service.FirebaseClient;
-import ss.martin.platform.wrapper.PushNotification;
 
 /**
  * Public REST controller.
@@ -52,9 +47,9 @@ class AgrolavkaPublicRESTController {
     /** Product DAO. */
     @Autowired
     private ProductDAO productDAO;
-    /** Firebase client. */
+    /** Order service. */
     @Autowired
-    private FirebaseClient firebaseClient;
+    private OrderService orderService;
     /**
      * Search product.
      * @param searchText search text.
@@ -161,53 +156,19 @@ class AgrolavkaPublicRESTController {
     /**
      * Confirm order.
      * @param request HTTP request.
-     * @param formValues form values.
+     * @param orderWrapper form values.
      * @return order.
      * @throws Exception error.
      */
-    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     @RequestMapping(value = "/order", method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public Order confirmOrder(HttpServletRequest request, @RequestBody() Map<String, Object> formValues)
+    public Order confirmOrder(HttpServletRequest request, @RequestBody() OrderDetailsWrapper orderWrapper)
             throws Exception {
         final Order order = (Order) request.getSession(true).getAttribute(SiteConstants.CART_SESSION_ATTRIBUTE);
-        Double total = 0d;
-        for (OrderPosition pos : order.getPositions()) {
-            total += pos.getQuantity() * pos.getPrice();
-        }
-        order.setPhone((String) formValues.get("phone"));
-        order.setComment((String) formValues.get("comment"));
-        order.setCreated(new Date());
-        order.setStatus(OrderStatus.WAITING_FOR_APPROVAL);
-        if (formValues.containsKey("city") && !formValues.get("city").toString().isBlank()) {
-            Address address = new Address();
-            address.setRegion((String) formValues.get("region"));
-            address.setDistrict((String) formValues.get("district"));
-            address.setCity((String) formValues.get("city"));
-            address.setHouse((String) formValues.get("house"));
-            address.setStreet((String) formValues.get("street"));
-            address.setPostcode((String) formValues.get("postcode"));
-            address.setFlat((String) formValues.get("flat"));
-            address.setFirstname((String) formValues.get("firstname"));
-            address.setLastname((String) formValues.get("lastname"));
-            address.setMiddlename((String) formValues.get("middlename"));
-            order.setAddress(address);
-        } else if (formValues.containsKey("europost_id") && !formValues.get("europost_id").toString().isBlank()) {
-            
-        }
-        Order savedOrder = coreDAO.create(order);
-        Order neworder = new Order();
-        neworder.setPositions(new HashSet<>());
-        request.getSession().setAttribute(SiteConstants.CART_SESSION_ATTRIBUTE, neworder);
-        PushNotification notification = new PushNotification();
-        notification.setTitle("Поступил новый заказ");
-        notification.setBody("Потенциальная сумма заказа - " + String.format("%.2f", total)
-                + " BYN. Номер заказа: " + savedOrder.getId());
-        notification.setTtlInSeconds(String.valueOf(TimeUnit.DAYS.toSeconds(1)));
-        notification.setIcon("https://agrolavka.by/favicon.svg");
-        notification.setClickAction("https://agrolavka.by/admin/app/agrolavka/order/" + savedOrder.getId());
-        notification.setClickActionLabel("Открыть");
-        firebaseClient.sendTopicNotification(notification, SiteConstants.FIREBASE_TOPIC_ORDER_CREATED);
+        final Order savedOrder = orderService.createOrder(order, orderWrapper);
+        final Order newOrder = new Order();
+        newOrder.setPositions(new HashSet<>());
+        request.getSession().setAttribute(SiteConstants.CART_SESSION_ATTRIBUTE, newOrder);
         return savedOrder;
     }
 }
