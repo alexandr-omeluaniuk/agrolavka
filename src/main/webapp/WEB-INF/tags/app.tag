@@ -76,7 +76,7 @@
         <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.5.0/mdb.min.css" rel="stylesheet"/>
 
         <!-- Main CSS File -->
-        <link href="/assets/css/style-mb.css?v=6" rel="stylesheet">
+        <link href="/assets/css/style-mb.css?v=7" rel="stylesheet">
     </head>
 
     <body>

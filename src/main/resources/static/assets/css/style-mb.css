@@ -167,7 +167,7 @@ and open the template in the editor.
 #agr-quick-search-result-desktop .text-muted, #agr-quick-search-result-mobile .text-muted {
     font-size: .8rem;
 }
-#agr-quick-search-result-desktop .highlighted-text, #agr-quick-search-result-mobile .highlighted-text {
+#agr-quick-search-result-desktop .highlighted-text, #agr-quick-search-result-mobile .highlighted-text, #agr-europost-locations-list .highlighted-text {
     color: var(--bs-purple);
     background-color: rgba(121,82,179,.07);
 }

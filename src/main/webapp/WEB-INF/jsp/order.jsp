@@ -99,17 +99,26 @@
                     address.querySelectorAll('input[required]').forEach(input => {
                         input.setAttribute("readonly", "true");
                     });
+                    europost.querySelectorAll('input[required]').forEach(input => {
+                        input.setAttribute("readonly", "true");
+                    });
                 } else if (event.target.id === "remote-delivery") {
                     europost.classList.add("d-none");
                     address.classList.remove("d-none");
                     address.querySelectorAll('input[required]').forEach(input => {
                         input.removeAttribute("readonly");
                     });
+                    europost.querySelectorAll('input[required]').forEach(input => {
+                        input.setAttribute("readonly", "true");
+                    });
                 } else if (event.target.id === "europost-delivery") {
                     address.classList.add("d-none");
                     europost.classList.remove("d-none");
-                    address.querySelectorAll('input[required]').forEach(input => {
+                    europost.querySelectorAll('input[required]').forEach(input => {
                         input.removeAttribute("readonly");
+                    });
+                    address.querySelectorAll('input[required]').forEach(input => {
+                        input.setAttribute("readonly", "true");
                     });
                 }
             });
