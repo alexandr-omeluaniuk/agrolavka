@@ -27,11 +27,13 @@ import ss.agrolavka.dao.ProductDAO;
 import ss.agrolavka.util.AppCache;
 import ss.agrolavka.util.UrlProducer;
 import ss.agrolavka.wrapper.ProductsSearchRequest;
+import ss.entity.agrolavka.EuropostLocation;
 import ss.entity.agrolavka.Order;
 import ss.entity.agrolavka.OrderPosition;
 import ss.entity.agrolavka.Product;
 import ss.entity.agrolavka.ProductsGroup;
 import ss.entity.martin.DataModel;
+import ss.martin.platform.dao.CoreDAO;
 
 /**
  * Site static pages controller.
@@ -44,6 +46,9 @@ public class SiteController {
     /** Product DAO. */
     @Autowired
     private ProductDAO productDAO;
+    /** Core DAO. */
+    @Autowired
+    private CoreDAO coreDAO;
     /**
      * Home page.
      * @param model data model.
@@ -93,6 +98,9 @@ public class SiteController {
     @RequestMapping("/order")
     public String order(Model model, HttpServletRequest httpRequest) throws Exception {
         insertCartDataToModel(httpRequest, model);
+        final List<EuropostLocation> locations = coreDAO.getAll(EuropostLocation.class);
+        Collections.sort(locations);
+        model.addAttribute("europostLocations", locations);
         return "order";
     }
     /**

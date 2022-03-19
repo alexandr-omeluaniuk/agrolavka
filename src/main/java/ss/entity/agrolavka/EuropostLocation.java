@@ -33,7 +33,7 @@ import ss.entity.martin.DataModel;
  */
 @Entity
 @Table(name = "europost_location")
-public class EuropostLocation extends DataModel {
+public class EuropostLocation extends DataModel implements Comparable<EuropostLocation> {
     // ============================================== FIELDS ==========================================================
     @JsonProperty("Address1Id")
     @NotNull
@@ -208,5 +208,16 @@ public class EuropostLocation extends DataModel {
     @Override
     public String toString() {
         return "ss.entity.agrolavka.EuropostLocation[ id=" + getId() + " ]";
+    }
+
+    @Override
+    public int compareTo(EuropostLocation location) {
+        if (location.getCity().compareTo(this.getCity()) > 0) {
+            return -1;
+        } else if (location.getCity().compareTo(this.getCity()) < 0) {
+            return 1;
+        } else {
+            return location.getAddress().compareTo(this.getAddress()) > 0 ? -1 : 1;
+        }
     }
 }

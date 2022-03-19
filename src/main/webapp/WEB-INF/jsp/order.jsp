@@ -28,7 +28,7 @@
                                         <fieldset>
                                             <order:delivery-type/>
                                             <order:delivery-post/>
-                                            <order:delivery-europost/>
+                                            <order:delivery-europost europostLocations="${europostLocations}"/>
                                         </fieldset>
                                     </form>
                                 </div>
