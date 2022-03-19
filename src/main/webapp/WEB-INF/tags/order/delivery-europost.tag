@@ -23,10 +23,7 @@
             <c:forEach items="${europostLocations}" var="location">
                 <li class="agr-product-search-link" data-location-address="${location.address}" data-location-id="${location.id}">
                     <a class="dropdown-item" href="#">
-                        <div class="d-flex w-100 justify-content-between">
-                            <h6>${location.address}</h6>
-                            <small class="text-muted">${location.city}</small>
-                        </div>
+                        <h6 style="white-space: pre-wrap;">${location.address}</h6>
                         <div class="d-flex justify-content-between">
                             <small style="white-space: pre-wrap;">${location.workingHours}</small>
                         </div>

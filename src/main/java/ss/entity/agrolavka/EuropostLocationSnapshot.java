@@ -16,17 +16,169 @@
  */
 package ss.entity.agrolavka;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import javax.persistence.Column;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import ss.entity.martin.DataModel;
 
 /**
  * Europost location snapshot.
  * @author alex
  */
 @Entity
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-public class EuropostLocationSnapshot extends EuropostLocation {
+@Table(name = "europost_location_snapshot")
+public class EuropostLocationSnapshot extends DataModel {
+    // ============================================== FIELDS ==========================================================
+    @NotNull
+    @Column(name = "external_id", length = 255, nullable = false)
+    private String externalId;
+    @Column(name = "alt_id", length = 255)
+    private String altId;
+    @NotNull
+    @Column(name = "city", length = 255, nullable = false)
+    private String city;
+    @Column(name = "working_hours", length = 255)
+    private String workingHours;
+    @Column(name = "latitude", length = 255)
+    private String latitude;
+    @Column(name = "longitude")
+    private String longitude;
+    @Column(name = "note", length = 3000)
+    private String note;
+    @Column(name = "address", length = 255)
+    private String address;
+    @Column(name = "warehouse_id", length = 255)
+    private String warehouseId;
+    @Column(name = "is_new", length = 255)
+    private String isNew;
+    // ============================================== SET & GET =======================================================
+    /**
+     * @return the externalId
+     */
+    public String getExternalId() {
+        return externalId;
+    }
+    /**
+     * @param externalId the externalId to set
+     */
+    public void setExternalId(String externalId) {
+        this.externalId = externalId;
+    }
+    /**
+     * @return the altId
+     */
+    public String getAltId() {
+        return altId;
+    }
+    /**
+     * @param altId the altId to set
+     */
+    public void setAltId(String altId) {
+        this.altId = altId;
+    }
+    /**
+     * @return the city
+     */
+    public String getCity() {
+        return city;
+    }
+    /**
+     * @param city the city to set
+     */
+    public void setCity(String city) {
+        this.city = city;
+    }
+    /**
+     * @return the workingHours
+     */
+    public String getWorkingHours() {
+        return workingHours;
+    }
+    /**
+     * @param workingHours the workingHours to set
+     */
+    public void setWorkingHours(String workingHours) {
+        this.workingHours = workingHours;
+    }
+    /**
+     * @return the latitude
+     */
+    public String getLatitude() {
+        return latitude;
+    }
+    /**
+     * @param latitude the latitude to set
+     */
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
+    }
+    /**
+     * @return the longitude
+     */
+    public String getLongitude() {
+        return longitude;
+    }
+    /**
+     * @param longitude the longitude to set
+     */
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
+    }
+    /**
+     * @return the note
+     */
+    public String getNote() {
+        return note;
+    }
+    /**
+     * @param note the note to set
+     */
+    public void setNote(String note) {
+        this.note = note;
+    }
+    /**
+     * @return the address
+     */
+    public String getAddress() {
+        return address;
+    }
+    /**
+     * @param address the address to set
+     */
+    public void setAddress(String address) {
+        this.address = address;
+    }
+    /**
+     * @return the warehouseId
+     */
+    public String getWarehouseId() {
+        return warehouseId;
+    }
+    /**
+     * @param warehouseId the warehouseId to set
+     */
+    public void setWarehouseId(String warehouseId) {
+        this.warehouseId = warehouseId;
+    }
+
+    /**
+     * @return the isNew
+     */
+    public String getIsNew() {
+        return isNew;
+    }
+
+    /**
+     * @param isNew the isNew to set
+     */
+    public void setIsNew(String isNew) {
+        this.isNew = isNew;
+    }
     // ================================================================================================================
     @Override
     public int hashCode() {

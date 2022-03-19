@@ -237,7 +237,7 @@ function Order(props) {
     const europost = () => {
         const result = [];
         result.push(<Chip label={chip(t('m_agrolavka:orders.delivery_europost'))} key={1} color="secondary" className={classes.chip}/>);
-        result.push(<Chip label={chip(order.europostLocationSnapshot.WarehouseName)} key={2} color="secondary" className={classes.chip}/>);
+        result.push(<Chip label={chip(order.europostLocationSnapshot.address)} key={2} color="secondary" className={classes.chip}/>);
         return result;
     };
     if (!order || !tableConfig) {
