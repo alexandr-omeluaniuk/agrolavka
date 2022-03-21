@@ -67,14 +67,17 @@
                         <div class="col-sm-12 col-md-4">
                             <div class="card shadow-1-strong mb-3">
                                 <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
-                                    <h5 class="mb-3 mt-3 text-center text-dark"><strong>Самовывоз</strong></h5>
-                                    <div class="card-img-top agr-card-image" style="background-image: url('/assets/img/delivery/selfpickup.jpg')"></div>
+                                    <h5 class="mb-3 mt-3 text-center text-dark"><strong>Доставка Европочтой</strong></h5>
+                                    <div class="card-img-top agr-card-image" style="background-image: url('/assets/img/delivery/europost.jpg')"></div>
                                     <div class="mask" style="background-color: rgba(0, 0, 0, 0.05)"></div>
                                     
                                 </div>
                                 <div class="card-body">
-                                    <small class="mb-0 text-dark">Бесплатно, из магазина, 
-                                        <a class="agr-link" href="#footer">расположенного в г.Дрогичине</a></small>
+                                    <small class="mb-0 text-dark">Доставка посылок по всей Беларуси, 
+                                        <a class="agr-link" href="https://evropochta.by/">Европочтой</a>
+                                        имеет ряд преимуществ, таких как низкие тарифы для физических и юридических лиц,
+                                        более 230 офисов по всей Беларуси
+                                    </small>
                                 </div>
                             </div>
                         </div>
@@ -117,6 +120,25 @@
                                     </div>
                                 </div>
                                 
+                            </div>
+                        </div>
+                        
+                    </div>
+                    
+                    <div class="row">
+                        
+                        <div class="col-sm-12 col-md-4">
+                            <div class="card shadow-1-strong mb-3">
+                                <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
+                                    <h5 class="mb-3 mt-3 text-center text-dark"><strong>Самовывоз</strong></h5>
+                                    <div class="card-img-top agr-card-image" style="background-image: url('/assets/img/delivery/selfpickup.jpg')"></div>
+                                    <div class="mask" style="background-color: rgba(0, 0, 0, 0.05)"></div>
+                                    
+                                </div>
+                                <div class="card-body">
+                                    <small class="mb-0 text-dark">Бесплатно, из магазина, 
+                                        <a class="agr-link" href="#footer">расположенного в г.Дрогичине</a></small>
+                                </div>
                             </div>
                         </div>
                         
