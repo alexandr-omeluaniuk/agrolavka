@@ -207,7 +207,7 @@ function ProductsGroups(props) {
                 ]),
                 new FormField('topCategory', TYPES.BOOLEAN, t('m_agrolavka:products_groups.product_group_top_category'))
                         .setGrid({xs: 12, md: 3}),
-                new FormField('description', TYPES.HTML_EDITOR, t('m_agrolavka:products_groups.product_group_description'))
+                new FormField('description', TYPES.TEXTAREA, t('m_agrolavka:products_groups.product_group_description'))
                         .setGrid({xs: 12}).validation([
                     new Validator(VALIDATORS.MAX_LENGTH, {length: 4096})
                 ]).setAttributes({ rows: 6, labelWidth: 200 }),

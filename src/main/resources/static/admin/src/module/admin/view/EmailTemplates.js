@@ -33,7 +33,7 @@ function EmailTemplates() {
             new Validator(VALIDATORS.REQUIRED),
             new Validator(VALIDATORS.MAX_LENGTH, {length: 255})
         ]),
-        new FormField('content', TYPES.HTML_EDITOR, t('m_administrator:email_templates.content')).setGrid({xs: 12}).validation([
+        new FormField('content', TYPES.TEXTAREA, t('m_administrator:email_templates.content')).setGrid({xs: 12}).validation([
             new Validator(VALIDATORS.REQUIRED),
             new Validator(VALIDATORS.MAX_LENGTH, {length: 2147483647})
         ]).setAttributes({
