@@ -64,11 +64,11 @@
         <!-- Inner -->
 
         <!-- Controls -->
-        <a class="carousel-control-prev" href="#introCarousel" role="button" data-mdb-slide="prev">
+        <a class="carousel-control-prev d-none" href="#introCarousel" role="button" data-mdb-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
             <span class="sr-only">Previous</span>
         </a>
-        <a class="carousel-control-next" href="#introCarousel" role="button" data-mdb-slide="next">
+        <a class="carousel-control-next d-none" href="#introCarousel" role="button" data-mdb-slide="next">
             <span class="carousel-control-next-icon" aria-hidden="true"></span>
             <span class="sr-only">Next</span>
         </a>

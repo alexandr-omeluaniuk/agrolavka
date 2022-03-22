@@ -45,6 +45,10 @@
         if (removeFromCartCartBtn) {
             removeFromCartListener(evt, removeFromCartCartBtn);
         }
+        const orderOneClickButton = evt.target.closest("[data-product-id][data-order]");
+        if (orderOneClickButton) {
+            orderOneClickButtonListener(evt, orderOneClickButton);
+        }
         const cartRemoveProductBtn = evt.target.closest("[data-product-id][data-remove-product-from-cart]");
         if (cartRemoveProductBtn) {
             cartRemoveProductListener(evt, cartRemoveProductBtn);
@@ -135,6 +139,13 @@
         }).catch(error => {
             console.error('HTTP error occurred: ' + error);
         });
+    };
+    
+    var orderOneClickButtonListener = function(evt, button) {
+        evt.preventDefault();
+        evt.stopPropagation();
+        const productId = button.getAttribute('data-product-id');
+        console.log(productId);
     };
     
     var cartRemoveProductListener = function (evt, button) {
