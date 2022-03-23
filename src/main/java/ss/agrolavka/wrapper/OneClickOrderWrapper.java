@@ -14,30 +14,39 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package ss.agrolavka.service;
-
-import ss.agrolavka.wrapper.OneClickOrderWrapper;
-import ss.agrolavka.wrapper.OrderDetailsWrapper;
-import ss.entity.agrolavka.Order;
+package ss.agrolavka.wrapper;
 
 /**
- * Order service.
+ * One-click order form.
  * @author alex
  */
-public interface OrderService {
+public class OneClickOrderWrapper {
+    /** Product ID. */
+    private Long productId;
+    /** Phone. */
+    private String phone;
     /**
-     * Create order.
-     * @param order order.
-     * @param orderDetails order details.
-     * @return new order.
-     * @throws Exception exception.
+     * @return the productId
      */
-    Order createOrder(Order order, OrderDetailsWrapper orderDetails) throws Exception;
+    public Long getProductId() {
+        return productId;
+    }
     /**
-     * Create one click order.
-     * @param orderDetails order details.
-     * @return order.
-     * @throws Exception error.
+     * @param productId the productId to set
      */
-    Order createOneClickOrder(OneClickOrderWrapper orderDetails) throws Exception;
+    public void setProductId(Long productId) {
+        this.productId = productId;
+    }
+    /**
+     * @return the phone
+     */
+    public String getPhone() {
+        return phone;
+    }
+    /**
+     * @param phone the phone to set
+     */
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 }

@@ -16,7 +16,9 @@
  */
 package ss.agrolavka.service.impl;
 
+import java.util.Collections;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,11 +29,14 @@ import org.springframework.transaction.annotation.Transactional;
 import ss.agrolavka.constants.OrderStatus;
 import ss.agrolavka.constants.SiteConstants;
 import ss.agrolavka.service.OrderService;
+import ss.agrolavka.wrapper.OneClickOrderWrapper;
 import ss.agrolavka.wrapper.OrderDetailsWrapper;
 import ss.entity.agrolavka.Address;
 import ss.entity.agrolavka.EuropostLocation;
 import ss.entity.agrolavka.EuropostLocationSnapshot;
 import ss.entity.agrolavka.Order;
+import ss.entity.agrolavka.OrderPosition;
+import ss.entity.agrolavka.Product;
 import ss.martin.platform.dao.CoreDAO;
 import ss.martin.platform.service.FirebaseClient;
 import ss.martin.platform.wrapper.PushNotification;
@@ -74,6 +79,26 @@ class OrderServiceImpl implements OrderService {
         final Order savedOrder = coreDAO.create(order);
         sendNotification(savedOrder, total);
         return savedOrder;
+    }
+    
+    @Override
+    public Order createOneClickOrder(final OneClickOrderWrapper orderDetails) throws Exception {
+        final Product product = coreDAO.findById(orderDetails.getProductId(), Product.class);
+        final OrderPosition position = new OrderPosition();
+        position.setQuantity(1);
+        position.setProduct(product);
+        position.setProductId(orderDetails.getProductId());
+        position.setPrice(product.getDiscountPrice());
+        final Double total = position.getQuantity() * position.getPrice();
+        final Order order = new Order();
+        order.setPhone(orderDetails.getPhone());
+        order.setCreated(new Date());
+        order.setStatus(OrderStatus.WAITING_FOR_APPROVAL);
+        order.setPositions(new HashSet<>(Collections.singletonList(position)));
+        position.setOrder(order);
+        final Order savedOrder = coreDAO.create(order);
+        sendNotification(savedOrder, total);
+        return order;
     }
     
     private Address getOrderAddress(final OrderDetailsWrapper orderDetails) {

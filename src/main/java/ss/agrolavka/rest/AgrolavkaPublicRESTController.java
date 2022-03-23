@@ -26,6 +26,7 @@ import ss.agrolavka.constants.SiteConstants;
 import ss.agrolavka.dao.ProductDAO;
 import ss.agrolavka.service.OrderService;
 import ss.agrolavka.util.UrlProducer;
+import ss.agrolavka.wrapper.OneClickOrderWrapper;
 import ss.agrolavka.wrapper.OrderDetailsWrapper;
 import ss.agrolavka.wrapper.ProductsSearchRequest;
 import ss.entity.agrolavka.Feedback;
@@ -170,5 +171,16 @@ class AgrolavkaPublicRESTController {
         newOrder.setPositions(new HashSet<>());
         request.getSession().setAttribute(SiteConstants.CART_SESSION_ATTRIBUTE, newOrder);
         return savedOrder;
+    }
+    /**
+     * Confirm one-click order.
+     * @param orderWrapper order form.
+     * @return order.
+     * @throws Exception error.
+     */
+    @RequestMapping(value = "/order/one-click", method = RequestMethod.POST,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public Order confirmOneClickOrder(@RequestBody() OneClickOrderWrapper orderWrapper) throws Exception {
+        return orderService.createOneClickOrder(orderWrapper);
     }
 }

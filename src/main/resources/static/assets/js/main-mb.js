@@ -150,7 +150,10 @@
         evt.stopPropagation();
         const productId = button.getAttribute('data-product-id');
         const modalElement = document.getElementById('agr-one-click-order-modal');
-        modalElement.querySelector('input[name="productId"]').setAttribute('data-one-click-order', productId);
+        modalElement.querySelector('input[name="productId"]').value = productId;
+        const confirmButton = modalElement.querySelector('button[data-one-click-order]');
+        confirmButton.removeAttribute('disabled');
+        confirmButton.querySelector('.spinner-border').classList.add('d-none');
         const modal = new mdb.Modal(modalElement, {});
         modal.toggle();
         setTimeout(() => {
@@ -161,31 +164,32 @@
     var orderOneClickConfirmButtonListener = function(evt, button) {
         var form = button.closest('.modal-content').querySelector('form');
         if (!form.checkValidity()) {
-            event.preventDefault();
-            event.stopPropagation();
+            evt.preventDefault();
+            evt.stopPropagation();
         } else {
             button.setAttribute('disabled', 'true');
             const formData = {};
             form.querySelectorAll("input").forEach(input => {
                 formData[input.getAttribute("name")] = input.value;
             });
-            console.log(formData);
-//            fetch('/api/agrolavka/public/order', {
-//                method: 'POST',
-//                headers: {
-//                    'Accept': 'application/json',
-//                    'Content-Type': 'application/json'
-//                },
-//                body: JSON.stringify(formData)
-//            }).then(function (response) {
-//                if (response.ok) {
-//                    response.json().then(json => {
-//                        window.location.reload();
-//                    });
-//                }
-//            }).catch(error => {
-//                console.error('HTTP error occurred: ' + error);
-//            });
+            button.querySelector('.spinner-border').classList.remove('d-none');
+            fetch('/api/agrolavka/public/order/one-click', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            }).then(function (response) {
+                if (response.ok) {
+                    response.json().then(json => {
+                        const modalElement = document.getElementById('agr-one-click-order-modal');
+                        modalElement.querySelector('button[data-mdb-dismiss]').click();
+                    });
+                }
+            }).catch(error => {
+                console.error('HTTP error occurred: ' + error);
+            });
         }
         form.classList.add('was-validated');
     };

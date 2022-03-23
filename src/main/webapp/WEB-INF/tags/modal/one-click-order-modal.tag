@@ -29,7 +29,12 @@
             </div>
             <div class="modal-footer d-flex justify-content-between">
                 <button type="button" class="btn btn-light" data-mdb-dismiss="modal">Закрыть</button>
-                <button type="button" class="btn btn-primary" data-one-click-order>Заказать</button>
+                <button type="button" class="btn btn-primary" data-one-click-order>
+                    <div class="spinner-border spinner-border-sm me-1 d-none" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    Заказать
+                </button>
             </div>
         </div>
     </div>
