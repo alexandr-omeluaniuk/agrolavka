@@ -125,7 +125,8 @@ function Order(props) {
                     ), [
                 new TableColumn('avatar', '', (row) => {
                     return <Avatar className={classes.image} alt={row.name}
-                            src={row.images && row.images.length > 0 ? `/media/${row.images[0].fileNameOnDisk}?timestamp=${new Date().getTime()}`
+                            src={row.product && row.product.images && row.product.images.length > 0
+                            ? `/media/${row.product.images[0].fileNameOnDisk}?timestamp=${new Date().getTime()}`
                                 : `/assets/img/no-image.png`} />;
                 }).setSortable().width('40px'),
                 new TableColumn('name', t('m_agrolavka:order.position.name'), (row) => {
@@ -275,6 +276,7 @@ function Order(props) {
                         {t('m_agrolavka:order.contacts')}
                     </Typography>
                     <Link href={'tel:+375' + order.phone.replace(/\D/g,'')} color="primary">{order.phone}</Link><br/>
+                    {order.oneClick ? <i>{t('m_agrolavka:orders.one_click')}</i> : null}
                     {order.comment ? (
                             <React.Fragment>
                                 <Divider className={classes.divider}/>

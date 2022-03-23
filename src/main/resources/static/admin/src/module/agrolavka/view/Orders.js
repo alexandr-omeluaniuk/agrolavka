@@ -152,7 +152,9 @@ function Orders() {
             new TableColumn('address', t('m_agrolavka:orders.address'), (row) => {
                 const adr = row.address;
                 const europost = row.europostLocationSnapshot;
-                if (adr) {
+                if (row.oneClick) {
+                    return <i>{t('m_agrolavka:orders.one_click')}</i>;
+                } else if (adr) {
                     return `${adr.postcode ? adr.postcode + ' ' : ''}${adr.city}, ${adr.street} д.${adr.house} ${adr.flat ? 'кв.' + adr.flat : ''}`;
                 } else if (europost) {
                     return t('m_agrolavka:orders.delivery_europost');
@@ -161,7 +163,7 @@ function Orders() {
             }),
             new TableColumn('status', t('m_agrolavka:order.status'), (row) => {
                 return t('m_agrolavka:order.statusConst.' + row.status);
-            }),
+            }).width('250px'),
             new TableColumn('created', t('m_agrolavka:order.created'), (row) => {
                 return moment(row.created).locale('ru').format('DD.MM.yyyy HH:mm');
             }).width('160px').setSortable().alignment(ALIGN_RIGHT),

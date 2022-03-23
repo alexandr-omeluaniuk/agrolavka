@@ -46,7 +46,8 @@
         "disable_notifications_success": "Уведомления отключены",
         "order_total": "Сумма",
         "delivery_self": "Самовывоз",
-        "delivery_europost": "Европочта"
+        "delivery_europost": "Европочта",
+        "one_click": "Заказ в один клик"
     },
     "feedbacks": {
         "feedback_number": "Номер",

@@ -46,7 +46,8 @@
         "disable_notifications_success": "Notifications have been turned off",
         "order_total": "Total sum",
         "delivery_self": "Self-delivery",
-        "delivery_europost": "Europost"
+        "delivery_europost": "Europost",
+        "one_click": "One-click order"
     },
     "feedbacks": {
         "feedback_number": "Nr.",

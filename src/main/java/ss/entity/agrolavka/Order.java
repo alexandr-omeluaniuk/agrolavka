@@ -68,6 +68,9 @@ public class Order extends DataModel {
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
     private OrderStatus status;
+    /** One click order. */
+    @Column(name = "one_click")
+    private Boolean oneClick;
     // =============================================== SET & GET ======================================================
     /**
      * @return the positions
@@ -164,6 +167,18 @@ public class Order extends DataModel {
      */
     public void setEuropostLocationSnapshot(EuropostLocationSnapshot europostLocationSnapshot) {
         this.europostLocationSnapshot = europostLocationSnapshot;
+    }
+    /**
+     * @return the oneClick
+     */
+    public Boolean getOneClick() {
+        return oneClick;
+    }
+    /**
+     * @param oneClick the oneClick to set
+     */
+    public void setOneClick(Boolean oneClick) {
+        this.oneClick = oneClick;
     }
     // ================================================================================================================
     @Override

@@ -95,6 +95,7 @@ class OrderServiceImpl implements OrderService {
         order.setCreated(new Date());
         order.setStatus(OrderStatus.WAITING_FOR_APPROVAL);
         order.setPositions(new HashSet<>(Collections.singletonList(position)));
+        order.setOneClick(true);
         position.setOrder(order);
         final Order savedOrder = coreDAO.create(order);
         sendNotification(savedOrder, total);
