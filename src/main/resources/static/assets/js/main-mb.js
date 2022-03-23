@@ -49,6 +49,10 @@
         if (orderOneClickButton) {
             orderOneClickButtonListener(evt, orderOneClickButton);
         }
+        const orderOneClickConfirmButton = evt.target.closest("button[data-one-click-order]");
+        if (orderOneClickConfirmButton) {
+            orderOneClickConfirmButtonListener(evt, orderOneClickConfirmButton);
+        }
         const cartRemoveProductBtn = evt.target.closest("[data-product-id][data-remove-product-from-cart]");
         if (cartRemoveProductBtn) {
             cartRemoveProductListener(evt, cartRemoveProductBtn);
@@ -146,12 +150,44 @@
         evt.stopPropagation();
         const productId = button.getAttribute('data-product-id');
         const modalElement = document.getElementById('agr-one-click-order-modal');
-        modalElement.setAttribute('data-product-id', productId);
+        modalElement.querySelector('input[name="productId"]').setAttribute('data-one-click-order', productId);
         const modal = new mdb.Modal(modalElement, {});
         modal.toggle();
         setTimeout(() => {
             modalElement.querySelector('input[name="phone"]').focus();
         }, 500);
+    };
+    
+    var orderOneClickConfirmButtonListener = function(evt, button) {
+        var form = button.closest('.modal-content').querySelector('form');
+        if (!form.checkValidity()) {
+            event.preventDefault();
+            event.stopPropagation();
+        } else {
+            button.setAttribute('disabled', 'true');
+            const formData = {};
+            form.querySelectorAll("input").forEach(input => {
+                formData[input.getAttribute("name")] = input.value;
+            });
+            console.log(formData);
+//            fetch('/api/agrolavka/public/order', {
+//                method: 'POST',
+//                headers: {
+//                    'Accept': 'application/json',
+//                    'Content-Type': 'application/json'
+//                },
+//                body: JSON.stringify(formData)
+//            }).then(function (response) {
+//                if (response.ok) {
+//                    response.json().then(json => {
+//                        window.location.reload();
+//                    });
+//                }
+//            }).catch(error => {
+//                console.error('HTTP error occurred: ' + error);
+//            });
+        }
+        form.classList.add('was-validated');
     };
     
     var cartRemoveProductListener = function (evt, button) {

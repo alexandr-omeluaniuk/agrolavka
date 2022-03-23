@@ -24,11 +24,12 @@
                         <input type="text" class="form-control" placeholder="Номер телефона" required
                            id="order-mobile" name="phone">
                     </div>
+                    <input name="productId" hidden required>
                 </form>
             </div>
             <div class="modal-footer d-flex justify-content-between">
                 <button type="button" class="btn btn-light" data-mdb-dismiss="modal">Закрыть</button>
-                <button type="button" class="btn btn-primary">Заказать</button>
+                <button type="button" class="btn btn-primary" data-one-click-order>Заказать</button>
             </div>
         </div>
     </div>
