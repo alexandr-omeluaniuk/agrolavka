@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-/* global parseFloat, fetch */
+/* global parseFloat, fetch, mdb */
 
 (function () {
     "use strict";
@@ -145,7 +145,13 @@
         evt.preventDefault();
         evt.stopPropagation();
         const productId = button.getAttribute('data-product-id');
-        console.log(productId);
+        const modalElement = document.getElementById('agr-one-click-order-modal');
+        modalElement.setAttribute('data-product-id', productId);
+        const modal = new mdb.Modal(modalElement, {});
+        modal.toggle();
+        setTimeout(() => {
+            modalElement.querySelector('input[name="phone"]').focus();
+        }, 500);
     };
     
     var cartRemoveProductListener = function (evt, button) {
