@@ -39,3 +39,13 @@
         </div>
     </div>
 </div>
+
+<div class="toast fade text-white bg-success" role="alert" aria-live="assertive" aria-atomic="true" data-mdb-color="success" data-mdb-autohide="false"
+     style="position: fixed; top: 70px; right: 20px; z-index: 9999" id="agr-one-click-order-success">
+    <div class="toast-header text-white bg-success">
+        <i class="fas fa-check fa-lg me-2"></i>
+        <strong class="me-auto">Спасибо за Ваш заказ</strong>
+        <button type="button" class="btn-close btn-close-white" data-mdb-dismiss="toast" aria-label="Close"></button>
+    </div>
+    <div class="toast-body">Мы Вам обязательно перезвоним</div>
+</div>

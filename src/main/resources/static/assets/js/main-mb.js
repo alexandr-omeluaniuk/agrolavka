@@ -185,6 +185,11 @@
                     response.json().then(json => {
                         const modalElement = document.getElementById('agr-one-click-order-modal');
                         modalElement.querySelector('button[data-mdb-dismiss]').click();
+                        const toast = document.querySelector('#agr-one-click-order-success');
+                        toast.classList.add('show');
+                        setTimeout(() => {
+                            toast.classList.remove('show');
+                        }, 2000);
                     });
                 }
             }).catch(error => {
