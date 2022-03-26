@@ -7,6 +7,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
+<%@taglib prefix="modal" tagdir="/WEB-INF/tags/modal" %>
 
 <t:app title="Товары на акции" metaDescription="Товары для сада и огорода на акции, купить дешево" canonical="/promotions">
     
@@ -37,6 +38,7 @@
                 </section>
             </div>
         </main>
+        <modal:one-click-order-modal/>
     </jsp:body>
 
 </t:app>
