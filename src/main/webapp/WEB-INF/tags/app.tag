@@ -26,7 +26,7 @@
             function gtag(){dataLayer.push(arguments);}
                 gtag('js', new Date());
 
-                gtag('config', 'UA-190622177-1');
+                gtag('config', 'UA-190622177-1', { cookie_flags: 'SameSite=None;Secure' });
         </script>
         
         <!-- Google structured data -->
