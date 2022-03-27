@@ -17,7 +17,7 @@
     <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
         <c:choose>
             <c:when test="${group.images.size() > 0}">
-                <div class="card-img-top agr-card-image" style="background-image: url('/media/${group.images.get(0).fileNameOnDisk}')"></div>
+                <div class="card-img-top agr-card-image" style="background-image: url('/media/${group.images.get(0).fileNameOnDisk}?timestamp=${group.images.get(0).createdDate}')"></div>
             </c:when>
             <c:otherwise>
                 <div class="card-img-top agr-card-image" style="background-image: url('/assets/img/no-image.png')"></div>

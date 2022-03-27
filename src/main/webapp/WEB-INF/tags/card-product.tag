@@ -28,7 +28,7 @@
         <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
             <c:choose>
                 <c:when test="${product.images.size() > 0}">
-                    <div class="card-img-top agr-card-image" style="background-image: url('/media/${product.images.get(0).fileNameOnDisk}')"></div>
+                    <div class="card-img-top agr-card-image" style="background-image: url('/media/${product.images.get(0).fileNameOnDisk}?timestamp=${product.images.get(0).createdDate}')"></div>
                 </c:when>
                 <c:otherwise>
                     <div class="card-img-top agr-card-image" style="background-image: url('/assets/img/no-image.png')"></div>
@@ -41,17 +41,17 @@
                     <div class="row p-2">
                         <div class="col-4">
                             <c:if test="${product.images.size() > 0}">
-                                <div class="agr-product-photos img-thumbnail agr-photo-active" style="background-image: url('/media/${product.images.get(0).fileNameOnDisk}')"></div>
+                                <div class="agr-product-photos img-thumbnail agr-photo-active" style="background-image: url('/media/${product.images.get(0).fileNameOnDisk}?timestamp=${product.images.get(0).createdDate}')"></div>
                             </c:if>
                         </div>
                         <div class="col-4">
                             <c:if test="${product.images.size() > 1}">
-                                <div class="agr-product-photos img-thumbnail" style="background-image: url('/media/${product.images.get(1).fileNameOnDisk}')"></div>
+                                <div class="agr-product-photos img-thumbnail" style="background-image: url('/media/${product.images.get(1).fileNameOnDisk}?timestamp=${product.images.get(1).createdDate}')"></div>
                             </c:if>
                         </div>
                         <div class="col-4">
                             <c:if test="${product.images.size() > 2}">
-                                <div class="agr-product-photos img-thumbnail" style="background-image: url('/media/${product.images.get(2).fileNameOnDisk}')"></div>
+                                <div class="agr-product-photos img-thumbnail" style="background-image: url('/media/${product.images.get(2).fileNameOnDisk}?timestamp=${product.images.get(2).createdDate}')"></div>
                             </c:if>
                         </div>
                     </div>
