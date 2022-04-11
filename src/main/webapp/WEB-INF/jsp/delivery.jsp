@@ -4,7 +4,7 @@
     Author     : alex
 --%>
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page contentType="text/html" pageEncoding="UTF-8" import="ss.agrolavka.constants.SiteConstants"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 
 <t:app title="Условия доставки и оплаты товара" metaDescription="Условия доставки и оплаты товара в магазине Агролавка г.Дрогичин"
@@ -32,6 +32,7 @@
                             <h6>Об условиях доставки</h6>
                             <small class="text-muted">
                                 Заявки обрабатываются ежедневно с 09:00 - 20:00.<br/> 
+                                Минимальная сумма заказа для доставки - <b>${SiteConstants.MIN_ORDER_SUM} рублей</b><br/>
                                 Курьерская доставка осуществляется ежедневно по предварительной договоренности.<br/>
                                 Пересылка почтой осуществляется с понедельника по пятницу.
                             </small>

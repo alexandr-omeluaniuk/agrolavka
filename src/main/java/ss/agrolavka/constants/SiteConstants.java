@@ -20,4 +20,6 @@ public class SiteConstants {
     public static final String FIREBASE_TOPIC_ORDER_CREATED = "agrolavka_order_created";
     /** Image thumb size. */
     public static final int IMAGE_THUMB_SIZE = 306;
+    /** Min order sum. */
+    public static final int MIN_ORDER_SUM = 25;
 }

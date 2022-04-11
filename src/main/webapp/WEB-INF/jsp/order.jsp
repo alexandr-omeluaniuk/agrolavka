@@ -26,7 +26,7 @@
                                     <form class="needs-validation shadow-1-strong p-4" novalidate id="order-form">
                                         <order:form-common-section/>
                                         <fieldset>
-                                            <order:delivery-type/>
+                                            <order:delivery-type totalInteger="${totalInteger}"/>
                                             <order:delivery-post/>
                                             <order:delivery-europost europostLocations="${europostLocations}"/>
                                         </fieldset>
