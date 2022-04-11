@@ -131,6 +131,9 @@ class OrderServiceImpl implements OrderService {
         snapshot.setNote(location.getNote());
         snapshot.setWarehouseId(location.getWarehouseId());
         snapshot.setWorkingHours(location.getWorkingHours());
+        snapshot.setFirstname(orderDetails.getFirstname());
+        snapshot.setLastname(orderDetails.getLastname());
+        snapshot.setMiddlename(orderDetails.getMiddlename());
         return snapshot;
     }
     

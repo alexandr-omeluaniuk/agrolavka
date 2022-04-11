@@ -12,27 +12,53 @@
 <%-- The list of normal or fragment attributes can be specified here: --%>
 
 <%-- any content can be specified here e.g.: --%>
-<div class="mt-3 d-none" id="order-europost">
-    <div class="input-group me-4 d-lg-none d-xl-flex" id="agr-europost-location-dropdown">
-        <span class="input-group-text"><i class="fas fa-mail-bulk"></i></span>
-        <input type="search" class="form-control" aria-label="Отделения Европочты" placeholder="Выберите отделение Европочты"
-               autocomplete="chrome-off" id="agr-europost-location-input" name="europostLocationName" required readonly
-               style="border-top-right-radius: 0.25rem; border-bottom-right-radius: 0.25rem;">
-        <ul class="dropdown-menu w-100" aria-labelledby="agr-europost-locations-list" id="agr-europost-locations-list"
-                style="overflow-y: auto; max-height: 500px;">
-            <c:forEach items="${europostLocations}" var="location">
-                <li class="agr-product-search-link" data-location-address="${location.address}" data-location-id="${location.id}">
-                    <a class="dropdown-item" href="#">
-                        <h6 style="white-space: pre-wrap;">${location.address}</h6>
-                        <div class="d-flex justify-content-between">
-                            <small style="white-space: pre-wrap;">${location.workingHours}</small>
-                        </div>
-                    </a>
-                </li>
-            </c:forEach>
-        </ul>
+<div class="row d-none" id="order-europost">
+    
+    <div class="col-sm-12 col-lg-12 mb-3 mt-3">
+            <div class="input-group me-4 d-lg-none d-xl-flex" id="agr-europost-location-dropdown">
+                <span class="input-group-text"><i class="fas fa-mail-bulk"></i></span>
+                <input type="search" class="form-control" aria-label="Отделения Европочты" placeholder="Выберите отделение Европочты *"
+                       autocomplete="chrome-off" id="agr-europost-location-input" name="europostLocationName" required readonly
+                       style="border-top-right-radius: 0.25rem; border-bottom-right-radius: 0.25rem;">
+                <ul class="dropdown-menu w-100" aria-labelledby="agr-europost-locations-list" id="agr-europost-locations-list"
+                        style="overflow-y: auto; max-height: 500px;">
+                    <c:forEach items="${europostLocations}" var="location">
+                        <li class="agr-product-search-link" data-location-address="${location.address}" data-location-id="${location.id}">
+                            <a class="dropdown-item" href="#">
+                                <h6 style="white-space: pre-wrap;">${location.address}</h6>
+                                <div class="d-flex justify-content-between">
+                                    <small style="white-space: pre-wrap;">${location.workingHours}</small>
+                                </div>
+                            </a>
+                        </li>
+                    </c:forEach>
+                </ul>
+            </div>
+            <input type="number" hidden="true" name="europostLocationId" required readonly/>
     </div>
-    <input type="number" hidden="true" name="europostLocationId" required readonly/>
+    
+    <div class="col-sm-12 col-lg-4">
+        <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="lastname" placeholder="Иванов"
+                   name="lastname" required>
+            <label for="lastname">Фамилия *</label>
+        </div>
+    </div>
+    <div class="col-sm-12 col-lg-4">
+        <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="firstname" placeholder="Иван"
+                   name="firstname" required>
+            <label for="firstname">Имя *</label>
+        </div>
+    </div>
+    <div class="col-sm-12 col-lg-4">
+        <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="middlename" placeholder="Иванович"
+                   name="middlename" required>
+            <label for="middlename">Отчество *</label>
+        </div>
+    </div>
+    
 </div>
 
 <script>

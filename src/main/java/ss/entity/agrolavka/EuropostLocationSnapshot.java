@@ -16,14 +16,11 @@
  */
 package ss.entity.agrolavka;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import javax.persistence.Column;
-import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import ss.entity.martin.DataModel;
 
 /**
@@ -56,6 +53,18 @@ public class EuropostLocationSnapshot extends DataModel {
     private String warehouseId;
     @Column(name = "is_new", length = 255)
     private String isNew;
+    /** First name. */
+    @Size(max = 255)
+    @Column(name = "firstname", length = 255)
+    private String firstname;
+    /** Last name. */
+    @Size(max = 255)
+    @Column(name = "lastname", length = 255)
+    private String lastname;
+    /** Middle name. */
+    @Size(max = 255)
+    @Column(name = "middlename", length = 255)
+    private String middlename;
     // ============================================== SET & GET =======================================================
     /**
      * @return the externalId
@@ -165,19 +174,53 @@ public class EuropostLocationSnapshot extends DataModel {
     public void setWarehouseId(String warehouseId) {
         this.warehouseId = warehouseId;
     }
-
     /**
      * @return the isNew
      */
     public String getIsNew() {
         return isNew;
     }
-
     /**
      * @param isNew the isNew to set
      */
     public void setIsNew(String isNew) {
         this.isNew = isNew;
+    }
+    /**
+     * @return the firstname
+     */
+    public String getFirstname() {
+        return firstname;
+    }
+    /**
+     * @param firstname the firstname to set
+     */
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
+    /**
+     * @return the lastname
+     */
+    public String getLastname() {
+        return lastname;
+    }
+    /**
+     * @param lastname the lastname to set
+     */
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
+    /**
+     * @return the middlename
+     */
+    public String getMiddlename() {
+        return middlename;
+    }
+    /**
+     * @param middlename the middlename to set
+     */
+    public void setMiddlename(String middlename) {
+        this.middlename = middlename;
     }
     // ================================================================================================================
     @Override

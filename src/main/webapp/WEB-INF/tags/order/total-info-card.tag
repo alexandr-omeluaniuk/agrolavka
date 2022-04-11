@@ -13,7 +13,7 @@
 
 <%-- any content can be specified here e.g.: --%>
 <div class="card shadow-1-strong">
-    <div class="card-body">
+    <div class="card-body p-3">
         <div class="d-flex justify-content-between">
             <span class="text-muted">Товаров на</span>
             <div>

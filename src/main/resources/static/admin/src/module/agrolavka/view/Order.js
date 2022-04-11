@@ -197,7 +197,7 @@ function Order(props) {
         return (
                 <React.Fragment>
                     <Typography variant="caption" component="span" color="textSecondary"><b>{label}</b></Typography>
-                    <Typography variant="subtitle1" component="span">{value}</Typography>
+                    <Typography variant="subtitle2" component="span">{value}</Typography>
                 </React.Fragment>
         );
     };
@@ -237,8 +237,21 @@ function Order(props) {
     };
     const europost = () => {
         const result = [];
-        result.push(<Chip label={chip(t('m_agrolavka:orders.delivery_europost'))} key={1} color="secondary" className={classes.chip}/>);
-        result.push(<Chip label={chip(order.europostLocationSnapshot.address)} key={2} color="secondary" className={classes.chip}/>);
+        result.push(<Chip label={chip('Способ доставки: ', t('m_agrolavka:orders.delivery_europost'))} key={1} color="secondary" className={classes.chip}/>);
+        result.push(<Chip label={chip('Отделение: ', order.europostLocationSnapshot.address)} key={2} color="secondary" className={classes.chip}/>);
+        let fullname = [];
+        if (order.europostLocationSnapshot.lastname) {
+            fullname.push(order.europostLocationSnapshot.lastname);
+        }
+        if (order.europostLocationSnapshot.firstname) {
+            fullname.push(order.europostLocationSnapshot.firstname);
+        }
+        if (order.europostLocationSnapshot.middlename) {
+            fullname.push(order.europostLocationSnapshot.middlename);
+        }
+        if (fullname.length > 0) {
+            result.push(<Chip label={chip('Получатель: ', fullname.join(' '))} key={2} color="secondary" className={classes.chip}/>);
+        }
         return result;
     };
     if (!order || !tableConfig) {
