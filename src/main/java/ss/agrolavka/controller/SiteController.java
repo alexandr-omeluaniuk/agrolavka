@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import ss.agrolavka.constants.SiteConstants;
 import ss.agrolavka.dao.ProductDAO;
+import ss.agrolavka.service.OrderService;
 import ss.agrolavka.util.AppCache;
 import ss.agrolavka.util.UrlProducer;
 import ss.agrolavka.wrapper.ProductsSearchRequest;
@@ -49,6 +50,9 @@ public class SiteController {
     /** Core DAO. */
     @Autowired
     private CoreDAO coreDAO;
+    /** Order service. */
+    @Autowired
+    private OrderService orderService;
     /**
      * Home page.
      * @param model data model.
@@ -327,12 +331,7 @@ public class SiteController {
      * @param model page model.
      */
     private void insertCartDataToModel(HttpServletRequest request, Model model) throws Exception {
-        Order order = (Order) request.getSession(true).getAttribute(SiteConstants.CART_SESSION_ATTRIBUTE);
-        if (order == null) {
-            order = new Order();
-            order.setPositions(new HashSet<>());
-            request.getSession().setAttribute(SiteConstants.CART_SESSION_ATTRIBUTE, order);
-        }
+        final Order order = orderService.getCurrentOrder(request);
         Double total = 0d;
         for (OrderPosition pos : order.getPositions()) {
             total += pos.getPrice() * pos.getQuantity();

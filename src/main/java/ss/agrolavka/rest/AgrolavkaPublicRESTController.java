@@ -89,7 +89,7 @@ class AgrolavkaPublicRESTController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public Order addToCart(@PathVariable("id") Long id, HttpServletRequest request) throws Exception {
         Product product = coreDAO.findById(id, Product.class);
-        Order order = (Order) request.getSession(true).getAttribute(SiteConstants.CART_SESSION_ATTRIBUTE);
+        final Order order = orderService.getCurrentOrder(request);
         if (product != null) {
             OrderPosition position = new OrderPosition();
             position.setOrder(order);
@@ -112,7 +112,7 @@ class AgrolavkaPublicRESTController {
     @RequestMapping(value = "/cart/{id}", method = RequestMethod.DELETE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public Order removeFromCart(@PathVariable("id") Long id, HttpServletRequest request) throws Exception {
-        Order order = (Order) request.getSession(true).getAttribute(SiteConstants.CART_SESSION_ATTRIBUTE);
+        final Order order = orderService.getCurrentOrder(request);
         Set<OrderPosition> positions = order.getPositions().stream().filter(pos -> {
             return !Objects.equals(pos.getProductId(), id);
         }).collect(Collectors.toSet());
@@ -132,7 +132,7 @@ class AgrolavkaPublicRESTController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public Order changeCartPositionQuantity(@PathVariable("id") Long id, @PathVariable("quantity") Integer quantity,
             HttpServletRequest request) throws Exception {
-        Order order = (Order) request.getSession(true).getAttribute(SiteConstants.CART_SESSION_ATTRIBUTE);
+        final Order order = orderService.getCurrentOrder(request);
         OrderPosition position = order.getPositions().stream().filter(pos -> {
             return Objects.equals(pos.getProductId(), id);
         }).findFirst().get();
@@ -165,7 +165,7 @@ class AgrolavkaPublicRESTController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public Order confirmOrder(HttpServletRequest request, @RequestBody() OrderDetailsWrapper orderWrapper)
             throws Exception {
-        final Order order = (Order) request.getSession(true).getAttribute(SiteConstants.CART_SESSION_ATTRIBUTE);
+        final Order order = orderService.getCurrentOrder(request);
         final Order savedOrder = orderService.createOrder(order, orderWrapper);
         final Order newOrder = new Order();
         newOrder.setPositions(new HashSet<>());

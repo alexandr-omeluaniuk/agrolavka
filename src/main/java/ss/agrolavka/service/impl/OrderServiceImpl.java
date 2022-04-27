@@ -20,6 +20,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.concurrent.TimeUnit;
+import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -99,6 +100,17 @@ class OrderServiceImpl implements OrderService {
         position.setOrder(order);
         final Order savedOrder = coreDAO.create(order);
         sendNotification(savedOrder, total);
+        return order;
+    }
+    
+    @Override
+    public Order getCurrentOrder(final HttpServletRequest request) {
+        Order order = (Order) request.getSession(true).getAttribute(SiteConstants.CART_SESSION_ATTRIBUTE);
+        if (order == null) {
+            order = new Order();
+            order.setPositions(new HashSet<>());
+            request.getSession().setAttribute(SiteConstants.CART_SESSION_ATTRIBUTE, order);
+        }
         return order;
     }
     

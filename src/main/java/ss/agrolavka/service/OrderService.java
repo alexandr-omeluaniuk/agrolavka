@@ -16,6 +16,7 @@
  */
 package ss.agrolavka.service;
 
+import javax.servlet.http.HttpServletRequest;
 import ss.agrolavka.wrapper.OneClickOrderWrapper;
 import ss.agrolavka.wrapper.OrderDetailsWrapper;
 import ss.entity.agrolavka.Order;
@@ -40,4 +41,10 @@ public interface OrderService {
      * @throws Exception error.
      */
     Order createOneClickOrder(OneClickOrderWrapper orderDetails) throws Exception;
+    /**
+     * Get current order.
+     * @param request HTTP request.
+     * @return order.
+     */
+    Order getCurrentOrder(HttpServletRequest request);
 }

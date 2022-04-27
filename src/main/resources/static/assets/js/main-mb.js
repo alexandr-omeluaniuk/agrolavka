@@ -186,9 +186,13 @@
                         const modalElement = document.getElementById('agr-one-click-order-modal');
                         modalElement.querySelector('button[data-mdb-dismiss]').click();
                         const toast = document.querySelector('#agr-one-click-order-success');
+                        toast.style.display = 'block';
                         toast.classList.add('show');
                         setTimeout(() => {
                             toast.classList.remove('show');
+                            setTimeout(() => {
+                                toast.style.display = 'none';
+                            });
                         }, 2000);
                     });
                 }
