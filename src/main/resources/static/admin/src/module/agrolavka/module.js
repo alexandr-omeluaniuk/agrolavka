@@ -10,9 +10,11 @@ import Products from './view/Products';
 import Feedbacks from './view/Feedbacks';
 import Orders from './view/Orders';
 import Order from './view/Order';
+import Shops from './view/Shops';
 import { ROLE_SUBSCRIPTION_ADMINISTRATOR, ROLE_SUBSCRIPTION_USER } from '../../conf/standard-roles';
 
 export const agrolavka = new Module('agrolavka', '/agrolavka', [
+    new ModuleView('shops', '/shops', 'location_on', Shops),
     new ModuleView('orders', '/orders', 'shopping_cart', Orders),
     new ModuleView('products', '/products', 'store', Products),
     new ModuleView('feedbacks', '/feedbacks', 'feedback', Feedbacks),

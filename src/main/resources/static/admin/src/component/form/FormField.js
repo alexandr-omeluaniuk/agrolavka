@@ -13,6 +13,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import NumberField from './input/NumberField';
 import MoneyField from './input/MoneyField';
+import DoubleField from './input/DoubleField';
 import Dropdown from './input/Dropdown';
 import FileUpload from './input/FileUpload';
 import Images from './input/Images';
@@ -57,6 +58,10 @@ function FormField (props) {
                             helperText={invalidFields.get(name)} required={isRequired}/>;
         } else if (fieldConfig.type === TYPES.MONEY) {
             return <MoneyField label={label} value={fieldValue ? fieldValue : ''} variant={variant} suffix={attributes.suffix}
+                            onChange={(e) => onChangeFieldValue(name, e.target.value)} fullWidth={true} align={attributes.align}
+                            helperText={invalidFields.get(name)} required={isRequired} decimalScale={attributes.decimalScale}/>;
+        } else if (fieldConfig.type === TYPES.DOUBLE_NUMBER) {
+            return <DoubleField label={label} value={fieldValue ? fieldValue : ''} variant={variant} suffix={attributes.suffix}
                             onChange={(e) => onChangeFieldValue(name, e.target.value)} fullWidth={true} align={attributes.align}
                             helperText={invalidFields.get(name)} required={isRequired} decimalScale={attributes.decimalScale}/>;
         } else if (fieldConfig.type === TYPES.SELECT) {

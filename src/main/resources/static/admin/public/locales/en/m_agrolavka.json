@@ -4,7 +4,8 @@
         "products": "Products",
         "orders": "Orders",
         "sandbox": "Sandbox",
-        "feedbacks": "Feedbacks"
+        "feedbacks": "Feedbacks",
+        "shops": "Shops"
     },
     "products": {
         "product_groups": "Product groups",
@@ -80,6 +81,17 @@
         "contacts": "Contacts",
         "comment": "Comment",
         "adminComment": "My comment"
+    },
+    "shops": {
+        "shop_number": "Nr",
+        "title": "Name",
+        "description": "Description",
+        "latitude": "Latitude",
+        "longitude": "Longitude",
+        "address": "Address",
+        "working_hours": "Working hours",
+        "main_image": "Main image",
+        "images": "Images"
     },
     "backup": "Do data backup"
 }
