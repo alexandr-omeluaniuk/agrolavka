@@ -19,7 +19,7 @@
                     <div class="row">
                         <div class="col-md-4 gx-5 mb-4">
                             <div class="bg-image hover-overlay ripple shadow-2-strong" data-mdb-ripple-color="light">
-                                <img src="/assets/img/intro/discount.jpg" class="img-fluid" />
+                                <img src="/assets/img/intro/discount.webp" class="img-fluid" />
                                 <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
                             </div>
                         </div>

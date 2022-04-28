@@ -27,6 +27,8 @@
                         <ul class="list-unstyled">
                             <li class="mb-2"><a class="text-white" href="/">Главная</a></li>
                             <li class="mb-2"><a class="text-white" href="/catalog">Каталог товаров</a></li>
+                            <li class="mb-2"><a class="text-white" href="/discount">Дисконтная программа</a></li>
+                            <li class="mb-2"><a class="text-white" href="/delivery">Доставка</a></li>
                             <li>
                                 <a href="https://www.instagram.com/agrolavka.by" class="btn btn-outline-light btn-floating">
                                     <i class="fab fa-instagram"></i>
@@ -40,9 +42,12 @@
             <div class="col-lg-3">
                 <h4>Контакты</h4>
                 <p>
-                    ул.Мелиоративная, 61 <br>
-                    г.Дрогичин, 225612<br>
-                    Республика Беларусь <br>
+                    ул.Мелиоративная, 61 <br/>
+                    г.Дрогичин, 225612
+                    <hr/>
+                    ул.Московская, 118 <br/>
+                    г.Брест, 224012
+                    <hr/>
                     <strong>Телефон:</strong> <a class="text-white" href="tel:+375298713758">+375 29 871-37-58</a><br>
                     <strong>Email:</strong> <a class="text-white" href="mailto:sergej4ikk@mail.ru">sergej4ikk@mail.ru</a><br>
                 </p>
