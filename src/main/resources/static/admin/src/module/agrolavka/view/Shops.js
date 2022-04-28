@@ -5,12 +5,10 @@
  */
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { TableConfig, TableColumn, FormConfig, FormField, ALIGN_RIGHT, ApiURL , Validator } from '../../../util/model/TableConfig';
+import { TableConfig, TableColumn, FormConfig, FormField, ApiURL , Validator } from '../../../util/model/TableConfig';
 import { TYPES, VALIDATORS } from '../../../service/DataTypeService';
 import DataTable from '../../../component/datatable/DataTable';
-import AppURLs from '../../../conf/app-urls';
-import { NavLink } from "react-router-dom";
-import moment from 'moment';
+import Avatar from '@material-ui/core/Avatar';
 
 function Shops() {
     const { t } = useTranslation();
@@ -24,20 +22,15 @@ function Shops() {
                 '/platform/entity/ss.entity.agrolavka.Shop'
         );
         const newTableConfig = new TableConfig(t('m_agrolavka:agrolavka.shops'), apiUrl, [
-            new TableColumn('id', t('m_agrolavka:shops.shop_number'), (row) => {
-                let num = row.id.toString();
-                while (num.length < 5) num = "0" + num;
-                return num;
-            }).width('100px').setSortable(),
-//            new TableColumn('contact', t('m_agrolavka:feedbacks.contact'), (row) => {
-//                return row.contact;
-//            }).width('230px'),
-//            new TableColumn('message', t('m_agrolavka:feedbacks.message'), (row) => {
-//                return row.message;
-//            }),
-//            new TableColumn('created', t('m_agrolavka:feedbacks.created'), (row) => {
-//                return moment(row.created).locale('ru').format('DD.MM.yyyy HH:mm');
-//            }).width('160px').setSortable().alignment(ALIGN_RIGHT)
+            new TableColumn('avatar', '', (row) => {
+                return <Avatar alt={row.name}
+                        src={row.images && row.images.length > 0 && row.images[0].fileNameOnDisk 
+                        ? `/media/${row.mainImage.fileNameOnDisk}?timestamp=${new Date().getTime()}`
+                        : `/assets/img/no-image.png`} />;
+            }).width('40px'),
+            new TableColumn('title', t('m_agrolavka:shops.title'), (row) => {
+                return row.title;
+            })
         ], new FormConfig([
             new FormField('id', TYPES.ID).hide(),
             new FormField('title', TYPES.TEXTFIELD, t('m_agrolavka:shops.title')).setGrid({xs: 12}).validation([
@@ -62,7 +55,7 @@ function Shops() {
             new FormField('longitude', TYPES.DOUBLE_NUMBER, t('m_agrolavka:shops.longitude')).setGrid({xs: 12, md: 6}).validation([
                 new Validator(VALIDATORS.REQUIRED)
             ]).setAttributes({ decimalScale: 6}),
-            new FormField('images', TYPES.IMAGE, t('m_agrolavka:shops.main_image')).setGrid({xs: 12}).validation([
+            new FormField('mainImage', TYPES.IMAGE, t('m_agrolavka:shops.main_image')).setGrid({xs: 12}).validation([
                 new Validator(VALIDATORS.REQUIRED)
             ]),
             new FormField('images', TYPES.IMAGES, t('m_agrolavka:shops.images')).setGrid({xs: 12})
