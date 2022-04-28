@@ -55,10 +55,12 @@ public class Shop extends EntityAudit {
     @Column(name = "description", length = 5000)
     private String description;
     /** Main image. */
+    @FormField
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "main_image_id")
     private EntityImage mainImage;
     /** Images. */
+    @FormField
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinTable(name = "shop_images",
             joinColumns = @JoinColumn(name = "shop_id", referencedColumnName = "id"),
