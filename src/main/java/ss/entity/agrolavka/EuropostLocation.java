@@ -18,7 +18,6 @@ package ss.entity.agrolavka;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import javax.persistence.Column;
-import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
