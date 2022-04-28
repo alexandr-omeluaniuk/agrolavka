@@ -32,6 +32,7 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import ss.entity.martin.EntityAudit;
 import ss.entity.martin.EntityImage;
+import ss.martin.platform.anno.security.FormField;
 
 /**
  * Shop
@@ -42,11 +43,13 @@ import ss.entity.martin.EntityImage;
 public class Shop extends EntityAudit {
     // ========================================== FIELDS ==============================================================
     /** Shop title. */
+    @FormField
     @NotNull
     @Size(min = 1, max = 255)
     @Column(name = "title", length = 255)
     private String title;
     /** Shop description. */
+    @FormField
     @NotNull
     @Size(min = 1, max = 5000)
     @Column(name = "description", length = 5000)
@@ -63,19 +66,23 @@ public class Shop extends EntityAudit {
     @Fetch(FetchMode.SUBSELECT)
     private List<EntityImage> images;
     /** Latitude. */
+    @FormField
     @NotNull
     @Column(name = "latitude")
     private Double latitude;
     /** Longitude. */
+    @FormField
     @NotNull
     @Column(name = "longitude")
     private Double longitude;
     /** Address. */
+    @FormField
     @NotNull
     @Size(min = 1, max = 255)
     @Column(name = "address")
     private String address;
     /** Working hours. */
+    @FormField
     @NotNull
     @Size(min = 1, max = 255)
     @Column(name = "working_hours")

@@ -59,7 +59,15 @@ function Shops() {
                 new Validator(VALIDATORS.REQUIRED)
             ]),
             new FormField('images', TYPES.IMAGES, t('m_agrolavka:shops.images')).setGrid({xs: 12})
-        ])).setElevation(1);
+        ]).setBeforeOnEditRecord((record) => {
+            return new Promise((resolve) => {
+                record.images.forEach(i => {
+                    i.data = `/media/` + i.fileNameOnDisk;
+                });
+                record.mainImage.data = `/media/` + record.mainImage.fileNameOnDisk;
+                resolve(record);
+            });
+        })).setElevation(1);
         setTableConfig(newTableConfig);
     };
     // ------------------------------------------------------- HOOKS ----------------------------------------------------------------------
