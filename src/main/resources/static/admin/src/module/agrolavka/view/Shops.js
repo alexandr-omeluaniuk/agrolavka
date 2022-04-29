@@ -24,7 +24,7 @@ function Shops() {
         const newTableConfig = new TableConfig(t('m_agrolavka:agrolavka.shops'), apiUrl, [
             new TableColumn('avatar', '', (row) => {
                 return <Avatar alt={row.name}
-                        src={row.images && row.images.length > 0 && row.images[0].fileNameOnDisk 
+                        src={row.mainImage && row.mainImage.fileNameOnDisk 
                         ? `/media/${row.mainImage.fileNameOnDisk}?timestamp=${new Date().getTime()}`
                         : `/assets/img/no-image.png`} />;
             }).width('40px'),
