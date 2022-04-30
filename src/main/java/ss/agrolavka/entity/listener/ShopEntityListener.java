@@ -17,7 +17,6 @@
 package ss.agrolavka.entity.listener;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -59,10 +58,6 @@ class ShopEntityListener implements PlatformEntityListener<Shop> {
                 image.setData(thumb);
             }
         }
-        if (entity.getMainImage() != null) {
-            byte[] thumb = imageService.convertToThumbnail(entity.getMainImage().getData(), SiteConstants.IMAGE_THUMB_SIZE);
-            entity.getMainImage().setData(thumb);
-        }
     }
 
     @Override
@@ -71,13 +66,6 @@ class ShopEntityListener implements PlatformEntityListener<Shop> {
         List<EntityImage> actualImages = getActualImages(entityFromDB.getImages(), entity.getImages());
         entityFromDB.setImages(actualImages);
         entity.setImages(actualImages);
-        List<EntityImage> actualMainImages = getActualImages(
-                Collections.singletonList(entityFromDB.getMainImage()),
-                Collections.singletonList(entity.getMainImage())
-        );
-        EntityImage actualMainImage = actualMainImages.isEmpty() ? null : actualMainImages.get(0);
-        entityFromDB.setMainImage(actualMainImage);
-        entity.setMainImage(actualMainImage);
         coreDAO.update(entityFromDB);
     }
     

@@ -24,8 +24,8 @@ function Shops() {
         const newTableConfig = new TableConfig(t('m_agrolavka:agrolavka.shops'), apiUrl, [
             new TableColumn('avatar', '', (row) => {
                 return <Avatar alt={row.name}
-                        src={row.mainImage && row.mainImage.fileNameOnDisk 
-                        ? `/media/${row.mainImage.fileNameOnDisk}?timestamp=${new Date().getTime()}`
+                        src={row.images && row.images.length > 0 && row.images[0].fileNameOnDisk 
+                        ? `/media/${row.images[0].fileNameOnDisk}?timestamp=${new Date().getTime()}`
                         : `/assets/img/no-image.png`} />;
             }).width('40px'),
             new TableColumn('title', t('m_agrolavka:shops.title'), (row) => {
@@ -55,16 +55,12 @@ function Shops() {
             new FormField('longitude', TYPES.DOUBLE_NUMBER, t('m_agrolavka:shops.longitude')).setGrid({xs: 12, md: 6}).validation([
                 new Validator(VALIDATORS.REQUIRED)
             ]).setAttributes({ decimalScale: 6}),
-            new FormField('mainImage', TYPES.IMAGE, t('m_agrolavka:shops.main_image')).setGrid({xs: 12}).validation([
-                new Validator(VALIDATORS.REQUIRED)
-            ]),
             new FormField('images', TYPES.IMAGES, t('m_agrolavka:shops.images')).setGrid({xs: 12})
         ]).setBeforeOnEditRecord((record) => {
             return new Promise((resolve) => {
                 record.images.forEach(i => {
                     i.data = `/media/` + i.fileNameOnDisk;
                 });
-                record.mainImage.data = `/media/` + record.mainImage.fileNameOnDisk;
                 resolve(record);
             });
         })).setElevation(1);

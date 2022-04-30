@@ -24,7 +24,6 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -54,10 +53,6 @@ public class Shop extends EntityAudit {
     @Size(min = 1, max = 5000)
     @Column(name = "description", length = 5000)
     private String description;
-    /** Main image. */
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "main_image_id")
-    private EntityImage mainImage;
     /** Images. */
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinTable(name = "shop_images",
@@ -111,18 +106,6 @@ public class Shop extends EntityAudit {
      */
     public void setDescription(String description) {
         this.description = description;
-    }
-    /**
-     * @return the mainImage
-     */
-    public EntityImage getMainImage() {
-        return mainImage;
-    }
-    /**
-     * @param mainImage the mainImage to set
-     */
-    public void setMainImage(EntityImage mainImage) {
-        this.mainImage = mainImage;
     }
     /**
      * @return the images
