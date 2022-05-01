@@ -12,12 +12,13 @@
 <%@attribute name="shop" required="true" type="ss.entity.agrolavka.Shop"%>
 
 <%-- any content can be specified here e.g.: --%>
-<section class="mb-4">
+<c:if test="${shop.images.size() > 0}">
+<section class="mb-2">
     <div class="row">
         <div class="col-md-6 gx-5 mb-4">
             <img src="/media/${shop.images.get(0).fileNameOnDisk}?timestamp=${shop.images.get(0).createdDate}"
-                 class="img-fluid shadow-2-strong float-end"
-                 alt="${shop.title}" height="100"/>
+                 class="img-fluid shadow-2-strong" style="width: 100%"
+                 alt="${shop.title}"/>
         </div>
         <div class="col-md-6 gx-5 mb-4">
             <h5>${shop.title}</h5>
@@ -44,3 +45,4 @@
     </div>
 </section>
 <hr/>
+</c:if>

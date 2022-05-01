@@ -36,23 +36,24 @@ abstract class EntityWithImagesListener {
     @Autowired
     private ImageService imageService;
     
-    protected void cropImages(final List<EntityImage> images) throws Exception {
+    protected void cropImages(final List<EntityImage> images, final int thumbSize) throws Exception {
         for (EntityImage image : images) {
-            byte[] thumb = imageService.convertToThumbnail(image.getData(), SiteConstants.IMAGE_THUMB_SIZE);
+            byte[] thumb = imageService.convertToThumbnail(image.getData(), thumbSize);
             image.setData(thumb);
         }
     }
     
     protected List<EntityImage> getActualImages(
             final List<EntityImage> imagesDB,
-            final List<EntityImage> images
+            final List<EntityImage> images,
+            final int thumbSize
     ) throws Exception {
         Map<Long, EntityImage> map = imagesDB.stream()
                 .collect(Collectors.toMap(EntityImage::getId, Function.identity()));
         List<EntityImage> actualImages = new ArrayList();
         for (EntityImage image : images) {
             if (image.getData() != null) {
-                byte[] thumb = imageService.convertToThumbnail(image.getData(), SiteConstants.IMAGE_THUMB_SIZE);
+                byte[] thumb = imageService.convertToThumbnail(image.getData(), thumbSize);
                 image.setData(thumb);
                 actualImages.add(image);
             } else if (image.getId() != null && map.containsKey(image.getId())) {

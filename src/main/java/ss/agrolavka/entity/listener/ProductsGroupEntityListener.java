@@ -10,6 +10,7 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
+import ss.agrolavka.constants.SiteConstants;
 import ss.agrolavka.service.MySkladIntegrationService;
 import ss.agrolavka.util.AppCache;
 import ss.agrolavka.util.UrlProducer;
@@ -39,7 +40,7 @@ class ProductsGroupEntityListener extends EntityWithImagesListener implements Pl
 
     @Override
     public void prePersist(ProductsGroup entity) throws Exception {
-        cropImages(entity.getImages());
+        cropImages(entity.getImages(), SiteConstants.IMAGE_THUMB_SIZE);
         entity.setUrl(UrlProducer.transliterate(entity.getName()));
         entity.setExternalId(mySkladIntegrationService.createProductsGroup(entity));
     }
@@ -52,7 +53,8 @@ class ProductsGroupEntityListener extends EntityWithImagesListener implements Pl
     @Override
     public void preUpdate(ProductsGroup entity) throws Exception {
         ProductsGroup entityFromDB = coreDAO.findById(entity.getId(), ProductsGroup.class);
-        final List<EntityImage> actualImages = getActualImages(entityFromDB.getImages(), entity.getImages());
+        final List<EntityImage> actualImages = getActualImages(
+                entityFromDB.getImages(), entity.getImages(), SiteConstants.IMAGE_THUMB_SIZE);
         entityFromDB.setImages(actualImages);
         entity.setImages(actualImages);
         coreDAO.update(entityFromDB);

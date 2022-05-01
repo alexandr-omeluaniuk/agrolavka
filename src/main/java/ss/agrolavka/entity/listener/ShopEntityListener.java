@@ -21,6 +21,7 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
+import ss.agrolavka.constants.SiteConstants;
 import ss.agrolavka.util.AppCache;
 import ss.entity.agrolavka.Shop;
 import ss.entity.martin.EntityImage;
@@ -45,7 +46,7 @@ class ShopEntityListener extends EntityWithImagesListener implements PlatformEnt
     
     @Override
     public void prePersist(final Shop entity) throws Exception {
-        cropImages(entity.getImages());
+        cropImages(entity.getImages(), SiteConstants.IMAGE_SHOP_THUMB_SIZE);
         
     }
     
@@ -57,7 +58,8 @@ class ShopEntityListener extends EntityWithImagesListener implements PlatformEnt
     @Override
     public void preUpdate(final Shop entity) throws Exception {
         Shop entityFromDB = coreDAO.findById(entity.getId(), Shop.class);
-        final List<EntityImage> actualImages = getActualImages(entityFromDB.getImages(), entity.getImages());
+        final List<EntityImage> actualImages = getActualImages(
+                entityFromDB.getImages(), entity.getImages(), SiteConstants.IMAGE_SHOP_THUMB_SIZE);
         entityFromDB.setImages(actualImages);
         entity.setImages(actualImages);
         coreDAO.update(entityFromDB);

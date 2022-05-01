@@ -10,6 +10,7 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
+import ss.agrolavka.constants.SiteConstants;
 import ss.agrolavka.service.MySkladIntegrationService;
 import ss.entity.agrolavka.Product;
 import ss.entity.martin.EntityImage;
@@ -38,7 +39,7 @@ class ProductEntityListener extends EntityWithImagesListener implements Platform
     @Override
     public void prePersist(Product entity) throws Exception {
         Product mySkladEntity = mySkladIntegrationService.createProduct(entity);
-        cropImages(entity.getImages());
+        cropImages(entity.getImages(), SiteConstants.IMAGE_THUMB_SIZE);
         entity.setExternalId(mySkladEntity.getExternalId());
         mySkladIntegrationService.attachImagesToProduct(entity);
     }
@@ -47,7 +48,8 @@ class ProductEntityListener extends EntityWithImagesListener implements Platform
     public void preUpdate(Product entity) throws Exception {
         mySkladIntegrationService.updateProduct(entity);
         Product entityFromDB = coreDAO.findById(entity.getId(), Product.class);
-        final List<EntityImage> actualImages = getActualImages(entityFromDB.getImages(), entity.getImages());
+        final List<EntityImage> actualImages = getActualImages(
+                entityFromDB.getImages(), entity.getImages(), SiteConstants.IMAGE_THUMB_SIZE);
         entityFromDB.setImages(actualImages);
         entityFromDB = coreDAO.update(entityFromDB);
         entity.setImages(entityFromDB.getImages());
