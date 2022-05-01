@@ -51,10 +51,10 @@ function Shops() {
             ]),
             new FormField('latitude', TYPES.DOUBLE_NUMBER, t('m_agrolavka:shops.latitude')).setGrid({xs: 12, md: 6}).validation([
                 new Validator(VALIDATORS.REQUIRED)
-            ]).setAttributes({ decimalScale: 6}),
+            ]).setAttributes({decimalScale: 6}),
             new FormField('longitude', TYPES.DOUBLE_NUMBER, t('m_agrolavka:shops.longitude')).setGrid({xs: 12, md: 6}).validation([
                 new Validator(VALIDATORS.REQUIRED)
-            ]).setAttributes({ decimalScale: 6}),
+            ]).setAttributes({decimalScale: 6}),
             new FormField('images', TYPES.IMAGES, t('m_agrolavka:shops.images')).setGrid({xs: 12})
         ]).setBeforeOnEditRecord((record) => {
             return new Promise((resolve) => {

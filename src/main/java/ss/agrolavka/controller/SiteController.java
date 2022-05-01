@@ -11,7 +11,6 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.HashSet;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
@@ -33,6 +32,7 @@ import ss.entity.agrolavka.Order;
 import ss.entity.agrolavka.OrderPosition;
 import ss.entity.agrolavka.Product;
 import ss.entity.agrolavka.ProductsGroup;
+import ss.entity.agrolavka.Shop;
 import ss.entity.martin.DataModel;
 import ss.martin.platform.dao.CoreDAO;
 
@@ -62,7 +62,7 @@ public class SiteController {
      */
     @RequestMapping("/")
     public String home(Model model, HttpServletRequest httpRequest) throws Exception {
-        insertCartDataToModel(httpRequest, model);
+        insertCommonDataToModel(httpRequest, model);
         model.addAttribute("title", "Все для сада и огорода");
         List<Product> newProducts = AppCache.getNewProducts();
         if (newProducts == null) {
@@ -89,7 +89,7 @@ public class SiteController {
      */
     @RequestMapping("/cart")
     public String cart(Model model, HttpServletRequest httpRequest) throws Exception {
-        insertCartDataToModel(httpRequest, model);
+        insertCommonDataToModel(httpRequest, model);
         return "cart";
     }
     /**
@@ -101,7 +101,7 @@ public class SiteController {
      */
     @RequestMapping("/order")
     public String order(Model model, HttpServletRequest httpRequest) throws Exception {
-        insertCartDataToModel(httpRequest, model);
+        insertCommonDataToModel(httpRequest, model);
         final List<EuropostLocation> locations = coreDAO.getAll(EuropostLocation.class);
         Collections.sort(locations);
         model.addAttribute("europostLocations", locations);
@@ -116,7 +116,7 @@ public class SiteController {
      */
     @RequestMapping("/delivery")
     public String delivery(Model model, HttpServletRequest httpRequest) throws Exception {
-        insertCartDataToModel(httpRequest, model);
+        insertCommonDataToModel(httpRequest, model);
         return "delivery";
     }
     /**
@@ -128,7 +128,7 @@ public class SiteController {
      */
     @RequestMapping("/discount")
     public String discount(Model model, HttpServletRequest httpRequest) throws Exception {
-        insertCartDataToModel(httpRequest, model);
+        insertCommonDataToModel(httpRequest, model);
         return "discount";
     }
     /**
@@ -140,9 +140,16 @@ public class SiteController {
      */
     @RequestMapping("/promotions")
     public String promotions(Model model, HttpServletRequest httpRequest) throws Exception {
-        insertCartDataToModel(httpRequest, model);
+        insertCommonDataToModel(httpRequest, model);
         model.addAttribute("products", getProductsWithDiscount());
         return "promotions";
+    }
+    
+    @RequestMapping("/shops")
+    public String shops(Model model, HttpServletRequest httpRequest) throws Exception {
+        insertCommonDataToModel(httpRequest, model);
+        model.addAttribute("shops", coreDAO.getAll(Shop.class));
+        return "shops";
     }
     /**
      * Feedback page.
@@ -153,7 +160,7 @@ public class SiteController {
      */
     @RequestMapping("/feedback")
     public String feedback(Model model, HttpServletRequest httpRequest) throws Exception {
-        insertCartDataToModel(httpRequest, model);
+        insertCommonDataToModel(httpRequest, model);
         return "feedback";
     }
     /**
@@ -164,7 +171,7 @@ public class SiteController {
      */
     @RequestMapping("/error/page-not-found")
     public String error404(Model model, HttpServletRequest httpRequest) throws Exception {
-        insertCartDataToModel(httpRequest, model);
+        insertCommonDataToModel(httpRequest, model);
         return "error/404";
     }
     /**
@@ -184,7 +191,7 @@ public class SiteController {
             @RequestParam(name = "view", required = false) String view,
             @RequestParam(name = "sort", required = false) String sort,
             @RequestParam(name = "available", required = false) boolean available) throws Exception {
-        insertCartDataToModel(request, model);
+        insertCommonDataToModel(request, model);
         String url = request.getRequestURI();
         model.addAttribute("page", page == null ? 1 : page);
         model.addAttribute("view", view == null ? "TILES" : view);
@@ -326,11 +333,12 @@ public class SiteController {
         return productDAO.getProductByUrl(last);
     }
     /**
-     * Insert cart to data model.
+     * Insert common to data model.
      * @param request HTTP request.
      * @param model page model.
      */
-    private void insertCartDataToModel(HttpServletRequest request, Model model) throws Exception {
+    private void insertCommonDataToModel(HttpServletRequest request, Model model) throws Exception {
+        // cart
         final Order order = orderService.getCurrentOrder(request);
         Double total = 0d;
         for (OrderPosition pos : order.getPositions()) {
@@ -350,6 +358,13 @@ public class SiteController {
             AppCache.setProductsCount(productsCount);
         }
         model.addAttribute("productsCount", productsCount);
+        // shop
+        List<Shop> shops = AppCache.getShops();
+        if (shops == null) {
+            AppCache.flushShopsCache(coreDAO.getAll(Shop.class));
+            shops = AppCache.getShops();
+        }
+        model.addAttribute("shops", shops);
     }
     /**
      * Get products with discount.

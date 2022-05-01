@@ -4,7 +4,9 @@
     Author     : alex
 --%>
 
-<%@tag description="put the tag description here" pageEncoding="UTF-8"%>
+<%@tag description="Site footer" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 
 <%-- The list of normal or fragment attributes can be specified here: --%>
 
@@ -29,6 +31,7 @@
                             <li class="mb-2"><a class="text-white" href="/catalog">Каталог товаров</a></li>
                             <li class="mb-2"><a class="text-white" href="/discount">Дисконтная программа</a></li>
                             <li class="mb-2"><a class="text-white" href="/delivery">Доставка</a></li>
+                            <li class="mb-2"><a class="text-white" href="/shops">Наши магазины</a></li>
                             <li>
                                 <a href="https://www.instagram.com/agrolavka.by" class="btn btn-outline-light btn-floating">
                                     <i class="fab fa-instagram"></i>
@@ -42,26 +45,11 @@
             <div class="col-lg-3">
                 <h4>Контакты</h4>
                 <p>
-                    ул.Мелиоративная, 61 <br/>
-                    г.Дрогичин, 225612
-                    <hr/>
-                    ул.Московская, 118 <br/>
-                    г.Брест, 224012
-                    <hr/>
+                    <c:forEach items="${shops}" var="shop">
+                        <t:shop-short-info shop="${shop}"/>
+                    </c:forEach>
                     <strong>Телефон:</strong> <a class="text-white" href="tel:+375298713758">+375 29 871-37-58</a><br>
                     <strong>Email:</strong> <a class="text-white" href="mailto:sergej4ikk@mail.ru">sergej4ikk@mail.ru</a><br>
-                </p>
-                <h4>Время работы</h4>
-                <p>
-                    <div class="d-flex justify-content-between align-items-center">
-                        <small><b>понедельник - пятница</b></small> <small>09:00 - 18:30</small>
-                    </div>
-                    <div class="d-flex justify-content-between align-items-center">
-                        <small><b>суббота</b></small> <small>09:00 - 16:00</small>
-                    </div>
-                    <div class="d-flex justify-content-between align-items-center">
-                        <small><b>воскресенье</b></small> <small>10:00 - 14:00</small>
-                    </div>
                 </p>
             </div>
 

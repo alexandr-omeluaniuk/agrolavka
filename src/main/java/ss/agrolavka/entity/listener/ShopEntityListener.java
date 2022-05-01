@@ -16,19 +16,15 @@
  */
 package ss.agrolavka.entity.listener;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.function.Function;
-import java.util.stream.Collectors;
+import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
-import ss.agrolavka.constants.SiteConstants;
+import ss.agrolavka.util.AppCache;
 import ss.entity.agrolavka.Shop;
 import ss.entity.martin.EntityImage;
 import ss.martin.platform.dao.CoreDAO;
-import ss.martin.platform.service.ImageService;
 import ss.martin.platform.util.PlatformEntityListener;
 
 /**
@@ -37,13 +33,10 @@ import ss.martin.platform.util.PlatformEntityListener;
  */
 @Component
 @Qualifier("ShopEntityListener")
-class ShopEntityListener implements PlatformEntityListener<Shop> {
+class ShopEntityListener extends EntityWithImagesListener implements PlatformEntityListener<Shop> {
     /** Core DAO. */
     @Autowired
     private CoreDAO coreDAO;
-    /** Image service. */
-    @Autowired
-    private ImageService imageService;
 
     @Override
     public Class<Shop> entity() {
@@ -52,37 +45,33 @@ class ShopEntityListener implements PlatformEntityListener<Shop> {
     
     @Override
     public void prePersist(final Shop entity) throws Exception {
-        if (entity.getImages() != null) {
-            for (EntityImage image : entity.getImages()) {
-                byte[] thumb = imageService.convertToThumbnail(image.getData(), SiteConstants.IMAGE_THUMB_SIZE);
-                image.setData(thumb);
-            }
-        }
+        cropImages(entity.getImages());
+        
+    }
+    
+    @Override
+    public void postPersist(final Shop entity) throws Exception {
+        AppCache.flushShopsCache(coreDAO.getAll(Shop.class));
     }
 
     @Override
     public void preUpdate(final Shop entity) throws Exception {
         Shop entityFromDB = coreDAO.findById(entity.getId(), Shop.class);
-        List<EntityImage> actualImages = getActualImages(entityFromDB.getImages(), entity.getImages());
+        final List<EntityImage> actualImages = getActualImages(entityFromDB.getImages(), entity.getImages());
         entityFromDB.setImages(actualImages);
         entity.setImages(actualImages);
         coreDAO.update(entityFromDB);
+        AppCache.flushShopsCache(coreDAO.getAll(Shop.class));
     }
     
-    private List<EntityImage> getActualImages(List<EntityImage> imagesDB, List<EntityImage> images) throws Exception {
-        Map<Long, EntityImage> map = imagesDB.stream()
-                .collect(Collectors.toMap(EntityImage::getId, Function.identity()));
-        List<EntityImage> actualImages = new ArrayList();
-        for (EntityImage image : images) {
-            if (image.getData() != null) {
-                byte[] thumb = imageService.convertToThumbnail(image.getData(), SiteConstants.IMAGE_THUMB_SIZE);
-                image.setData(thumb);
-                actualImages.add(image);
-            } else if (image.getId() != null && map.containsKey(image.getId())) {
-                actualImages.add(map.get(image.getId()));
-            }
-        }
-        return actualImages;
+    @Override
+    public void postUpdate(final Shop entity) throws Exception {
+        AppCache.flushShopsCache(coreDAO.getAll(Shop.class));
+    }
+    
+    @Override
+    public void postDelete(Set<Long> ids) throws Exception {
+        AppCache.flushShopsCache(coreDAO.getAll(Shop.class));
     }
     
 }

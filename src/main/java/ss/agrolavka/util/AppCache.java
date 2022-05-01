@@ -13,6 +13,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import ss.entity.agrolavka.Product;
 import ss.entity.agrolavka.ProductsGroup;
+import ss.entity.agrolavka.Shop;
 
 /**
  * Application cache.
@@ -29,6 +30,8 @@ public class AppCache {
     private static List<Product> productWithDiscounts = null;
     /** Products count. */
     private static Long productsCount = null;
+    /** All shops. */
+    private static List<Shop> allShops = null;
     /**
      * Update catalog data.
      * @param groups product groups.
@@ -48,6 +51,13 @@ public class AppCache {
             String parentId = group.getParentId();
             GROUPS_PARENT_MAP.put(group.getExternalId(), parentId == null ? null : externalIdsMap.get(parentId));
         }
+    }
+    /**
+     * Flush shops cache.
+     * @param shops actual shops.
+     */
+    public static synchronized void flushShopsCache(final List<Shop> shops) {
+        allShops = shops;
     }
     /**
      * Get new products.
@@ -131,6 +141,10 @@ public class AppCache {
      */
     public static synchronized Map<String, ProductsGroup> getProductsGroupsTree() {
         return GROUPS_PARENT_MAP;
+    }
+    
+    public static synchronized List<Shop> getShops() {
+        return allShops;
     }
     /**
      * Get root product groups.
