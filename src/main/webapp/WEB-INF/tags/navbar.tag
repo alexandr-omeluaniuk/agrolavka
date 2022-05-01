@@ -57,7 +57,7 @@
                         <a class="nav-link" href="/discount">Дисконтная программа</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#footer">Контакты</a>
+                        <a class="nav-link" href="#contacts">Контакты</a>
                     </li>
                     <li class="nav-item d-lg-none d-xl-none d-xxl-none">
                         <a class="nav-link" href="/feedback">Написать нам</a>

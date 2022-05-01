@@ -42,15 +42,13 @@
                 </div>
             </div>
 
-            <div class="col-lg-3">
+            <div class="col-lg-3" id="contacts">
                 <h4>Контакты</h4>
-                <p>
-                    <c:forEach items="${shops}" var="shop">
-                        <t:shop-short-info shop="${shop}"/>
-                    </c:forEach>
-                    <strong>Телефон:</strong> <a class="text-white" href="tel:+375298713758">+375 29 871-37-58</a><br>
-                    <strong>Email:</strong> <a class="text-white" href="mailto:sergej4ikk@mail.ru">sergej4ikk@mail.ru</a><br>
-                </p>
+                <c:forEach items="${shops}" var="shop">
+                    <t:shop-short-info shop="${shop}"/>
+                </c:forEach>
+                <strong>Телефон:</strong> <a class="text-white" href="tel:+375298713758">+375 29 871-37-58</a><br>
+                <strong>Email:</strong> <a class="text-white" href="mailto:sergej4ikk@mail.ru">sergej4ikk@mail.ru</a><br>
             </div>
 
         </div>

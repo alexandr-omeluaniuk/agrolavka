@@ -12,8 +12,8 @@
 <%@attribute name="shop" required="true" type="ss.entity.agrolavka.Shop"%>
 
 <%-- any content can be specified here e.g.: --%>
-<a class="agr-shop-address-link" href="/shops">${shop.address}</a>
-<h6>Время работы</h6>
+<a class="agr-shop-address-link" href="/shops"><p>${shop.address}</p></a>
+<h6 class="mt-2">Время работы</h6>
 <%
     final String workingWhours = shop.getWorkingHours();
     final String[] lines = workingWhours.split("\n");
