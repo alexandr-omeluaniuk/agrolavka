@@ -49,12 +49,12 @@
                 for (int i = 1; i < 5; i++) {
                     if (shop.getImages().size() > i) {
                         final EntityImage image = shop.getImages().get(i);
-                        out.print("<div class=\"col-lg col-md-6 col-sm-6 col-6\">");
+                        out.print("<div class=\"col-lg col-md-6 col-sm-6 col-6 mb-3\">");
                         out.print("<img src=\"/media/" + image.getFileNameOnDisk() + "?timestamp=" 
                             + image.getCreatedDate() + "\" class=\"img-fluid shadow-2-strong\" style=\"width: 100%\" alt=\"" + image.getName() + "\"/>");
                         out.print("</div>");
                     } else {
-                        out.print("<div class=\"col-lg col-md-6 col-sm-6 col-6\">");
+                        out.print("<div class=\"col-lg col-md-6 col-sm-6 col-6 mb-3\">");
                         out.print("</div>");
                     }
                 }
