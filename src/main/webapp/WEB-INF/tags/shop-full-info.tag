@@ -68,7 +68,7 @@
             </div>
         </div>
     </section>
-    <hr class="m-4"/>
+    <hr class="m-5"/>
     <script>
         (function () {
             "use strict";
