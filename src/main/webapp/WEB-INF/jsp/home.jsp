@@ -62,29 +62,6 @@
                         </div>
                     </div>
                     
-                    <!--div class="row mb-5 mt-4 d-none d-lg-flex" style="min-height: 400px;">
-                        <div class="col-lg-3 gx-5 mb-4">
-                            <div class="bg-image shadow-2-strong h-100" data-mdb-ripple-color="light">
-                                <div class="mask" style="opacity: 1; background-color: rgba(251, 251, 251, 0.15); background: url('/assets/img/highlights/1.webp')"></div>
-                            </div>
-                        </div>
-                        <div class="col-lg-3 gx-5 mb-4">
-                            <div class="bg-image shadow-2-strong h-100" data-mdb-ripple-color="light">
-                                <div class="mask" style="opacity: 1; background-color: rgba(251, 251, 251, 0.15); background: url('/assets/img/highlights/2.webp')"></div>
-                            </div>
-                        </div>
-                        <div class="col-lg-3 gx-5 mb-4">
-                            <div class="bg-image shadow-2-strong h-100" data-mdb-ripple-color="light">
-                                <div class="mask" style="opacity: 1; background-color: rgba(251, 251, 251, 0.15); background: url('/assets/img/highlights/3.webp')"></div>
-                            </div>
-                        </div>
-                        <div class="col-lg-3 gx-5 mb-4">
-                            <div class="bg-image shadow-2-strong h-100" data-mdb-ripple-color="light">
-                                <div class="mask" style="opacity: 1; background-color: rgba(251, 251, 251, 0.15); background: url('/assets/img/highlights/4.webp')"></div>
-                            </div>
-                        </div>
-                    </div-->
-                    
                 </section>
                 
                 <!--Section: Content-->

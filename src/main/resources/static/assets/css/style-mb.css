@@ -249,6 +249,9 @@ and open the template in the editor.
 .agr-shop-address-link:hover {
     color: lightgray;
 }
+.leaflet-control-attribution.leaflet-control {
+    display: none;
+}
 /** ============================================== RIBBON ============================================================================== */
 .ribbon {
     z-index: 500;

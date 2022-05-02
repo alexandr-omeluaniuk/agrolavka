@@ -11,6 +11,7 @@
 <%@attribute name="metaDescription" required="true"%>
 <%@attribute name="canonical" required="true" type="String"%>
 <%@attribute name="structuredData" fragment="true" required="false"%>
+<%@attribute name="headSection" fragment="true" required="false"%>
 
 <%-- any content can be specified here e.g.: --%>
 <!DOCTYPE html>
@@ -80,6 +81,7 @@
 
         <!-- Main CSS File -->
         <link href="/assets/css/style-mb.css?v=9" rel="stylesheet">
+        <jsp:invoke fragment="headSection"/>
     </head>
 
     <body>
