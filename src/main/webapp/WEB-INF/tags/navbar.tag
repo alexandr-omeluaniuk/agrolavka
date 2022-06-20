@@ -27,7 +27,7 @@
                                 <i class="fas fa-carrot"></i>
                             </strong>
                         </a>
-                        <a class="nav-link" href="tel:+375298713758" style="flex: 1"><i class="fas fa-phone-alt"></i> +375 29 871-37-58 (МТС)</a>
+                        <a class="nav-link" href="tel:+375292848848" style="flex: 1"><i class="fas fa-phone-alt"></i> +375 29 2-848-848 (МТС)</a>
                         <button class="navbar-toggler" type="button" data-mdb-toggle="collapse"
                                 data-mdb-target="#agr-navbar" aria-controls="agr-navbar" aria-expanded="false" aria-label="Toggle navigation">
                             <i class="fas fa-bars"></i>
@@ -64,7 +64,7 @@
                     </li>
                 </ul>
                 <div class="d-none d-lg-flex align-items-center me-4">
-                    <a class="text-white" href="tel:+375298713758"><i class="fas fa-phone-alt"></i> (29) 871-37-58</a><br>
+                    <a class="text-white" href="tel:+375292848848"><i class="fas fa-phone-alt"></i> (29) 2-848-848</a><br>
                 </div>
                 <div class="d-none d-lg-flex">
                     <t:quick-search-desktop />
