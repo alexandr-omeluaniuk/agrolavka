@@ -1,6 +1,10 @@
 #!/bin/bash
+JAVA_HOME=/usr/lib/jvm/jdk-17
 KEY=/home/alex/secure/agrolavka/id_rsa_agrolavka
 MAVEN_HOME=/home/alex/work/soft/netbeans/java/maven/bin/mvn
+
+export JAVA_HOME=${JAVA_HOME}
+
 cd src/main/resources/static/admin
 npm run build
 cd ../../../../../
