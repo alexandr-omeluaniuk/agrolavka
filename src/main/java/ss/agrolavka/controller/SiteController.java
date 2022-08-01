@@ -12,6 +12,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -380,7 +381,10 @@ public class SiteController {
             searchRequest.setOrder("asc");
             searchRequest.setOrderBy("name");
             searchRequest.setWithDiscounts(true);
-            AppCache.setProductsWithDiscounts(productDAO.search(searchRequest));
+            final List<Product> products = productDAO.search(searchRequest).stream()
+                    .filter(product -> product.getQuantity() > 0)
+                    .collect(Collectors.toList());
+            AppCache.setProductsWithDiscounts(products);
             productsWithDiscounts = AppCache.getProductsWithDiscounts();
         }
         return productsWithDiscounts;
