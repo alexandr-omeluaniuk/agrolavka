@@ -123,5 +123,10 @@
                 }
             });
         });
+        
+        const selfDeliveryRadio = document.querySelector('input[name="delivery"][id="self-delivery"]');
+        if (selfDeliveryRadio) {
+            selfDeliveryRadio.dispatchEvent(new Event('change'));
+        }
     })();
 </script>
