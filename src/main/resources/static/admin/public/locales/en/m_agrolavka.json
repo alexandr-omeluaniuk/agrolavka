@@ -48,7 +48,8 @@
         "order_total": "Total sum",
         "delivery_self": "Self-delivery",
         "delivery_europost": "Europost",
-        "one_click": "One-click order"
+        "one_click": "One-click order",
+        "print": "Print version"
     },
     "feedbacks": {
         "feedback_number": "Nr.",

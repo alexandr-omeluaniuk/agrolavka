@@ -173,7 +173,19 @@ function Orders() {
                     total += pos.quantity * pos.price;
                 });
                 return <Price price={total} />;
-            }).width('170px').alignment(ALIGN_RIGHT)
+            }).width('170px').alignment(ALIGN_RIGHT),
+            new TableColumn('total', t('m_agrolavka:orders.order_total'), (row) => {
+                return (
+                        <Tooltip title={t('m_agrolavka:orders.print')}>
+                            <IconButton onClick={() => {
+                                dataService.getFile('/api/agrolavka/protected/order/print/' + row.id, `Заказ №${row.id}.pdf`).then(resp => {
+                                });
+                            }}>
+                                <Icon>print</Icon>
+                            </IconButton>
+                        </Tooltip>
+                );
+            }).width('100px').alignment(ALIGN_RIGHT)
         ], new FormConfig([
             new FormField('id', TYPES.ID).hide()
         ])).setElevation(1).setFilter(ordersFilter()).setToolbarActionsBefore(toolbarBefore());

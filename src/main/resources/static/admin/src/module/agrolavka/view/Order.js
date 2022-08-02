@@ -182,6 +182,14 @@ function Order(props) {
     const actions = () => {
         return (
                 <div className={classes.actions}>
+                    <Tooltip title={t('m_agrolavka:orders.print')}>
+                        <IconButton onClick={() => {
+                                dataService.getFile('/api/agrolavka/protected/order/print/' + order.id, `Заказ №${order.id}.pdf`).then(resp => {
+                                });
+                        }}>
+                            <Icon>print</Icon>
+                        </IconButton>
+                    </Tooltip>
                     <NavLink to={'/admin/app/agrolavka/orders'}>
                         <Tooltip title={t('m_agrolavka:order.close')}>
                             <IconButton>

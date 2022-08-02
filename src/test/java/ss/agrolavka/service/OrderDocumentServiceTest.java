@@ -40,7 +40,7 @@ public class OrderDocumentServiceTest {
     @Autowired
     private OrderDocumentService orderDocumentService;
     
-    @Test
+    //@Test
     public void testGenerateOrderPdf() throws Exception {
         // Given
         final Order order = new Order();

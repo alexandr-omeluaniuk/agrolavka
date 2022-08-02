@@ -48,7 +48,8 @@
         "order_total": "Сумма",
         "delivery_self": "Самовывоз",
         "delivery_europost": "Европочта",
-        "one_click": "Заказ в один клик"
+        "one_click": "Заказ в один клик",
+        "print": "Версия для печати"
     },
     "feedbacks": {
         "feedback_number": "Номер",

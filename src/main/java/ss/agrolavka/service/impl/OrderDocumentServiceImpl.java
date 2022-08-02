@@ -47,6 +47,7 @@ import static org.vandeseer.easytable.settings.HorizontalAlignment.*;
 import org.vandeseer.easytable.settings.VerticalAlignment;
 import static org.vandeseer.easytable.settings.VerticalAlignment.TOP;
 import ss.entity.agrolavka.Address;
+import ss.entity.agrolavka.EuropostLocationSnapshot;
 import ss.entity.agrolavka.OrderPosition;
 
 /**
@@ -94,7 +95,7 @@ class OrderDocumentServiceImpl implements OrderDocumentService {
         final PDFont robotoRegularFont = PDType0Font.load(document, robotoRegular.getInputStream());
         
         final TableBuilder tableBuilder = Table.builder()
-                .addColumnsOfWidth(410, 50, 50, 50)
+                .addColumnsOfWidth(380, 60, 60, 60)
                 .fontSize(10).font(robotoBoldFont).borderColor(Color.WHITE).padding(6f);
         
         tableBuilder.addRow(Row.builder()
@@ -181,7 +182,7 @@ class OrderDocumentServiceImpl implements OrderDocumentService {
         // Add a final row
         tableBuilder.addRow(Row.builder()
                 .add(TextCell.builder()
-                        .text(order.getComment() == null ? "" : "Комментарий от клиента:\n" + order.getComment())
+                        .text(order.getComment() == null || order.getComment().isBlank() ? "" : "Комментарий от клиента:\n" + order.getComment())
                         .colSpan(3)
                         .lineSpacing(1f)
                         .borderWidthTop(1)
@@ -213,21 +214,32 @@ class OrderDocumentServiceImpl implements OrderDocumentService {
     
     private String clientInfo(final Order order) {
                 final StringBuilder sb = new StringBuilder();
-        //sb.append(new SimpleDateFormat("dd.MM.yyyy HH:mm").format(new Date()));
-        final Address address = order.getAddress();
-        sb.append(address.getRegion() != null ? address.getRegion() + ", " : "");
-        sb.append(address.getDistrict() != null ? address.getDistrict() : "");
-        sb.append("\n");
-        sb.append(address.getPostcode() != null ? address.getPostcode() + ", " : "");
-        sb.append(address.getCity() != null ? address.getCity() : "");
-        sb.append("\n");
-        sb.append(address.getStreet() != null ? address.getStreet() + " " : "");
-        sb.append(address.getHouse() != null ? ", д. " + address.getHouse() : "");
-        sb.append(address.getFlat() != null ? ", кв. " + address.getFlat() : "");
-        sb.append("\n\n");
-        sb.append(address.getLastname() != null ? address.getLastname() + " " : "");
-        sb.append(address.getFirstname() != null ? address.getFirstname() + " " : "");
-        sb.append(address.getMiddlename() != null ? address.getMiddlename() : "");
+        if (order.getAddress() != null) {
+            final Address address = order.getAddress();
+            sb.append(address.getRegion() != null ? address.getRegion() + ", " : "");
+            sb.append(address.getDistrict() != null ? address.getDistrict() : "");
+            sb.append("\n");
+            sb.append(address.getPostcode() != null ? address.getPostcode() + ", " : "");
+            sb.append(address.getCity() != null ? address.getCity() : "");
+            sb.append("\n");
+            sb.append(address.getStreet() != null && !address.getStreet().isBlank() ? address.getStreet() + " " : "");
+            sb.append(address.getHouse() != null && !address.getHouse().isBlank() ? ", д. " + address.getHouse() : "");
+            sb.append(address.getFlat() != null && !address.getFlat().isBlank() ? ", кв. " + address.getFlat() : "");
+            sb.append("\n\n");
+            sb.append(address.getLastname() != null ? address.getLastname() + " " : "");
+            sb.append(address.getFirstname() != null ? address.getFirstname() + " " : "");
+            sb.append(address.getMiddlename() != null ? address.getMiddlename() : "");
+        } else if (order.getEuropostLocationSnapshot() != null) {
+            final EuropostLocationSnapshot europost = order.getEuropostLocationSnapshot();
+            sb.append("доставка Европочтой\n");
+            sb.append(europost.getAddress() != null ? europost.getAddress() : "");
+            sb.append("\n");
+            sb.append(europost.getLastname() != null ? europost.getLastname() + " " : "");
+            sb.append(europost.getFirstname() != null ? europost.getFirstname() + " " : "");
+            sb.append(europost.getMiddlename() != null ? europost.getMiddlename() : "");
+        } else {
+            sb.append("самовывоз из магазина\n");
+        }
         sb.append("\n");
         sb.append(order.getPhone());
         return sb.toString();

@@ -6,7 +6,11 @@
 package ss.agrolavka.rest;
 
 import java.util.Set;
+import javax.servlet.http.HttpServletResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ss.agrolavka.dao.OrderDAO;
+import ss.agrolavka.service.OrderDocumentService;
 import ss.agrolavka.wrapper.OrderSearchRequest;
 import ss.entity.agrolavka.Order;
 import ss.entity.agrolavka.OrderPosition;
@@ -29,12 +34,18 @@ import ss.martin.platform.wrapper.EntitySearchResponse;
 @RestController
 @RequestMapping("/api/agrolavka/protected/order")
 public class OrderRESTController {
+    
+    private static final Logger LOG = LoggerFactory.getLogger(OrderRESTController.class);
+    
     /** Core DAO. */
     @Autowired
     private CoreDAO coreDAO;
     /** Order DAO. */
     @Autowired
     private OrderDAO orderDAO;
+    /** Order document service. */
+    @Autowired
+    private OrderDocumentService orderDocumentService;
     /**
      * Delete order.
      * @param id order ID.
@@ -116,5 +127,20 @@ public class OrderRESTController {
         response.setData(orderDAO.search(searchRequest));
         response.setTotal(orderDAO.count(searchRequest).intValue());
         return response;
+    }
+    
+    @RequestMapping(value = "/print/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    public void backup(@PathVariable("id") Long id, HttpServletResponse response) throws Exception {
+        final Order order = coreDAO.findById(id, Order.class);
+        for (OrderPosition pos : order.getPositions()) {
+            pos.setProduct(coreDAO.findById(pos.getProductId(), Product.class));
+        }
+        LOG.debug(order.getAddress() + "");
+        order.getPositions().forEach(position -> LOG.info(position.getProduct() + ""));
+        final byte[] pdf = orderDocumentService.generateOrderPdf(order);
+        response.getOutputStream().write(pdf);
+        response.addHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=Заказ №" + order.getId() + ".pdf");
+        response.addHeader("ContentType", "application/pdf");
+        response.addHeader("Content-Length", pdf.length + "");
     }
 }
