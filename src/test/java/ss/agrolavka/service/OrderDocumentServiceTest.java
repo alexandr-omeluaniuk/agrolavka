@@ -24,6 +24,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import ss.agrolavka.SpringConfig;
+import ss.entity.agrolavka.Address;
+import ss.entity.agrolavka.Discount;
 import ss.entity.agrolavka.Order;
 import ss.entity.agrolavka.OrderPosition;
 import ss.entity.agrolavka.Product;
@@ -46,9 +48,27 @@ public class OrderDocumentServiceTest {
         order.setPositions(new HashSet<>());
         order.setAdminComment("Some comment from owner...");
         order.setComment("Some coomment from client");
+        order.setPhone("+375 29 778 77 77");
+        
+        final Address address = new Address();
+        address.setCity("Brest");
+        address.setStreet("Rabinovaya");
+        address.setDistrict("Brestsky");
+        address.setFlat("52");
+        address.setHouse("31");
+        address.setRegion("Brestskaya obl");
+        address.setPostcode("224033");
+        address.setFirstname("Mike");
+        address.setLastname("Ivanov");
+        address.setMiddlename("Ivanivich");
+        order.setAddress(address);
+        
+        final Discount discount = new Discount();
+        discount.setDiscount(5d);
         
         final Product product = new Product();
         product.setName("Product #1");
+        product.setDiscount(discount);
         
         final OrderPosition position = new OrderPosition();
         position.setPrice(20.53d);

@@ -44,7 +44,9 @@ import ss.entity.agrolavka.Order;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import static org.vandeseer.easytable.settings.HorizontalAlignment.*;
+import org.vandeseer.easytable.settings.VerticalAlignment;
 import static org.vandeseer.easytable.settings.VerticalAlignment.TOP;
+import ss.entity.agrolavka.Address;
 import ss.entity.agrolavka.OrderPosition;
 
 /**
@@ -59,7 +61,6 @@ class OrderDocumentServiceImpl implements OrderDocumentService {
     private final static String PRODUCT_NAME = "Наименование";
     private final static String QUANTITY = "Кол-во";
     private final static String PRICE = "Цена";
-    private final static String DISCOUNT = "Скидка";
     private final static String TOTAL = "Сумма";
         
     private final static Color BLUE_DARK = new Color(76, 129, 190);
@@ -93,13 +94,64 @@ class OrderDocumentServiceImpl implements OrderDocumentService {
         final PDFont robotoRegularFont = PDType0Font.load(document, robotoRegular.getInputStream());
         
         final TableBuilder tableBuilder = Table.builder()
-                .addColumnsOfWidth(360, 50, 50, 50, 50)
+                .addColumnsOfWidth(410, 50, 50, 50)
                 .fontSize(10).font(robotoBoldFont).borderColor(Color.WHITE).padding(6f);
+        
+        tableBuilder.addRow(Row.builder()
+                .add(TextCell.builder()
+                        .text("Агролавка")
+                        .colSpan(1)
+                        .lineSpacing(1f)
+                        .borderWidthTop(1)
+                        .textColor(Color.ORANGE)
+                        .backgroundColor(WHITE)
+                        .fontSize(22)
+                        .verticalAlignment(VerticalAlignment.BOTTOM)
+                        .font(robotoBoldFont)
+                        .borderWidth(1)
+                        .build())
+                .add(TextCell.builder().text("Информация о заказе:")
+                        .backgroundColor(WHITE)
+                        .textColor(BLUE_DARK)
+                        .colSpan(3)
+                        .font(robotoBoldFont).fontSize(10)
+                        .horizontalAlignment(RIGHT)
+                        .verticalAlignment(VerticalAlignment.BOTTOM)
+                        .borderWidth(1)
+                        .build())
+                .horizontalAlignment(LEFT)
+                .build());
+        
+        tableBuilder.addRow(Row.builder()
+                .add(TextCell.builder()
+                        .text("agrolavka.by")
+                        .colSpan(1)
+                        .lineSpacing(1f)
+                        .borderWidthTop(1)
+                        .textColor(Color.ORANGE)
+                        .backgroundColor(WHITE)
+                        .fontSize(8)
+                        .verticalAlignment(TOP)
+                        .font(robotoBoldFont)
+                        .borderWidth(1).paddingBottom(20f)
+                        .build())
+                .add(TextCell.builder().text(clientInfo(order))
+                        .backgroundColor(WHITE)
+                        .textColor(BLUE_DARK)
+                        .colSpan(3)
+                        .paddingBottom(20f)
+                        .font(robotoRegularFont).fontSize(10)
+                        .horizontalAlignment(RIGHT)
+                        .verticalAlignment(TOP)
+                        .borderWidth(1)
+                        .build())
+                .horizontalAlignment(LEFT)
+                .build());
+        
         // header
         tableBuilder.addRow(Row.builder()
                 .add(TextCell.builder().text(PRODUCT_NAME).horizontalAlignment(LEFT).borderWidth(1).build())
                 .add(TextCell.builder().text(QUANTITY).borderWidth(1).build())
-                .add(TextCell.builder().text(DISCOUNT).borderWidth(1).build())
                 .add(TextCell.builder().text(PRICE).borderWidth(1).build())
                 .add(TextCell.builder().text(TOTAL).borderWidth(1).build())
                 .backgroundColor(BLUE_DARK).textColor(Color.WHITE).font(robotoBoldFont).fontSize(10)
@@ -112,14 +164,12 @@ class OrderDocumentServiceImpl implements OrderDocumentService {
             final String productName = position.getProduct().getName();
             final Integer quantity = position.getQuantity();
             final Double price = position.getPrice();
-            final String discount = "";
             final double subtotal = price * quantity;
             grandTotal += subtotal;
             
             tableBuilder.addRow(Row.builder()
                     .add(TextCell.builder().text(String.valueOf(productName)).horizontalAlignment(LEFT).borderWidth(1).build())
                     .add(TextCell.builder().text(String.valueOf(quantity)).borderWidth(1).build())
-                    .add(TextCell.builder().text(discount).borderWidth(1).build())
                     .add(TextCell.builder().text(String.format("%.2f", price)).borderWidth(1).build())
                     .add(TextCell.builder().text(String.format("%.2f", subtotal)).borderWidth(1).build())
                     .backgroundColor(i % 2 == 0 ? BLUE_LIGHT_1 : BLUE_LIGHT_2)
@@ -132,7 +182,7 @@ class OrderDocumentServiceImpl implements OrderDocumentService {
         tableBuilder.addRow(Row.builder()
                 .add(TextCell.builder()
                         .text(order.getComment() == null ? "" : "Комментарий от клиента:\n" + order.getComment())
-                        .colSpan(4)
+                        .colSpan(3)
                         .lineSpacing(1f)
                         .borderWidthTop(1)
                         .textColor(WHITE)
@@ -159,6 +209,28 @@ class OrderDocumentServiceImpl implements OrderDocumentService {
                     .build();
             tableDrawer.draw();
         }
+    }
+    
+    private String clientInfo(final Order order) {
+                final StringBuilder sb = new StringBuilder();
+        //sb.append(new SimpleDateFormat("dd.MM.yyyy HH:mm").format(new Date()));
+        final Address address = order.getAddress();
+        sb.append(address.getRegion() != null ? address.getRegion() + ", " : "");
+        sb.append(address.getDistrict() != null ? address.getDistrict() : "");
+        sb.append("\n");
+        sb.append(address.getPostcode() != null ? address.getPostcode() + ", " : "");
+        sb.append(address.getCity() != null ? address.getCity() : "");
+        sb.append("\n");
+        sb.append(address.getStreet() != null ? address.getStreet() + " " : "");
+        sb.append(address.getHouse() != null ? ", д. " + address.getHouse() : "");
+        sb.append(address.getFlat() != null ? ", кв. " + address.getFlat() : "");
+        sb.append("\n\n");
+        sb.append(address.getLastname() != null ? address.getLastname() + " " : "");
+        sb.append(address.getFirstname() != null ? address.getFirstname() + " " : "");
+        sb.append(address.getMiddlename() != null ? address.getMiddlename() : "");
+        sb.append("\n");
+        sb.append(order.getPhone());
+        return sb.toString();
     }
     
 }
