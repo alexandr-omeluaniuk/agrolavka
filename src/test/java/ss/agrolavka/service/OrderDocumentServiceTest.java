@@ -18,7 +18,6 @@ package ss.agrolavka.service;
 
 import java.io.File;
 import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
 import java.nio.file.StandardOpenOption;
 import java.util.HashSet;
 import org.junit.jupiter.api.Test;
@@ -26,6 +25,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import ss.agrolavka.SpringConfig;
 import ss.entity.agrolavka.Order;
+import ss.entity.agrolavka.OrderPosition;
+import ss.entity.agrolavka.Product;
 
 /**
  *
@@ -43,7 +44,18 @@ public class OrderDocumentServiceTest {
         final Order order = new Order();
         order.setId(1234L);
         order.setPositions(new HashSet<>());
-        order.setComment("Some comment from owner...");
+        order.setAdminComment("Some comment from owner...");
+        order.setComment("Some coomment from client");
+        
+        final Product product = new Product();
+        product.setName("Product #1");
+        
+        final OrderPosition position = new OrderPosition();
+        position.setPrice(20.53d);
+        position.setQuantity(1);
+        position.setProduct(product);
+        
+        order.getPositions().add(position);
         
         // When
         final byte[] result = orderDocumentService.generateOrderPdf(order);

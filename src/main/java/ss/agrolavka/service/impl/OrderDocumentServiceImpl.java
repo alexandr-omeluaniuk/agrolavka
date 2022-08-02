@@ -21,11 +21,13 @@ import static java.awt.Color.LIGHT_GRAY;
 import static java.awt.Color.WHITE;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
-import static org.apache.pdfbox.pdmodel.font.PDType1Font.HELVETICA;
-import static org.apache.pdfbox.pdmodel.font.PDType1Font.HELVETICA_BOLD;
+import org.apache.pdfbox.pdmodel.font.PDFont;
+import org.apache.pdfbox.pdmodel.font.PDType0Font;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -39,9 +41,11 @@ import org.vandeseer.easytable.structure.cell.TextCell;
 import ss.agrolavka.service.OrderDocumentService;
 import ss.entity.agrolavka.Order;
 
-import static org.apache.pdfbox.pdmodel.font.PDType1Font.*;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
 import static org.vandeseer.easytable.settings.HorizontalAlignment.*;
 import static org.vandeseer.easytable.settings.VerticalAlignment.TOP;
+import ss.entity.agrolavka.OrderPosition;
 
 /**
  *
@@ -52,20 +56,21 @@ class OrderDocumentServiceImpl implements OrderDocumentService {
     /** Logger. */
     private static final Logger LOG = LoggerFactory.getLogger(OrderDocumentServiceImpl.class);
     
-        private final static Object[][] DATA = new Object[][]{
-            {"Whisky", 134.0, 145.0},
-            {"Beer",   768.0, 677.0},
-            {"Gin",    456.2, 612.0},
-            {"Vodka",  302.3, 467.0}
-    };
+    private final static String PRODUCT_NAME = "Наименование";
+    private final static String QUANTITY = "Кол-во";
+    private final static String PRICE = "Цена";
+    private final static String DISCOUNT = "Скидка";
+    private final static String TOTAL = "Сумма";
         
-            private final static Color BLUE_DARK = new Color(76, 129, 190);
+    private final static Color BLUE_DARK = new Color(76, 129, 190);
     private final static Color BLUE_LIGHT_1 = new Color(186, 206, 230);
     private final static Color BLUE_LIGHT_2 = new Color(218, 230, 242);
-
-    private final static Color GRAY_LIGHT_1 = new Color(245, 245, 245);
-    private final static Color GRAY_LIGHT_2 = new Color(240, 240, 240);
-    private final static Color GRAY_LIGHT_3 = new Color(216, 216, 216);
+    
+    @Value("classpath:Roboto-Bold.ttf")
+    private Resource robotoBold;
+    
+    @Value("classpath:Roboto-Regular.ttf")
+    private Resource robotoRegular;
 
     @Override
     public byte[] generateOrderPdf(final Order order) throws Exception {
@@ -73,7 +78,7 @@ class OrderDocumentServiceImpl implements OrderDocumentService {
             document.getDocumentInformation().setAuthor("agrolavka.by");
             document.getDocumentInformation().setTitle("Заказ №" + order.getId());
             final PDPage page = new PDPage();
-            addTable(document, page);
+            addTable(document, page, order);
             document.addPage(page);
             final ByteArrayOutputStream baos = new ByteArrayOutputStream();
             document.save(baos);
@@ -82,78 +87,76 @@ class OrderDocumentServiceImpl implements OrderDocumentService {
         }
     }
     
-    private void addTable(final PDDocument document, final PDPage page) throws IOException {
-        try (PDPageContentStream contentStream = new PDPageContentStream(document, page)) {
-
-                final TableBuilder tableBuilder = Table.builder()
-                .addColumnsOfWidth(400, 50, 50, 50)
-                .fontSize(8)
-                .font(HELVETICA)
-                .borderColor(Color.WHITE);
-
-        // Add the header row ...
-        tableBuilder.addRow(Row.builder()
-                .add(TextCell.builder().text("Product").horizontalAlignment(LEFT).borderWidth(1).build())
-                .add(TextCell.builder().text("2018").borderWidth(1).build())
-                .add(TextCell.builder().text("2019").borderWidth(1).build())
-                .add(TextCell.builder().text("Total").borderWidth(1).build())
-                .backgroundColor(BLUE_DARK)
-                .textColor(Color.WHITE)
-                .font(HELVETICA_BOLD)
-                .fontSize(9)
-                .horizontalAlignment(CENTER)
-                .build());
+    private void addTable(final PDDocument document, final PDPage page, final Order order) throws IOException {
+        // fonts
+        final PDFont robotoBoldFont = PDType0Font.load(document, robotoBold.getInputStream());
+        final PDFont robotoRegularFont = PDType0Font.load(document, robotoRegular.getInputStream());
         
+        final TableBuilder tableBuilder = Table.builder()
+                .addColumnsOfWidth(320, 50, 50, 80, 80)
+                .fontSize(10).font(robotoBoldFont).borderColor(Color.WHITE);
+        // header
+        tableBuilder.addRow(Row.builder()
+                .add(TextCell.builder().text(PRODUCT_NAME).horizontalAlignment(LEFT).borderWidth(1).build())
+                .add(TextCell.builder().text(QUANTITY).borderWidth(1).build())
+                .add(TextCell.builder().text(DISCOUNT).borderWidth(1).build())
+                .add(TextCell.builder().text(PRICE).borderWidth(1).build())
+                .add(TextCell.builder().text(TOTAL).borderWidth(1).build())
+                .backgroundColor(BLUE_DARK).textColor(Color.WHITE).font(robotoBoldFont).fontSize(10)
+                .horizontalAlignment(CENTER).build()
+        );
         double grandTotal = 0;
-        for (int i = 0; i < DATA.length; i++) {
-            final Object[] dataRow = DATA[i];
-            final double total = (double) dataRow[1] + (double) dataRow[2];
-            grandTotal += total;
-
+        final List<OrderPosition> positions = new ArrayList(order.getPositions());
+        for (int i = 0; i < positions.size(); i++) {
+            final OrderPosition position = positions.get(i);
+            final String productName = position.getProduct().getName();
+            final String quantity = String.valueOf(position.getPrice().intValue());
+            final String price = "XXX";
+            final String discount = "YYY";
+            final String subtotal = "ZZZ";
+            grandTotal += 100d;
+            
             tableBuilder.addRow(Row.builder()
-                    .add(TextCell.builder().text(String.valueOf(dataRow[0])).horizontalAlignment(LEFT).borderWidth(1).build())
-                    .add(TextCell.builder().text(dataRow[1] + " €").borderWidth(1).build())
-                    .add(TextCell.builder().text(dataRow[2] + " €").borderWidth(1).build())
-                    .add(TextCell.builder().text(total + " €").borderWidth(1).build())
+                    .add(TextCell.builder().text(String.valueOf(productName)).horizontalAlignment(LEFT).borderWidth(1).build())
+                    .add(TextCell.builder().text(quantity).borderWidth(1).build())
+                    .add(TextCell.builder().text(discount).borderWidth(1).build())
+                    .add(TextCell.builder().text(price).borderWidth(1).build())
+                    .add(TextCell.builder().text(subtotal).borderWidth(1).build())
                     .backgroundColor(i % 2 == 0 ? BLUE_LIGHT_1 : BLUE_LIGHT_2)
                     .horizontalAlignment(RIGHT)
+                    .font(robotoRegularFont).fontSize(10)
                     .build());
         }
-
+        
         // Add a final row
         tableBuilder.addRow(Row.builder()
-                .add(TextCell.builder().text("This spans over 3 cells, is right aligned and its text is so long that it even breaks. " +
-                        "Also it shows the grand total in the next cell and furthermore vertical alignment is shown:")
-                        .colSpan(3)
+                .add(TextCell.builder().text(order.getComment() == null ? "" : order.getComment())
+                        .colSpan(4)
                         .lineSpacing(1f)
                         .borderWidthTop(1)
                         .textColor(WHITE)
                         .backgroundColor(BLUE_DARK)
                         .fontSize(6)
-                        .font(HELVETICA_OBLIQUE)
+                        .font(robotoBoldFont)
                         .borderWidth(1)
                         .build())
-                .add(TextCell.builder().text(grandTotal + " €").backgroundColor(LIGHT_GRAY)
-                        .font(HELVETICA_BOLD_OBLIQUE)
+                .add(TextCell.builder().text(grandTotal + " BYN").backgroundColor(LIGHT_GRAY)
+                        .font(robotoRegularFont).fontSize(10)
                         .verticalAlignment(TOP)
                         .borderWidth(1)
                         .build())
-                .horizontalAlignment(RIGHT)
+                .horizontalAlignment(LEFT)
                 .build());
-
-
-                // Set up the drawer
-                TableDrawer tableDrawer = TableDrawer.builder()
-                        .contentStream(contentStream)
-                        .startX(20f)
-                        .startY(page.getMediaBox().getUpperRightY() - 20f)
-                        .table(tableBuilder.build())
-                        .build();
-
-                // And go for it!
-                tableDrawer.draw();
-            }
+        try ( PDPageContentStream contentStream = new PDPageContentStream(document, page)) {
+            // Set up the drawer
+            TableDrawer tableDrawer = TableDrawer.builder()
+                    .contentStream(contentStream)
+                    .startX(20f)
+                    .startY(page.getMediaBox().getUpperRightY() - 20f)
+                    .table(tableBuilder.build())
+                    .build();
+            tableDrawer.draw();
+        }
     }
-    
     
 }
