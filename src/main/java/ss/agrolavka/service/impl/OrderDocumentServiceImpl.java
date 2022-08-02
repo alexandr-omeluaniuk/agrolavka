@@ -93,8 +93,8 @@ class OrderDocumentServiceImpl implements OrderDocumentService {
         final PDFont robotoRegularFont = PDType0Font.load(document, robotoRegular.getInputStream());
         
         final TableBuilder tableBuilder = Table.builder()
-                .addColumnsOfWidth(320, 50, 50, 80, 80)
-                .fontSize(10).font(robotoBoldFont).borderColor(Color.WHITE);
+                .addColumnsOfWidth(360, 50, 50, 50, 50)
+                .fontSize(10).font(robotoBoldFont).borderColor(Color.WHITE).padding(6f);
         // header
         tableBuilder.addRow(Row.builder()
                 .add(TextCell.builder().text(PRODUCT_NAME).horizontalAlignment(LEFT).borderWidth(1).build())
@@ -110,18 +110,18 @@ class OrderDocumentServiceImpl implements OrderDocumentService {
         for (int i = 0; i < positions.size(); i++) {
             final OrderPosition position = positions.get(i);
             final String productName = position.getProduct().getName();
-            final String quantity = String.valueOf(position.getPrice().intValue());
-            final String price = "XXX";
-            final String discount = "YYY";
-            final String subtotal = "ZZZ";
-            grandTotal += 100d;
+            final Integer quantity = position.getQuantity();
+            final Double price = position.getPrice();
+            final String discount = "";
+            final double subtotal = price * quantity;
+            grandTotal += subtotal;
             
             tableBuilder.addRow(Row.builder()
                     .add(TextCell.builder().text(String.valueOf(productName)).horizontalAlignment(LEFT).borderWidth(1).build())
-                    .add(TextCell.builder().text(quantity).borderWidth(1).build())
+                    .add(TextCell.builder().text(String.valueOf(quantity)).borderWidth(1).build())
                     .add(TextCell.builder().text(discount).borderWidth(1).build())
-                    .add(TextCell.builder().text(price).borderWidth(1).build())
-                    .add(TextCell.builder().text(subtotal).borderWidth(1).build())
+                    .add(TextCell.builder().text(String.format("%.2f", price)).borderWidth(1).build())
+                    .add(TextCell.builder().text(String.format("%.2f", subtotal)).borderWidth(1).build())
                     .backgroundColor(i % 2 == 0 ? BLUE_LIGHT_1 : BLUE_LIGHT_2)
                     .horizontalAlignment(RIGHT)
                     .font(robotoRegularFont).fontSize(10)
@@ -130,7 +130,8 @@ class OrderDocumentServiceImpl implements OrderDocumentService {
         
         // Add a final row
         tableBuilder.addRow(Row.builder()
-                .add(TextCell.builder().text(order.getComment() == null ? "" : order.getComment())
+                .add(TextCell.builder()
+                        .text(order.getComment() == null ? "" : "Комментарий от клиента:\n" + order.getComment())
                         .colSpan(4)
                         .lineSpacing(1f)
                         .borderWidthTop(1)
@@ -140,9 +141,10 @@ class OrderDocumentServiceImpl implements OrderDocumentService {
                         .font(robotoBoldFont)
                         .borderWidth(1)
                         .build())
-                .add(TextCell.builder().text(grandTotal + " BYN").backgroundColor(LIGHT_GRAY)
+                .add(TextCell.builder().text(String.format("%.2f", grandTotal)).backgroundColor(LIGHT_GRAY)
                         .font(robotoRegularFont).fontSize(10)
                         .verticalAlignment(TOP)
+                        .horizontalAlignment(RIGHT)
                         .borderWidth(1)
                         .build())
                 .horizontalAlignment(LEFT)
