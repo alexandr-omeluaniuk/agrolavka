@@ -115,7 +115,9 @@ export const AuthProvider = ({ children }) => {
         let routes = [];
         let rootURL = AppURLs.app;
         modules.forEach(module => {
-            _visitItemRoutes(module, routes, rootURL);
+            const moduleRoutes = [];
+            _visitItemRoutes(module, moduleRoutes, rootURL);
+            routes = routes.concat(module.wrapModuleRoutes(moduleRoutes));
         });
         return routes;
     };

@@ -24,7 +24,7 @@ export const OrdersForPrintProvider = ({ children }) => {
     const addOrder = (newOrder) => {
         const orders = [];
         ordersForPrint.forEach(order => orders.push(order));
-        ordersForPrint.push(newOrder);
+        orders.push(newOrder);
         setOrdersForPrint(orders);
     };
     
@@ -32,13 +32,8 @@ export const OrdersForPrintProvider = ({ children }) => {
         setOrdersForPrint(ordersForPrint.filter(order => order.id !== orderForRemove.id));
     };
     
-    const getOrders = () => {
-        console.log(ordersForPrint);
-        return ordersForPrint;
-    };
-    
     return (
-            <OrdersForPrintContext.Provider value={{ addOrder, removeOrder, getOrders }}>
+            <OrdersForPrintContext.Provider value={{ addOrder, removeOrder, ordersForPrint }}>
                 {children}
             </OrdersForPrintContext.Provider>
     );

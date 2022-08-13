@@ -49,7 +49,9 @@
         "delivery_self": "Self-delivery",
         "delivery_europost": "Europost",
         "one_click": "One-click order",
-        "print": "Print version"
+        "print": "Print version",
+        "print_add": "Add for print list",
+        "print_remove": "Remove from print list"
     },
     "feedbacks": {
         "feedback_number": "Nr.",

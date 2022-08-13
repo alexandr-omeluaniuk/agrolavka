@@ -49,7 +49,9 @@
         "delivery_self": "Самовывоз",
         "delivery_europost": "Европочта",
         "one_click": "Заказ в один клик",
-        "print": "Версия для печати"
+        "print": "Версия для печати",
+        "print_add": "Добавить в список для печати",
+        "print_remove": "Убрать из списка для печати"
     },
     "feedbacks": {
         "feedback_number": "Номер",

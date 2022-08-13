@@ -52,7 +52,7 @@ function Orders() {
     const { t } = useTranslation();
     const { permissions, updatePermissions } = useAuth();
     const { showNotification } = useNotification();
-    const { addOrder, removeOrder, getOrders } = useOrdersForPrint();
+    const { addOrder, removeOrder, ordersForPrint } = useOrdersForPrint();
     const classes = useStyles();
     const [tableConfig, setTableConfig] = React.useState(null);
     const [notificationsOn, setNotificationsOn] = React.useState(null);
@@ -126,17 +126,19 @@ function Orders() {
                     </IconButton>
                 </Tooltip>
         );
-        console.log(getOrders());
-        const ordersForPrintButton = getOrders().length === 0 ? null : (
-                <Tooltip title={t('m_agrolavka:orders.print')}>
+        const ordersForPrintButton = ordersForPrint.length === 0 ? null : (
+                <Tooltip title={t('m_agrolavka:orders.print')} key="2">
                     <IconButton onClick={() => {
-                        console.log("open dialog");
+                        console.log("print all");
                     }}>
-                        <Icon>print</Icon>
+                        <Badge badgeContent={ordersForPrint.length} color="secondary">
+                            <Icon className={classes.printAdd}>print</Icon>
+                        </Badge>
                     </IconButton>
                 </Tooltip>
         );
         const buttons = [];
+        buttons.push(ordersForPrintButton);
         buttons.push(notificationButton);
         return buttons;
     };
@@ -195,8 +197,14 @@ function Orders() {
                 });
                 return <Price price={total} />;
             }).width('170px').alignment(ALIGN_RIGHT),
-            new TableColumn('btn_print_add', '', (row) => {
-                return (
+            new TableColumn('btn_print_list', '', (row) => {
+                const inList = ordersForPrint.filter(order => order.id === row.id).length > 0;
+                return inList ? (
+                        <Tooltip title={t('m_agrolavka:orders.print_remove')}>
+                            <IconButton onClick={() => removeOrder(row)}>
+                                <Icon className={classes.printRemove}>playlist_remove</Icon>
+                            </IconButton>
+                        </Tooltip>) : (
                         <Tooltip title={t('m_agrolavka:orders.print_add')}>
                             <IconButton onClick={() => addOrder(row)}>
                                 <Icon className={classes.printAdd}>playlist_add</Icon>
@@ -237,7 +245,7 @@ function Orders() {
     useEffect(() => {
         updateTable();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [filterStatus, filterText, filterShowArchive]);
+    }, [filterStatus, filterText, filterShowArchive, ordersForPrint]);
     // ------------------------------------------------------- RENDERING ------------------------------------------------------------------
     if (tableConfig === null) {
         return null;

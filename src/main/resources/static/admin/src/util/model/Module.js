@@ -8,17 +8,14 @@ import AppURLs from '../../conf/app-urls';
 
 export class Module {
     
-    constructor(id, path, items) {
+    constructor(id, path, items, wrapModuleRoutes) {
         this.id = id;
         this.path = path;
         this.items = items;
         this.visible = true;
         this.roles = null;
-        this.providers = [];
-    }
-    
-    setContextProviders(providers) {
-        this.providers = providers;
+        this.createProvider = null;
+        this.wrapModuleRoutes = wrapModuleRoutes ? wrapModuleRoutes : (routes) => routes;
     }
     
     setBackgroundImage(img) {
