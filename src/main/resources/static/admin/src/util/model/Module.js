@@ -14,6 +14,11 @@ export class Module {
         this.items = items;
         this.visible = true;
         this.roles = null;
+        this.providers = [];
+    }
+    
+    setContextProviders(providers) {
+        this.providers = providers;
     }
     
     setBackgroundImage(img) {
