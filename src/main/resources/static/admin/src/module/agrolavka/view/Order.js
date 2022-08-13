@@ -31,6 +31,7 @@ import { TableConfig, TableColumn, FormConfig, FormField, Validator, ALIGN_RIGHT
 import { TYPES, VALIDATORS } from '../../../service/DataTypeService';
 import Price from '../component/Price';
 import { NavLink } from "react-router-dom";
+import useOrdersForPrint from '../hooks/useOrdersForPrint';
 
 const dataService = new DataService();
 
@@ -77,6 +78,12 @@ const useStyles = makeStyles(theme => ({
     },
     adminComment: {
         marginTop: theme.spacing(2)
+    },
+    printAdd: {
+        color: theme.palette.success.main
+    },
+    printRemove: {
+        color: theme.palette.error.main
     }
 }));
 
@@ -88,6 +95,7 @@ function Order(props) {
     const [tableConfig, setTableConfig] = React.useState(null);
     const [adminComment, setAdminComment] = React.useState(null);
     const { t } = useTranslation();
+    const { addOrder, removeOrder, ordersForPrint } = useOrdersForPrint();
     // -------------------------------------------------------- METHODS -------------------------------------------------------------------
     const getNum = (order) => {
         let num = order.id.toString();
@@ -180,9 +188,23 @@ function Order(props) {
         return <Avatar className={classes[order.status]}><Icon>{icon}</Icon></Avatar>;
     };
     const actions = () => {
+        const inPrintList = order && ordersForPrint.filter(o => o.id === order.id).length > 0;
         return (
                 <div className={classes.actions}>
-                    <Tooltip title={t('m_agrolavka:orders.print')}>
+                    {inPrintList ? (
+                    <Tooltip title={t('m_agrolavka:orders.print_remove')} key="1">
+                        <IconButton onClick={() => removeOrder(order)}>
+                            <Icon className={classes.printRemove}>playlist_remove</Icon>
+                        </IconButton>
+                    </Tooltip>
+                    ) : (
+                    <Tooltip title={t('m_agrolavka:orders.print_add')} key="2">
+                        <IconButton onClick={() => addOrder(order)}>
+                            <Icon className={classes.printAdd}>playlist_add</Icon>
+                        </IconButton>
+                    </Tooltip>
+                    )}
+                    <Tooltip title={t('m_agrolavka:orders.print')} key="3">
                         <IconButton onClick={() => {
                                 dataService.getFile('/api/agrolavka/protected/order/print/' + order.id, `Заказ №${order.id}.pdf`).then(resp => {
                                 });
@@ -190,8 +212,8 @@ function Order(props) {
                             <Icon>print</Icon>
                         </IconButton>
                     </Tooltip>
-                    <NavLink to={'/admin/app/agrolavka/orders'}>
-                        <Tooltip title={t('m_agrolavka:order.close')}>
+                    <NavLink to={'/admin/app/agrolavka/orders'} key="4">
+                        <Tooltip title={t('m_agrolavka:order.close')} key="5">
                             <IconButton>
                                 <Icon color="primary">chevron_left</Icon>
                             </IconButton>
@@ -258,7 +280,7 @@ function Order(props) {
             fullname.push(order.europostLocationSnapshot.middlename);
         }
         if (fullname.length > 0) {
-            result.push(<Chip label={chip('Получатель: ', fullname.join(' '))} key={2} color="secondary" className={classes.chip}/>);
+            result.push(<Chip label={chip('Получатель: ', fullname.join(' '))} key={3} color="secondary" className={classes.chip}/>);
         }
         return result;
     };
@@ -292,7 +314,7 @@ function Order(props) {
                                     value={adminComment ? adminComment : ''} name={'admin_comment'} multiline variant={'outlined'} rows={4}/>
                             </React.Fragment>
                     ) : null}
-                    <Divider className={classes.divider}/>
+                    <Divider className={classes.divider} key="divider-1"/>
                     <Typography variant={'h6'}>
                         {t('m_agrolavka:order.contacts')}
                     </Typography>
@@ -300,7 +322,7 @@ function Order(props) {
                     {order.oneClick ? <i>{t('m_agrolavka:orders.one_click')}</i> : null}
                     {order.comment ? (
                             <React.Fragment>
-                                <Divider className={classes.divider}/>
+                                <Divider className={classes.divider} key="divider-5"/>
                                 <Typography variant={'h6'}>
                                     {t('m_agrolavka:order.comment')}
                                 </Typography>
@@ -309,9 +331,9 @@ function Order(props) {
                                 </Typography>
                             </React.Fragment>
                     ) : null}
-                    {order.address ? (<React.Fragment><Divider className={classes.divider}/>{address()}</React.Fragment>) : null}
-                    {order.europostLocationSnapshot ? (<React.Fragment><Divider className={classes.divider}/>{europost()}</React.Fragment>) : null}
-                    <Divider className={classes.divider}/>
+                    {order.address ? (<React.Fragment><Divider className={classes.divider} key="divider-2"/>{address()}</React.Fragment>) : null}
+                    {order.europostLocationSnapshot ? (<React.Fragment><Divider className={classes.divider} key="divider-3"/>{europost()}</React.Fragment>) : null}
+                    <Divider className={classes.divider} key="divider-4"/>
                     <DataTable tableConfig={tableConfig}/>
                 </CardContent>
             </Card>
