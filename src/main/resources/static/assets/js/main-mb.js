@@ -225,7 +225,9 @@
     };
     
     var cartProductQuantityChangeListener = function (evt, input) {
-        const quantity = input.value;
+        let quantity = input.value;
+        quantity = Math.round(quantity);
+        input.value = quantity;
         const productId = input.getAttribute('data-product-id');
         fetch('/api/agrolavka/public/cart/quantity/' + productId + '/' + quantity, {
             method: 'PUT',
