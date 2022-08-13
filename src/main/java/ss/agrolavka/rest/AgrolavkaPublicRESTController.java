@@ -133,10 +133,12 @@ class AgrolavkaPublicRESTController {
     public Order changeCartPositionQuantity(@PathVariable("id") Long id, @PathVariable("quantity") Integer quantity,
             HttpServletRequest request) throws Exception {
         final Order order = orderService.getCurrentOrder(request);
-        OrderPosition position = order.getPositions().stream().filter(pos -> {
+        final List<OrderPosition> positions = order.getPositions().stream().filter(pos -> {
             return Objects.equals(pos.getProductId(), id);
-        }).findFirst().get();
-        position.setQuantity(quantity > 0 ? quantity : 1);
+        }).collect(Collectors.toList());
+        if (!positions.isEmpty()) {
+            positions.get(0).setQuantity(quantity > 0 ? quantity : 1);
+        }
         request.getSession().setAttribute(SiteConstants.CART_SESSION_ATTRIBUTE, order);
         return order;
     }
