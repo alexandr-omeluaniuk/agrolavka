@@ -13,6 +13,12 @@
 
 <%-- any content can be specified here e.g.: --%>
 <a class="agr-shop-address-link" href="/shops"><p>${shop.address}</p></a>
+<% if (shop.getPhone() != null) { %>
+<div class="d-flex justify-content-between align-items-center">
+    <h6 class="mt-2">Телефон</h6>
+    <a class="text-white" href="tel:${shop.phone}">${shop.phone}</a>
+</div>
+<% } %>
 <h6 class="mt-2">Время работы</h6>
 <%
     final String workingWhours = shop.getWorkingHours();

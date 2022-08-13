@@ -49,6 +49,9 @@ function Shops() {
                 new Validator(VALIDATORS.REQUIRED),
                 new Validator(VALIDATORS.MAX_LENGTH, {length: 255})
             ]),
+            new FormField('phone', TYPES.TEXTFIELD, t('m_agrolavka:shops.phone')).setGrid({xs: 12}).validation([
+                new Validator(VALIDATORS.MAX_LENGTH, {length: 255})
+            ]),
             new FormField('latitude', TYPES.DOUBLE_NUMBER, t('m_agrolavka:shops.latitude')).setGrid({xs: 12, md: 6}).validation([
                 new Validator(VALIDATORS.REQUIRED)
             ]).setAttributes({decimalScale: 6}),

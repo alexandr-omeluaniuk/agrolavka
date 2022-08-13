@@ -47,7 +47,6 @@
                 <c:forEach items="${shops}" var="shop">
                     <t:shop-short-info shop="${shop}"/>
                 </c:forEach>
-                <strong>Телефон:</strong> <a class="text-white" href="tel:+375292848848">+375 29 2-848-848</a><br>
                 <strong>Email:</strong> <a class="text-white" href="mailto:sergej4ikk@mail.ru">sergej4ikk@mail.ru</a><br>
             </div>
 

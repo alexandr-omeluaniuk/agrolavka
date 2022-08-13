@@ -92,7 +92,8 @@
         "address": "Address",
         "working_hours": "Working hours",
         "main_image": "Main image",
-        "images": "Images"
+        "images": "Images",
+        "phone": "Phone"
     },
     "backup": "Do data backup"
 }

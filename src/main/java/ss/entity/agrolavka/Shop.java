@@ -82,6 +82,11 @@ public class Shop extends EntityAudit {
     @Size(min = 1, max = 255)
     @Column(name = "working_hours")
     private String workingHours;
+    /** Phone */
+    @FormField
+    @Size(max = 255)
+    @Column(name = "phone")
+    private String phone;
     // ========================================== SET & GET ===========================================================
     /**
      * @return the title
@@ -166,6 +171,18 @@ public class Shop extends EntityAudit {
      */
     public void setWorkingHours(String workingHours) {
         this.workingHours = workingHours;
+    }
+    /**
+     * @return the phone
+     */
+    public String getPhone() {
+        return phone;
+    }
+    /**
+     * @param phone the phone to set
+     */
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
     // ================================================================================================================
     @Override
