@@ -23,6 +23,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
@@ -80,7 +81,9 @@ class OrderDocumentServiceImpl implements OrderDocumentService {
             document.getDocumentInformation().setAuthor("agrolavka.by");
             document.getDocumentInformation().setTitle("Заказ №" + order.getId());
             final PDPage page = new PDPage();
-            addTable(document, page, order);
+            final TableBuilder tableBuilder = createTableBuilder();
+            addTable(document, order, tableBuilder);
+            draw(document, page, tableBuilder);
             document.addPage(page);
             final ByteArrayOutputStream baos = new ByteArrayOutputStream();
             document.save(baos);
@@ -89,14 +92,34 @@ class OrderDocumentServiceImpl implements OrderDocumentService {
         }
     }
     
-    private void addTable(final PDDocument document, final PDPage page, final Order order) throws IOException {
+    @Override
+    public byte[] generateOrdersPdf(final List<Order> orders) throws Exception {
+        try (PDDocument document = new PDDocument()) {
+            document.getDocumentInformation().setAuthor("agrolavka.by");
+            document.getDocumentInformation().setTitle("Заказы №№" + orders.stream().map(Order::getId).collect(Collectors.toList()).toString());
+            final PDPage page = new PDPage();
+            final TableBuilder tableBuilder = createTableBuilder();
+            for (final Order order : orders) {
+                addTable(document, order, tableBuilder);
+            }
+            draw(document, page, tableBuilder);
+            document.addPage(page);
+            final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            document.save(baos);
+            return baos.toByteArray();
+        }
+    }
+    
+    private TableBuilder createTableBuilder() {
+        return  Table.builder()
+                .addColumnsOfWidth(380, 60, 60, 60)
+                .fontSize(10).borderColor(Color.WHITE).padding(6f);
+    }
+    
+    private TableBuilder addTable(final PDDocument document, final Order order, final TableBuilder tableBuilder) throws IOException {
         // fonts
         final PDFont robotoBoldFont = PDType0Font.load(document, robotoBold.getInputStream());
         final PDFont robotoRegularFont = PDType0Font.load(document, robotoRegular.getInputStream());
-        
-        final TableBuilder tableBuilder = Table.builder()
-                .addColumnsOfWidth(380, 60, 60, 60)
-                .fontSize(10).font(robotoBoldFont).borderColor(Color.WHITE).padding(6f);
         
         tableBuilder.addRow(Row.builder()
                 .add(TextCell.builder()
@@ -200,6 +223,10 @@ class OrderDocumentServiceImpl implements OrderDocumentService {
                         .build())
                 .horizontalAlignment(LEFT)
                 .build());
+        return tableBuilder;
+    }
+    
+    private void draw(final PDDocument document, final PDPage page, final TableBuilder tableBuilder) throws Exception {
         try ( PDPageContentStream contentStream = new PDPageContentStream(document, page)) {
             // Set up the drawer
             TableDrawer tableDrawer = TableDrawer.builder()

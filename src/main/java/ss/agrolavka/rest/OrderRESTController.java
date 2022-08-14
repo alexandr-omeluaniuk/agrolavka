@@ -5,7 +5,11 @@
  */
 package ss.agrolavka.rest;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -130,17 +134,36 @@ public class OrderRESTController {
     }
     
     @RequestMapping(value = "/print/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-    public void backup(@PathVariable("id") Long id, HttpServletResponse response) throws Exception {
+    public void printOrder(@PathVariable("id") Long id, HttpServletResponse response) throws Exception {
+        final Order order = getOrder(id);
+        final byte[] pdf = orderDocumentService.generateOrderPdf(order);
+        response.getOutputStream().write(pdf);
+        response.addHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=Заказ №" + order.getId() + ".pdf");
+        response.addHeader("ContentType", "application/pdf");
+        response.addHeader("Content-Length", pdf.length + "");
+    }
+    
+    @RequestMapping(value = "/print-orders/{ids}", method = RequestMethod.GET, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    public void printOrders(@PathVariable("ids") String ids, HttpServletResponse response) throws Exception {
+        final List<Order> orders = new ArrayList<>();
+        for (String id : ids.split("-")) {
+            orders.add(getOrder(Long.valueOf(id)));
+        }
+        final byte[] pdf = orderDocumentService.generateOrdersPdf(orders);
+        response.getOutputStream().write(pdf);
+        response.addHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=Заказы №"
+                + orders.stream().map(Order::getId).collect(Collectors.toList()).toString() + ".pdf");
+        response.addHeader("ContentType", "application/pdf");
+        response.addHeader("Content-Length", pdf.length + "");
+    }
+    
+    private Order getOrder(final Long id) throws Exception {
         final Order order = coreDAO.findById(id, Order.class);
         for (OrderPosition pos : order.getPositions()) {
             pos.setProduct(coreDAO.findById(pos.getProductId(), Product.class));
         }
         LOG.debug(order.getAddress() + "");
         order.getPositions().forEach(position -> LOG.info(position.getProduct() + ""));
-        final byte[] pdf = orderDocumentService.generateOrderPdf(order);
-        response.getOutputStream().write(pdf);
-        response.addHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=Заказ №" + order.getId() + ".pdf");
-        response.addHeader("ContentType", "application/pdf");
-        response.addHeader("Content-Length", pdf.length + "");
+        return order;
     }
 }

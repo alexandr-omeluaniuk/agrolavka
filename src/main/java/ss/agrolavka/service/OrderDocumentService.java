@@ -16,6 +16,7 @@
  */
 package ss.agrolavka.service;
 
+import java.util.List;
 import ss.entity.agrolavka.Order;
 
 /**
@@ -31,5 +32,13 @@ public interface OrderDocumentService {
      * @throws Exception any error.
      */
     byte[] generateOrderPdf(Order order) throws Exception;
+    
+    /**
+     * Generate PDF for orders.
+     * @param orders orders.
+     * @return PDF file.
+     * @throws Exception any error.
+     */
+    byte[] generateOrdersPdf(List<Order> orders) throws Exception;
     
 }

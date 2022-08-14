@@ -102,10 +102,10 @@ function MainContent(props) {
             <Container maxWidth="lg" className={classes.container}>
                 <ErrorBoundary>
                     <Switch>
-                        {routes}
                         <Route exact path={AppURLs.app} key={'root'}>
                             <Redirect to={AppURLs.app + '/common/applications'}/>
                         </Route>
+                        {routes}
                     </Switch>
                 </ErrorBoundary>
                 <Box pt={4}>

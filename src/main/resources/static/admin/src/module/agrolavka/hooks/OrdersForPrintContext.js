@@ -15,6 +15,9 @@ export const OrdersForPrintContext = createContext({
     },
     getOrders: () => {
         console.log('Not init yet...');
+    },
+    clear: () => {
+        console.log('Not init yet...');
     }
 });
 
@@ -32,8 +35,12 @@ export const OrdersForPrintProvider = ({ children }) => {
         setOrdersForPrint(ordersForPrint.filter(order => order.id !== orderForRemove.id));
     };
     
+    const clear = () => {
+        setOrdersForPrint([]);
+    };
+    
     return (
-            <OrdersForPrintContext.Provider value={{ addOrder, removeOrder, ordersForPrint }}>
+            <OrdersForPrintContext.Provider value={{ addOrder, removeOrder, ordersForPrint, clear }}>
                 {children}
             </OrdersForPrintContext.Provider>
     );

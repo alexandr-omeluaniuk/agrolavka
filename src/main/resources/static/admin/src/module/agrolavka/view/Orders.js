@@ -52,7 +52,7 @@ function Orders() {
     const { t } = useTranslation();
     const { permissions, updatePermissions } = useAuth();
     const { showNotification } = useNotification();
-    const { addOrder, removeOrder, ordersForPrint } = useOrdersForPrint();
+    const { addOrder, removeOrder, ordersForPrint, clear } = useOrdersForPrint();
     const classes = useStyles();
     const [tableConfig, setTableConfig] = React.useState(null);
     const [notificationsOn, setNotificationsOn] = React.useState(null);
@@ -129,7 +129,11 @@ function Orders() {
         const ordersForPrintButton = ordersForPrint.length === 0 ? null : (
                 <Tooltip title={t('m_agrolavka:orders.print')} key="2">
                     <IconButton onClick={() => {
-                        console.log("print all");
+                        const ids = [];
+                        ordersForPrint.forEach(order => ids.push(order.id));
+                        dataService.getFile('/api/agrolavka/protected/order/print-orders/' + ids.join('-'), `Заказы №№${ids.join('-')}.pdf`).then(resp => {
+                            clear();
+                        });
                     }}>
                         <Badge badgeContent={ordersForPrint.length} color="secondary">
                             <Icon className={classes.printAdd}>print</Icon>
