@@ -21,6 +21,7 @@ import static java.awt.Color.LIGHT_GRAY;
 import static java.awt.Color.WHITE;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -90,7 +91,7 @@ class OrderDocumentServiceImpl implements OrderDocumentService {
             document.getDocumentInformation().setTitle("Заказ №" + order.getId());
             final PDPage page = new PDPage();
             final TableBuilder tableBuilder = createTableBuilder();
-            addTable(document, order, tableBuilder);
+            addTable(document, order, tableBuilder, getLogo());
             draw(document, page, tableBuilder, page.getMediaBox().getUpperRightY() - 20f);
             document.addPage(page);
             final ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -109,7 +110,7 @@ class OrderDocumentServiceImpl implements OrderDocumentService {
             float actualPageHeight = 20f;
             for (final Order order : orders) {
                 final TableBuilder tableBuilder = createTableBuilder();
-                addTable(document, order, tableBuilder);
+                addTable(document, order, tableBuilder, getLogo());
                 final Table table = tableBuilder.build();
                 final float tableHeight = table.getHeight();
                 final float blankPageHeight = currentPage.getMediaBox().getHeight();
@@ -135,23 +136,33 @@ class OrderDocumentServiceImpl implements OrderDocumentService {
         }
     }
     
+    private byte[] getLogo() throws Exception {
+        try (final InputStream is = logo.getInputStream()) {
+            byte [] buffer = new byte[is.available()];
+            is.read(buffer, 0, is.available());
+            return buffer;
+        }
+    }
+    
     private TableBuilder createTableBuilder() {
         return  Table.builder()
                 .addColumnsOfWidth(30, 350, 60, 60, 60)
                 .fontSize(10).borderColor(Color.WHITE).padding(6f);
     }
     
-    private TableBuilder addTable(final PDDocument document, final Order order, final TableBuilder tableBuilder) throws IOException {
+    private TableBuilder addTable(final PDDocument document, final Order order, final TableBuilder tableBuilder, final byte[] logo) throws IOException {
         // fonts
         final PDFont robotoBoldFont = PDType0Font.load(document, robotoBold.getInputStream());
         final PDFont robotoRegularFont = PDType0Font.load(document, robotoRegular.getInputStream());
         
         tableBuilder.addRow(Row.builder()
                 .add(ImageCell.builder()
-                    .verticalAlignment(VerticalAlignment.MIDDLE)
-                    .horizontalAlignment(CENTER)
-                    .image(PDImageXObject.createFromFileByContent(logo.getFile(), document))
-                    .scale(.6f).build())
+                        .verticalAlignment(VerticalAlignment.MIDDLE)
+                        .horizontalAlignment(CENTER)
+                        .colSpan(1)
+                        .image(PDImageXObject.createFromByteArray(document, logo, "logo"))
+                        .scale(.5f)
+                        .build())
                 .add(TextCell.builder()
                         .text("Агролавка")
                         .colSpan(1)
@@ -177,7 +188,10 @@ class OrderDocumentServiceImpl implements OrderDocumentService {
                 .build());
         
         tableBuilder.addRow(Row.builder()
-                .add(TextCell.builder().text("").colSpan(1).build())
+                .add(TextCell.builder()
+                        .text("")
+                        .colSpan(1)
+                        .build())
                 .add(TextCell.builder()
                         .text("agrolavka.by")
                         .colSpan(1)
@@ -194,7 +208,7 @@ class OrderDocumentServiceImpl implements OrderDocumentService {
                         .backgroundColor(WHITE)
                         .textColor(BLUE_DARK)
                         .colSpan(COLUMNS - COLUMNS_LEFT)
-                        .paddingBottom(20f)
+                        .paddingBottom(10f)
                         .font(robotoRegularFont).fontSize(10)
                         .horizontalAlignment(RIGHT)
                         .verticalAlignment(TOP)
