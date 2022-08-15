@@ -29,6 +29,7 @@ import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType0Font;
+import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -47,6 +48,7 @@ import org.springframework.core.io.Resource;
 import static org.vandeseer.easytable.settings.HorizontalAlignment.*;
 import org.vandeseer.easytable.settings.VerticalAlignment;
 import static org.vandeseer.easytable.settings.VerticalAlignment.TOP;
+import org.vandeseer.easytable.structure.cell.ImageCell;
 import ss.entity.agrolavka.Address;
 import ss.entity.agrolavka.EuropostLocationSnapshot;
 import ss.entity.agrolavka.OrderPosition;
@@ -69,13 +71,17 @@ class OrderDocumentServiceImpl implements OrderDocumentService {
     private final static Color BLUE_LIGHT_1 = new Color(186, 206, 230);
     private final static Color BLUE_LIGHT_2 = new Color(218, 230, 242);
     
-    private final static int COLUMNS = 4;
+    private final static int COLUMNS = 5;
+    private final static int COLUMNS_LEFT = 2;
     
     @Value("classpath:Roboto-Bold.ttf")
     private Resource robotoBold;
     
     @Value("classpath:Roboto-Regular.ttf")
     private Resource robotoRegular;
+    
+    @Value("classpath:static/assets/img/favicon.png")
+    private Resource logo;
 
     @Override
     public byte[] generateOrderPdf(final Order order) throws Exception {
@@ -131,7 +137,7 @@ class OrderDocumentServiceImpl implements OrderDocumentService {
     
     private TableBuilder createTableBuilder() {
         return  Table.builder()
-                .addColumnsOfWidth(380, 60, 60, 60)
+                .addColumnsOfWidth(30, 350, 60, 60, 60)
                 .fontSize(10).borderColor(Color.WHITE).padding(6f);
     }
     
@@ -141,6 +147,11 @@ class OrderDocumentServiceImpl implements OrderDocumentService {
         final PDFont robotoRegularFont = PDType0Font.load(document, robotoRegular.getInputStream());
         
         tableBuilder.addRow(Row.builder()
+                .add(ImageCell.builder()
+                    .verticalAlignment(VerticalAlignment.MIDDLE)
+                    .horizontalAlignment(CENTER)
+                    .image(PDImageXObject.createFromFileByContent(logo.getFile(), document))
+                    .scale(.6f).build())
                 .add(TextCell.builder()
                         .text("Агролавка")
                         .colSpan(1)
@@ -156,7 +167,7 @@ class OrderDocumentServiceImpl implements OrderDocumentService {
                 .add(TextCell.builder().text("Информация о заказе #" + order.getId() + ":")
                         .backgroundColor(WHITE)
                         .textColor(BLUE_DARK)
-                        .colSpan(COLUMNS - 1)
+                        .colSpan(COLUMNS - COLUMNS_LEFT)
                         .font(robotoBoldFont).fontSize(10)
                         .horizontalAlignment(RIGHT)
                         .verticalAlignment(VerticalAlignment.BOTTOM)
@@ -166,6 +177,7 @@ class OrderDocumentServiceImpl implements OrderDocumentService {
                 .build());
         
         tableBuilder.addRow(Row.builder()
+                .add(TextCell.builder().text("").colSpan(1).build())
                 .add(TextCell.builder()
                         .text("agrolavka.by")
                         .colSpan(1)
@@ -181,7 +193,7 @@ class OrderDocumentServiceImpl implements OrderDocumentService {
                 .add(TextCell.builder().text(clientInfo(order))
                         .backgroundColor(WHITE)
                         .textColor(BLUE_DARK)
-                        .colSpan(COLUMNS - 1)
+                        .colSpan(COLUMNS - COLUMNS_LEFT)
                         .paddingBottom(20f)
                         .font(robotoRegularFont).fontSize(10)
                         .horizontalAlignment(RIGHT)
@@ -193,7 +205,7 @@ class OrderDocumentServiceImpl implements OrderDocumentService {
         
         // header
         tableBuilder.addRow(Row.builder()
-                .add(TextCell.builder().text(PRODUCT_NAME).horizontalAlignment(LEFT).borderWidth(1).build())
+                .add(TextCell.builder().text(PRODUCT_NAME).colSpan(COLUMNS_LEFT).horizontalAlignment(LEFT).borderWidth(1).build())
                 .add(TextCell.builder().text(QUANTITY).borderWidth(1).build())
                 .add(TextCell.builder().text(PRICE).borderWidth(1).build())
                 .add(TextCell.builder().text(TOTAL).borderWidth(1).build())
@@ -211,7 +223,7 @@ class OrderDocumentServiceImpl implements OrderDocumentService {
             grandTotal += subtotal;
             
             tableBuilder.addRow(Row.builder()
-                    .add(TextCell.builder().text(String.valueOf(productName)).horizontalAlignment(LEFT).borderWidth(1).build())
+                    .add(TextCell.builder().text(String.valueOf(productName)).colSpan(COLUMNS_LEFT).horizontalAlignment(LEFT).borderWidth(1).build())
                     .add(TextCell.builder().text(String.valueOf(quantity)).borderWidth(1).build())
                     .add(TextCell.builder().text(String.format("%.2f", price)).borderWidth(1).build())
                     .add(TextCell.builder().text(String.format("%.2f", subtotal)).borderWidth(1).build())
