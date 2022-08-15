@@ -69,6 +69,8 @@ class OrderDocumentServiceImpl implements OrderDocumentService {
     private final static Color BLUE_LIGHT_1 = new Color(186, 206, 230);
     private final static Color BLUE_LIGHT_2 = new Color(218, 230, 242);
     
+    private final static int COLUMNS = 4;
+    
     @Value("classpath:Roboto-Bold.ttf")
     private Resource robotoBold;
     
@@ -83,7 +85,7 @@ class OrderDocumentServiceImpl implements OrderDocumentService {
             final PDPage page = new PDPage();
             final TableBuilder tableBuilder = createTableBuilder();
             addTable(document, order, tableBuilder);
-            draw(document, page, tableBuilder);
+            draw(document, page, tableBuilder, page.getMediaBox().getUpperRightY() - 20f);
             document.addPage(page);
             final ByteArrayOutputStream baos = new ByteArrayOutputStream();
             document.save(baos);
@@ -97,13 +99,30 @@ class OrderDocumentServiceImpl implements OrderDocumentService {
         try (PDDocument document = new PDDocument()) {
             document.getDocumentInformation().setAuthor("agrolavka.by");
             document.getDocumentInformation().setTitle("Заказы №№" + orders.stream().map(Order::getId).collect(Collectors.toList()).toString());
-            final PDPage page = new PDPage();
-            final TableBuilder tableBuilder = createTableBuilder();
+            PDPage currentPage = new PDPage();
+            float actualPageHeight = 20f;
             for (final Order order : orders) {
+                final TableBuilder tableBuilder = createTableBuilder();
                 addTable(document, order, tableBuilder);
+                final Table table = tableBuilder.build();
+                final float tableHeight = table.getHeight();
+                final float blankPageHeight = currentPage.getMediaBox().getHeight();
+                final float newActualPageHeight = actualPageHeight + tableHeight;
+                final boolean isNewPageNeed = newActualPageHeight > blankPageHeight;
+                float yCoord;
+                if (isNewPageNeed) {
+                    // start new page
+                    document.addPage(currentPage);
+                    currentPage = new PDPage();
+                    yCoord = currentPage.getMediaBox().getUpperRightY() - 20f;
+                    actualPageHeight = 20f;
+                } else {
+                    yCoord = currentPage.getMediaBox().getUpperRightY() - actualPageHeight;
+                    actualPageHeight = newActualPageHeight;
+                }
+                draw(document, currentPage, tableBuilder, yCoord);
             }
-            draw(document, page, tableBuilder);
-            document.addPage(page);
+            document.addPage(currentPage);
             final ByteArrayOutputStream baos = new ByteArrayOutputStream();
             document.save(baos);
             return baos.toByteArray();
@@ -134,10 +153,10 @@ class OrderDocumentServiceImpl implements OrderDocumentService {
                         .font(robotoBoldFont)
                         .borderWidth(1)
                         .build())
-                .add(TextCell.builder().text("Информация о заказе:")
+                .add(TextCell.builder().text("Информация о заказе #" + order.getId() + ":")
                         .backgroundColor(WHITE)
                         .textColor(BLUE_DARK)
-                        .colSpan(3)
+                        .colSpan(COLUMNS - 1)
                         .font(robotoBoldFont).fontSize(10)
                         .horizontalAlignment(RIGHT)
                         .verticalAlignment(VerticalAlignment.BOTTOM)
@@ -162,7 +181,7 @@ class OrderDocumentServiceImpl implements OrderDocumentService {
                 .add(TextCell.builder().text(clientInfo(order))
                         .backgroundColor(WHITE)
                         .textColor(BLUE_DARK)
-                        .colSpan(3)
+                        .colSpan(COLUMNS - 1)
                         .paddingBottom(20f)
                         .font(robotoRegularFont).fontSize(10)
                         .horizontalAlignment(RIGHT)
@@ -206,7 +225,7 @@ class OrderDocumentServiceImpl implements OrderDocumentService {
         tableBuilder.addRow(Row.builder()
                 .add(TextCell.builder()
                         .text(order.getComment() == null || order.getComment().isBlank() ? "" : "Комментарий от клиента:\n" + order.getComment())
-                        .colSpan(3)
+                        .colSpan(COLUMNS - 1)
                         .lineSpacing(1f)
                         .borderWidthTop(1)
                         .textColor(WHITE)
@@ -223,16 +242,18 @@ class OrderDocumentServiceImpl implements OrderDocumentService {
                         .build())
                 .horizontalAlignment(LEFT)
                 .build());
+        // add empty row
+        tableBuilder.addRow(Row.builder().add(TextCell.builder().text("").colSpan(COLUMNS).borderWidth(0).build()).build());
         return tableBuilder;
     }
     
-    private void draw(final PDDocument document, final PDPage page, final TableBuilder tableBuilder) throws Exception {
-        try ( PDPageContentStream contentStream = new PDPageContentStream(document, page)) {
+    private void draw(final PDDocument document, final PDPage page, final TableBuilder tableBuilder, final float yCoord) throws Exception {
+        try ( PDPageContentStream contentStream = new PDPageContentStream(document, page, PDPageContentStream.AppendMode.APPEND, true)) {
             // Set up the drawer
             TableDrawer tableDrawer = TableDrawer.builder()
                     .contentStream(contentStream)
                     .startX(20f)
-                    .startY(page.getMediaBox().getUpperRightY() - 20f)
+                    .startY(yCoord)
                     .table(tableBuilder.build())
                     .build();
             tableDrawer.draw();

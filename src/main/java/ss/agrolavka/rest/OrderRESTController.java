@@ -5,8 +5,10 @@
  */
 package ss.agrolavka.rest;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -151,8 +153,10 @@ public class OrderRESTController {
         }
         final byte[] pdf = orderDocumentService.generateOrdersPdf(orders);
         response.getOutputStream().write(pdf);
-        response.addHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=Заказы №"
-                + orders.stream().map(Order::getId).collect(Collectors.toList()).toString() + ".pdf");
+        response.addHeader(
+                HttpHeaders.CONTENT_DISPOSITION,
+                "attachment; filename=orders-" + new SimpleDateFormat("dd.MM.yyyy").format(new Date()) + ".pdf"
+        );
         response.addHeader("ContentType", "application/pdf");
         response.addHeader("Content-Length", pdf.length + "");
     }
