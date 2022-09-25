@@ -6,6 +6,6 @@
 import { useContext } from 'react';
 import { OrdersForPrintContext } from './OrdersForPrintContext';
 
-const useOrdersForPrint = () => useContext(OrdersForPrintContext);
+const useOrdersForPrint = () => useContext(OrdersForPrintContext); 
 
 export default useOrdersForPrint;
