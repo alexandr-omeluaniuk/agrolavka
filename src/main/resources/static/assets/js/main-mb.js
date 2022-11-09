@@ -37,6 +37,10 @@
     });
     
     document.querySelector('body').addEventListener('click', function(evt) {
+        const agrClickedPhoto = evt.target.closest('.agr-clicked-photo');
+        if (agrClickedPhoto) {
+            photoClickListener(evt, agrClickedPhoto);
+        }
         const addToCartBtn = evt.target.closest("[data-product-id][data-add]");
         if (addToCartBtn) {
             addToCartListener(evt, addToCartBtn);
@@ -159,6 +163,16 @@
         setTimeout(() => {
             modalElement.querySelector('input[name="phone"]').focus();
         }, 500);
+    };
+    
+    var photoClickListener = function(evt, image) {
+        evt.preventDefault();
+        evt.stopPropagation();
+        const imageUrl = image.style['background-image'];
+        const modalElement = document.getElementById('agr-photo-modal');
+        modalElement.querySelector('.agr-photo-full').style['background-image'] = imageUrl;
+        const modal = new mdb.Modal(modalElement, {});
+        modal.toggle();
     };
     
     var orderOneClickConfirmButtonListener = function(evt, button) {
