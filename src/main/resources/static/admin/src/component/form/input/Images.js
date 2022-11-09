@@ -33,7 +33,8 @@ const useStyles = makeStyles(theme => ({
     },
     media: {
         height: 0,
-        paddingTop: '56.25%' // 16:9
+        paddingTop: '100%',
+        backgroundSize: 'cover'
     },
     deleteImage: {
         color: theme.palette.error.main
