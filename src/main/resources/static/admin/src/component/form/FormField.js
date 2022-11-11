@@ -16,6 +16,7 @@ import MoneyField from './input/MoneyField';
 import DoubleField from './input/DoubleField';
 import Dropdown from './input/Dropdown';
 import FileUpload from './input/FileUpload';
+import HTMLEditor from './input/HTMLEditor';
 import Images from './input/Images';
 import Image from './input/Image';
 import MultipleSelect from './input/MultipleSelect';
@@ -52,6 +53,11 @@ function FormField (props) {
                                 value={fieldValue ? fieldValue : ''} name={name} error={invalidFields.has(name)}
                                 helperText={invalidFields.get(name)} multiline variant={variant}
                                 rows={attributes.rows ? attributes.rows : 3} required={isRequired}/>;
+        } else if (fieldConfig.type === TYPES.HTML) {
+            return <HTMLEditor label={label} onChange={onChangeFieldValue}
+                                value={fieldValue ? fieldValue : ''} name={name} error={invalidFields.has(name)}
+                                helperText={invalidFields.get(name)} variant={variant}
+                                required={isRequired}/>;
         } else if (fieldConfig.type === TYPES.INTEGER_NUMBER) {
             return <NumberField label={label} value={fieldValue ? fieldValue : ''} variant={variant}
                             onChange={(e) => onChangeFieldValue(name, e.target.value)} fullWidth={true}

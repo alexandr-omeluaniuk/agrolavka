@@ -29,7 +29,8 @@ export let TYPES = {
     TIME: 'TIME',
     DATE: 'DATE',
     BOOLEAN: 'BOOLEAN',
-    CUSTOM: 'CUSTOM'
+    CUSTOM: 'CUSTOM',
+    HTML: 'HTML'
 };
 
 export let VALIDATORS = {
