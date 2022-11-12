@@ -96,7 +96,7 @@ function Images (props) {
                 <Grid container spacing={2}>
                     {value.map((img, idx) => {
                         return (
-                                <Grid item key={idx} xs={12} md={4}>
+                                <Grid item key={idx} xs={12} md={4} lg={2}>
                                     <Card>
                                         <CardMedia className={classes.media} image={img.data} title={img.name}/>
                                         <CardActions className={classes.imageActions}>

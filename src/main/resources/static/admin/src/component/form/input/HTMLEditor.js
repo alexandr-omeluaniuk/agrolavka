@@ -28,10 +28,9 @@ function HTMLEditor (props) {
     const { label, value, name, onChange, helperText, align, variant,  ...other } = props;
     const classes = useStyles();
     const editorRef = useRef(null);
-//    const [editorState, setEditorState] = React.useState(null);
-//    
-    const onEditorChange = (ev) => {
-        onChange(name, ev);
+
+    const onBlur = () => {
+        onChange(name, editorRef.current.getContent());
     };
     
     return (
@@ -53,10 +52,13 @@ function HTMLEditor (props) {
                         toolbar: 'undo redo | formatselect | ' +
                             'bold italic backcolor | alignleft aligncenter ' +
                             'alignright alignjustify | bullist numlist outdent indent | ' +
-                            'removeformat | help',
+                            'removeformat | help | table tabledelete | tableprops tablerowprops tablecellprops | ' + 
+                            'tableinsertrowbefore tableinsertrowafter tabledeleterow | ' + 
+                            'tableinsertcolbefore tableinsertcolafter tabledeletecol',
+                        language: 'ru',
                         content_style: ''
                     }}
-                    onEditorChange={onEditorChange}
+                    onBlur={onBlur}
                 />
                 <FormHelperText error={helperText ? true : false}>{helperText ? helperText : ''}</FormHelperText>
             </FormControl>

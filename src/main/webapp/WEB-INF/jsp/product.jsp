@@ -9,7 +9,7 @@
 <%@taglib prefix="modal" tagdir="/WEB-INF/tags/modal" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<t:app title="${title}" metaDescription="${metaDescription}" canonical="${canonical}">
+<t:app title="${title}" metaDescription="${title}" canonical="${canonical}">
     
     <jsp:attribute name="structuredData">
         <script type="application/ld+json">
