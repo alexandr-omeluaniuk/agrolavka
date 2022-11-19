@@ -4,9 +4,12 @@
     Author     : alex
 --%>
 
+<%@tag import="org.json.JSONObject"%>
+<%@tag import="org.json.JSONArray"%>
 <%@tag import="java.text.SimpleDateFormat"%>
 <%@tag import="java.util.Objects"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@tag description="put the tag description here" pageEncoding="UTF-8" 
        import="ss.entity.agrolavka.*,ss.agrolavka.util.UrlProducer"%>
 
@@ -108,6 +111,21 @@
                         }
                     }
                 %>
+                
+                <%
+                    if (product.getVolumes() != null) {
+                %>
+                    <t:product-volumes product="${product}"></t:product-volumes>
+                <%
+                    } else {
+                %>
+                <button class="btn btn-outline-info btn-rounded w-100 mt-1 agr-card-button" data-product-id="${product.id}" data-order="" style="z-index: 9000;">
+                    <i class="far fa-hand-point-up me-2"></i> Заказать сразу
+                </button>
+                <%
+                    }
+                %>
+                
                 <%
                     if (!inCart) {
                 %>
@@ -123,9 +141,6 @@
                 <%
                     }
                 %>
-                <button class="btn btn-outline-info btn-rounded w-100 mt-1 agr-card-button" data-product-id="${product.id}" data-order="" style="z-index: 9000;">
-                    <i class="far fa-hand-point-up me-2"></i> Заказать сразу
-                </button>
             </div>
         </div>
     </div>

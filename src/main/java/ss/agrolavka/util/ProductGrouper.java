@@ -17,6 +17,7 @@
 package ss.agrolavka.util;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -37,7 +38,7 @@ import ss.entity.martin.EntityImage;
  */
 public class ProductGrouper {
     
-    private static final String VOLUME_VALUE_PATTERN = "(\\d|,|.)*л";
+    private static final String VOLUME_VALUE_PATTERN = "[\\d|,|.]*л";
     private static final String VOLUME_TOKEN_PATTERN = ",\\s" + VOLUME_VALUE_PATTERN;
     private static final String VOLUMABLE_PRODUCT_NAME_PATTERN = "^(.)*" + VOLUME_TOKEN_PATTERN + "$";
     
@@ -73,7 +74,7 @@ public class ProductGrouper {
         Double maxPrice = 0d;
         Double quantity = 0d;
         List<EntityImage> images = new ArrayList<>();
-        final JSONArray volumes = new JSONArray();
+        final List<JSONObject> volumes = new ArrayList<>();
         for (final Product p : products) {
             if (p.getDescription() != null && p.getDescription().length() > maxDescription.length()) {
                 maxDescription = p.getDescription();
@@ -95,9 +96,9 @@ public class ProductGrouper {
             if (matcher.find()) {
                 final String volumeToken = matcher.group();
                 final JSONObject volumeObj = new JSONObject();
-                volumeObj.put("v", volumeToken.replace(", ", "").replace("л", "").trim());
+                volumeObj.put("v", volumeToken.replace(", ", "").trim());
                 volumeObj.put("p", p.getPrice());
-                volumes.put(volumeObj);
+                volumes.add(volumeObj);
             }
             product.setGroup(p.getGroup());
             product.setPrice(p.getPrice());
@@ -112,7 +113,18 @@ public class ProductGrouper {
         product.setBuyPrice(0d);
         product.setUrl(UrlProducer.transliterate(product.getName()));
         product.setImages(images);
-        product.setVolumes(volumes.toString());
+        Collections.sort(volumes, (item1, item2) -> {
+            final Double price1 = item1.getDouble("p");
+            final Double price2 = item2.getDouble("p");
+            if (price1 > price2) {
+                return 1;
+            } else if (price1 < price2) {
+                return -1;
+            } else {
+                return 0;
+            }
+        });
+        product.setVolumes(new JSONArray(volumes).toString());
         product.setHidden(false);
         return product;
     }
