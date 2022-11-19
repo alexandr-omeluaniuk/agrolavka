@@ -17,6 +17,7 @@
 package ss.agrolavka.util;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,7 +25,9 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import ss.agrolavka.constants.SiteConstants;
 import ss.entity.agrolavka.Product;
+import ss.entity.martin.EntityImage;
 
 /**
  * Products grouper.
@@ -32,7 +35,8 @@ import ss.entity.agrolavka.Product;
  */
 public class ProductGrouper {
     
-    private static final String VOLUME_TOKEN_PATTERN = ",\\s(\\d|,|.)*л";
+    private static final String VOLUME_VALUE_PATTERN = "(\\d|,|.)*л";
+    private static final String VOLUME_TOKEN_PATTERN = ",\\s" + VOLUME_VALUE_PATTERN;
     private static final String VOLUMABLE_PRODUCT_NAME_PATTERN = "^(.)*" + VOLUME_TOKEN_PATTERN + "$";
     
     public static Map<String, List<Product>> grouping(final List<Product> products) {
@@ -57,6 +61,46 @@ public class ProductGrouper {
                 .collect(Collectors.toSet());
         keysForRemove.forEach(key -> result.remove(key));
         return result;
+    }
+    
+    public static Product createProductsWithVolumes(final List<Product> products, final String productName) {
+        final Product product = new Product();
+        product.setName(productName);
+        String maxDescription = "";
+        Double minPrice = 0d;
+        Double maxPrice = 0d;
+        Double quantity = 0d;
+        List<EntityImage> images = new ArrayList<>();
+        for (final Product p : products) {
+            if (p.getDescription() != null && p.getDescription().length() > maxDescription.length()) {
+                maxDescription = p.getDescription();
+            }
+            if (p.getPrice() > maxPrice) {
+                maxPrice = p.getPrice();
+            }
+            if (p.getPrice() < minPrice) {
+                minPrice = p.getPrice();
+            }
+            if (p.getQuantity() != null && p.getQuantity() > quantity) {
+                quantity = p.getQuantity();
+            }
+            if (p.getImages() != null && p.getImages().size() > images.size()) {
+                images = p.getImages();
+            }
+            product.setGroup(p.getGroup());
+            product.setPrice(p.getPrice());
+        }
+        product.setDescription(maxDescription);
+        product.setMaxPrice(maxPrice);
+        product.setMinPrice(minPrice);
+        product.setPrice(minPrice);
+        product.setUpdated(new Date());
+        product.setQuantity(quantity);
+        product.setExternalId(SiteConstants.PRODUCT_WITH_VOLUMES_EXTERNAL_ID);
+        product.setBuyPrice(minPrice);
+        product.setUrl(UrlProducer.transliterate(product.getName()));
+        product.setImages(images);
+        return product;
     }
     
 }

@@ -48,6 +48,12 @@ public class Product extends ExternalEntity implements Serializable {
     @NotNull
     @Column(name = "price", nullable = false)
     private Double price;
+    /** Min price. */
+    @Column(name = "min_price")
+    private Double minPrice;
+    /** Max price. */
+    @Column(name = "max_price")
+    private Double maxPrice;
     /** Buy price. */
     @NotNull
     @Column(name = "buy_price")
@@ -112,7 +118,7 @@ public class Product extends ExternalEntity implements Serializable {
     private Discount discount;
     /** Product is hidden. */
     @Column(name = "hidden")
-    private boolean hidden;
+    private Boolean hidden;
     /** Product volumes. */
     @Column(name = "volumes", length = 255)
     private String volumes;
@@ -301,13 +307,13 @@ public class Product extends ExternalEntity implements Serializable {
     /**
      * @return the hidden
      */
-    public boolean isHidden() {
+    public Boolean isHidden() {
         return hidden;
     }
     /**
      * @param hidden the hidden to set
      */
-    public void setHidden(boolean hidden) {
+    public void setHidden(Boolean hidden) {
         this.hidden = hidden;
     }
     /**
@@ -321,6 +327,30 @@ public class Product extends ExternalEntity implements Serializable {
      */
     public void setVolumes(String volumes) {
         this.volumes = volumes;
+    }
+    /**
+     * @return the minPrice
+     */
+    public Double getMinPrice() {
+        return minPrice;
+    }
+    /**
+     * @param minPrice the minPrice to set
+     */
+    public void setMinPrice(Double minPrice) {
+        this.minPrice = minPrice;
+    }
+    /**
+     * @return the maxPrice
+     */
+    public Double getMaxPrice() {
+        return maxPrice;
+    }
+    /**
+     * @param maxPrice the maxPrice to set
+     */
+    public void setMaxPrice(Double maxPrice) {
+        this.maxPrice = maxPrice;
     }
     // ================================================================================================================
     @Override
