@@ -148,6 +148,7 @@ function Products() {
         apiUrl.addGetExtraParam('code', filterCode ? filterCode : '');
         apiUrl.addGetExtraParam('available', filterAvailable);
         apiUrl.addGetExtraParam('discounts', filterDiscounts);
+        apiUrl.addGetExtraParam('includesHidden', true);
         const newTableConfig = new TableConfig(
                 t('m_agrolavka:agrolavka.products') + (selectedProductGroup ? ` (${selectedProductGroup.name})` : ''), apiUrl, [
             new TableColumn('avatar', '', (row) => {

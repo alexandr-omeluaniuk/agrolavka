@@ -28,6 +28,8 @@ public class ProductsSearchRequest {
     private boolean available = false;
     /** With discounts only. */
     private boolean withDiscounts = false;
+    /** Includes hidden. */
+    private boolean includesHidden = false;
     // =================================================== SET & GET ==================================================
     /**
      * @return the groupId
@@ -136,5 +138,17 @@ public class ProductsSearchRequest {
      */
     public void setWithDiscounts(boolean withDiscounts) {
         this.withDiscounts = withDiscounts;
+    }
+    /**
+     * @return the includesHidden
+     */
+    public boolean isIncludesHidden() {
+        return includesHidden;
+    }
+    /**
+     * @param includesHidden the includesHidden to set
+     */
+    public void setIncludesHidden(boolean includesHidden) {
+        this.includesHidden = includesHidden;
     }
 }

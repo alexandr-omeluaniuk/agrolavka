@@ -46,6 +46,9 @@ class ProductEntityListener extends EntityWithImagesListener implements Platform
     
     @Override
     public void preUpdate(Product entity) throws Exception {
+        if (SiteConstants.PRODUCT_WITH_VOLUMES_EXTERNAL_ID.equals(entity.getExternalId())) {
+            return;
+        }
         mySkladIntegrationService.updateProduct(entity);
         Product entityFromDB = coreDAO.findById(entity.getId(), Product.class);
         final List<EntityImage> actualImages = getActualImages(
@@ -61,7 +64,9 @@ class ProductEntityListener extends EntityWithImagesListener implements Platform
     public void preDelete(Set<Long> ids) throws Exception {
         for (Long id : ids) {
             Product product = coreDAO.findById(id, Product.class);
-            mySkladIntegrationService.deleteProduct(product);
+            if (!SiteConstants.PRODUCT_WITH_VOLUMES_EXTERNAL_ID.equals(product.getExternalId())) {
+                mySkladIntegrationService.deleteProduct(product);
+            }
         }
     }
     
