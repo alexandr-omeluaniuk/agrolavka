@@ -103,7 +103,8 @@
         evt.preventDefault();
         evt.stopPropagation();
         button.setAttribute('disabled', 'true');
-        fetch('/api/agrolavka/public/cart/' + button.getAttribute('data-product-id'), {
+        const volumePrice = button.getAttribute("data-volume-price");
+        fetch('/api/agrolavka/public/cart/' + button.getAttribute('data-product-id') + (volumePrice ? "?volumePrice=" + volumePrice : ""), {
             method: 'PUT',
             headers: {
                 'Accept': 'application/json',
@@ -193,6 +194,10 @@
         const priceSmall = parseFloat(price).toFixed(2).split('.')[1];
         btn.closest('.card').querySelector('.agr-price').innerHTML = priceBig + ".<small>" + priceSmall
                 + '</small> <small class="text-muted">BYN</small>';
+        const addToCartBtn = btn.closest(".card").querySelector('button[data-add]');
+        if (addToCartBtn) {
+            addToCartBtn.setAttribute('data-volume-price', price);
+        }
     };
     
     var orderOneClickConfirmButtonListener = function(evt, button) {
