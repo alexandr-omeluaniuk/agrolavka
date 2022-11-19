@@ -96,7 +96,7 @@ and open the template in the editor.
     h6 {
         font-size: .8rem;
     }
-    button[data-product-id] {
+    button[data-product-id], button[data-product-volume-price] {
         font-size: .6rem;
     }
     .row {

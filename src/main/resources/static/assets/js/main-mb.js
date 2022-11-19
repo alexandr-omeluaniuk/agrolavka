@@ -37,6 +37,10 @@
     });
     
     document.querySelector('body').addEventListener('click', function(evt) {
+        const agrVolumeBtn = evt.target.closest('.agr-volume-btn');
+        if (agrVolumeBtn) {
+            agrVolumeBtnListener(evt, agrVolumeBtn);
+        }
         const agrClickedPhoto = evt.target.closest('.agr-clicked-photo');
         if (agrClickedPhoto) {
             photoClickListener(evt, agrClickedPhoto);
@@ -173,6 +177,22 @@
         modalElement.querySelector('.agr-photo-full').style['background-image'] = imageUrl;
         const modal = new mdb.Modal(modalElement, {});
         modal.toggle();
+    };
+    
+    var agrVolumeBtnListener = function(evt, btn) {
+        evt.preventDefault();
+        evt.stopPropagation();
+        btn.closest('.btn-group').querySelectorAll('button').forEach(b => {
+            b.classList.add("btn-outline-info");
+            b.classList.remove("btn-info");
+        });
+        btn.classList.remove("btn-outline-info");
+        btn.classList.add("btn-info");
+        const price = btn.getAttribute("data-product-volume-price");
+        const priceBig = parseFloat(price).toFixed(2).split('.')[0];
+        const priceSmall = parseFloat(price).toFixed(2).split('.')[1];
+        btn.closest('.card').querySelector('.agr-price').innerHTML = priceBig + ".<small>" + priceSmall
+                + '</small> <small class="text-muted">BYN</small>';
     };
     
     var orderOneClickConfirmButtonListener = function(evt, button) {

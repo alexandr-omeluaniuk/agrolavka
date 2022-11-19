@@ -69,7 +69,7 @@
                 <h6 class="card-title text-dark text-left" style="min-height: 60px;">${product.name}</h6>
                 <div class="d-flex align-items-center justify-content-between agr-card-line">
                     <small class="text-muted">Цена</small>
-                    <span class="fw-bold ${not empty product.discount ? 'text-decoration-line-through text-muted' : 'text-dark'}">
+                    <span class="agr-price fw-bold ${not empty product.discount ? 'text-decoration-line-through text-muted' : 'text-dark'}">
                         <%
                             String price = String.format("%.2f", product.getPrice());
                             String[] parts = price.split("\\.");

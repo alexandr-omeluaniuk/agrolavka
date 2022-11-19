@@ -17,7 +17,9 @@
     out.print("<div class=\"btn-group w-100 shadow-0 mt-1\" role=\"group\" aria-label=\"Volumes\">");
     for (int i = 0; i < array.length(); i++) {
         JSONObject obj = array.getJSONObject(i);
-        out.print("<button type=\"button\" class=\"btn btn-outline-info btn-rounded\" data-mdb-color=\"dark\">");
+        String cl = i == 0 ? "btn-info" : "btn-outline-info";
+        out.print("<button type=\"button\" class=\"agr-volume-btn btn " + cl + " btn-rounded agr-card-button\" data-product-volume-price=\""
+            + obj.getDouble("p") + "\" data-mdb-color=\"dark\">");
         out.print(obj.getString("v"));
         out.print("</button>");
     }
