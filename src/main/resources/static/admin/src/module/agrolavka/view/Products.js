@@ -52,6 +52,10 @@ const useStyles = makeStyles(theme => ({
     filterAvailable: {
         display: 'flex',
         alignItems: 'center'
+    },
+    hidden: {
+        opacity: '.5',
+        textDecoration: 'line-through'
     }
 }));
 
@@ -155,17 +159,24 @@ function Products() {
             new TableColumn('name', t('m_agrolavka:products.product_name'), (row) => {
                 return (
                         <React.Fragment>
-                            <span>{row.name}</span><br/>
+                            <span className={row.hidden ? classes.hidden : null}>{row.name}</span><br/>
                             <small className={classes.productGroup}>{row.group ? row.group.name : ''}</small>
                         </React.Fragment>
                 );
             }).setSortable(),
             new TableColumn('code', t('m_agrolavka:products.product_code')).setSortable().width('160px').alignment(ALIGN_RIGHT),
             new TableColumn('buyPrice', t('m_agrolavka:products.product_buy_price'), (row) => {
-                return <Price price={row.buyPrice}/>;
+                return row.minPrice && row.maxPrice ? null : <Price price={row.buyPrice}/>;
             }).setSortable().width('100px').alignment(ALIGN_RIGHT),
             new TableColumn('price', t('m_agrolavka:products.product_price'), (row) => {
-                return <Price price={row.price}/>;
+                if (row.minPrice && row.maxPrice) {
+                    return <React.Fragment>
+                        <Price price={row.minPrice}/>
+                        <Price price={row.maxPrice}/>
+                    </React.Fragment>;
+                } else {
+                    return <Price price={row.price}/>;
+                }
             }).setSortable().width('80px').alignment(ALIGN_RIGHT),
             new TableColumn('quantity', t('m_agrolavka:products.quantity'), (row) => {
                     const quantityStyle = clsx({

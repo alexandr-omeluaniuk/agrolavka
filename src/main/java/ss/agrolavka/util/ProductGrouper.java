@@ -25,6 +25,8 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import ss.agrolavka.constants.SiteConstants;
 import ss.entity.agrolavka.Product;
 import ss.entity.martin.EntityImage;
@@ -67,10 +69,11 @@ public class ProductGrouper {
         final Product product = new Product();
         product.setName(productName);
         String maxDescription = "";
-        Double minPrice = 0d;
+        Double minPrice = Double.MAX_VALUE;
         Double maxPrice = 0d;
         Double quantity = 0d;
         List<EntityImage> images = new ArrayList<>();
+        final JSONArray volumes = new JSONArray();
         for (final Product p : products) {
             if (p.getDescription() != null && p.getDescription().length() > maxDescription.length()) {
                 maxDescription = p.getDescription();
@@ -87,6 +90,15 @@ public class ProductGrouper {
             if (p.getImages() != null && p.getImages().size() > images.size()) {
                 images = p.getImages();
             }
+            final Pattern pattern = Pattern.compile("(" + VOLUME_TOKEN_PATTERN + ")");
+            final Matcher matcher = pattern.matcher(p.getName());
+            if (matcher.find()) {
+                final String volumeToken = matcher.group();
+                final JSONObject volumeObj = new JSONObject();
+                volumeObj.put("v", volumeToken.replace(", ", "").replace("л", "").trim());
+                volumeObj.put("p", p.getPrice());
+                volumes.put(volumeObj);
+            }
             product.setGroup(p.getGroup());
             product.setPrice(p.getPrice());
         }
@@ -97,9 +109,11 @@ public class ProductGrouper {
         product.setUpdated(new Date());
         product.setQuantity(quantity);
         product.setExternalId(SiteConstants.PRODUCT_WITH_VOLUMES_EXTERNAL_ID);
-        product.setBuyPrice(minPrice);
+        product.setBuyPrice(0d);
         product.setUrl(UrlProducer.transliterate(product.getName()));
         product.setImages(images);
+        product.setVolumes(volumes.toString());
+        product.setHidden(false);
         return product;
     }
     

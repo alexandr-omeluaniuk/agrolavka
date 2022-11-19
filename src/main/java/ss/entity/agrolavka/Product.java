@@ -118,9 +118,9 @@ public class Product extends ExternalEntity implements Serializable {
     private Discount discount;
     /** Product is hidden. */
     @Column(name = "hidden")
-    private Boolean hidden;
+    private boolean hidden;
     /** Product volumes. */
-    @Column(name = "volumes", length = 255)
+    @Column(name = "volumes", length = 3000)
     private String volumes;
     // ============================================== SET & GET =======================================================
     /**
@@ -307,13 +307,13 @@ public class Product extends ExternalEntity implements Serializable {
     /**
      * @return the hidden
      */
-    public Boolean isHidden() {
+    public boolean isHidden() {
         return hidden;
     }
     /**
      * @param hidden the hidden to set
      */
-    public void setHidden(Boolean hidden) {
+    public void setHidden(boolean hidden) {
         this.hidden = hidden;
     }
     /**

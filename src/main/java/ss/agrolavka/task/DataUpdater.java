@@ -122,10 +122,10 @@ public class DataUpdater {
             securityService.backgroundAuthentication(
                     configuration.getBackgroundUserUsername(), configuration.getBackgroundUserPassword());
             deleteOutdatedData();
-            //importPriceTypes();
-            //importProductGroups();
-            //importProducts();
-            //importImages();
+            importPriceTypes();
+            importProductGroups();
+            importProducts();
+            importImages();
             groupProducts();
             AppCache.flushCache(coreDAO.getAll(ProductsGroup.class));
             LOG.info("===============================================================================================");
@@ -143,6 +143,9 @@ public class DataUpdater {
                 .filter(p -> SiteConstants.PRODUCT_WITH_VOLUMES_EXTERNAL_ID.equals(p.getExternalId()))
                 .collect(Collectors.toList());
         coreDAO.massDelete(outdated);
+        allProducts = coreDAO.getAll(Product.class);
+        allProducts.forEach(p -> p.setHidden(false));
+        coreDAO.massUpdate(allProducts);
     }
     
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
@@ -346,12 +349,12 @@ public class DataUpdater {
         final List<Product> allProducts = coreDAO.getAll(Product.class);
         final Map<String, List<Product>> groups = ProductGrouper.grouping(allProducts);
         final List<Product> forUpdate = new ArrayList<>();
-        final List<Product> forCreate = new ArrayList<>();
         for (String key : groups.keySet()) {
             final List<Product> products = groups.get(key);
             LOG.info("New product with volumes: " + key + ", size " + products.size());
             products.forEach(p -> p.setHidden(true));
-            final Product newProduct = ProductGrouper.createProductsWithVolumes(products, key);
+            forUpdate.addAll(products);
+            Product newProduct = ProductGrouper.createProductsWithVolumes(products, key);
             final List<EntityImage> images = new ArrayList<>();
             for (final EntityImage image : newProduct.getImages()) {
                 image.setId(null);
@@ -360,10 +363,11 @@ public class DataUpdater {
                 image.setSize(0L);
                 images.add(image);
             }
+            newProduct.setImages(null);
+            newProduct = coreDAO.create(newProduct);
             newProduct.setImages(images);
-            forCreate.add(newProduct);
+            coreDAO.update(newProduct);
         }
-        coreDAO.massCreate(forCreate);
         coreDAO.massUpdate(forUpdate);
     }
 }
