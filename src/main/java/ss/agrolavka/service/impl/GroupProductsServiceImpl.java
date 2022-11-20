@@ -65,6 +65,7 @@ class GroupProductsServiceImpl implements GroupProductsService {
     @Override
     
     public void groupProductByVolumes() throws Exception {
+        resetHiddenFlag();
         final Set<Long> hiddenProducts = doGrouping();
         setHiddenFlag(hiddenProducts);
     }
@@ -72,9 +73,6 @@ class GroupProductsServiceImpl implements GroupProductsService {
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     private Set<Long> doGrouping() throws Exception {
         final List<Product> allProducts = coreDAO.getAll(Product.class);
-        allProducts.forEach(p -> p.setHidden(false));
-        coreDAO.massUpdate(allProducts);
-        LOG.info("Flag 'hidden' has been reset");
         final Map<String, Product> productsMap = allProducts.stream()
                 .collect(Collectors.toMap(Product::getName, (p) -> p));
         final Map<String, List<Product>> groups = grouping(allProducts);
@@ -117,10 +115,19 @@ class GroupProductsServiceImpl implements GroupProductsService {
     }
     
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    private void resetHiddenFlag() throws Exception {
+        final List<Product> allProducts = coreDAO.getAll(Product.class);
+        allProducts.forEach(p -> p.setHidden(false));
+        coreDAO.massUpdate(allProducts);
+        LOG.info("Flag 'hidden' has been reset");
+    }
+    
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     private void setHiddenFlag(final Set<Long> ids) throws Exception {
         final List<Product> hiddenProducts = coreDAO.getAll(Product.class).stream()
                 .filter(p -> ids.contains(p.getId()))
                 .collect(Collectors.toList());
+        hiddenProducts.forEach(p -> p.setHidden(true));
         coreDAO.massUpdate(hiddenProducts);
         LOG.info("Flag 'hidden' has been set");
     }
