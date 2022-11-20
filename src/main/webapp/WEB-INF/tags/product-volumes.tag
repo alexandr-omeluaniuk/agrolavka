@@ -4,8 +4,9 @@
     Author     : alex
 --%>
 
-<%@tag import="org.json.JSONObject"%>
-<%@tag import="org.json.JSONArray"%>
+<%@tag import="java.util.ArrayList"%>
+<%@tag import="java.util.List"%>
+<%@tag import="java.util.Map"%>
 <%@tag description="put the tag description here" pageEncoding="UTF-8"%>
 
 <%-- The list of normal or fragment attributes can be specified here: --%>
@@ -13,14 +14,15 @@
 
 <%-- any content can be specified here e.g.: --%>
 <%
-    JSONArray array = new JSONArray(product.getVolumes());
+    final Map<Double, String> volumePrices = product.getVolumePrices();
     out.print("<div class=\"btn-group w-100 shadow-0 mt-1\" role=\"group\" aria-label=\"Volumes\">");
-    for (int i = 0; i < array.length(); i++) {
-        JSONObject obj = array.getJSONObject(i);
+    final List<Double> prices = new ArrayList<>(volumePrices.keySet());
+    for (int i = 0; i < prices.size(); i++) {
+        final Double price = prices.get(i);
         String cl = i == 0 ? "btn-info" : "btn-outline-info";
         out.print("<button type=\"button\" class=\"agr-volume-btn btn " + cl + " btn-rounded agr-card-button\" data-product-volume-price=\""
-            + obj.getDouble("p") + "\" data-mdb-color=\"dark\">");
-        out.print(obj.getString("v"));
+            + price + "\" data-mdb-color=\"dark\">");
+        out.print(volumePrices.get(price));
         out.print("</button>");
     }
     out.print("</div>");

@@ -4,8 +4,7 @@
     Author     : alex
 --%>
 
-<%@tag import="org.json.JSONObject"%>
-<%@tag import="org.json.JSONArray"%>
+<%@tag import="java.util.Map"%>
 <%@tag description="put the tag description here" pageEncoding="UTF-8" import="ss.entity.agrolavka.*,ss.agrolavka.util.UrlProducer"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%-- The list of normal or fragment attributes can be specified here: --%>
@@ -74,15 +73,12 @@
                         <%
                             if (position.getProduct().getVolumes() != null) {
                                 try {
-                                    JSONArray array = new JSONArray(position.getProduct().getVolumes());
-                                    for (int i = 0; i < array.length(); i++) {
-                                        JSONObject obj = array.getJSONObject(i);
-                                        if (obj.getDouble("p") == position.getPrice()) {
-                                            out.print("<small class=\"text-muted fw-bold ms-1\">/ ");
-                                            out.print(obj.getString("v"));
-                                            out.print("</small>");
-                                            break;
-                                        }
+                                    final Map<Double, String> volumePrices = position.getProduct().getVolumePrices();
+                                    final String volume = volumePrices.get(position.getPrice());
+                                    if (volume != null) {
+                                        out.print("<small class=\"text-muted fw-bold ms-1\">/ ");
+                                        out.print(volume);
+                                        out.print("</small>");
                                     }
                                 } catch (Exception e) {
                                     e.printStackTrace();

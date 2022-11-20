@@ -8,6 +8,8 @@ package ss.entity.agrolavka;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -38,6 +40,9 @@ import ss.martin.platform.anno.security.FormField;
 public class Product extends ExternalEntity implements Serializable {
     /** Default UID. */
     private static final long serialVersionUID = 1L;
+    
+    public static final String VOLUME_KEY = "v";
+    public static final String PRICE_KEY = "p";
     // ============================================== FIELDS ==========================================================
     /** Name. */
     @FormField
@@ -385,6 +390,26 @@ public class Product extends ExternalEntity implements Serializable {
         } else {
             return this.getPrice();
         }
+    }
+    
+    public Map<Double, String> getVolumePrices() {
+        final Map<Double, String> result = new TreeMap<>((price1, price2) -> {
+            if (price1 > price2) {
+                return 1;
+            } else if (price1 < price2) {
+                return -1;
+            } else {
+                return 0;
+            }
+        });
+        if (getVolumes() != null) {
+            final JSONArray array = new JSONArray(getVolumes());
+            for (int i = 0; i < array.length(); i++) {
+                final JSONObject obj = array.getJSONObject(i);
+                result.put(obj.getDouble(Product.PRICE_KEY), obj.getString(Product.VOLUME_KEY));
+            }
+        }
+        return result;
     }
     
     public JSONObject toMySkladJSON(PriceType priceType) {

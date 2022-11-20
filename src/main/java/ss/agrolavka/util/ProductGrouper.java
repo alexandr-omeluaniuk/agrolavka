@@ -17,7 +17,6 @@
 package ss.agrolavka.util;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -96,8 +95,8 @@ public class ProductGrouper {
             if (matcher.find()) {
                 final String volumeToken = matcher.group();
                 final JSONObject volumeObj = new JSONObject();
-                volumeObj.put("v", volumeToken.replace(", ", "").trim());
-                volumeObj.put("p", p.getPrice());
+                volumeObj.put(Product.VOLUME_KEY, volumeToken.replace(", ", "").trim());
+                volumeObj.put(Product.PRICE_KEY, p.getPrice());
                 volumes.add(volumeObj);
             }
             product.setGroup(p.getGroup());
@@ -113,17 +112,6 @@ public class ProductGrouper {
         product.setBuyPrice(0d);
         product.setUrl(UrlProducer.transliterate(product.getName()));
         product.setImages(images);
-        Collections.sort(volumes, (item1, item2) -> {
-            final Double price1 = item1.getDouble("p");
-            final Double price2 = item2.getDouble("p");
-            if (price1 > price2) {
-                return 1;
-            } else if (price1 < price2) {
-                return -1;
-            } else {
-                return 0;
-            }
-        });
         product.setVolumes(new JSONArray(volumes).toString());
         product.setHidden(false);
         return product;
