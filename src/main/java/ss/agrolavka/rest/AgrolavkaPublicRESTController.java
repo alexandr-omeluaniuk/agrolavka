@@ -95,6 +95,10 @@ class AgrolavkaPublicRESTController {
         Product product = coreDAO.findById(id, Product.class);
         final Order order = orderService.getCurrentOrder(request);
         if (product != null) {
+            final Map<Double, String> volumePrices = product.getVolumePrices();
+            if (volumePrice != null && !volumePrices.containsKey(volumePrice)) {
+                volumePrice = volumePrices.keySet().iterator().next();  // the first by default
+            }
             OrderPosition position = new OrderPosition();
             position.setOrder(order);
             position.setPrice(volumePrice == null ? product.getDiscountPrice() : volumePrice);
