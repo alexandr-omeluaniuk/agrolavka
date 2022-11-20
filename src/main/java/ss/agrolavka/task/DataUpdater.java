@@ -26,9 +26,9 @@ import ss.agrolavka.AgrolavkaConfiguration;
 import ss.agrolavka.constants.SiteConstants;
 import ss.agrolavka.dao.ExternalEntityDAO;
 import ss.agrolavka.dao.ProductDAO;
+import ss.agrolavka.service.GroupProductsService;
 import ss.agrolavka.service.MySkladIntegrationService;
 import ss.agrolavka.util.AppCache;
-import ss.agrolavka.util.ProductGrouper;
 import ss.agrolavka.util.UrlProducer;
 import ss.agrolavka.wrapper.ProductsSearchRequest;
 import ss.entity.agrolavka.Discount;
@@ -78,6 +78,9 @@ public class DataUpdater {
     /** Image service. */
     @Autowired
     private ImageService imageService;
+    /** Group products service. */
+    @Autowired
+    private GroupProductsService groupProductsService;
     
     @PostConstruct
     protected void init() {
@@ -121,12 +124,11 @@ public class DataUpdater {
             LOG.info("====================================== MY SKLAD DATA UPDATE ===================================");
             securityService.backgroundAuthentication(
                     configuration.getBackgroundUserUsername(), configuration.getBackgroundUserPassword());
-            deleteOutdatedData();
-            importPriceTypes();
-            importProductGroups();
-            importProducts();
-            importImages();
-            groupProducts();
+//            importPriceTypes();
+//            importProductGroups();
+//            importProducts();
+//            importImages();
+            groupProductsService.groupProductByVolumes();
             AppCache.flushCache(coreDAO.getAll(ProductsGroup.class));
             LOG.info("===============================================================================================");
             return true;
@@ -134,18 +136,6 @@ public class DataUpdater {
             LOG.warn("Import MySklad data - fail!", e);
             return false;
         }
-    }
-    
-    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    private void deleteOutdatedData() throws Exception {
-        List<Product> allProducts = coreDAO.getAll(Product.class);
-        final List<Product> outdated = allProducts.stream()
-                .filter(p -> SiteConstants.PRODUCT_WITH_VOLUMES_EXTERNAL_ID.equals(p.getExternalId()))
-                .collect(Collectors.toList());
-        coreDAO.massDelete(outdated);
-        allProducts = coreDAO.getAll(Product.class);
-        allProducts.forEach(p -> p.setHidden(false));
-        coreDAO.massUpdate(allProducts);
     }
     
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
@@ -343,31 +333,5 @@ public class DataUpdater {
         LOG.info("images import completed...");
         LOG.info("elapsed time [" + (System.currentTimeMillis() - start) + "] ms");
     }
-    
-    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    private void groupProducts() throws Exception {
-        final List<Product> allProducts = coreDAO.getAll(Product.class);
-        final Map<String, List<Product>> groups = ProductGrouper.grouping(allProducts);
-        final List<Product> forUpdate = new ArrayList<>();
-        for (String key : groups.keySet()) {
-            final List<Product> products = groups.get(key);
-            LOG.info("New product with volumes: " + key + ", size " + products.size());
-            products.forEach(p -> p.setHidden(true));
-            forUpdate.addAll(products);
-            Product newProduct = ProductGrouper.createProductsWithVolumes(products, key);
-            final List<EntityImage> images = new ArrayList<>();
-            for (final EntityImage image : newProduct.getImages()) {
-                image.setId(null);
-                image.setData(imageService.readImageFromDisk(image));
-                image.setFileNameOnDisk(null);
-                image.setSize(0L);
-                images.add(image);
-            }
-            newProduct.setImages(null);
-            newProduct = coreDAO.create(newProduct);
-            newProduct.setImages(images);
-            coreDAO.update(newProduct);
-        }
-        coreDAO.massUpdate(forUpdate);
-    }
+   
 }

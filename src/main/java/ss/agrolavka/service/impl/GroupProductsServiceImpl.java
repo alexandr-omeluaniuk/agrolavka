@@ -14,11 +14,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package ss.agrolavka.util;
+package ss.agrolavka.service.impl;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -27,21 +28,102 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import ss.agrolavka.constants.SiteConstants;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+import ss.agrolavka.service.GroupProductsService;
+import ss.agrolavka.util.UrlProducer;
 import ss.entity.agrolavka.Product;
 import ss.entity.martin.EntityImage;
+import ss.martin.platform.dao.CoreDAO;
+import ss.martin.platform.service.ImageService;
 
 /**
- * Products grouper.
+ * Group products service implementation.
  * @author alex
  */
-public class ProductGrouper {
+@Service
+class GroupProductsServiceImpl implements GroupProductsService {
+    /** Logger. */
+    private static final Logger LOG = LoggerFactory.getLogger(GroupProductsServiceImpl.class);
     
     private static final String VOLUME_VALUE_PATTERN = "[\\d|,|.]*л";
     private static final String VOLUME_TOKEN_PATTERN = ",\\s" + VOLUME_VALUE_PATTERN;
     private static final String VOLUMABLE_PRODUCT_NAME_PATTERN = "^(.)*" + VOLUME_TOKEN_PATTERN + "$";
+    /** Core DAO. */
+    @Autowired
+    private CoreDAO coreDAO;
+    /** Image service. */
+    @Autowired
+    private ImageService imageService;
+
+    @Override
     
-    public static Map<String, List<Product>> grouping(final List<Product> products) {
+    public void groupProductByVolumes() throws Exception {
+        final Set<Long> hiddenProducts = doGrouping();
+        setHiddenFlag(hiddenProducts);
+    }
+    
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    private Set<Long> doGrouping() throws Exception {
+        final List<Product> allProducts = coreDAO.getAll(Product.class);
+        allProducts.forEach(p -> p.setHidden(false));
+        coreDAO.massUpdate(allProducts);
+        LOG.info("Flag 'hidden' has been reset");
+        final Map<String, Product> productsMap = allProducts.stream()
+                .collect(Collectors.toMap(Product::getName, (p) -> p));
+        final Map<String, List<Product>> groups = grouping(allProducts);
+        final Set<Long> hiddenProducts = new HashSet<>();
+        for (String groupedProductName : groups.keySet()) {
+            final List<Product> products = groups.get(groupedProductName);
+            products.forEach(p -> hiddenProducts.add(p.getId()));
+            Product newProduct = createProductsWithVolumes(products, groupedProductName);
+            final List<EntityImage> images = new ArrayList<>();
+            for (final EntityImage image : newProduct.getImages()) {
+                image.setId(null);
+                image.setData(imageService.readImageFromDisk(image));
+                image.setFileNameOnDisk(null);
+                image.setSize(0L);
+                images.add(image);
+            }
+            if (productsMap.containsKey(groupedProductName)) {
+                LOG.info("Update product with volumes: " + groupedProductName + ", size " + products.size());
+                final Product existingProduct = productsMap.get(groupedProductName);
+                existingProduct.setDescription(newProduct.getDescription());
+                existingProduct.setImages(images);
+                existingProduct.setMinPrice(newProduct.getMinPrice());
+                existingProduct.setMaxPrice(newProduct.getMaxPrice());
+                existingProduct.setPrice(newProduct.getPrice());
+                existingProduct.setUpdated(new Date());
+                existingProduct.setQuantity(newProduct.getQuantity());
+                existingProduct.setBuyPrice(0d);
+                existingProduct.setUrl(newProduct.getUrl());
+                existingProduct.setVolumes(newProduct.getVolumes());
+                existingProduct.setHidden(false);
+            } else {
+                LOG.info("New product with volumes: " + groupedProductName + ", size " + products.size());
+                newProduct.setImages(null);
+                newProduct = coreDAO.create(newProduct);
+                newProduct.setImages(images);
+                coreDAO.update(newProduct);
+            }
+        }
+        return hiddenProducts;
+    }
+    
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    private void setHiddenFlag(final Set<Long> ids) throws Exception {
+        final List<Product> hiddenProducts = coreDAO.getAll(Product.class).stream()
+                .filter(p -> ids.contains(p.getId()))
+                .collect(Collectors.toList());
+        coreDAO.massUpdate(hiddenProducts);
+        LOG.info("Flag 'hidden' has been set");
+    }
+    
+    private Map<String, List<Product>> grouping(final List<Product> products) {
         final Map<String, List<Product>> result = new HashMap<>();
         final Set<Long> forGrouping = products.stream()
                 .filter(product -> Pattern.matches(VOLUMABLE_PRODUCT_NAME_PATTERN, product.getName()))
@@ -65,7 +147,7 @@ public class ProductGrouper {
         return result;
     }
     
-    public static Product createProductsWithVolumes(final List<Product> products, final String productName) {
+    private Product createProductsWithVolumes(final List<Product> products, final String productName) {
         final Product product = new Product();
         product.setName(productName);
         String maxDescription = "";
@@ -108,7 +190,7 @@ public class ProductGrouper {
         product.setPrice(minPrice);
         product.setUpdated(new Date());
         product.setQuantity(quantity);
-        product.setExternalId(SiteConstants.PRODUCT_WITH_VOLUMES_EXTERNAL_ID);
+        product.setExternalId("-1");
         product.setBuyPrice(0d);
         product.setUrl(UrlProducer.transliterate(product.getName()));
         product.setImages(images);
