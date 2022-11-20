@@ -22,6 +22,8 @@ package ss.agrolavka.service;
  */
 public interface GroupProductsService {
     
+    static final String GROUPED_PRODUCT_EXTERNAL_ID = "-1";
+    
     /**
      * Group product by their volumes.
      * @throws Exception error.

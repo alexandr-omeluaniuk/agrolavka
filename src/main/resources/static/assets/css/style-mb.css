@@ -98,6 +98,7 @@ and open the template in the editor.
     }
     button[data-product-id], button[data-product-volume-price] {
         font-size: .6rem;
+        line-height: 1;
     }
     .row {
         --bs-gutter-x: 1rem;

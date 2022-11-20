@@ -53,6 +53,8 @@ class GroupProductsServiceImpl implements GroupProductsService {
     private static final String VOLUME_VALUE_PATTERN = "[\\d|,|.]*л";
     private static final String VOLUME_TOKEN_PATTERN = ",\\s" + VOLUME_VALUE_PATTERN;
     private static final String VOLUMABLE_PRODUCT_NAME_PATTERN = "^(.)*" + VOLUME_TOKEN_PATTERN + "$";
+    
+    
     /** Core DAO. */
     @Autowired
     private CoreDAO coreDAO;
@@ -190,7 +192,7 @@ class GroupProductsServiceImpl implements GroupProductsService {
         product.setPrice(minPrice);
         product.setUpdated(new Date());
         product.setQuantity(quantity);
-        product.setExternalId("-1");
+        product.setExternalId(GROUPED_PRODUCT_EXTERNAL_ID);
         product.setBuyPrice(0d);
         product.setUrl(UrlProducer.transliterate(product.getName()));
         product.setImages(images);

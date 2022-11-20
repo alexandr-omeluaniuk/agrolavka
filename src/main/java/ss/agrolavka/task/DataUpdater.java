@@ -124,10 +124,10 @@ public class DataUpdater {
             LOG.info("====================================== MY SKLAD DATA UPDATE ===================================");
             securityService.backgroundAuthentication(
                     configuration.getBackgroundUserUsername(), configuration.getBackgroundUserPassword());
-//            importPriceTypes();
-//            importProductGroups();
-//            importProducts();
-//            importImages();
+            importPriceTypes();
+            importProductGroups();
+            importProducts();
+            importImages();
             groupProductsService.groupProductByVolumes();
             AppCache.flushCache(coreDAO.getAll(ProductsGroup.class));
             LOG.info("===============================================================================================");

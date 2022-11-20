@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import ss.agrolavka.constants.SiteConstants;
+import ss.agrolavka.service.GroupProductsService;
 import ss.agrolavka.service.MySkladIntegrationService;
 import ss.entity.agrolavka.Product;
 import ss.entity.martin.EntityImage;
@@ -46,7 +47,7 @@ class ProductEntityListener extends EntityWithImagesListener implements Platform
     
     @Override
     public void preUpdate(Product entity) throws Exception {
-        if (SiteConstants.PRODUCT_WITH_VOLUMES_EXTERNAL_ID.equals(entity.getExternalId())) {
+        if (GroupProductsService.GROUPED_PRODUCT_EXTERNAL_ID.equals(entity.getExternalId())) {
             return;
         }
         mySkladIntegrationService.updateProduct(entity);
@@ -64,7 +65,7 @@ class ProductEntityListener extends EntityWithImagesListener implements Platform
     public void preDelete(Set<Long> ids) throws Exception {
         for (Long id : ids) {
             Product product = coreDAO.findById(id, Product.class);
-            if (!SiteConstants.PRODUCT_WITH_VOLUMES_EXTERNAL_ID.equals(product.getExternalId())) {
+            if (!GroupProductsService.GROUPED_PRODUCT_EXTERNAL_ID.equals(product.getExternalId())) {
                 mySkladIntegrationService.deleteProduct(product);
             }
         }
