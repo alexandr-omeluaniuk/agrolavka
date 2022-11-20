@@ -87,13 +87,17 @@ class AgrolavkaPublicRESTController {
      */
     @RequestMapping(value = "/cart/{id}", method = RequestMethod.PUT,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public Order addToCart(@PathVariable("id") Long id, HttpServletRequest request) throws Exception {
+    public Order addToCart(
+            @PathVariable("id") Long id,
+            @RequestParam(value = "volumePrice", required = false) Double volumePrice,
+            HttpServletRequest request
+    ) throws Exception {
         Product product = coreDAO.findById(id, Product.class);
         final Order order = orderService.getCurrentOrder(request);
         if (product != null) {
             OrderPosition position = new OrderPosition();
             position.setOrder(order);
-            position.setPrice(product.getDiscountPrice());
+            position.setPrice(volumePrice == null ? product.getDiscountPrice() : volumePrice);
             position.setQuantity(1);
             position.setProduct(product);
             position.setProductId(product.getId());

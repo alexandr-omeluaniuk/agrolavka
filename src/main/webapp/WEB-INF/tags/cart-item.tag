@@ -4,6 +4,8 @@
     Author     : alex
 --%>
 
+<%@tag import="org.json.JSONObject"%>
+<%@tag import="org.json.JSONArray"%>
 <%@tag description="put the tag description here" pageEncoding="UTF-8" import="ss.entity.agrolavka.*,ss.agrolavka.util.UrlProducer"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%-- The list of normal or fragment attributes can be specified here: --%>
@@ -64,11 +66,29 @@
                     </c:if>
                     <span class="mt-4 fw-bold ${not empty position.product.discount ? 'text-decoration-line-through text-muted' : 'text-dark'}">
                         <%
-                            String price = String.format("%.2f", position.getProduct().getPrice());
+                            String price = String.format("%.2f", position.getPrice());
                             String[] parts = price.split("\\.");
                             out.print(parts[0] + ".");
                             out.print("<small>" + parts[1] + "</small>");
                         %> <small class="text-muted">BYN</small></span>
+                        <%
+                            if (position.getProduct().getVolumes() != null) {
+                                try {
+                                    JSONArray array = new JSONArray(position.getProduct().getVolumes());
+                                    for (int i = 0; i < array.length(); i++) {
+                                        JSONObject obj = array.getJSONObject(i);
+                                        if (obj.getDouble("p") == position.getPrice()) {
+                                            out.print("<small class=\"text-muted fw-bold ms-1\">/ ");
+                                            out.print(obj.getString("v"));
+                                            out.print("</small>");
+                                            break;
+                                        }
+                                    }
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        %>
                 </div>
 
             </div>
