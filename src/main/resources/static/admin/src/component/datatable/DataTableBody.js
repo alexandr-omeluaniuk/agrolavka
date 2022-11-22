@@ -57,6 +57,37 @@ function DataTableBody (props) {
         );
     }
     
+    const editBtn = (rowData) => {
+        if (tableConfig.isRowEditable && !tableConfig.isRowEditable(rowData)) {
+            return <TableCell className={classes.actionCell}></TableCell>;
+        }
+        return (
+                <TableCell className={classes.actionCell}>
+                    <Tooltip title={t('component.datatable.edit')}>
+                        <IconButton aria-label="edit record" className={classes.editButton} onClick={() => onEditRecord(rowData)}>
+                            <Icon>edit</Icon>
+                        </IconButton>
+                    </Tooltip>
+                </TableCell>
+        );
+    };
+    
+    const deleteBtn = (rowData) => {
+        if (tableConfig.isRowDeletable && !tableConfig.isRowDeletable(rowData)) {
+            return <TableCell className={classes.actionCell}></TableCell>;
+        }
+        return (
+                <TableCell className={classes.actionCell}>
+                    <Tooltip title={t('component.datatable.delete')}>
+                        <IconButton aria-label="delete record" className={classes.deleteButton}
+                                onClick={() => onDeleteRecord(rowData)}>
+                            <Icon>delete</Icon>
+                        </IconButton>
+                    </Tooltip>
+                </TableCell>
+        );
+    };
+    
     const tableRow = (rowData) => {
         return (
             <TableRow>
@@ -90,25 +121,8 @@ function DataTableBody (props) {
                     }
                     return columnUI;
                 })}
-                {onEditRecord ? (
-                    <TableCell className={classes.actionCell}>
-                        <Tooltip title={t('component.datatable.edit')}>
-                            <IconButton aria-label="edit record" className={classes.editButton} onClick={() => onEditRecord(rowData)}>
-                                <Icon>edit</Icon>
-                            </IconButton>
-                        </Tooltip>
-                    </TableCell>
-                ) : null}
-                {onDeleteRecord ? (
-                    <TableCell className={classes.actionCell}>
-                        <Tooltip title={t('component.datatable.delete')}>
-                            <IconButton aria-label="delete record" className={classes.deleteButton}
-                                    onClick={() => onDeleteRecord(rowData)}>
-                                <Icon>delete</Icon>
-                            </IconButton>
-                        </Tooltip>
-                    </TableCell>
-                ) : null}
+                {onEditRecord ? editBtn(rowData) : null}
+                {onDeleteRecord ? deleteBtn(rowData) : null}
             </TableRow>
         );
     };

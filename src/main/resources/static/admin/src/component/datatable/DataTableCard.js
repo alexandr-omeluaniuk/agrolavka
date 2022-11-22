@@ -62,23 +62,27 @@ function DataTableCard (props) {
     // ====================================================== RENDERING ===================================================================
     const actions = [];
     if (onEditRecord) {
-        actions.push((
-            <Tooltip title={t('common.edit')} key={1}>
-                <IconButton aria-label="edit record" className={classes.editButton} onClick={() => onEditRecord(rowData)}>
-                    <Icon>edit</Icon>
-                </IconButton>
-            </Tooltip>
-        ));
+        if (!tableConfig.isRowEditable || (tableConfig.isRowEditable && tableConfig.isRowEditable(rowData))) {
+            actions.push((
+                <Tooltip title={t('common.edit')} key={1}>
+                    <IconButton aria-label="edit record" className={classes.editButton} onClick={() => onEditRecord(rowData)}>
+                        <Icon>edit</Icon>
+                    </IconButton>
+                </Tooltip>
+            ));
+        }
     }
     if (onDeleteRecord) {
-        actions.push((
-            <Tooltip title={t('common.delete')} key={2}>
-                <IconButton aria-label="delete record" className={classes.deleteButton}
-                        onClick={() => onDeleteRecord(rowData)}>
-                    <Icon>delete</Icon>
-                </IconButton>
-            </Tooltip>
-        ));
+        if (!tableConfig.isRowDeletable || (tableConfig.isRowDeletable && tableConfig.isRowDeletable(rowData))) {
+            actions.push((
+                <Tooltip title={t('common.delete')} key={2}>
+                    <IconButton aria-label="delete record" className={classes.deleteButton}
+                            onClick={() => onDeleteRecord(rowData)}>
+                        <Icon>delete</Icon>
+                    </IconButton>
+                </Tooltip>
+            ));
+        }
     }
     let firstColumn = tableConfig.columns.filter(c => {
         return c.type !== 'action' && c.label;

@@ -231,6 +231,12 @@ function Products() {
                 resolve(record);
             });
         })).setElevation(1).setFilter(productsFilter()).setToolbarActionsBefore(toolbarBefore());
+        newTableConfig.isRowEditable = (row) => {
+            return !(row.minPrice && row.maxPrice);
+        };
+        newTableConfig.isRowDeletable = (row) => {
+            return !(row.minPrice && row.maxPrice);
+        };
         setTableConfig(newTableConfig);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedProductGroup, filterProductName, filterCode, filterAvailable, filterDiscounts]);
