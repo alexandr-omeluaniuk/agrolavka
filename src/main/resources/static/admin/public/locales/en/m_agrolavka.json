@@ -97,5 +97,6 @@
         "images": "Images",
         "phone": "Phone"
     },
-    "backup": "Do data backup"
+    "backup": "Do data backup",
+    "group_products_by_volumes": "Group products by volume"
 }

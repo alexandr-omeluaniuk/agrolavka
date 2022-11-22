@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ss.agrolavka.dao.ProductDAO;
+import ss.agrolavka.service.GroupProductsService;
 import ss.agrolavka.wrapper.ProductsSearchRequest;
-import ss.martin.platform.dao.CoreDAO;
 import ss.martin.platform.wrapper.EntitySearchResponse;
 
 /**
@@ -26,9 +26,9 @@ public class ProductRESTController {
     /** Product DAO. */
     @Autowired
     private ProductDAO productDAO;
-    /** Core DAO. */
+    /** Group products service. */
     @Autowired
-    private CoreDAO coreDAO;
+    private GroupProductsService groupProductsService;
     /**
      * Search products.
      * @param page page.
@@ -40,6 +40,7 @@ public class ProductRESTController {
      * @param groupId group ID.
      * @param available product is available.
      * @param discounts with discounts.
+     * @param includesHidden includes hidden products.
      * @return products portion.
      * @throws Exception error.
      */
@@ -71,5 +72,14 @@ public class ProductRESTController {
         response.setData(productDAO.search(request));
         response.setTotal(productDAO.count(request).intValue());
         return response;
+    }
+    
+    /**
+     * Group products by volume.
+     * @throws Exception error.
+     */
+    @RequestMapping(value = "/group", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+    public void groupProductsByVolume() throws Exception {
+        groupProductsService.groupProductByVolumes();
     }
 }

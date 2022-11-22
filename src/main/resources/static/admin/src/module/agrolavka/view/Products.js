@@ -102,6 +102,11 @@ function Products() {
     const toolbarBefore = () => {
         return (
                 <React.Fragment>
+                    <Tooltip title={t('m_agrolavka:group_products_by_volumes')}>
+                        <IconButton onClick={groupProductsByVolume}>
+                            <Icon color="primary">dashboard</Icon>
+                        </IconButton>
+                    </Tooltip>
                     <Tooltip title={t('m_agrolavka:backup')}>
                         <IconButton onClick={backup}>
                             <Icon color="primary">backup</Icon>
@@ -122,6 +127,10 @@ function Products() {
     };
     const backup = () => {
         dataService.getFile('/api/agrolavka/protected/mysklad/backup').then(resp => {
+        });
+    };
+    const groupProductsByVolume = () => {
+        dataService.put('/agrolavka/protected/product/group').then(resp => {
         });
     };
     // ------------------------------------------------------- HOOKS ----------------------------------------------------------------------
