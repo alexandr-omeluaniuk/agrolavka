@@ -7,7 +7,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 
-<t:app title="Дисконтная программа" metaDescription="Условия дисконтной программы, акции и скидки в магазине Агролавка г.Дрогичин"
+<t:app title="Дисконтная программа" metaDescription="Условия дисконтной программы, акции и скидки в магазине Агролавка г.Дрогичин и г.Брест"
        canonical="/discount">
     
     <jsp:body>

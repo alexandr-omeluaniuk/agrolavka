@@ -7,7 +7,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" import="ss.agrolavka.constants.SiteConstants"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 
-<t:app title="Условия доставки и оплаты товара" metaDescription="Условия доставки и оплаты товара в магазине Агролавка г.Дрогичин"
+<t:app title="Условия доставки и оплаты товара" metaDescription="Условия доставки и оплаты товара в магазине Агролавка г.Дрогичин и г.Брест"
        canonical="/delivery">
     
     <jsp:body>
@@ -138,7 +138,7 @@
                                 </div>
                                 <div class="card-body">
                                     <small class="mb-0 text-dark">Бесплатно, из магазина, 
-                                        <a class="agr-link" href="#footer">расположенного в г.Дрогичине</a></small>
+                                        <a class="agr-link" href="/shops">расположенного в г.Дрогичине или г.Бресте</a></small>
                                 </div>
                             </div>
                         </div>
