@@ -257,6 +257,13 @@ and open the template in the editor.
 .agr-shop-address-link:hover {
     color: lightgray;
 }
+.agr-shop-address {
+    font-weight: 800;
+    text-decoration: underline;
+}
+.agr-shop-phone {
+    text-decoration: underline;
+}
 .leaflet-control-attribution.leaflet-control {
     display: none;
 }
