@@ -33,8 +33,8 @@
                             <li class="mb-2"><a class="text-white" href="/delivery">Доставка</a></li>
                             <li class="mb-2"><a class="text-white" href="/shops">Наши магазины</a></li>
                             <li>
-                                <a href="https://www.instagram.com/agrolavka.by" class="btn btn-outline-light btn-floating">
-                                    <i class="fab fa-instagram"></i>
+                                <a href="https://www.instagram.com/agrolavka.by">
+                                    <img src="/assets/img/instagram.ico" alt="Instagram">
                                 </a>
                             </li>
                         </ul>
