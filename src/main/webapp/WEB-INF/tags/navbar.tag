@@ -16,7 +16,7 @@
             <!-- Navbar brand -->
             <a href="/" class="navbar-brand nav-link d-none d-lg-block">
                 <strong class="d-flex justify-content-center align-items-center">
-                    <i class="fas fa-carrot"></i><span class="ms-2">Агролавка</span>
+                    <i class="fas fa-carrot agr-carrot-logo"></i><span class="ms-2">Агролавка</span>
                 </strong>
             </a>
             <div class="d-lg-none w-100">
@@ -24,7 +24,7 @@
                     <div class="d-flex align-items-center mb-2">
                         <a href="/" class="navbar-brand nav-link" style="border-right: 1px solid #ffffff70; margin-right: 0;">
                             <strong class="d-flex justify-content-center align-items-center">
-                                <i class="fas fa-carrot"></i>
+                                <i class="fas fa-carrot agr-carrot-logo"></i>
                             </strong>
                         </a>
                         <a class="nav-link" href="tel:+375292848848" style="flex: 1"><i class="fas fa-phone-alt"></i> +375 29 2-848-848 (МТС)</a>

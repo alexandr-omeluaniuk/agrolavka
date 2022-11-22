@@ -264,6 +264,9 @@ and open the template in the editor.
 .agr-shop-phone {
     text-decoration: underline;
 }
+.agr-carrot-logo {
+    color: orange;
+}
 .leaflet-control-attribution.leaflet-control {
     display: none;
 }
