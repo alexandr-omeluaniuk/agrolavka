@@ -103,6 +103,7 @@ class GroupProductsServiceImpl implements GroupProductsService {
                 existingProduct.setUrl(newProduct.getUrl());
                 existingProduct.setVolumes(newProduct.getVolumes());
                 existingProduct.setHidden(false);
+                coreDAO.update(existingProduct);
             } else {
                 LOG.info("New product with volumes: " + groupedProductName + ", size " + products.size());
                 newProduct.setImages(null);
