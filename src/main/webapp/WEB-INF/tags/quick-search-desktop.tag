@@ -45,7 +45,7 @@
             const container = document.querySelector('#agr-quick-search-container-desktop');
             const navLinks = document.querySelector('.navbar-nav');
             navLinks.style.display = 'none';
-            container.style.width = (window.innerWidth - 570) + 'px';
+            container.style.width = (window.innerWidth - 600) + 'px';
             const searchResultOutput = document.querySelector('#agr-quick-search-result-desktop');
             if (searchResultOutput.innerHTML) {
                 searchResultOutput.classList.add("show");
@@ -93,15 +93,21 @@
                                     const price = parseFloat(product.discountPrice ? product.discountPrice : product.price).toFixed(2);
                                     const priceRub = price.split('.')[0];
                                     const priceCent = price.split('.')[1];
+                                    let priceMaxRub, priceMaxCent;
+                                    if (product.maxPrice) {
+                                        const priceMax = parseFloat(product.maxPrice).toFixed(2);
+                                        priceMaxRub = priceMax.split('.')[0];
+                                        priceMaxCent = priceMax.split('.')[1];
+                                    }
                                     sb += 
                                         '<li class="agr-product-search-link">'
                                             + '<a class="dropdown-item" href="' + product.url + '">'
                                                 + '<div class="d-flex w-100 justify-content-between">'
                                                     + '<h6 class="mb-1">' + highlightText(product.name, searchText) + '</h6>'
-                                                    + '<small style="margin-left: 10px; min-width: 80px; text-align: right;"' 
-                                                        + 'class="fw-bold">' + priceRub
-                                                        + '.<span style="font-size: .9em; margin-right: 5px;">' + priceCent + '</span>'
-                                                        + '<span class="text-muted">BYN</span>'
+                                                    + '<small style="margin-left: 10px; min-width: 80px; text-align: right;" class="fw-bold">' + priceRub
+                                                            + '.<span style="font-size: .9em;">' + priceCent + '</span>'
+                                                            + (priceMaxRub ? ' - ' + priceMaxRub + '.<span style="font-size: .9em;">' + priceMaxCent + '</span>' : '')
+                                                        + '<span class="text-muted ms-1">BYN</span>'
                                                     + '</small>'
                                                 + '</div>'
                                                 + '<div class="d-flex justify-content-between">'
