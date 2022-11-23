@@ -237,6 +237,7 @@ function Products() {
         newTableConfig.isRowDeletable = (row) => {
             return !(row.minPrice && row.maxPrice);
         };
+        newTableConfig.isFormDialog = false;
         setTableConfig(newTableConfig);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedProductGroup, filterProductName, filterCode, filterAvailable, filterDiscounts]);

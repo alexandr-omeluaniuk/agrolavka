@@ -18,6 +18,7 @@ export class TableConfig {
         this.formConfig = formConfig;
         this.elevation = 1;
         this.toolbarFilter = null;
+        this.isFormDialog = true;
     }
     
     setElevation(elevation) {

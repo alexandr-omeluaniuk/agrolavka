@@ -25,6 +25,9 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import TablePagination from '@material-ui/core/TablePagination';
 import { DENSE_PADDING, ITEMS_PER_PAGE } from '../../conf/local-storage-keys';
 import { ApiURL } from '../../util/model/TableConfig';
+import Typography from '@material-ui/core/Typography';
+import IconButton from '@material-ui/core/IconButton';
+import Icon from '@material-ui/core/Icon';
 
 let dataService = new DataService();
 
@@ -33,6 +36,14 @@ const LAST_PAGE_NUMBER = 'last-page-number';
 const useStyles = makeStyles(theme => ({
     paperMobile: {
         backgroundColor: '#fff0'
+    },
+    paper: {
+        padding: theme.spacing(2)
+    },
+    title: {
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center'
     }
 }));
 
@@ -186,6 +197,19 @@ function DataTable(props) {
     const isEditable = tableConfig.apiUrl instanceof ApiURL ? tableConfig.apiUrl.putUrl : (tableConfig.apiUrl ? true : false);
     const isDeletable = tableConfig.apiUrl instanceof ApiURL ? tableConfig.apiUrl.deleteUrl : (tableConfig.apiUrl ? true : false);
     const isCreatable = tableConfig.apiUrl instanceof ApiURL ? tableConfig.apiUrl.postUrl : (tableConfig.apiUrl ? true : false);
+    if (formOpen && !tableConfig.isFormDialog) {
+        return (
+                <Paper elevation={1} className={classes.paper}>
+                    <div className={classes.title}>
+                        <Typography variant="h6">{formTitle}</Typography>
+                        <IconButton aria-label="close" className={classes.closeButton} onClick={() => setFormOpen(false)}>
+                            <Icon>close</Icon>
+                        </IconButton>
+                    </div>
+                    <Form formConfig={actualFormConfig} onSubmitAction={onFormSubmitAction} record={record} disabled={formDisabled}/>
+                </Paper>
+        );
+    }
     return (
         <div>
             <Paper className={isMobile ? classes.paperMobile : null} elevation={isMobile ? 0 : (tableConfig.getElevation())}>
@@ -208,9 +232,11 @@ function DataTable(props) {
             {isMobile ? null : (
                 <FormControlLabel control={<Switch checked={dense} onChange={handleChangeDense} />} label={t('component.datatable.dense_padding')} />
             )}
-            <FormDialog title={formTitle} open={formOpen} handleClose={() => setFormOpen(false)}>
-                <Form formConfig={actualFormConfig} onSubmitAction={onFormSubmitAction} record={record} disabled={formDisabled}/>
-            </FormDialog>
+            {tableConfig.isFormDialog ? (
+                <FormDialog title={formTitle} open={formOpen} handleClose={() => setFormOpen(false)}>
+                    <Form formConfig={actualFormConfig} onSubmitAction={onFormSubmitAction} record={record} disabled={formDisabled}/>
+                </FormDialog>
+            ) : null}
             <ConfirmDialog open={confirmDialogOpen} handleClose={() => setConfirmDialogOpen(false)} title={t('component.datatable.delete')}
                 contentText={t('component.datatable.confirm_delete_message')} acceptBtnLabel={t('component.datatable.confirm')}
                 declineBtnLabel={t('component.datatable.cancel')} declineBtnOnClick={() => setConfirmDialogOpen(false)}
