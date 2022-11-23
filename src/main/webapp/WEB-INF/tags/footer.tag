@@ -32,9 +32,12 @@
                             <li class="mb-2"><a class="text-white" href="/discount">Дисконтная программа</a></li>
                             <li class="mb-2"><a class="text-white" href="/delivery">Доставка</a></li>
                             <li class="mb-2"><a class="text-white" href="/shops">Наши магазины</a></li>
-                            <li>
+                            <li class="d-flex" style="gap: 10px;">
                                 <a href="https://www.instagram.com/agrolavka.by">
                                     <img src="/assets/img/instagram.ico" alt="Instagram">
+                                </a>
+                                <a href="https://invite.viber.com/?g2=AQAg5Rkk2LluF0zHtRAvabtjZ4jDtGaaMApRoqe3%2FboHZogbep9nBgCTSKDPVqTl">
+                                    <i class="fab fa-viber" style="font-size: 32px; color: white;"></i>
                                 </a>
                             </li>
                         </ul>
