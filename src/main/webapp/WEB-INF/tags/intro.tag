@@ -4,26 +4,49 @@
     Author     : alex
 --%>
 
+<%@tag import="java.util.List"%>
+<%@tag import="ss.entity.agrolavka.Slide"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@tag description="Product highlights" pageEncoding="UTF-8"%>
 
 <%-- The list of normal or fragment attributes can be specified here: --%>
 <%@attribute name="visible" required="true" type="Boolean"%>
+<%@attribute name="slides" required="true" type="List<Slide>"%>
 <%-- any content can be specified here e.g.: --%>
 <c:if test="${visible}">
     <!-- Carousel wrapper -->
     <div id="introCarousel" class="carousel slide carousel-fade shadow-2-strong" data-mdb-ride="carousel">
         <!-- Indicators -->
         <ol class="carousel-indicators">
-            <li data-mdb-target="#introCarousel" data-mdb-slide-to="0" class="active" aria-current="true"></li>
-            <li data-mdb-target="#introCarousel" data-mdb-slide-to="1" class=""></li>
-            <li data-mdb-target="#introCarousel" data-mdb-slide-to="2" class=""></li>
+            <c:forEach items="${slides}" var="slide" varStatus="loop">
+                <li data-mdb-target="#introCarousel" data-mdb-slide-to="${loop.index}" class="${loop.index == 0 ? "active" : ""}"></li>
+            </c:forEach>
+            <li data-mdb-target="#introCarousel" data-mdb-slide-to="${slides.size() + 0}" class="${slides.size() == 0 ? "active" : ""}" aria-current="true"></li>
+            <li data-mdb-target="#introCarousel" data-mdb-slide-to="${slides.size() + 1}" class=""></li>
+            <li data-mdb-target="#introCarousel" data-mdb-slide-to="${slides.size() + 2}" class=""></li>
         </ol>
 
         <!-- Inner -->
         <div class="carousel-inner">
+            
+            <c:forEach items="${slides}" var="slide" varStatus="loop">
+                <div class="carousel-item ${loop.index == 0 ? "active" : ""}" style="background-image: url('/media/${slide.getImages().get(0).getFileNameOnDisk()}')">
+                    <div class="mask" style="background-color: rgba(0, 0, 0, 0.3);">
+                        <div class="d-flex justify-content-center align-items-center h-100">
+                            <div class="text-white text-center">
+                                <h1>${slide.title}</h1>
+                                <h5>${slide.subtitle}</h5>
+                                <c:if test="${not empty slide.buttonText}">
+                                    <a class="btn btn-outline-light btn-lg m-2" href="${slide.buttonLink}" role="button">${slide.buttonText}</a>
+                                </c:if>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </c:forEach>
+            
             <!-- Single item -->
-            <div class="carousel-item active">
+            <div class="carousel-item ${slides.size() > 0 ? "" : "active"}" style="background-image: url('/assets/img/intro/catalog.webp');">
                 <div class="mask" style="background-color: rgba(0, 0, 0, 0.5);">
                     <div class="d-flex justify-content-center align-items-center h-100">
                         <div class="text-white text-center">
@@ -37,7 +60,7 @@
             </div>
 
             <!-- Single item -->
-            <div class="carousel-item">
+            <div class="carousel-item" style="background-image: url('/assets/img/intro/discount.webp');">
                 <div class="mask" style="background-color: rgba(0, 0, 0, 0.3);">
                     <div class="d-flex justify-content-center align-items-center h-100">
                         <div class="text-white text-center">
@@ -50,7 +73,7 @@
             </div>
 
             <!-- Single item -->
-            <div class="carousel-item">
+            <div class="carousel-item" style="background-image: url('/assets/img/intro/delivery.webp');">
                 <div class="mask" style="background-color: rgba(0, 0, 0, 0.4);">
                     <div class="d-flex justify-content-center align-items-center h-100">
                         <div class="text-white text-center">

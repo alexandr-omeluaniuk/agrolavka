@@ -29,7 +29,7 @@ function FormDialog(props) {
     const { title, open, handleClose, children, maxWidth, noScroll } = props;
     const classes = useStyles();
     return (
-            <Dialog open={open} onClose={handleClose} scroll={'paper'} maxWidth={maxWidth ? maxWidth : 'md'} fullWidth={true}>
+            <Dialog open={open} onClose={handleClose} scroll={'paper'} maxWidth={maxWidth ? maxWidth : 'md'} fullWidth={true} fullScreen={true}>
                 <MuiDialogTitle disableTypography className={classes.root}>
                     <Typography variant="h6">{title}</Typography>
                     <IconButton aria-label="close" className={classes.closeButton} onClick={handleClose}>

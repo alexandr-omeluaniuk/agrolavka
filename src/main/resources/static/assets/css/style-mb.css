@@ -39,20 +39,7 @@ and open the template in the editor.
     height: 100vh;
 }
 
-#introCarousel .carousel-item:nth-child(1) {
-    background-image: url('/assets/img/intro/catalog.webp');
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center center;
-}
-#introCarousel .carousel-item:nth-child(2) {
-    background-image: url('/assets/img/intro/discount.webp');
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center center;
-}
-#introCarousel .carousel-item:nth-child(3) {
-    background-image: url('/assets/img/intro/delivery.webp');
+#introCarousel .carousel-item {
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center center;

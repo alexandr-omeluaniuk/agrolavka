@@ -14,7 +14,7 @@
 
     <jsp:body>
         <main class="min-vh-100" id="home">
-            <t:intro visible="true"/>
+            <t:intro visible="true" slides="${slides}"/>
             <div class="container pt-5">
 
                 <!--Section: Content-->

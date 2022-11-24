@@ -34,6 +34,7 @@ import ss.entity.agrolavka.OrderPosition;
 import ss.entity.agrolavka.Product;
 import ss.entity.agrolavka.ProductsGroup;
 import ss.entity.agrolavka.Shop;
+import ss.entity.agrolavka.Slide;
 import ss.entity.martin.DataModel;
 import ss.martin.platform.dao.CoreDAO;
 
@@ -76,6 +77,12 @@ public class SiteController {
             newProducts = AppCache.getNewProducts();
         }
         model.addAttribute("newProducts", newProducts);
+        List<Slide> slides = AppCache.getSlides();
+        if (slides == null) {
+            AppCache.flushSlidesCache(coreDAO.getAll(Slide.class));
+            slides = AppCache.getSlides();
+        }
+        model.addAttribute("slides", slides);
         List<Product> withDiscount = getProductsWithDiscount();
         List<Product> withDiscountFirst12 = withDiscount.size() > 12 ? withDiscount.subList(0, 12) : withDiscount;
         model.addAttribute("productsWithDiscount", withDiscountFirst12);

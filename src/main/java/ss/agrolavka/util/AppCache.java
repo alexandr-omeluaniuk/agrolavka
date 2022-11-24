@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 import ss.entity.agrolavka.Product;
 import ss.entity.agrolavka.ProductsGroup;
 import ss.entity.agrolavka.Shop;
+import ss.entity.agrolavka.Slide;
 
 /**
  * Application cache.
@@ -32,6 +33,8 @@ public class AppCache {
     private static Long productsCount = null;
     /** All shops. */
     private static List<Shop> allShops = null;
+    /** Slides. */
+    private static List<Slide> allSlides = null;
     /**
      * Update catalog data.
      * @param groups product groups.
@@ -58,6 +61,13 @@ public class AppCache {
      */
     public static synchronized void flushShopsCache(final List<Shop> shops) {
         allShops = shops;
+    }
+    /**
+     * Flush slides cache.
+     * @param slides actual slides.
+     */
+    public static synchronized void flushSlidesCache(final List<Slide> slides) {
+        allSlides = slides;
     }
     /**
      * Get new products.
@@ -145,6 +155,9 @@ public class AppCache {
     
     public static synchronized List<Shop> getShops() {
         return allShops;
+    }
+    public static synchronized List<Slide> getSlides() {
+        return allSlides;
     }
     /**
      * Get root product groups.

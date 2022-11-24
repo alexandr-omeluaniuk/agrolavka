@@ -10,12 +10,14 @@ import Feedbacks from './view/Feedbacks';
 import Orders from './view/Orders';
 import Order from './view/Order';
 import Shops from './view/Shops';
+import Slides from './view/Slides';
 import { ROLE_SUBSCRIPTION_ADMINISTRATOR, ROLE_SUBSCRIPTION_USER } from '../../conf/standard-roles';
 import { OrdersForPrintProvider } from './hooks/OrdersForPrintContext';
 
 export const agrolavka = new Module('agrolavka', '/agrolavka', [
     new ModuleView('orders', '/orders', 'shopping_cart', Orders),
     new ModuleView('products', '/products', 'store', Products),
+    new ModuleView('slides', '/slides', 'grade', Slides),
     new ModuleView('shops', '/shops', 'location_on', Shops),
     new ModuleView('feedbacks', '/feedbacks', 'feedback', Feedbacks),
     new ModuleView(null, '/order/:id', null, Order)

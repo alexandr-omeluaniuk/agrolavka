@@ -5,7 +5,8 @@
         "orders": "Orders",
         "sandbox": "Sandbox",
         "feedbacks": "Feedbacks",
-        "shops": "Shops"
+        "shops": "Shops",
+        "slides": "Slides"
     },
     "products": {
         "product_groups": "Product groups",
@@ -96,6 +97,13 @@
         "main_image": "Main image",
         "images": "Images",
         "phone": "Phone"
+    },
+    "slides": {
+        "name": "Name",
+        "title": "Title",
+        "subtitle": "Subtitle",
+        "button_text": "Button text",
+        "button_link": "Button link"
     },
     "backup": "Do data backup",
     "group_products_by_volumes": "Group products by volume"
