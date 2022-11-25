@@ -17,6 +17,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import ss.agrolavka.dao.ExternalEntityDAO;
+import ss.agrolavka.service.GroupProductsService;
 import ss.entity.agrolavka.ExternalEntity;
 import ss.entity.agrolavka.ExternalEntity_;
 
@@ -44,7 +45,10 @@ class ExternalEntityDAOImpl implements ExternalEntityDAO {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaDelete<T> criteria = cb.createCriteriaDelete(cl);
         Root<T> c = criteria.from(cl);
-        criteria.where(cb.not(c.get(ExternalEntity_.externalId).in(ids)));
+        criteria.where(cb.and(
+                cb.not(c.get(ExternalEntity_.externalId).in(ids)),
+                cb.notEqual(c.get(ExternalEntity_.EXTERNAL_ID), GroupProductsService.GROUPED_PRODUCT_EXTERNAL_ID)
+        ));
         em.createQuery(criteria).executeUpdate();
     }
 }

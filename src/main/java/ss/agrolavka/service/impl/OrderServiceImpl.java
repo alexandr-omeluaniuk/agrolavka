@@ -89,7 +89,7 @@ class OrderServiceImpl implements OrderService {
         position.setQuantity(1);
         position.setProduct(product);
         position.setProductId(orderDetails.getProductId());
-        position.setPrice(product.getDiscountPrice());
+        position.setPrice(orderDetails.getVolumePrice() == null ? product.getDiscountPrice() : orderDetails.getVolumePrice());
         final Double total = position.getQuantity() * position.getPrice();
         final Order order = new Order();
         order.setPhone(orderDetails.getPhone());

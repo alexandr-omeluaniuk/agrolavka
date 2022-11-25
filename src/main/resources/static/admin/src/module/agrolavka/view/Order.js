@@ -140,6 +140,19 @@ function Order(props) {
                 new TableColumn('name', t('m_agrolavka:order.position.name'), (row) => {
                     return row.product ? row.product.name : '<--->';
                 }).setSortable(),
+                new TableColumn('volume', t('m_agrolavka:order.position.volume'), (row) => {
+                    let volume = null;
+                    if (row.product && row.product.volumePrices) {
+                        volume = row.product.volumePrices[row.price];
+                        if (!volume) {
+                            volume = row.product.volumePrices[row.price.toFixed(1)];
+                        }
+                        if (!volume) {
+                            volume = row.product.volumePrices[row.price.toFixed(2)];
+                        }
+                    }
+                    return volume;
+                }).width('100px').alignment(ALIGN_RIGHT),
                 new TableColumn('quantity', t('m_agrolavka:order.position.quantity'), (row) => {
                     return row.quantity;
                 }).setSortable().width('100px').alignment(ALIGN_RIGHT),

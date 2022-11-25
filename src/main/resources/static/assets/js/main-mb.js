@@ -158,8 +158,10 @@
         evt.preventDefault();
         evt.stopPropagation();
         const productId = button.getAttribute('data-product-id');
+        const volumePrice = button.getAttribute('data-volume-price');
         const modalElement = document.getElementById('agr-one-click-order-modal');
         modalElement.querySelector('input[name="productId"]').value = productId;
+        modalElement.querySelector('input[name="volumePrice"]').value = volumePrice;
         const confirmButton = modalElement.querySelector('button[data-one-click-order]');
         confirmButton.removeAttribute('disabled');
         confirmButton.querySelector('.spinner-border').classList.add('d-none');
@@ -197,6 +199,10 @@
         const addToCartBtn = btn.closest(".card").querySelector('button[data-add]');
         if (addToCartBtn) {
             addToCartBtn.setAttribute('data-volume-price', price);
+        }
+        const buyNowBtn = btn.closest(".card").querySelector('button[data-order]');
+        if (buyNowBtn) {
+            buyNowBtn.setAttribute('data-volume-price', price);
         }
     };
     

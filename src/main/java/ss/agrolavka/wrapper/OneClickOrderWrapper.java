@@ -25,6 +25,8 @@ public class OneClickOrderWrapper {
     private Long productId;
     /** Phone. */
     private String phone;
+    /** Volume price. */
+    private Double volumePrice;
     /**
      * @return the productId
      */
@@ -48,5 +50,17 @@ public class OneClickOrderWrapper {
      */
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+    /**
+     * @return the volumePrice
+     */
+    public Double getVolumePrice() {
+        return volumePrice;
+    }
+    /**
+     * @param volumePrice the volumePrice to set
+     */
+    public void setVolumePrice(Double volumePrice) {
+        this.volumePrice = volumePrice;
     }
 }

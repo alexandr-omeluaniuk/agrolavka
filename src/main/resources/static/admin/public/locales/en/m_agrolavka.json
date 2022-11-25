@@ -75,7 +75,8 @@
             "name": "Name",
             "quantity": "Quantity",
             "price": "Price",
-            "subtotal": "Subtotal"
+            "subtotal": "Subtotal",
+            "volume": "Volume"
         },
         "close": "Close",
         "total": "Total",

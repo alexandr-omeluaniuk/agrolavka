@@ -25,6 +25,7 @@
                            id="order-mobile" name="phone">
                     </div>
                     <input name="productId" hidden required>
+                    <input name="volumePrice" hidden>
                 </form>
             </div>
             <div class="modal-footer d-flex justify-content-between">
