@@ -39,6 +39,7 @@
             </div>
         </main>
         <modal:one-click-order-modal/>
+        <modal:add-to-cart-modal/>
     </jsp:body>
 
 </t:app>

@@ -24,6 +24,8 @@
                         <input type="text" class="form-control" placeholder="Номер телефона" required
                            id="order-mobile" name="phone">
                     </div>
+                    <label for="agr-form-quantity" class="form-label">Количество</label>
+                    <input type="number" id="agr-form-quantity" class="form-control" placeholder="Количество" name="quantity" min="1" required>
                     <input name="productId" hidden required>
                     <input name="volumePrice" hidden>
                 </form>

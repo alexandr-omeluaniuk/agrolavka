@@ -86,7 +86,7 @@ class OrderServiceImpl implements OrderService {
     public Order createOneClickOrder(final OneClickOrderWrapper orderDetails) throws Exception {
         final Product product = coreDAO.findById(orderDetails.getProductId(), Product.class);
         final OrderPosition position = new OrderPosition();
-        position.setQuantity(1);
+        position.setQuantity(orderDetails.getQuantity());
         position.setProduct(product);
         position.setProductId(orderDetails.getProductId());
         position.setPrice(orderDetails.getVolumePrice() == null ? product.getDiscountPrice() : orderDetails.getVolumePrice());

@@ -17,18 +17,17 @@
 package ss.agrolavka.wrapper;
 
 /**
- * One-click order form.
+ * Cart product.
  * @author alex
  */
-public class OneClickOrderWrapper {
+public class CartProduct {
     /** Product ID. */
     private Long productId;
-    /** Phone. */
-    private String phone;
     /** Volume price. */
     private Double volumePrice;
     /** Quantity. */
     private Integer quantity;
+
     /**
      * @return the productId
      */
@@ -40,18 +39,6 @@ public class OneClickOrderWrapper {
      */
     public void setProductId(Long productId) {
         this.productId = productId;
-    }
-    /**
-     * @return the phone
-     */
-    public String getPhone() {
-        return phone;
-    }
-    /**
-     * @param phone the phone to set
-     */
-    public void setPhone(String phone) {
-        this.phone = phone;
     }
     /**
      * @return the volumePrice

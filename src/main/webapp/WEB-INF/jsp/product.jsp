@@ -59,6 +59,7 @@
         </main>
                             
         <modal:one-click-order-modal/>
+        <modal:add-to-cart-modal/>
         <modal:photo-modal/>
     </jsp:body>
     

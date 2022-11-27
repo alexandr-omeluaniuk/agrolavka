@@ -26,6 +26,7 @@ import ss.agrolavka.constants.SiteConstants;
 import ss.agrolavka.dao.ProductDAO;
 import ss.agrolavka.service.OrderService;
 import ss.agrolavka.util.UrlProducer;
+import ss.agrolavka.wrapper.CartProduct;
 import ss.agrolavka.wrapper.OneClickOrderWrapper;
 import ss.agrolavka.wrapper.OrderDetailsWrapper;
 import ss.agrolavka.wrapper.ProductsSearchRequest;
@@ -85,24 +86,24 @@ class AgrolavkaPublicRESTController {
      * @return cart.
      * @throws Exception error.
      */
-    @RequestMapping(value = "/cart/{id}", method = RequestMethod.PUT,
+    @RequestMapping(value = "/cart", method = RequestMethod.PUT,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public Order addToCart(
-            @PathVariable("id") Long id,
-            @RequestParam(value = "volumePrice", required = false) Double volumePrice,
-            HttpServletRequest request
+            @RequestBody final CartProduct cartProduct,
+            final HttpServletRequest request
     ) throws Exception {
-        Product product = coreDAO.findById(id, Product.class);
+        Product product = coreDAO.findById(cartProduct.getProductId(), Product.class);
         final Order order = orderService.getCurrentOrder(request);
         if (product != null) {
             final Map<Double, String> volumePrices = product.getVolumePrices();
+            Double volumePrice = cartProduct.getVolumePrice();
             if (volumePrice != null && !volumePrices.containsKey(volumePrice)) {
                 volumePrice = volumePrices.keySet().iterator().next();  // the first by default
             }
             OrderPosition position = new OrderPosition();
             position.setOrder(order);
             position.setPrice(volumePrice == null ? product.getDiscountPrice() : volumePrice);
-            position.setQuantity(1);
+            position.setQuantity(cartProduct.getQuantity());
             position.setProduct(product);
             position.setProductId(product.getId());
             order.getPositions().add(position);

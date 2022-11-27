@@ -127,7 +127,7 @@ public class DataUpdater {
             importPriceTypes();
             importProductGroups();
             importProducts();
-            //importImages();
+            importImages();
             groupProductsService.groupProductByVolumes();
             AppCache.flushCache(coreDAO.getAll(ProductsGroup.class));
             LOG.info("===============================================================================================");

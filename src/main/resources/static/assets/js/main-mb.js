@@ -49,6 +49,10 @@
         if (addToCartBtn) {
             addToCartListener(evt, addToCartBtn);
         }
+        const addToCartConfirmBtn = evt.target.closest("[data-add-to-cart-confirm]");
+        if (addToCartConfirmBtn) {
+            addToCartConfirmListener(evt, addToCartConfirmBtn);
+        }
         const removeFromCartCartBtn = evt.target.closest("[data-product-id][data-remove]");
         if (removeFromCartCartBtn) {
             removeFromCartListener(evt, removeFromCartCartBtn);
@@ -102,29 +106,55 @@
     var addToCartListener = function(evt, button) {
         evt.preventDefault();
         evt.stopPropagation();
-        button.setAttribute('disabled', 'true');
-        const volumePrice = button.getAttribute("data-volume-price");
-        fetch('/api/agrolavka/public/cart/' + button.getAttribute('data-product-id') + (volumePrice ? "?volumePrice=" + volumePrice : ""), {
-            method: 'PUT',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            }
-        }).then(function (response) {
-            if (response.ok) {
-                response.json().then(cart => {
-                    button.removeAttribute('disabled');
-                    button.removeAttribute('data-add');
-                    button.setAttribute('data-remove', '');
-                    _updateCartTotal(cart);
-                    button.innerHTML = '<i class="fas fa-minus-circle me-2"></i> Из корзины';
-                    button.classList.remove('btn-outline-success');
-                    button.classList.add('btn-outline-danger');
-                });
-            }
-        }).catch(error => {
-            console.error('HTTP error occurred: ' + error);
-        });
+        const modalElement = document.getElementById('agr-add-to-cart-modal');
+        modalElement.cartButton = button;
+        modalElement.querySelector('input[name="productId"]').value = button.getAttribute('data-product-id');
+        modalElement.querySelector('input[name="volumePrice"]').value = button.getAttribute("data-volume-price");
+        modalElement.querySelector('input[name="quantity"]').value = 1;
+        const modal = new mdb.Modal(modalElement, {});
+        modal.toggle();
+        setTimeout(() => {
+            modalElement.querySelector('input[name="quantity"]').focus();
+        }, 500);
+    };
+    
+    var addToCartConfirmListener = function (evt, button) {
+        const modalElement = document.getElementById('agr-add-to-cart-modal');
+        var form = button.closest('.modal-content').querySelector('form');
+        if (!form.checkValidity()) {
+            evt.preventDefault();
+            evt.stopPropagation();
+        } else {
+            modalElement.querySelector('button[data-mdb-dismiss]').click();
+            modalElement.cartButton.setAttribute('disabled', 'true');
+            const formData = {};
+            form.querySelectorAll("input").forEach(input => {
+                formData[input.getAttribute("name")] = input.value;
+            });
+            fetch('/api/agrolavka/public/cart', {
+                method: 'PUT',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            }).then(function (response) {
+                if (response.ok) {
+                    response.json().then(cart => {
+                        modalElement.cartButton.removeAttribute('disabled');
+                        modalElement.cartButton.removeAttribute('data-add');
+                        modalElement.cartButton.setAttribute('data-remove', '');
+                        _updateCartTotal(cart);
+                        modalElement.cartButton.innerHTML = '<i class="fas fa-minus-circle me-2"></i> Из корзины';
+                        modalElement.cartButton.classList.remove('btn-outline-success');
+                        modalElement.cartButton.classList.add('btn-outline-danger');
+                    });
+                }
+            }).catch(error => {
+                console.error('HTTP error occurred: ' + error);
+            });
+        }
+        form.classList.add('was-validated');
     };
     
     var removeFromCartListener = function(evt, button) {
@@ -162,6 +192,7 @@
         const modalElement = document.getElementById('agr-one-click-order-modal');
         modalElement.querySelector('input[name="productId"]').value = productId;
         modalElement.querySelector('input[name="volumePrice"]').value = volumePrice;
+        modalElement.querySelector('input[name="quantity"]').value = 1;
         const confirmButton = modalElement.querySelector('button[data-one-click-order]');
         confirmButton.removeAttribute('disabled');
         confirmButton.querySelector('.spinner-border').classList.add('d-none');
