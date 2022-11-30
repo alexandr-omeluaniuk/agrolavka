@@ -11,6 +11,7 @@
 
 <%-- The list of normal or fragment attributes can be specified here: --%>
 <%@attribute name="product" type="ss.entity.agrolavka.Product" required="true"%>
+<%@attribute name="buttonClass" required="false" type="String"%>
 
 <%-- any content can be specified here e.g.: --%>
 <%
@@ -20,7 +21,8 @@
     for (int i = 0; i < prices.size(); i++) {
         final Double price = prices.get(i);
         String cl = i == 0 ? "btn-info" : "btn-outline-info";
-        out.print("<button type=\"button\" class=\"agr-volume-btn btn " + cl + " btn-rounded agr-card-button\" data-product-volume-price=\""
+        out.print("<button type=\"button\" class=\"agr-volume-btn btn " + cl + " btn-rounded "
+            + (buttonClass == null ? "" : buttonClass) + "\" data-product-volume-price=\""
             + price + "\" data-mdb-color=\"dark\">");
         out.print(volumePrices.get(price));
         out.print("</button>");

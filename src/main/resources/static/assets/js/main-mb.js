@@ -225,13 +225,17 @@
         const price = btn.getAttribute("data-product-volume-price");
         const priceBig = parseFloat(price).toFixed(2).split('.')[0];
         const priceSmall = parseFloat(price).toFixed(2).split('.')[1];
-        btn.closest('.card').querySelector('.agr-price').innerHTML = priceBig + ".<small>" + priceSmall
+        let container = btn.closest('.card');
+        if (!container) {
+            container = btn.closest('.row');
+        }
+        container.querySelector('.agr-price').innerHTML = priceBig + ".<small>" + priceSmall
                 + '</small> <small class="text-muted">BYN</small>';
-        const addToCartBtn = btn.closest(".card").querySelector('button[data-add]');
+        const addToCartBtn = container.querySelector('button[data-add]');
         if (addToCartBtn) {
             addToCartBtn.setAttribute('data-volume-price', price);
         }
-        const buyNowBtn = btn.closest(".card").querySelector('button[data-order]');
+        const buyNowBtn = container.querySelector('button[data-order]');
         if (buyNowBtn) {
             buyNowBtn.setAttribute('data-volume-price', price);
         }

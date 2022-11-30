@@ -101,7 +101,7 @@ function Images (props) {
                                         <CardMedia className={classes.media} image={img.data} title={img.name}/>
                                         <CardActions className={classes.imageActions}>
                                             <Typography className={classes.imageName} variant={'caption'}>
-                                                {img.name.length > 20 ? img.name.substring(0, 20) + '...' : img.name}
+                                                {img.name.length > 16 ? img.name.substring(0, 16) + '...' : img.name}
                                             </Typography>
                                             <Tooltip title={t('component.form.remove_image')}>
                                                 <IconButton onClick={() => deleteImage(img)}>

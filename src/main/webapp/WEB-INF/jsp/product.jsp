@@ -45,8 +45,13 @@
                     <t:breadcrumb label="${breadcrumbLabel}" groups="${breadcrumbPath}"></t:breadcrumb>
                     <article>
                         <div class="row">
-                            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 d-flex justify-content-center">
-                                <t:card-product product="${product}" cart="${cart}" noHover="true" showAdditionalPhotos="true"/>
+                            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 d-flex justify-content-center flex-column">
+                                <t:product-images product="${product}"></t:product-images>
+                                <hr/>
+                                <t:product-price product="${product}"></t:product-price>
+                                <hr/>
+                                <t:product-actions cart="${cart}" product="${product}"></t:product-actions>
+                                <hr/>
                             </div>
                             <div class="col-xs-12 col-sm-6 col-md-8 col-lg-9">
                                 <t:product-description product="${product}"/>

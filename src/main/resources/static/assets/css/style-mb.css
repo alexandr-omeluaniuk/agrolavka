@@ -83,7 +83,7 @@ and open the template in the editor.
     h6 {
         font-size: .8rem;
     }
-    button[data-product-id], button[data-product-volume-price] {
+    .agr-card-button[data-product-id], .agr-card-button[data-product-volume-price] {
         font-size: .6rem;
         line-height: 1;
     }
@@ -253,6 +253,23 @@ and open the template in the editor.
 }
 .agr-carrot-logo {
     color: orange;
+}
+.agr-product-image-carousel {
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+#productImagesCarousel {
+    height: 360px;
+}
+#productImagesCarousel .carousel-inner, #productImagesCarousel .carousel-item {
+    height: 360px;
+}
+#productImagesCarousel .carousel-indicators {
+    bottom: -48px;
+}
+#productImagesCarousel .carousel-indicators li {
+    background-color: var(--agr-bs-purple-dark);
 }
 .leaflet-control-attribution.leaflet-control {
     display: none;
