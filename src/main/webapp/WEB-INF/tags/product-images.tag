@@ -14,7 +14,7 @@
 <%-- any content can be specified here e.g.: --%>
 
 <!-- Carousel wrapper -->
-<div id="productImagesCarousel" class="carousel slide carousel-fade shadow-1-strong w-100 ${product.images.size() > 1 ? "mb-5" : ""}" data-mdb-ride="carousel">
+<div id="productImagesCarousel" class="carousel slide carousel-fade shadow-1-strong w-100 ${product.images.size() > 1 ? "mb-5" : ""}">
     <!-- Indicators -->
     <c:if test="${product.images.size() > 1}">
         <ol class="carousel-indicators">
