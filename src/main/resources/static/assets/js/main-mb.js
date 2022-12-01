@@ -206,9 +206,24 @@
     var photoClickListener = function(evt, image) {
         evt.preventDefault();
         evt.stopPropagation();
-        const imageUrl = image.style['background-image'];
+        const carousel = image.closest('.carousel').cloneNode(true);
+        const newId = 'productPhotoCarouselInModal';
+        carousel.setAttribute('id', newId);
+        carousel.querySelectorAll('[data-mdb-target]').forEach(item => item.setAttribute('data-mdb-target', '#' + newId));
+        carousel.querySelectorAll('.carousel-item').forEach(item => { 
+            while(item.lastChild) item.removeChild(item.lastChild);
+            item.style['background-size'] = 'contain';
+        });
+        carousel.classList.remove('shadow-1-strong');
+        carousel.style['background-color'] = 'black';
+        const indicators = carousel.querySelector('.carousel-indicators');
+        indicators.style.bottom = '-40px';
         const modalElement = document.getElementById('agr-photo-modal');
-        modalElement.querySelector('.agr-photo-full').style['background-image'] = imageUrl;
+        const modalBody = modalElement.querySelector('.modal-body');
+        while (modalBody.firstChild) {
+            modalBody.removeChild(modalBody.lastChild);
+        }
+        modalBody.appendChild(carousel);
         const modal = new mdb.Modal(modalElement, {});
         modal.toggle();
     };
