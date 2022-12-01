@@ -40,7 +40,7 @@
             <div class="container">
                 
                 <section>
-                    <h3 class="text-center mb-4">${product.name}</h3>
+                    <h3 class="text-center mb-4" id="agr-product-name-title">${product.name}</h3>
                     <h5 class="text-center text-muted text-uppercase mb-4">${product.group.name}</h5>
                     <t:breadcrumb label="${breadcrumbLabel}" groups="${breadcrumbPath}"></t:breadcrumb>
                     <article>

@@ -217,13 +217,16 @@
         carousel.classList.remove('shadow-1-strong');
         carousel.style['background-color'] = 'black';
         const indicators = carousel.querySelector('.carousel-indicators');
-        indicators.style.bottom = '-40px';
+        if (indicators) {
+            indicators.style.bottom = '-40px';
+        }
         const modalElement = document.getElementById('agr-photo-modal');
         const modalBody = modalElement.querySelector('.modal-body');
         while (modalBody.firstChild) {
             modalBody.removeChild(modalBody.lastChild);
         }
         modalBody.appendChild(carousel);
+        modalElement.querySelector('.modal-title').innerHTML = document.getElementById('agr-product-name-title').innerHTML;
         const modal = new mdb.Modal(modalElement, {});
         modal.toggle();
     };

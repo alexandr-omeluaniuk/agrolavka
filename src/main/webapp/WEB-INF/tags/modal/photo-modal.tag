@@ -13,7 +13,7 @@
     <div class="modal-dialog modal-fullscreen modal-dialog-centered">
         <div class="modal-content" style="background-color: black;">
             <div class="modal-header">
-                <h5 class="modal-title" id="agr-photo-modal"></h5>
+                <h5 class="modal-title" id="agr-photo-modal" style="color: white;"></h5>
                 <button type="button" class="btn-close agr-btn-close-modal-white" data-mdb-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body d-flex align-items-center justify-content-center">
