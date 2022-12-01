@@ -5,7 +5,8 @@
 --%>
 
 <%@tag import="ss.entity.agrolavka.Product"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@tag description="Product images" pageEncoding="UTF-8"%>
 
 <%-- The list of normal or fragment attributes can be specified here: --%>
@@ -28,7 +29,7 @@
 
         <c:forEach items="${product.images}" var="image" varStatus="loop">
             <div class="carousel-item agr-product-image-carousel ${loop.index == 0 ? "active" : ""}" style="background-image: url('/media/${image.fileNameOnDisk}?timestamp=${image.createdDate}')">
-
+                <t:product-ribbon product="${product}"></t:product-ribbon>
             </div>
         </c:forEach>
         
