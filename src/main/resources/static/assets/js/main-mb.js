@@ -41,7 +41,7 @@
         if (agrVolumeBtn) {
             agrVolumeBtnListener(evt, agrVolumeBtn);
         }
-        const agrClickedPhoto = evt.target.closest('.agr-clicked-photo');
+        const agrClickedPhoto = evt.target.closest('.agr-product-image-carousel');
         if (agrClickedPhoto) {
             photoClickListener(evt, agrClickedPhoto);
         }
