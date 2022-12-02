@@ -216,6 +216,10 @@ function Products() {
             new FormField('description', TYPES.HTML, t('m_agrolavka:products.product_description')).setGrid({xs: 12})
                     .setAttributes({ labelWidth: 200 }),
             new FormField('images', TYPES.IMAGES, t('m_agrolavka:products.product_images')).setGrid({xs: 12}),
+            new FormField('videoURL', TYPES.TEXTFIELD, t('m_agrolavka:products.product_video_url')).setGrid({xs: 12}).validation([
+                new Validator(VALIDATORS.MAX_LENGTH, {length: 300}),
+                new Validator(VALIDATORS.WEB_URL)
+            ]),
             new FormField('seoTitle', TYPES.TEXTFIELD, t('m_agrolavka:products.product_seo_title')).setGrid({xs: 12}).validation([
                 new Validator(VALIDATORS.MAX_LENGTH, {length: 255})
             ]),

@@ -125,8 +125,14 @@ public class Product extends ExternalEntity implements Serializable {
     @Column(name = "hidden")
     private boolean hidden;
     /** Product volumes. */
+    @Size(max = 3000)
     @Column(name = "volumes", length = 3000)
     private String volumes;
+    /** Video URL. */
+    @FormField
+    @Size(max = 3000)
+    @Column(name = "video_url", length = 3000)
+    private String videoURL;
     // ============================================== SET & GET =======================================================
     /**
      * @return the name
@@ -356,6 +362,18 @@ public class Product extends ExternalEntity implements Serializable {
      */
     public void setMaxPrice(Double maxPrice) {
         this.maxPrice = maxPrice;
+    }
+    /**
+     * @return the videoURL
+     */
+    public String getVideoURL() {
+        return videoURL;
+    }
+    /**
+     * @param videoURL the videoURL to set
+     */
+    public void setVideoURL(String videoURL) {
+        this.videoURL = videoURL;
     }
     // ================================================================================================================
     @Override

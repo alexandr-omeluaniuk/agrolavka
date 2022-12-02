@@ -23,7 +23,8 @@
         "product_seo_description": "Описание страницы товара на сайте (SEO)",
         "quantity": "Кол-во",
         "available": "В наличии",
-        "discounts": "На акции"
+        "discounts": "На акции",
+        "product_video_url": "Ссылка на видео"
     },
     "products_groups": {
         "new_group": "Создать новую группу товаров",
