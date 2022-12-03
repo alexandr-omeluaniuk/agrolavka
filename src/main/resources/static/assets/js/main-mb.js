@@ -220,6 +220,7 @@
         if (indicators) {
             indicators.style.bottom = '-40px';
         }
+        carousel.querySelector('.ribbon').remove();
         const modalElement = document.getElementById('agr-photo-modal');
         const modalBody = modalElement.querySelector('.modal-body');
         while (modalBody.firstChild) {
@@ -229,6 +230,10 @@
         modalElement.querySelector('.modal-title').innerHTML = document.getElementById('agr-product-name-title').innerHTML;
         const modal = new mdb.Modal(modalElement, {});
         modal.toggle();
+        setTimeout(() => {
+            const nextBtn = modalBody.querySelector('button[class="carousel-control-next"]');
+            if (nextBtn) nextBtn.click();
+        }, 500);
     };
     
     var agrVolumeBtnListener = function(evt, btn) {

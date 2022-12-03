@@ -27,12 +27,11 @@
 
     <!-- Inner -->
     <div class="carousel-inner">
-
+        <t:product-ribbon product="${product}"></t:product-ribbon>
         <c:forEach items="${product.images}" var="image" varStatus="loop">
             <div class="carousel-item agr-product-image-carousel ${loop.index == 0 ? "active" : ""}"
                  data-mdb-interval="36000"
                  style="background-image: url('/media/${image.fileNameOnDisk}?timestamp=${image.createdDate}')">
-                <t:product-ribbon product="${product}"></t:product-ribbon>
             </div>
         </c:forEach>
         

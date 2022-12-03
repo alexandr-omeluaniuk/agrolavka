@@ -306,6 +306,9 @@ public class DataUpdater {
             counter++;
             List<EntityImage> productImages = new ArrayList<>();
             try {
+                if (GroupProductsService.GROUPED_PRODUCT_EXTERNAL_ID.equals(product.getExternalId())) {
+                    continue;
+                }
                 List<EntityImage> images = mySkladIntegrationService.getProductImages(product.getExternalId());
                 for (EntityImage image : images) {
                     byte[] thumb = imageService.convertToThumbnail(
