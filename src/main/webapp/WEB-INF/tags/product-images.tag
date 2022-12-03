@@ -14,7 +14,8 @@
 <%-- any content can be specified here e.g.: --%>
 
 <!-- Carousel wrapper -->
-<div id="productImagesCarousel" class="carousel slide carousel-fade shadow-1-strong w-100 ${product.images.size() > 1 ? "mb-5" : ""}">
+<div id="productImagesCarousel" class="carousel slide shadow-1-strong w-100 ${product.images.size() > 1 ? "mb-5" : ""}" 
+     mdb-data-touch="true" data-mdb-ride="carousel">
     <!-- Indicators -->
     <c:if test="${product.images.size() > 1}">
         <ol class="carousel-indicators">
@@ -28,7 +29,9 @@
     <div class="carousel-inner">
 
         <c:forEach items="${product.images}" var="image" varStatus="loop">
-            <div class="carousel-item agr-product-image-carousel ${loop.index == 0 ? "active" : ""}" style="background-image: url('/media/${image.fileNameOnDisk}?timestamp=${image.createdDate}')">
+            <div class="carousel-item agr-product-image-carousel ${loop.index == 0 ? "active" : ""}"
+                 data-mdb-interval="36000"
+                 style="background-image: url('/media/${image.fileNameOnDisk}?timestamp=${image.createdDate}')">
                 <t:product-ribbon product="${product}"></t:product-ribbon>
             </div>
         </c:forEach>
