@@ -13,7 +13,7 @@
 <%@attribute name="product" required="true" type="Product"%>
 <%-- any content can be specified here e.g.: --%>
 
-<div class="swiper shadow-1-strong w-100 ${product.images.size() > 1 ? "mb-5" : ""}" style="height: 360px;">
+<div class="agr-product-photo-swiper swiper shadow-1-strong w-100 mb-2" style="height: 360px;">
     <t:product-ribbon product="${product}"></t:product-ribbon>
     <!-- Additional required wrapper -->
     <div class="swiper-wrapper">
@@ -21,23 +21,27 @@
             <div class="swiper-slide agr-product-image-carousel" style="background-image: url('/media/${image.fileNameOnDisk}?timestamp=${image.createdDate}')"></div>
         </c:forEach>
     </div>
-    <!-- If we need pagination -->
-    <div class="swiper-pagination" style="color: red;"></div>
+    <c:if test="${not empty product.images}">
+        <!-- If we need pagination -->
+        <div class="swiper-pagination" style="color: red;"></div>
 
-    <!-- If we need navigation buttons -->
-    <div class="swiper-button-prev"></div>
-    <div class="swiper-button-next"></div>
-
+        <!-- If we need navigation buttons -->
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next"></div>
+    </c:if>
 </div>
 
 <script>
-    const swiper = new Swiper('.swiper', {
-        pagination: {
-            el: '.swiper-pagination'
-        },
-        navigation: {
-            nextEl: '.swiper-button-next',
-            prevEl: '.swiper-button-prev'
-        }
-    });
+    (function() {
+        const swiperPI = new Swiper('.agr-product-photo-swiper', {
+            loop: false,
+            pagination: {
+                el: '.swiper-pagination'
+            },
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev'
+            }
+        });
+    })();
 </script>

@@ -37,9 +37,20 @@
     });
     
     document.querySelector('body').addEventListener('click', function(evt) {
+        const modal = evt.target.closest('#agr-photo-modal');
+        if (modal) {
+            if (!evt.target.classList.contains('btn-close')) {
+                evt.stopPropagation();
+                return;
+            }
+        }
         const agrVolumeBtn = evt.target.closest('.agr-volume-btn');
         if (agrVolumeBtn) {
             agrVolumeBtnListener(evt, agrVolumeBtn);
+        }
+        const agrClickedPhoto = evt.target.closest('.agr-product-image-carousel');
+        if (agrClickedPhoto) {
+            photoClickListener(evt, agrClickedPhoto);
         }
         const addToCartBtn = evt.target.closest("[data-product-id][data-add]");
         if (addToCartBtn) {
@@ -197,6 +208,14 @@
         setTimeout(() => {
             modalElement.querySelector('input[name="phone"]').focus();
         }, 500);
+    };
+    
+    var photoClickListener = function(evt, image) {
+        evt.preventDefault();
+        evt.stopPropagation();
+        const modalElement = document.getElementById('agr-photo-modal');
+        const modal = new mdb.Modal(modalElement, {});
+        modal.toggle();
     };
     
     var agrVolumeBtnListener = function(evt, btn) {
