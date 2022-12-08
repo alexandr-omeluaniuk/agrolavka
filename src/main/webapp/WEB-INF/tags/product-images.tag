@@ -13,47 +13,31 @@
 <%@attribute name="product" required="true" type="Product"%>
 <%-- any content can be specified here e.g.: --%>
 
-<!-- Carousel wrapper -->
-<div id="productImagesCarousel" class="carousel slide shadow-1-strong w-100 ${product.images.size() > 1 ? "mb-5" : ""}" 
-     mdb-data-touch="true" data-mdb-ride="carousel">
-    <!-- Indicators -->
-    <c:if test="${product.images.size() > 1}">
-        <ol class="carousel-indicators">
-            <c:forEach items="${product.images}" var="slide" varStatus="loop">
-                <li data-mdb-target="#productImagesCarousel" data-mdb-slide-to="${loop.index}" class="${loop.index == 0 ? "active" : ""}"></li>
-            </c:forEach>
-        </ol>
-    </c:if>
-
-    <!-- Inner -->
-    <div class="carousel-inner">
-        <t:product-ribbon product="${product}"></t:product-ribbon>
+<div class="swiper shadow-1-strong w-100 ${product.images.size() > 1 ? "mb-5" : ""}" style="height: 360px;">
+    <t:product-ribbon product="${product}"></t:product-ribbon>
+    <!-- Additional required wrapper -->
+    <div class="swiper-wrapper">
         <c:forEach items="${product.images}" var="image" varStatus="loop">
-            <div class="carousel-item agr-product-image-carousel ${loop.index == 0 ? "active" : ""}"
-                 data-mdb-interval="36000"
-                 style="background-image: url('/media/${image.fileNameOnDisk}?timestamp=${image.createdDate}')">
-            </div>
+            <div class="swiper-slide agr-product-image-carousel" style="background-image: url('/media/${image.fileNameOnDisk}?timestamp=${image.createdDate}')"></div>
         </c:forEach>
-        
-        <c:if test="${product.images.size() == 0}">
-            <div class="carousel-item agr-product-image-carousel active" style="background-image: url('/assets/img/no-image.png')">
-
-            </div>
-        </c:if>
-
     </div>
-    <!-- Inner -->
+    <!-- If we need pagination -->
+    <div class="swiper-pagination" style="color: red;"></div>
 
-    <!-- Controls -->
-    <c:if test="${product.images.size() > 1}">
-        <button class="carousel-control-prev" type="button" data-mdb-target="#productImagesCarousel" data-mdb-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-mdb-target="#productImagesCarousel" data-mdb-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-        </button>
-    </c:if>
+    <!-- If we need navigation buttons -->
+    <div class="swiper-button-prev"></div>
+    <div class="swiper-button-next"></div>
+
 </div>
-<!-- Carousel wrapper -->
+
+<script>
+    const swiper = new Swiper('.swiper', {
+        pagination: {
+            el: '.swiper-pagination'
+        },
+        navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev'
+        }
+    });
+</script>

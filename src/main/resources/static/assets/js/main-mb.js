@@ -41,10 +41,6 @@
         if (agrVolumeBtn) {
             agrVolumeBtnListener(evt, agrVolumeBtn);
         }
-        const agrClickedPhoto = evt.target.closest('.agr-product-image-carousel');
-        if (agrClickedPhoto) {
-            photoClickListener(evt, agrClickedPhoto);
-        }
         const addToCartBtn = evt.target.closest("[data-product-id][data-add]");
         if (addToCartBtn) {
             addToCartListener(evt, addToCartBtn);
@@ -200,39 +196,6 @@
         modal.toggle();
         setTimeout(() => {
             modalElement.querySelector('input[name="phone"]').focus();
-        }, 500);
-    };
-    
-    var photoClickListener = function(evt, image) {
-        evt.preventDefault();
-        evt.stopPropagation();
-        const carousel = image.closest('.carousel').cloneNode(true);
-        const newId = 'productPhotoCarouselInModal';
-        carousel.setAttribute('id', newId);
-        carousel.querySelectorAll('[data-mdb-target]').forEach(item => item.setAttribute('data-mdb-target', '#' + newId));
-        carousel.querySelectorAll('.carousel-item').forEach(item => { 
-            while(item.lastChild) item.removeChild(item.lastChild);
-            item.style['background-size'] = 'contain';
-        });
-        carousel.classList.remove('shadow-1-strong');
-        carousel.style['background-color'] = 'black';
-        const indicators = carousel.querySelector('.carousel-indicators');
-        if (indicators) {
-            indicators.style.bottom = '-40px';
-        }
-        carousel.querySelector('.ribbon').remove();
-        const modalElement = document.getElementById('agr-photo-modal');
-        const modalBody = modalElement.querySelector('.modal-body');
-        while (modalBody.firstChild) {
-            modalBody.removeChild(modalBody.lastChild);
-        }
-        modalBody.appendChild(carousel);
-        modalElement.querySelector('.modal-title').innerHTML = document.getElementById('agr-product-name-title').innerHTML;
-        const modal = new mdb.Modal(modalElement, {});
-        modal.toggle();
-        setTimeout(() => {
-            const nextBtn = modalBody.querySelector('button[class="carousel-control-next"]');
-            if (nextBtn) nextBtn.click();
         }, 500);
     };
     
