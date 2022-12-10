@@ -17,33 +17,17 @@
 package ss.agrolavka.entity.listener;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import org.springframework.beans.factory.annotation.Autowired;
 import ss.entity.martin.EntityImage;
-import ss.martin.platform.service.ImageService;
 
 /**
  *
  * @author alex
  */
 abstract class EntityWithImagesListener {
-    
-    /** Image service. */
-    @Autowired
-    private ImageService imageService;
-    
-    protected void cropImages(final List<EntityImage> images, final int thumbSize) throws Exception {
-        for (EntityImage image : images) {
-            byte[] thumb = imageService.convertToThumbnail(image.getData(), thumbSize);
-            image.setData(thumb);
-        }
-    }
     
     protected List<EntityImage> getActualImages(
             final List<EntityImage> imagesDB,
@@ -52,18 +36,15 @@ abstract class EntityWithImagesListener {
     ) throws Exception {
         Map<Long, EntityImage> map = imagesDB.stream()
                 .collect(Collectors.toMap(EntityImage::getId, Function.identity()));
-        final Map<Long, EntityImage> uniqueMap = new HashMap<>();
+        List<EntityImage> actualImages = new ArrayList();
         for (EntityImage image : images) {
             if (image.getData() != null) {
-                byte[] thumb = imageService.convertToThumbnail(image.getData(), thumbSize);
-                image.setData(thumb);
-                uniqueMap.put(image.getSize(), image);
+                actualImages.add(image);
             } else if (image.getId() != null && map.containsKey(image.getId())) {
-                final EntityImage val = map.get(image.getId());
-                uniqueMap.put(val.getSize(), val);
+                actualImages.add(map.get(image.getId()));
             }
         }
-        return new ArrayList(uniqueMap.values());
+        return actualImages;
     }
     
 }

@@ -40,7 +40,7 @@ class ProductEntityListener extends EntityWithImagesListener implements Platform
     @Override
     public void prePersist(Product entity) throws Exception {
         Product mySkladEntity = mySkladIntegrationService.createProduct(entity);
-        cropImages(entity.getImages(), SiteConstants.IMAGE_THUMB_SIZE);
+        //cropImages(entity.getImages(), SiteConstants.IMAGE_THUMB_SIZE);
         entity.setExternalId(mySkladEntity.getExternalId());
         mySkladIntegrationService.attachImagesToProduct(entity);
     }

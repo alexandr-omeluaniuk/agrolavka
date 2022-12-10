@@ -6,6 +6,7 @@
 package ss.agrolavka.dao.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -190,5 +191,15 @@ class ProductDAOImpl implements ProductDAO {
         Expression<Discount> expr = cb.nullLiteral(Discount.class);
         criteria.set(c.get(Product_.discount), expr);
         em.createQuery(criteria).executeUpdate();
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.SUPPORTS, rollbackFor = Exception.class)
+    public List<Product> getLastModifiedProducts(final Date minDate) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Product> criteria = cb.createQuery(Product.class);
+        Root<Product> c = criteria.from(Product.class);
+        criteria.select(c).where(cb.greaterThanOrEqualTo(c.get(Product_.UPDATED), minDate));
+        return em.createQuery(criteria).getResultList();
     }
 }

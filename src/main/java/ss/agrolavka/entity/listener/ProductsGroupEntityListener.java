@@ -40,7 +40,7 @@ class ProductsGroupEntityListener extends EntityWithImagesListener implements Pl
 
     @Override
     public void prePersist(ProductsGroup entity) throws Exception {
-        cropImages(entity.getImages(), SiteConstants.IMAGE_THUMB_SIZE);
+        //cropImages(entity.getImages(), SiteConstants.IMAGE_THUMB_SIZE);
         entity.setUrl(UrlProducer.transliterate(entity.getName()));
         entity.setExternalId(mySkladIntegrationService.createProductsGroup(entity));
     }

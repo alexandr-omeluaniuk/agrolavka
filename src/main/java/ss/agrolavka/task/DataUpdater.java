@@ -7,7 +7,9 @@ package ss.agrolavka.task;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -23,7 +25,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import ss.agrolavka.AgrolavkaConfiguration;
-import ss.agrolavka.constants.SiteConstants;
 import ss.agrolavka.dao.ExternalEntityDAO;
 import ss.agrolavka.dao.ProductDAO;
 import ss.agrolavka.service.GroupProductsService;
@@ -38,7 +39,6 @@ import ss.entity.agrolavka.ProductsGroup;
 import ss.entity.martin.EntityImage;
 import ss.martin.platform.dao.CoreDAO;
 import ss.martin.platform.service.EmailService;
-import ss.martin.platform.service.ImageService;
 import ss.martin.platform.service.SecurityService;
 import ss.martin.platform.spring.config.PlatformConfiguration;
 import ss.martin.platform.wrapper.EmailRequest;
@@ -75,9 +75,6 @@ public class DataUpdater {
     /** Email service. */
     @Autowired
     private EmailService emailService;
-    /** Image service. */
-    @Autowired
-    private ImageService imageService;
     /** Group products service. */
     @Autowired
     private GroupProductsService groupProductsService;
@@ -300,7 +297,11 @@ public class DataUpdater {
         long start = System.currentTimeMillis();
         LOG.info("start images import...");
         LOG.info("");
-        List<Product> products = coreDAO.getAll(Product.class);
+        final Calendar calendar = new GregorianCalendar();
+        calendar.setTime(new Date());
+        calendar.add(Calendar.DAY_OF_MONTH, -10);
+        List<Product> products = productDAO.getLastModifiedProducts(calendar.getTime());
+        LOG.info("found [" + products.size() + "] products for images uploading");
         int counter = 0;
         for (Product product : products) {
             counter++;
@@ -310,11 +311,6 @@ public class DataUpdater {
                     continue;
                 }
                 List<EntityImage> images = mySkladIntegrationService.getProductImages(product.getExternalId());
-                for (EntityImage image : images) {
-                    byte[] thumb = imageService.convertToThumbnail(
-                            image.getData(), SiteConstants.IMAGE_THUMB_SIZE);
-                    image.setData(thumb);
-                }
                 final Set<String> imageKeys = images.stream().map((i) -> i.getSize() + "::" + i.getName())
                     .collect(Collectors.toSet());
                 final List<EntityImage> restImages = product.getImages().stream().filter(i -> {

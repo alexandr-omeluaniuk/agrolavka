@@ -46,8 +46,7 @@ class ShopEntityListener extends EntityWithImagesListener implements PlatformEnt
     
     @Override
     public void prePersist(final Shop entity) throws Exception {
-        cropImages(entity.getImages(), SiteConstants.IMAGE_SHOP_THUMB_SIZE);
-        
+        //cropImages(entity.getImages(), SiteConstants.IMAGE_SHOP_THUMB_SIZE);
     }
     
     @Override

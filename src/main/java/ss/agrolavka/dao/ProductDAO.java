@@ -5,6 +5,7 @@
  */
 package ss.agrolavka.dao;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import ss.agrolavka.wrapper.ProductsSearchRequest;
@@ -50,4 +51,10 @@ public interface ProductDAO {
      * Reset discounts.
      */
     void resetDiscounts();
+    /**
+     * Get last modified products.
+     * @param minDate min date of modification (includes the date).
+     * @return list of products.
+     */
+    List<Product> getLastModifiedProducts(Date minDate);
 }
