@@ -170,7 +170,7 @@ function Products() {
             new TableColumn('name', t('m_agrolavka:products.product_name'), (row) => {
                 return (
                         <React.Fragment>
-                            <NavLink to={AppURLs.app + '/agrolavka/product/' + row.id} color="primary" target="_blank">
+                            <NavLink to={AppURLs.app + '/agrolavka/product/' + row.id} color="primary">
                                 <span className={row.hidden ? classes.hidden : null}>{row.name}</span>
                             </NavLink>
                             <br/>
