@@ -23,7 +23,7 @@
     </div>
     <c:if test="${not empty product.images}">
         <!-- If we need pagination -->
-        <div class="swiper-pagination" style="color: red;"></div>
+        <div class="swiper-pagination" style="bottom: 0px;"></div>
 
         <!-- If we need navigation buttons -->
         <div class="swiper-button-prev"></div>

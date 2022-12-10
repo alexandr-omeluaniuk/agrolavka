@@ -17,11 +17,12 @@ import Switch from '@material-ui/core/Switch';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Avatar from '@material-ui/core/Avatar';
 import DataService from '../../../service/DataService';
-import { TableConfig, TableColumn, FormConfig, FormField, Validator, ALIGN_RIGHT, ApiURL } from '../../../util/model/TableConfig';
-import { TYPES, VALIDATORS } from '../../../service/DataTypeService';
+import { TableConfig, TableColumn, FormConfig, ALIGN_RIGHT, ApiURL } from '../../../util/model/TableConfig';
 import DataTable from '../../../component/datatable/DataTable';
 import ProductsGroups from './ProductsGroups';
 import Price from '../component/Price';
+import { NavLink } from "react-router-dom";
+import AppURLs from '../../../conf/app-urls';
 
 let dataService = new DataService();
 
@@ -138,7 +139,7 @@ function Products() {
         const apiUrl = new ApiURL(
                 '/agrolavka/protected/product/search',
                 selectedProductGroup ? '/platform/entity/ss.entity.agrolavka.Product' : null,
-                '/platform/entity/ss.entity.agrolavka.Product',
+                null,
                 '/platform/entity/ss.entity.agrolavka.Product'
         );
         apiUrl.beforeCreate = (data) => {
@@ -169,15 +170,15 @@ function Products() {
             new TableColumn('name', t('m_agrolavka:products.product_name'), (row) => {
                 return (
                         <React.Fragment>
-                            <span className={row.hidden ? classes.hidden : null}>{row.name}</span><br/>
+                            <NavLink to={AppURLs.app + '/agrolavka/product/' + row.id} color="primary" target="_blank">
+                                <span className={row.hidden ? classes.hidden : null}>{row.name}</span>
+                            </NavLink>
+                            <br/>
                             <small className={classes.productGroup}>{row.group ? row.group.name : ''}</small>
                         </React.Fragment>
                 );
             }).setSortable(),
-            new TableColumn('code', t('m_agrolavka:products.product_code')).setSortable().width('160px').alignment(ALIGN_RIGHT),
-            new TableColumn('buyPrice', t('m_agrolavka:products.product_buy_price'), (row) => {
-                return row.minPrice && row.maxPrice ? null : <Price price={row.buyPrice}/>;
-            }).setSortable().width('100px').alignment(ALIGN_RIGHT),
+            new TableColumn('code', t('m_agrolavka:products.product_code')).setSortable().width('150px').alignment(ALIGN_RIGHT),
             new TableColumn('price', t('m_agrolavka:products.product_price'), (row) => {
                 if (row.minPrice && row.maxPrice) {
                     return <React.Fragment>
@@ -187,7 +188,7 @@ function Products() {
                 } else {
                     return <Price price={row.price}/>;
                 }
-            }).setSortable().width('80px').alignment(ALIGN_RIGHT),
+            }).setSortable().width('174px').alignment(ALIGN_RIGHT),
             new TableColumn('quantity', t('m_agrolavka:products.quantity'), (row) => {
                     const quantityStyle = clsx({
                         [classes.quantityZero]: row.quantity === 0,
@@ -197,36 +198,7 @@ function Products() {
                 return <span className={quantityStyle}>{row.quantity}</span>;
             }).width('100px').alignment(ALIGN_RIGHT)
         ], new FormConfig([
-            new FormField('id', TYPES.ID).hide(),
-            new FormField('name', TYPES.TEXTFIELD, t('m_agrolavka:products.product_name')).setGrid({xs: 12, md: 9}).validation([
-                new Validator(VALIDATORS.REQUIRED),
-                new Validator(VALIDATORS.MAX_LENGTH, {length: 255})
-            ]),
-            new FormField('price', TYPES.MONEY, t('m_agrolavka:products.product_price')).setGrid({xs: 12, md: 3}).validation([
-                new Validator(VALIDATORS.REQUIRED),
-                new Validator(VALIDATORS.MIN, {size: 0})
-            ]).setAttributes({ decimalScale: 2, suffix: ' BYN', align: 'right' }),
-//            new FormField('article', TYPES.TEXTFIELD, t('m_agrolavka:products.product_article')).setGrid({xs: 12, md: 9}).validation([
-//                new Validator(VALIDATORS.MAX_LENGTH, {length: 255})
-//            ]),
-//            new FormField('buyPrice', TYPES.MONEY, t('m_agrolavka:products.product_buy_price')).setGrid({xs: 12, md: 3}).validation([
-//                new Validator(VALIDATORS.REQUIRED),
-//                new Validator(VALIDATORS.MIN, {size: 0})
-//            ]).setAttributes({ decimalScale: 2, suffix: ' BYN', align: 'right' }),
-            new FormField('description', TYPES.HTML, t('m_agrolavka:products.product_description')).setGrid({xs: 12})
-                    .setAttributes({ labelWidth: 200 }),
-            new FormField('images', TYPES.IMAGES, t('m_agrolavka:products.product_images')).setGrid({xs: 12}),
-            new FormField('videoURL', TYPES.TEXTFIELD, t('m_agrolavka:products.product_video_url')).setGrid({xs: 12}).validation([
-                new Validator(VALIDATORS.MAX_LENGTH, {length: 300}),
-                new Validator(VALIDATORS.WEB_URL)
-            ]),
-            new FormField('seoTitle', TYPES.TEXTFIELD, t('m_agrolavka:products.product_seo_title')).setGrid({xs: 12}).validation([
-                new Validator(VALIDATORS.MAX_LENGTH, {length: 255})
-            ]),
-            new FormField('seoDescription', TYPES.TEXTFIELD, t('m_agrolavka:products.product_seo_description')).setGrid({xs: 12})
-                    .validation([
-                new Validator(VALIDATORS.MAX_LENGTH, {length: 255})
-            ])
+            
         ]).setBeforeOnEditRecord((record) => {
             return new Promise((resolve) => {
                 record.images.forEach(i => {

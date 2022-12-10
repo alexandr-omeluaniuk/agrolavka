@@ -10,8 +10,8 @@ and open the template in the editor.
 :root {
     --agr-background-color: #000000ba;
     --agr-bs-purple-dark: #563296;
-    --swiper-pagination-color: whitesmoke;
-    --swiper-navigation-color: white;
+    --swiper-pagination-color: #563296;
+    --swiper-navigation-color: #563296;
 }
 .dropdown-toggle:after  {
     float: right;

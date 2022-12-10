@@ -7,6 +7,7 @@ package ss.agrolavka.rest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -14,6 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 import ss.agrolavka.dao.ProductDAO;
 import ss.agrolavka.service.GroupProductsService;
 import ss.agrolavka.wrapper.ProductsSearchRequest;
+import ss.entity.agrolavka.Order;
+import ss.entity.agrolavka.Product;
+import ss.martin.platform.dao.CoreDAO;
 import ss.martin.platform.wrapper.EntitySearchResponse;
 
 /**
@@ -26,6 +30,9 @@ public class ProductRESTController {
     /** Product DAO. */
     @Autowired
     private ProductDAO productDAO;
+    /** Core DAO. */
+    @Autowired
+    private CoreDAO coreDAO;
     /** Group products service. */
     @Autowired
     private GroupProductsService groupProductsService;
@@ -81,5 +88,16 @@ public class ProductRESTController {
     @RequestMapping(value = "/group", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
     public void groupProductsByVolume() throws Exception {
         groupProductsService.groupProductByVolumes();
+    }
+    /**
+     * Get product by ID.
+     * @param id product ID.
+     * @return product or null;
+     * @throws Exception error.
+     */
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Product getProductById(@PathVariable("id") Long id)throws Exception {
+        final Product product = coreDAO.findById(id, Product.class);
+        return product;
     }
 }
