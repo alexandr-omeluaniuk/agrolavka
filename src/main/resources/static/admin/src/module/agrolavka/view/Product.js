@@ -82,6 +82,8 @@ function Product(props) {
     
     const onFormSubmitAction = (data) => {
         setFormDisabled(true);
+        data.group = product.group;
+        data.externalId = product.externalId;
         dataService.put('/platform/entity/ss.entity.agrolavka.Product', data).then(() => {
             setFormDisabled(false);
             props.history.push('/admin/app/agrolavka/products');
