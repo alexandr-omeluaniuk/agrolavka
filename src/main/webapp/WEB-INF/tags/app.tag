@@ -93,7 +93,7 @@
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.5.0/mdb.min.js"></script>
         <script type="text/javascript" src="/assets/vendor/purecounter/purecounter.js"></script>
         <!-- Main CSS File -->
-        <script type="text/javascript" src="/assets/js/main-mb.js?v=12"></script>
+        <script type="text/javascript" src="/assets/js/main-mb.js?v=13"></script>
     </body>
 
 </html>

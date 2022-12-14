@@ -39,7 +39,9 @@
     document.querySelector('body').addEventListener('click', function(evt) {
         const modal = evt.target.closest('#agr-photo-modal');
         if (modal) {
-            if (!evt.target.classList.contains('btn-close')) {
+            if (!evt.target.classList.contains('btn-close') 
+                    && !evt.target.classList.contains('swiper-button-next')
+                    && !evt.target.classList.contains('swiper-button-prev')) {
                 evt.stopPropagation();
                 return;
             }
