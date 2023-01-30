@@ -9,37 +9,15 @@
 
 <%-- The list of normal or fragment attributes can be specified here: --%>
 <%-- any content can be specified here e.g.: --%>
-<header>
-    <!-- Navbar -->
+<header class="agr-navbar-desktop">
     <nav class="navbar navbar-expand-lg navbar-dark agr-navbar shadow-2-strong">
         <div class="container-fluid">
-            <!-- Navbar brand -->
             <a href="/" class="navbar-brand nav-link d-none d-lg-block">
                 <strong class="d-flex justify-content-center align-items-center">
                     <i class="fas fa-carrot agr-carrot-logo"></i><span class="ms-2">Агролавка</span>
                 </strong>
             </a>
-            <div class="d-lg-none w-100">
-                <div class="arg-top-navbar">
-                    <div class="d-flex align-items-center mb-2">
-                        <a href="/" class="navbar-brand nav-link" style="border-right: 1px solid #ffffff70; margin-right: 0;">
-                            <strong class="d-flex justify-content-center align-items-center">
-                                <i class="fas fa-carrot agr-carrot-logo"></i>
-                            </strong>
-                        </a>
-                        <a class="nav-link" href="tel:+375292848848" style="flex: 1"><i class="fas fa-phone-alt"></i> +375 29 2-848-848 (МТС)</a>
-                        <button class="navbar-toggler" type="button" data-mdb-toggle="collapse"
-                                data-mdb-target="#agr-navbar" aria-controls="agr-navbar" aria-expanded="false" aria-label="Toggle navigation">
-                            <i class="fas fa-bars"></i>
-                        </button>
-                    </div>
-                </div>
-                <div class="d-flex align-items-center justify-content-between">
-                    <t:quick-search-mobile />
-                    <t:cart cart="${cart}" totalDecimal="${totalDecimal}" totalInteger="${totalInteger}"/>
-                </div>
-            </div>
-            <div class="collapse navbar-collapse justify-content-end" id="agr-navbar">
+            <div class="navbar-collapse justify-content-end">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item active">
                         <a class="nav-link" aria-current="page" href="/">Главная</a>
@@ -86,5 +64,4 @@
             </div>
         </div>
     </nav>
-    <!-- Navbar -->
 </header>

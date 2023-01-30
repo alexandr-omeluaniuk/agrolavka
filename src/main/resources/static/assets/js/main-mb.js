@@ -46,6 +46,14 @@
                 return;
             }
         }
+        const agrMobileMenuBtn = evt.target.closest('.agr-mobile-menu-btn');
+        if (agrMobileMenuBtn) {
+            agrMobileMenuBtnListener(evt, agrMobileMenuBtn);
+        }
+        const agrMobileMenuCloseBtn = evt.target.closest('.agr-mobile-menu-close-btn');
+        if (agrMobileMenuCloseBtn) {
+            agrMobileMenuCloseBtnListener(evt, agrMobileMenuCloseBtn);
+        }
         const agrVolumeBtn = evt.target.closest('.agr-volume-btn');
         if (agrVolumeBtn) {
             agrVolumeBtnListener(evt, agrVolumeBtn);
@@ -368,6 +376,27 @@
         productPhoto.classList.add('agr-photo-active');
         const cardPhoto = card.querySelector('.agr-card-image');
         cardPhoto.style.backgroundImage = photoUrl;
+    };
+    
+    var agrMobileMenuBtnListener = function (evt, button) {
+        const sidebar = document.querySelector('.agr-menu-sidebar');
+        const body = document.querySelector('body');
+        const backdrop = document.querySelector('.agr-backdrop');
+        backdrop.classList.add('open-it');
+        backdrop.classList.remove('close-it');
+        body.classList.add('agr-body-freeze');
+        sidebar.classList.remove('close-it');
+        sidebar.classList.add('open-it');
+    };
+    var agrMobileMenuCloseBtnListener = function (evt, button) {
+        const sidebar = document.querySelector('.agr-menu-sidebar');
+        const body = document.querySelector('body');
+        const backdrop = document.querySelector('.agr-backdrop');
+        backdrop.classList.remove('open-it');
+        backdrop.classList.add('close-it');
+        body.classList.remove('agr-body-freeze');
+        sidebar.classList.remove('open-it');
+        sidebar.classList.add('close-it');
     };
 })();
 

@@ -80,12 +80,13 @@
         <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.5.0/mdb.min.css" rel="stylesheet"/>
 
         <!-- Main CSS File -->
-        <link href="/assets/css/style-mb.css?v=18" rel="stylesheet">
+        <link href="/assets/css/style-mb.css?v=19" rel="stylesheet">
         <jsp:invoke fragment="headSection"/>
     </head>
 
     <body>
         <t:navbar></t:navbar>
+        <t:navbar-mobile></t:navbar-mobile>
         <jsp:doBody/>
         <t:footer></t:footer>
 
@@ -93,7 +94,7 @@
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.5.0/mdb.min.js"></script>
         <script type="text/javascript" src="/assets/vendor/purecounter/purecounter.js"></script>
         <!-- Main CSS File -->
-        <script type="text/javascript" src="/assets/js/main-mb.js?v=13"></script>
+        <script type="text/javascript" src="/assets/js/main-mb.js?v=14"></script>
     </body>
 
 </html>

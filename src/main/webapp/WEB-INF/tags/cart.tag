@@ -12,7 +12,7 @@
 <%@attribute name="totalInteger" required="true" type="String"%>
 <%@attribute name="totalDecimal" required="true" type="String"%>
 <%-- any content can be specified here e.g.: --%>
-<a href="/cart" class="btn btn-outline-light d-flex align-items-center">
+<a href="/cart" class="btn btn-outline-light d-flex align-items-center agr-cart-button-container">
     <i class="fas fa-shopping-cart" style="position: relative;">
         <span class="badge rounded-pill agr-cart-badge">${cart.positions.size()}</span>
     </i>

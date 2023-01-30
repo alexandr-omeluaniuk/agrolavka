@@ -76,6 +76,12 @@ and open the template in the editor.
     .agr-card-body-category {
         min-height: 89px;
     }
+    .agr-navbar-mobile {
+        display: none !important;
+    }
+    .agr-navbar-desktop {
+        display: block;
+    }
 }
 
 @media (max-width: 992px) {
@@ -116,6 +122,19 @@ and open the template in the editor.
     }
     .card-body {
         padding: .75rem;
+    }
+    .agr-cart-badge {
+        display: none !important;
+    }
+    .agr-cart-button-container {
+        padding-left: 8px;
+        padding-right: 8px;
+    }
+    .agr-navbar-mobile {
+        display: block;
+    }
+    .agr-navbar-desktop {
+        display: none !important;
     }
 }
 @media (max-width: 576px) {
@@ -263,6 +282,96 @@ and open the template in the editor.
 }
 .leaflet-control-attribution.leaflet-control {
     display: none;
+}
+.agr-mobile-menu-btn {
+    border-right: 1px solid #ffffff70 !important;
+    margin-right: 10px;
+    padding-right: 22px;
+    border-radius: 0;
+    color: white !important;
+}
+.agr-menu-sidebar {
+    height: 100vh;
+    width: calc(100% - 30px);
+    position: fixed;
+    z-index: 5000;
+    top: 0;
+    left: 0;
+    background-color: white;
+    overflow: hidden;
+    transform: translateX(-100%);
+    opacity: 1;
+}
+.agr-menu-sidebar.open-it {
+    animation-name: agr-open-sidebar;
+    animation-duration: 300ms;
+    animation-timing-function: ease-out;
+    animation-fill-mode: forwards;
+}
+.agr-menu-sidebar.close-it {
+    animation-name: agr-close-sidebar;
+    animation-duration: 300ms;
+    animation-timing-function: ease-in;
+    animation-fill-mode: forwards;
+}
+@keyframes agr-open-sidebar {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(0%);
+    }
+}
+@keyframes agr-close-sidebar {
+    0% {
+        transform: translateX(0%);
+    }
+    100% {
+        transform: translateX(-100%);
+    }
+}
+.agr-body-freeze {
+    position: fixed;
+}
+.agr-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 4000;
+    opacity: 0;
+    display: none;
+    background-color: #00000094;
+}
+.agr-backdrop.open-it {
+    display: block;
+    animation-name: agr-open-backdrop;
+    animation-duration: 300ms;
+    animation-timing-function: ease-out;
+    animation-fill-mode: forwards;
+}
+.agr-backdrop.close-it {
+    animation-name: agr-close-backdrop;
+    animation-duration: 300ms;
+    animation-timing-function: ease-in;
+    animation-fill-mode: forwards;
+}
+@keyframes agr-open-backdrop {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+@keyframes agr-close-backdrop {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
 }
 /** ============================================== RIBBON ============================================================================== */
 .ribbon {
