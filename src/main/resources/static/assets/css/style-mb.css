@@ -352,6 +352,7 @@ and open the template in the editor.
     animation-fill-mode: forwards;
 }
 .agr-backdrop.close-it {
+    display: block;
     animation-name: agr-close-backdrop;
     animation-duration: 300ms;
     animation-timing-function: ease-in;
@@ -371,6 +372,7 @@ and open the template in the editor.
     }
     100% {
         opacity: 0;
+        display: none;
     }
 }
 /** ============================================== RIBBON ============================================================================== */

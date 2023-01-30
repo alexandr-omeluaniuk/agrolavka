@@ -79,76 +79,32 @@
             </a>
             <h4 class="text-center mb-0" style="flex: 1">Агролавка</h4>
             <button class="navbar-toggler agr-mobile-menu-close-btn" type="button">
-                <h3 class="mb-0"><i class="fas fa-times"></i></h3>
+                <h3 class="mb-0"><i class="fas fa-chevron-left"></i></h3>
             </button>
         </div>
         <div class="position-sticky">
             <div class="list-group list-group-flush mx-3 mt-4">
-                <a
-                    href="#"
-                    class="list-group-item list-group-item-action py-2 ripple"
-                    aria-current="true"
-                    >
-                    <i class="fas fa-tachometer-alt fa-fw me-3"></i
-                    ><span>Main dashboard</span>
+                <a href="/" class="list-group-item list-group-item-action py-2 ripple" aria-current="true">
+                    <i class="fas fa-home fa-fw me-3"></i><span>Главная</span>
                 </a>
-                <a
-                    href="#"
-                    class="list-group-item list-group-item-action py-2 ripple active"
-                    >
-                    <i class="fas fa-chart-area fa-fw me-3"></i
-                    ><span>Webiste traffic</span>
+                <a href="/catalog" class="list-group-item list-group-item-action py-2 ripple" aria-current="true">
+                    <i class="fas fa-box-open fa-fw me-3"></i><span>Каталог</span>
                 </a>
-                <a
-                    href="#"
-                    class="list-group-item list-group-item-action py-2 ripple"
-                    ><i class="fas fa-lock fa-fw me-3"></i><span>Password</span></a
-                >
-                <a
-                    href="#"
-                    class="list-group-item list-group-item-action py-2 ripple"
-                    ><i class="fas fa-chart-line fa-fw me-3"></i
-                    ><span>Analytics</span></a
-                >
-                <a
-                    href="#"
-                    class="list-group-item list-group-item-action py-2 ripple"
-                    >
-                    <i class="fas fa-chart-pie fa-fw me-3"></i><span>SEO</span>
+                <a href="/promotions" class="list-group-item list-group-item-action py-2 ripple text-danger" aria-current="true">
+                    <i class="fas fas fa-fire fa-fw me-3"></i><span>Акции</span>
                 </a>
-                <a
-                    href="#"
-                    class="list-group-item list-group-item-action py-2 ripple"
-                    ><i class="fas fa-chart-bar fa-fw me-3"></i><span>Orders</span></a
-                >
-                <a
-                    href="#"
-                    class="list-group-item list-group-item-action py-2 ripple"
-                    ><i class="fas fa-globe fa-fw me-3"></i
-                    ><span>International</span></a
-                >
-                <a
-                    href="#"
-                    class="list-group-item list-group-item-action py-2 ripple"
-                    ><i class="fas fa-building fa-fw me-3"></i
-                    ><span>Partners</span></a
-                >
-                <a
-                    href="#"
-                    class="list-group-item list-group-item-action py-2 ripple"
-                    ><i class="fas fa-calendar fa-fw me-3"></i
-                    ><span>Calendar</span></a
-                >
-                <a
-                    href="#"
-                    class="list-group-item list-group-item-action py-2 ripple"
-                    ><i class="fas fa-users fa-fw me-3"></i><span>Users</span></a
-                >
-                <a
-                    href="#"
-                    class="list-group-item list-group-item-action py-2 ripple"
-                    ><i class="fas fa-money-bill fa-fw me-3"></i><span>Sales</span></a
-                >
+                <a href="/delivery" class="list-group-item list-group-item-action py-2 ripple" aria-current="true">
+                    <i class="fas fa-truck fa-fw me-3"></i><span>Доставка</span>
+                </a>
+                <a href="/discount" class="list-group-item list-group-item-action py-2 ripple" aria-current="true">
+                    <i class="fas fa-percent fa-fw me-3"></i><span>Дисконтная программа</span>
+                </a>
+                <a href="#contacts" class="list-group-item list-group-item-action py-2 ripple" aria-current="true" style="border-top: 2px solid #dedede;">
+                    <i class="fas fa-map-marker-alt fa-fw me-3"></i><span>Контакты</span>
+                </a>
+                <a href="/feedback" class="list-group-item list-group-item-action py-2 ripple" aria-current="true">
+                    <i class="fas fa-comment fa-fw me-3"></i><span>Написать нам</span>
+                </a>
             </div>
         </div>
     </nav>

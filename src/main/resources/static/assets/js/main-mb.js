@@ -46,13 +46,19 @@
                 return;
             }
         }
+        const mobileNavbarLink = evt.target.closest('.position-sticky');
+        if (mobileNavbarLink) {
+            evt.stopPropagation();
+            closeMobileMenu();
+        }
         const agrMobileMenuBtn = evt.target.closest('.agr-mobile-menu-btn');
         if (agrMobileMenuBtn) {
             agrMobileMenuBtnListener(evt, agrMobileMenuBtn);
         }
         const agrMobileMenuCloseBtn = evt.target.closest('.agr-mobile-menu-close-btn');
-        if (agrMobileMenuCloseBtn) {
-            agrMobileMenuCloseBtnListener(evt, agrMobileMenuCloseBtn);
+        const agrBackdrop = evt.target.closest('.agr-backdrop');
+        if (agrMobileMenuCloseBtn || agrBackdrop) {
+            closeMobileMenu();
         }
         const agrVolumeBtn = evt.target.closest('.agr-volume-btn');
         if (agrVolumeBtn) {
@@ -388,7 +394,7 @@
         sidebar.classList.remove('close-it');
         sidebar.classList.add('open-it');
     };
-    var agrMobileMenuCloseBtnListener = function (evt, button) {
+    var closeMobileMenu = function () {
         const sidebar = document.querySelector('.agr-menu-sidebar');
         const body = document.querySelector('body');
         const backdrop = document.querySelector('.agr-backdrop');
@@ -397,6 +403,7 @@
         body.classList.remove('agr-body-freeze');
         sidebar.classList.remove('open-it');
         sidebar.classList.add('close-it');
+        setTimeout(() => backdrop.classList.remove('close-it'), 350);
     };
 })();
 
