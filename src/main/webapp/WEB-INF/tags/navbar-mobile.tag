@@ -32,43 +32,6 @@
                     <t:cart cart="${cart}" totalDecimal="${totalDecimal}" totalInteger="${totalInteger}"/>
                 </div>
             </div>
-            <!--div class="collapse navbar-collapse justify-content-end" id="agr-mm-navbar-menu">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item active">
-                        <a class="nav-link" aria-current="page" href="/">Главная</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/catalog">Каталог</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/promotions">Акции</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/delivery">Доставка</a>
-                    </li>
-                    <li class="nav-item d-lg-none d-xl-none d-xxl-block">
-                        <a class="nav-link" href="/discount">Дисконтная программа</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#contacts">Контакты</a>
-                    </li>
-                    <li class="nav-item d-lg-none d-xl-none d-xxl-none">
-                        <a class="nav-link" href="/feedback">Написать нам</a>
-                    </li>
-                </ul>
-                <ul class="navbar-nav d-flex flex-row">
-                    <li class="nav-item me-3 ms-3 me-lg-0">
-                        <a class="nav-link d-flex align-items-center" href="https://www.instagram.com/agrolavka.by" target="_blank" rel="noreferrer">
-                            <img src="/assets/img/instagram.ico" alt="Instagram"><span class="ms-2 d-block d-lg-none">Инстаграм</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="nav-link d-flex align-items-center" href="https://invite.viber.com/?g2=AQAg5Rkk2LluF0zHtRAvabtjZ4jDtGaaMApRoqe3%2FboHZogbep9nBgCTSKDPVqTl" target="_blank" rel="noreferrer">
-                            <i class="fab fa-viber" style="font-size: 32px;"></i><span class="ms-2 d-block d-lg-none">Вайбер</span>
-                        </a>
-                    </li>
-                </ul>
-            </div-->
         </div>
     </nav>
 
@@ -90,6 +53,9 @@
                 <a href="/catalog" class="list-group-item list-group-item-action py-2 ripple" aria-current="true">
                     <i class="fas fa-box-open fa-fw me-3"></i><span>Каталог</span>
                 </a>
+                <a href="/shops" class="list-group-item list-group-item-action py-2 ripple" aria-current="true">
+                    <i class="fas fa-store fa-fw me-3"></i><span>Магазины</span>
+                </a>
                 <a href="/promotions" class="list-group-item list-group-item-action py-2 ripple text-danger" aria-current="true">
                     <i class="fas fas fa-fire fa-fw me-3"></i><span>Акции</span>
                 </a>
@@ -99,11 +65,17 @@
                 <a href="/discount" class="list-group-item list-group-item-action py-2 ripple" aria-current="true">
                     <i class="fas fa-percent fa-fw me-3"></i><span>Дисконтная программа</span>
                 </a>
-                <a href="#contacts" class="list-group-item list-group-item-action py-2 ripple" aria-current="true" style="border-top: 2px solid #dedede;">
+                <a href="#contacts" class="list-group-item list-group-item-action py-2 ripple agr-mobile-menu-separator" aria-current="true">
                     <i class="fas fa-map-marker-alt fa-fw me-3"></i><span>Контакты</span>
                 </a>
                 <a href="/feedback" class="list-group-item list-group-item-action py-2 ripple" aria-current="true">
                     <i class="fas fa-comment fa-fw me-3"></i><span>Написать нам</span>
+                </a>
+                <a class="list-group-item list-group-item-action py-2 ripple d-flex align-items-center agr-mobile-menu-separator" href="https://www.instagram.com/agrolavka.by" target="_blank" rel="noreferrer">
+                    <img src="/assets/img/instagram.ico" alt="Instagram"><span class="ms-2 d-block d-lg-none">Инстаграм</span>
+                </a>
+                <a class="list-group-item list-group-item-action py-2 ripple d-flex align-items-center" href="https://invite.viber.com/?g2=AQAg5Rkk2LluF0zHtRAvabtjZ4jDtGaaMApRoqe3%2FboHZogbep9nBgCTSKDPVqTl" target="_blank" rel="noreferrer">
+                    <i class="fab fa-viber" style="font-size: 32px; color: #574e92;"></i><span class="ms-2 d-block d-lg-none">Вайбер</span>
                 </a>
             </div>
         </div>

@@ -76,7 +76,7 @@ and open the template in the editor.
     .agr-card-body-category {
         min-height: 89px;
     }
-    .agr-navbar-mobile {
+    .agr-navbar-mobile, .agr-backdrop {
         display: none !important;
     }
     .agr-navbar-desktop {
@@ -130,7 +130,7 @@ and open the template in the editor.
         padding-left: 8px;
         padding-right: 8px;
     }
-    .agr-navbar-mobile {
+    .agr-navbar-mobile, .agr-backdrop {
         display: block;
     }
     .agr-navbar-desktop {
@@ -374,6 +374,9 @@ and open the template in the editor.
         opacity: 0;
         display: none;
     }
+}
+.agr-mobile-menu-separator {
+    border-top: 2px solid #dedede !important;
 }
 /** ============================================== RIBBON ============================================================================== */
 .ribbon {
