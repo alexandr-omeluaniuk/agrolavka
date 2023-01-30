@@ -21,7 +21,6 @@
                             </strong>
                         </a>
                         <a class="nav-link" href="tel:+375292848848" style="flex: 1"><i class="fas fa-phone-alt"></i> +375 29 2-848-848 (МТС)</a>
-
                     </div>
                 </div>
                 <div class="d-flex align-items-center justify-content-between">
