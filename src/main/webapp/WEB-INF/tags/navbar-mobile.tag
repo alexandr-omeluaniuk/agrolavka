@@ -45,7 +45,7 @@
             </button>
         </div>
         <div class="agr-mobile-menu-slider">
-            <div class="agr-mobile-menu-slide">
+            <div class="agr-mobile-menu-slide active">
                 <div class="list-group list-group-flush mx-3 mt-4 ">
                     <a href="/" class="list-group-item list-group-item-action py-2 ripple agr-mobile-menu-link" aria-current="true">
                         <i class="fas fa-home fa-fw me-3"></i><span>Главная</span>
@@ -101,22 +101,23 @@
             }
         });
 
-        const catalogContainer = document.querySelector('.position-sticky');
-
         const openCatalog = (id) => {
             console.log(id);
             const data = catalog[id];
             let sb = '';
             data.forEach(item => {
-                sb += `
-                    <a class="list-group-item list-group-item-action py-2 ripple>
-                        <span class="ms-2">${item.name}</span>
-                    </a>
-                `;
+                sb += 
+                    '<a class="list-group-item list-group-item-action py-2 ripple>'
+                        + '<span class="ms-2">' + item.name + '</span>'
+                    + '</a>';
             });
-            const template = `<div class="agr-mobile-menu-slide"><div class="list-group list-group-flush mx-3 mt-4">${sb}</div></div>`;
+            const template = '<div class="agr-mobile-menu-slide"><div class="list-group list-group-flush mx-3 mt-4">' + sb + '</div></div>';
             const element = createElementFromHTML(template);
+            const catalogContainer = document.querySelector('.agr-mobile-menu-slider');
             catalogContainer.appendChild(element);
+            const activeSlide = catalogContainer.querySelector('.active');
+            activeSlide.classList.remove('active');
+            activeSlide.classList.add('left');
         };
 
         const createElementFromHTML = (htmlString) => {

@@ -389,6 +389,23 @@ and open the template in the editor.
     right: 0;
     bottom: 0;
 }
+.agr-mobile-menu-slide.left {
+    transform: translateX(0%);
+    z-index: 100;
+    box-shadow: 0 5px 15px 0 rgba(0,0,0,.05);
+    animation-name: agr-slide-left;
+    animation-duration: 300ms;
+    animation-timing-function: ease-in;
+    animation-fill-mode: forwards;
+}
+@keyframes agr-slide-left {
+    0% {
+        transform: translateX(0%);
+    }
+    100% {
+        transform: translateX(-100%);
+    }
+}
 /** ============================================== RIBBON ============================================================================== */
 .ribbon {
     z-index: 500;
