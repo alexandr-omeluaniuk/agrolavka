@@ -129,12 +129,11 @@ public class AppCache {
     public static synchronized Map<String, List<ProductsGroup>> getCategoriesTree() {
         Map<String, List<ProductsGroup>> tree = new HashMap<>();
         for (ProductsGroup group : ALL_GROUPS) {
-            if (group.getParentId() != null) {
-                if (!tree.containsKey(group.getParentId())) {
-                    tree.put(group.getParentId(), new ArrayList<>());
-                }
-                tree.get(group.getParentId()).add(group);
+            final String parentId = group.getParentId() != null ? group.getParentId() : "-1";
+            if (!tree.containsKey(parentId)) {
+                tree.put(parentId, new ArrayList<>());
             }
+            tree.get(parentId).add(group);
         }
         return tree;
     }

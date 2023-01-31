@@ -378,6 +378,17 @@ and open the template in the editor.
 .agr-mobile-menu-separator {
     border-top: 2px solid #dedede !important;
 }
+.agr-mobile-menu-slider {
+    position: relative;
+    height: 100%;
+}
+.agr-mobile-menu-slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
 /** ============================================== RIBBON ============================================================================== */
 .ribbon {
     z-index: 500;

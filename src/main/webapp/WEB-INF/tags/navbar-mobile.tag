@@ -44,42 +44,92 @@
                 <h3 class="mb-0"><i class="fas fa-chevron-left"></i></h3>
             </button>
         </div>
-        <div class="position-sticky">
-            <div class="list-group list-group-flush mx-3 mt-4">
-                <a href="/" class="list-group-item list-group-item-action py-2 ripple" aria-current="true">
-                    <i class="fas fa-home fa-fw me-3"></i><span>Главная</span>
-                </a>
-                <a href="/catalog" class="list-group-item list-group-item-action py-2 ripple" aria-current="true">
-                    <i class="fas fa-box-open fa-fw me-3"></i><span>Каталог</span>
-                </a>
-                <a href="/shops" class="list-group-item list-group-item-action py-2 ripple" aria-current="true">
-                    <i class="fas fa-store fa-fw me-3"></i><span>Магазины</span>
-                </a>
-                <a href="/promotions" class="list-group-item list-group-item-action py-2 ripple text-danger" aria-current="true">
-                    <i class="fas fas fa-fire fa-fw me-3"></i><span>Акции</span>
-                </a>
-                <a href="/delivery" class="list-group-item list-group-item-action py-2 ripple" aria-current="true">
-                    <i class="fas fa-truck fa-fw me-3"></i><span>Доставка</span>
-                </a>
-                <a href="/discount" class="list-group-item list-group-item-action py-2 ripple" aria-current="true">
-                    <i class="fas fa-percent fa-fw me-3"></i><span>Дисконтная программа</span>
-                </a>
-                <a href="#contacts" class="list-group-item list-group-item-action py-2 ripple agr-mobile-menu-separator" aria-current="true">
-                    <i class="fas fa-map-marker-alt fa-fw me-3"></i><span>Контакты</span>
-                </a>
-                <a href="/feedback" class="list-group-item list-group-item-action py-2 ripple" aria-current="true">
-                    <i class="fas fa-comment fa-fw me-3"></i><span>Написать нам</span>
-                </a>
-                <a class="list-group-item list-group-item-action py-2 ripple d-flex align-items-center agr-mobile-menu-separator" href="https://www.instagram.com/agrolavka.by" target="_blank" rel="noreferrer">
-                    <img src="/assets/img/instagram.ico" alt="Instagram"><span class="ms-2 d-block d-lg-none">Инстаграм</span>
-                </a>
-                <a class="list-group-item list-group-item-action py-2 ripple d-flex align-items-center" href="https://invite.viber.com/?g2=AQAg5Rkk2LluF0zHtRAvabtjZ4jDtGaaMApRoqe3%2FboHZogbep9nBgCTSKDPVqTl" target="_blank" rel="noreferrer">
-                    <i class="fab fa-viber" style="font-size: 32px; color: #574e92;"></i><span class="ms-2 d-block d-lg-none">Вайбер</span>
-                </a>
+        <div class="agr-mobile-menu-slider">
+            <div class="agr-mobile-menu-slide">
+                <div class="list-group list-group-flush mx-3 mt-4 ">
+                    <a href="/" class="list-group-item list-group-item-action py-2 ripple agr-mobile-menu-link" aria-current="true">
+                        <i class="fas fa-home fa-fw me-3"></i><span>Главная</span>
+                    </a>
+                    <a href="/catalog" class="list-group-item list-group-item-action py-2 ripple d-flex align-items-center" aria-current="true" id="agr-mobile-catalog">
+                        <div style="flex: 1;"><i class="fas fa-box-open fa-fw me-3"></i><span>Каталог продукции</span></div>
+                        <i class="fas fa-chevron-right"></i>
+                    </a>
+                    <a href="/shops" class="list-group-item list-group-item-action py-2 ripple agr-mobile-menu-link" aria-current="true">
+                        <i class="fas fa-store fa-fw me-3"></i><span>Магазины</span>
+                    </a>
+                    <a href="/promotions" class="list-group-item list-group-item-action py-2 ripple text-danger agr-mobile-menu-link" aria-current="true">
+                        <i class="fas fas fa-fire fa-fw me-3"></i><span>Акции</span>
+                    </a>
+                    <a href="/delivery" class="list-group-item list-group-item-action py-2 ripple agr-mobile-menu-link" aria-current="true">
+                        <i class="fas fa-truck fa-fw me-3"></i><span>Доставка</span>
+                    </a>
+                    <a href="/discount" class="list-group-item list-group-item-action py-2 ripple agr-mobile-menu-link" aria-current="true">
+                        <i class="fas fa-percent fa-fw me-3"></i><span>Дисконтная программа</span>
+                    </a>
+                    <a href="#contacts" class="list-group-item list-group-item-action py-2 ripple agr-mobile-menu-separator agr-mobile-menu-link" aria-current="true">
+                        <i class="fas fa-map-marker-alt fa-fw me-3"></i><span>Контакты</span>
+                    </a>
+                    <a href="/feedback" class="list-group-item list-group-item-action py-2 ripple agr-mobile-menu-link" aria-current="true">
+                        <i class="fas fa-comment fa-fw me-3"></i><span>Написать нам</span>
+                    </a>
+                    <a class="list-group-item list-group-item-action py-2 ripple d-flex align-items-center agr-mobile-menu-separator" href="https://www.instagram.com/agrolavka.by" target="_blank" rel="noreferrer">
+                        <img src="/assets/img/instagram.ico" alt="Instagram"><span class="ms-2 d-block d-lg-none">Инстаграм</span>
+                    </a>
+                    <a class="list-group-item list-group-item-action py-2 ripple d-flex align-items-center" href="https://invite.viber.com/?g2=AQAg5Rkk2LluF0zHtRAvabtjZ4jDtGaaMApRoqe3%2FboHZogbep9nBgCTSKDPVqTl" target="_blank" rel="noreferrer">
+                        <i class="fab fa-viber" style="font-size: 32px; color: #574e92;"></i><span class="ms-2 d-block d-lg-none">Вайбер</span>
+                    </a>
+                </div>
             </div>
         </div>
     </nav>
 
 </header>
 <div class="agr-backdrop"></div>
+<script type="text/javascript">
+    (function () {
+        "use strict";
+        let catalog = {};
+        fetch('/api/agrolavka/public/catalog', {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        }).then(response => {
+            if (response.ok) {
+                response.json().then(json => catalog = json);
+            }
+        });
+
+        const catalogContainer = document.querySelector('.position-sticky');
+
+        const openCatalog = (id) => {
+            console.log(id);
+            const data = catalog[id];
+            let sb = '';
+            data.forEach(item => {
+                sb += `
+                    <a class="list-group-item list-group-item-action py-2 ripple>
+                        <span class="ms-2">${item.name}</span>
+                    </a>
+                `;
+            });
+            const template = `<div class="agr-mobile-menu-slide"><div class="list-group list-group-flush mx-3 mt-4">${sb}</div></div>`;
+            const element = createElementFromHTML(template);
+            catalogContainer.appendChild(element);
+        };
+
+        const createElementFromHTML = (htmlString) => {
+            var div = document.createElement('div');
+            div.innerHTML = htmlString.trim();
+            return div.firstElementChild;
+        };
+
+        document.querySelector('#agr-mobile-catalog').addEventListener('click', (evt) => {
+            evt.stopPropagation();
+            evt.preventDefault();
+            openCatalog("-1");
+        });
+    })();
+</script>
 

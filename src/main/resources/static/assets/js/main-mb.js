@@ -46,7 +46,7 @@
                 return;
             }
         }
-        const mobileNavbarLink = evt.target.closest('.position-sticky');
+        const mobileNavbarLink = evt.target.closest('.agr-mobile-menu-link');
         if (mobileNavbarLink) {
             evt.stopPropagation();
             closeMobileMenu();

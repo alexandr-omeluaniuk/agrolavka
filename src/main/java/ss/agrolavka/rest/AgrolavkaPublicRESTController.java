@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ss.agrolavka.constants.SiteConstants;
 import ss.agrolavka.dao.ProductDAO;
 import ss.agrolavka.service.OrderService;
+import ss.agrolavka.util.AppCache;
 import ss.agrolavka.util.UrlProducer;
 import ss.agrolavka.wrapper.CartProduct;
 import ss.agrolavka.wrapper.OneClickOrderWrapper;
@@ -34,6 +35,7 @@ import ss.entity.agrolavka.Feedback;
 import ss.entity.agrolavka.Order;
 import ss.entity.agrolavka.OrderPosition;
 import ss.entity.agrolavka.Product;
+import ss.entity.agrolavka.ProductsGroup;
 import ss.martin.platform.dao.CoreDAO;
 
 /**
@@ -193,5 +195,11 @@ class AgrolavkaPublicRESTController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public Order confirmOneClickOrder(@RequestBody() OneClickOrderWrapper orderWrapper) throws Exception {
         return orderService.createOneClickOrder(orderWrapper);
+    }
+    
+    @RequestMapping(value = "/catalog", method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, List<ProductsGroup>> catalog() throws Exception {
+        return AppCache.getCategoriesTree();
     }
 }
