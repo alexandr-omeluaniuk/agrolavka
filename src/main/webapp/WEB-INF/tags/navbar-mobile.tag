@@ -50,7 +50,7 @@
                     <a href="/" class="list-group-item list-group-item-action py-2 ripple agr-mobile-menu-link" aria-current="true">
                         <i class="fas fa-home fa-fw me-3"></i><span>Главная</span>
                     </a>
-                    <a href="/catalog" class="list-group-item list-group-item-action py-2 ripple d-flex align-items-center" aria-current="true" id="agr-mobile-catalog">
+                    <a href="/catalog" class="list-group-item list-group-item-action py-2 ripple d-flex align-items-center" aria-current="true" data-catalog="-1">
                         <div style="flex: 1;"><i class="fas fa-box-open fa-fw me-3"></i><span>Каталог продукции</span></div>
                         <i class="fas fa-chevron-right"></i>
                     </a>
@@ -106,10 +106,10 @@
             const data = catalog[id];
             let sb = '';
             data.forEach(item => {
-                sb += 
-                    '<a class="list-group-item list-group-item-action py-2 ripple>'
+                sb +=
+                        '<a class="list-group-item list-group-item-action py-2 ripple" data-catalog="' + item.externalId + '">'
                         + '<span class="ms-2">' + item.name + '</span>'
-                    + '</a>';
+                        + '</a>';
             });
             const template = '<div class="agr-mobile-menu-slide"><div class="list-group list-group-flush mx-3 mt-4">' + sb + '</div></div>';
             const element = createElementFromHTML(template);
@@ -118,6 +118,7 @@
             const activeSlide = catalogContainer.querySelector('.active');
             activeSlide.classList.remove('active');
             activeSlide.classList.add('left');
+            element.classList.add('active');
         };
 
         const createElementFromHTML = (htmlString) => {
@@ -126,10 +127,13 @@
             return div.firstElementChild;
         };
 
-        document.querySelector('#agr-mobile-catalog').addEventListener('click', (evt) => {
-            evt.stopPropagation();
-            evt.preventDefault();
-            openCatalog("-1");
+        document.querySelector('.agr-mobile-menu-slider').addEventListener('click', (evt) => {
+            const catalogLink = evt.target.closest('a[data-catalog]');
+            if (catalogLink) {
+                evt.stopPropagation();
+                evt.preventDefault();
+                openCatalog(catalogLink.getAttribute('data-catalog'));
+            }
         });
     })();
 </script>
