@@ -35,13 +35,13 @@
     </nav>
 
     <nav class="agr-menu-sidebar shadow-2-strong">
-        <div class="d-flex align-items-center shadow-2 p-3">
+        <div class="d-flex align-items-center shadow-2 p-3" style="position: relative; z-index: 700;">
             <a href="/">
                 <h3 class="mb-0"><i class="fas fa-carrot agr-carrot-logo"></i></h3>
             </a>
             <h4 class="text-center mb-0" style="flex: 1">Агролавка</h4>
             <button class="navbar-toggler agr-mobile-menu-close-btn" type="button">
-                <h3 class="mb-0"><i class="fas fa-chevron-left"></i></h3>
+                <i class="fas fa-times fa-fw"></i>
             </button>
         </div>
         <div class="agr-mobile-menu-slider">
@@ -100,18 +100,44 @@
                 response.json().then(json => catalog = json);
             }
         });
+        
+        const findGroup = (id) => {
+            const keys = Object.keys(catalog);
+            for (let i = 0; i < keys.length; i++) {
+                const groups = catalog[keys[i]].filter(group => group.externalId === id);
+                if (groups.length > 0)
+                    return groups[0];
+            }
+        };
 
         const openCatalog = (id) => {
-            console.log(id);
-            const data = catalog[id];
+            const data = catalog[id].sort((a, b) => {
+                if (a.name > b.name) {
+                    return 1;
+                } else if (a.name < b.name) {
+                    return -1;
+                } else {
+                    return 0;
+                }
+            });
             let sb = '';
             data.forEach(item => {
-                sb +=
-                        '<a class="list-group-item list-group-item-action py-2 ripple" data-catalog="' + item.externalId + '">'
-                        + '<span class="ms-2">' + item.name + '</span>'
+                const isLeaf = !catalog[item.externalId];
+                const attributes = isLeaf ? ' href="' + buildProguctGroupUrl(item) + '" data-catalog-nav-link=""' : ' data-catalog="' + item.externalId + '"';
+                const nextIcon = isLeaf ? '' : '<i class="fas fa-chevron-right fa-fw"></i>';
+                sb += '<a class="list-group-item list-group-item-action py-2 ripple d-flex align-items-center" ' + attributes + '>'
+                        + '<span class="ms-2" style="flex: 1">' + item.name + '</span>'
+                        + nextIcon
                         + '</a>';
             });
-            const template = '<div class="agr-mobile-menu-slide"><div class="list-group list-group-flush mx-3 mt-4">' + sb + '</div></div>';
+            const backButton = '<a class="list-group-item list-group-item-action py-2 ripple agr-mobile-menu-back-button d-flex align-items-center" data-catalog-back="' + id + '">'
+                    + '<i class="fas fa-chevron-left fa-fw me-1"></i>'
+                    + '<span class="ms-2">' + (id === "-1" ? "Каталог продукции" : findGroup(id).name) + '</span>'
+                    + '</a>';
+            const template = '<div class="agr-mobile-menu-slide" data-slide="' + id + '">'
+                    + '<div class="list-group list-group-flush mx-3 mt-2">' + backButton + '</div>'
+                    + '<div class="list-group list-group-flush mx-3 mt-4 pb-2" style="overflow-y: auto;">' + sb + '</div>'
+                    + '</div>';
             const element = createElementFromHTML(template);
             const catalogContainer = document.querySelector('.agr-mobile-menu-slider');
             catalogContainer.appendChild(element);
@@ -121,10 +147,35 @@
             element.classList.add('active');
         };
 
+        const closeCatalog = (id) => {
+            const catalogContainer = document.querySelector('.agr-mobile-menu-slider');
+            const activeSlide = catalogContainer.lastChild;
+            const prevSlide = catalogContainer.children[catalogContainer.children.length - 2];
+            prevSlide.classList.remove('left');
+            prevSlide.classList.add('right');
+            prevSlide.classList.add('active');
+            setTimeout(() => {
+                activeSlide.remove();
+                prevSlide.classList.remove('right');
+            }, 310);
+        };
+
         const createElementFromHTML = (htmlString) => {
             var div = document.createElement('div');
             div.innerHTML = htmlString.trim();
             return div.firstElementChild;
+        };
+
+        const buildProguctGroupUrl = (group) => {
+            let sb = '/catalog';
+            const parts = [];
+            let current = group;
+            while (current) {
+                parts.push(current.url);
+                current = findGroup(current.parentId);
+            }
+            parts.reverse().forEach(url => sb += '/' + url);
+            return sb;
         };
 
         document.querySelector('.agr-mobile-menu-slider').addEventListener('click', (evt) => {
@@ -133,7 +184,23 @@
                 evt.stopPropagation();
                 evt.preventDefault();
                 openCatalog(catalogLink.getAttribute('data-catalog'));
+                return;
             }
+            const catalogBackLink = evt.target.closest('a[data-catalog-back]');
+            if (catalogBackLink) {
+                evt.stopPropagation();
+                evt.preventDefault();
+                closeCatalog(catalogBackLink.getAttribute('data-catalog-back'));
+                return;
+            }
+            const link = evt.target.closest('a[data-catalog-nav-link]');
+            if (link) {
+                evt.stopPropagation();
+                window.location.href = link.getAttribute('href');
+                return;
+            }
+            evt.stopPropagation();
+            evt.preventDefault();
         });
     })();
 </script>

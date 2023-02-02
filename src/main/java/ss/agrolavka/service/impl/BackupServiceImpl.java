@@ -34,9 +34,9 @@ import ss.martin.platform.spring.config.PlatformConfiguration;
  * @author alex
  */
 @Service
-public class BackupServiceImpl implements BackupService {
+class BackupServiceImpl implements BackupService {
     /** Logger. */
-    private static final Logger LOG = LoggerFactory.getLogger(MySkladIntegrationServiceImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(BackupServiceImpl.class);
     /** Backup directory. */
     private static final File BACKUP_DIR = new File("/tmp/agrolavka");
     /** DB username. */
