@@ -23,7 +23,7 @@
     </div>
     <div class="agr-mobile-menu-slider">
         <div class="agr-mobile-menu-slide active">
-            <div class="list-group list-group-flush mx-3 mt-4 ">
+            <div class="list-group list-group-flush mt-4 ">
                 <a href="/" class="list-group-item list-group-item-action py-2 ripple agr-mobile-menu-link" aria-current="true">
                     <i class="fas fa-home fa-fw me-3"></i><span>Главная</span>
                 </a>
@@ -43,13 +43,13 @@
                 <a href="/discount" class="list-group-item list-group-item-action py-2 ripple agr-mobile-menu-link" aria-current="true">
                     <i class="fas fa-percent fa-fw me-3"></i><span>Дисконтная программа</span>
                 </a>
-                <a href="#contacts" class="list-group-item list-group-item-action py-2 ripple agr-mobile-menu-separator agr-mobile-menu-link" aria-current="true">
+                <a href="#contacts" class="list-group-item list-group-item-action py-2 ripple agr-mobile-menu-link" aria-current="true">
                     <i class="fas fa-map-marker-alt fa-fw me-3"></i><span>Контакты</span>
                 </a>
                 <a href="/feedback" class="list-group-item list-group-item-action py-2 ripple agr-mobile-menu-link" aria-current="true">
                     <i class="fas fa-comment fa-fw me-3"></i><span>Написать нам</span>
                 </a>
-                <a class="list-group-item list-group-item-action py-2 ripple d-flex align-items-center agr-mobile-menu-separator" href="https://www.instagram.com/agrolavka.by" target="_blank" rel="noreferrer">
+                <a class="list-group-item list-group-item-action py-2 ripple d-flex align-items-center" href="https://www.instagram.com/agrolavka.by" target="_blank" rel="noreferrer">
                     <img src="/assets/img/instagram.ico" alt="Instagram"><span class="ms-2">Инстаграм</span>
                 </a>
                 <a class="list-group-item list-group-item-action py-2 ripple d-flex align-items-center" href="https://invite.viber.com/?g2=AQAg5Rkk2LluF0zHtRAvabtjZ4jDtGaaMApRoqe3%2FboHZogbep9nBgCTSKDPVqTl" target="_blank" rel="noreferrer">
@@ -111,8 +111,8 @@
                     + '<span class="ms-2">' + (id === "-1" ? "Каталог продукции" : findGroup(id).name) + '</span>'
                     + '</a>';
             const template = '<div class="agr-mobile-menu-slide" data-slide="' + id + '">'
-                    + '<div class="list-group list-group-flush mx-3 mt-2">' + backButton + '</div>'
-                    + '<div class="list-group list-group-flush mx-3 mt-4 pb-2" style="overflow-y: auto;">' + sb + '</div>'
+                    + '<div class="list-group list-group-flush mt-2">' + backButton + '</div>'
+                    + '<div class="list-group list-group-flush mt-4 pb-2" style="overflow-y: auto;">' + sb + '</div>'
                     + '</div>';
             const element = createElementFromHTML(template);
             const catalogContainer = document.querySelector('.agr-mobile-menu-slider');
