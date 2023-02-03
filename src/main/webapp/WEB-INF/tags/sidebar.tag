@@ -50,10 +50,10 @@
                     <i class="fas fa-comment fa-fw me-3"></i><span>Написать нам</span>
                 </a>
                 <a class="list-group-item list-group-item-action py-2 ripple d-flex align-items-center agr-mobile-menu-separator" href="https://www.instagram.com/agrolavka.by" target="_blank" rel="noreferrer">
-                    <img src="/assets/img/instagram.ico" alt="Instagram"><span class="ms-2 d-block d-lg-none">Инстаграм</span>
+                    <img src="/assets/img/instagram.ico" alt="Instagram"><span class="ms-2">Инстаграм</span>
                 </a>
                 <a class="list-group-item list-group-item-action py-2 ripple d-flex align-items-center" href="https://invite.viber.com/?g2=AQAg5Rkk2LluF0zHtRAvabtjZ4jDtGaaMApRoqe3%2FboHZogbep9nBgCTSKDPVqTl" target="_blank" rel="noreferrer">
-                    <i class="fab fa-viber" style="font-size: 32px; color: #574e92;"></i><span class="ms-2 d-block d-lg-none">Вайбер</span>
+                    <i class="fab fa-viber" style="font-size: 32px; color: #574e92;"></i><span class="ms-2">Вайбер</span>
                 </a>
             </div>
         </div>
@@ -101,12 +101,12 @@
                 const isLeaf = !catalog[item.externalId];
                 const attributes = isLeaf ? ' href="' + buildProguctGroupUrl(item) + '" data-catalog-nav-link=""' : ' data-catalog="' + item.externalId + '"';
                 const nextIcon = isLeaf ? '' : '<i class="fas fa-chevron-right fa-fw"></i>';
-                sb += '<a class="list-group-item list-group-item-action py-2 ripple d-flex align-items-center" ' + attributes + '>'
+                sb += '<a class="list-group-item list-group-item-action py-2 d-flex align-items-center" ' + attributes + '>'
                         + '<span class="ms-2" style="flex: 1">' + item.name + '</span>'
                         + nextIcon
                         + '</a>';
             });
-            const backButton = '<a class="list-group-item list-group-item-action py-2 ripple agr-mobile-menu-back-button d-flex align-items-center" data-catalog-back="' + id + '">'
+            const backButton = '<a class="list-group-item list-group-item-action py-2 agr-mobile-menu-back-button d-flex align-items-center" data-catalog-back="' + id + '">'
                     + '<i class="fas fa-chevron-left fa-fw me-1"></i>'
                     + '<span class="ms-2">' + (id === "-1" ? "Каталог продукции" : findGroup(id).name) + '</span>'
                     + '</a>';

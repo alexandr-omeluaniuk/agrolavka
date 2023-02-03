@@ -14,7 +14,7 @@
         <div class="container-fluid">
             <a href="/" class="navbar-brand nav-link d-none d-lg-block">
                 <strong class="d-flex justify-content-center align-items-center">
-                    <i class="fas fa-carrot agr-carrot-logo"></i><span class="ms-2">Агролавка</span>
+                    <i class="fas fa-carrot agr-carrot-logo" style="font-size: 1.5em;"></i><span class="ms-2">Агролавка</span>
                 </strong>
             </a>
             <div class="navbar-collapse justify-content-end">
@@ -64,4 +64,8 @@
             </div>
         </div>
     </nav>
+
+    <div class="agr-desktop-menu-btn">
+        <i class="fas fa-bars"></i>
+    </div>
 </header>

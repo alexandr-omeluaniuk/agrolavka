@@ -45,7 +45,7 @@
             const container = document.querySelector('#agr-quick-search-container-desktop');
             const navLinks = document.querySelector('.navbar-nav');
             navLinks.style.display = 'none';
-            container.style.width = (window.innerWidth - 600) + 'px';
+            container.style.width = (window.innerWidth - 650) + 'px';
             const searchResultOutput = document.querySelector('#agr-quick-search-result-desktop');
             if (searchResultOutput.innerHTML) {
                 searchResultOutput.classList.add("show");

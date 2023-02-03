@@ -76,11 +76,14 @@ and open the template in the editor.
     .agr-card-body-category {
         min-height: 89px;
     }
-    .agr-navbar-mobile, .agr-backdrop {
+    .agr-navbar-mobile {
         display: none !important;
     }
     .agr-navbar-desktop {
         display: block;
+    }
+    .agr-menu-sidebar {
+        width: 400px;
     }
 }
 
@@ -135,6 +138,14 @@ and open the template in the editor.
     }
     .agr-navbar-desktop {
         display: none !important;
+    }
+    .agr-menu-sidebar {
+        width: calc(100% - 30px);
+    }
+    .agr-body-freeze {
+        position: fixed;
+        left: 0;
+        right: 0;
     }
 }
 @media (max-width: 576px) {
@@ -292,7 +303,6 @@ and open the template in the editor.
 }
 .agr-menu-sidebar {
     height: 100vh;
-    width: calc(100% - 30px);
     position: fixed;
     z-index: 5000;
     top: 0;
@@ -329,9 +339,6 @@ and open the template in the editor.
     100% {
         transform: translateX(-110%);
     }
-}
-.agr-body-freeze {
-    position: fixed;
 }
 .agr-backdrop {
     position: fixed;
@@ -428,6 +435,25 @@ and open the template in the editor.
     100% {
         transform: translateX(0%);
     }
+}
+.agr-desktop-menu-btn {
+    position: fixed;
+    display: flex; 
+    justify-content: center; 
+    align-items: center;
+    width: 60px; 
+    height: 60px; 
+    border-radius: 50px; 
+    background: #00000085; 
+    top: 75px; 
+    left: 10px;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,.25),0 5px 15px 2px rgba(0,0,0,.2)!important; 
+    font-size: 1.6em; 
+    color: white; 
+    z-index: 5000;
+}
+.agr-desktop-menu-btn:hover {
+    cursor: pointer;
 }
 /** ============================================== RIBBON ============================================================================== */
 .ribbon {

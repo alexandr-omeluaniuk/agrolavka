@@ -53,7 +53,11 @@
         }
         const agrMobileMenuBtn = evt.target.closest('.agr-mobile-menu-btn');
         if (agrMobileMenuBtn) {
-            agrMobileMenuBtnListener(evt, agrMobileMenuBtn);
+            openMobileMenu();
+        }
+        const agrDesktopMenuBtn = evt.target.closest('.agr-desktop-menu-btn');
+        if (agrDesktopMenuBtn) {
+            openMobileMenu();
         }
         const agrMobileMenuCloseBtn = evt.target.closest('.agr-mobile-menu-close-btn');
         const agrBackdrop = evt.target.closest('.agr-backdrop');
@@ -384,7 +388,7 @@
         cardPhoto.style.backgroundImage = photoUrl;
     };
     
-    var agrMobileMenuBtnListener = function (evt, button) {
+    var openMobileMenu = function () {
         const sidebar = document.querySelector('.agr-menu-sidebar');
         const body = document.querySelector('body');
         const backdrop = document.querySelector('.agr-backdrop');
