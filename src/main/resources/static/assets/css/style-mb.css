@@ -157,7 +157,7 @@ and open the template in the editor.
     }
 }
 #agr-quick-search-container-desktop {
-    width: 270px;
+    width: 230px;
     transition: all .5s;
 }
 #agr-quick-search-result-desktop, #agr-quick-search-result-mobile {
@@ -299,7 +299,7 @@ and open the template in the editor.
     left: 0;
     background-color: white;
     overflow: hidden;
-    transform: translateX(-100%);
+    transform: translateX(-110%);
     opacity: 1;
 }
 .agr-menu-sidebar.open-it {
@@ -316,7 +316,7 @@ and open the template in the editor.
 }
 @keyframes agr-open-sidebar {
     0% {
-        transform: translateX(-100%);
+        transform: translateX(-110%);
     }
     100% {
         transform: translateX(0%);
@@ -327,7 +327,7 @@ and open the template in the editor.
         transform: translateX(0%);
     }
     100% {
-        transform: translateX(-100%);
+        transform: translateX(-110%);
     }
 }
 .agr-body-freeze {
