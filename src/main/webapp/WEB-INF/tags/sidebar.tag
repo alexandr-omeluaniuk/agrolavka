@@ -101,7 +101,7 @@
                 const isLeaf = !catalog[item.externalId];
                 const attributes = isLeaf ? ' href="' + buildProguctGroupUrl(item) + '" data-catalog-nav-link=""' : ' data-catalog="' + item.externalId + '"';
                 const nextIcon = isLeaf ? '' : '<i class="fas fa-chevron-right fa-fw"></i>';
-                sb += '<a class="list-group-item list-group-item-action py-2 d-flex align-items-center" ' + attributes + '>'
+                sb += '<a class="agr-menu-catalog-group-link list-group-item list-group-item-action py-2 d-flex align-items-center" ' + attributes + '>'
                         + '<span class="ms-2" style="flex: 1">' + item.name + '</span>'
                         + nextIcon
                         + '</a>';

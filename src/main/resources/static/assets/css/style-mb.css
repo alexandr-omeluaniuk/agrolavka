@@ -83,7 +83,7 @@ and open the template in the editor.
         display: block;
     }
     .agr-menu-sidebar {
-        width: 400px;
+        width: 450px;
     }
 }
 
@@ -385,8 +385,11 @@ and open the template in the editor.
 .agr-mobile-menu-separator {
     border-top: 2px solid #dedede !important;
 }
-.agr-mobile-menu-back-button{
+.agr-mobile-menu-back-button {
     background-color: lightgray;
+}
+.agr-mobile-menu-back-button:hover {
+    cursor: pointer;
 }
 .agr-mobile-menu-slider {
     position: relative;
@@ -453,6 +456,9 @@ and open the template in the editor.
     z-index: 5000;
 }
 .agr-desktop-menu-btn:hover {
+    cursor: pointer;
+}
+.agr-menu-catalog-group-link:hover {
     cursor: pointer;
 }
 /** ============================================== RIBBON ============================================================================== */
