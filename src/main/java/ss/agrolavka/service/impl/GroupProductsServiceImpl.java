@@ -92,6 +92,7 @@ class GroupProductsServiceImpl implements GroupProductsService {
             if (productsMap.containsKey(groupedProductName)) {
                 LOG.info("Update product with volumes: " + groupedProductName + ", size " + products.size());
                 final Product existingProduct = productsMap.get(groupedProductName);
+                existingProduct.setGroup(newProduct.getGroup());
                 existingProduct.setDescription(newProduct.getDescription());
                 existingProduct.setImages(images);
                 existingProduct.setMinPrice(newProduct.getMinPrice());
