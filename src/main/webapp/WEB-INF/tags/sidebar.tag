@@ -49,10 +49,10 @@
                 <a href="/feedback" class="list-group-item list-group-item-action py-2 ripple agr-mobile-menu-link" aria-current="true">
                     <i class="fas fa-comment fa-fw me-3"></i><span>Написать нам</span>
                 </a>
-                <a class="list-group-item list-group-item-action py-2 ripple d-flex align-items-center" href="https://www.instagram.com/agrolavka.by" target="_blank" rel="noreferrer">
+                <a class="list-group-item list-group-item-action py-2 ripple d-flex align-items-center agr-external-link" href="https://www.instagram.com/agrolavka.by" target="_blank" rel="noreferrer">
                     <img src="/assets/img/instagram.ico" alt="Instagram"><span class="ms-2">Инстаграм</span>
                 </a>
-                <a class="list-group-item list-group-item-action py-2 ripple d-flex align-items-center" href="https://invite.viber.com/?g2=AQAg5Rkk2LluF0zHtRAvabtjZ4jDtGaaMApRoqe3%2FboHZogbep9nBgCTSKDPVqTl" target="_blank" rel="noreferrer">
+                <a class="list-group-item list-group-item-action py-2 ripple d-flex align-items-center agr-external-link" href="https://invite.viber.com/?g2=AQAg5Rkk2LluF0zHtRAvabtjZ4jDtGaaMApRoqe3%2FboHZogbep9nBgCTSKDPVqTl" target="_blank" rel="noreferrer">
                     <i class="fab fa-viber" style="font-size: 32px; color: #574e92;"></i><span class="ms-2">Вайбер</span>
                 </a>
             </div>
@@ -106,13 +106,18 @@
                         + nextIcon
                         + '</a>';
             });
+            const category = findGroup(id);
             const backButton = '<a class="list-group-item list-group-item-action py-2 agr-mobile-menu-back-button d-flex align-items-center" data-catalog-back="' + id + '">'
                     + '<i class="fas fa-chevron-left fa-fw me-1"></i>'
-                    + '<span class="ms-2">' + (id === "-1" ? "Каталог продукции" : findGroup(id).name) + '</span>'
+                    + '<span class="ms-2">' + (id === "-1" ? "Каталог продукции" : category.name) + '</span>'
                     + '</a>';
             const template = '<div class="agr-mobile-menu-slide" data-slide="' + id + '">'
-                    + '<div class="list-group list-group-flush mt-2">' + backButton + '</div>'
-                    + '<div class="list-group list-group-flush mt-4 pb-2" style="overflow-y: auto;">' + sb + '</div>'
+                    + '<div class="list-group list-group-flush mt-2">' 
+                        + backButton
+                        + '<a class="agr-link agr-external-link text-center mt-2" href="' + (category ? buildProguctGroupUrl(category) : '/catalog') + '" style="text-decoration: underline;">'
+                            + '«Посмотреть все»</a>'
+                    + '</div>'
+                    + '<div class="list-group list-group-flush mt-2 pb-2" style="overflow-y: auto;">' + sb + '</div>'
                     + '</div>';
             const element = createElementFromHTML(template);
             const catalogContainer = document.querySelector('.agr-mobile-menu-slider');
@@ -173,6 +178,10 @@
             if (link) {
                 evt.stopPropagation();
                 window.location.href = link.getAttribute('href');
+                return;
+            }
+            const externalLink = evt.target.closest('.agr-external-link');
+            if (externalLink) {
                 return;
             }
             evt.stopPropagation();

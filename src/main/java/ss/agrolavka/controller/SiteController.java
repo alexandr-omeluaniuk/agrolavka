@@ -389,7 +389,7 @@ public class SiteController {
             searchRequest.setOrderBy("name");
             searchRequest.setWithDiscounts(true);
             final List<Product> products = productDAO.search(searchRequest).stream()
-                    .filter(product -> product.getQuantity() > 0)
+                    .filter(product -> product.getQuantity() != null && product.getQuantity() > 0)
                     .collect(Collectors.toList());
             AppCache.setProductsWithDiscounts(products);
             productsWithDiscounts = AppCache.getProductsWithDiscounts();
