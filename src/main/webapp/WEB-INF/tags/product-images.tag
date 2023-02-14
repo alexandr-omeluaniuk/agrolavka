@@ -20,6 +20,9 @@
         <c:forEach items="${product.images}" var="image" varStatus="loop">
             <div class="swiper-slide agr-product-image-carousel" style="background-image: url('/media/${image.fileNameOnDisk}?timestamp=${image.createdDate}')"></div>
         </c:forEach>
+        <c:if test="${empty product.images}">
+            <div class="swiper-slide" style="background-image: url('/assets/img/no-image.png'); background-repeat: no-repeat; background-size: contain;"></div>
+        </c:if>
     </div>
     <c:if test="${not empty product.images}">
         <!-- If we need pagination -->
