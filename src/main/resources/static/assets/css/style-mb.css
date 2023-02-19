@@ -469,6 +469,10 @@ and open the template in the editor.
 .agr-menu-catalog-group-link:hover {
     cursor: pointer;
 }
+.agr-menu-item-top-category {
+    font-weight: 800;
+    color: var(--agr-bs-purple-dark);
+}
 /** ============================================== RIBBON ============================================================================== */
 .ribbon {
     z-index: 500;
