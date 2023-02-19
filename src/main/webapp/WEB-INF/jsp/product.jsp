@@ -67,7 +67,7 @@
                 
             </div>
         </main>
-                            
+        <t:nav-back-btn></t:nav-back-btn>       
         <modal:one-click-order-modal/>
         <modal:add-to-cart-modal/>
         <modal:photo-modal product="${product}"/>

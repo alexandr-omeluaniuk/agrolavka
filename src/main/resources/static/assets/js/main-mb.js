@@ -59,6 +59,10 @@
         if (agrDesktopMenuBtn) {
             openMobileMenu();
         }
+        const agrNavBackBtn = evt.target.closest('.agr-nav-back-btn');
+        if (agrNavBackBtn) {
+            navBackBtnClick(evt, agrNavBackBtn);
+        }
         const agrMobileMenuCloseBtn = evt.target.closest('.agr-mobile-menu-close-btn');
         const agrBackdrop = evt.target.closest('.agr-backdrop');
         if (agrMobileMenuCloseBtn || agrBackdrop) {
@@ -129,6 +133,17 @@
             }
         });
     });
+    
+    var navBackBtnClick = function(evt, button) {
+        const lastCatalogLink = document.querySelector('#agr-last-catalog-link');
+        if (lastCatalogLink) {
+            lastCatalogLink.click();
+        } else if (window.location.pathname === '/catalog') {
+            window.location.href = '/';
+        } else {
+            window.location.href = '/catalog';
+        }
+    };
     
     var addToCartListener = function(evt, button) {
         evt.preventDefault();

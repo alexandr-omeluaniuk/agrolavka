@@ -31,9 +31,11 @@
             <% 
                 if (groups != null) {
                     for (ProductsGroup group : groups) { 
+                        boolean isLast = groups.indexOf(group) == groups.size() - 1;
+                        final String linkId = isLast ? "id=\"agr-last-catalog-link\"" : "";
             %>
                         <li class="breadcrumb-item">
-                            <a href="<%= UrlProducer.buildProductGroupUrl(group) %>" class="agr-link">
+                            <a href="<%= UrlProducer.buildProductGroupUrl(group) %>" class="agr-link" <%= linkId %>>
                                 <small><%= group.getName() %></small>
                             </a>
                         </li>

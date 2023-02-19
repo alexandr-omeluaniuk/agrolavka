@@ -31,11 +31,11 @@
                     <div style="flex: 1;"><i class="fas fa-box-open fa-fw me-3"></i><span>Каталог продукции</span></div>
                     <i class="fas fa-chevron-right"></i>
                 </a>
-                <a href="/shops" class="list-group-item list-group-item-action py-2 ripple agr-mobile-menu-link" aria-current="true">
-                    <i class="fas fa-store fa-fw me-3"></i><span>Магазины</span>
-                </a>
                 <a href="/promotions" class="list-group-item list-group-item-action py-2 ripple text-danger agr-mobile-menu-link" aria-current="true">
                     <i class="fas fas fa-fire fa-fw me-3"></i><span>Акции</span>
+                </a>
+                <a href="/shops" class="list-group-item list-group-item-action py-2 ripple agr-mobile-menu-link" aria-current="true">
+                    <i class="fas fa-store fa-fw me-3"></i><span>Магазины</span>
                 </a>
                 <a href="/delivery" class="list-group-item list-group-item-action py-2 ripple agr-mobile-menu-link" aria-current="true">
                     <i class="fas fa-truck fa-fw me-3"></i><span>Доставка</span>
