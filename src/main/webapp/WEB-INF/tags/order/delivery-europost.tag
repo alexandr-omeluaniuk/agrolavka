@@ -39,21 +39,21 @@
     
     <div class="col-sm-12 col-lg-4">
         <div class="form-floating mb-3">
-            <input type="text" class="form-control" id="lastname" placeholder="Иванов"
+            <input type="text" class="form-control" id="lastname" placeholder="Фамилия"
                    name="lastname" required>
             <label for="lastname">Фамилия *</label>
         </div>
     </div>
     <div class="col-sm-12 col-lg-4">
         <div class="form-floating mb-3">
-            <input type="text" class="form-control" id="firstname" placeholder="Иван"
+            <input type="text" class="form-control" id="firstname" placeholder="Имя"
                    name="firstname" required>
             <label for="firstname">Имя *</label>
         </div>
     </div>
     <div class="col-sm-12 col-lg-4">
         <div class="form-floating mb-3">
-            <input type="text" class="form-control" id="middlename" placeholder="Иванович"
+            <input type="text" class="form-control" id="middlename" placeholder="Отчество"
                    name="middlename" required>
             <label for="middlename">Отчество *</label>
         </div>

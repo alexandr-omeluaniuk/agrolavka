@@ -23,7 +23,7 @@
 <div class="form-check">
     <input class="form-check-input" type="radio" name="delivery" id="remote-delivery">
     <label class="form-check-label" for="remote-delivery">
-        Доставка по адресу
+        Доставка Белпочтой
     </label>
 </div>
 <div class="form-check">

@@ -34,7 +34,10 @@
                                 </div>
                                 <div class="col-sm-12 col-md-3 mb-4">
                                     <order:total-info-card totalDecimal="${totalDecimal}" totalInteger="${totalInteger}"/>
-                                    <button class="btn btn-success w-100 mt-4" id="order-confirm">
+                                    <p class="text-danger mt-3" id="agr-order-required-fields" style="white-space: pre-line; line-height: .9em; font-size: .8em;">
+                                        
+                                    </p>
+                                    <button class="btn btn-success w-100" id="order-confirm">
                                         <i class="fas fa-check me-2"></i>Заказать
                                     </button>
                                 </div>
@@ -53,12 +56,19 @@
         "use strict";
 
         const submitOrderButton = document.querySelector("#order-confirm");
+        const dangerText = document.querySelector('#agr-order-required-fields');
         if (submitOrderButton) {
             submitOrderButton.addEventListener('click', function (event) {
                 var form = document.querySelector('#order-form');
                 if (!form.checkValidity()) {
-                    event.preventDefault()
-                    event.stopPropagation()
+                    event.preventDefault();
+                    event.stopPropagation();
+                    const invalidFields = form.querySelectorAll( ".form-control:invalid" );
+                    let sb = '<b>Пожалуйста заполните обязательные поля:</b><br/><br/>';
+                    invalidFields.forEach(item => {
+                        sb += item.getAttribute('placeholder') + '<br/>';
+                    });
+                    dangerText.innerHTML = sb;
                 } else {
                     submitOrderButton.setAttribute('disabled', 'true');
                     const formData = {};
@@ -91,6 +101,7 @@
 
         document.querySelectorAll('input[name="delivery"]').forEach(el => {
             el.addEventListener('change', function (event) {
+                dangerText.innerHTML = '';
                 const address = document.querySelector('#order-address');
                 const europost = document.querySelector('#order-europost');
                 if (event.target.id === "self-delivery") {
