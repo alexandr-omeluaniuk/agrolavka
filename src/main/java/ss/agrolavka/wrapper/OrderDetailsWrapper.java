@@ -28,11 +28,14 @@ public class OrderDetailsWrapper {
     private String district;
     private Long europostLocationId;
     private String europostLocationName;
-    private String firstname;
     private String flat;
     private String house;
+    private String firstname;
     private String lastname;
     private String middlename;
+    private String europostFirstname;
+    private String europostLastname;
+    private String europostMiddlename;
     private String phone;
     private String postcode;
     private String region;
@@ -217,5 +220,41 @@ public class OrderDetailsWrapper {
      */
     public void setStreet(String street) {
         this.street = street;
+    }
+    /**
+     * @return the europostFirstname
+     */
+    public String getEuropostFirstname() {
+        return europostFirstname;
+    }
+    /**
+     * @param europostFirstname the europostFirstname to set
+     */
+    public void setEuropostFirstname(String europostFirstname) {
+        this.europostFirstname = europostFirstname;
+    }
+    /**
+     * @return the europostLastname
+     */
+    public String getEuropostLastname() {
+        return europostLastname;
+    }
+    /**
+     * @param europostLastname the europostLastname to set
+     */
+    public void setEuropostLastname(String europostLastname) {
+        this.europostLastname = europostLastname;
+    }
+    /**
+     * @return the europostMiddlename
+     */
+    public String getEuropostMiddlename() {
+        return europostMiddlename;
+    }
+    /**
+     * @param europostMiddlename the europostMiddlename to set
+     */
+    public void setEuropostMiddlename(String europostMiddlename) {
+        this.europostMiddlename = europostMiddlename;
     }
 }

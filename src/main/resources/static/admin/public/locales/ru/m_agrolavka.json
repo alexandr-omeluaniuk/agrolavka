@@ -40,9 +40,10 @@
         "normalize": "Нормализация (сжатие изображений)"
     },
     "orders": {
-        "order_number": "Номер",
-        "mobile_phone": "Мобильный телефон",
+        "order_number": "№",
+        "mobile_phone": "Номер телефона",
         "address": "Адрес",
+        "details": "Детали доставки",
         "enable_notifications": "Уведомления выключены. Нажмите чтобы включить уведомления",
         "enable_notifications_success": "Уведомления включены",
         "disable_notifications": "Уведомления включены. Нажмите чтобы выключить уведомления",

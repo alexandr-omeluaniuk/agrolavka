@@ -13,21 +13,21 @@
     <div class="row">
         <div class="col-sm-12 col-lg-4">
             <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="lastname" placeholder="Фамилия"
+                <input type="text" class="form-control" id="address-lastname" placeholder="Фамилия"
                        name="lastname" required readonly>
                 <label for="lastname">Фамилия *</label>
             </div>
         </div>
         <div class="col-sm-12 col-lg-4">
             <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="firstname" placeholder="Имя"
+                <input type="text" class="form-control" id="address-firstname" placeholder="Имя"
                        name="firstname" required readonly>
                 <label for="firstname">Имя *</label>
             </div>
         </div>
         <div class="col-sm-12 col-lg-4">
             <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="middlename" placeholder="Отчество"
+                <input type="text" class="form-control" id="address-middlename" placeholder="Отчество"
                        name="middlename" required readonly>
                 <label for="middlename">Отчество *</label>
             </div>

@@ -24,12 +24,12 @@
                             <div class="row">
                                 <div class="col-sm-12 col-md-9 mb-4">
                                     <form class="needs-validation shadow-1-strong p-4" novalidate id="order-form">
-                                        <order:form-common-section/>
                                         <fieldset>
                                             <order:delivery-type totalInteger="${totalInteger}"/>
                                             <order:delivery-post/>
                                             <order:delivery-europost europostLocations="${europostLocations}"/>
                                         </fieldset>
+                                        <order:form-common-section/>
                                     </form>
                                 </div>
                                 <div class="col-sm-12 col-md-3 mb-4">
@@ -73,10 +73,14 @@
                     submitOrderButton.setAttribute('disabled', 'true');
                     const formData = {};
                     form.querySelectorAll("input").forEach(input => {
-                        formData[input.getAttribute("name")] = input.value;
+                        if (!input.getAttribute('readonly')) {
+                            formData[input.getAttribute("name")] = input.value;
+                        }
                     });
                     form.querySelectorAll("textarea").forEach(input => {
-                        formData[input.getAttribute("name")] = input.value;
+                        if (!input.getAttribute('readonly')) {
+                            formData[input.getAttribute("name")] = input.value;
+                        }
                     });
                     fetch('/api/agrolavka/public/order', {
                         method: 'POST',

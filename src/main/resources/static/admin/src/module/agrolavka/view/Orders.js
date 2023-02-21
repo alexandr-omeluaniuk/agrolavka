@@ -173,16 +173,17 @@ function Orders() {
                     </Tooltip>
                 ) : navLink;
             }).width('100px').setSortable(),
-            new TableColumn('phone', t('m_agrolavka:orders.order_number'), (row) => {
+            new TableColumn('phone', t('m_agrolavka:orders.mobile_phone'), (row) => {
                 return <Link href={'tel:+375' + row.phone.replace(/\D/g,'')} color="primary">{row.phone}</Link>;
-            }).width('170px'),
-            new TableColumn('address', t('m_agrolavka:orders.address'), (row) => {
+            }).width('200px'),
+            new TableColumn('address', t('m_agrolavka:orders.details'), (row) => {
                 const adr = row.address;
                 const europost = row.europostLocationSnapshot;
                 if (row.oneClick) {
                     return <i>{t('m_agrolavka:orders.one_click')}</i>;
                 } else if (adr) {
-                    return `${adr.postcode ? adr.postcode + ' ' : ''}${adr.city}, ${adr.street} д.${adr.house} ${adr.flat ? 'кв.' + adr.flat : ''}`;
+                    return 'Белпочта';
+                    //return `${adr.postcode ? adr.postcode + ' ' : ''}${adr.city}, ${adr.street} д.${adr.house} ${adr.flat ? 'кв.' + adr.flat : ''}`;
                 } else if (europost) {
                     return t('m_agrolavka:orders.delivery_europost');
                 }

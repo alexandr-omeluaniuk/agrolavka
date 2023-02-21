@@ -59,7 +59,7 @@ class OrderServiceImpl implements OrderService {
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public Order createOrder(final Order order, final OrderDetailsWrapper orderDetails) throws Exception {
-        LOG.info("Create new order");
+        LOG.info("----------------------------------- Create new order ----------------------------------------------");
         final Double total = order.getPositions().stream().mapToDouble(e -> e.getPrice() * e.getQuantity())
                 .reduce(0, (a, b) -> a + b);
         LOG.info("Order total [" + total + "]");
@@ -79,6 +79,7 @@ class OrderServiceImpl implements OrderService {
         }
         final Order savedOrder = coreDAO.create(order);
         sendNotification(savedOrder, total);
+        LOG.info("---------------------------------------------------------------------------------------------------");
         return savedOrder;
     }
     
@@ -143,9 +144,9 @@ class OrderServiceImpl implements OrderService {
         snapshot.setNote(location.getNote());
         snapshot.setWarehouseId(location.getWarehouseId());
         snapshot.setWorkingHours(location.getWorkingHours());
-        snapshot.setFirstname(orderDetails.getFirstname());
-        snapshot.setLastname(orderDetails.getLastname());
-        snapshot.setMiddlename(orderDetails.getMiddlename());
+        snapshot.setFirstname(orderDetails.getEuropostFirstname());
+        snapshot.setLastname(orderDetails.getEuropostLastname());
+        snapshot.setMiddlename(orderDetails.getEuropostMiddlename());
         return snapshot;
     }
     

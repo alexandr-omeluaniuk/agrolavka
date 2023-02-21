@@ -236,6 +236,37 @@ function Order(props) {
                 
         );
     };
+    const contactInfo = () => {
+        const result = [];
+        let fullname = [];
+        if (order.address) {
+            if (order.address.lastname) {
+                fullname.push(order.address.lastname);
+            }
+            if (order.address.firstname) {
+                fullname.push(order.address.firstname);
+            }
+            if (order.address.middlename) {
+                fullname.push(order.address.middlename);
+            }
+        }
+        if (order.europostLocationSnapshot) {
+            if (order.europostLocationSnapshot.lastname) {
+                fullname.push(order.europostLocationSnapshot.lastname);
+            }
+            if (order.europostLocationSnapshot.firstname) {
+                fullname.push(order.europostLocationSnapshot.firstname);
+            }
+            if (order.europostLocationSnapshot.middlename) {
+                fullname.push(order.europostLocationSnapshot.middlename);
+            }
+        }
+        if (fullname.length > 0) {
+            result.push(<React.Fragment key="1"><Typography variant={'caption'}>{fullname.join(' ')}</Typography><br/></React.Fragment>);
+        }
+        result.push(<Link href={'tel:+375' + order.phone.replace(/\D/g,'')} color="primary" key="2">{order.phone}</Link>);
+        return result;
+    };
     const chip = (label, value) => {
         return (
                 <React.Fragment>
@@ -246,15 +277,6 @@ function Order(props) {
     };
     const address = () => {
         const result = [];
-        if (order.address.lastname) {
-            result.push(<Chip label={chip('Фамилия: ',order.address.lastname)} key={1} color="secondary" className={classes.chip}/>);
-        }
-        if (order.address.firstname) {
-            result.push(<Chip label={chip('Имя: ', order.address.firstname)} key={2} color="secondary" className={classes.chip}/>);
-        }
-        if (order.address.middlename) {
-            result.push(<Chip label={chip('Отчество: ',order.address.middlename)} key={3} color="secondary" className={classes.chip}/>);
-        }
         if (order.address.region) {
             result.push(<Chip label={chip('Область: ', order.address.region)} key={4} color="secondary" className={classes.chip}/>);
         }
@@ -331,7 +353,7 @@ function Order(props) {
                     <Typography variant={'h6'}>
                         {t('m_agrolavka:order.contacts')}
                     </Typography>
-                    <Link href={'tel:+375' + order.phone.replace(/\D/g,'')} color="primary">{order.phone}</Link><br/>
+                    {contactInfo()}
                     {order.oneClick ? <i>{t('m_agrolavka:orders.one_click')}</i> : null}
                     {order.comment ? (
                             <React.Fragment>
@@ -344,7 +366,14 @@ function Order(props) {
                                 </Typography>
                             </React.Fragment>
                     ) : null}
-                    {order.address ? (<React.Fragment><Divider className={classes.divider} key="divider-2"/>{address()}</React.Fragment>) : null}
+                    {order.address ? (
+                        <React.Fragment>
+                            <Divider className={classes.divider} key="divider-2"/>
+                            <Typography variant={'h6'}>
+                                {t('m_agrolavka:orders.address')}
+                            </Typography>
+                            {address()}
+                        </React.Fragment>) : null}
                     {order.europostLocationSnapshot ? (<React.Fragment><Divider className={classes.divider} key="divider-3"/>{europost()}</React.Fragment>) : null}
                     <Divider className={classes.divider} key="divider-4"/>
                     <DataTable tableConfig={tableConfig}/>

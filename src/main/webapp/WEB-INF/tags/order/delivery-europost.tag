@@ -39,22 +39,22 @@
     
     <div class="col-sm-12 col-lg-4">
         <div class="form-floating mb-3">
-            <input type="text" class="form-control" id="lastname" placeholder="Фамилия"
-                   name="lastname" required>
+            <input type="text" class="form-control" id="europost-lastname" placeholder="Фамилия"
+                   name="europostLastname" required>
             <label for="lastname">Фамилия *</label>
         </div>
     </div>
     <div class="col-sm-12 col-lg-4">
         <div class="form-floating mb-3">
-            <input type="text" class="form-control" id="firstname" placeholder="Имя"
-                   name="firstname" required>
+            <input type="text" class="form-control" id="europost-firstname" placeholder="Имя"
+                   name="europostFirstname" required>
             <label for="firstname">Имя *</label>
         </div>
     </div>
     <div class="col-sm-12 col-lg-4">
         <div class="form-floating mb-3">
-            <input type="text" class="form-control" id="middlename" placeholder="Отчество"
-                   name="middlename" required>
+            <input type="text" class="form-control" id="europost-middlename" placeholder="Отчество"
+                   name="europostMiddlename" required>
             <label for="middlename">Отчество *</label>
         </div>
     </div>
