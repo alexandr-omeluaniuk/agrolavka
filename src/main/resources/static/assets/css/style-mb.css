@@ -401,7 +401,8 @@ and open the template in the editor.
 }
 .agr-mobile-menu-slider {
     position: relative;
-    height: calc(100% - 68px);
+    /*height: calc(100% - 68px);*/
+    flex: 1;
 }
 .agr-mobile-menu-slide {
     position: absolute;
@@ -461,7 +462,7 @@ and open the template in the editor.
     box-shadow: 0 4px 8px 0 rgba(0,0,0,.25),0 5px 15px 2px rgba(0,0,0,.2)!important; 
     font-size: 1.6em; 
     color: white; 
-    z-index: 5000;
+    z-index: 4900;
 }
 .agr-desktop-menu-btn:hover, .agr-nav-back-btn:hover {
     cursor: pointer;
@@ -471,6 +472,15 @@ and open the template in the editor.
 }
 .agr-menu-item-top-category {
     font-weight: 800;
+    color: var(--agr-bs-purple-dark);
+}
+.agr-menu-container {
+    height: 100%;
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+}
+.agr-menu-item-higlight {
     color: var(--agr-bs-purple-dark);
 }
 /** ============================================== RIBBON ============================================================================== */

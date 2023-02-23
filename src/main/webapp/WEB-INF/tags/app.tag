@@ -80,7 +80,7 @@
         <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.5.0/mdb.min.css" rel="stylesheet"/>
 
         <!-- Main CSS File -->
-        <link href="/assets/css/style-mb.css?v=24" rel="stylesheet">
+        <link href="/assets/css/style-mb.css?v=25" rel="stylesheet">
         <jsp:invoke fragment="headSection"/>
     </head>
 
