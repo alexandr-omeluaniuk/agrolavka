@@ -13,7 +13,7 @@
 <%-- any content can be specified here e.g.: --%>
 <nav class="agr-menu-sidebar shadow-2-strong">
     <div class="agr-menu-container">
-        <div class="d-flex align-items-center shadow-2 p-3" style="position: relative; z-index: 700;">
+        <div class="d-flex align-items-center p-3" style="position: relative; z-index: 700;">
             <a href="/">
                 <h3 class="mb-0"><i class="fas fa-carrot agr-carrot-logo"></i></h3>
             </a>
@@ -23,7 +23,7 @@
             </button>
         </div>
         <div class="agr-mobile-menu-slider">
-            <div class="agr-mobile-menu-slide active">
+            <div class="agr-mobile-menu-slide active agr-mobile-menu-main-slide">
                 <div class="list-group list-group-flush mt-4 ">
                     <a href="/" class="list-group-item list-group-item-action py-2 ripple agr-mobile-menu-link" aria-current="true">
                         <i class="fas fa-home fa-fw me-3"></i><span>Главная</span>
@@ -121,12 +121,12 @@
                     + '<span class="ms-2">' + (id === "-1" ? "Каталог продукции" : category.name) + '</span>'
                     + '</a>';
             const template = '<div class="agr-mobile-menu-slide" data-slide="' + id + '">'
-                    + '<div class="list-group list-group-flush mt-2">'
+                    + '<div class="list-group list-group-flush">'
                     + backButton
-                    + '<a class="agr-link agr-external-link text-center mt-2" href="' + (category ? buildProguctGroupUrl(category) : '/catalog') + '" style="text-decoration: underline;">'
+                    + '<a class="agr-link agr-external-link text-center mt-2 mb-1" href="' + (category ? buildProguctGroupUrl(category) : '/catalog') + '" style="text-decoration: underline;">'
                     + '«Посмотреть все»</a>'
                     + '</div>'
-                    + '<div class="list-group list-group-flush mt-2 pb-2" style="overflow-y: auto;">' + sb + '</div>'
+                    + '<div class="list-group list-group-flush mt-2 agr-scrollable-list-group">' + sb + '</div>'
                     + '</div>';
             const element = createElementFromHTML(template);
             const catalogContainer = document.querySelector('.agr-mobile-menu-slider');

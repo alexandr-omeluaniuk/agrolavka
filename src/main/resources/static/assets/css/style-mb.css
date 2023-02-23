@@ -409,10 +409,28 @@ and open the template in the editor.
     top: 0;
     left: 0;
     right: 0;
-    bottom: 0;
+    bottom: 0px;
     background-color: white;
     display: flex;
     flex-direction: column;
+}
+.agr-mobile-menu-main-slide {
+    box-shadow: 
+        inset 0px 11px 8px -10px #CCC,
+        inset 0px -11px 8px -10px #CCC;
+}
+.agr-mobile-menu-slide.active .agr-scrollable-list-group {
+    overflow-y: auto;
+    box-shadow: 
+        inset 0px 11px 8px -10px #CCC,
+        inset 0px -11px 8px -10px #CCC;
+    flex: 1;
+}
+.agr-mobile-menu-slide.active {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
 }
 .agr-mobile-menu-slide.left {
     transform: translateX(0%);
@@ -466,6 +484,9 @@ and open the template in the editor.
 }
 .agr-desktop-menu-btn:hover, .agr-nav-back-btn:hover {
     cursor: pointer;
+}
+.agr-menu-catalog-group-link {
+    background: transparent;
 }
 .agr-menu-catalog-group-link:hover {
     cursor: pointer;
