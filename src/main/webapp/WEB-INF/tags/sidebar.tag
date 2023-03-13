@@ -59,6 +59,11 @@
                 </div>
             </div>
         </div>
+        <div class="d-flex w-100 align-items-center justify-content-center">
+            <div class="text-center p-3">
+                &copy; <strong>Агролавка</strong>. Все права защищены
+            </div>
+        </div>
     </div>
 </nav>
 
