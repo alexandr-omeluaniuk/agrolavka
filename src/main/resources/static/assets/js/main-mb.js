@@ -275,6 +275,10 @@
         if (addToCartBtn) {
             addToCartBtn.setAttribute('data-volume-price', price);
         }
+        const removeFromCartBtn = container.querySelector('button[data-remove]');
+        if (removeFromCartBtn) {
+            removeFromCartBtn.setAttribute('data-volume-price', price);
+        }
         const buyNowBtn = container.querySelector('button[data-order]');
         if (buyNowBtn) {
             buyNowBtn.setAttribute('data-volume-price', price);

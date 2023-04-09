@@ -65,7 +65,11 @@
                     </c:if>
                     <span class="mt-4 fw-bold ${not empty position.product.discount ? 'text-decoration-line-through text-muted' : 'text-dark'}">
                         <%
-                            String price = String.format("%.2f", position.getProduct() != null ? position.getProduct().getPrice() : position.getPrice());
+                            Double priceVal = position.getPrice();
+                            if (position.getProduct() != null && position.getProduct().getVolumes() == null) {
+                                priceVal = position.getProduct().getPrice();
+                            }
+                            String price = String.format("%.2f", priceVal);
                             String[] parts = price.split("\\.");
                             out.print(parts[0] + ".");
                             out.print("<small>" + parts[1] + "</small>");
