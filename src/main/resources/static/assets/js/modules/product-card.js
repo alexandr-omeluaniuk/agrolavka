@@ -100,4 +100,113 @@ const addToCartConfirmListener = (evt, button) => {
     form.classList.add('was-validated');
 };
 
-export { addToCartListener, removeFromCartListener, addToCartConfirmListener };
+const orderOneClickButtonListener = (evt, button) => {
+    evt.preventDefault();
+    evt.stopPropagation();
+    const productId = button.getAttribute('data-product-id');
+    const volumePrice = button.getAttribute('data-volume-price');
+    const modalElement = document.getElementById('agr-one-click-order-modal');
+    modalElement.querySelector('input[name="productId"]').value = productId;
+    modalElement.querySelector('input[name="volumePrice"]').value = volumePrice;
+    modalElement.querySelector('input[name="quantity"]').value = 1;
+    const confirmButton = modalElement.querySelector('button[data-one-click-order]');
+    confirmButton.removeAttribute('disabled');
+    confirmButton.querySelector('.spinner-border').classList.add('d-none');
+    const modal = new mdb.Modal(modalElement, {});
+    modal.toggle();
+    setTimeout(() => {
+        modalElement.querySelector('input[name="phone"]').focus();
+    }, 500);
+};
+
+const orderOneClickConfirmButtonListener = (evt, button) => {
+    var form = button.closest('.modal-content').querySelector('form');
+    if (!form.checkValidity()) {
+        evt.preventDefault();
+        evt.stopPropagation();
+    } else {
+        button.setAttribute('disabled', 'true');
+        const formData = {};
+        form.querySelectorAll("input").forEach(input => {
+            formData[input.getAttribute("name")] = input.value;
+        });
+        button.querySelector('.spinner-border').classList.remove('d-none');
+        fetch('/api/agrolavka/public/order/one-click', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+        }).then(function (response) {
+            if (response.ok) {
+                response.json().then(json => {
+                    const modalElement = document.getElementById('agr-one-click-order-modal');
+                    modalElement.querySelector('button[data-mdb-dismiss]').click();
+                    const toast = document.querySelector('#agr-one-click-order-success');
+                    toast.style.display = 'block';
+                    toast.classList.add('show');
+                    setTimeout(() => {
+                        toast.classList.remove('show');
+                        setTimeout(() => {
+                            toast.style.display = 'none';
+                        });
+                    }, 2000);
+                });
+            }
+        }).catch(error => {
+            console.error('HTTP error occurred: ' + error);
+        });
+    }
+    form.classList.add('was-validated');
+};
+
+const productVolumeClickListener = (evt, btn) => {
+    evt.preventDefault();
+    evt.stopPropagation();
+    btn.closest('.btn-group').querySelectorAll('button').forEach(b => {
+        b.classList.add("btn-outline-info");
+        b.classList.remove("btn-info");
+    });
+    btn.classList.remove("btn-outline-info");
+    btn.classList.add("btn-info");
+    const price = btn.getAttribute("data-product-volume-price");
+    const priceBig = parseFloat(price).toFixed(2).split('.')[0];
+    const priceSmall = parseFloat(price).toFixed(2).split('.')[1];
+    let container = btn.closest('.card');
+    if (!container) {
+        container = btn.closest('.row');
+    }
+    container.querySelector('.agr-price').innerHTML = priceBig + ".<small>" + priceSmall
+            + '</small> <small class="text-muted">BYN</small>';
+    const addToCartBtn = container.querySelector('button[data-add]');
+    if (addToCartBtn) {
+        addToCartBtn.setAttribute('data-volume-price', price);
+    }
+    const removeFromCartBtn = container.querySelector('button[data-remove]');
+    if (removeFromCartBtn) {
+        removeFromCartBtn.setAttribute('data-volume-price', price);
+    }
+    const buyNowBtn = container.querySelector('button[data-order]');
+    if (buyNowBtn) {
+        buyNowBtn.setAttribute('data-volume-price', price);
+    }
+};
+
+const photoClickListener = (evt, image) => {
+    evt.preventDefault();
+    evt.stopPropagation();
+    const modalElement = document.getElementById('agr-photo-modal');
+    const modal = new mdb.Modal(modalElement, {});
+    modal.toggle();
+};
+
+export { 
+    addToCartListener, 
+    removeFromCartListener, 
+    addToCartConfirmListener, 
+    orderOneClickButtonListener,
+    orderOneClickConfirmButtonListener,
+    productVolumeClickListener,
+    photoClickListener
+};
