@@ -68,9 +68,9 @@
         <link href="/favicon.svg?" rel="icon">
         <link href="/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
         
-        <link rel= "preconnect" href="https://kit.fontawesome.com" />
-        <link rel= "preconnect" href="https://fonts.googleapis.com" />
-        <link rel= "preconnect" href="https://cdnjs.cloudflare.com" />
+        <link rel="preconnect" href="https://kit.fontawesome.com" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
 
         <!-- Vendor CSS Files -->
         <script src="https://kit.fontawesome.com/c4a406170c.js" crossorigin="anonymous" async></script>

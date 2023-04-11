@@ -32,14 +32,14 @@ import { handleNavigationEvent } from "./modules/navigation.js";
         handleCartChangeEvent(evt);
     }, true);
     
-    const navBar = document.querySelector('#agr-navbar');
-    document.querySelectorAll('.nav-link', navBar).forEach(navLink => {
-        navLink.addEventListener('click', function () {
-            if (navBar.classList.contains('show')) {
-                document.querySelector('button[data-mdb-target="#agr-navbar"]').click();
-            }
-        });
-    });
+//    const navBar = document.querySelector('#agr-navbar');
+//    document.querySelectorAll('.nav-link', navBar).forEach(navLink => {
+//        navLink.addEventListener('click', function () {
+//            if (navBar.classList.contains('show')) {
+//                document.querySelector('button[data-mdb-target="#agr-navbar"]').click();
+//            }
+//        });
+//    });
     
     /**
      * Fix for a bug with backdrop for photo-slider-modal in the product card.
