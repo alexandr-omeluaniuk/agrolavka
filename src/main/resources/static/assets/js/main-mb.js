@@ -10,32 +10,25 @@ import { handleCartClickEvent, handleCartChangeEvent } from './modules/cart.js';
 import { initScrollEvents} from './modules/scroll-events.js';
 import { handleMenuEvent } from './modules/menu.js';
 import { handleProductCardEvent } from "./modules/product-card.js";
+import { handleNavigationEvent } from "./modules/navigation.js";
 
 (function () {
     "use strict";
 
     initScrollEvents();
+    const body = document.querySelector('body');
     
-    document.querySelector('body').addEventListener('click', function(evt) {
-        const modal = evt.target.closest('#agr-photo-modal');
-        if (modal) {
-            if (!evt.target.classList.contains('btn-close') 
-                    && !evt.target.classList.contains('swiper-button-next')
-                    && !evt.target.classList.contains('swiper-button-prev')) {
-                evt.stopPropagation();
-                return;
-            }
+    body.addEventListener('click', function(evt) {
+        if (preventModalEventOnDemand(evt)) {
+            return;
         }
-        const agrNavBackBtn = evt.target.closest('.agr-nav-back-btn');
-        if (agrNavBackBtn) {
-            navBackBtnClick(evt, agrNavBackBtn);
-        }
+        handleNavigationEvent(evt);
         handleMenuEvent(evt);
         handleProductCardEvent(evt);
         handleCartClickEvent(evt);
     }, true);
     
-    document.querySelector('body').addEventListener('change', function(evt) {
+    body.addEventListener('change', function(evt) {
         handleCartChangeEvent(evt);
     }, true);
     
@@ -48,16 +41,19 @@ import { handleProductCardEvent } from "./modules/product-card.js";
         });
     });
     
-    var navBackBtnClick = function(evt, button) {
-        const lastCatalogLink = document.querySelector('#agr-last-catalog-link');
-        if (lastCatalogLink) {
-            lastCatalogLink.click();
-        } else if (window.location.pathname === '/catalog') {
-            window.location.href = '/';
-        } else {
-            window.location.href = '/catalog';
+    /**
+     * Fix for a bug with backdrop for photo-slider-modal in the product card.
+     */
+    const preventModalEventOnDemand = (evt) => {
+        const modal = evt.target.closest('#agr-photo-modal');
+        if (modal) {
+            if (!evt.target.classList.contains('btn-close') 
+                    && !evt.target.classList.contains('swiper-button-next')
+                    && !evt.target.classList.contains('swiper-button-prev')) {
+                evt.stopPropagation();
+                return true;
+            }
         }
     };
-    
 })();
 
