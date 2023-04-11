@@ -15,11 +15,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-const handleEvent = (evt, selector, listener) => {
+const addElementEvent = (evt, selector, listener) => {
     const element = evt.target.closest(selector);
     if (element) {
         listener(evt, element);
     }
 };
 
-export { handleEvent };
+export { addElementEvent };

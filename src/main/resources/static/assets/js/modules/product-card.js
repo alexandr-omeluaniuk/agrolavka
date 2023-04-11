@@ -18,6 +18,7 @@
 /* global mdb */
 
 import { updateCartTotal } from './cart.js';
+import { addElementEvent } from './util-functions.js';
 
 const addToCartListener = (evt, button) => {
     evt.preventDefault();
@@ -202,11 +203,11 @@ const photoClickListener = (evt, image) => {
 };
 
 export const handleProductCardEvent = (evt) => {
-    handleEvent(evt, "[data-product-id][data-add]", addToCartListener);
-    handleEvent(evt, "[data-product-id][data-remove]", removeFromCartListener);
-    handleEvent(evt, "[data-add-to-cart-confirm]", addToCartConfirmListener);
-    handleEvent(evt, "[data-product-id][data-order]", orderOneClickButtonListener);
-    handleEvent(evt, "button[data-one-click-order]", orderOneClickConfirmButtonListener);
-    handleEvent(evt, ".agr-volume-btn", productVolumeClickListener);
-    handleEvent(evt, ".agr-product-image-carousel", photoClickListener);
+    addElementEvent(evt, "[data-product-id][data-add]", addToCartListener);
+    addElementEvent(evt, "[data-product-id][data-remove]", removeFromCartListener);
+    addElementEvent(evt, "[data-add-to-cart-confirm]", addToCartConfirmListener);
+    addElementEvent(evt, "[data-product-id][data-order]", orderOneClickButtonListener);
+    addElementEvent(evt, "button[data-one-click-order]", orderOneClickConfirmButtonListener);
+    addElementEvent(evt, ".agr-volume-btn", productVolumeClickListener);
+    addElementEvent(evt, ".agr-product-image-carousel", photoClickListener);
 };

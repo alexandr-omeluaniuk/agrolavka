@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export { handleEvent } from './utils.js';
+import { addElementEvent } from './util-functions.js';
 
 const openMobileMenu = (evt, element) => {
     evt.stopPropagation();
@@ -43,9 +43,9 @@ const closeMobileMenu = (evt, element) => {
 };
 
 export const handleMenuEvent = (evt) => {
-    handleEvent(evt, ".agr-mobile-menu-link", closeMobileMenu);
-    handleEvent(evt, ".agr-mobile-menu-btn", openMobileMenu);
-    handleEvent(evt, ".agr-desktop-menu-btn", openMobileMenu);
-    handleEvent(evt, ".agr-mobile-menu-close-btn", closeMobileMenu);
-    handleEvent(evt, ".agr-backdrop", closeMobileMenu);
+    addElementEvent(evt, ".agr-mobile-menu-link", closeMobileMenu);
+    addElementEvent(evt, ".agr-mobile-menu-btn", openMobileMenu);
+    addElementEvent(evt, ".agr-desktop-menu-btn", openMobileMenu);
+    addElementEvent(evt, ".agr-mobile-menu-close-btn", closeMobileMenu);
+    addElementEvent(evt, ".agr-backdrop", closeMobileMenu);
 };

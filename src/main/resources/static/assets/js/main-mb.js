@@ -6,10 +6,10 @@
 
 /* global parseFloat, fetch, mdb */
 
-import { handleProductCardEvent } from "./modules/product-card.js";
 import { updateCartTotal } from './modules/cart.js';
 import { initScrollEvents} from './modules/scroll-events.js';
 import { handleMenuEvent } from './modules/menu.js';
+import { handleProductCardEvent } from "./modules/product-card.js";
 
 (function () {
     "use strict";
