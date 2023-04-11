@@ -6,7 +6,7 @@
 
 /* global parseFloat, fetch, mdb */
 
-import { updateCartTotal } from './modules/cart.js';
+import { handleCartClickEvent, handleCartChangeEvent } from './modules/cart.js';
 import { initScrollEvents} from './modules/scroll-events.js';
 import { handleMenuEvent } from './modules/menu.js';
 import { handleProductCardEvent } from "./modules/product-card.js";
@@ -32,30 +32,11 @@ import { handleProductCardEvent } from "./modules/product-card.js";
         }
         handleMenuEvent(evt);
         handleProductCardEvent(evt);
-        
-        const cartRemoveProductBtn = evt.target.closest("[data-product-id][data-remove-product-from-cart]");
-        if (cartRemoveProductBtn) {
-            cartRemoveProductListener(evt, cartRemoveProductBtn);
-        }
-        const cartQuantityPlusBtn = evt.target.closest("[data-product-quantity-plus]");
-        if (cartQuantityPlusBtn) {
-            const input = cartQuantityPlusBtn.closest("div").querySelector("[data-product-quantity]");
-            input.value = parseInt(input.value) + 1;
-            cartProductQuantityChangeListener(evt, input);
-        }
-        const cartQuantityMinusBtn = evt.target.closest("[data-product-quantity-minus]");
-        if (cartQuantityMinusBtn) {
-            const input = cartQuantityMinusBtn.closest("div").querySelector("[data-product-quantity]");
-            input.value = parseInt(input.value) > 1 ? parseInt(input.value) - 1 : parseInt(input.value);
-            cartProductQuantityChangeListener(evt, input);
-        }
+        handleCartClickEvent(evt);
     }, true);
     
     document.querySelector('body').addEventListener('change', function(evt) {
-        const cartProductQuantityInput = evt.target.closest("[data-product-id][data-product-quantity]");
-        if (cartProductQuantityInput) {
-            cartProductQuantityChangeListener(evt, cartProductQuantityInput);
-        }
+        handleCartChangeEvent(evt);
     }, true);
     
     const navBar = document.querySelector('#agr-navbar');
@@ -76,49 +57,6 @@ import { handleProductCardEvent } from "./modules/product-card.js";
         } else {
             window.location.href = '/catalog';
         }
-    };
-    
-    var cartRemoveProductListener = function (evt, button) {
-        button.setAttribute('disabled', 'true');
-        fetch('/api/agrolavka/public/cart/' + button.getAttribute('data-product-id'), {
-            method: 'DELETE',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            }
-        }).then(function (response) {
-            if (response.ok) {
-                response.json().then(cart => {
-                    button.closest(".card").remove();
-                    
-                    updateCartTotal(cart);
-                });
-            }
-        }).catch(error => {
-            console.error('HTTP error occurred: ' + error);
-        });
-    };
-    
-    var cartProductQuantityChangeListener = function (evt, input) {
-        let quantity = input.value;
-        quantity = Math.round(quantity);
-        input.value = quantity;
-        const productId = input.getAttribute('data-product-id');
-        fetch('/api/agrolavka/public/cart/quantity/' + productId + '/' + quantity, {
-            method: 'PUT',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            }
-        }).then(function (response) {
-            if (response.ok) {
-                response.json().then(cart => {
-                    updateCartTotal(cart);
-                });
-            }
-        }).catch(error => {
-            console.error('HTTP error occurred: ' + error);
-        });
     };
     
 })();
