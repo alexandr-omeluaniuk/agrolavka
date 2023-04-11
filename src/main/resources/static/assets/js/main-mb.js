@@ -113,10 +113,6 @@ import {
             input.value = parseInt(input.value) > 1 ? parseInt(input.value) - 1 : parseInt(input.value);
             cartProductQuantityChangeListener(evt, input);
         }
-        const productPhoto = evt.target.closest(".agr-product-photos");
-        if (productPhoto) {
-            selectProductPhotoListener(evt, productPhoto);
-        }
     }, true);
     
     document.querySelector('body').addEventListener('change', function(evt) {
@@ -187,19 +183,6 @@ import {
         }).catch(error => {
             console.error('HTTP error occurred: ' + error);
         });
-    };
-    
-    var selectProductPhotoListener = function (evt, productPhoto) {
-        evt.preventDefault();
-        evt.stopPropagation();
-        const photoUrl = productPhoto.style.backgroundImage;
-        const card = productPhoto.closest('.card');
-        card.querySelectorAll('.agr-product-photos').forEach(item => {
-            item.classList.remove('agr-photo-active');
-        });
-        productPhoto.classList.add('agr-photo-active');
-        const cardPhoto = card.querySelector('.agr-card-image');
-        cardPhoto.style.backgroundImage = photoUrl;
     };
     
     var openMobileMenu = function () {
