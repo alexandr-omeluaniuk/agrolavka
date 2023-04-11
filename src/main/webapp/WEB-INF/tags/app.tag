@@ -98,6 +98,7 @@
         <script type="module" src="/assets/js/main-mb.js?v=18"></script>
         <script type="module" src="/assets/js/modules/product-card.js?v=1"></script>
         <script type="module" src="/assets/js/modules/cart.js?v=1"></script>
+        <script type="module" src="/assets/js/modules/scroll-events.js?v=1"></script>
     </body>
 
 </html>

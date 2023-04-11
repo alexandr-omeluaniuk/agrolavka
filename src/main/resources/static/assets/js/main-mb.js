@@ -18,6 +18,9 @@ import {
 import {
     updateCartTotal
 } from './modules/cart.js';
+import {
+    initScrollEvents
+} from './modules/scroll-events.js';
 
 (function () {
     "use strict";
@@ -29,32 +32,7 @@ import {
         }
     };
 
-    let previuosScrollPosition = null;
-    document.addEventListener('scroll', function () {
-        const topNavbar = document.querySelector('.arg-top-navbar');
-        let currentScrollDirection = null;
-        if (previuosScrollPosition !== null) {
-            if (previuosScrollPosition > window.scrollY) {
-                currentScrollDirection = 'UP';
-            } else if (previuosScrollPosition < window.scrollY) {
-                currentScrollDirection = 'DOWN';
-            }
-        }
-        if (window.scrollY < 80 || currentScrollDirection === 'UP') {
-            topNavbar.style.display = 'block';
-            topNavbar.style.opacity = 1;
-            topNavbar.style.height = '41px';
-        } else if (currentScrollDirection === 'DOWN') {
-            topNavbar.style.opacity = 0;
-            topNavbar.style.height = 0;
-            setTimeout(() => {
-                if (topNavbar.style.height === 0 || topNavbar.style.height === '0px') {
-                    topNavbar.style.display = 'none';
-                }
-            }, 300);
-        }
-        previuosScrollPosition = window.scrollY;
-    });
+    initScrollEvents();
     
     document.querySelector('body').addEventListener('click', function(evt) {
         const modal = evt.target.closest('#agr-photo-modal');
