@@ -201,12 +201,12 @@ const photoClickListener = (evt, image) => {
     modal.toggle();
 };
 
-export { 
-    addToCartListener, 
-    removeFromCartListener, 
-    addToCartConfirmListener, 
-    orderOneClickButtonListener,
-    orderOneClickConfirmButtonListener,
-    productVolumeClickListener,
-    photoClickListener
+export const handleProductCardEvent = (evt) => {
+    handleEvent(evt, "[data-product-id][data-add]", addToCartListener);
+    handleEvent(evt, "[data-product-id][data-remove]", removeFromCartListener);
+    handleEvent(evt, "[data-add-to-cart-confirm]", addToCartConfirmListener);
+    handleEvent(evt, "[data-product-id][data-order]", orderOneClickButtonListener);
+    handleEvent(evt, "button[data-one-click-order]", orderOneClickConfirmButtonListener);
+    handleEvent(evt, ".agr-volume-btn", productVolumeClickListener);
+    handleEvent(evt, ".agr-product-image-carousel", photoClickListener);
 };

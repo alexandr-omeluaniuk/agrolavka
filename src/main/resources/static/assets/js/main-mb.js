@@ -6,31 +6,13 @@
 
 /* global parseFloat, fetch, mdb */
 
-import { 
-    addToCartListener,
-    removeFromCartListener,
-    addToCartConfirmListener,
-    orderOneClickButtonListener,
-    orderOneClickConfirmButtonListener,
-    productVolumeClickListener,
-    photoClickListener
-} from "./modules/product-card.js";
-import {
-    updateCartTotal
-} from './modules/cart.js';
-import {
-    initScrollEvents
-} from './modules/scroll-events.js';
+import { handleProductCardEvent } from "./modules/product-card.js";
+import { updateCartTotal } from './modules/cart.js';
+import { initScrollEvents} from './modules/scroll-events.js';
+import { handleMenuEvent } from './modules/menu.js';
 
 (function () {
     "use strict";
-    
-    const handleEvent = (evt, selector, listener) => {
-        const element = evt.target.closest(selector);
-        if (element) {
-            listener(evt, element);
-        }
-    };
 
     initScrollEvents();
     
@@ -44,36 +26,12 @@ import {
                 return;
             }
         }
-        const mobileNavbarLink = evt.target.closest('.agr-mobile-menu-link');
-        if (mobileNavbarLink) {
-            evt.stopPropagation();
-            closeMobileMenu();
-        }
-        const agrMobileMenuBtn = evt.target.closest('.agr-mobile-menu-btn');
-        if (agrMobileMenuBtn) {
-            openMobileMenu();
-        }
-        const agrDesktopMenuBtn = evt.target.closest('.agr-desktop-menu-btn');
-        if (agrDesktopMenuBtn) {
-            openMobileMenu();
-        }
         const agrNavBackBtn = evt.target.closest('.agr-nav-back-btn');
         if (agrNavBackBtn) {
             navBackBtnClick(evt, agrNavBackBtn);
         }
-        const agrMobileMenuCloseBtn = evt.target.closest('.agr-mobile-menu-close-btn');
-        const agrBackdrop = evt.target.closest('.agr-backdrop');
-        if (agrMobileMenuCloseBtn || agrBackdrop) {
-            closeMobileMenu();
-        }
-        // product card listeners
-        handleEvent(evt, "[data-product-id][data-add]", addToCartListener);
-        handleEvent(evt, "[data-product-id][data-remove]", removeFromCartListener);
-        handleEvent(evt, "[data-add-to-cart-confirm]", addToCartConfirmListener);
-        handleEvent(evt, "[data-product-id][data-order]", orderOneClickButtonListener);
-        handleEvent(evt, "button[data-one-click-order]", orderOneClickConfirmButtonListener);
-        handleEvent(evt, ".agr-volume-btn", productVolumeClickListener);
-        handleEvent(evt, ".agr-product-image-carousel", photoClickListener);
+        handleMenuEvent(evt);
+        handleProductCardEvent(evt);
         
         const cartRemoveProductBtn = evt.target.closest("[data-product-id][data-remove-product-from-cart]");
         if (cartRemoveProductBtn) {
@@ -163,26 +121,5 @@ import {
         });
     };
     
-    var openMobileMenu = function () {
-        const sidebar = document.querySelector('.agr-menu-sidebar');
-        const body = document.querySelector('body');
-        const backdrop = document.querySelector('.agr-backdrop');
-        backdrop.classList.add('open-it');
-        backdrop.classList.remove('close-it');
-        body.classList.add('agr-body-freeze');
-        sidebar.classList.remove('close-it');
-        sidebar.classList.add('open-it');
-    };
-    var closeMobileMenu = function () {
-        const sidebar = document.querySelector('.agr-menu-sidebar');
-        const body = document.querySelector('body');
-        const backdrop = document.querySelector('.agr-backdrop');
-        backdrop.classList.remove('open-it');
-        backdrop.classList.add('close-it');
-        body.classList.remove('agr-body-freeze');
-        sidebar.classList.remove('open-it');
-        sidebar.classList.add('close-it');
-        setTimeout(() => backdrop.classList.remove('close-it'), 350);
-    };
 })();
 
