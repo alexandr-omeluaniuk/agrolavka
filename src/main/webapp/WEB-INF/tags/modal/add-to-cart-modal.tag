@@ -21,7 +21,6 @@
                 <form>
                     <input type="number" class="form-control" placeholder="Количество" name="quantity" min="1" required>
                     <input name="productId" hidden required>
-                    <input name="volumePrice" hidden>
                 </form>
             </div>
             <div class="modal-footer d-flex justify-content-between">

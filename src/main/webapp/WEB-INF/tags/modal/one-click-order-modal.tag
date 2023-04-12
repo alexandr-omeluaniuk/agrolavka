@@ -27,7 +27,7 @@
                     <label for="agr-form-quantity" class="form-label">Количество</label>
                     <input type="number" id="agr-form-quantity" class="form-control" placeholder="Количество" name="quantity" min="1" required>
                     <input name="productId" hidden required>
-                    <input name="volumePrice" hidden>
+                    <!--input name="volumePrice" hidden-->
                 </form>
             </div>
             <div class="modal-footer d-flex justify-content-between">

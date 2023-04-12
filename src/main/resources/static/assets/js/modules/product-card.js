@@ -25,13 +25,34 @@ const addToCartListener = (evt, button) => {
     evt.stopPropagation();
     const modalElement = document.getElementById('agr-add-to-cart-modal');
     modalElement.cartButton = button;
-    modalElement.querySelector('input[name="productId"]').value = button.getAttribute('data-product-id');
-    modalElement.querySelector('input[name="volumePrice"]').value = button.getAttribute("data-volume-price");
-    modalElement.querySelector('input[name="quantity"]').value = 1;
+    const fieldProductId = modalElement.querySelector('input[name="productId"]');
+    const fieldQuantity = modalElement.querySelector('input[name="quantity"]');
+    fieldProductId.value = button.getAttribute('data-product-id');
+    const volumes = button.getAttribute('data-volumes');
+    if (volumes) {
+        fieldQuantity.setAttribute("step", ".1");
+        try {
+            const pricesList = JSON.parse(volumes.replaceAll("'", '"'));
+            const minVolume = pricesList.reduce((prev, curr) => {
+                return prev.v.replace('л', '') < curr.v.replace('л', '') ? prev : curr;
+            });
+            fieldQuantity.setAttribute("min", minVolume.v.replace('л', ''));
+            fieldQuantity.value = button.closest('div')
+                .querySelector('[aria-label="Volumes"]')
+                .querySelector('.btn-info')
+                .innerHTML.replace('л', '').replace(',', '.');
+        } catch (e) {
+            console.warn(e);
+        }
+    } else {
+        fieldQuantity.removeAttribute("step");
+        fieldQuantity.setAttribute("min", "1");
+        fieldQuantity.value = 1;
+    }
     const modal = new mdb.Modal(modalElement, {});
     modal.toggle();
     setTimeout(() => {
-        modalElement.querySelector('input[name="quantity"]').focus();
+        fieldQuantity.focus();
     }, 500);
 };
 
@@ -105,10 +126,10 @@ const orderOneClickButtonListener = (evt, button) => {
     evt.preventDefault();
     evt.stopPropagation();
     const productId = button.getAttribute('data-product-id');
-    const volumePrice = button.getAttribute('data-volume-price');
+//    const volumePrice = button.getAttribute('data-volume-price');
     const modalElement = document.getElementById('agr-one-click-order-modal');
     modalElement.querySelector('input[name="productId"]').value = productId;
-    modalElement.querySelector('input[name="volumePrice"]').value = volumePrice;
+//    modalElement.querySelector('input[name="volumePrice"]').value = volumePrice;
     modalElement.querySelector('input[name="quantity"]').value = 1;
     const confirmButton = modalElement.querySelector('button[data-one-click-order]');
     confirmButton.removeAttribute('disabled');
@@ -180,18 +201,18 @@ const productVolumeClickListener = (evt, btn) => {
     }
     container.querySelector('.agr-price').innerHTML = priceBig + ".<small>" + priceSmall
             + '</small> <small class="text-muted">BYN</small>';
-    const addToCartBtn = container.querySelector('button[data-add]');
-    if (addToCartBtn) {
-        addToCartBtn.setAttribute('data-volume-price', price);
-    }
-    const removeFromCartBtn = container.querySelector('button[data-remove]');
-    if (removeFromCartBtn) {
-        removeFromCartBtn.setAttribute('data-volume-price', price);
-    }
-    const buyNowBtn = container.querySelector('button[data-order]');
-    if (buyNowBtn) {
-        buyNowBtn.setAttribute('data-volume-price', price);
-    }
+//    const addToCartBtn = container.querySelector('button[data-add]');
+//    if (addToCartBtn) {
+//        addToCartBtn.setAttribute('data-volume-price', price);
+//    }
+//    const removeFromCartBtn = container.querySelector('button[data-remove]');
+//    if (removeFromCartBtn) {
+//        removeFromCartBtn.setAttribute('data-volume-price', price);
+//    }
+//    const buyNowBtn = container.querySelector('button[data-order]');
+//    if (buyNowBtn) {
+//        buyNowBtn.setAttribute('data-volume-price', price);
+//    }
 };
 
 const photoClickListener = (evt, image) => {
