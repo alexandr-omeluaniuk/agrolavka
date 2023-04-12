@@ -19,7 +19,10 @@
             </div>
             <div class="modal-body">
                 <form>
-                    <input type="number" class="form-control" placeholder="Количество" name="quantity" min="1" required>
+                    <div class="input-group">
+                        <input type="number" class="form-control" placeholder="Количество" name="quantity" min="1" required aria-describedby="quantity-type">
+                        <span class="input-group-text" id="quantity-type">шт.</span>
+                    </div>
                     <input name="productId" hidden required>
                 </form>
             </div>

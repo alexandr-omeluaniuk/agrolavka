@@ -225,6 +225,8 @@ const modifyQuantityField = (volumes, fieldQuantity, button) => {
         fieldQuantity.setAttribute("min", "1");
         fieldQuantity.value = 1;
     }
+    const quantityType = fieldQuantity.closest('div').querySelector('span');
+    quantityType.innerHTML = volumes ? 'литр.' : 'шт.';
 };
 
 export const handleProductCardEvent = (evt) => {

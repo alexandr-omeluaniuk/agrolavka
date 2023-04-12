@@ -25,7 +25,10 @@
                            id="order-mobile" name="phone">
                     </div>
                     <label for="agr-form-quantity" class="form-label">Количество</label>
-                    <input type="number" id="agr-form-quantity" class="form-control" placeholder="Количество" name="quantity" min="1" required>
+                    <div class="input-group">
+                        <input type="number" id="agr-form-quantity" class="form-control" placeholder="Количество" name="quantity" min="1" required>
+                        <span class="input-group-text" id="quantity-type">шт.</span>
+                    </div>
                     <input name="productId" hidden required>
                     <!--input name="volumePrice" hidden-->
                 </form>
