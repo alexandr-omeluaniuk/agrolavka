@@ -29,26 +29,7 @@ const addToCartListener = (evt, button) => {
     const fieldQuantity = modalElement.querySelector('input[name="quantity"]');
     fieldProductId.value = button.getAttribute('data-product-id');
     const volumes = button.getAttribute('data-volumes');
-    if (volumes) {
-        fieldQuantity.setAttribute("step", ".1");
-        try {
-            const pricesList = JSON.parse(volumes.replaceAll("'", '"'));
-            const minVolume = pricesList.reduce((prev, curr) => {
-                return prev.v.replace('л', '') < curr.v.replace('л', '') ? prev : curr;
-            });
-            fieldQuantity.setAttribute("min", minVolume.v.replace('л', ''));
-            fieldQuantity.value = button.closest('div')
-                .querySelector('[aria-label="Volumes"]')
-                .querySelector('.btn-info')
-                .innerHTML.replace('л', '').replace(',', '.');
-        } catch (e) {
-            console.warn(e);
-        }
-    } else {
-        fieldQuantity.removeAttribute("step");
-        fieldQuantity.setAttribute("min", "1");
-        fieldQuantity.value = 1;
-    }
+    modifyQuantityField(volumes, fieldQuantity, button);
     const modal = new mdb.Modal(modalElement, {});
     modal.toggle();
     setTimeout(() => {
@@ -126,11 +107,11 @@ const orderOneClickButtonListener = (evt, button) => {
     evt.preventDefault();
     evt.stopPropagation();
     const productId = button.getAttribute('data-product-id');
-//    const volumePrice = button.getAttribute('data-volume-price');
     const modalElement = document.getElementById('agr-one-click-order-modal');
     modalElement.querySelector('input[name="productId"]').value = productId;
-//    modalElement.querySelector('input[name="volumePrice"]').value = volumePrice;
-    modalElement.querySelector('input[name="quantity"]').value = 1;
+    const fieldQuantity = modalElement.querySelector('input[name="quantity"]');
+    const volumes = button.getAttribute('data-volumes');
+    modifyQuantityField(volumes, fieldQuantity, button);
     const confirmButton = modalElement.querySelector('button[data-one-click-order]');
     confirmButton.removeAttribute('disabled');
     confirmButton.querySelector('.spinner-border').classList.add('d-none');
@@ -221,6 +202,29 @@ const photoClickListener = (evt, image) => {
     const modalElement = document.getElementById('agr-photo-modal');
     const modal = new mdb.Modal(modalElement, {});
     modal.toggle();
+};
+
+const modifyQuantityField = (volumes, fieldQuantity, button) => {
+    if (volumes) {
+        fieldQuantity.setAttribute("step", ".1");
+        try {
+            const pricesList = JSON.parse(volumes.replaceAll("'", '"'));
+            const minVolume = pricesList.reduce((prev, curr) => {
+                return prev.v.replace('л', '') < curr.v.replace('л', '') ? prev : curr;
+            });
+            fieldQuantity.setAttribute("min", minVolume.v.replace('л', ''));
+            fieldQuantity.value = button.closest('div')
+                .querySelector('[aria-label="Volumes"]')
+                .querySelector('.btn-info')
+                .innerHTML.replace('л', '').replace(',', '.');
+        } catch (e) {
+            console.warn(e);
+        }
+    } else {
+        fieldQuantity.removeAttribute("step");
+        fieldQuantity.setAttribute("min", "1");
+        fieldQuantity.value = 1;
+    }
 };
 
 export const handleProductCardEvent = (evt) => {
