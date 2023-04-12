@@ -29,8 +29,9 @@
 %>
 
 <%
-    final String volumes = product.getVolumes().replace("\"", "'");
+    String volumes = "";
     if (product.getVolumes() != null) {
+        volumes = product.getVolumes().replace("\"", "'");
 %>
     <t:product-volumes product="${product}" buttonClass="${buttonClass}"></t:product-volumes>
 <%
