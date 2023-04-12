@@ -77,7 +77,7 @@ public class OrderRESTController {
      * @throws Exception error.
      */
     @RequestMapping(value = "/positions/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Set<OrderPosition> getPositions(@PathVariable("id") Long id) throws Exception {
+    public List<OrderPosition> getPositions(@PathVariable("id") Long id) throws Exception {
         Order order = coreDAO.findById(id, Order.class);
         for (OrderPosition pos : order.getPositions()) {
             pos.setProduct(coreDAO.findById(pos.getProductId(), Product.class));

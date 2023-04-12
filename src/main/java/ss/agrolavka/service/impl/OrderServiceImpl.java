@@ -16,11 +16,14 @@
  */
 package ss.agrolavka.service.impl;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -89,19 +92,22 @@ class OrderServiceImpl implements OrderService {
     @Override
     public Order createOneClickOrder(final OneClickOrderWrapper orderDetails) throws Exception {
         final Product product = coreDAO.findById(orderDetails.getProductId(), Product.class);
-        final OrderPosition position = new OrderPosition();
-        position.setQuantity(orderDetails.getQuantity());
-        position.setProduct(product);
-        position.setProductId(orderDetails.getProductId());
-        position.setPrice(PriceCalculator.caluclatePrice(product, position.getQuantity()));
-        final Double total = position.getQuantity() * position.getPrice();
+        final List<OrderPosition> positions = new ArrayList<>();
+        PriceCalculator.breakQuantityByVolume(product, orderDetails.getQuantity()).forEach((price, quantity) -> {
+            final OrderPosition position = new OrderPosition();
+            position.setQuantity(quantity);
+            position.setProduct(product);
+            position.setProductId(orderDetails.getProductId());
+            position.setPrice(price);
+        });
+        final Double total = positions.stream().map(pos -> pos.getQuantity() * pos.getPrice()).reduce(0d, Double::sum);
         final Order order = new Order();
         order.setPhone(orderDetails.getPhone());
         order.setCreated(new Date());
         order.setStatus(OrderStatus.WAITING_FOR_APPROVAL);
-        order.setPositions(new HashSet<>(Collections.singletonList(position)));
+        order.setPositions(positions);
         order.setOneClick(true);
-        position.setOrder(order);
+        positions.forEach(position -> position.setOrder(order));
         final Order savedOrder = coreDAO.create(order);
         sendNotification(savedOrder, total);
         return order;
@@ -112,7 +118,7 @@ class OrderServiceImpl implements OrderService {
         Order order = (Order) request.getSession(true).getAttribute(SiteConstants.CART_SESSION_ATTRIBUTE);
         if (order == null) {
             order = new Order();
-            order.setPositions(new HashSet<>());
+            order.setPositions(Collections.emptyList());
             request.getSession().setAttribute(SiteConstants.CART_SESSION_ATTRIBUTE, order);
         }
         return order;
@@ -123,13 +129,15 @@ class OrderServiceImpl implements OrderService {
         Product product = coreDAO.findById(cartProduct.getProductId(), Product.class);
         final Order order = getCurrentOrder(request);
         if (product != null) {
-            OrderPosition position = new OrderPosition();
-            position.setOrder(order);
-            position.setQuantity(cartProduct.getQuantity());
-            position.setPrice(PriceCalculator.caluclatePrice(product, position.getQuantity()));
-            position.setProduct(product);
-            position.setProductId(product.getId());
-            order.getPositions().add(position);
+            PriceCalculator.breakQuantityByVolume(product, cartProduct.getQuantity()).forEach((price, quantity) -> {
+                OrderPosition position = new OrderPosition();
+                position.setOrder(order);
+                position.setQuantity(quantity);
+                position.setPrice(price);
+                position.setProduct(product);
+                position.setProductId(product.getId());
+                order.getPositions().add(position);
+            });
             request.getSession().setAttribute(SiteConstants.CART_SESSION_ATTRIBUTE, order);
         }
         return order;

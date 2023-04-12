@@ -19,6 +19,7 @@ package ss.agrolavka.service;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
+import java.util.ArrayList;
 import java.util.HashSet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -44,7 +45,7 @@ public class OrderDocumentServiceTest {
         // Given
         final Order order = new Order();
         order.setId(1234L);
-        order.setPositions(new HashSet<>());
+        order.setPositions(new ArrayList<>());
         order.setAdminComment("Some comment from owner...");
         order.setComment("Some coomment from client");
         order.setPhone("+375 29 778 77 77");

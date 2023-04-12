@@ -18,6 +18,7 @@ package ss.agrolavka.util;
 
 import java.math.BigDecimal;
 import java.util.Map;
+import java.util.TreeMap;
 import ss.entity.agrolavka.Product;
 
 /**
@@ -26,22 +27,22 @@ import ss.entity.agrolavka.Product;
  */
 public class PriceCalculator {
     
-    public static Double caluclatePrice(final Product product, final Double quantity) {
+    public static Map<Double, Double> breakQuantityByVolume(final Product product, final Double quantity) {
+        final Map<Double, Double> result = new TreeMap<>();
         if (product.getVolumes() != null) {
             final Map<Double, String> volumePrices = product.getVolumePricesWithOrder(true);
             double rest = quantity;
-            double sum = 0;
             for (Map.Entry<Double, String> entry : volumePrices.entrySet()) {
                 if (rest > 0) {
                     final double volume = Double.parseDouble(entry.getValue().replace("л", "").replace(",", "."));
-                    final double ceil = Math.floor(rest / volume);
-                    rest = rest - ceil * volume;
-                    sum += ceil * entry.getKey();
+                    final double subQuantity = Math.floor(rest / volume);
+                    rest = rest - subQuantity * volume;
+                    result.put(entry.getKey(), subQuantity);
                 }
             }
-            return new BigDecimal(sum / quantity).doubleValue();
         } else {
-            return product.getDiscountPrice();
+            result.put(product.getDiscountPrice(), quantity);
         }
+        return result;
     }
 }

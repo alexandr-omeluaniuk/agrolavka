@@ -5,6 +5,7 @@
  */
 package ss.agrolavka.rest;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -108,9 +109,9 @@ class AgrolavkaPublicRESTController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public Order removeFromCart(@PathVariable("id") Long id, HttpServletRequest request) throws Exception {
         final Order order = orderService.getCurrentOrder(request);
-        Set<OrderPosition> positions = order.getPositions().stream().filter(pos -> {
+        List<OrderPosition> positions = order.getPositions().stream().filter(pos -> {
             return !Objects.equals(pos.getProductId(), id);
-        }).collect(Collectors.toSet());
+        }).collect(Collectors.toList());
         order.setPositions(positions);
         request.getSession().setAttribute(SiteConstants.CART_SESSION_ATTRIBUTE, order);
         return order;
@@ -132,9 +133,7 @@ class AgrolavkaPublicRESTController {
             return Objects.equals(pos.getProductId(), id);
         }).collect(Collectors.toList());
         if (!positions.isEmpty()) {
-            final OrderPosition position = positions.get(0);
-            position.setQuantity(quantity > 0 ? quantity : 1);
-            position.setPrice(PriceCalculator.caluclatePrice(coreDAO.findById(id, Product.class), quantity));
+            positions.get(0).setQuantity(quantity > 0 ? quantity : 1);
         }
         request.getSession().setAttribute(SiteConstants.CART_SESSION_ATTRIBUTE, order);
         return order;
@@ -167,7 +166,7 @@ class AgrolavkaPublicRESTController {
         final Order order = orderService.getCurrentOrder(request);
         final Order savedOrder = orderService.createOrder(order, orderWrapper);
         final Order newOrder = new Order();
-        newOrder.setPositions(new HashSet<>());
+        newOrder.setPositions(Collections.emptyList());
         request.getSession().setAttribute(SiteConstants.CART_SESSION_ATTRIBUTE, newOrder);
         return savedOrder;
     }
