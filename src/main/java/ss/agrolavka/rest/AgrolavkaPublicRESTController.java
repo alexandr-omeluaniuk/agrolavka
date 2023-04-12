@@ -26,6 +26,7 @@ import ss.agrolavka.constants.SiteConstants;
 import ss.agrolavka.dao.ProductDAO;
 import ss.agrolavka.service.OrderService;
 import ss.agrolavka.util.AppCache;
+import ss.agrolavka.util.PriceCalculator;
 import ss.agrolavka.util.UrlProducer;
 import ss.agrolavka.wrapper.CartProduct;
 import ss.agrolavka.wrapper.OneClickOrderWrapper;
@@ -131,7 +132,9 @@ class AgrolavkaPublicRESTController {
             return Objects.equals(pos.getProductId(), id);
         }).collect(Collectors.toList());
         if (!positions.isEmpty()) {
-            positions.get(0).setQuantity(quantity > 0 ? quantity : 1);
+            final OrderPosition position = positions.get(0);
+            position.setQuantity(quantity > 0 ? quantity : 1);
+            position.setPrice(PriceCalculator.caluclatePrice(coreDAO.findById(id, Product.class), quantity));
         }
         request.getSession().setAttribute(SiteConstants.CART_SESSION_ATTRIBUTE, order);
         return order;

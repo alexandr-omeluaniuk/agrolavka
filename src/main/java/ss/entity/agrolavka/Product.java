@@ -411,11 +411,15 @@ public class Product extends ExternalEntity implements Serializable {
     }
     
     public Map<Double, String> getVolumePrices() {
+        return getVolumePricesWithOrder(false);
+    }
+    
+    public Map<Double, String> getVolumePricesWithOrder(boolean isReverse) {
         final Map<Double, String> result = new TreeMap<>((price1, price2) -> {
             if (price1 > price2) {
-                return 1;
+                return isReverse ? -1 : 1;
             } else if (price1 < price2) {
-                return -1;
+                return isReverse ? 1 : -1;
             } else {
                 return 0;
             }
