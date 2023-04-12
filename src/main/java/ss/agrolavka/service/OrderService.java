@@ -17,6 +17,7 @@
 package ss.agrolavka.service;
 
 import javax.servlet.http.HttpServletRequest;
+import ss.agrolavka.wrapper.CartProduct;
 import ss.agrolavka.wrapper.OneClickOrderWrapper;
 import ss.agrolavka.wrapper.OrderDetailsWrapper;
 import ss.entity.agrolavka.Order;
@@ -47,4 +48,12 @@ public interface OrderService {
      * @return order.
      */
     Order getCurrentOrder(HttpServletRequest request);
+    /**
+     * Add product to cart
+     * @param cartProduct cart product form.
+     * @param request HTTP request.
+     * @return current order.
+     * @throws Exception exception.
+     */
+    Order addProductToCart(CartProduct cartProduct, HttpServletRequest request) throws Exception;
 }

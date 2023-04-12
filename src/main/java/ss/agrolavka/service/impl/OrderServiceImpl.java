@@ -19,6 +19,7 @@ package ss.agrolavka.service.impl;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
@@ -30,6 +31,8 @@ import org.springframework.transaction.annotation.Transactional;
 import ss.agrolavka.constants.OrderStatus;
 import ss.agrolavka.constants.SiteConstants;
 import ss.agrolavka.service.OrderService;
+import ss.agrolavka.util.PriceCalculator;
+import ss.agrolavka.wrapper.CartProduct;
 import ss.agrolavka.wrapper.OneClickOrderWrapper;
 import ss.agrolavka.wrapper.OrderDetailsWrapper;
 import ss.entity.agrolavka.Address;
@@ -90,7 +93,7 @@ class OrderServiceImpl implements OrderService {
         position.setQuantity(orderDetails.getQuantity());
         position.setProduct(product);
         position.setProductId(orderDetails.getProductId());
-        position.setPrice(orderDetails.getVolumePrice() == null ? product.getDiscountPrice() : orderDetails.getVolumePrice());
+        position.setPrice(PriceCalculator.caluclatePrice(product, position.getQuantity()));
         final Double total = position.getQuantity() * position.getPrice();
         final Order order = new Order();
         order.setPhone(orderDetails.getPhone());
@@ -110,6 +113,23 @@ class OrderServiceImpl implements OrderService {
         if (order == null) {
             order = new Order();
             order.setPositions(new HashSet<>());
+            request.getSession().setAttribute(SiteConstants.CART_SESSION_ATTRIBUTE, order);
+        }
+        return order;
+    }
+    
+    @Override
+    public Order addProductToCart(final CartProduct cartProduct, final HttpServletRequest request) throws Exception {
+        Product product = coreDAO.findById(cartProduct.getProductId(), Product.class);
+        final Order order = getCurrentOrder(request);
+        if (product != null) {
+            OrderPosition position = new OrderPosition();
+            position.setOrder(order);
+            position.setQuantity(cartProduct.getQuantity());
+            position.setPrice(PriceCalculator.caluclatePrice(product, position.getQuantity()));
+            position.setProduct(product);
+            position.setProductId(product.getId());
+            order.getPositions().add(position);
             request.getSession().setAttribute(SiteConstants.CART_SESSION_ATTRIBUTE, order);
         }
         return order;

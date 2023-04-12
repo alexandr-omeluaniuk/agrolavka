@@ -94,24 +94,7 @@ class AgrolavkaPublicRESTController {
             @RequestBody final CartProduct cartProduct,
             final HttpServletRequest request
     ) throws Exception {
-        Product product = coreDAO.findById(cartProduct.getProductId(), Product.class);
-        final Order order = orderService.getCurrentOrder(request);
-        if (product != null) {
-            final Map<Double, String> volumePrices = product.getVolumePrices();
-            Double volumePrice = cartProduct.getVolumePrice();
-            if (volumePrice != null && !volumePrices.containsKey(volumePrice)) {
-                volumePrice = volumePrices.keySet().iterator().next();  // the first by default
-            }
-            OrderPosition position = new OrderPosition();
-            position.setOrder(order);
-            position.setPrice(volumePrice == null ? product.getDiscountPrice() : volumePrice);
-            position.setQuantity(cartProduct.getQuantity());
-            position.setProduct(product);
-            position.setProductId(product.getId());
-            order.getPositions().add(position);
-            request.getSession().setAttribute(SiteConstants.CART_SESSION_ATTRIBUTE, order);
-        }
-        return order;
+        return orderService.addProductToCart(cartProduct, request);
     }
     /**
      * Remove product from cart.
@@ -141,7 +124,7 @@ class AgrolavkaPublicRESTController {
      */
     @RequestMapping(value = "/cart/quantity/{id}/{quantity}", method = RequestMethod.PUT,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public Order changeCartPositionQuantity(@PathVariable("id") Long id, @PathVariable("quantity") Integer quantity,
+    public Order changeCartPositionQuantity(@PathVariable("id") Long id, @PathVariable("quantity") Double quantity,
             HttpServletRequest request) throws Exception {
         final Order order = orderService.getCurrentOrder(request);
         final List<OrderPosition> positions = order.getPositions().stream().filter(pos -> {

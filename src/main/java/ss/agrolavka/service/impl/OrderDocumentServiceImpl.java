@@ -231,7 +231,7 @@ class OrderDocumentServiceImpl implements OrderDocumentService {
         for (int i = 0; i < positions.size(); i++) {
             final OrderPosition position = positions.get(i);
             final String productName = position.getProduct().getName();
-            final Integer quantity = position.getQuantity();
+            final Double quantity = position.getQuantity();
             final Double price = position.getPrice();
             final double subtotal = price * quantity;
             grandTotal += subtotal;

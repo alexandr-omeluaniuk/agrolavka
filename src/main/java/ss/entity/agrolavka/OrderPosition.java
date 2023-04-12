@@ -43,10 +43,10 @@ public class OrderPosition extends DataModel {
     private Double price;
     /** Quantity. */
     @NotNull
-    @Min(1)
+    @Min(0)
     @FormField
-    @Column(name = "quantity", nullable = false)
-    private Integer quantity;
+    @Column(name = "quantity_double", nullable = false)
+    private Double quantity;
     /** Product. */
     @Transient
     private Product product;
@@ -90,13 +90,13 @@ public class OrderPosition extends DataModel {
     /**
      * @return the quantity
      */
-    public Integer getQuantity() {
+    public Double getQuantity() {
         return quantity;
     }
     /**
      * @param quantity the quantity to set
      */
-    public void setQuantity(Integer quantity) {
+    public void setQuantity(Double quantity) {
         this.quantity = quantity;
     }
     /**
