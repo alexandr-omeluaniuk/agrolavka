@@ -29,22 +29,20 @@
 %>
 
 <%
-    String volumes = "";
     if (product.getVolumes() != null) {
-        volumes = product.getVolumes().replace("\"", "'");
 %>
     <t:product-volumes product="${product}" buttonClass="${buttonClass}"></t:product-volumes>
 <%
     }
 %>
-<button class="btn btn-outline-info btn-rounded w-100 mt-1 ${buttonClass}" data-product-id="${product.id}" data-order="" data-volumes="<%=volumes%>">
+<button class="btn btn-outline-info btn-rounded w-100 mt-1 ${buttonClass}" data-product-id="${product.id}" data-order="">
     <i class="far fa-hand-point-up me-2"></i> Заказать сразу
 </button>
 
 <%
     if (!inCart) {
 %>
-<button class="btn btn-outline-success btn-rounded w-100 mt-1 ${buttonClass}" data-product-id="${product.id}" data-add="" data-volumes="<%=volumes%>">
+<button class="btn btn-outline-success btn-rounded w-100 mt-1 ${buttonClass}" data-product-id="${product.id}" data-add="">
     <i class="fas fa-cart-plus me-2"></i> В корзину
 </button>
 <%

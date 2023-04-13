@@ -28,8 +28,7 @@ const addToCartListener = (evt, button) => {
     const fieldProductId = modalElement.querySelector('input[name="productId"]');
     const fieldQuantity = modalElement.querySelector('input[name="quantity"]');
     fieldProductId.value = button.getAttribute('data-product-id');
-    const volumes = button.getAttribute('data-volumes');
-    modifyQuantityField(volumes, fieldQuantity, button);
+    modifyQuantityField(fieldQuantity, button);
     const modal = new mdb.Modal(modalElement, {});
     modal.toggle();
     setTimeout(() => {
@@ -110,8 +109,7 @@ const orderOneClickButtonListener = (evt, button) => {
     const modalElement = document.getElementById('agr-one-click-order-modal');
     modalElement.querySelector('input[name="productId"]').value = productId;
     const fieldQuantity = modalElement.querySelector('input[name="quantity"]');
-    const volumes = button.getAttribute('data-volumes');
-    modifyQuantityField(volumes, fieldQuantity, button);
+    modifyQuantityField(fieldQuantity, button);
     const confirmButton = modalElement.querySelector('button[data-one-click-order]');
     confirmButton.removeAttribute('disabled');
     confirmButton.querySelector('.spinner-border').classList.add('d-none');
@@ -174,6 +172,9 @@ const productVolumeClickListener = (evt, btn) => {
     btn.classList.remove("btn-outline-info");
     btn.classList.add("btn-info");
     const price = btn.getAttribute("data-product-volume-price");
+    const quantity = btn.getAttribute("data-product-volume-quantity");
+    btn.closest('div[data-volumes]').setAttribute("data-selected-volume-quantity", quantity);
+    btn.closest('div[data-volumes]').setAttribute("data-selected-volume-price", price);
     const priceBig = parseFloat(price).toFixed(2).split('.')[0];
     const priceSmall = parseFloat(price).toFixed(2).split('.')[1];
     let container = btn.closest('.card');
@@ -192,19 +193,18 @@ const photoClickListener = (evt, image) => {
     modal.toggle();
 };
 
-const modifyQuantityField = (volumes, fieldQuantity, button) => {
-    if (volumes) {
+const modifyQuantityField = (fieldQuantity, button) => {
+    const volumesComponent = button.closest('div').querySelector('div[data-volumes]');
+    if (volumesComponent) {
         fieldQuantity.setAttribute("step", ".1");
         try {
+            const volumes = volumesComponent.getAttribute("data-volumes");
             const pricesList = JSON.parse(volumes.replaceAll("'", '"'));
             const minVolume = pricesList.reduce((prev, curr) => {
                 return prev.v.replace('л', '') < curr.v.replace('л', '') ? prev : curr;
             });
             fieldQuantity.setAttribute("min", minVolume.v.replace('л', ''));
-            fieldQuantity.value = button.closest('div')
-                .querySelector('[aria-label="Volumes"]')
-                .querySelector('.btn-info')
-                .innerHTML.replace('л', '').replace(',', '.');
+            fieldQuantity.value = volumesComponent.getAttribute("data-selected-volume-quantity");
         } catch (e) {
             console.warn(e);
         }
@@ -214,7 +214,7 @@ const modifyQuantityField = (volumes, fieldQuantity, button) => {
         fieldQuantity.value = 1;
     }
     const quantityType = fieldQuantity.closest('div').querySelector('span');
-    quantityType.innerHTML = volumes ? 'литр.' : 'шт.';
+    quantityType.innerHTML = volumesComponent ? 'литр.' : 'шт.';
 };
 
 export const handleProductCardEvent = (evt) => {
