@@ -22,6 +22,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
@@ -131,6 +132,7 @@ class OrderServiceImpl implements OrderService {
         if (product != null) {
             PriceCalculator.breakQuantityByVolume(product, cartProduct.getQuantity()).forEach((price, quantity) -> {
                 OrderPosition position = new OrderPosition();
+                position.setPositionId(UUID.randomUUID().toString());
                 position.setOrder(order);
                 position.setQuantity(quantity);
                 position.setPrice(price);

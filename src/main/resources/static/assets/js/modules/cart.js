@@ -43,7 +43,7 @@ const updateCartTotal = (cart) => {
 
 const cartRemoveProductListener = (evt, button) => {
     button.setAttribute('disabled', 'true');
-    fetch('/api/agrolavka/public/cart/' + button.getAttribute('data-product-id'), {
+    fetch('/api/agrolavka/public/cart/position/' + button.getAttribute('data-product-position-id'), {
         method: 'DELETE',
         headers: {
             'Accept': 'application/json',
@@ -66,8 +66,8 @@ const cartProductQuantityChangeListener = (evt, input) => {
     let quantity = input.value;
     quantity = Math.round(quantity);
     input.value = quantity;
-    const productId = input.getAttribute('data-product-id');
-    fetch('/api/agrolavka/public/cart/quantity/' + productId + '/' + quantity, {
+    const positionId = input.getAttribute('data-product-position-id');
+    fetch('/api/agrolavka/public/cart/quantity/' + positionId + '/' + quantity, {
         method: 'PUT',
         headers: {
             'Accept': 'application/json',
@@ -97,13 +97,13 @@ const cartQuantityMinusBtnListener = (evt, element) => {
 };
 
 const handleCartClickEvent = (evt) => {
-    addElementEvent(evt, "[data-product-id][data-remove-product-from-cart]", cartRemoveProductListener);
+    addElementEvent(evt, "[data-product-position-id][data-remove-product-from-cart]", cartRemoveProductListener);
     addElementEvent(evt, "[data-product-quantity-plus]", cartQuantityPlusBtnListener);
     addElementEvent(evt, "[data-product-quantity-minus]", cartQuantityMinusBtnListener);
 };
 
 const handleCartChangeEvent = (evt) => {
-    addElementEvent(evt, "[data-product-id][data-product-quantity]", cartProductQuantityChangeListener);
+    addElementEvent(evt, "[data-product-position-id][data-product-quantity]", cartProductQuantityChangeListener);
 };
 
 export { updateCartTotal, handleCartClickEvent, handleCartChangeEvent }

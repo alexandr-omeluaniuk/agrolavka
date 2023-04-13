@@ -50,6 +50,9 @@ public class OrderPosition extends DataModel {
     /** Product. */
     @Transient
     private Product product;
+    /** Temporary ID. Should be used until entity is not save in DB. */
+    @Transient
+    private String positionId;
     // ========================================== SET & GET ===========================================================
     /**
      * @return the order
@@ -110,6 +113,18 @@ public class OrderPosition extends DataModel {
      */
     public void setProduct(Product product) {
         this.product = product;
+    }
+    /**
+     * @return the tempId
+     */
+    public String getPositionId() {
+        return positionId;
+    }
+    /**
+     * @param tempId the tempId to set
+     */
+    public void setPositionId(String tempId) {
+        this.positionId = tempId;
     }
     // ================================================================================================================
     @Override

@@ -105,12 +105,24 @@ class AgrolavkaPublicRESTController {
      * @return cart.
      * @throws Exception error.
      */
-    @RequestMapping(value = "/cart/{id}", method = RequestMethod.DELETE,
+    @RequestMapping(value = "/cart/product/{id}", method = RequestMethod.DELETE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public Order removeFromCart(@PathVariable("id") Long id, HttpServletRequest request) throws Exception {
+    public Order removeFromCartByProductId(@PathVariable("id") Long id, HttpServletRequest request) throws Exception {
         final Order order = orderService.getCurrentOrder(request);
         List<OrderPosition> positions = order.getPositions().stream().filter(pos -> {
             return !Objects.equals(pos.getProductId(), id);
+        }).collect(Collectors.toList());
+        order.setPositions(positions);
+        request.getSession().setAttribute(SiteConstants.CART_SESSION_ATTRIBUTE, order);
+        return order;
+    }
+    
+    @RequestMapping(value = "/cart/position/{id}", method = RequestMethod.DELETE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public Order removeFromCartByPositionId(@PathVariable("id") String id, HttpServletRequest request) throws Exception {
+        final Order order = orderService.getCurrentOrder(request);
+        List<OrderPosition> positions = order.getPositions().stream().filter(pos -> {
+            return !Objects.equals(pos.getPositionId(), id);
         }).collect(Collectors.toList());
         order.setPositions(positions);
         request.getSession().setAttribute(SiteConstants.CART_SESSION_ATTRIBUTE, order);

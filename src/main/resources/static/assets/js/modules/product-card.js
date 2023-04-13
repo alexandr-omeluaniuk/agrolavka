@@ -41,7 +41,7 @@ const removeFromCartListener = (evt, button) => {
     evt.preventDefault();
     evt.stopPropagation();
     button.setAttribute('disabled', 'true');
-    fetch('/api/agrolavka/public/cart/' + button.getAttribute('data-product-id'), {
+    fetch('/api/agrolavka/public/cart/product/' + button.getAttribute('data-product-id'), {
         method: 'DELETE',
         headers: {
             'Accept': 'application/json',
@@ -182,18 +182,6 @@ const productVolumeClickListener = (evt, btn) => {
     }
     container.querySelector('.agr-price').innerHTML = priceBig + ".<small>" + priceSmall
             + '</small> <small class="text-muted">BYN</small>';
-//    const addToCartBtn = container.querySelector('button[data-add]');
-//    if (addToCartBtn) {
-//        addToCartBtn.setAttribute('data-volume-price', price);
-//    }
-//    const removeFromCartBtn = container.querySelector('button[data-remove]');
-//    if (removeFromCartBtn) {
-//        removeFromCartBtn.setAttribute('data-volume-price', price);
-//    }
-//    const buyNowBtn = container.querySelector('button[data-order]');
-//    if (buyNowBtn) {
-//        buyNowBtn.setAttribute('data-volume-price', price);
-//    }
 };
 
 const photoClickListener = (evt, image) => {
