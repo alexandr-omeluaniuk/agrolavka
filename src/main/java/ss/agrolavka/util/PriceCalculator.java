@@ -17,6 +17,7 @@
 package ss.agrolavka.util;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Map;
 import java.util.TreeMap;
 import ss.entity.agrolavka.Product;
@@ -27,22 +28,31 @@ import ss.entity.agrolavka.Product;
  */
 public class PriceCalculator {
     
+    private static final int MILLILITER_IN_LITER = 1000;
+    
     public static Map<Double, Double> breakQuantityByVolume(final Product product, final Double quantity) {
         final Map<Double, Double> result = new TreeMap<>();
         if (product.getVolumes() != null) {
             final Map<Double, String> volumePrices = product.getVolumePricesWithOrder(true);
-            double rest = quantity;
+            int rest = toMilliliters(quantity);
             for (Map.Entry<Double, String> entry : volumePrices.entrySet()) {
                 if (rest > 0) {
-                    final double volume = Double.parseDouble(entry.getValue().replace("л", "").replace(",", "."));
-                    final double subQuantity = Math.floor(rest / volume);
-                    rest = rest - subQuantity * volume;
-                    result.put(entry.getKey(), subQuantity);
+                    final String volumeStr = entry.getValue().replace("л", "").replace(",", ".");
+                    final int volumeInMilliliter = toMilliliters(Double.parseDouble(volumeStr));
+                    final int quantityInt = rest / volumeInMilliliter;
+                    if (quantityInt >= 1) {
+                        rest = rest - quantityInt * volumeInMilliliter;
+                        result.put(entry.getKey(), new BigDecimal(quantityInt).setScale(2, RoundingMode.HALF_UP).doubleValue());
+                    }
                 }
             }
         } else {
             result.put(product.getDiscountPrice(), quantity);
         }
         return result;
+    }
+    
+    private static int toMilliliters(final double quantityInLiters) {
+        return Double.valueOf(String.valueOf(quantityInLiters * MILLILITER_IN_LITER)).intValue();
     }
 }

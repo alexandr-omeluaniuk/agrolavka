@@ -130,7 +130,7 @@ class AgrolavkaPublicRESTController {
     }
     /**
      * Change cart position quantity.
-     * @param id product ID.
+     * @param id position ID.
      * @param quantity quantity.
      * @param request HTTP request.
      * @return cart.
@@ -138,11 +138,11 @@ class AgrolavkaPublicRESTController {
      */
     @RequestMapping(value = "/cart/quantity/{id}/{quantity}", method = RequestMethod.PUT,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public Order changeCartPositionQuantity(@PathVariable("id") Long id, @PathVariable("quantity") Double quantity,
+    public Order changeCartPositionQuantity(@PathVariable("id") String id, @PathVariable("quantity") Double quantity,
             HttpServletRequest request) throws Exception {
         final Order order = orderService.getCurrentOrder(request);
         final List<OrderPosition> positions = order.getPositions().stream().filter(pos -> {
-            return Objects.equals(pos.getProductId(), id);
+            return Objects.equals(pos.getPositionId(), id);
         }).collect(Collectors.toList());
         if (!positions.isEmpty()) {
             positions.get(0).setQuantity(quantity > 0 ? quantity : 1);
