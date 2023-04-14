@@ -40,8 +40,11 @@
                     <button class="btn btn-primary btn-floating me-2" type="button" data-product-quantity-plus>
                         <i class="fas fa-plus"></i>
                     </button>
-                    <input type="number" step="1" class="form-control" aria-label="Количество" min="1" value="${position.quantity}"
-                           data-product-position-id="${position.positionId}" data-product-quantity style="flex: 1">
+                    <div class="input-group mb-3" style="flex: 1;">
+                        <input type="number" step="1" class="form-control" aria-label="Количество" min="1" value="${position.quantity}"
+                            data-product-position-id="${position.positionId}" data-product-quantity >
+                        <span class="input-group-text border-0">ед.</span>
+                    </div>
                     <button class="btn btn-primary btn-floating me-2 ms-2" type="button" data-product-quantity-minus>
                         <i class="fas fa-minus"></i>
                     </button>
