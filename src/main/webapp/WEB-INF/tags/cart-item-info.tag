@@ -42,7 +42,9 @@
                 <t:price priceDouble="${position.price * position.quantity}"></t:price>
             </td>
             <td class="text-left">
-                <small class="text-muted fw-bold">за ${position.quantity} ед.</small>
+                <small class="text-muted fw-bold">
+                    ${position.getSubtotalLabel()}
+                </small>
             </td>
         </tr>
     </tbody>
