@@ -29,14 +29,14 @@
                 </c:otherwise>
             </c:choose>
 
-            <div class="col-sm-12 col-md-6 col-lg-8 ps-3 pe-3">
+            <div class="col-sm-12 col-md-6 col-lg-7 ps-3 pe-3">
                 <a href="<%= UrlProducer.buildProductUrl(position.getProduct())%>" class="agr-link"><h6>${position.product.name}</h6></a>
                 <small class="text-muted agr-cart-position-description mb-2">
                     ${position.product.description}
                 </small>
             </div>
 
-            <div class="col-sm-12 col-md-4 col-lg-3 d-flex flex-column">
+            <div class="col-sm-12 col-md-4 col-lg-4 d-flex flex-column">
                 <div class="d-flex justify-content-end">
                     <div class="me-4 d-flex rounded-pill shadow-sm p-2">
                         <button class="btn btn-primary btn-floating me-2" type="button" data-product-quantity-plus>
@@ -57,10 +57,7 @@
                     </button>
                 </div>
 
-                <div style="flex: 1;" class="d-flex justify-content-end align-items-end flex-column mt-3">
-                    <t:cart-item-price position="${position}"/>
-                    <t:cart-item-subtotal position="${position}"/>
-                </div>
+                <t:cart-item-info position="${position}"/>
 
             </div>
 
