@@ -4,7 +4,8 @@
     Author     : alex
 --%>
 
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 
 <%@tag import="java.util.Map"%>
 <%@tag description="Cart" pageEncoding="UTF-8"%>
@@ -25,29 +26,14 @@
             <th scope="row text-muted">Цена</th>
             <td class="text-right">
                 <c:if test="${not empty position.product.discount}">
-                    <button class="btn btn-sm btn-danger btn-rounded fs-6 me-2">
-                        <i class="fas fa-fire me-2"></i>
-                        <%
-                            String priceWithDiscount = String.format("%.2f", position.getProduct().getDiscountPrice());
-                            String[] priceWithDiscountParts = priceWithDiscount.split("\\.");
-                            out.print(priceWithDiscountParts[0] + ".");
-                            out.print("<small>" + priceWithDiscountParts[1] + "</small>");
-                        %> <small>BYN</small>
-                    </button>
+                    <i class="fas fa-fire me-2 text-danger"></i>
+                    <t:price priceDouble="${position.product.discountPrice}"></t:price>
                 </c:if>
-                <span class="mt-4 fw-bold ${not empty position.product.discount ? 'text-decoration-line-through text-muted' : 'text-dark'}">
-                    <%
-                        Double priceVal = position.getPrice();
-                        if (position.getProduct() != null && position.getProduct().getVolumes() == null) {
-                            priceVal = position.getProduct().getPrice();
-                        }
-                        String price = String.format("%.2f", priceVal);
-                        String[] parts = price.split("\\.");
-                        out.print(parts[0] + ".");
-                        out.print("<small>" + parts[1] + "</small>");
-                    %>
+                <c:if test="${empty position.product.discount}">
+                    <t:price priceDouble="${position.product.price}"></t:price>
+                </c:if>
             </td>
-            <td class="text-right">
+            <td class="text-left">
                 <%
                     out.print("<small class=\"text-muted fw-bold ms-1\">");
                     if (position.getProduct().getVolumes() != null) {
@@ -73,14 +59,14 @@
                 <span class="mt-4 fw-bold text-dark">
                     <%
                         Integer quantity = position.getQuantity();
-                        Double subtotal = priceVal * quantity;
+                        Double subtotal = position.getPrice() * quantity;
                         String sum = String.format("%.2f", subtotal);
                         String[] parts2 = sum.split("\\.");
                         out.print(parts2[0] + ".");
                         out.print("<small>" + parts2[1] + "</small>");
                     %>
             </td>
-            <td class="text-right">
+            <td class="text-left">
                 <small class="text-muted fw-bold ms-1">за ${position.quantity} ед.</small>
             </td>
         </tr>

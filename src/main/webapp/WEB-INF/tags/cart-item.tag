@@ -18,25 +18,25 @@
 
             <c:choose>
                 <c:when test="${position.product.images.size() > 0}">
-                    <div class="col-md-2 col-lg-1 agr-cart-position-image d-none d-md-block shadow-1-strong rounded" 
+                    <div class="col-lg-1 agr-cart-position-image d-none d-lg-block shadow-1-strong rounded" 
                          style="background-image: url('/media/${position.product.images.get(0).fileNameOnDisk}')" alt="${position.product.name}">
                     </div>
                 </c:when>
                 <c:otherwise>
-                    <div class="col-md-2 col-lg-1 agr-cart-position-image d-none d-md-block shadow-1-strong rounded" 
+                    <div class="col-lg-1 agr-cart-position-image d-none d-lg-block shadow-1-strong rounded" 
                          style="background-image: url('/assets/img/no-image.png')" alt="${position.product.name}'">
                     </div>
                 </c:otherwise>
             </c:choose>
 
-            <div class="col-sm-12 col-md-6 col-lg-7 ps-3 pe-3">
+            <div class="col-sm-12 col-md-6 col-lg-6 col-xl-7 ps-3 pe-3">
                 <a href="<%= UrlProducer.buildProductUrl(position.getProduct())%>" class="agr-link"><h6>${position.product.name}</h6></a>
                 <small class="text-muted agr-cart-position-description mb-2">
                     ${position.product.description}
                 </small>
             </div>
 
-            <div class="col-sm-12 col-md-4 col-lg-4 d-flex flex-column">
+            <div class="col-sm-12 col-md-6 col-lg-5 col-xl-4 d-flex flex-column">
                 <div class="d-flex justify-content-end">
                     <div class="me-4 d-flex rounded-pill shadow-sm p-2">
                         <button class="btn btn-primary btn-floating me-2" type="button" data-product-quantity-plus>
@@ -51,10 +51,12 @@
                             <i class="fas fa-minus"></i>
                         </button>
                     </div>
-                    <button class="btn btn-danger btn-floating mt-2" data-remove-product-from-cart data-product-position-id="${position.positionId}"
-                            type="button">
-                        <i class="fas fa-trash"></i>
-                    </button>
+                    <div class="d-flex rounded-pill shadow-sm p-2">
+                        <button class="btn btn-danger btn-floating" data-remove-product-from-cart data-product-position-id="${position.positionId}"
+                                type="button">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
                 </div>
 
                 <t:cart-item-info position="${position}"/>
