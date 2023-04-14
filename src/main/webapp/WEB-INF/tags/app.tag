@@ -80,7 +80,7 @@
         <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.5.0/mdb.min.css" rel="stylesheet"/>
 
         <!-- Main CSS File -->
-        <link href="/assets/css/style-mb.css?v=27" rel="stylesheet">
+        <link href="/assets/css/style-mb.css?v=28" rel="stylesheet">
         <jsp:invoke fragment="headSection"/>
     </head>
 
@@ -94,7 +94,7 @@
         <!-- Vendor JS Files -->
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.5.0/mdb.min.js"></script>
         <script type="text/javascript" src="/assets/vendor/purecounter/purecounter.js"></script>
-        <!-- Main CSS File -->
+        <!-- Main JS Files -->
         <script type="module" src="/assets/js/main-mb.js?v=18"></script>
         <script type="module" src="/assets/js/modules/product-card.js?v=1"></script>
         <script type="module" src="/assets/js/modules/cart.js?v=1"></script>

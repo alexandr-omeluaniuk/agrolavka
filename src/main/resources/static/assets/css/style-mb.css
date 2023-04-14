@@ -241,10 +241,10 @@ and open the template in the editor.
     -webkit-box-orient: vertical;
 }
 .agr-cart-position-image {
-    padding-top: 70px;
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
+    min-height: 120px;
 }
 .agr-quantity {
     line-height: 0.7rem;

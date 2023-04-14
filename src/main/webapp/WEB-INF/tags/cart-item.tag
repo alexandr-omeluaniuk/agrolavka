@@ -13,16 +13,16 @@
 <%-- any content can be specified here e.g.: --%>
 <div class="card mb-4 shadow-1-strong">
     <div class="card-body">
-        <div class="row">
+        <div class="row ps-md-2">
 
             <c:choose>
                 <c:when test="${position.product.images.size() > 0}">
-                    <div class="col-md-2 col-lg-1 agr-cart-position-image d-none d-md-block" 
+                    <div class="col-md-2 col-lg-1 agr-cart-position-image d-none d-md-block shadow-1-strong rounded" 
                          style="background-image: url('/media/${position.product.images.get(0).fileNameOnDisk}')" alt="${position.product.name}">
                     </div>
                 </c:when>
                 <c:otherwise>
-                    <div class="col-md-2 col-lg-1 agr-cart-position-image d-none d-md-block" 
+                    <div class="col-md-2 col-lg-1 agr-cart-position-image d-none d-md-block shadow-1-strong rounded" 
                          style="background-image: url('/assets/img/no-image.png')" alt="${position.product.name}'">
                     </div>
                 </c:otherwise>
@@ -40,7 +40,7 @@
                     <button class="btn btn-primary btn-floating me-2" type="button" data-product-quantity-plus>
                         <i class="fas fa-plus"></i>
                     </button>
-                    <input type="number" step=".1" class="form-control" aria-label="Количество" min="1" value="${position.quantity}"
+                    <input type="number" step="1" class="form-control" aria-label="Количество" min="1" value="${position.quantity}"
                            data-product-position-id="${position.positionId}" data-product-quantity style="flex: 1">
                     <button class="btn btn-primary btn-floating me-2 ms-2" type="button" data-product-quantity-minus>
                         <i class="fas fa-minus"></i>
