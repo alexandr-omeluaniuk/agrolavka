@@ -37,18 +37,20 @@
 
             <div class="col-sm-12 col-md-4 col-lg-3 d-flex flex-column">
                 <div class="d-flex justify-content-end">
-                    <button class="btn btn-primary btn-floating me-2" type="button" data-product-quantity-plus>
-                        <i class="fas fa-plus"></i>
-                    </button>
-                    <div class="input-group mb-3" style="flex: 1;">
-                        <input type="number" step="1" class="form-control" aria-label="Количество" min="1" value="${position.quantity}"
-                            data-product-position-id="${position.positionId}" data-product-quantity >
-                        <span class="input-group-text border-0">ед.</span>
+                    <div class="me-4 d-flex rounded-pill shadow-sm p-2">
+                        <button class="btn btn-primary btn-floating me-2" type="button" data-product-quantity-plus>
+                            <i class="fas fa-plus"></i>
+                        </button>
+                        <div class="input-group" style="flex: 1;">
+                            <input type="number" step="1" class="form-control" aria-label="Количество" min="1" value="${position.quantity}"
+                                data-product-position-id="${position.positionId}" data-product-quantity >
+                            <span class="input-group-text border-0">ед.</span>
+                        </div>
+                        <button class="btn btn-primary btn-floating" type="button" data-product-quantity-minus>
+                            <i class="fas fa-minus"></i>
+                        </button>
                     </div>
-                    <button class="btn btn-primary btn-floating me-2 ms-2" type="button" data-product-quantity-minus>
-                        <i class="fas fa-minus"></i>
-                    </button>
-                    <button class="btn btn-danger btn-floating" data-remove-product-from-cart data-product-position-id="${position.positionId}"
+                    <button class="btn btn-danger btn-floating mt-2" data-remove-product-from-cart data-product-position-id="${position.positionId}"
                             type="button">
                         <i class="fas fa-trash"></i>
                     </button>
