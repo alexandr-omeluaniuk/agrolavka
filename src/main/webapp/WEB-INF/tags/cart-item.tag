@@ -40,7 +40,7 @@
                     <button class="btn btn-primary btn-floating me-2" type="button" data-product-quantity-plus>
                         <i class="fas fa-plus"></i>
                     </button>
-                    <input type="number" class="form-control" aria-label="Количество" min="1" value="${position.quantity}"
+                    <input type="number" step=".1" class="form-control" aria-label="Количество" min="1" value="${position.quantity}"
                            data-product-position-id="${position.positionId}" data-product-quantity style="flex: 1">
                     <button class="btn btn-primary btn-floating me-2 ms-2" type="button" data-product-quantity-minus>
                         <i class="fas fa-minus"></i>

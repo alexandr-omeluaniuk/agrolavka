@@ -8,11 +8,9 @@ package ss.agrolavka.rest;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +25,6 @@ import ss.agrolavka.constants.SiteConstants;
 import ss.agrolavka.dao.ProductDAO;
 import ss.agrolavka.service.OrderService;
 import ss.agrolavka.util.AppCache;
-import ss.agrolavka.util.PriceCalculator;
 import ss.agrolavka.util.UrlProducer;
 import ss.agrolavka.wrapper.CartProduct;
 import ss.agrolavka.wrapper.OneClickOrderWrapper;
@@ -138,7 +135,7 @@ class AgrolavkaPublicRESTController {
      */
     @RequestMapping(value = "/cart/quantity/{id}/{quantity}", method = RequestMethod.PUT,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public Order changeCartPositionQuantity(@PathVariable("id") String id, @PathVariable("quantity") Double quantity,
+    public Order changeCartPositionQuantity(@PathVariable("id") String id, @PathVariable("quantity") Integer quantity,
             HttpServletRequest request) throws Exception {
         final Order order = orderService.getCurrentOrder(request);
         final List<OrderPosition> positions = order.getPositions().stream().filter(pos -> {

@@ -20,7 +20,6 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
-import java.util.HashSet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import ss.agrolavka.SpringConfig;
@@ -72,7 +71,7 @@ public class OrderDocumentServiceTest {
         
         final OrderPosition position = new OrderPosition();
         position.setPrice(20.53d);
-        position.setQuantity(1d);
+        position.setQuantity(1);
         position.setProduct(product);
         
         order.getPositions().add(position);

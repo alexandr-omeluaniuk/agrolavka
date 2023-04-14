@@ -16,8 +16,6 @@
  */
 package ss.agrolavka.util;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.Map;
 import java.util.TreeMap;
 import ss.entity.agrolavka.Product;
@@ -30,8 +28,8 @@ public class PriceCalculator {
     
     private static final int MILLILITER_IN_LITER = 1000;
     
-    public static Map<Double, Double> breakQuantityByVolume(final Product product, final Double quantity) {
-        final Map<Double, Double> result = new TreeMap<>();
+    public static Map<Double, Integer> breakQuantityByVolume(final Product product, final Double quantity) {
+        final Map<Double, Integer> result = new TreeMap<>();
         if (product.getVolumes() != null) {
             final Map<Double, String> volumePrices = product.getVolumePricesWithOrder(true);
             int rest = toMilliliters(quantity);
@@ -42,12 +40,12 @@ public class PriceCalculator {
                     final int quantityInt = rest / volumeInMilliliter;
                     if (quantityInt >= 1) {
                         rest = rest - quantityInt * volumeInMilliliter;
-                        result.put(entry.getKey(), new BigDecimal(quantityInt).setScale(2, RoundingMode.HALF_UP).doubleValue());
+                        result.put(entry.getKey(), quantityInt);
                     }
                 }
             }
         } else {
-            result.put(product.getDiscountPrice(), quantity);
+            result.put(product.getDiscountPrice(), quantity.intValue());
         }
         return result;
     }

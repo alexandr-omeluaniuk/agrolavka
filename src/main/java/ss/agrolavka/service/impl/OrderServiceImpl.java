@@ -119,7 +119,7 @@ class OrderServiceImpl implements OrderService {
         Order order = (Order) request.getSession(true).getAttribute(SiteConstants.CART_SESSION_ATTRIBUTE);
         if (order == null) {
             order = new Order();
-            order.setPositions(Collections.emptyList());
+            order.setPositions(new ArrayList<>());
             request.getSession().setAttribute(SiteConstants.CART_SESSION_ATTRIBUTE, order);
         }
         return order;
