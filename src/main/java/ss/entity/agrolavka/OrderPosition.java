@@ -130,25 +130,27 @@ public class OrderPosition extends DataModel {
     // ================================================================================================================
     
     public String getQuantityLabel() {
-        if (getProduct() != null && getProduct().getVolumes() != null) {
-            final Map<Double, String> volumePrices = getProduct().getVolumePrices();
-            return "за " + volumePrices.get(getPrice());
-        } else {
-            return "за 1 ед";
-        }
+        return "TODO 11";
+//        if (getProduct() != null && getProduct().getVolumes() != null) {
+//            final Map<Double, String> volumePrices = getProduct().getVolumePrices();
+//            return "за " + volumePrices.get(getPrice());
+//        } else {
+//            return "за 1 ед";
+//        }
     }
     public String getSubtotalLabel() {
-        if (getProduct() != null && getProduct().getVolumes() != null) {
-            final Map<Double, String> volumePrices = getProduct().getVolumePrices();
-            final String volume = volumePrices.get(getPrice());
-            if (volume != null) {
-                return String.format("за %s л", Double.valueOf(volume.replace("л", "").replace(",", ".")) * getQuantity());
-            } else {
-                return "";
-            }
-        } else {
-            return String.format("за %s ед", getQuantity());
-        }
+        return "TODO 22";
+//        if (getProduct() != null && getProduct().getVolumes() != null) {
+//            final Map<Double, String> volumePrices = getProduct().getVolumePrices();
+//            final String volume = volumePrices.get(getPrice());
+//            if (volume != null) {
+//                return String.format("за %s л", Double.valueOf(volume.replace("л", "").replace(",", ".")) * getQuantity());
+//            } else {
+//                return "";
+//            }
+//        } else {
+//            return String.format("за %s ед", getQuantity());
+//        }
     }
     @Override
     public int hashCode() {

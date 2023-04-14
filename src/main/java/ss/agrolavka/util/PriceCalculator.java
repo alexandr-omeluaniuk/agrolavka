@@ -16,8 +16,10 @@
  */
 package ss.agrolavka.util;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import java.util.Map;
 import java.util.TreeMap;
+import ss.agrolavka.wrapper.ProductVolume;
 import ss.entity.agrolavka.Product;
 
 /**
@@ -28,19 +30,17 @@ public class PriceCalculator {
     
     private static final int MILLILITER_IN_LITER = 1000;
     
-    public static Map<Double, Integer> breakQuantityByVolume(final Product product, final Double quantity) {
+    public static Map<Double, Integer> breakQuantityByVolume(final Product product, final Double quantity) throws JsonProcessingException {
         final Map<Double, Integer> result = new TreeMap<>();
         if (product.getVolumes() != null) {
-            final Map<Double, String> volumePrices = product.getVolumePricesWithOrder(true);
             int rest = toMilliliters(quantity);
-            for (Map.Entry<Double, String> entry : volumePrices.entrySet()) {
+            for (ProductVolume productVolume : product.getProductVolumes()) {
                 if (rest > 0) {
-                    final String volumeStr = entry.getValue().replace("л", "").replace(",", ".");
-                    final int volumeInMilliliter = toMilliliters(Double.parseDouble(volumeStr));
+                    final int volumeInMilliliter = toMilliliters(productVolume.getAmount());
                     final int quantityInt = rest / volumeInMilliliter;
                     if (quantityInt >= 1) {
                         rest = rest - quantityInt * volumeInMilliliter;
-                        result.put(entry.getKey(), quantityInt);
+                        result.put(productVolume.getPrice(), quantityInt);
                     }
                 }
             }

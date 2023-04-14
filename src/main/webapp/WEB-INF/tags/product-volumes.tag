@@ -14,6 +14,7 @@
 <%@attribute name="buttonClass" required="false" type="String"%>
 
 <%-- any content can be specified here e.g.: --%>
+
 <%
     final Map<Double, String> volumePrices = product.getVolumePrices();
     final List<Double> prices = new ArrayList<>(volumePrices.keySet());

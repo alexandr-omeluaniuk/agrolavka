@@ -5,7 +5,12 @@
  */
 package ss.entity.agrolavka;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.Serializable;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -28,6 +33,7 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import ss.agrolavka.wrapper.ProductVolume;
 import ss.entity.martin.EntityImage;
 import ss.martin.platform.anno.security.FormField;
 
@@ -40,9 +46,6 @@ import ss.martin.platform.anno.security.FormField;
 public class Product extends ExternalEntity implements Serializable {
     /** Default UID. */
     private static final long serialVersionUID = 1L;
-    
-    public static final String VOLUME_KEY = "v";
-    public static final String PRICE_KEY = "p";
     // ============================================== FIELDS ==========================================================
     /** Name. */
     @FormField
@@ -410,28 +413,9 @@ public class Product extends ExternalEntity implements Serializable {
         }
     }
     
-    public Map<Double, String> getVolumePrices() {
-        return getVolumePricesWithOrder(false);
-    }
-    
-    public Map<Double, String> getVolumePricesWithOrder(boolean isReverse) {
-        final Map<Double, String> result = new TreeMap<>((price1, price2) -> {
-            if (price1 > price2) {
-                return isReverse ? -1 : 1;
-            } else if (price1 < price2) {
-                return isReverse ? 1 : -1;
-            } else {
-                return 0;
-            }
-        });
-        if (getVolumes() != null) {
-            final JSONArray array = new JSONArray(getVolumes());
-            for (int i = 0; i < array.length(); i++) {
-                final JSONObject obj = array.getJSONObject(i);
-                result.put(obj.getDouble(Product.PRICE_KEY), obj.getString(Product.VOLUME_KEY));
-            }
-        }
-        return result;
+    public List<ProductVolume> getProductVolumes() throws JsonProcessingException {
+        var list = getVolumes() == null ? new ProductVolume[0] : new ObjectMapper().readValue(getVolumes(), ProductVolume[].class);
+        return Arrays.asList(list);
     }
     
     public JSONObject toMySkladJSON(PriceType priceType) {
