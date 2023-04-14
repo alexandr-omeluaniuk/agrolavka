@@ -27,47 +27,22 @@
             <td class="text-right">
                 <c:if test="${not empty position.product.discount}">
                     <i class="fas fa-fire me-2 text-danger"></i>
-                    <t:price priceDouble="${position.product.discountPrice}"></t:price>
                 </c:if>
-                <c:if test="${empty position.product.discount}">
-                    <t:price priceDouble="${position.product.price}"></t:price>
-                </c:if>
+                <t:price priceDouble="${position.price}"></t:price>
             </td>
             <td class="text-left">
-                <%
-                    out.print("<small class=\"text-muted fw-bold ms-1\">");
-                    if (position.getProduct().getVolumes() != null) {
-                        try {
-                            final Map<Double, String> volumePrices = position.getProduct().getVolumePrices();
-                            final String volume = volumePrices.get(position.getPrice());
-                            if (volume != null) {
-                                out.print("за " + volume);
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    } else {
-                        out.print("за 1 ед.");
-                    }
-                    out.print("</small>");
-                %>
+                <small class="text-muted fw-bold">
+                    ${position.getQuantityLabel()}
+                </small>
             </td>
         </tr>
         <tr>
             <th scope="row text-muted">Сумма</th>
             <td class="text-right">
-                <span class="mt-4 fw-bold text-dark">
-                    <%
-                        Integer quantity = position.getQuantity();
-                        Double subtotal = position.getPrice() * quantity;
-                        String sum = String.format("%.2f", subtotal);
-                        String[] parts2 = sum.split("\\.");
-                        out.print(parts2[0] + ".");
-                        out.print("<small>" + parts2[1] + "</small>");
-                    %>
+                <t:price priceDouble="${position.price * position.quantity}"></t:price>
             </td>
             <td class="text-left">
-                <small class="text-muted fw-bold ms-1">за ${position.quantity} ед.</small>
+                <small class="text-muted fw-bold">за ${position.quantity} ед.</small>
             </td>
         </tr>
     </tbody>

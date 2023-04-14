@@ -6,6 +6,7 @@
 package ss.entity.agrolavka;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.util.Map;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -127,6 +128,15 @@ public class OrderPosition extends DataModel {
         this.positionId = tempId;
     }
     // ================================================================================================================
+    
+    public String getQuantityLabel() {
+        if (getProduct() != null && getProduct().getVolumes() != null) {
+            final Map<Double, String> volumePrices = getProduct().getVolumePrices();
+            return "за " + volumePrices.get(getPrice());
+        } else {
+            return "за 1 ед";
+        }
+    }
     @Override
     public int hashCode() {
         int hash = 0;
