@@ -17,6 +17,8 @@
 package ss.agrolavka.util;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import ss.agrolavka.wrapper.ProductVolume;
@@ -34,7 +36,9 @@ public class PriceCalculator {
         final Map<Double, Integer> result = new TreeMap<>();
         if (product.getVolumes() != null) {
             int rest = toMilliliters(quantity);
-            for (ProductVolume productVolume : product.getProductVolumes()) {
+            final List<ProductVolume> volumes = product.getProductVolumes();
+            Collections.reverse(volumes);
+            for (ProductVolume productVolume : volumes) {
                 if (rest > 0) {
                     final int volumeInMilliliter = toMilliliters(productVolume.getAmount());
                     final int quantityInt = rest / volumeInMilliliter;
