@@ -151,6 +151,19 @@ public class OrderPosition extends DataModel {
             return String.format("за %s ед", getQuantity());
         }
     }
+    public String getProductName() throws JsonProcessingException {
+        String name = "";
+        if (getProduct() != null) {
+            if (getProduct().getVolumes() != null) {
+                final Optional<ProductVolume> volume = getProduct().getProductVolumes().stream()
+                    .filter(item -> item.getPrice().equals(getPrice())).findFirst();
+                name = getProduct().getName() + (volume.isEmpty() ? "" : (" (" + volume.get().getVolumeLabel() + ")"));
+            } else {
+                name = getProduct().getName();
+            }
+        }
+        return name;
+    }
     @Override
     public int hashCode() {
         int hash = 0;
