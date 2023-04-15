@@ -31,7 +31,7 @@
             out.print("<button type=\"button\" class=\"agr-volume-btn btn " + cl + " btn-rounded "
                 + (buttonClass == null ? "" : buttonClass) + "\" data-product-volume-price=\""
                 + volume.getPrice() + "\" data-product-volume-quantity=\"" + volume.getAmount() + "\" data-mdb-color=\"dark\">");
-            out.print(volume.getAmount());
+            out.print(volume.getVolumeLabel());
             out.print("</button>");
         }
     %>

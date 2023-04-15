@@ -21,5 +21,15 @@ package ss.agrolavka.constants;
  * @author alex
  */
 public enum VolumeUnit {
-    LITER;
+    LITER("л");
+    
+    private String label;
+    
+    private VolumeUnit(final String label) {
+        this.label = label;
+    }
+    
+    public String getLabel() {
+        return label;
+    }
 }

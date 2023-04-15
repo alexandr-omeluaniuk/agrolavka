@@ -77,4 +77,9 @@ public class ProductVolume implements Comparable<ProductVolume>{
             return 0;
         }
     }
+    
+    public String getVolumeLabel() {
+        final Double fractional = amount - amount.intValue();
+        return (fractional >= 0.1 ? String.valueOf(amount) : String.valueOf(amount.intValue())) + unit.getLabel();
+    }
 }
