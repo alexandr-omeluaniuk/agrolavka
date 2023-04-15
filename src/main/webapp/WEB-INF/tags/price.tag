@@ -12,7 +12,7 @@
 <%-- The list of normal or fragment attributes can be specified here: --%>
 <%@attribute name="priceDouble" required="true" type="Double"%>
 <%-- any content can be specified here e.g.: --%>
-<span class="mt-4 fw-bold text-dark">
+<span class="fw-bold text-dark">
     <%
         String price = String.format("%.2f", priceDouble);
         String[] parts = price.split("\\.");

@@ -38,11 +38,11 @@
         </tr>
         <tr>
             <th scope="row text-muted">Сумма</th>
-            <td class="text-right">
+            <td class="text-right agr-cart-item-subtotal-price">
                 <t:price priceDouble="${position.price * position.quantity}"></t:price>
             </td>
             <td class="text-left">
-                <small class="text-muted fw-bold">
+                <small class="text-muted fw-bold agr-cart-item-subtotal-label">
                     ${position.getSubtotalLabel()}
                 </small>
             </td>

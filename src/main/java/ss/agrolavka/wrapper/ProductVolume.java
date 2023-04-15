@@ -86,6 +86,6 @@ public class ProductVolume implements Comparable<ProductVolume>{
     public String getVolumeLabelForQuantity(Integer quantity) {
         final Double subtotal = amount * quantity;
         final Double fractional = subtotal - subtotal.intValue();
-        return (fractional >= 0.1 ? String.valueOf(subtotal) : String.valueOf(subtotal.intValue())) + unit.getLabel();
+        return (fractional >= 0.1 ? String.format("%.1f", subtotal) : String.valueOf(subtotal.intValue())) + unit.getLabel();
     }
 }

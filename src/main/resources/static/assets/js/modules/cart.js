@@ -18,6 +18,7 @@
 import { addElementEvent } from './util-functions.js';
 
 const updateCartTotal = (cart) => {
+    updateCartItems(cart);
     let total = 0;
     cart.positions.forEach(p => {
         total += p.price * p.quantity;
@@ -41,6 +42,17 @@ const updateCartTotal = (cart) => {
     }
 };
 
+const updateCartItems = (cart) => {
+    cart.positions.forEach(position => {
+        const cartElement = document.querySelector("[data-cart-item-id='" + position.positionId + "']");
+        if (cartElement) {
+            cartElement.querySelector('.agr-cart-item-subtotal-label').innerHTML = position.subtotalLabel;
+            const subtotal = parseFloat(position.price * position.quantity).toFixed(2).split(".");
+            cartElement.querySelector('.agr-cart-item-subtotal-price').querySelector('span').innerHTML = subtotal[0] + `.<small>${subtotal[1]}</small>`;
+        }
+    });
+};
+
 const cartRemoveProductListener = (evt, button) => {
     button.setAttribute('disabled', 'true');
     fetch('/api/agrolavka/public/cart/position/' + button.getAttribute('data-product-position-id'), {
@@ -53,7 +65,6 @@ const cartRemoveProductListener = (evt, button) => {
         if (response.ok) {
             response.json().then(cart => {
                 button.closest(".card").remove();
-
                 updateCartTotal(cart);
             });
         }

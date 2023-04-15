@@ -6,6 +6,7 @@
 package ss.entity.agrolavka;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import java.util.Map;
 import java.util.Optional;
@@ -131,7 +132,7 @@ public class OrderPosition extends DataModel {
         this.positionId = tempId;
     }
     // ================================================================================================================
-    
+    @JsonIgnore
     public String getQuantityLabel() throws JsonProcessingException {
         if (getProduct() != null && getProduct().getVolumes() != null) {
             final Optional<ProductVolume> volume = getProduct().getProductVolumes().stream()
