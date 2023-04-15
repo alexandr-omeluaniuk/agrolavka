@@ -21,7 +21,7 @@
                 <form>
                     <div class="input-group">
                         <input type="number" class="form-control" placeholder="Количество" name="quantity" min="1" required aria-describedby="quantity-type">
-                        <span class="input-group-text" id="quantity-type">шт.</span>
+                        <span class="input-group-text border-0" id="quantity-type">шт.</span>
                     </div>
                     <input name="productId" hidden required>
                 </form>

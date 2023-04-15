@@ -201,9 +201,9 @@ const modifyQuantityField = (fieldQuantity, button) => {
             const volumes = volumesComponent.getAttribute("data-volumes");
             const pricesList = JSON.parse(volumes.replaceAll("'", '"'));
             const minVolume = pricesList.reduce((prev, curr) => {
-                return prev.v.replace('л', '') < curr.v.replace('л', '') ? prev : curr;
+                return prev.amount < curr.amount ? prev : curr;
             });
-            fieldQuantity.setAttribute("min", minVolume.v.replace('л', ''));
+            fieldQuantity.setAttribute("min", minVolume.amount);
             fieldQuantity.value = volumesComponent.getAttribute("data-selected-volume-quantity");
         } catch (e) {
             console.warn(e);
