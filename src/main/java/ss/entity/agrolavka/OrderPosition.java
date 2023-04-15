@@ -6,7 +6,9 @@
 package ss.entity.agrolavka;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import java.util.Map;
+import java.util.Optional;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -16,6 +18,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import ss.agrolavka.wrapper.ProductVolume;
 import ss.entity.martin.DataModel;
 import ss.martin.platform.anno.security.FormField;
 
@@ -129,28 +132,23 @@ public class OrderPosition extends DataModel {
     }
     // ================================================================================================================
     
-    public String getQuantityLabel() {
-        return "TODO 11";
-//        if (getProduct() != null && getProduct().getVolumes() != null) {
-//            final Map<Double, String> volumePrices = getProduct().getVolumePrices();
-//            return "за " + volumePrices.get(getPrice());
-//        } else {
-//            return "за 1 ед";
-//        }
+    public String getQuantityLabel() throws JsonProcessingException {
+        if (getProduct() != null && getProduct().getVolumes() != null) {
+            final Optional<ProductVolume> volume = getProduct().getProductVolumes().stream()
+                    .filter(item -> item.getPrice().equals(getPrice())).findFirst();
+            return volume.isEmpty() ? "" : String.format("за %s", volume.get().getVolumeLabel());
+        } else {
+            return "за 1 ед";
+        }
     }
-    public String getSubtotalLabel() {
-        return "TODO 22";
-//        if (getProduct() != null && getProduct().getVolumes() != null) {
-//            final Map<Double, String> volumePrices = getProduct().getVolumePrices();
-//            final String volume = volumePrices.get(getPrice());
-//            if (volume != null) {
-//                return String.format("за %s л", Double.valueOf(volume.replace("л", "").replace(",", ".")) * getQuantity());
-//            } else {
-//                return "";
-//            }
-//        } else {
-//            return String.format("за %s ед", getQuantity());
-//        }
+    public String getSubtotalLabel() throws JsonProcessingException {
+        if (getProduct() != null && getProduct().getVolumes() != null) {
+            final Optional<ProductVolume> volume = getProduct().getProductVolumes().stream()
+                    .filter(item -> item.getPrice().equals(getPrice())).findFirst();
+            return volume.isEmpty() ? "" : String.format("за %s", volume.get().getVolumeLabelForQuantity(quantity));
+        } else {
+            return String.format("за %s ед", getQuantity());
+        }
     }
     @Override
     public int hashCode() {
