@@ -195,6 +195,7 @@ const photoClickListener = (evt, image) => {
 
 const modifyQuantityField = (fieldQuantity, button) => {
     const volumesComponent = button.closest('div').querySelector('div[data-volumes]');
+    const helpText = fieldQuantity.closest('form').querySelector('.agr-volume-help-text');
     if (volumesComponent) {
         fieldQuantity.setAttribute("step", ".1");
         try {
@@ -208,6 +209,8 @@ const modifyQuantityField = (fieldQuantity, button) => {
             fieldQuantity.setAttribute("step", minAmount);
             const valQuantity = volumesComponent.getAttribute("data-selected-volume-quantity");
             fieldQuantity.value = valQuantity >= 1 ? parseFloat(valQuantity).toFixed(0) : valQuantity;
+            helpText.classList.remove('d-none');
+            helpText.querySelector('b').innerHTML = minAmount + 'л';
         } catch (e) {
             console.warn(e);
         }
@@ -215,6 +218,7 @@ const modifyQuantityField = (fieldQuantity, button) => {
         fieldQuantity.removeAttribute("step");
         fieldQuantity.setAttribute("min", "1");
         fieldQuantity.value = 1;
+        helpText.classList.add('d-none');
     }
     const quantityType = fieldQuantity.closest('div').querySelector('span');
     quantityType.innerHTML = volumesComponent ? 'литр.' : 'шт.';
