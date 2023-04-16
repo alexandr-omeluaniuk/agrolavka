@@ -5,6 +5,7 @@
  */
 package ss.agrolavka.rest;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -183,7 +184,7 @@ class AgrolavkaPublicRESTController {
         final Order order = orderService.getCurrentOrder(request);
         final Order savedOrder = orderService.createOrder(order, orderWrapper);
         final Order newOrder = new Order();
-        newOrder.setPositions(Collections.emptyList());
+        newOrder.setPositions(new ArrayList<>());
         request.getSession().setAttribute(SiteConstants.CART_SESSION_ATTRIBUTE, newOrder);
         return savedOrder;
     }

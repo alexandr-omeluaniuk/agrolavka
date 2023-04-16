@@ -203,8 +203,11 @@ const modifyQuantityField = (fieldQuantity, button) => {
             const minVolume = pricesList.reduce((prev, curr) => {
                 return prev.amount < curr.amount ? prev : curr;
             });
-            fieldQuantity.setAttribute("min", minVolume.amount);
-            fieldQuantity.value = volumesComponent.getAttribute("data-selected-volume-quantity");
+            const minAmount = minVolume.amount >= 1 ? parseFloat(minVolume.amount).toFixed(0) : minVolume.amount;
+            fieldQuantity.setAttribute("min", minAmount);
+            fieldQuantity.setAttribute("step", minAmount);
+            const valQuantity = volumesComponent.getAttribute("data-selected-volume-quantity");
+            fieldQuantity.value = valQuantity >= 1 ? parseFloat(valQuantity).toFixed(0) : valQuantity;
         } catch (e) {
             console.warn(e);
         }
