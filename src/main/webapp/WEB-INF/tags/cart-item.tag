@@ -35,7 +35,12 @@
                 </c:choose>
                 <div class="ms-3" style="flex: 1;">
                     <small class="text-muted agr-cart-position-description">
-                        ${position.product.description}
+                        <c:if test="${not empty position.product.description}">
+                            ${position.product.description}
+                        </c:if>
+                        <c:if test="${empty position.product.description}">
+                            Нет описания товара
+                        </c:if>
                     </small>
                 </div>
             </div>

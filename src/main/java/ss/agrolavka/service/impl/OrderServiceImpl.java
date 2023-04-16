@@ -96,6 +96,7 @@ class OrderServiceImpl implements OrderService {
             position.setProduct(product);
             position.setProductId(orderDetails.getProductId());
             position.setPrice(price);
+            positions.add(position);
         });
         final Double total = positions.stream().map(pos -> pos.getQuantity() * pos.getPrice()).reduce(0d, Double::sum);
         final Order order = new Order();
