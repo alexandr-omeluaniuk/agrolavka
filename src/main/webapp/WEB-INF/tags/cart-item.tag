@@ -14,31 +14,35 @@
 <%-- any content can be specified here e.g.: --%>
 <div class="card mb-4 shadow-1-strong" data-cart-item-id="${position.positionId}">
     <div class="card-body">
-        <div class="row ps-md-2">
+        <div class="row">
 
-            <c:choose>
-                <c:when test="${position.product.images.size() > 0}">
-                    <div class="col-lg-1 agr-cart-position-image d-none d-lg-block shadow-1-strong rounded" 
-                         style="background-image: url('/media/${position.product.images.get(0).fileNameOnDisk}')" alt="${position.product.name}">
-                    </div>
-                </c:when>
-                <c:otherwise>
-                    <div class="col-lg-1 agr-cart-position-image d-none d-lg-block shadow-1-strong rounded" 
-                         style="background-image: url('/assets/img/no-image.png')" alt="${position.product.name}'">
-                    </div>
-                </c:otherwise>
-            </c:choose>
-
-            <div class="col-sm-12 col-md-6 col-lg-6 col-xl-7 ps-3 pe-3">
-                <a href="<%= UrlProducer.buildProductUrl(position.getProduct())%>" class="agr-link"><h6>${position.getProductName()}</h6></a>
-                <small class="text-muted agr-cart-position-description mb-2">
-                    ${position.product.description}
-                </small>
+            <div class="col-12">
+                <a href="<%= UrlProducer.buildProductUrl(position.getProduct())%>" class="agr-link" style="text-decoration: underline"><h5>${position.getProductName()}</h5></a>
             </div>
 
-            <div class="col-sm-12 col-md-6 col-lg-5 col-xl-4 d-flex flex-column">
+            <div class="col-12 col-sm-12 col-md-7 col-lg-7 col-xl-8 d-flex mb-2">
+                <c:choose>
+                    <c:when test="${position.product.images.size() > 0}">
+                        <div class="agr-cart-position-image shadow-1-strong rounded-circle" 
+                                 style="background-image: url('/media/${position.product.images.get(0).fileNameOnDisk}')" 
+                                 alt="${position.product.name}"></div>
+                    </c:when>
+                    <c:otherwise>
+                        <div class="agr-cart-position-image shadow-1-strong rounded-circle" 
+                                 style="background-image: url('/assets/img/no-image.png')" 
+                                 alt="${position.product.name}"></div>
+                    </c:otherwise>
+                </c:choose>
+                <div class="ms-3" style="flex: 1;">
+                    <small class="text-muted agr-cart-position-description">
+                        ${position.product.description}
+                    </small>
+                </div>
+            </div>
+
+            <div class="col-12 col-sm-12 col-md-5 col-lg-5 col-xl-4 d-flex flex-column">
                 <div class="d-flex justify-content-end">
-                    <div class="me-4 d-flex rounded-pill shadow-sm p-2">
+                    <div class="me-4 d-flex rounded-pill shadow-sm p-2 w-100">
                         <button class="btn btn-primary btn-floating me-2" type="button" data-product-quantity-plus>
                             <i class="fas fa-plus"></i>
                         </button>

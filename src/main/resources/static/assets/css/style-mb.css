@@ -237,15 +237,17 @@ and open the template in the editor.
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
-    -webkit-line-clamp: 4;
+    -webkit-line-clamp: 6;
     -webkit-box-orient: vertical;
 }
 .agr-cart-position-image {
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
-    min-height: 120px;
-    max-height: 120px;
+    min-height: 100px;
+    max-height: 100px;
+    min-width: 100px;
+    max-width: 100px;
 }
 .agr-quantity {
     line-height: 0.7rem;
