@@ -110,7 +110,11 @@ class AgrolavkaPublicRESTController {
             return !Objects.equals(pos.getProductId(), id);
         }).collect(Collectors.toList());
         order.setPositions(positions);
-        request.getSession().setAttribute(SiteConstants.CART_SESSION_ATTRIBUTE, order);
+        if (positions.isEmpty()) {
+            request.getSession().removeAttribute(SiteConstants.CART_SESSION_ATTRIBUTE);
+        } else {
+            request.getSession().setAttribute(SiteConstants.CART_SESSION_ATTRIBUTE, order);
+        }
         return order;
     }
     
@@ -122,7 +126,11 @@ class AgrolavkaPublicRESTController {
             return !Objects.equals(pos.getPositionId(), id);
         }).collect(Collectors.toList());
         order.setPositions(positions);
-        request.getSession().setAttribute(SiteConstants.CART_SESSION_ATTRIBUTE, order);
+        if (positions.isEmpty()) {
+            request.getSession().removeAttribute(SiteConstants.CART_SESSION_ATTRIBUTE);
+        } else {
+            request.getSession().setAttribute(SiteConstants.CART_SESSION_ATTRIBUTE, order);
+        }
         return order;
     }
     /**

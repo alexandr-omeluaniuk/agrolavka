@@ -16,6 +16,7 @@
  */
 package ss.agrolavka.wrapper;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import ss.agrolavka.constants.VolumeUnit;
 
 /**
@@ -77,12 +78,12 @@ public class ProductVolume implements Comparable<ProductVolume>{
             return 0;
         }
     }
-    
+    @JsonIgnore
     public String getVolumeLabel() {
         final Double fractional = amount - amount.intValue();
         return (fractional >= 0.1 ? String.valueOf(amount) : String.valueOf(amount.intValue())) + unit.getLabel();
     }
-    
+    @JsonIgnore
     public String getVolumeLabelForQuantity(Integer quantity) {
         final Double subtotal = amount * quantity;
         final Double fractional = subtotal - subtotal.intValue();
