@@ -141,10 +141,14 @@ function Order(props) {
                     return row.product ? row.product.name : '<--->';
                 }).setSortable(),
                 new TableColumn('volume', t('m_agrolavka:order.position.volume'), (row) => {
-                    let volume = null;
+                    let volume = '';
                     if (row.product && row.product.productVolumes && row.product.productVolumes.length > 0) {
                         const volume = row.product.productVolumes.filter(item => item.price === row.price)[0];
-                        return volume.amount + (volume.unit === 'LITER' ? 'л' : '');
+                        if (volume) {
+                            return volume.amount + (volume.unit === 'LITER' ? 'л' : '');
+                        } else {
+                            console.log(row);
+                        }
                     }
                     return volume;
                 }).width('100px').alignment(ALIGN_RIGHT),
