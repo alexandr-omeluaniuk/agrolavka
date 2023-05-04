@@ -1,0 +1,4 @@
+allprojects {
+    group = 'ss.martin.platform'
+    version = '1.0'
+}

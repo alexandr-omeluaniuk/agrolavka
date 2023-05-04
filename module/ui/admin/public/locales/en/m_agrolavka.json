@@ -1,0 +1,112 @@
+{
+    "title": "Agrolavka",
+    "agrolavka": {
+        "products": "Products",
+        "orders": "Orders",
+        "sandbox": "Sandbox",
+        "feedbacks": "Feedbacks",
+        "shops": "Shops",
+        "slides": "Slides"
+    },
+    "products": {
+        "product_groups": "Product groups",
+        "product_name": "Name",
+        "product_price": "Price",
+        "product_buy_price": "Buy price",
+        "product_images": "Images",
+        "all_product_groups": "All",
+        "product_article": "Article",
+        "product_description": "Description",
+        "product_code": "Code",
+        "synchronize": "Synchronize MySklad data",
+        "product_seo_title": "SEO and site page title",
+        "product_seo_description": "SEO meta description content",
+        "quantity": "Quantity",
+        "available": "Available",
+        "discounts": "With discount",
+        "product_video_url": "VIdeo URL"
+    },
+    "products_groups": {
+        "new_group": "Create new product group",
+        "edit_group": "Edit",
+        "delete_group": "Delete",
+        "product_group_name": "Name",
+        "product_group_top_category": "Toolbar category",
+        "product_group_fa_icon": "Font Awesome icon",
+        "product_group_description": "Description",
+        "product_group_seo_title": "SEO and site page title",
+        "product_group_seo_description": "SEO meta description content",
+        "image": "Photo",
+        "normalize": "Normalize product groups"
+    },
+    "orders": {
+        "order_number": "Order Nr.",
+        "mobile_phone": "Mobile",
+        "address": "Address",
+        "enable_notifications": "Enable notifications",
+        "enable_notifications_success": "Notifications have been enabled!",
+        "disable_notifications": "Disable notifications",
+        "disable_notifications_success": "Notifications have been turned off",
+        "order_total": "Total sum",
+        "delivery_self": "Self-delivery",
+        "delivery_europost": "Europost",
+        "one_click": "One-click order",
+        "print": "Print version",
+        "print_add": "Add for print list",
+        "print_remove": "Remove from print list"
+    },
+    "feedbacks": {
+        "feedback_number": "Nr.",
+        "contact": "Contact information",
+        "message": "Message",
+        "created": "Created"
+    },
+    "order": {
+        "title": "Order # {{num}}",
+        "status": "Status",
+        "created": "Created",
+        "statusConst": {
+            "WAITING_FOR_APPROVAL": "Waiting for approval",
+            "APPROVED": "Approved",
+            "DELIVERY": "Delivery",
+            "CLOSED": "Closed"
+        },
+        "positions": "Positions",
+        "position": {
+            "name": "Name",
+            "quantity": "Quantity",
+            "price": "Price",
+            "subtotal": "Subtotal",
+            "volume": "Volume"
+        },
+        "close": "Close",
+        "total": "Total",
+        "nostatus": "None",
+        "search_text": "Search...",
+        "show_archive": "Show archive",
+        "contacts": "Contacts",
+        "comment": "Comment",
+        "adminComment": "My comment"
+    },
+    "shops": {
+        "shop_number": "Nr",
+        "title": "Name",
+        "description": "Description",
+        "latitude": "Latitude",
+        "longitude": "Longitude",
+        "address": "Address",
+        "working_hours": "Working hours",
+        "main_image": "Main image",
+        "images": "Images",
+        "phone": "Phone"
+    },
+    "slides": {
+        "name": "Name",
+        "title": "Title",
+        "subtitle": "Subtitle",
+        "button_text": "Button text",
+        "button_link": "Button link"
+    },
+    "backup": "Do data backup",
+    "group_products_by_volumes": "Group products by volume"
+}

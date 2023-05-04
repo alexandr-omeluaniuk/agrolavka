@@ -1,0 +1,28 @@
+{
+    "title": "Администрирование",
+    "administrator": {
+        "users": "Пользователи",
+        "email_group": "Настройки Email",
+        "email": {
+            "emailtemplates": "Шаблоны"
+        }
+    },
+    "users": {
+        "fullname": "Полное имя",
+        "email": "Email",
+        "status": "Статус",
+        "active": "Активный",
+        "firstname": "Имя",
+        "lastname": "Фамилия",
+        "status_const": {
+            "ACTIVE": "Активный",
+            "INACTIVE": "Декактивирован",
+            "REGISTRATION": "В процессе регистрации"
+        },
+        "open_registration_link": "Открыть ссылку регистрации"
+    },
+    "email_templates": {
+        "subject": "Тема письма",
+        "content": "Содержание"
+    }
+}

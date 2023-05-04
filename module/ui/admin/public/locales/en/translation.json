@@ -1,0 +1,126 @@
+{
+    "app_name": "Martin",
+    "copyright": "Copyright",
+    "vendor_site": "https://github.com/alexandr-omeluaniuk",
+    "author": "Alex Amelyaniuk",
+    
+    "language": {
+        "en": "English",
+        "ru": "Русский"
+    },
+    
+    "component": {
+        "datatable": {
+            "new": "New record",
+            "refresh": "Refresh",
+            "edit": "Edit record",
+            "delete": "Delete record",
+            "confirm": "Confirm",
+            "cancel": "Cancel",
+            "dense_padding": "Dense padding",
+            "confirm_delete_message": "Do you really want to delete this record?",
+            "no_data": "No data",
+            "filters": "Filters"
+        },
+        "menu": {
+            "close": "Close",
+            "open": "Open"
+        },
+        "form": {
+            "save": "Save",
+            "cancel": "Cancel",
+            "clear": "Clear",
+            "none": "None",
+            "today": "Today",
+            "select_image": "Select image",
+            "remove_image": "Remove image"
+        },
+        "toolbar": {
+            "account": "Account"
+        },
+        "welcome": {
+            "title": "Welcome",
+            "sign_in": "Sign in",
+            "username": "Email",
+            "password": "Password",
+            "login_fail": "Invalid login or password"
+        },
+        "account_menu": {
+            "profile": "My profile",
+            "settings": "Settings",
+            "t_settings": {
+                "tabs": {
+                    "interface": "Look and feel"
+                },
+                "language": "Language",
+                "theme": "Theme",
+                "palette": "Palette",
+                "themes": {
+                    "STANDARD": "Material Theme"
+                },
+                "palette_colors": {
+                    "primary": "Primary",
+                    "secondary": "Secondary"
+                }
+            },
+            "applications": "Applications",
+            "logout": "Logout",
+            "update": "Update application",
+            "update_success": "Application has been updated successfully!"
+        },
+        "finish_registration": {
+            "title": "Please, finish your registration",
+            "password": "Please, enter new password",
+            "password_repeat": "Please, repeat the password",
+            "password_length": "At least 8 characters",
+            "password_not_match": "Passwords are not match",
+            "submit": "Finish registration"
+        },
+        "htmleditor": {
+            "context_menu": {
+                "back": "Back",
+                "headers": "Headers",
+                "texts": "Text",
+                "header": {
+                    "h1": "Header 1",
+                    "h2": "Header 2",
+                    "h3": "Header 3",
+                    "h4": "Header 4",
+                    "h5": "Header 5",
+                    "h6": "Header 6"
+                },
+                "text": {
+                    "p": "Paragraph",
+                    "span": "Text"
+                },
+                "action": {
+                    "delete": "Remove",
+                    "settings": "Settings"
+                }
+            },
+            "toolbar": {
+                "colors": "Text color",
+                "content": {
+                    "text": "Text",
+                    "link": "Link",
+                    "links": {
+                        "settings": "Link settings"
+                    }
+                },
+                "text_alignment": {
+                    "left": "Left",
+                    "center": "Center",
+                    "right": "Right",
+                    "justify": "Justify"
+                }
+            }
+        }
+    },
+    "validation": {
+        "required": "Required field",
+        "email": "Wrong email address",
+        "min_length": "Min {{length}} characters",
+        "max_length": "Max {{length}} characters",
+        "web_url": "Incorrect URL"
+    }
+}

@@ -1,0 +1,113 @@
+{
+    "title": "Agrolavka",
+    "agrolavka": {
+        "products": "Товары",
+        "orders": "Заказы",
+        "sandbox": "Песочница",
+        "feedbacks": "Обратная связь",
+        "shops": "Магазины",
+        "slides": "Слайды"
+    },
+    "products": {
+        "product_groups": "Категория товара",
+        "product_name": "Название",
+        "product_price": "Отпускная цена",
+        "product_buy_price": "Закупочная цена",
+        "product_images": "Изображения",
+        "all_product_groups": "Все",
+        "product_article": "Артикул",
+        "product_description": "Описание",
+        "product_code": "Код товара",
+        "synchronize": "Синхонизировать данные c программой Мой Склад",
+        "product_seo_title": "Название страницы товара на сайте (SEO)",
+        "product_seo_description": "Описание страницы товара на сайте (SEO)",
+        "quantity": "Кол-во",
+        "available": "В наличии",
+        "discounts": "На акции",
+        "product_video_url": "Ссылка на видео"
+    },
+    "products_groups": {
+        "new_group": "Создать новую группу товаров",
+        "edit_group": "Редактировать",
+        "delete_group": "Удалить",
+        "product_group_name": "Название",
+        "product_group_top_category": "Показать в тулбаре",
+        "product_group_fa_icon": "Font Awesome иконка",
+        "product_group_description": "Описание",
+        "product_group_seo_title": "Название страницы категории товаров на сайте (SEO)",
+        "product_group_seo_description": "Описание страницы категории товаров на сайте (SEO)",
+        "image": "Изображение",
+        "normalize": "Нормализация (сжатие изображений)"
+    },
+    "orders": {
+        "order_number": "№",
+        "mobile_phone": "Номер телефона",
+        "address": "Адрес",
+        "details": "Детали доставки",
+        "enable_notifications": "Уведомления выключены. Нажмите чтобы включить уведомления",
+        "enable_notifications_success": "Уведомления включены",
+        "disable_notifications": "Уведомления включены. Нажмите чтобы выключить уведомления",
+        "disable_notifications_success": "Уведомления отключены",
+        "order_total": "Сумма",
+        "delivery_self": "Самовывоз",
+        "delivery_europost": "Европочта",
+        "one_click": "Заказ в один клик",
+        "print": "Версия для печати",
+        "print_add": "Добавить в список для печати",
+        "print_remove": "Убрать из списка для печати"
+    },
+    "feedbacks": {
+        "feedback_number": "Номер",
+        "contact": "Контактная информация",
+        "message": "Сообщение",
+        "created": "Создано"
+    },
+    "order": {
+        "title": "Заказ № {{num}}",
+        "status": "Статус",
+        "created": "Создан",
+        "statusConst": {
+            "WAITING_FOR_APPROVAL": "В ожидании подтверждения",
+            "APPROVED": "Подтвержден",
+            "DELIVERY": "В процессе доставки",
+            "CLOSED": "Закрыт"
+        },
+        "positions": "Корзина покупателя",
+        "position": {
+            "name": "Наименование",
+            "quantity": "Количество",
+            "price": "Цена",
+            "subtotal": "Сумма",
+            "volume": "Обьем"
+        },
+        "close": "Закрыть",
+        "total": "Общая сумма",
+        "nostatus": "Не выбран",
+        "search_text": "Поиск...",
+        "show_archive": "Архив",
+        "contacts": "Контактные данные",
+        "comment": "Комментарий к заказу",
+        "adminComment": "Мой комментарий"
+    },
+    "shops": {
+        "shop_number": "Номер",
+        "title": "Название магазина",
+        "description": "Описание",
+        "latitude": "Широта",
+        "longitude": "Долгота",
+        "address": "Адрес",
+        "working_hours": "Время работы",
+        "main_image": "Фото магазина",
+        "images": "Дополнительные изображения",
+        "phone": "Телефон"
+    },
+    "slides": {
+        "name": "Название",
+        "title": "Заголовок",
+        "subtitle": "Описание",
+        "button_text": "Текст для кнопки",
+        "button_link": "Ссылка для кнопки"
+    },
+    "backup": "Сделать резервную копию всех данных",
+    "group_products_by_volumes": "Перегруппировать товары по обьему"
+}

@@ -1,0 +1,5 @@
+/.gradle
+build/
+/buildSrc/build
+/buildSrc/.gradle
+/module/app/agrolavka/src/main/resources/application.yml

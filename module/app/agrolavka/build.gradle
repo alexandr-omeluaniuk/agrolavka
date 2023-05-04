@@ -1,0 +1,50 @@
+plugins {
+    id "spring-boot-convention"
+}
+dependencies {
+    implementation "org.json:json:20201115"
+    implementation "com.github.vandeseer:easytable:0.8.5"
+    runtimeOnly "org.apache.tomcat.embed:tomcat-embed-jasper"
+    runtimeOnly "org.glassfish.web:jakarta.servlet.jsp.jstl"
+    runtimeOnly "jakarta.servlet.jsp.jstl:jakarta.servlet.jsp.jstl-api"
+    providedRuntime "org.springframework.boot:spring-boot-starter-tomcat"
+    
+    annotationProcessor "org.hibernate.orm:hibernate-jpamodelgen"
+    implementation project(":module:lib:platform")
+}
+
+processResources {
+    excludes = [
+        "/application.yml",
+        "/application.sample.yml"
+    ]
+}
+
+springBoot {
+    mainClass = 'ss.agrolavka.Main'
+}
+
+tasks.named("bootWar") {
+    launchScript()  // run as linux script/service
+}
+
+task copyAdminApp(type: Copy) {
+    from '../../ui/admin/build'
+    into 'src/main/resources/static/admin/build'
+}
+
+copyAdminApp.dependsOn(':module:ui:admin:buildReactApp')
+if ("deploy" in project.gradle.startParameter.taskNames) {
+    println "NPM build enabled..."
+    processResources.dependsOn(copyAdminApp)
+}
+
+task deploy(type: Exec) {
+    dependsOn build
+    workingDir '.'
+    commandLine 'bin/deploy.sh'
+    standardOutput = new ByteArrayOutputStream()
+    ext.output = {
+        return standardOutput.toString()
+    }
+}

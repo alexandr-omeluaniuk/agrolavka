@@ -1,0 +1,9 @@
+plugins {
+    id "com.github.node-gradle.node" 
+}
+
+task buildReactApp(type: NpxTask) {
+    dependsOn npmInstall
+    command = 'npm'
+    args = ['run', 'build']
+}

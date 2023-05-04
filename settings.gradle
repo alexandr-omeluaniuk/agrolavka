@@ -1,0 +1,18 @@
+rootProject.name = 'martin'
+
+include ':module:lib:platform', ':module:lib:security', ':module:lib:core'
+include ':module:app:agrolavka'
+include ':module:ui:admin'
+
+dependencyResolutionManagement {
+    versionCatalogs {
+        libs {
+            version('spring-boot', '3.0.5')
+            version('jjwt', '0.11.5')
+            library('spring-boot-dependencies', 'org.springframework.boot', 'spring-boot-dependencies').versionRef('spring-boot')
+            library('jjwt-api', 'io.jsonwebtoken', 'jjwt-api').versionRef('jjwt')
+            library('jjwt-impl', 'io.jsonwebtoken', 'jjwt-impl').versionRef('jjwt')
+            library('jjwt-orgjson', 'io.jsonwebtoken', 'jjwt-orgjson').versionRef('jjwt')
+        }
+    }
+}
