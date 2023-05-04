@@ -16,9 +16,10 @@
  */
 package ss.agrolavka.service.impl;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
+import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
@@ -30,6 +31,8 @@ import org.springframework.transaction.annotation.Transactional;
 import ss.agrolavka.constants.OrderStatus;
 import ss.agrolavka.constants.SiteConstants;
 import ss.agrolavka.service.OrderService;
+import ss.agrolavka.util.PriceCalculator;
+import ss.agrolavka.wrapper.CartProduct;
 import ss.agrolavka.wrapper.OneClickOrderWrapper;
 import ss.agrolavka.wrapper.OrderDetailsWrapper;
 import ss.entity.agrolavka.Address;
@@ -86,19 +89,23 @@ class OrderServiceImpl implements OrderService {
     @Override
     public Order createOneClickOrder(final OneClickOrderWrapper orderDetails) throws Exception {
         final Product product = coreDAO.findById(orderDetails.getProductId(), Product.class);
-        final OrderPosition position = new OrderPosition();
-        position.setQuantity(orderDetails.getQuantity());
-        position.setProduct(product);
-        position.setProductId(orderDetails.getProductId());
-        position.setPrice(orderDetails.getVolumePrice() == null ? product.getDiscountPrice() : orderDetails.getVolumePrice());
-        final Double total = position.getQuantity() * position.getPrice();
+        final List<OrderPosition> positions = new ArrayList<>();
+        PriceCalculator.breakQuantityByVolume(product, orderDetails.getQuantity()).forEach((price, quantity) -> {
+            final OrderPosition position = new OrderPosition();
+            position.setQuantity(quantity);
+            position.setProduct(product);
+            position.setProductId(orderDetails.getProductId());
+            position.setPrice(price);
+            positions.add(position);
+        });
+        final Double total = positions.stream().map(pos -> pos.getQuantity() * pos.getPrice()).reduce(0d, Double::sum);
         final Order order = new Order();
         order.setPhone(orderDetails.getPhone());
         order.setCreated(new Date());
         order.setStatus(OrderStatus.WAITING_FOR_APPROVAL);
-        order.setPositions(new HashSet<>(Collections.singletonList(position)));
+        order.setPositions(positions);
         order.setOneClick(true);
-        position.setOrder(order);
+        positions.forEach(position -> position.setOrder(order));
         final Order savedOrder = coreDAO.create(order);
         sendNotification(savedOrder, total);
         return order;
@@ -109,7 +116,27 @@ class OrderServiceImpl implements OrderService {
         Order order = (Order) request.getSession(true).getAttribute(SiteConstants.CART_SESSION_ATTRIBUTE);
         if (order == null) {
             order = new Order();
-            order.setPositions(new HashSet<>());
+            order.setPositions(new ArrayList<>());
+            request.getSession().setAttribute(SiteConstants.CART_SESSION_ATTRIBUTE, order);
+        }
+        return order;
+    }
+    
+    @Override
+    public Order addProductToCart(final CartProduct cartProduct, final HttpServletRequest request) throws Exception {
+        Product product = coreDAO.findById(cartProduct.getProductId(), Product.class);
+        final Order order = getCurrentOrder(request);
+        if (product != null) {
+            PriceCalculator.breakQuantityByVolume(product, cartProduct.getQuantity()).forEach((price, quantity) -> {
+                OrderPosition position = new OrderPosition();
+                position.setPositionId(UUID.randomUUID().toString());
+                position.setOrder(order);
+                position.setQuantity(quantity);
+                position.setPrice(price);
+                position.setProduct(product);
+                position.setProductId(product.getId());
+                order.getPositions().add(position);
+            });
             request.getSession().setAttribute(SiteConstants.CART_SESSION_ATTRIBUTE, order);
         }
         return order;

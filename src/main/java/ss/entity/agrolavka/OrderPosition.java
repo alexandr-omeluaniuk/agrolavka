@@ -6,6 +6,10 @@
 package ss.entity.agrolavka;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import java.util.Map;
+import java.util.Optional;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -15,6 +19,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import ss.agrolavka.wrapper.ProductVolume;
 import ss.entity.martin.DataModel;
 import ss.martin.platform.anno.security.FormField;
 
@@ -50,6 +55,9 @@ public class OrderPosition extends DataModel {
     /** Product. */
     @Transient
     private Product product;
+    /** Temporary ID. Should be used until entity is not save in DB. */
+    @Transient
+    private String positionId;
     // ========================================== SET & GET ===========================================================
     /**
      * @return the order
@@ -111,7 +119,51 @@ public class OrderPosition extends DataModel {
     public void setProduct(Product product) {
         this.product = product;
     }
+    /**
+     * @return the tempId
+     */
+    public String getPositionId() {
+        return positionId;
+    }
+    /**
+     * @param tempId the tempId to set
+     */
+    public void setPositionId(String tempId) {
+        this.positionId = tempId;
+    }
     // ================================================================================================================
+    @JsonIgnore
+    public String getQuantityLabel() throws JsonProcessingException {
+        if (getProduct() != null && getProduct().getVolumes() != null) {
+            final Optional<ProductVolume> volume = getProduct().getProductVolumes().stream()
+                    .filter(item -> item.getPrice().equals(getPrice())).findFirst();
+            return volume.isEmpty() ? "" : String.format("за %s", volume.get().getVolumeLabel());
+        } else {
+            return "за 1 ед";
+        }
+    }
+    public String getSubtotalLabel() throws JsonProcessingException {
+        if (getProduct() != null && getProduct().getVolumes() != null) {
+            final Optional<ProductVolume> volume = getProduct().getProductVolumes().stream()
+                    .filter(item -> item.getPrice().equals(getPrice())).findFirst();
+            return volume.isEmpty() ? "" : String.format("за %s", volume.get().getVolumeLabelForQuantity(quantity));
+        } else {
+            return String.format("за %s ед", getQuantity());
+        }
+    }
+    public String getProductName() throws JsonProcessingException {
+        String name = "";
+        if (getProduct() != null) {
+            if (getProduct().getVolumes() != null) {
+                final Optional<ProductVolume> volume = getProduct().getProductVolumes().stream()
+                    .filter(item -> item.getPrice().equals(getPrice())).findFirst();
+                name = getProduct().getName() + (volume.isEmpty() ? "" : (" (" + volume.get().getVolumeLabel() + ")"));
+            } else {
+                name = getProduct().getName();
+            }
+        }
+        return name;
+    }
     @Override
     public int hashCode() {
         int hash = 0;

@@ -19,9 +19,12 @@
             </div>
             <div class="modal-body">
                 <form>
-                    <input type="number" class="form-control" placeholder="Количество" name="quantity" min="1" required>
+                    <div class="input-group">
+                        <input type="number" class="form-control" placeholder="Количество" name="quantity" min="1" required aria-describedby="quantity-type">
+                        <span class="input-group-text border-0" id="quantity-type">шт.</span>
+                    </div>
+                    <small class="text-muted d-none agr-volume-help-text">Минимальное количество для заказа <b class="text-danger">0.1л</b></small>
                     <input name="productId" hidden required>
-                    <input name="volumePrice" hidden>
                 </form>
             </div>
             <div class="modal-footer d-flex justify-content-between">

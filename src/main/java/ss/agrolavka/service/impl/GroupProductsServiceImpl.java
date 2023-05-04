@@ -16,7 +16,9 @@
  */
 package ss.agrolavka.service.impl;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -26,16 +28,16 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-import org.json.JSONArray;
-import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import ss.agrolavka.constants.VolumeUnit;
 import ss.agrolavka.service.GroupProductsService;
 import ss.agrolavka.util.UrlProducer;
+import ss.agrolavka.wrapper.ProductVolume;
 import ss.entity.agrolavka.Product;
 import ss.entity.martin.EntityImage;
 import ss.martin.platform.dao.CoreDAO;
@@ -158,7 +160,7 @@ class GroupProductsServiceImpl implements GroupProductsService {
         return result;
     }
     
-    private Product createProductsWithVolumes(final List<Product> products, final String productName) {
+    private Product createProductsWithVolumes(final List<Product> products, final String productName) throws Exception {
         final Product product = new Product();
         product.setName(productName);
         String maxDescription = "";
@@ -166,7 +168,7 @@ class GroupProductsServiceImpl implements GroupProductsService {
         Double maxPrice = 0d;
         Double quantity = 0d;
         List<EntityImage> images = new ArrayList<>();
-        final List<JSONObject> volumes = new ArrayList<>();
+        final List<ProductVolume> volumes = new ArrayList<>();
         for (final Product p : products) {
             if (p.getDescription() != null && p.getDescription().length() > maxDescription.length()) {
                 maxDescription = p.getDescription();
@@ -187,9 +189,10 @@ class GroupProductsServiceImpl implements GroupProductsService {
             final Matcher matcher = pattern.matcher(p.getName());
             if (matcher.find()) {
                 final String volumeToken = matcher.group();
-                final JSONObject volumeObj = new JSONObject();
-                volumeObj.put(Product.VOLUME_KEY, volumeToken.replace(", ", "").trim());
-                volumeObj.put(Product.PRICE_KEY, p.getPrice());
+                final ProductVolume volumeObj = new ProductVolume();
+                volumeObj.setPrice(p.getPrice());
+                volumeObj.setUnit(VolumeUnit.LITER);
+                volumeObj.setAmount(Double.valueOf(volumeToken.replace(", ", "").trim().replace("л", "").replace(",", ".")));
                 volumes.add(volumeObj);
             }
             product.setGroup(p.getGroup());
@@ -205,7 +208,8 @@ class GroupProductsServiceImpl implements GroupProductsService {
         product.setBuyPrice(0d);
         product.setUrl(UrlProducer.transliterate(product.getName()));
         product.setImages(images);
-        product.setVolumes(new JSONArray(volumes).toString());
+        Collections.sort(volumes);
+        product.setVolumes(new ObjectMapper().writeValueAsString(volumes));
         product.setHidden(false);
         return product;
     }

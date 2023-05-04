@@ -5,13 +5,13 @@
  */
 package ss.agrolavka.rest;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -94,24 +94,7 @@ class AgrolavkaPublicRESTController {
             @RequestBody final CartProduct cartProduct,
             final HttpServletRequest request
     ) throws Exception {
-        Product product = coreDAO.findById(cartProduct.getProductId(), Product.class);
-        final Order order = orderService.getCurrentOrder(request);
-        if (product != null) {
-            final Map<Double, String> volumePrices = product.getVolumePrices();
-            Double volumePrice = cartProduct.getVolumePrice();
-            if (volumePrice != null && !volumePrices.containsKey(volumePrice)) {
-                volumePrice = volumePrices.keySet().iterator().next();  // the first by default
-            }
-            OrderPosition position = new OrderPosition();
-            position.setOrder(order);
-            position.setPrice(volumePrice == null ? product.getDiscountPrice() : volumePrice);
-            position.setQuantity(cartProduct.getQuantity());
-            position.setProduct(product);
-            position.setProductId(product.getId());
-            order.getPositions().add(position);
-            request.getSession().setAttribute(SiteConstants.CART_SESSION_ATTRIBUTE, order);
-        }
-        return order;
+        return orderService.addProductToCart(cartProduct, request);
     }
     /**
      * Remove product from cart.
@@ -120,20 +103,40 @@ class AgrolavkaPublicRESTController {
      * @return cart.
      * @throws Exception error.
      */
-    @RequestMapping(value = "/cart/{id}", method = RequestMethod.DELETE,
+    @RequestMapping(value = "/cart/product/{id}", method = RequestMethod.DELETE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public Order removeFromCart(@PathVariable("id") Long id, HttpServletRequest request) throws Exception {
+    public Order removeFromCartByProductId(@PathVariable("id") Long id, HttpServletRequest request) throws Exception {
         final Order order = orderService.getCurrentOrder(request);
-        Set<OrderPosition> positions = order.getPositions().stream().filter(pos -> {
+        List<OrderPosition> positions = order.getPositions().stream().filter(pos -> {
             return !Objects.equals(pos.getProductId(), id);
-        }).collect(Collectors.toSet());
+        }).collect(Collectors.toList());
         order.setPositions(positions);
-        request.getSession().setAttribute(SiteConstants.CART_SESSION_ATTRIBUTE, order);
+        if (positions.isEmpty()) {
+            request.getSession().removeAttribute(SiteConstants.CART_SESSION_ATTRIBUTE);
+        } else {
+            request.getSession().setAttribute(SiteConstants.CART_SESSION_ATTRIBUTE, order);
+        }
+        return order;
+    }
+    
+    @RequestMapping(value = "/cart/position/{id}", method = RequestMethod.DELETE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public Order removeFromCartByPositionId(@PathVariable("id") String id, HttpServletRequest request) throws Exception {
+        final Order order = orderService.getCurrentOrder(request);
+        List<OrderPosition> positions = order.getPositions().stream().filter(pos -> {
+            return !Objects.equals(pos.getPositionId(), id);
+        }).collect(Collectors.toList());
+        order.setPositions(positions);
+        if (positions.isEmpty()) {
+            request.getSession().removeAttribute(SiteConstants.CART_SESSION_ATTRIBUTE);
+        } else {
+            request.getSession().setAttribute(SiteConstants.CART_SESSION_ATTRIBUTE, order);
+        }
         return order;
     }
     /**
      * Change cart position quantity.
-     * @param id product ID.
+     * @param id position ID.
      * @param quantity quantity.
      * @param request HTTP request.
      * @return cart.
@@ -141,11 +144,11 @@ class AgrolavkaPublicRESTController {
      */
     @RequestMapping(value = "/cart/quantity/{id}/{quantity}", method = RequestMethod.PUT,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public Order changeCartPositionQuantity(@PathVariable("id") Long id, @PathVariable("quantity") Integer quantity,
+    public Order changeCartPositionQuantity(@PathVariable("id") String id, @PathVariable("quantity") Integer quantity,
             HttpServletRequest request) throws Exception {
         final Order order = orderService.getCurrentOrder(request);
         final List<OrderPosition> positions = order.getPositions().stream().filter(pos -> {
-            return Objects.equals(pos.getProductId(), id);
+            return Objects.equals(pos.getPositionId(), id);
         }).collect(Collectors.toList());
         if (!positions.isEmpty()) {
             positions.get(0).setQuantity(quantity > 0 ? quantity : 1);
@@ -181,7 +184,7 @@ class AgrolavkaPublicRESTController {
         final Order order = orderService.getCurrentOrder(request);
         final Order savedOrder = orderService.createOrder(order, orderWrapper);
         final Order newOrder = new Order();
-        newOrder.setPositions(new HashSet<>());
+        newOrder.setPositions(new ArrayList<>());
         request.getSession().setAttribute(SiteConstants.CART_SESSION_ATTRIBUTE, newOrder);
         return savedOrder;
     }

@@ -68,9 +68,9 @@
         <link href="/favicon.svg?" rel="icon">
         <link href="/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
         
-        <link rel= "preconnect" href="https://kit.fontawesome.com" />
-        <link rel= "preconnect" href="https://fonts.googleapis.com" />
-        <link rel= "preconnect" href="https://cdnjs.cloudflare.com" />
+        <link rel="preconnect" href="https://kit.fontawesome.com" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
 
         <!-- Vendor CSS Files -->
         <script src="https://kit.fontawesome.com/c4a406170c.js" crossorigin="anonymous" async></script>
@@ -80,7 +80,7 @@
         <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.5.0/mdb.min.css" rel="stylesheet"/>
 
         <!-- Main CSS File -->
-        <link href="/assets/css/style-mb.css?v=27" rel="stylesheet">
+        <link href="/assets/css/style-mb.css?v=28" rel="stylesheet">
         <jsp:invoke fragment="headSection"/>
     </head>
 
@@ -94,8 +94,14 @@
         <!-- Vendor JS Files -->
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.5.0/mdb.min.js"></script>
         <script type="text/javascript" src="/assets/vendor/purecounter/purecounter.js"></script>
-        <!-- Main CSS File -->
-        <script type="text/javascript" src="/assets/js/main-mb.js?v=18"></script>
+        <!-- Main JS Files -->
+        <script type="module" src="/assets/js/main-mb.js?v=18"></script>
+        <script type="module" src="/assets/js/modules/product-card.js?v=1"></script>
+        <script type="module" src="/assets/js/modules/cart.js?v=1"></script>
+        <script type="module" src="/assets/js/modules/scroll-events.js?v=1"></script>
+        <script type="module" src="/assets/js/modules/menu.js?v=1"></script>
+        <script type="module" src="/assets/js/modules/navigation.js?v=1"></script>
+        <script type="module" src="/assets/js/modules/util-functions.js?v=1"></script>
     </body>
 
 </html>

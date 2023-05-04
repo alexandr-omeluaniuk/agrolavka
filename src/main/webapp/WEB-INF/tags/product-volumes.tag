@@ -4,6 +4,7 @@
     Author     : alex
 --%>
 
+<%@tag import="ss.agrolavka.wrapper.ProductVolume"%>
 <%@tag import="java.util.ArrayList"%>
 <%@tag import="java.util.List"%>
 <%@tag import="java.util.Map"%>
@@ -15,17 +16,23 @@
 
 <%-- any content can be specified here e.g.: --%>
 <%
-    final Map<Double, String> volumePrices = product.getVolumePrices();
-    out.print("<div class=\"btn-group w-100 shadow-0 mt-1\" role=\"group\" aria-label=\"Volumes\">");
-    final List<Double> prices = new ArrayList<>(volumePrices.keySet());
-    for (int i = 0; i < prices.size(); i++) {
-        final Double price = prices.get(i);
-        String cl = i == 0 ? "btn-info" : "btn-outline-info";
-        out.print("<button type=\"button\" class=\"agr-volume-btn btn " + cl + " btn-rounded "
-            + (buttonClass == null ? "" : buttonClass) + "\" data-product-volume-price=\""
-            + price + "\" data-mdb-color=\"dark\">");
-        out.print(volumePrices.get(price));
-        out.print("</button>");
-    }
-    out.print("</div>");
+    final List<ProductVolume> volumes = product.getProductVolumes();
+    final Double minPrice = volumes.get(0).getPrice();
+    final Double selectedQuantity = volumes.get(0).getAmount();
 %>
+<div class="btn-group w-100 shadow-0 mt-1" role="group" aria-label="Volumes" 
+     data-volumes="<%= product.getVolumes().replace("\"", "'") %>" 
+     data-selected-volume-quantity="<%= selectedQuantity %>" 
+     data-selected-volume-price="<%= minPrice %>">
+    <%
+        for (int i = 0; i < volumes.size(); i++) {
+            final ProductVolume volume = volumes.get(i);
+            String cl = i == 0 ? "btn-info" : "btn-outline-info";
+            out.print("<button type=\"button\" class=\"agr-volume-btn btn " + cl + " btn-rounded "
+                + (buttonClass == null ? "" : buttonClass) + "\" data-product-volume-price=\""
+                + volume.getPrice() + "\" data-product-volume-quantity=\"" + volume.getAmount() + "\" data-mdb-color=\"dark\">");
+            out.print(volume.getVolumeLabel());
+            out.print("</button>");
+        }
+    %>
+</div>
