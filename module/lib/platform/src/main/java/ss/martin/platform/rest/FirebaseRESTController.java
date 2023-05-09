@@ -23,9 +23,9 @@
  */
 package ss.martin.platform.rest;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Optional;
-import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Propagation;
@@ -35,11 +35,11 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import ss.entity.martin.NotificationTopicSubscription;
-import ss.entity.martin.UserAgent;
+import ss.entity.security.NotificationTopicSubscription;
+import ss.entity.security.UserAgent;
 import ss.martin.core.dao.CoreDao;
-import ss.martin.platform.security.SecurityContext;
-import ss.martin.platform.service.FirebaseClient;
+import ss.martin.notification.push.api.PushNotificationService;
+import ss.martin.security.context.SecurityContext;
 
 /**
  * Firebase REST controller.
@@ -53,7 +53,7 @@ public class FirebaseRESTController {
     private CoreDao coreDAO;
     /** Firebase client. */
     @Autowired
-    private FirebaseClient firebaseClient;
+    private PushNotificationService pushNotificationService;
     /**
      * Subscribe Firebase notifications.
      * @param topic Firebase notifications topic.
@@ -80,9 +80,7 @@ public class FirebaseRESTController {
             notificationSubscription.setTopic(topic);
             notificationSubscription.setUserAgent(userAgent);
             coreDAO.create(notificationSubscription);
-            Set<UserAgent> set = new HashSet<>();
-            set.add(userAgent);
-            firebaseClient.subscribeToTopic(topic, set);
+            pushNotificationService.subscribeToTopic(topic, new HashSet<>(Arrays.asList(userAgent.getFirebaseToken())));
         }
     }
     /**
@@ -103,9 +101,7 @@ public class FirebaseRESTController {
             return topic.equals(s.getTopic());
         }).findFirst();
         if (subs.isPresent()) {
-            Set<UserAgent> set = new HashSet<>();
-            set.add(userAgent);
-            firebaseClient.unsubscribeFromTopic(topic, set);
+            pushNotificationService.unsubscribeFromTopic(topic, new HashSet<>(Arrays.asList(userAgent.getFirebaseToken())));
             coreDAO.delete(subs.get().getId(), NotificationTopicSubscription.class);
         }
     }

@@ -1,0 +1,54 @@
+server:
+  port: 9090
+application:
+  version: 1.0
+spring:
+  mvc:
+    view:
+      prefix: /WEB-INF/jsp/
+      suffix: .jsp
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        show_sql: false
+        use_sql_comments: false
+        format_sql: true
+  datasource:
+    url: jdbc:mysql://localhost:3306/tools-rental?useSSL=false&characterEncoding=utf-8&useUnicode=true&allowPublicKeyRetrieval=True
+    username: user
+    password: password
+jasypt:
+  encryptor:
+    password: ${JASYPT_ENCRYPTOR_PASSWORD}
+platform:
+  # system email settings
+  systemEmailContactName: Platform support
+  systemEmailContactEmail: platform.support@domain.com
+  # super admin registration info
+  superAdminEmail: superadmin@domain.com
+  superAdminFirstName: Jack
+  superAdminLastName: Hubert
+  superAdminPassword: password
+  # domain settings
+  serverDomain: http://localhost:3000
+  # mailjet settings
+  mailjet:
+    apiKey: ENC(Zf3zX2Q2uFDpR3OpdQvF5zEyaoZQNWWCooT3lxdwVZRh5AMAeStfQplYLSD5Azr+gOnNbnengmyyfD6KDKnz3loRHp0LcWpAoo5vgGoS5qg=)
+    secretKey: ENC(m/YyuW+7OxxLUV/vXkGE+WIevlII4Wai6G9PmTOFJ+J7iLKlwkO6FdTyPfgBlOxzjbeU0UNBasZkjVUh58A12JD9F46pssJJgv1oWcxBQrs=)
+  #navigation
+  navigation:
+    login: /login
+    logout: /logout
+    loginPage: /admin/welcome
+    protectedRest: /api/site/protected/*
+    publicRest: /api/site/public/*
+    registrationVerification: /site/verification
+    views: /site/app
+  #firebase
+  push:
+    firebaseConfigFilePath: /home/alex/secure/agrolavka/test/agrolavka-test-firebase-adminsdk.json
+  jwt:
+    validityPeriodInHours: 8

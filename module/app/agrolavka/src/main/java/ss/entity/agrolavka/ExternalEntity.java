@@ -9,7 +9,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import ss.entity.martin.EntityAudit;
+import ss.entity.security.EntityAudit;
 
 /**
  * External Entity.

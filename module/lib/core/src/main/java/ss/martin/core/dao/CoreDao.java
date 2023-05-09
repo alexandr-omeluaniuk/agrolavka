@@ -82,7 +82,7 @@ public interface CoreDao {
      * @param searchRequest search request.
      * @return search response.
      */
-    <T extends DataModel> EntitySearchResponse searchEntities(Class<T> cl, EntitySearchRequest searchRequest);
+    <T extends DataModel> EntitySearchResponse<T> searchEntities(EntitySearchRequest searchRequest, Class<T> cl);
     
     /**
      * Deactivate entities.
@@ -107,14 +107,13 @@ public interface CoreDao {
      * @return count of entities.
      * @throws Exception error.
      */
-    <T extends DataModel> Long count(Class<T> cl) throws Exception;
+    <T extends DataModel> Long count(Class<T> cl);
     
     /**
      * Get all entities.
      * @param <T> entity type.
      * @param cl entity class.
      * @return list of entities.
-     * @throws Exception error.
      */
-    <T extends DataModel> List<T> getAll(Class<T> cl) throws Exception;
+    <T extends DataModel> List<T> getAll(Class<T> cl);
 }

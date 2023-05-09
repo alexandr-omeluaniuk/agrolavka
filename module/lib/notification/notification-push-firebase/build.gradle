@@ -1,0 +1,12 @@
+plugins {
+    id "java-library-convention"
+}
+
+dependencies {
+    api project(":module:lib:base")
+    api project(":module:lib:notification:notification-push-api")
+    implementation "org.springframework.boot:spring-boot-starter"
+    implementation libs.firebase
+    
+    testImplementation project(":module:lib:common-test")
+}

@@ -4,14 +4,8 @@ plugins {
 
 dependencies {
     api project(":module:lib:security")
-    api "org.springframework.boot:spring-boot-starter-web"
-    api "org.springframework.boot:spring-boot-starter-security"
-    api "org.springframework.boot:spring-boot-starter-mail"
-    api "com.google.firebase:firebase-admin:7.1.1"
+    api project(":module:lib:notification:notification-push-api")
+    runtimeOnly project(":module:lib:notification:notification-push-firebase")
     annotationProcessor "org.hibernate.orm:hibernate-jpamodelgen"
     implementation "com.mysql:mysql-connector-j"
-    implementation "com.mailjet:mailjet-client:4.2.1"
-    implementation libs.jjwt.api
-    runtimeOnly libs.jjwt.impl
-    runtimeOnly libs.jjwt.orgjson
 }

@@ -1,0 +1,11 @@
+plugins {
+    id "java-library-convention"
+}
+
+dependencies {
+    api project (":module:lib:base")
+    api "org.springframework.boot:spring-boot-starter-test"
+    compileOnly "org.springframework.boot:spring-boot-starter"
+    implementation "com.github.ulisesbocchio:jasypt-spring-boot-starter:3.0.5"
+    runtimeOnly "com.h2database:h2"
+}

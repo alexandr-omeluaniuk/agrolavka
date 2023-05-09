@@ -34,7 +34,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import ss.entity.martin.EntityImage;
 import ss.martin.platform.service.ImageService;
-import ss.martin.platform.spring.config.PlatformConfiguration;
+import ss.martin.security.configuration.external.PlatformConfiguration;
 
 /**
  * Image service implementation.

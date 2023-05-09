@@ -33,7 +33,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import ss.martin.platform.wrapper.RESTResponse;
+import ss.martin.security.model.RESTResponse;
 
 /**
  * HTTP errors interceptor.

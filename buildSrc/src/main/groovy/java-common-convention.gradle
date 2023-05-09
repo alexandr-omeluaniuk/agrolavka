@@ -15,10 +15,50 @@ java {
 }
 test {
     useJUnitPlatform()
+    finalizedBy jacocoTestReport
 }
+jacoco {
+    toolVersion = "0.8.10"
+}
+def jacocoExclusions = [
+    "ss/entity/martin/*.class"
+]
+jacocoTestReport {
+    dependsOn test
+    reports {
+        xml.required = false
+        csv.required = false
+    }
+    afterEvaluate {
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it, exclude: jacocoExclusions)
+        }))
+    }
+}
+jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            limit {
+                minimum = 1.0
+            }
+        }
+    }
+    afterEvaluate {
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it, exclude: jacocoExclusions)
+        }))
+    }
+}
+check.dependsOn jacocoTestCoverageVerification
+
 checkstyle {
     maxWarnings = 0
-    toolVersion = '10.10.0'
+    toolVersion = "10.10.0"
+}
+checkstyleTest {
+    excludes = [
+        "**"
+    ]
 }
 tasks.withType(Checkstyle) {
     reports {

@@ -5,7 +5,7 @@
  */
 package ss.agrolavka.task;
 
-import java.text.SimpleDateFormat;
+import jakarta.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
-import javax.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,10 +37,7 @@ import ss.entity.agrolavka.Product;
 import ss.entity.agrolavka.ProductsGroup;
 import ss.entity.martin.EntityImage;
 import ss.martin.core.dao.CoreDao;
-import ss.martin.platform.service.EmailService;
-import ss.martin.platform.service.SecurityService;
-import ss.martin.platform.spring.config.PlatformConfiguration;
-import ss.martin.platform.wrapper.EmailRequest;
+import ss.martin.security.api.SecurityService;
 
 /**
  * Data updater.
@@ -69,12 +65,6 @@ public class DataUpdater {
     /** Agrolavka configuration. */
     @Autowired
     private AgrolavkaConfiguration configuration;
-    /** Platform configuration. */
-    @Autowired
-    private PlatformConfiguration platformConfiguration;
-    /** Email service. */
-    @Autowired
-    private EmailService emailService;
     /** Group products service. */
     @Autowired
     private GroupProductsService groupProductsService;
@@ -99,20 +89,6 @@ public class DataUpdater {
             } else {
                 attempts++;
             }
-        }
-        EmailRequest email = new EmailRequest();
-        email.setSubject("Import MySklad data - fail!");
-        email.setMessage(new SimpleDateFormat("dd.MM.yyyy HH:mm").format(new Date()));
-        email.setRecipients(new EmailRequest.EmailContact[] {
-            new EmailRequest.EmailContact("Alex", "starshistrelok@gmail.com")
-        });
-        email.setSender(
-            new EmailRequest.EmailContact(platformConfiguration.getSystemEmailContactName(),
-                    platformConfiguration.getSystemEmailContactEmail()));
-        try {
-            emailService.sendEmail(email);
-        } catch (Exception ex) {
-            LOG.error("Can't send email", ex);
         }
     }
     

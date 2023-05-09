@@ -6,6 +6,7 @@ import jakarta.persistence.Lob;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import ss.entity.security.EntityAudit;
 import ss.martin.core.anno.Updatable;
 
 /**

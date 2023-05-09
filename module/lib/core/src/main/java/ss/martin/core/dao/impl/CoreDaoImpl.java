@@ -1,18 +1,16 @@
 package ss.martin.core.dao.impl;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.CriteriaUpdate;
-import jakarta.persistence.criteria.Expression;
-import jakarta.persistence.criteria.Predicate;
-import jakarta.persistence.criteria.Root;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
@@ -99,9 +97,9 @@ class CoreDaoImpl implements CoreDao {
     
     @Override
     @Transactional(propagation = Propagation.SUPPORTS)
-    public <T extends DataModel> EntitySearchResponse searchEntities(
-            final Class<T> cl, 
-            final EntitySearchRequest searchRequest
+    public <T extends DataModel> EntitySearchResponse<T> searchEntities(
+            final EntitySearchRequest searchRequest,
+            final Class<T> cl
     ) {
         final var cb = em.getCriteriaBuilder();
         final var criteria = cb.createQuery(cl);
@@ -133,12 +131,12 @@ class CoreDaoImpl implements CoreDao {
     
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public <T extends DataModel & SoftDeleted> void deactivateEntities(Set<Long> ids, Class<T> cl) {
+    public <T extends DataModel & SoftDeleted> void deactivateEntities(final Set<Long> ids, final Class<T> cl) {
         if (!ids.isEmpty()) {
-            CriteriaBuilder cb = em.getCriteriaBuilder();
-            CriteriaUpdate<T> criteria = cb.createCriteriaUpdate(cl);
-            Root<T> c = criteria.from(cl);
-            criteria.set(c.get("active"), false).where(
+            final var cb = em.getCriteriaBuilder();
+            final var criteria = cb.createCriteriaUpdate(cl);
+            final var c = criteria.from(cl);
+            criteria.set(c.get(SoftDeleted.ACTIVE_FIELD_NAME), false).where(
                 c.get(DataModel_.id).in(ids)
             );
             em.createQuery(criteria).executeUpdate();
@@ -147,12 +145,12 @@ class CoreDaoImpl implements CoreDao {
     
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public <T extends DataModel & SoftDeleted> void activateEntities(Set<Long> ids, Class<T> cl) {
+    public <T extends DataModel & SoftDeleted> void activateEntities(final Set<Long> ids, final Class<T> cl) {
         if (!ids.isEmpty()) {
-            CriteriaBuilder cb = em.getCriteriaBuilder();
-            CriteriaUpdate<T> criteria = cb.createCriteriaUpdate(cl);
-            Root<T> c = criteria.from(cl);
-            criteria.set(c.get("active"), true).where(
+            final var cb = em.getCriteriaBuilder();
+            final var criteria = cb.createCriteriaUpdate(cl);
+            final var c = criteria.from(cl);
+            criteria.set(c.get(SoftDeleted.ACTIVE_FIELD_NAME), true).where(
                 c.get(DataModel_.id).in(ids)
             );
             em.createQuery(criteria).executeUpdate();
@@ -161,19 +159,19 @@ class CoreDaoImpl implements CoreDao {
     
     @Override
     @Transactional(propagation = Propagation.SUPPORTS)
-    public <T extends DataModel> Long count(Class<T> cl) throws Exception {
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<Long> criteriaCount = cb.createQuery(Long.class);
-        Root<T> c = criteriaCount.from(cl);
-        Expression<Long> sum = cb.count(c);
+    public <T extends DataModel> Long count(final Class<T> cl) {
+        final var cb = em.getCriteriaBuilder();
+        final var criteriaCount = cb.createQuery(Long.class);
+        final var c = criteriaCount.from(cl);
+        final var sum = cb.count(c);
         criteriaCount.select(sum).where(new Predicate[0]);
-        List<Long> maxList = em.createQuery(criteriaCount).getResultList();
-        return maxList.iterator().next();
+        final var maxList = em.createQuery(criteriaCount).getResultStream();
+        return maxList.findFirst().orElse(0L);
     }
     
     @Override
     @Transactional(propagation = Propagation.SUPPORTS)
-    public <T extends DataModel> List<T> getAll(Class<T> cl) throws Exception {
+    public <T extends DataModel> List<T> getAll(final Class<T> cl) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<T> criteria = cb.createQuery(cl);
         Root<T> c = criteria.from(cl);
@@ -189,7 +187,7 @@ class CoreDaoImpl implements CoreDao {
     ) {
         List<Predicate> predicates = new ArrayList<>();
         if (!searchRequest.showDeactivated() && SoftDeleted.class.isAssignableFrom(clazz)) {
-            predicates.add(cb.equal(c.get("active"), true));
+            predicates.add(cb.equal(c.get(SoftDeleted.ACTIVE_FIELD_NAME), true));
         }
         return predicates;
     }

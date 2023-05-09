@@ -38,7 +38,7 @@ import ss.entity.martin.DataModel;
 import ss.martin.platform.service.EntityService;
 import ss.martin.core.model.EntitySearchRequest;
 import ss.martin.core.model.EntitySearchResponse;
-import ss.martin.platform.wrapper.RESTResponse;
+import ss.martin.security.model.RESTResponse;
 
 /**
  * Entity REST controller.

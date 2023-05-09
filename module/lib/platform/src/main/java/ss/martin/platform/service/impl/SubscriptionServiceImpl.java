@@ -31,11 +31,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import ss.entity.martin.Subscription;
-import ss.entity.martin.SystemUser;
+import ss.entity.security.SystemUser;
 import ss.martin.core.constants.StandardRole;
 import ss.martin.core.dao.CoreDao;
 import ss.martin.platform.service.SubscriptionService;
-import ss.martin.platform.service.SystemUserService;
+import ss.martin.security.api.SystemUserService;
 
 /**
  * Subscription service implementation.

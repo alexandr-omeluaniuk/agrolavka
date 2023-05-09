@@ -7,6 +7,7 @@ import jakarta.persistence.EntityListeners;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import ss.entity.security.EntityAudit;
 import ss.martin.core.anno.Updatable;
 import ss.martin.platform.util.ByteArrayDeserializer;
 import ss.martin.platform.util.EntityImageListener;

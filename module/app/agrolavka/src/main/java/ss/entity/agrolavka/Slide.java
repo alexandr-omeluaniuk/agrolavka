@@ -16,8 +16,6 @@
  */
 package ss.entity.agrolavka;
 
-import java.io.Serializable;
-import java.util.List;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -28,10 +26,12 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import java.io.Serializable;
+import java.util.List;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
-import ss.entity.martin.EntityAudit;
 import ss.entity.martin.EntityImage;
+import ss.entity.security.EntityAudit;
 import ss.martin.core.anno.Updatable;
 
 /**
