@@ -7,17 +7,19 @@ dependencies {
     runtimeOnly "org.apache.tomcat.embed:tomcat-embed-jasper"
     runtimeOnly "org.glassfish.web:jakarta.servlet.jsp.jstl"
     runtimeOnly "jakarta.servlet.jsp.jstl:jakarta.servlet.jsp.jstl-api"
+    runtimeOnly "com.mysql:mysql-connector-j"
     providedRuntime "org.springframework.boot:spring-boot-starter-tomcat"
     
     annotationProcessor "org.hibernate.orm:hibernate-jpamodelgen"
     implementation project(":module:lib:platform")
 }
 
+def isDeploy = "deploy" in project.gradle.startParameter.taskNames
+
 processResources {
-    excludes = [
-        "/application.yml",
-        "/application.sample.yml"
-    ]
+    excludes = isDeploy ? [
+        "/application.yml"
+    ] : []
 }
 
 springBoot {
@@ -34,7 +36,7 @@ task copyAdminApp(type: Copy) {
 }
 
 copyAdminApp.dependsOn(':module:ui:admin:buildReactApp')
-if ("deploy" in project.gradle.startParameter.taskNames) {
+if (isDeploy) {
     println "NPM build enabled..."
     processResources.dependsOn(copyAdminApp)
 }

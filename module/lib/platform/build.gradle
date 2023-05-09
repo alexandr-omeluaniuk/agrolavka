@@ -7,5 +7,4 @@ dependencies {
     api project(":module:lib:notification:notification-push-api")
     runtimeOnly project(":module:lib:notification:notification-push-firebase")
     annotationProcessor "org.hibernate.orm:hibernate-jpamodelgen"
-    implementation "com.mysql:mysql-connector-j"
 }

@@ -8,13 +8,16 @@ package ss.agrolavka;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
+import ss.martin.base.constants.PlatformConfiguration;
 
 /**
  * Application entry point.
  * @author ss
  */
 @SpringBootApplication
+@ConfigurationPropertiesScan(PlatformConfiguration.BASE_PACKAGE_SCAN)
 public class Main extends SpringBootServletInitializer {
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
