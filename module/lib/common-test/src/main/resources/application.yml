@@ -14,6 +14,14 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
+    username: ENC(dKrIWk6PO8et/xqH4hNxMhlzjef5QAAooYDtQ9LyTYKWIsLFuEHkjLOE0/RxSN0qCf2uFGrjyhsTjNbJU8P26Q==)
+    password: ENC(JgA2xDrRh91SS0I+3IH8mIJxnANGSkq+MJ8EqgDnLUXaYYiNF925gf6PUI6OYIxbistSrFa6EsIGO+YzGHwMoQ==)
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
   mvc:
     view:
       prefix: /WEB-INF/jsp/
