@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ss.martin.base.lang.ThrowingRunnable;
 import ss.martin.notification.email.api.EmailService;
 import ss.martin.notification.email.api.model.EmailAttachment;
 import ss.martin.notification.email.api.model.EmailRequest;
@@ -32,16 +33,18 @@ class MailjetSender implements EmailService {
     private MailjetConfiguration config;
     
     @Override
-    public void sendEmail(final EmailRequest emailRequest) throws Exception {
+    public void sendEmail(final EmailRequest emailRequest) {
         LOG.debug(emailRequest.toString());
-        final var clientOptions = ClientOptions.builder()
-                .apiKey(config.apiKey())
-                .apiSecretKey(config.secretKey())
-                .build();
-        final var client = new MailjetClient(clientOptions);
-        final var response = client.post(prepareEmail(emailRequest));
-        LOG.debug("response status: " + response.getStatus());
-        LOG.debug("response data: " + response.getData());
+        ((ThrowingRunnable) () -> {
+            final var clientOptions = ClientOptions.builder()
+                    .apiKey(config.apiKey())
+                    .apiSecretKey(config.secretKey())
+                    .build();
+            final var client = new MailjetClient(clientOptions);
+            final var response = client.post(prepareEmail(emailRequest));
+            LOG.debug("response status: " + response.getStatus());
+            LOG.debug("response data: " + response.getData());
+        }).run();
     }
     
     private MailjetRequest prepareEmail(final EmailRequest emailRequest) throws IOException {
