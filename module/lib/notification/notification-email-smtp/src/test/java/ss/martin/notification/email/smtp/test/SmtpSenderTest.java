@@ -21,10 +21,23 @@ public class SmtpSenderTest extends AbstractComponentTest {
                 new EmailContact("Site admin", "agrolavka.by@gmail.com"), 
                 new EmailContact[] { new EmailContact("Alex A", "alexandr.omelyaniuk@gmail.com") }, 
                 "Test email", 
-                "Some text for test email....",
+                "<b>Some text for test email....</b>",
                 new EmailAttachment[] {
                     new EmailAttachment("test-attachment.txt", "plain/text", new File("src/test/resources/sample.txt"))
                 }
+        );
+        
+        assertDoesNotThrow(() -> emailService.sendEmail(email));
+    }
+    
+    @Test
+    public void testSendEmail_NoAttachments() {
+        final var email = new EmailRequest(
+                new EmailContact("Site admin", "agrolavka.by@gmail.com"), 
+                new EmailContact[] { new EmailContact("Alex A", "alexandr.omelyaniuk@gmail.com") }, 
+                "Test email", 
+                "<b>Some text for test email....</b>",
+                new EmailAttachment[0]
         );
         
         assertDoesNotThrow(() -> emailService.sendEmail(email));
