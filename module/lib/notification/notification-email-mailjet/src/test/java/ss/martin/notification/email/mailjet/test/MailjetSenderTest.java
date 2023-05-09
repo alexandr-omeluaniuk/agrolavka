@@ -19,7 +19,7 @@ public class MailjetSenderTest extends AbstractComponentTest {
     public void testSendEmail() {
         final var email = new EmailRequest(
                 new EmailContact("Site admin", "agrolavka.by@gmail.com"), 
-                new EmailContact[] { new EmailContact("Alex A", "starshistrelok@gmail.com") }, 
+                new EmailContact[] { new EmailContact("Alex A", "alexandr.omeluaniuk@gmail.com") }, 
                 "Test email", 
                 "Some text for test email....",
                 new EmailAttachment[] {

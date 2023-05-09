@@ -19,7 +19,7 @@ public class SmtpSenderTest extends AbstractComponentTest {
     public void testSendEmail() {
         final var email = new EmailRequest(
                 new EmailContact("Site admin", "agrolavka.by@gmail.com"), 
-                new EmailContact[] { new EmailContact("Alex A", "alexandr.omelyaniuk@gmail.com") }, 
+                new EmailContact[] { new EmailContact("Alex A", "alexandr.omeluaniuk@gmail.com") }, 
                 "Test email", 
                 "<b>Some text for test email....</b>",
                 new EmailAttachment[] {
@@ -34,7 +34,7 @@ public class SmtpSenderTest extends AbstractComponentTest {
     public void testSendEmail_NoAttachments() {
         final var email = new EmailRequest(
                 new EmailContact("Site admin", "agrolavka.by@gmail.com"), 
-                new EmailContact[] { new EmailContact("Alex A", "alexandr.omelyaniuk@gmail.com") }, 
+                new EmailContact[] { new EmailContact("Alex A", "alexandr.omeluaniuk@gmail.com") }, 
                 "Test email", 
                 "<b>Some text for test email....</b>",
                 new EmailAttachment[0]

@@ -10,7 +10,6 @@ public interface EmailService {
     /**
      * Send email.
      * @param emailRequest email request.
-     * @throws Exception error.
      */
-    void sendEmail(EmailRequest emailRequest) throws Exception;
+    void sendEmail(EmailRequest emailRequest);
 }

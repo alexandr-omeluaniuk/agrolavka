@@ -23,6 +23,8 @@
  */
 package ss.martin.security.exception;
 
+import ss.martin.base.exception.PlatformException;
+
 /**
  * Registration user exception.
  * @author ss

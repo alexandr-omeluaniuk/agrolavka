@@ -37,7 +37,7 @@ import ss.entity.martin.Subscription;
 import ss.entity.security.SystemUser;
 import ss.martin.core.anno.Updatable;
 import ss.martin.core.dao.CoreDao;
-import ss.martin.security.exception.PlatformException;
+import ss.martin.base.exception.PlatformException;
 import ss.martin.core.model.EntitySearchRequest;
 import ss.martin.core.model.EntitySearchResponse;
 import ss.martin.platform.exception.PlatformSecurityException;

@@ -1,4 +1,4 @@
-package ss.martin.security.exception;
+package ss.martin.base.exception;
 
 /**
  * Application-specific exception for common cases.

@@ -1,5 +1,6 @@
 package ss.martin.notification.email.smtp;
 
+import jakarta.mail.MessagingException;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.slf4j.Logger;
@@ -9,6 +10,7 @@ import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+import org.springframework.util.function.ThrowingConsumer;
 import ss.martin.notification.email.api.EmailService;
 import ss.martin.notification.email.api.model.EmailRequest;
 
@@ -25,8 +27,13 @@ class SmtpSender implements EmailService {
     private JavaMailSender emailSender;
 
     @Override
-    public void sendEmail(final EmailRequest emailRequest) throws Exception {
+    public void sendEmail(final EmailRequest emailRequest) {
         LOG.debug(emailRequest.toString());
+        final ThrowingConsumer<EmailRequest> sendFunction = this::doSend;
+        sendFunction.accept(emailRequest);
+    }
+    
+    private void doSend(final EmailRequest emailRequest) throws MessagingException {
         final var message = emailSender.createMimeMessage();
         final var helper = new MimeMessageHelper(message, emailRequest.attachments().length > 0, "UTF-8");
         helper.setFrom(emailRequest.sender().toString());
