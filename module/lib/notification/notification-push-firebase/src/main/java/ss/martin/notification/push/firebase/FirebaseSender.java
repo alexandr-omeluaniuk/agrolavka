@@ -20,6 +20,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ss.martin.base.lang.ThrowingRunnable;
+import ss.martin.base.lang.ThrowingSupplier;
 import ss.martin.notification.push.api.PushNotificationService;
 import ss.martin.notification.push.api.model.PushNotification;
 import ss.martin.notification.push.firebase.configuration.FirebaseConfiguration;
@@ -40,45 +42,51 @@ class FirebaseSender implements PushNotificationService {
     protected void init() {
         Optional.ofNullable(configuration.firebaseConfigFilePath()).ifPresent(firebaseConf -> {
             if (FirebaseApp.getApps().isEmpty()) {
-                try (InputStream serviceAccount = readGoogleCredentials(firebaseConf)) {
-                    FirebaseOptions options = FirebaseOptions.builder()
-                          .setCredentials(GoogleCredentials.fromStream(serviceAccount)).build();
-                    FirebaseApp.initializeApp(options);
-                    LOG.info("Firebase initialization completed...");
-                } catch (IOException e) {
-                    LOG.error("Firebase credentials loading error!", e);
-                }
+                ((ThrowingRunnable) () -> {
+                    try (InputStream serviceAccount = readGoogleCredentials(firebaseConf)) {
+                        FirebaseOptions options = FirebaseOptions.builder()
+                              .setCredentials(GoogleCredentials.fromStream(serviceAccount)).build();
+                        FirebaseApp.initializeApp(options);
+                        LOG.info("Firebase initialization completed...");
+                    }
+                }).run();
             }
         });
     }
 
     @Override
-    public String sendPersonalNotification(String clientToken, PushNotification notification) throws Exception {
-        final var message = Message.builder().setToken(clientToken).setWebpushConfig(
-                WebpushConfig.builder().putHeader("ttl", notification.ttlInSeconds())
-                        .setNotification(createWebPushBuilder(notification).build()).build()
-        ).build();
-        return FirebaseMessaging.getInstance().sendAsync(message).get();
+    public String sendPersonalNotification(final String clientToken, final PushNotification notification) {
+        return ((ThrowingSupplier<String>) () -> {
+            final var message = Message.builder().setToken(clientToken).setWebpushConfig(
+                    WebpushConfig.builder().putHeader("ttl", notification.ttlInSeconds())
+                            .setNotification(createWebPushBuilder(notification).build()).build()
+            ).build();
+            return FirebaseMessaging.getInstance().sendAsync(message).get();
+        }).get();
     }
 
     @Override
-    public String sendTopicNotification(String topic, PushNotification notification) throws Exception {
-        final var message = Message.builder().setTopic(topic).setWebpushConfig(
-                WebpushConfig.builder().putHeader("ttl", notification.ttlInSeconds())
-                        .setFcmOptions(WebpushFcmOptions.withLink(notification.clickAction()))
-                        .setNotification(createWebPushBuilder(notification).build()).build()
-        ).build();
-        return FirebaseMessaging.getInstance().sendAsync(message).get();
+    public String sendTopicNotification(final String topic, final PushNotification notification) {
+        return ((ThrowingSupplier<String>) () -> {
+            final var message = Message.builder().setTopic(topic).setWebpushConfig(
+                    WebpushConfig.builder().putHeader("ttl", notification.ttlInSeconds())
+                            .setFcmOptions(WebpushFcmOptions.withLink(notification.clickAction()))
+                            .setNotification(createWebPushBuilder(notification).build()).build()
+            ).build();
+            return FirebaseMessaging.getInstance().sendAsync(message).get();
+        }).get();
     }
 
     @Override
-    public void subscribeToTopic(final String topic, final Set<String> clientTokens) throws Exception {
-        FirebaseMessaging.getInstance().subscribeToTopic(new ArrayList<>(clientTokens), topic);
+    public void subscribeToTopic(final String topic, final Set<String> clientTokens) {
+        ((ThrowingRunnable) () -> 
+                FirebaseMessaging.getInstance().subscribeToTopic(new ArrayList<>(clientTokens), topic)).run();
     }
     
     @Override
-    public void unsubscribeFromTopic(final String topic, final Set<String> clientTokens) throws Exception {
-        FirebaseMessaging.getInstance().unsubscribeFromTopic(new ArrayList<>(clientTokens), topic);
+    public void unsubscribeFromTopic(final String topic, final Set<String> clientTokens) {
+        ((ThrowingRunnable) () -> 
+                FirebaseMessaging.getInstance().unsubscribeFromTopic(new ArrayList<>(clientTokens), topic)).run();
     }
     
     private WebpushNotification.Builder createWebPushBuilder(final PushNotification notification) throws Exception {

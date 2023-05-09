@@ -1,6 +1,5 @@
 package ss.martin.notification.push.firebase.test;
 
-import com.google.firebase.messaging.FirebaseMessagingException;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -8,6 +7,7 @@ import java.util.concurrent.ExecutionException;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import ss.martin.base.exception.PlatformException;
 import ss.martin.notification.push.api.PushNotificationService;
 import ss.martin.notification.push.api.model.PushNotification;
 import ss.martin.test.AbstractComponentTest;
@@ -41,7 +41,7 @@ public class FirebaseSenderTest extends AbstractComponentTest {
     
     @Test
     public void testSendPersonalNotification() {
-        final var exception = assertThrows(ExecutionException.class, () -> pushNotificationService.sendPersonalNotification(
+        final var exception = assertThrows(PlatformException.class, () -> pushNotificationService.sendPersonalNotification(
                 CLIENT_TOKEN_EXAMPLE,
                 new PushNotification(
                     "Test title",
@@ -53,8 +53,8 @@ public class FirebaseSenderTest extends AbstractComponentTest {
                     null
                 )
         )).getCause();
-        assertEquals("SenderId mismatch", exception.getMessage());
-        assertTrue(exception instanceof FirebaseMessagingException);
+        assertEquals("com.google.firebase.messaging.FirebaseMessagingException: SenderId mismatch", exception.getMessage());
+        assertTrue(exception instanceof ExecutionException);
     }
     
     @Test
