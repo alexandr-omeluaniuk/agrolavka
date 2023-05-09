@@ -1,8 +1,19 @@
-server:
-  port: 9090
 application:
   version: 1.0
+server:
+  port: 9090
+  servlet:
+    session:
+      timeout: 96h
+      persistent: true
+      cookie:
+        http-only: true
+        secure: true
+        max-age: 96h
 spring:
+  mail:
+    host: smtp.gmail.com
+    port: 587
   mvc:
     view:
       prefix: /WEB-INF/jsp/
