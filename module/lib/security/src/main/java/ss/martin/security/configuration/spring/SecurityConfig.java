@@ -23,7 +23,8 @@ import org.springframework.security.web.firewall.StrictHttpFirewall;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import ss.martin.security.api.SystemUserService;
 import ss.martin.security.configuration.custom.AuthUsernamePasswordFilter;
-import ss.martin.security.configuration.external.PlatformConfiguration;
+import ss.martin.security.configuration.external.JwtConfiguration;
+import ss.martin.security.configuration.external.NavigationConfiguration;
 import ss.martin.security.configuration.jwt.JwtRequestFilter;
 
 /**
@@ -54,7 +55,10 @@ public class SecurityConfig {
     private SystemUserService systemUserService;
     /** Platform configuration. */
     @Autowired
-    private PlatformConfiguration configuration;
+    private NavigationConfiguration configuration;
+    /** JWT configuration. */
+    @Autowired
+    private JwtConfiguration jwtConfiguration;
     /** JWT request filter. */
     @Autowired
     private JwtRequestFilter jwtRequestFilter;
@@ -63,19 +67,19 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeHttpRequests().requestMatchers(
-                        configuration.getNavigation().getProtectedRest() + "/**",
+                        configuration.protectedRest() + "/**",
                         "/api/platform/security/**", 
                         "/api/platform/entity/**"
                 ).authenticated().and()
                 .authorizeHttpRequests().requestMatchers("/**").permitAll().and()
                 .addFilterBefore(authFilter(), UsernamePasswordAuthenticationFilter.class)
-                .formLogin().loginPage(configuration.getNavigation().getLoginPage()).permitAll().and()
-                .logout().deleteCookies("JSESSIONID").logoutUrl(configuration.getNavigation().getLogout())
+                .formLogin().loginPage(configuration.loginPage()).permitAll().and()
+                .logout().deleteCookies("JSESSIONID").logoutUrl(configuration.logout())
                 .logoutSuccessHandler(logoutSuccesshandler)
                 .invalidateHttpSession(true)
                 .and().exceptionHandling().authenticationEntryPoint(authEntryPoint);
         // whitelist
-        if (configuration.getJwt() != null) {
+        if (jwtConfiguration != null) {
             http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
             http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         }
@@ -89,19 +93,7 @@ public class SecurityConfig {
     
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer(HttpFirewall httpFirewall) {
-        return (web) -> {
-            web.httpFirewall(httpFirewall);
-//            web.ignoring().requestMatchers(
-//                    "/assets/**", 
-//                    "/locales/*", 
-//                    "/*.json", 
-//                    "/*.js", 
-//                    "/*.txt", 
-//                    "/*.ico", 
-//                    "/*.html", 
-//                    "/WEB-INF/jsp/*"
-//            );
-        };
+        return (web) -> web.httpFirewall(httpFirewall);
     }
     
     /**
@@ -122,7 +114,7 @@ public class SecurityConfig {
     private Filter authFilter() {
         AuthUsernamePasswordFilter filter = new AuthUsernamePasswordFilter();
         filter.setRequiresAuthenticationRequestMatcher(
-                new AntPathRequestMatcher(configuration.getNavigation().getLogin(), "POST")
+                new AntPathRequestMatcher(configuration.login(), "POST")
         );
         filter.setAuthenticationSuccessHandler(successHandler);
         filter.setAuthenticationFailureHandler(failureHandler);

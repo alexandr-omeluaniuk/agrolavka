@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package ss.martin.security.configuration.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -19,7 +14,7 @@ import java.util.function.Function;
 import javax.crypto.SecretKey;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import ss.martin.security.configuration.external.PlatformConfiguration;
+import ss.martin.security.configuration.external.JwtConfiguration;
 import ss.martin.security.context.UserPrincipal;
 
 /**
@@ -34,7 +29,7 @@ public class JwtTokenUtil implements Serializable {
     private static final SecretKey KEY = Keys.secretKeyFor(SignatureAlgorithm.HS512);
     /** Platform configuration. */
     @Autowired
-    private PlatformConfiguration configuration;
+    private JwtConfiguration jwtConfiguration;
     /**
      * Retrieve username from jwt token.
      * @param token JWT token.
@@ -83,7 +78,7 @@ public class JwtTokenUtil implements Serializable {
         return Jwts.builder().setClaims(claims).setSubject(subject)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + TimeUnit.HOURS.toMillis(
-                        configuration.getJwt().getValidityPeriodInHours()
+                        jwtConfiguration.validityPeriodInHours()
                 ))).signWith(KEY).compact();
     }
     public Boolean validateToken(String token, String email) {

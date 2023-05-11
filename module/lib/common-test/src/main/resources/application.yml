@@ -43,21 +43,18 @@ jasypt:
   encryptor:
     password: ${JASYPT_ENCRYPTOR_PASSWORD}
 platform:
-  # system email settings
-  systemEmailContactName: Platform support
-  systemEmailContactEmail: platform.support@domain.com
-  # super admin registration info
-  superAdminEmail: superadmin@domain.com
-  superAdminFirstName: Jack
-  superAdminLastName: Hubert
-  superAdminPassword: password
-  # domain settings
-  serverDomain: http://localhost:3000
-  # mailjet settings
+  domain:
+    host: http://localhost:3000
+    email: platform.support@domain.com,
+    emailName: Platform support
+  superAdmin:
+    email: superadmin@domain.com
+    firstName: Jack
+    lastName: Hubert
+    password: password
   mailjet:
     apiKey: ENC(Zf3zX2Q2uFDpR3OpdQvF5zEyaoZQNWWCooT3lxdwVZRh5AMAeStfQplYLSD5Azr+gOnNbnengmyyfD6KDKnz3loRHp0LcWpAoo5vgGoS5qg=)
     secretKey: ENC(m/YyuW+7OxxLUV/vXkGE+WIevlII4Wai6G9PmTOFJ+J7iLKlwkO6FdTyPfgBlOxzjbeU0UNBasZkjVUh58A12JD9F46pssJJgv1oWcxBQrs=)
-  #navigation
   navigation:
     login: /login
     logout: /logout
@@ -66,7 +63,6 @@ platform:
     publicRest: /api/site/public/*
     registrationVerification: /site/verification
     views: /site/app
-  #firebase
   push:
     firebaseConfigFilePath: /home/alex/secure/agrolavka/test/agrolavka-test-firebase-adminsdk.json
   jwt:

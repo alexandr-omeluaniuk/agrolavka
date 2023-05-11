@@ -1,26 +1,3 @@
-/*
- * The MIT License
- *
- * Copyright 2020 ss.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- */
 package ss.martin.security.service;
 
 import jakarta.persistence.EntityManager;
@@ -28,6 +5,7 @@ import jakarta.persistence.PersistenceContext;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Optional;
 import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,7 +25,9 @@ import ss.martin.notification.email.api.model.EmailAttachment;
 import ss.martin.notification.email.api.model.EmailContact;
 import ss.martin.notification.email.api.model.EmailRequest;
 import ss.martin.security.api.SystemUserService;
-import ss.martin.security.configuration.external.PlatformConfiguration;
+import ss.martin.security.configuration.external.DomainConfiguration;
+import ss.martin.security.configuration.external.NavigationConfiguration;
+import ss.martin.security.configuration.external.SuperUserConfiguration;
 import ss.martin.security.constants.SystemUserStatus;
 import ss.martin.security.context.SecurityContext;
 import ss.martin.security.dao.UserDao;
@@ -79,7 +59,13 @@ class SystemUserServiceImpl implements SystemUserService {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
     /** Platform configuration. */
     @Autowired
-    private PlatformConfiguration config;
+    private SuperUserConfiguration superUserConfig;
+    /** Domain configuration. */
+    @Autowired
+    private DomainConfiguration domainConfig;
+    /** Navigation configuration. */
+    @Autowired
+    private NavigationConfiguration navigationConfig;
 // =================================================== PUBLIC =========================================================
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
@@ -95,11 +81,14 @@ class SystemUserServiceImpl implements SystemUserService {
         } else {
             coreDAO.create(systemUser);
         }
+        final var firstname = Optional.ofNullable(systemUser.getFirstname()).orElse("");
         EmailRequest emailRequest = new EmailRequest(
-                new EmailContact(config.getSystemEmailContactName(), config.getSystemEmailContactEmail()),
-                new EmailContact[] {new EmailContact((systemUser.getFirstname() == null ? "" : systemUser.getFirstname() + " ") + systemUser.getLastname(), systemUser.getEmail())},
-                "Регистрация нового пользователя",
-                "Пройдите по ссылке: " + config.getServerDomain() + config.getNavigation().getRegistrationVerification() + "/" + validationString,
+                new EmailContact(domainConfig.emailName(), domainConfig.email()),
+                new EmailContact[] {
+                    new EmailContact(firstname + " " + systemUser.getLastname(), systemUser.getEmail())
+                },
+                "New user registration",
+                "Follow the link: " + domainConfig.host() + navigationConfig.registrationVerification() + "/" + validationString,
                 new EmailAttachment[0]
         );
         emailService.sendEmail(emailRequest);
@@ -117,8 +106,8 @@ class SystemUserServiceImpl implements SystemUserService {
     @Transactional(propagation = Propagation.REQUIRED)
     public void superUserCheck() {
         SystemUser superAdmin = userDAO.getSuperUser();
-        if (superAdmin == null && config.getSuperAdminEmail() != null
-                && config.getSuperAdminLastName() != null && config.getSuperAdminPassword() != null) {
+        if (superAdmin == null && superUserConfig.email() != null
+                && superUserConfig.lastname() != null && superUserConfig.password() != null) {
             LOG.info("super user is not exist, create it...");
             try {
                 Calendar calendar = new GregorianCalendar();
@@ -129,15 +118,15 @@ class SystemUserServiceImpl implements SystemUserService {
                 calendar.add(Calendar.YEAR, 33);
                 superAdminSubscription.setExpirationDate(calendar.getTime());
                 superAdminSubscription.setOrganizationName("Super Admin subscription");
-                superAdminSubscription.setSubscriptionAdminEmail(config.getSuperAdminEmail());
+                superAdminSubscription.setSubscriptionAdminEmail(superUserConfig.email());
                 em.persist(superAdminSubscription);
                 superAdmin = new SystemUser();
                 superAdmin.setActive(true);
                 superAdmin.setSubscription(superAdminSubscription);
-                superAdmin.setEmail(config.getSuperAdminEmail());
-                superAdmin.setFirstname(config.getSuperAdminFirstName());
-                superAdmin.setLastname(config.getSuperAdminLastName());
-                superAdmin.setPassword(bCryptPasswordEncoder.encode(config.getSuperAdminPassword()));
+                superAdmin.setEmail(superUserConfig.email());
+                superAdmin.setFirstname(superUserConfig.firstname());
+                superAdmin.setLastname(superUserConfig.lastname());
+                superAdmin.setPassword(bCryptPasswordEncoder.encode(superUserConfig.password()));
                 superAdmin.setStandardRole(StandardRole.ROLE_SUPER_ADMIN);
                 superAdmin.setStatus(SystemUserStatus.ACTIVE);
                 em.persist(superAdmin);

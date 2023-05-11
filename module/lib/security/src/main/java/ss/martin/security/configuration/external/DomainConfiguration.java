@@ -4,10 +4,12 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import ss.martin.base.constants.PlatformConfiguration;
 
 /**
- * JWT configuration.
+ * Domain configuration.
  * @author alex
  */
-@ConfigurationProperties(prefix = PlatformConfiguration.PREFIX + ".jwt")
-public record JwtConfiguration(
-        Integer validityPeriodInHours
+@ConfigurationProperties(prefix = PlatformConfiguration.PREFIX + ".domain")
+public record DomainConfiguration(
+        String host,
+        String email,
+        String emailName
 ) {}

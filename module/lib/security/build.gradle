@@ -12,4 +12,6 @@ dependencies {
     runtimeOnly libs.jjwt.impl
     runtimeOnly libs.jjwt.orgjson
     annotationProcessor "org.hibernate.orm:hibernate-jpamodelgen"
+    
+    testImplementation project(":module:lib:common-test")
 }

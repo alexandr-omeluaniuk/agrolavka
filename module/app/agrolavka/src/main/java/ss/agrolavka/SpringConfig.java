@@ -20,7 +20,7 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.resource.PathResourceResolver;
-import ss.martin.security.configuration.external.PlatformConfiguration;
+import ss.martin.security.configuration.external.NavigationConfiguration;
 
 /**
  * Spring configuration.
@@ -32,12 +32,12 @@ import ss.martin.security.configuration.external.PlatformConfiguration;
 public class SpringConfig implements WebMvcConfigurer {
     /** Platform configuration. */
     @Autowired
-    private PlatformConfiguration configuration;
+    private NavigationConfiguration configuration;
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler(configuration.getNavigation().getLoginPage())
+        registry.addResourceHandler(configuration.loginPage())
                 .addResourceLocations("classpath:/static/admin/build/");
-        registry.addResourceHandler(configuration.getNavigation().getRegistrationVerification())
+        registry.addResourceHandler(configuration.registrationVerification())
                 .addResourceLocations("classpath:/static/admin/build/");
         registry.addResourceHandler("/assets/**").addResourceLocations("classpath:/static/assets/")
                 .setCacheControl(CacheControl.maxAge(365, TimeUnit.DAYS));
@@ -66,10 +66,10 @@ public class SpringConfig implements WebMvcConfigurer {
             public void addViewControllers(ViewControllerRegistry registry) {
                 final String forward = "forward:/admin/index.html";
                 registry.addViewController("/admin").setViewName(forward);
-                registry.addViewController(configuration.getNavigation().getLoginPage()).setViewName(forward);
-                registry.addViewController(configuration.getNavigation().getRegistrationVerification() + "/**")
+                registry.addViewController(configuration.loginPage()).setViewName(forward);
+                registry.addViewController(configuration.registrationVerification() + "/**")
                         .setViewName(forward);
-                registry.addViewController(configuration.getNavigation().getViews() + "/**").setViewName(forward);
+                registry.addViewController(configuration.views() + "/**").setViewName(forward);
             }
         };
     }
