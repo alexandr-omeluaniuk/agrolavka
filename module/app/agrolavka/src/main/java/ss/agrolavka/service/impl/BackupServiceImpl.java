@@ -27,7 +27,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import ss.agrolavka.service.BackupService;
-import ss.martin.security.configuration.external.PlatformConfiguration;
+import ss.martin.platform.configuration.external.StorageConfiguration;
 
 /**
  * Backup service implementation.
@@ -47,7 +47,7 @@ class BackupServiceImpl implements BackupService {
     private String dbPassword;
     /** Platform configuration. */
     @Autowired
-    private PlatformConfiguration platformConfig;
+    private StorageConfiguration storageConfiguration;
 //    /** Email service. */
 //    @Autowired
 //    private EmailService emailService;
@@ -93,7 +93,7 @@ class BackupServiceImpl implements BackupService {
     private File imagesBackup() throws Exception {
         File archive = new File(BACKUP_DIR, "agrolavka_images.zip");
         try (FileOutputStream fos = new FileOutputStream(archive); ZipOutputStream zos = new ZipOutputStream(fos)) {
-            addDirToZipArchive(zos, new File(platformConfig.getImagesStoragePath()), null);
+            addDirToZipArchive(zos, new File(storageConfiguration.path()), null);
             zos.flush();
             fos.flush();
         }

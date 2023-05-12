@@ -65,5 +65,8 @@ platform:
     views: /site/app
   push:
     firebaseConfigFilePath: /home/alex/secure/agrolavka/test/agrolavka-test-firebase-adminsdk.json
-  jwt:
-    validityPeriodInHours: 8
+  storage:
+    path: /var/martin/storage
+  security:
+    tokenValidityPeriodInHours: 8
+    contentSecurityPolicy: "img-src https://sp.tinymce.com https://agrolavka.by https://api.mapbox.com https://www.google.com https://www.google.by https://www.google-analytics.com data:; script-src 'self' 'unsafe-inline' https://*.com https://cdn.jsdelivr.net https://cdn.tiny.cloud; object-src 'self';"

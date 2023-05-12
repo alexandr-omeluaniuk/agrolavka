@@ -33,8 +33,8 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import ss.entity.martin.EntityImage;
+import ss.martin.platform.configuration.external.StorageConfiguration;
 import ss.martin.platform.service.ImageService;
-import ss.martin.security.configuration.external.PlatformConfiguration;
 
 /**
  * Image service implementation.
@@ -45,7 +45,7 @@ import ss.martin.security.configuration.external.PlatformConfiguration;
 class ImageServiceImpl implements ImageService {
     /** Platform configuration. */
     @Autowired
-    private PlatformConfiguration platformConfiguration;
+    private StorageConfiguration storageConfiguration;
 
     @Override
     public String saveImageToDisk(byte[] data) throws Exception {
@@ -70,7 +70,7 @@ class ImageServiceImpl implements ImageService {
     }
     
     private File getRootFolder() {
-        File folder = new File(platformConfiguration.getImagesStoragePath());
+        File folder = new File(storageConfiguration.path());
         if (!folder.exists()) {
             folder.mkdirs();
         }

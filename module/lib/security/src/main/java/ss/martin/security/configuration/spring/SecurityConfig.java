@@ -1,7 +1,5 @@
 package ss.martin.security.configuration.spring;
 
-
-
 import jakarta.servlet.Filter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -23,8 +21,8 @@ import org.springframework.security.web.firewall.StrictHttpFirewall;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import ss.martin.security.api.SystemUserService;
 import ss.martin.security.configuration.custom.AuthUsernamePasswordFilter;
-import ss.martin.security.configuration.external.JwtConfiguration;
 import ss.martin.security.configuration.external.NavigationConfiguration;
+import ss.martin.security.configuration.external.SecurityConfiguration;
 import ss.martin.security.configuration.jwt.JwtRequestFilter;
 
 /**
@@ -58,7 +56,7 @@ public class SecurityConfig {
     private NavigationConfiguration configuration;
     /** JWT configuration. */
     @Autowired
-    private JwtConfiguration jwtConfiguration;
+    private SecurityConfiguration securityConfiguration;
     /** JWT request filter. */
     @Autowired
     private JwtRequestFilter jwtRequestFilter;
@@ -78,14 +76,10 @@ public class SecurityConfig {
                 .logoutSuccessHandler(logoutSuccesshandler)
                 .invalidateHttpSession(true)
                 .and().exceptionHandling().authenticationEntryPoint(authEntryPoint);
-        // whitelist
-        if (jwtConfiguration != null) {
-            http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
-            http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        }
-        // CSP
-        if (configuration.getContentSecurityPolicy() != null) {
-            http.headers().xssProtection().and().contentSecurityPolicy(configuration.getContentSecurityPolicy());
+        http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        if (securityConfiguration.contentSecurityPolicy() != null) {
+            http.headers().xssProtection().and().contentSecurityPolicy(securityConfiguration.contentSecurityPolicy());
         }
         systemUserService.superUserCheck();
         return http.build();

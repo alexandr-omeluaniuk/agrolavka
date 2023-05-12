@@ -14,7 +14,7 @@ import java.util.function.Function;
 import javax.crypto.SecretKey;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import ss.martin.security.configuration.external.JwtConfiguration;
+import ss.martin.security.configuration.external.SecurityConfiguration;
 import ss.martin.security.context.UserPrincipal;
 
 /**
@@ -29,7 +29,7 @@ public class JwtTokenUtil implements Serializable {
     private static final SecretKey KEY = Keys.secretKeyFor(SignatureAlgorithm.HS512);
     /** Platform configuration. */
     @Autowired
-    private JwtConfiguration jwtConfiguration;
+    private SecurityConfiguration securityConfiguration;
     /**
      * Retrieve username from jwt token.
      * @param token JWT token.
@@ -78,7 +78,7 @@ public class JwtTokenUtil implements Serializable {
         return Jwts.builder().setClaims(claims).setSubject(subject)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + TimeUnit.HOURS.toMillis(
-                        jwtConfiguration.validityPeriodInHours()
+                        securityConfiguration.tokenValidityPeriodInHours()
                 ))).signWith(KEY).compact();
     }
     public Boolean validateToken(String token, String email) {
