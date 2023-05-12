@@ -29,10 +29,11 @@ import ss.entity.security.SystemUser;
  */
 @Configuration
 @EnableJpaAuditing(auditorAwareRef = "auditorAware")
-public class DataAuditorConfig {
+class DataAuditorConfig {
     /** Auditor aware. */
     @Autowired
     private AuditorAware<SystemUser> auditorAware;
+    
     @Bean
     public AuditorAware<SystemUser> auditorAware() {
         return auditorAware;

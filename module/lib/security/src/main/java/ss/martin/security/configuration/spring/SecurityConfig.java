@@ -32,7 +32,7 @@ import ss.martin.security.configuration.jwt.JwtRequestFilter;
 @Configuration
 @EnableMethodSecurity(prePostEnabled = true, securedEnabled = true)
 @EnableWebSecurity/*(debug = true)*/
-public class SecurityConfig {
+class SecurityConfig {
     /** Authentication entry point. */
     @Autowired
     private AuthenticationEntryPoint authEntryPoint;
@@ -90,10 +90,6 @@ public class SecurityConfig {
         return (web) -> web.httpFirewall(httpFirewall);
     }
     
-    /**
-     * Spring security HTTP firewall.
-     * @return 
-     */
     @Bean
     public HttpFirewall httpFirewall() {
         StrictHttpFirewall firewall = new StrictHttpFirewall();
@@ -101,10 +97,7 @@ public class SecurityConfig {
         firewall.setAllowSemicolon(true);
         return firewall;
     }
-    /**
-     * Create custom authentication filter.
-     * @return authentication filter.
-     */
+  
     private Filter authFilter() {
         AuthUsernamePasswordFilter filter = new AuthUsernamePasswordFilter();
         filter.setRequiresAuthenticationRequestMatcher(

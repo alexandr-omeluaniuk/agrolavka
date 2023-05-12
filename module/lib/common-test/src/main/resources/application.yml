@@ -36,9 +36,9 @@ spring:
         use_sql_comments: false
         format_sql: true
   datasource:
-    url: jdbc:mysql://localhost:3306/tools-rental?useSSL=false&characterEncoding=utf-8&useUnicode=true&allowPublicKeyRetrieval=True
-    username: user
-    password: password
+    url: jdbc:h2:mem:db;DB_CLOSE_DELAY=-1
+    username: sa
+    password: sa
 jasypt:
   encryptor:
     password: ${JASYPT_ENCRYPTOR_PASSWORD}
@@ -47,10 +47,10 @@ platform:
     host: http://localhost:3000
     email: platform.support@domain.com,
     emailName: Platform support
-  superAdmin:
+  admin:
     email: superadmin@domain.com
-    firstName: Jack
-    lastName: Hubert
+    firstname: Jack
+    lastname: Hubert
     password: password
   mailjet:
     apiKey: ENC(Zf3zX2Q2uFDpR3OpdQvF5zEyaoZQNWWCooT3lxdwVZRh5AMAeStfQplYLSD5Azr+gOnNbnengmyyfD6KDKnz3loRHp0LcWpAoo5vgGoS5qg=)

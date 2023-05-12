@@ -7,10 +7,10 @@ import ss.martin.base.constants.PlatformConfiguration;
  * Super user external configuration.
  * @author alex
  */
-@ConfigurationProperties(prefix = PlatformConfiguration.PREFIX + ".superAdmin")
+@ConfigurationProperties(prefix = PlatformConfiguration.PREFIX + ".admin")
 public record SuperUserConfiguration(
         String email,
-        String password,
+        String firstname,
         String lastname,
-        String firstname
+        String password
 ) {}

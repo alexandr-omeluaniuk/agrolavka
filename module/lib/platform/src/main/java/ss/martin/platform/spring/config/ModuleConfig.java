@@ -24,11 +24,9 @@
 package ss.martin.platform.spring.config;
 
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 /**
  * JAR module configuration.
@@ -39,9 +37,5 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @EnableAspectJAutoProxy
 @ComponentScan({"ss.martin"})
 public class ModuleConfig {
-    @Bean
-    public BCryptPasswordEncoder passwordEncoder() {
-        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-        return bCryptPasswordEncoder;
-    }
+    
 }
