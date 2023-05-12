@@ -22,6 +22,7 @@ import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -51,13 +52,12 @@ public class UserDao {
         return users.isEmpty() ? null : users.get(0);
     }
     @Transactional(propagation = Propagation.SUPPORTS)
-    public SystemUser getSuperUser() {
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<SystemUser> criteria = cb.createQuery(SystemUser.class);
-        Root<SystemUser> c = criteria.from(SystemUser.class);
+    public Optional<SystemUser> findSuperUser() {
+        final var cb = em.getCriteriaBuilder();
+        final var criteria = cb.createQuery(SystemUser.class);
+        final var c = criteria.from(SystemUser.class);
         criteria.select(c).where(cb.equal(c.get(SystemUser_.standardRole), StandardRole.ROLE_SUPER_ADMIN));
-        List<SystemUser> users = em.createQuery(criteria).getResultList();
-        return users.isEmpty() ? null : users.get(0);
+        return em.createQuery(criteria).getResultStream().findFirst();
     }
     @Transactional(propagation = Propagation.SUPPORTS)
     public SystemUser getUserByValidationString(String validationString) {

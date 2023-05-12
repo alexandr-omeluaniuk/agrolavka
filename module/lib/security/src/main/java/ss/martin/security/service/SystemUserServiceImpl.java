@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import ss.entity.martin.Subscription;
 import ss.entity.security.SystemUser;
+import ss.martin.base.lang.ThrowingRunnable;
 import ss.martin.core.constants.StandardRole;
 import ss.martin.core.dao.CoreDao;
 import ss.martin.notification.email.api.EmailService;
@@ -109,34 +110,36 @@ class SystemUserServiceImpl implements SystemUserService {
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
     public void superUserCheck() {
-        SystemUser superAdmin = userDao.getSuperUser();
-        if (superAdmin == null && superUserConfiguration.email() != null
-                && superUserConfiguration.lastname() != null && superUserConfiguration.password() != null) {
+        final var superAdmin = userDao.findSuperUser();
+        if (superAdmin.isEmpty()) {
             LOG.info("super user is not exist, create it...");
-            try {
-                Calendar calendar = new GregorianCalendar();
+            ((ThrowingRunnable) () -> {
+                final var firstname = "System";
+                final var lastname = "Administrator";
+                final var email = Optional.ofNullable(superUserConfiguration.email()).orElse("system@admin.user");
+                final var generatedPassword = UUID.randomUUID().toString();
+                final var calendar = new GregorianCalendar();
                 calendar.setTime(new Date());
-                Subscription superAdminSubscription = new Subscription();
+                final var superAdminSubscription = new Subscription();
                 superAdminSubscription.setActive(true);
                 superAdminSubscription.setStarted(calendar.getTime());
                 calendar.add(Calendar.YEAR, 33);
                 superAdminSubscription.setExpirationDate(calendar.getTime());
                 superAdminSubscription.setOrganizationName("Super Admin subscription");
-                superAdminSubscription.setSubscriptionAdminEmail(superUserConfiguration.email());
+                superAdminSubscription.setSubscriptionAdminEmail(email);
                 em.persist(superAdminSubscription);
-                superAdmin = new SystemUser();
-                superAdmin.setActive(true);
-                superAdmin.setSubscription(superAdminSubscription);
-                superAdmin.setEmail(superUserConfiguration.email());
-                superAdmin.setFirstname(superUserConfiguration.firstname());
-                superAdmin.setLastname(superUserConfiguration.lastname());
-                superAdmin.setPassword(passwordEncoder.encode(superUserConfiguration.password()));
-                superAdmin.setStandardRole(StandardRole.ROLE_SUPER_ADMIN);
-                superAdmin.setStatus(SystemUserStatus.ACTIVE);
-                em.persist(superAdmin);
-            } catch (Exception e) {
-                LOG.warn("Unexpected error occurred during super user creation.", e);
-            }
+                final var admin = new SystemUser();
+                admin.setActive(true);
+                admin.setSubscription(superAdminSubscription);
+                admin.setEmail(email);
+                admin.setFirstname(firstname);
+                admin.setLastname(lastname);
+                admin.setPassword(passwordEncoder.encode(generatedPassword));
+                admin.setStandardRole(StandardRole.ROLE_SUPER_ADMIN);
+                admin.setStatus(SystemUserStatus.ACTIVE);
+                em.persist(admin);
+                LOG.info("Super admin generated password: " + generatedPassword);
+            }).run();
         }
     }
     

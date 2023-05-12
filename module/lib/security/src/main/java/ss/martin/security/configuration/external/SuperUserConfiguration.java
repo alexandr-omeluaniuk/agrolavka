@@ -9,8 +9,5 @@ import ss.martin.base.constants.PlatformConfiguration;
  */
 @ConfigurationProperties(prefix = PlatformConfiguration.PREFIX + ".admin")
 public record SuperUserConfiguration(
-        String email,
-        String firstname,
-        String lastname,
-        String password
+        String email
 ) {}

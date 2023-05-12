@@ -49,9 +49,6 @@ platform:
     emailName: Platform support
   admin:
     email: superadmin@domain.com
-    firstname: Jack
-    lastname: Hubert
-    password: password
   mailjet:
     apiKey: ENC(Zf3zX2Q2uFDpR3OpdQvF5zEyaoZQNWWCooT3lxdwVZRh5AMAeStfQplYLSD5Azr+gOnNbnengmyyfD6KDKnz3loRHp0LcWpAoo5vgGoS5qg=)
     secretKey: ENC(m/YyuW+7OxxLUV/vXkGE+WIevlII4Wai6G9PmTOFJ+J7iLKlwkO6FdTyPfgBlOxzjbeU0UNBasZkjVUh58A12JD9F46pssJJgv1oWcxBQrs=)
