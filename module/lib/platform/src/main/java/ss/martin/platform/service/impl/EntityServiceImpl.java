@@ -35,9 +35,9 @@ import ss.entity.martin.DataModel;
 import ss.entity.martin.SoftDeleted;
 import ss.entity.martin.Subscription;
 import ss.entity.security.SystemUser;
+import ss.martin.base.exception.PlatformException;
 import ss.martin.core.anno.Updatable;
 import ss.martin.core.dao.CoreDao;
-import ss.martin.base.exception.PlatformException;
 import ss.martin.core.model.EntitySearchRequest;
 import ss.martin.core.model.EntitySearchResponse;
 import ss.martin.platform.exception.PlatformSecurityException;
@@ -89,7 +89,7 @@ class EntityServiceImpl implements EntityService {
         if (entity instanceof Subscription) {
             return (T) subscriptionService.createSubscription((Subscription) entity);
         } else if (entity instanceof SystemUser) {
-            return (T) systemUserService.createSystemUser((SystemUser) entity);
+            return (T) systemUserService.createSubscriptionUser((SystemUser) entity);
         } else {
             List<PlatformEntityListener> listeners = getEntityListener(entity.getClass());
             for (PlatformEntityListener l : listeners) {

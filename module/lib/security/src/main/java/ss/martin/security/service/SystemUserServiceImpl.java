@@ -70,7 +70,7 @@ class SystemUserServiceImpl implements SystemUserService {
     
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
-    public void startRegistration(SystemUser systemUser) throws Exception {
+    public void startRegistration(SystemUser systemUser) {
         if (userDao.findByUsername(systemUser.getEmail()) != null) {
             throw new RegistrationUserException(RegistrationUserException.CODE_DUPLICATE_USER);
         }
@@ -99,7 +99,7 @@ class SystemUserServiceImpl implements SystemUserService {
     
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
-    public void finishRegistration(String validationString, String password) throws Exception {
+    public void finishRegistration(String validationString, String password) {
         SystemUser systemUser = userDao.getUserByValidationString(validationString);
         systemUser.setValidationString(null);
         systemUser.setStatus(SystemUserStatus.ACTIVE);
@@ -144,7 +144,7 @@ class SystemUserServiceImpl implements SystemUserService {
     }
     
     @Override
-    public SystemUser createSystemUser(SystemUser user) throws Exception {
+    public SystemUser createSubscriptionUser(final SystemUser user) {
         user.setStandardRole(StandardRole.ROLE_SUBSCRIPTION_USER);
         user.setSubscription(SecurityContext.currentUser().getSubscription());
         startRegistration(user);
