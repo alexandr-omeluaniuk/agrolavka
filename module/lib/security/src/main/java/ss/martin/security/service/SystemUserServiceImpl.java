@@ -47,30 +47,30 @@ class SystemUserServiceImpl implements SystemUserService {
     private EntityManager em;
     /** Core DAO. */
     @Autowired
-    private CoreDao coreDAO;
+    private CoreDao coreDao;
     /** User DAO. */
     @Autowired
-    private UserDao userDAO;
+    private UserDao userDao;
     /** Email service. */
     @Autowired
     private EmailService emailService;
     /** Password encoder. */
     @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    private BCryptPasswordEncoder passwordEncoder;
     /** Platform configuration. */
     @Autowired
-    private SuperUserConfiguration superUserConfig;
+    private SuperUserConfiguration superUserConfiguration;
     /** Domain configuration. */
     @Autowired
-    private DomainConfiguration domainConfig;
+    private DomainConfiguration domainConfiguration;
     /** Navigation configuration. */
     @Autowired
-    private NavigationConfiguration navigationConfig;
-// =================================================== PUBLIC =========================================================
+    private NavigationConfiguration navigationConfiguration;
+    
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
     public void startRegistration(SystemUser systemUser) throws Exception {
-        if (userDAO.findByUsername(systemUser.getEmail()) != null) {
+        if (userDao.findByUsername(systemUser.getEmail()) != null) {
             throw new RegistrationUserException(RegistrationUserException.CODE_DUPLICATE_USER);
         }
         String validationString = UUID.randomUUID().toString();
@@ -79,35 +79,39 @@ class SystemUserServiceImpl implements SystemUserService {
         if (SecurityContext.currentUser().getStandardRole() == StandardRole.ROLE_SUPER_ADMIN) {
             em.persist(systemUser);
         } else {
-            coreDAO.create(systemUser);
+            coreDao.create(systemUser);
         }
         final var firstname = Optional.ofNullable(systemUser.getFirstname()).orElse("");
+        final var link = domainConfiguration.host() + navigationConfiguration.registrationVerification() 
+                + "/" + validationString;
         EmailRequest emailRequest = new EmailRequest(
-                new EmailContact(domainConfig.emailName(), domainConfig.email()),
+                new EmailContact(domainConfiguration.emailName(), domainConfiguration.email()),
                 new EmailContact[] {
                     new EmailContact(firstname + " " + systemUser.getLastname(), systemUser.getEmail())
                 },
                 "New user registration",
-                "Follow the link: " + domainConfig.host() + navigationConfig.registrationVerification() + "/" + validationString,
+                String.format("Follow the link: %s", link),
                 new EmailAttachment[0]
         );
         emailService.sendEmail(emailRequest);
     }
+    
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
     public void finishRegistration(String validationString, String password) throws Exception {
-        SystemUser systemUser = userDAO.getUserByValidationString(validationString);
+        SystemUser systemUser = userDao.getUserByValidationString(validationString);
         systemUser.setValidationString(null);
         systemUser.setStatus(SystemUserStatus.ACTIVE);
-        systemUser.setPassword(bCryptPasswordEncoder.encode(password));
+        systemUser.setPassword(passwordEncoder.encode(password));
         em.merge(systemUser);
     }
+    
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
     public void superUserCheck() {
-        SystemUser superAdmin = userDAO.getSuperUser();
-        if (superAdmin == null && superUserConfig.email() != null
-                && superUserConfig.lastname() != null && superUserConfig.password() != null) {
+        SystemUser superAdmin = userDao.getSuperUser();
+        if (superAdmin == null && superUserConfiguration.email() != null
+                && superUserConfiguration.lastname() != null && superUserConfiguration.password() != null) {
             LOG.info("super user is not exist, create it...");
             try {
                 Calendar calendar = new GregorianCalendar();
@@ -118,15 +122,15 @@ class SystemUserServiceImpl implements SystemUserService {
                 calendar.add(Calendar.YEAR, 33);
                 superAdminSubscription.setExpirationDate(calendar.getTime());
                 superAdminSubscription.setOrganizationName("Super Admin subscription");
-                superAdminSubscription.setSubscriptionAdminEmail(superUserConfig.email());
+                superAdminSubscription.setSubscriptionAdminEmail(superUserConfiguration.email());
                 em.persist(superAdminSubscription);
                 superAdmin = new SystemUser();
                 superAdmin.setActive(true);
                 superAdmin.setSubscription(superAdminSubscription);
-                superAdmin.setEmail(superUserConfig.email());
-                superAdmin.setFirstname(superUserConfig.firstname());
-                superAdmin.setLastname(superUserConfig.lastname());
-                superAdmin.setPassword(bCryptPasswordEncoder.encode(superUserConfig.password()));
+                superAdmin.setEmail(superUserConfiguration.email());
+                superAdmin.setFirstname(superUserConfiguration.firstname());
+                superAdmin.setLastname(superUserConfiguration.lastname());
+                superAdmin.setPassword(passwordEncoder.encode(superUserConfiguration.password()));
                 superAdmin.setStandardRole(StandardRole.ROLE_SUPER_ADMIN);
                 superAdmin.setStatus(SystemUserStatus.ACTIVE);
                 em.persist(superAdmin);
@@ -135,6 +139,7 @@ class SystemUserServiceImpl implements SystemUserService {
             }
         }
     }
+    
     @Override
     public SystemUser createSystemUser(SystemUser user) throws Exception {
         user.setStandardRole(StandardRole.ROLE_SUBSCRIPTION_USER);
