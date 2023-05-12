@@ -28,7 +28,6 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
-import ss.entity.security.SystemUser;
 import ss.martin.security.constants.SystemUserStatus;
 import ss.martin.security.context.SecurityContext;
 import ss.martin.security.dao.UserDao;
@@ -52,10 +51,8 @@ class AuthManager implements AuthenticationManager {
     public Authentication authenticate(Authentication auth) throws AuthenticationException {
         String username = String.valueOf(auth.getPrincipal());
         String password = String.valueOf(auth.getCredentials());
-        SystemUser user = userDAO.findByUsername(username);
-        if (user == null) {
-            throw new UsernameNotFoundException("User not found: " + username);
-        }
+        final var user = userDAO.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
         if (SystemUserStatus.ACTIVE != user.getStatus()) {
             throw new DisabledException("User is deactivated: " + username);
         }

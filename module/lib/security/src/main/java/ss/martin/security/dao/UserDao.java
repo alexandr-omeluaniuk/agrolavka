@@ -42,14 +42,13 @@ public class UserDao {
     @PersistenceContext
     private EntityManager em;
     @Transactional(propagation = Propagation.SUPPORTS)
-    public SystemUser findByUsername(String username) {
+    public Optional<SystemUser> findByUsername(String username) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<SystemUser> criteria = cb.createQuery(SystemUser.class);
         Root<SystemUser> c = criteria.from(SystemUser.class);
         c.fetch(SystemUser_.subscription);
         criteria.select(c).where(cb.equal(c.get(SystemUser_.email), username));
-        List<SystemUser> users = em.createQuery(criteria).getResultList();
-        return users.isEmpty() ? null : users.get(0);
+        return em.createQuery(criteria).getResultStream().findFirst();
     }
     @Transactional(propagation = Propagation.SUPPORTS)
     public Optional<SystemUser> findSuperUser() {

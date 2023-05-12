@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -70,35 +71,6 @@ class SystemUserServiceImpl implements SystemUserService {
     
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
-    public void startRegistration(SystemUser systemUser) {
-        if (userDao.findByUsername(systemUser.getEmail()) != null) {
-            throw new RegistrationUserException(RegistrationUserException.CODE_DUPLICATE_USER);
-        }
-        String validationString = UUID.randomUUID().toString();
-        systemUser.setStatus(SystemUserStatus.REGISTRATION);
-        systemUser.setValidationString(validationString);
-        if (SecurityContext.currentUser().getStandardRole() == StandardRole.ROLE_SUPER_ADMIN) {
-            em.persist(systemUser);
-        } else {
-            coreDao.create(systemUser);
-        }
-        final var firstname = Optional.ofNullable(systemUser.getFirstname()).orElse("");
-        final var link = domainConfiguration.host() + navigationConfiguration.registrationVerification() 
-                + "/" + validationString;
-        EmailRequest emailRequest = new EmailRequest(
-                new EmailContact(domainConfiguration.emailName(), domainConfiguration.email()),
-                new EmailContact[] {
-                    new EmailContact(firstname + " " + systemUser.getLastname(), systemUser.getEmail())
-                },
-                "New user registration",
-                String.format("Follow the link: %s", link),
-                new EmailAttachment[0]
-        );
-        emailService.sendEmail(emailRequest);
-    }
-    
-    @Override
-    @Transactional(propagation = Propagation.REQUIRED)
     public void finishRegistration(String validationString, String password) {
         SystemUser systemUser = userDao.getUserByValidationString(validationString);
         systemUser.setValidationString(null);
@@ -144,10 +116,56 @@ class SystemUserServiceImpl implements SystemUserService {
     }
     
     @Override
+    @Secured("ROLE_SUBSCRIPTION_ADMINISTRATOR")
     public SystemUser createSubscriptionUser(final SystemUser user) {
         user.setStandardRole(StandardRole.ROLE_SUBSCRIPTION_USER);
         user.setSubscription(SecurityContext.currentUser().getSubscription());
         startRegistration(user);
         return user;
+    }
+
+    @Override
+    @Secured("ROLE_SUPER_ADMIN")
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public Subscription createSubscriptionAndAdmin(Subscription subscription) {
+        final var subscriptionAdmin = new SystemUser();
+        subscriptionAdmin.setActive(true);
+        subscriptionAdmin.setStandardRole(StandardRole.ROLE_SUBSCRIPTION_ADMINISTRATOR);
+        subscriptionAdmin.setLastname(subscription.getOrganizationName());
+        subscriptionAdmin.setEmail(subscription.getSubscriptionAdminEmail());
+        subscription = coreDao.create(subscription);
+        LOG.debug("new subscription created: " + subscription);
+        subscriptionAdmin.setSubscription(subscription);
+        startRegistration(subscriptionAdmin);
+        LOG.debug("new subscription administrator created: " + subscriptionAdmin);
+        return subscription;
+    }
+    
+    @Transactional(propagation = Propagation.REQUIRED)
+    private void startRegistration(final SystemUser systemUser) {
+        if (userDao.findByUsername(systemUser.getEmail()).isPresent()) {
+            throw new RegistrationUserException(RegistrationUserException.CODE_DUPLICATE_USER);
+        }
+        final var validationString = UUID.randomUUID().toString();
+        systemUser.setStatus(SystemUserStatus.REGISTRATION);
+        systemUser.setValidationString(validationString);
+        if (SecurityContext.currentUser().getStandardRole() == StandardRole.ROLE_SUPER_ADMIN) {
+            em.persist(systemUser);
+        } else {
+            coreDao.create(systemUser);
+        }
+        final var firstname = Optional.ofNullable(systemUser.getFirstname()).orElse("");
+        final var link = domainConfiguration.host() + navigationConfiguration.registrationVerification() 
+                + "/" + validationString;
+        final var emailRequest = new EmailRequest(
+                new EmailContact(domainConfiguration.emailName(), domainConfiguration.email()),
+                new EmailContact[] {
+                    new EmailContact(firstname + " " + systemUser.getLastname(), systemUser.getEmail())
+                },
+                "New user registration",
+                String.format("Follow the link: %s", link),
+                new EmailAttachment[0]
+        );
+        emailService.sendEmail(emailRequest);
     }
 }

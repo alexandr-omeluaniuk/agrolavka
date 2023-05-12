@@ -42,7 +42,6 @@ import ss.martin.core.model.EntitySearchRequest;
 import ss.martin.core.model.EntitySearchResponse;
 import ss.martin.platform.exception.PlatformSecurityException;
 import ss.martin.platform.service.EntityService;
-import ss.martin.platform.service.SubscriptionService;
 import ss.martin.platform.util.PlatformEntityListener;
 import ss.martin.security.api.SecurityService;
 import ss.martin.security.api.SystemUserService;
@@ -58,9 +57,6 @@ class EntityServiceImpl implements EntityService {
     /** Core DAO. */
     @Autowired
     private CoreDao coreDAO;
-    /** Subscription service. */
-    @Autowired
-    private SubscriptionService subscriptionService;
     /** System user service. */
     @Autowired
     private SystemUserService systemUserService;
@@ -87,7 +83,7 @@ class EntityServiceImpl implements EntityService {
             ((SoftDeleted) entity).setActive(true);
         }
         if (entity instanceof Subscription) {
-            return (T) subscriptionService.createSubscription((Subscription) entity);
+            return (T) systemUserService.createSubscriptionAndAdmin((Subscription) entity);
         } else if (entity instanceof SystemUser) {
             return (T) systemUserService.createSubscriptionUser((SystemUser) entity);
         } else {
