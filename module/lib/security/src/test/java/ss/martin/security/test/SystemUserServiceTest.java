@@ -21,9 +21,9 @@ public class SystemUserServiceTest extends AbstractComponentTest {
     private CoreDao coreDao;
     
     @Test
-    public void testSuperUserCheck() {
+    public void testCreateSuperAdmin() {
         assertNotNull(userDao.findSuperUser());
-        systemUserService.superUserCheck();
+        systemUserService.createSuperAdmin();
         assertEquals(1, coreDao.getAll(SystemUser.class).size());
     }
 }

@@ -81,7 +81,7 @@ class SecurityConfig {
         if (securityConfiguration.contentSecurityPolicy() != null) {
             http.headers().xssProtection().and().contentSecurityPolicy(securityConfiguration.contentSecurityPolicy());
         }
-        systemUserService.superUserCheck();
+        systemUserService.createSuperAdmin();
         return http.build();
     }
     

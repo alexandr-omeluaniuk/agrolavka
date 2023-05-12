@@ -109,7 +109,7 @@ class SystemUserServiceImpl implements SystemUserService {
     
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
-    public void superUserCheck() {
+    public void createSuperAdmin() {
         final var superAdmin = userDao.findSuperUser();
         if (superAdmin.isEmpty()) {
             LOG.info("super user is not exist, create it...");

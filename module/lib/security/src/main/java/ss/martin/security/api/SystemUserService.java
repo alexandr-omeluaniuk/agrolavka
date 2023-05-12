@@ -19,10 +19,9 @@ public interface SystemUserService {
      */
     void finishRegistration(String validationString, String password);
     /**
-     * Check if super user exists.
-     * If no - create it.
+     * Create super admin user if it is not exist.
      */
-    void superUserCheck();
+    void createSuperAdmin();
     /**
      * Create system user with ROLE_SUBSCRIPTION_USER.
      * @param user user without ID.
