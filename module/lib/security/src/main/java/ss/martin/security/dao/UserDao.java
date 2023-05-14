@@ -42,8 +42,9 @@ public class UserDao {
     /** Entity manager. */
     @PersistenceContext
     private EntityManager em;
+    
     @Transactional(propagation = Propagation.SUPPORTS)
-    public Optional<SystemUser> findByUsername(String username) {
+    public Optional<SystemUser> findByUsername(final String username) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<SystemUser> criteria = cb.createQuery(SystemUser.class);
         Root<SystemUser> c = criteria.from(SystemUser.class);
@@ -51,6 +52,7 @@ public class UserDao {
         criteria.select(c).where(cb.equal(c.get(SystemUser_.email), username));
         return em.createQuery(criteria).getResultStream().findFirst();
     }
+    
     @Transactional(propagation = Propagation.SUPPORTS)
     public Optional<SystemUser> findSuperUser() {
         final var cb = em.getCriteriaBuilder();
@@ -59,15 +61,17 @@ public class UserDao {
         criteria.select(c).where(cb.equal(c.get(SystemUser_.standardRole), StandardRole.ROLE_SUPER_ADMIN));
         return em.createQuery(criteria).getResultStream().findFirst();
     }
+    
     @Transactional(propagation = Propagation.SUPPORTS)
     public Optional<SystemUser> getUserByValidationString(final String validationString) {
         final var cb = em.getCriteriaBuilder();
         final var criteria = cb.createQuery(SystemUser.class);
         final var c = criteria.from(SystemUser.class);
-        c.join(SystemUser_.subscription, JoinType.LEFT);
+        c.fetch(SystemUser_.subscription, JoinType.LEFT);
         criteria.select(c).where(cb.equal(c.get(SystemUser_.validationString), validationString));
         return em.createQuery(criteria).getResultStream().findFirst();
     }
+    
     @Transactional(propagation = Propagation.SUPPORTS)
     public List<UserAgent> getUserAgents(SystemUser user) {
         CriteriaBuilder cb = em.getCriteriaBuilder();

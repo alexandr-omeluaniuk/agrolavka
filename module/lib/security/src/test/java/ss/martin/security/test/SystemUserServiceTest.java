@@ -1,7 +1,6 @@
 package ss.martin.security.test;
 
 import java.util.Date;
-import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
@@ -42,37 +41,38 @@ public class SystemUserServiceTest extends AbstractComponentTest {
     }
     
     @Test
-    public void testCreateSubscriptionAndAdmin() {
+    public void testCreateSubscriptionAndUsers() {
         final var superAdmin = userDao.findSuperUser().get();
         SecurityContextHolder.getContext().setAuthentication(SecurityContext.createPrincipal(superAdmin));
-        final var subscription = generateSubscription();
+        final var subscriptionAdminEmail = "subscription.admin@org.test";
+        final var subscription = generateSubscription(subscriptionAdminEmail);
         // create subscription admin user
         final var created = systemUserService.createSubscriptionAndAdmin(subscription);
         
         assertNotNull(created);
         assertNotNull(created.getId());
-        final var user = coreDao.getAll(SystemUser.class).stream()
-                .filter(u -> Objects.equals(u.getEmail(), subscription.getSubscriptionAdminEmail()))
-                .findFirst().get();
+        final var user = userDao.findByUsername(subscriptionAdminEmail).get();
         assertEquals(SystemUserStatus.REGISTRATION, user.getStatus());
         assertEquals(StandardRole.ROLE_SUBSCRIPTION_ADMINISTRATOR, user.getStandardRole());
         assertNotNull(user.getValidationString());
+        final var userWithSubscription = userDao.getUserByValidationString(user.getValidationString()).get();
+        assertEquals(subscriptionAdminEmail, userWithSubscription.getSubscription().getSubscriptionAdminEmail());
         // duplicate user
         final var ex = assertThrows(
                 RegistrationUserException.class, 
-                () -> systemUserService.createSubscriptionAndAdmin(generateSubscription())
+                () -> systemUserService.createSubscriptionAndAdmin(generateSubscription(subscriptionAdminEmail))
         );
         assertNotNull(ex);
-        // finish registration
+        // finish registration behalf of anonymous user
         SecurityContextHolder.getContext().setAuthentication(null);
         final var password = "15RtyyySSSS786";
         systemUserService.finishRegistration(user.getValidationString(), password);
     }
     
-    private Subscription generateSubscription() {
+    private Subscription generateSubscription(final String email) {
         final var subscription = new Subscription();
         subscription.setOrganizationName("Jack Daniels");
-        subscription.setSubscriptionAdminEmail("alan2@test.com");
+        subscription.setSubscriptionAdminEmail(email);
         subscription.setStarted(new Date());
         subscription.setExpirationDate(new Date(System.currentTimeMillis() + TimeUnit.DAYS.toMillis(365)));
         return subscription;

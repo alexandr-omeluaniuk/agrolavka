@@ -1,8 +1,6 @@
 package ss.martin.security.context;
 
-import java.util.ArrayList;
-import java.util.List;
-import org.springframework.security.core.GrantedAuthority;
+import java.util.Arrays;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import ss.entity.martin.Subscription;
@@ -47,11 +45,9 @@ public class SecurityContext {
      * @param user user.
      * @return principal.
      */
-    public static UserPrincipal createPrincipal(SystemUser user) {
-        GrantedAuthority ga = new SimpleGrantedAuthority(user.getStandardRole().name());
-        List<GrantedAuthority> gaList = new ArrayList<>();
-        gaList.add(ga);
-        UserPrincipal principal = new UserPrincipal(user.getEmail(), user.getPassword(), gaList);
+    public static UserPrincipal createPrincipal(final SystemUser user) {
+        final var gaList = Arrays.asList(new SimpleGrantedAuthority(user.getStandardRole().name()));
+        final var principal = new UserPrincipal(user.getEmail(), user.getPassword(), gaList);
         principal.setUser(user);
         return principal;
     }
