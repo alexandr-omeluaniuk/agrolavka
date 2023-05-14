@@ -7,6 +7,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import ss.entity.martin.Subscription;
 import ss.entity.security.SystemUser;
+import ss.martin.base.lang.ThrowingRunnable;
 
 /**
  * Security context.
@@ -18,7 +19,7 @@ public class SecurityContext {
      * Get current user.
      * @return current user.
      */
-    public static synchronized SystemUser currentUser() {
+    public static SystemUser currentUser() {
         UserPrincipal userPrincipal = principal();
         return userPrincipal == null ? null : userPrincipal.getUser();
     }
@@ -26,10 +27,9 @@ public class SecurityContext {
      * Get user principal.
      * @return user principal.
      */
-    public static synchronized UserPrincipal principal() {
+    public static UserPrincipal principal() {
         Object auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth instanceof UserPrincipal) {
-            UserPrincipal userPrincipal = (UserPrincipal) auth;
+        if (auth instanceof UserPrincipal userPrincipal) {
             return userPrincipal;
         } else {
             return null;
@@ -39,7 +39,7 @@ public class SecurityContext {
      * Get current user subscription.
      * @return subscription.
      */
-    public static synchronized Subscription subscription() {
+    public static Subscription subscription() {
         return currentUser().getSubscription();
     }
     /**
@@ -54,5 +54,15 @@ public class SecurityContext {
         UserPrincipal principal = new UserPrincipal(user.getEmail(), user.getPassword(), gaList);
         principal.setUser(user);
         return principal;
+    }
+    
+    public static void executeBehalfUser(final SystemUser user, final ThrowingRunnable runnable) {
+        final var currentPrincipal = principal();
+        try {
+            SecurityContextHolder.getContext().setAuthentication(createPrincipal(user));
+            runnable.run();
+        } finally {
+            SecurityContextHolder.getContext().setAuthentication(currentPrincipal);
+        }
     }
 }

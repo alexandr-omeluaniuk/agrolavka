@@ -71,16 +71,6 @@ class SystemUserServiceImpl implements SystemUserService {
     
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
-    public void finishRegistration(String validationString, String password) {
-        SystemUser systemUser = userDao.getUserByValidationString(validationString);
-        systemUser.setValidationString(null);
-        systemUser.setStatus(SystemUserStatus.ACTIVE);
-        systemUser.setPassword(passwordEncoder.encode(password));
-        em.merge(systemUser);
-    }
-    
-    @Override
-    @Transactional(propagation = Propagation.REQUIRED)
     public void createSuperAdmin() {
         final var superAdmin = userDao.findSuperUser();
         if (superAdmin.isEmpty()) {
@@ -99,7 +89,7 @@ class SystemUserServiceImpl implements SystemUserService {
                 superAdminSubscription.setExpirationDate(calendar.getTime());
                 superAdminSubscription.setOrganizationName("Super Admin subscription");
                 superAdminSubscription.setSubscriptionAdminEmail(email);
-                em.persist(superAdminSubscription);
+                final var createdSubscription = coreDao.create(superAdminSubscription);
                 final var admin = new SystemUser();
                 admin.setActive(true);
                 admin.setSubscription(superAdminSubscription);
@@ -109,7 +99,8 @@ class SystemUserServiceImpl implements SystemUserService {
                 admin.setPassword(passwordEncoder.encode(generatedPassword));
                 admin.setStandardRole(StandardRole.ROLE_SUPER_ADMIN);
                 admin.setStatus(SystemUserStatus.ACTIVE);
-                em.persist(admin);
+                admin.setSubscription(createdSubscription);
+                SecurityContext.executeBehalfUser(admin, () -> coreDao.create(admin));
                 LOG.info("Super admin generated password: " + generatedPassword);
             }).run();
         }
@@ -141,6 +132,17 @@ class SystemUserServiceImpl implements SystemUserService {
         return subscription;
     }
     
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED)
+    public void finishRegistration(String validationString, String password) {
+        userDao.getUserByValidationString(validationString).ifPresent(user -> {
+            user.setValidationString(null);
+            user.setStatus(SystemUserStatus.ACTIVE);
+            user.setPassword(passwordEncoder.encode(password));
+            SecurityContext.executeBehalfUser(user, () -> coreDao.update(user));
+        });
+    }
+    
     @Transactional(propagation = Propagation.REQUIRED)
     private void startRegistration(final SystemUser systemUser) {
         if (userDao.findByUsername(systemUser.getEmail()).isPresent()) {
@@ -149,11 +151,7 @@ class SystemUserServiceImpl implements SystemUserService {
         final var validationString = UUID.randomUUID().toString();
         systemUser.setStatus(SystemUserStatus.REGISTRATION);
         systemUser.setValidationString(validationString);
-        if (SecurityContext.currentUser().getStandardRole() == StandardRole.ROLE_SUPER_ADMIN) {
-            em.persist(systemUser);
-        } else {
-            coreDao.create(systemUser);
-        }
+        SecurityContext.executeBehalfUser(systemUser, () -> coreDao.create(systemUser));
         final var firstname = Optional.ofNullable(systemUser.getFirstname()).orElse("");
         final var link = domainConfiguration.host() + navigationConfiguration.registrationVerification() 
                 + "/" + validationString;

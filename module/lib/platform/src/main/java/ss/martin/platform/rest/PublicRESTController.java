@@ -31,7 +31,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import ss.entity.security.SystemUser;
 import ss.martin.security.api.SystemUserService;
 import ss.martin.security.dao.UserDao;
 import ss.martin.security.model.RESTResponse;
@@ -71,7 +70,7 @@ public class PublicRESTController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public Object checkValidationString(@PathVariable("validationString") String validationString)
             throws Exception {
-        SystemUser user = userDAO.getUserByValidationString(validationString);
-        return user == null ? new RESTResponse() : user;
+        final var user = userDAO.getUserByValidationString(validationString);
+        return user.isEmpty() ? new RESTResponse() : user.get();
     }
 }

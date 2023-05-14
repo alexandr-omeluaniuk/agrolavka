@@ -20,6 +20,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.JoinType;
 import jakarta.persistence.criteria.Root;
 import java.util.List;
 import java.util.Optional;
@@ -59,13 +60,13 @@ public class UserDao {
         return em.createQuery(criteria).getResultStream().findFirst();
     }
     @Transactional(propagation = Propagation.SUPPORTS)
-    public SystemUser getUserByValidationString(String validationString) {
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<SystemUser> criteria = cb.createQuery(SystemUser.class);
-        Root<SystemUser> c = criteria.from(SystemUser.class);
+    public Optional<SystemUser> getUserByValidationString(final String validationString) {
+        final var cb = em.getCriteriaBuilder();
+        final var criteria = cb.createQuery(SystemUser.class);
+        final var c = criteria.from(SystemUser.class);
+        c.join(SystemUser_.subscription, JoinType.LEFT);
         criteria.select(c).where(cb.equal(c.get(SystemUser_.validationString), validationString));
-        List<SystemUser> users = em.createQuery(criteria).getResultList();
-        return users.isEmpty() ? null : users.get(0);
+        return em.createQuery(criteria).getResultStream().findFirst();
     }
     @Transactional(propagation = Propagation.SUPPORTS)
     public List<UserAgent> getUserAgents(SystemUser user) {
