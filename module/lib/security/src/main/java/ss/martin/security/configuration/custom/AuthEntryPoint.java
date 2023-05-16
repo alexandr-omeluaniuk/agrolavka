@@ -23,6 +23,7 @@ class AuthEntryPoint implements AuthenticationEntryPoint {
     /** Platform configuration. */
     @Autowired
     private NavigationConfiguration configuration;
+    
     @Override
     public void commence(HttpServletRequest hsr, HttpServletResponse hsr1,
             AuthenticationException ae) throws IOException, ServletException {

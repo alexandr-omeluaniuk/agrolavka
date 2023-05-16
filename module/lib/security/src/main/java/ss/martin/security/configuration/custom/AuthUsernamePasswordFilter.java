@@ -1,21 +1,6 @@
-/*
- * Copyright (C) 2018 Wisent Media
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
 package ss.martin.security.configuration.custom;
 
+import ss.martin.security.model.LoginRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.BufferedReader;
 import jakarta.servlet.http.HttpServletRequest;
@@ -36,6 +21,7 @@ public class AuthUsernamePasswordFilter extends UsernamePasswordAuthenticationFi
     private String jsonUsername;
     /** Password. */
     private String jsonPassword;
+    
     @Override
     protected String obtainPassword(HttpServletRequest request) {
         String accept = request.getHeader("Accept");
@@ -47,6 +33,7 @@ public class AuthUsernamePasswordFilter extends UsernamePasswordAuthenticationFi
         }
         return password;
     }
+    
     @Override
     protected String obtainUsername(HttpServletRequest request) {
         String accept = request.getHeader("Accept");
@@ -58,6 +45,7 @@ public class AuthUsernamePasswordFilter extends UsernamePasswordAuthenticationFi
         }
         return username;
     }
+    
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) {
         String accept = request.getHeader("Accept");
@@ -72,8 +60,8 @@ public class AuthUsernamePasswordFilter extends UsernamePasswordAuthenticationFi
                 //json transformation
                 ObjectMapper mapper = new ObjectMapper();
                 LoginRequest loginRequest = mapper.readValue(sb.toString(), LoginRequest.class);
-                this.jsonUsername = loginRequest.getUsername();
-                this.jsonPassword = loginRequest.getPassword();
+                this.jsonUsername = loginRequest.username();
+                this.jsonPassword = loginRequest.password();
             } catch (Exception e) {
                 LOG.warn("attempt authentication error: ", e);
             }

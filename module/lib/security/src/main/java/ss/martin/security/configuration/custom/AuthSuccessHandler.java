@@ -39,11 +39,10 @@ class AuthSuccessHandler implements AuthenticationSuccessHandler {
             throws IOException, ServletException {
         hsr1.setStatus(HttpStatus.OK.value());
         UserPrincipal principal = SecurityContext.principal();
-        LoginResponse loginResponse = new LoginResponse();
-        loginResponse.setMessage("Welcome to Martin platform");
         principal.setUserAgent(getUserAgent(hsr));
-        loginResponse.setJwt(jwtTokenUtil.generateToken(principal));
-        hsr1.getOutputStream().println(new ObjectMapper().writeValueAsString(loginResponse));
+        hsr1.getOutputStream().println(new ObjectMapper().writeValueAsString(
+                new LoginResponse(jwtTokenUtil.generateToken(principal), "Welcome")
+        ));
     }
     
     private UserAgent getUserAgent(HttpServletRequest httpRequest) {

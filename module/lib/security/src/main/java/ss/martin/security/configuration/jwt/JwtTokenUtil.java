@@ -14,6 +14,7 @@ import java.util.function.Function;
 import javax.crypto.SecretKey;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import ss.martin.base.lang.ThrowingSupplier;
 import ss.martin.security.configuration.external.SecurityConfiguration;
 import ss.martin.security.context.UserPrincipal;
 
@@ -30,6 +31,7 @@ public class JwtTokenUtil implements Serializable {
     /** Platform configuration. */
     @Autowired
     private SecurityConfiguration securityConfiguration;
+    
     /**
      * Retrieve username from jwt token.
      * @param token JWT token.
@@ -39,7 +41,6 @@ public class JwtTokenUtil implements Serializable {
         return getClaimFromToken(token, Claims::getSubject);
     }
 
-    //retrieve expiration date from jwt token
     public Date getExpirationDateFromToken(String token) {
         return getClaimFromToken(token, Claims::getExpiration);
     }
@@ -48,32 +49,25 @@ public class JwtTokenUtil implements Serializable {
         final Claims claims = getAllClaimsFromToken(token);
         return claimsResolver.apply(claims);
     }
-
-    //for retrieveing any information from token we will need the secret key
-    private Claims getAllClaimsFromToken(String token) {
-        return Jwts.parserBuilder().setSigningKey(KEY).build().parseClaimsJws(token).getBody();
+    
+    /**
+     * Generate JWT token.
+     * @param principal principal.
+     * @return JWT token.
+     */
+    public String generateToken(final UserPrincipal principal) {
+        return ((ThrowingSupplier<String>) () -> {
+            final var claims = Jwts.claims();
+            claims.put(JwtConstants.CLAIM_KEY_SYSTEM_USER, serializeObjectToJson(principal.getUser()));
+            claims.put(JwtConstants.CLAIM_KEY_USER_AGENT, serializeObjectToJson(principal.getUserAgent()));
+            claims.put(
+                    JwtConstants.CLAIM_KEY_SUBSCRIPTION, 
+                    serializeObjectToJson(principal.getUser().getSubscription())
+            );
+            return doGenerateToken(claims, principal.getUser().getEmail());
+        }).get();
     }
 
-    //check if the token has expired
-    private Boolean isTokenExpired(String token) {
-        final Date expiration = getExpirationDateFromToken(token);
-        return expiration.before(new Date());
-    }
-
-    //generate token for user
-    public String generateToken(UserPrincipal principal) throws IOException {
-        Claims claims = Jwts.claims();
-        claims.put(JwtConstants.CLAIM_KEY_SYSTEM_USER, serializeObjectToJSON(principal.getUser()));
-        claims.put(JwtConstants.CLAIM_KEY_USER_AGENT, serializeObjectToJSON(principal.getUserAgent()));
-        claims.put(JwtConstants.CLAIM_KEY_SUBSCRIPTION, serializeObjectToJSON(principal.getUser().getSubscription()));
-        return doGenerateToken(claims, principal.getUser().getEmail());
-    }
-
-    //while creating the token -
-    //1. Define  claims of the token, like Issuer, Expiration, Subject, and the ID
-    //2. Sign the JWT using the HS512 algorithm and secret key.
-    //3. According to JWS Compact Serialization(https://tools.ietf.org/html/draft-ietf-jose-json-web-signature-41#section-3.1)
-    //   compaction of the JWT to a URL-safe string 
     private String doGenerateToken(Claims claims, String subject) {
         return Jwts.builder().setClaims(claims).setSubject(subject)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
@@ -81,17 +75,28 @@ public class JwtTokenUtil implements Serializable {
                         securityConfiguration.tokenValidityPeriodInHours()
                 ))).signWith(KEY).compact();
     }
+    
     public Boolean validateToken(String token, String email) {
         final String username = getUsernameFromToken(token);
         return (username.equals(email) && !isTokenExpired(token));
     }
+    
+    private Claims getAllClaimsFromToken(String token) {
+        return Jwts.parserBuilder().setSigningKey(KEY).build().parseClaimsJws(token).getBody();
+    }
+
+    private Boolean isTokenExpired(String token) {
+        final Date expiration = getExpirationDateFromToken(token);
+        return expiration.before(new Date());
+    }
+    
     /**
      * Serialize object to json string.
      * @param obj object.
      * @return json string.
-     * @throws Exception serialization error.
+     * @throws IOException serialization error.
      */
-    private String serializeObjectToJSON(Object obj) throws IOException {
+    private String serializeObjectToJson(Object obj) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         objectMapper.writeValue(baos, obj);

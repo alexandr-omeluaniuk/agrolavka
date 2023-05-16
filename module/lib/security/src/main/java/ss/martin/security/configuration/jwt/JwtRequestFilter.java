@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package ss.martin.security.configuration.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -40,6 +35,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     /** JWT token utility. */
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
+    
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws ServletException, IOException {

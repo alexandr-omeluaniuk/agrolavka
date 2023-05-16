@@ -13,7 +13,6 @@ class ModuleBeans {
     
     @Bean
     BCryptPasswordEncoder passwordEncoder() {
-        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-        return bCryptPasswordEncoder;
+        return new BCryptPasswordEncoder();
     }
 }

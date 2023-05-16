@@ -1,19 +1,3 @@
-/*
- * Copyright (C) 2018 Wisent Media
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
 package ss.martin.security.dao;
 
 import jakarta.persistence.EntityManager;
@@ -42,6 +26,11 @@ public class UserDao {
     @PersistenceContext
     private EntityManager em;
     
+    /**
+     * Find user by username.
+     * @param username username/email.
+     * @return user or null.
+     */
     @Transactional(propagation = Propagation.SUPPORTS)
     public Optional<SystemUser> findByUsername(final String username) {
         final var cb = em.getCriteriaBuilder();
@@ -52,6 +41,10 @@ public class UserDao {
         return em.createQuery(criteria).getResultStream().findFirst();
     }
     
+    /**
+     * Find super user.
+     * @return super user or null.
+     */
     @Transactional(propagation = Propagation.SUPPORTS)
     public Optional<SystemUser> findSuperUser() {
         final var cb = em.getCriteriaBuilder();
@@ -61,6 +54,11 @@ public class UserDao {
         return em.createQuery(criteria).getResultStream().findFirst();
     }
     
+    /**
+     * Find user by validation string.
+     * @param validationString validation string.
+     * @return user or null.
+     */
     @Transactional(propagation = Propagation.SUPPORTS)
     public Optional<SystemUser> findByValidationString(final String validationString) {
         final var cb = em.getCriteriaBuilder();
@@ -71,11 +69,16 @@ public class UserDao {
         return em.createQuery(criteria).getResultStream().findFirst();
     }
     
+    /**
+     * Get user-agent for a user.
+     * @param user user.
+     * @return list of user agents.
+     */
     @Transactional(propagation = Propagation.SUPPORTS)
-    public List<UserAgent> getUserAgents(SystemUser user) {
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<UserAgent> criteria = cb.createQuery(UserAgent.class);
-        Root<UserAgent> c = criteria.from(UserAgent.class);
+    public List<UserAgent> getUserAgents(final SystemUser user) {
+        final var cb = em.getCriteriaBuilder();
+        final var criteria = cb.createQuery(UserAgent.class);
+        final var c = criteria.from(UserAgent.class);
         criteria.select(c).where(cb.equal(c.get(EntityAudit_.createdBy), user));
         return em.createQuery(criteria).getResultList();
     }
