@@ -50,8 +50,8 @@ platform:
   admin:
     email: superadmin@domain.com
   mailjet:
-    apiKey: ENC(Zf3zX2Q2uFDpR3OpdQvF5zEyaoZQNWWCooT3lxdwVZRh5AMAeStfQplYLSD5Azr+gOnNbnengmyyfD6KDKnz3loRHp0LcWpAoo5vgGoS5qg=)
-    secretKey: ENC(m/YyuW+7OxxLUV/vXkGE+WIevlII4Wai6G9PmTOFJ+J7iLKlwkO6FdTyPfgBlOxzjbeU0UNBasZkjVUh58A12JD9F46pssJJgv1oWcxBQrs=)
+    apikey: ENC(Zf3zX2Q2uFDpR3OpdQvF5zEyaoZQNWWCooT3lxdwVZRh5AMAeStfQplYLSD5Azr+gOnNbnengmyyfD6KDKnz3loRHp0LcWpAoo5vgGoS5qg=)
+    secretkey: ENC(m/YyuW+7OxxLUV/vXkGE+WIevlII4Wai6G9PmTOFJ+J7iLKlwkO6FdTyPfgBlOxzjbeU0UNBasZkjVUh58A12JD9F46pssJJgv1oWcxBQrs=)
   navigation:
     login: /login
     logout: /logout

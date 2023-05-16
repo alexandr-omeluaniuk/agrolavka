@@ -268,6 +268,7 @@ public class DataUpdater {
         requestX.setPageSize(Integer.MAX_VALUE);
         AppCache.setProductsCount(productDAO.count(requestX));
     }
+    
     @Transactional(propagation = Propagation.SUPPORTS, rollbackFor = Exception.class)
     private void importImages() throws Exception {
         long start = System.currentTimeMillis();

@@ -9,6 +9,6 @@ import ss.martin.base.constants.PlatformConfiguration;
  */
 @ConfigurationProperties(prefix = PlatformConfiguration.PREFIX + ".mailjet")
 public record MailjetConfiguration(
-        String apiKey,
-        String secretKey
+        String apikey,
+        String secretkey
 ) {}

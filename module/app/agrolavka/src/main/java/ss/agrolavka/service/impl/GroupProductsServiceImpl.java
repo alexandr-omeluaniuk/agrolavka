@@ -25,6 +25,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -74,7 +77,9 @@ class GroupProductsServiceImpl implements GroupProductsService {
     
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     private Set<Long> doGrouping() throws Exception {
-        final List<Product> allProducts = coreDAO.getAll(Product.class);
+        final List<Product> allProducts = coreDAO.getAll(Product.class).stream()
+                .filter(distinctByKey(Product::getName))
+                .collect(Collectors.toList());
         final Map<String, Product> productsMap = allProducts.stream()
                 .collect(Collectors.toMap(Product::getName, (p) -> p));
         final Map<String, List<Product>> groups = grouping(allProducts);
@@ -212,6 +217,11 @@ class GroupProductsServiceImpl implements GroupProductsService {
         product.setVolumes(new ObjectMapper().writeValueAsString(volumes));
         product.setHidden(false);
         return product;
+    }
+    
+    private <T> Predicate<T> distinctByKey(Function<? super T, ?> keyExtractor) {
+        Set<Object> seen = ConcurrentHashMap.newKeySet();
+        return t -> seen.add(keyExtractor.apply(t));
     }
     
 }

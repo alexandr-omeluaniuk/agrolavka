@@ -37,8 +37,8 @@ class MailjetSender implements EmailService {
         LOG.debug(emailRequest.toString());
         ((ThrowingRunnable) () -> {
             final var clientOptions = ClientOptions.builder()
-                    .apiKey(config.apiKey())
-                    .apiSecretKey(config.secretKey())
+                    .apiKey(config.apikey())
+                    .apiSecretKey(config.secretkey())
                     .build();
             final var client = new MailjetClient(clientOptions);
             final var response = client.post(prepareEmail(emailRequest));

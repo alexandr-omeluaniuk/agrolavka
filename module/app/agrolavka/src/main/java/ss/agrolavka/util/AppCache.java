@@ -179,4 +179,18 @@ public class AppCache {
         // TODO: calculate
         return total;
     }
+    public static boolean isBelongsToGroup(final String groupName, final ProductsGroup group) {
+        if (group == null) {
+            return false;
+        }
+        final var tree = AppCache.getProductsGroupsTree();
+        var currentGroup = group;
+        while (currentGroup != null) {
+            if (groupName.equals(currentGroup.getName())) {
+                return true;
+            }
+            currentGroup = tree.get(currentGroup.getExternalId());
+        }
+        return false;
+    }
 }
