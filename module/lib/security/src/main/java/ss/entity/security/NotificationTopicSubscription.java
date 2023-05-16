@@ -18,7 +18,6 @@ import ss.entity.martin.DataModel;
 @Entity
 @Table(name = "notification_topic_subscriptions")
 public class NotificationTopicSubscription extends DataModel {
-    
     /** Topic. */
     @NotNull
     @Size(max = 255)
