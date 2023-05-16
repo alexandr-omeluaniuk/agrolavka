@@ -5,15 +5,18 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
-import ss.martin.security.api.SecurityService;
+import ss.entity.security.UserAgent;
+import ss.martin.core.dao.CoreDao;
 import ss.martin.security.configuration.jwt.JwtTokenUtil;
 import ss.martin.security.context.SecurityContext;
 import ss.martin.security.context.UserPrincipal;
+import ss.martin.security.dao.UserDao;
 
 /**
  * Authentication success handler.
@@ -21,21 +24,40 @@ import ss.martin.security.context.UserPrincipal;
  */
 @Component
 class AuthSuccessHandler implements AuthenticationSuccessHandler {
-    /** Security service. */
-    @Autowired
-    private SecurityService securityService;
-    /** JWT token utility. */
+    
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
+    
+    @Autowired
+    private UserDao userDao;
+    
+    @Autowired
+    private CoreDao coreDao;
+    
     @Override
-    public void onAuthenticationSuccess(HttpServletRequest hsr, HttpServletResponse hsr1,
-            Authentication a) throws IOException, ServletException {
+    public void onAuthenticationSuccess(HttpServletRequest hsr, HttpServletResponse hsr1, Authentication a) 
+            throws IOException, ServletException {
         hsr1.setStatus(HttpStatus.OK.value());
         UserPrincipal principal = SecurityContext.principal();
         LoginResponse loginResponse = new LoginResponse();
         loginResponse.setMessage("Welcome to Martin platform");
-        principal.setUserAgent(securityService.getUserAgent(hsr));
+        principal.setUserAgent(getUserAgent(hsr));
         loginResponse.setJwt(jwtTokenUtil.generateToken(principal));
         hsr1.getOutputStream().println(new ObjectMapper().writeValueAsString(loginResponse));
+    }
+    
+    private UserAgent getUserAgent(HttpServletRequest httpRequest) {
+        UserPrincipal principal = SecurityContext.principal();
+        String userAgentString = httpRequest.getHeader("User-Agent");
+        List<UserAgent> userAgents = userDao.getUserAgents(principal.getUser());
+        UserAgent userAgent = userAgents.stream().filter(ua -> {
+            return userAgentString.equals(ua.getUserAgentString());
+        }).findFirst().map(ua -> ua).orElseGet(() -> {
+            UserAgent ua = new UserAgent();
+            ua.setUserAgentString(userAgentString);
+            coreDao.create(ua);
+            return ua;
+        });
+        return userAgent;
     }
 }

@@ -37,7 +37,7 @@ import ss.entity.agrolavka.Product;
 import ss.entity.agrolavka.ProductsGroup;
 import ss.entity.martin.EntityImage;
 import ss.martin.core.dao.CoreDao;
-import ss.martin.security.api.SecurityService;
+import ss.martin.platform.service.SecurityService;
 
 /**
  * Data updater.

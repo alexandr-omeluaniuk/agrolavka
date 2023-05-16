@@ -1,4 +1,4 @@
-package ss.martin.security.service;
+package ss.martin.platform.service.impl;
 
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -22,7 +22,7 @@ import ss.entity.security.UserAgent;
 import ss.martin.core.anno.EntityAccess;
 import ss.martin.core.constants.StandardRole;
 import ss.martin.core.dao.CoreDao;
-import ss.martin.security.api.SecurityService;
+import ss.martin.platform.service.SecurityService;
 import ss.martin.security.constants.EntityPermission;
 import ss.martin.security.context.SecurityContext;
 import ss.martin.security.context.UserPrincipal;

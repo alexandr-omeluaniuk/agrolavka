@@ -1,4 +1,4 @@
-package ss.martin.security.api;
+package ss.martin.platform.service;
 
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.Set;
