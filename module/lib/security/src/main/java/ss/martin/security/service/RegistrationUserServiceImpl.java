@@ -26,7 +26,7 @@ import ss.martin.notification.email.api.EmailService;
 import ss.martin.notification.email.api.model.EmailAttachment;
 import ss.martin.notification.email.api.model.EmailContact;
 import ss.martin.notification.email.api.model.EmailRequest;
-import ss.martin.security.api.SystemUserService;
+import ss.martin.security.api.RegistrationUserService;
 import ss.martin.security.configuration.external.DomainConfiguration;
 import ss.martin.security.configuration.external.NavigationConfiguration;
 import ss.martin.security.configuration.external.SuperUserConfiguration;
@@ -36,14 +36,14 @@ import ss.martin.security.dao.UserDao;
 import ss.martin.security.exception.RegistrationUserException;
 
 /**
- * System user service implementation.
+ * Registration user service implementation.
  * @author ss
  */
 @Service
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
-class SystemUserServiceImpl implements SystemUserService {
+class RegistrationUserServiceImpl implements RegistrationUserService {
     /** Logger. */
-    private static final Logger LOG = LoggerFactory.getLogger(SystemUserService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(RegistrationUserServiceImpl.class);
     /** DataModel manager. */
     @PersistenceContext
     private EntityManager em;
@@ -133,9 +133,8 @@ class SystemUserServiceImpl implements SystemUserService {
     }
     
     @Override
-    @Transactional(propagation = Propagation.REQUIRED)
     public void finishRegistration(String validationString, String password) {
-        userDao.getUserByValidationString(validationString).ifPresent(user -> {
+        userDao.findByValidationString(validationString).ifPresent(user -> {
             user.setValidationString(null);
             user.setStatus(SystemUserStatus.ACTIVE);
             user.setPassword(passwordEncoder.encode(password));

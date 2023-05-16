@@ -21,6 +21,7 @@ public class SecurityContext {
         UserPrincipal userPrincipal = principal();
         return userPrincipal == null ? null : userPrincipal.getUser();
     }
+    
     /**
      * Get user principal.
      * @return user principal.
@@ -33,6 +34,7 @@ public class SecurityContext {
             return null;
         }
     }
+    
     /**
      * Get current user subscription.
      * @return subscription.
@@ -40,6 +42,7 @@ public class SecurityContext {
     public static Subscription subscription() {
         return currentUser().getSubscription();
     }
+    
     /**
      * Create principal for user.
      * @param user user.
@@ -52,6 +55,11 @@ public class SecurityContext {
         return principal;
     }
     
+    /**
+     * Execute some operation behalf some user.
+     * @param user user.
+     * @param runnable operation.
+     */
     public static void executeBehalfUser(final SystemUser user, final ThrowingRunnable runnable) {
         final var currentPrincipal = principal();
         try {

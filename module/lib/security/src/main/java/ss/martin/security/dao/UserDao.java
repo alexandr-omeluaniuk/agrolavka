@@ -20,7 +20,6 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.JoinType;
 import jakarta.persistence.criteria.Root;
 import java.util.List;
 import java.util.Optional;
@@ -45,9 +44,9 @@ public class UserDao {
     
     @Transactional(propagation = Propagation.SUPPORTS)
     public Optional<SystemUser> findByUsername(final String username) {
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<SystemUser> criteria = cb.createQuery(SystemUser.class);
-        Root<SystemUser> c = criteria.from(SystemUser.class);
+        final var cb = em.getCriteriaBuilder();
+        final var criteria = cb.createQuery(SystemUser.class);
+        final var c = criteria.from(SystemUser.class);
         c.fetch(SystemUser_.subscription);
         criteria.select(c).where(cb.equal(c.get(SystemUser_.email), username));
         return em.createQuery(criteria).getResultStream().findFirst();
@@ -63,11 +62,11 @@ public class UserDao {
     }
     
     @Transactional(propagation = Propagation.SUPPORTS)
-    public Optional<SystemUser> getUserByValidationString(final String validationString) {
+    public Optional<SystemUser> findByValidationString(final String validationString) {
         final var cb = em.getCriteriaBuilder();
         final var criteria = cb.createQuery(SystemUser.class);
         final var c = criteria.from(SystemUser.class);
-        c.fetch(SystemUser_.subscription, JoinType.LEFT);
+        c.fetch(SystemUser_.subscription);
         criteria.select(c).where(cb.equal(c.get(SystemUser_.validationString), validationString));
         return em.createQuery(criteria).getResultStream().findFirst();
     }

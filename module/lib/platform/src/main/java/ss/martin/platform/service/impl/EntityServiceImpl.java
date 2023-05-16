@@ -44,8 +44,8 @@ import ss.martin.platform.exception.PlatformSecurityException;
 import ss.martin.platform.service.EntityService;
 import ss.martin.platform.util.PlatformEntityListener;
 import ss.martin.security.api.SecurityService;
-import ss.martin.security.api.SystemUserService;
 import ss.martin.security.constants.EntityPermission;
+import ss.martin.security.api.RegistrationUserService;
 
 /**
  * Entity service implementation.
@@ -59,7 +59,7 @@ class EntityServiceImpl implements EntityService {
     private CoreDao coreDAO;
     /** System user service. */
     @Autowired
-    private SystemUserService systemUserService;
+    private RegistrationUserService systemUserService;
     /** Security service. */
     @Autowired
     private SecurityService securityService;
