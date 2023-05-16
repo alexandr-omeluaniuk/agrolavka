@@ -23,7 +23,8 @@
  */
 package ss.martin.platform.exception;
 
-import ss.martin.platform.constants.EntityPermission;
+import ss.martin.base.exception.PlatformException;
+import ss.martin.security.constants.EntityPermission;
 import ss.entity.martin.DataModel;
 
 /**

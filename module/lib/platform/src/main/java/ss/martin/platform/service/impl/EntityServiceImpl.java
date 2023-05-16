@@ -34,19 +34,18 @@ import org.springframework.stereotype.Service;
 import ss.entity.martin.DataModel;
 import ss.entity.martin.SoftDeleted;
 import ss.entity.martin.Subscription;
-import ss.entity.martin.SystemUser;
+import ss.entity.security.SystemUser;
+import ss.martin.base.exception.PlatformException;
 import ss.martin.core.anno.Updatable;
 import ss.martin.core.dao.CoreDao;
-import ss.martin.platform.constants.EntityPermission;
-import ss.martin.platform.exception.PlatformException;
-import ss.martin.platform.exception.PlatformSecurityException;
-import ss.martin.platform.service.EntityService;
-import ss.martin.platform.service.SecurityService;
-import ss.martin.platform.service.SubscriptionService;
-import ss.martin.platform.service.SystemUserService;
-import ss.martin.platform.util.PlatformEntityListener;
 import ss.martin.core.model.EntitySearchRequest;
 import ss.martin.core.model.EntitySearchResponse;
+import ss.martin.platform.exception.PlatformSecurityException;
+import ss.martin.platform.service.EntityService;
+import ss.martin.platform.util.PlatformEntityListener;
+import ss.martin.security.api.SecurityService;
+import ss.martin.security.api.SystemUserService;
+import ss.martin.security.constants.EntityPermission;
 
 /**
  * Entity service implementation.
@@ -58,9 +57,6 @@ class EntityServiceImpl implements EntityService {
     /** Core DAO. */
     @Autowired
     private CoreDao coreDAO;
-    /** Subscription service. */
-    @Autowired
-    private SubscriptionService subscriptionService;
     /** System user service. */
     @Autowired
     private SystemUserService systemUserService;
@@ -76,7 +72,7 @@ class EntityServiceImpl implements EntityService {
         if (!securityService.getEntityPermissions(clazz).contains(EntityPermission.READ)) {
             throw new PlatformSecurityException(EntityPermission.READ, clazz);
         }
-        return coreDAO.searchEntities(clazz, searchRequest);
+        return coreDAO.searchEntities(searchRequest, clazz);
     }
     @Override
     public <T extends DataModel> T create(T entity) throws Exception {
@@ -87,9 +83,9 @@ class EntityServiceImpl implements EntityService {
             ((SoftDeleted) entity).setActive(true);
         }
         if (entity instanceof Subscription) {
-            return (T) subscriptionService.createSubscription((Subscription) entity);
+            return (T) systemUserService.createSubscriptionAndAdmin((Subscription) entity);
         } else if (entity instanceof SystemUser) {
-            return (T) systemUserService.createSystemUser((SystemUser) entity);
+            return (T) systemUserService.createSubscriptionUser((SystemUser) entity);
         } else {
             List<PlatformEntityListener> listeners = getEntityListener(entity.getClass());
             for (PlatformEntityListener l : listeners) {

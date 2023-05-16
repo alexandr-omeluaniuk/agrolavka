@@ -1,10 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package ss.agrolavka;
 
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import org.apache.catalina.Context;
 import org.apache.tomcat.util.scan.StandardJarScanner;
@@ -20,7 +16,8 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.resource.PathResourceResolver;
-import ss.martin.platform.spring.config.PlatformConfiguration;
+import ss.martin.platform.configuration.external.StorageConfiguration;
+import ss.martin.security.configuration.external.NavigationConfiguration;
 
 /**
  * Spring configuration.
@@ -32,20 +29,21 @@ import ss.martin.platform.spring.config.PlatformConfiguration;
 public class SpringConfig implements WebMvcConfigurer {
     /** Platform configuration. */
     @Autowired
-    private PlatformConfiguration configuration;
+    private NavigationConfiguration navigationConfiguration;
+    @Autowired
+    private StorageConfiguration storageConfiguration;
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler(configuration.getNavigation().getLoginPage())
+        registry.addResourceHandler(navigationConfiguration.loginPage())
                 .addResourceLocations("classpath:/static/admin/build/");
-        registry.addResourceHandler(configuration.getNavigation().getRegistrationVerification())
+        registry.addResourceHandler(navigationConfiguration.registrationVerification())
                 .addResourceLocations("classpath:/static/admin/build/");
         registry.addResourceHandler("/assets/**").addResourceLocations("classpath:/static/assets/")
                 .setCacheControl(CacheControl.maxAge(365, TimeUnit.DAYS));
-        if (configuration.getImagesStoragePath() != null) {
-            registry.addResourceHandler("/media/**").setCacheControl(CacheControl.maxAge(365, TimeUnit.DAYS))
-                    .addResourceLocations("file:" + configuration.getImagesStoragePath() + "/").resourceChain(true)
-                    .addResolver(new PathResourceResolver());
-        }
+        Optional.ofNullable(storageConfiguration.path())
+                .ifPresent(path -> registry.addResourceHandler("/media/**").setCacheControl(CacheControl.maxAge(365, TimeUnit.DAYS))
+                    .addResourceLocations("file:" + path + "/").resourceChain(true)
+                    .addResolver(new PathResourceResolver()));
         registry.addResourceHandler("/favicon.svg").addResourceLocations("classpath:/static/favicon.svg");
         registry.addResourceHandler("/sitemap.xml").addResourceLocations("classpath:/static/sitemap.xml");
         registry.addResourceHandler("/robots.txt").addResourceLocations("classpath:/static/robots.txt");
@@ -66,10 +64,10 @@ public class SpringConfig implements WebMvcConfigurer {
             public void addViewControllers(ViewControllerRegistry registry) {
                 final String forward = "forward:/admin/index.html";
                 registry.addViewController("/admin").setViewName(forward);
-                registry.addViewController(configuration.getNavigation().getLoginPage()).setViewName(forward);
-                registry.addViewController(configuration.getNavigation().getRegistrationVerification() + "/**")
+                registry.addViewController(navigationConfiguration.loginPage()).setViewName(forward);
+                registry.addViewController(navigationConfiguration.registrationVerification() + "/**")
                         .setViewName(forward);
-                registry.addViewController(configuration.getNavigation().getViews() + "/**").setViewName(forward);
+                registry.addViewController(navigationConfiguration.views() + "/**").setViewName(forward);
             }
         };
     }

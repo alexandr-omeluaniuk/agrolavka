@@ -28,8 +28,8 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import ss.martin.platform.service.SecurityService;
-import ss.martin.platform.wrapper.UserPermissions;
+import ss.martin.security.api.SecurityService;
+import ss.martin.security.model.UserPermissions;
 
 /**
  * Security REST controller.

@@ -6,6 +6,8 @@
 
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@tag import="ss.agrolavka.util.AppCache"%>
+<%@tag import="ss.entity.agrolavka.ProductsGroup"%>
 <%@tag description="put the tag description here" pageEncoding="UTF-8" import="java.util.*"%>
 
 <%-- The list of normal or fragment attributes can be specified here: --%>
@@ -15,6 +17,7 @@
 <%@attribute name="sort" required="true" type="String"%>
 <%@attribute name="available" required="true" type="Boolean"%>
 <%@attribute name="url" required="true" type="String"%>
+<%@attribute name="group" required="true" type="ProductsGroup"%>
 
 <%-- any content can be specified here e.g.: --%>
 <%!
@@ -110,6 +113,7 @@
         </c:if>
     </div>
     <div class="col-sm-12 col-lg-6 col-xl-4 d-flex justify-content-start mt-3">
+        <% if (group != null && !AppCache.isBelongsToGroup("Средства защиты растений (СЗР)", group)) { %>
         <div class="dropdown w-100">
             <button class="btn btn-primary dropdown-toggle w-100 text-left" type="button" id="agr-dropdown-products-available" 
                     data-mdb-toggle="dropdown" aria-expanded="false">
@@ -125,6 +129,9 @@
                         <i class="fas fa-box-open me-2"></i> только в наличии</a></li>
             </ul>
         </div>
+        <%
+            }
+        %>
     </div>
     <div class="col-sm-12 col-lg-6 col-xl-4 d-flex justify-content-end mt-3">
         <div class="dropdown me-2 w-100">

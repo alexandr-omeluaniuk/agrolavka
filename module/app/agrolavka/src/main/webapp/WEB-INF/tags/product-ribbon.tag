@@ -5,15 +5,19 @@
 --%>
 
 <%@tag import="ss.entity.agrolavka.Product"%>
+<%@tag import="ss.agrolavka.util.AppCache"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@tag description="Product price" pageEncoding="UTF-8"%>
 
 <%-- The list of normal or fragment attributes can be specified here: --%>
 <%@attribute name="product" required="true" type="Product"%>
 <%-- any content can be specified here e.g.: --%>
-
+<% if (!AppCache.isBelongsToGroup("Средства защиты растений (СЗР)", product.getGroup())) { %>
 <div class="ribbon ribbon-top-left">
     <span class="${product.quantity > 0 ? 'bg-success' : 'bg-danger'}">
         <small>${product.quantity > 0 ? 'в наличии' : 'под заказ'}</small>
     </span>
 </div>
+<%
+    }
+%>

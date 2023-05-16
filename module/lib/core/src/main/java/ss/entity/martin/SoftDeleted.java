@@ -5,6 +5,9 @@ package ss.entity.martin;
  * @author ss
  */
 public interface SoftDeleted {
+    /** 'Active' field name. */
+    static final String ACTIVE_FIELD_NAME = "active";
+    
     /**
      * Get active flag.
      * @return the active

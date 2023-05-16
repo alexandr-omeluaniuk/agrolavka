@@ -7,6 +7,7 @@ import jakarta.persistence.TemporalType;
 import jakarta.persistence.Transient;
 import jakarta.validation.constraints.NotNull;
 import java.util.Date;
+import ss.entity.security.EntityAudit;
 import ss.martin.core.anno.Updatable;
 
 /**

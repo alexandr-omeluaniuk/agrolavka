@@ -4,4 +4,14 @@ plugins {
 
 dependencies {
     api project(":module:lib:core")
+    api project(":module:lib:notification:notification-email-api")
+    api "org.springframework.boot:spring-boot-starter-web"
+    api "org.springframework.boot:spring-boot-starter-security"
+    implementation libs.jjwt.api
+    runtimeOnly project(":module:lib:notification:notification-email-mailjet")
+    runtimeOnly libs.jjwt.impl
+    runtimeOnly libs.jjwt.orgjson
+    annotationProcessor "org.hibernate.orm:hibernate-jpamodelgen"
+    
+    testImplementation project(":module:lib:common-test")
 }

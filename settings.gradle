@@ -1,6 +1,9 @@
 rootProject.name = 'martin'
 
-include ':module:lib:platform', ':module:lib:security', ':module:lib:core'
+include ':module:lib:common-test'
+include ':module:lib:base', ':module:lib:core', ':module:lib:platform', ':module:lib:security'
+include ':module:lib:notification:notification-email-api', ':module:lib:notification:notification-email-mailjet', ':module:lib:notification:notification-email-smtp'
+include ':module:lib:notification:notification-push-api', ':module:lib:notification:notification-push-firebase'
 include ':module:app:agrolavka'
 include ':module:ui:admin'
 
@@ -9,10 +12,15 @@ dependencyResolutionManagement {
         libs {
             version('spring-boot', '3.0.5')
             version('jjwt', '0.11.5')
+            version('firebase', '7.1.1')
+            version('mailjet', '5.2.2')
             library('spring-boot-dependencies', 'org.springframework.boot', 'spring-boot-dependencies').versionRef('spring-boot')
             library('jjwt-api', 'io.jsonwebtoken', 'jjwt-api').versionRef('jjwt')
             library('jjwt-impl', 'io.jsonwebtoken', 'jjwt-impl').versionRef('jjwt')
             library('jjwt-orgjson', 'io.jsonwebtoken', 'jjwt-orgjson').versionRef('jjwt')
+            library('firebase', 'com.google.firebase', 'firebase-admin').versionRef('firebase')
+            library('mailjet', 'com.mailjet', 'mailjet-client').versionRef('mailjet')
+            library('jasypt', 'com.github.ulisesbocchio', 'jasypt-spring-boot-starter').versionRef('spring-boot')
         }
     }
 }
