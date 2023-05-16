@@ -32,7 +32,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import ss.martin.security.dao.UserDao;
-import ss.martin.security.model.RESTResponse;
+import ss.martin.security.model.RestResponse;
 import ss.martin.security.api.RegistrationUserService;
 
 /**
@@ -56,9 +56,9 @@ public class PublicRESTController {
      */
     @RequestMapping(value = "/finish-registration", method = RequestMethod.PUT,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public RESTResponse finishRegistration(@RequestBody Map<String, String> params) throws Exception {
+    public RestResponse finishRegistration(@RequestBody Map<String, String> params) throws Exception {
         systemUserService.finishRegistration(params.get("validation"), params.get("password"));
-        return new RESTResponse();
+        return new RestResponse();
     }
     /**
      * Check validation string.
@@ -71,6 +71,6 @@ public class PublicRESTController {
     public Object checkValidationString(@PathVariable("validationString") String validationString)
             throws Exception {
         final var user = userDAO.findByValidationString(validationString);
-        return user.isEmpty() ? new RESTResponse() : user.get();
+        return user.isEmpty() ? new RestResponse() : user.get();
     }
 }

@@ -22,8 +22,6 @@ import ss.martin.core.anno.Updatable;
 @Table(name = "subscription")
 @EntityAccess(roles = { StandardRole.ROLE_SUPER_ADMIN })
 public class Subscription extends DataModel implements SoftDeleted {
-    /** Default UID. */
-    private static final long serialVersionUID = 1L;
     /** Organization name. */
     @NotEmpty
     @Size(max = 255)

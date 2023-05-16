@@ -15,6 +15,7 @@ public class UserPrincipal extends UsernamePasswordAuthenticationToken {
     private SystemUser user;
     /** User agent of logged in user. */
     private UserAgent userAgent;
+    
     /**
      * Constructor.
      * @param username - username.
@@ -25,27 +26,19 @@ public class UserPrincipal extends UsernamePasswordAuthenticationToken {
             Collection<? extends GrantedAuthority> authorities) {
         super(username, password, authorities);
     }
-    /**
-     * @return the user
-     */
+
     public SystemUser getUser() {
         return user;
     }
-    /**
-     * @param user the user to set
-     */
+    
     public void setUser(SystemUser user) {
         this.user = user;
     }
-    /**
-     * @return the userAgent
-     */
+    
     public UserAgent getUserAgent() {
         return userAgent;
     }
-    /**
-     * @param userAgent the userAgent to set
-     */
+    
     public void setUserAgent(UserAgent userAgent) {
         this.userAgent = userAgent;
     }

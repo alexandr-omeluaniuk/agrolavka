@@ -13,7 +13,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
 import ss.martin.security.exception.SubscriptionHasExpiredException;
-import ss.martin.security.model.RESTResponse;
+import ss.martin.security.model.RestResponse;
 
 /**
  * Authentication failure handler.
@@ -22,19 +22,21 @@ import ss.martin.security.model.RESTResponse;
 @Component
 class AuthFailureHandler implements AuthenticationFailureHandler {
     @Override
-    public void onAuthenticationFailure(HttpServletRequest hsr, HttpServletResponse hsr1,
-            AuthenticationException ae) throws IOException, ServletException {
+    public void onAuthenticationFailure(HttpServletRequest hsr, HttpServletResponse hsr1, AuthenticationException ae) 
+            throws IOException, ServletException {
         hsr1.setStatus(HttpStatus.UNAUTHORIZED.value());
-        RESTResponse failback = new RESTResponse(false, ae.getMessage());
+        var code = "";
         if (ae instanceof UsernameNotFoundException) {
-            failback.setCode("1");
+            code = "1";
         } else if (ae instanceof BadCredentialsException) {
-            failback.setCode("2");
+            code = "2";
         } else if (ae instanceof DisabledException) {
-            failback.setCode("3");
+            code = "3";
         } else if (ae instanceof SubscriptionHasExpiredException) {
-            failback.setCode("4");
+            code = "4";
         }
-        hsr1.getOutputStream().println(new ObjectMapper().writeValueAsString(failback));
+        hsr1.getOutputStream().println(new ObjectMapper().writeValueAsString(
+                new RestResponse(false, ae.getMessage(), code)
+        ));
     }
 }

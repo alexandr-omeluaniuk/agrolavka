@@ -27,7 +27,7 @@ import ss.martin.security.constants.EntityPermission;
 import ss.martin.security.context.SecurityContext;
 import ss.martin.security.context.UserPrincipal;
 import ss.martin.security.dao.UserDao;
-import ss.martin.security.model.UserPermissions;
+import ss.martin.platform.wrapper.UserPermissions;
 
 /**
  * Security service implementation.

@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import ss.martin.platform.service.SecurityService;
-import ss.martin.security.model.UserPermissions;
+import ss.martin.platform.wrapper.UserPermissions;
 
 /**
  * Security REST controller.
