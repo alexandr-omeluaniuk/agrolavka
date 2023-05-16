@@ -17,10 +17,10 @@ public record RestResponse(
     }
     
     public RestResponse(boolean success, String message) {
-        this(true, message, null, null, null);
+        this(success, message, null, null, null);
     }
     
     public RestResponse(final boolean success, final String message, final String code) {
-        this(true, message, code, null, null);
+        this(success, message, code, null, null);
     }
 }

@@ -1,13 +1,10 @@
 package ss.martin.security.test;
 
-import java.util.Date;
-import java.util.concurrent.TimeUnit;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.core.context.SecurityContextHolder;
-import ss.entity.martin.Subscription;
 import ss.entity.security.SystemUser;
 import ss.martin.core.constants.StandardRole;
 import ss.martin.core.dao.CoreDao;
@@ -48,7 +45,7 @@ public class RegistrationUserServiceTest extends AbstractComponentTest {
         final var superAdmin = userDao.findSuperUser().get();
         SecurityContextHolder.getContext().setAuthentication(SecurityContext.createPrincipal(superAdmin));
         final var subscriptionAdminEmail = "subscription.admin@org.test";
-        final var subscription = generateSubscription(subscriptionAdminEmail);
+        final var subscription = DataFactory.generateSubscription(subscriptionAdminEmail);
         
         // create subscription admin user
         final var created = systemUserService.createSubscriptionAndAdmin(subscription);
@@ -65,7 +62,9 @@ public class RegistrationUserServiceTest extends AbstractComponentTest {
         // duplicate user
         final var ex = assertThrows(
                 RegistrationUserException.class, 
-                () -> systemUserService.createSubscriptionAndAdmin(generateSubscription(subscriptionAdminEmail))
+                () -> systemUserService.createSubscriptionAndAdmin(
+                        DataFactory.generateSubscription(subscriptionAdminEmail)
+                )
         );
         
         assertNotNull(ex);
@@ -85,26 +84,10 @@ public class RegistrationUserServiceTest extends AbstractComponentTest {
         // create subscription user
         SecurityContextHolder.getContext().setAuthentication(SecurityContext.createPrincipal(user));
         final var subscriptionUserEmail = "simple.user@subscription.test";
-        final var subscriptionUser = generateSystemUser(subscriptionUserEmail, "Bob Murrey");
+        final var subscriptionUser = DataFactory.generateSystemUser(subscriptionUserEmail, "Bob Murrey");
         
         final var createdSubscriptionUser = systemUserService.createSubscriptionUser(subscriptionUser);
         
         assertNotNull(createdSubscriptionUser);
-    }
-    
-    private Subscription generateSubscription(final String email) {
-        final var subscription = new Subscription();
-        subscription.setOrganizationName("Jack Daniels");
-        subscription.setSubscriptionAdminEmail(email);
-        subscription.setStarted(new Date());
-        subscription.setExpirationDate(new Date(System.currentTimeMillis() + TimeUnit.DAYS.toMillis(365)));
-        return subscription;
-    }
-    
-    private SystemUser generateSystemUser(final String email, final String lastname) {
-        final var user = new SystemUser();
-        user.setEmail(email);
-        user.setLastname(lastname);
-        return user;
     }
 }
