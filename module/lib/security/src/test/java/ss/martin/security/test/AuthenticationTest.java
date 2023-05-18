@@ -1,8 +1,8 @@
 package ss.martin.security.test;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.UUID;
-import org.junit.jupiter.api.Test;
+import java.util.function.Consumer;
+import java.util.stream.Stream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import ss.martin.core.constants.StandardRole;
@@ -11,17 +11,16 @@ import ss.martin.security.configuration.external.NavigationConfiguration;
 import ss.martin.security.constants.SystemUserStatus;
 import ss.martin.security.context.SecurityContext;
 import ss.martin.test.AbstractMvcTest;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.junit.jupiter.api.Assertions.*;
-import org.springframework.http.HttpHeaders;
+import org.junit.jupiter.api.Named;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+import org.springframework.http.HttpStatus;
+import ss.martin.security.configuration.custom.LoginResponse;
 import ss.martin.security.model.LoginRequest;
 
 public class AuthenticationTest extends AbstractMvcTest {
-    
-    private static final String USERNAME = "admin@subscription.test";
-    private static final String PASSWORD = UUID.randomUUID().toString();
     
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
@@ -32,31 +31,56 @@ public class AuthenticationTest extends AbstractMvcTest {
     @Autowired
     private NavigationConfiguration navigationConfiguration;
     
-    @Autowired
-    private ObjectMapper objectMapper;
-    
-    @Test
-    public void testLogin() {
-        userRegistration();
-        assertDoesNotThrow(() -> {
-            mockMvc.perform(
-                    post(navigationConfiguration.login())
-                        .content(objectMapper.writeValueAsBytes(new LoginRequest(USERNAME, PASSWORD)))
-                    .header(HttpHeaders.USER_AGENT, "Android 12")
-            ).andDo(print()).andExpect(status().isOk());
-        });
+    static Stream<Arguments> loginRequests() {
+        return Stream.of(
+            Arguments.of(
+                Named.of(
+                    "Success login", 
+                    new LoginTestCase<>(
+                        "admin@subscription.test", 
+                        "12345", 
+                        new LoginRequest("admin@subscription.test", "12345"),
+                        HttpStatus.OK,
+                        LoginResponse.class,
+                        (response) -> {
+                            assertNotNull(response.jwt());
+                            assertFalse(response.jwt().isBlank());
+                            assertNotNull(response.message());
+                        }
+                    )
+                )
+            )
+        );
     }
     
-    private void userRegistration() {
-        final var subscriptionAdminEmail = "admin@subscription.test";
-        final var subscription = coreDao.create(DataFactory.generateSubscription(subscriptionAdminEmail));
-        final var user = DataFactory.generateSystemUser(subscriptionAdminEmail, "Sam Little");
+    @ParameterizedTest
+    @MethodSource("loginRequests")
+    public <T, R> void testLogin(final LoginTestCase<T, R> testCase) {
+        userRegistration(testCase.registrationEmail(), testCase.registrationPassword());
+        
+        final var response = callPost(navigationConfiguration.login(), testCase.request(), testCase.responseType(), testCase.statusCode());
+
+        testCase.verificationFunction().accept(response);
+    }
+    
+    private void userRegistration(final String email, final String password) {
+        final var subscription = coreDao.create(DataFactory.generateSubscription(email));
+        final var user = DataFactory.generateSystemUser(email, "Sam Little");
         user.setSubscription(subscription);
-        user.setPassword(passwordEncoder.encode(PASSWORD));
+        user.setPassword(passwordEncoder.encode(password));
         user.setStandardRole(StandardRole.ROLE_SUBSCRIPTION_ADMINISTRATOR);
         user.setStatus(SystemUserStatus.ACTIVE);
         SecurityContext.executeBehalfUser(user, () -> {
             coreDao.create(user);
         });
     }
+    
+    private static record LoginTestCase<T, R>(
+        String registrationEmail,
+        String registrationPassword,
+        T request,
+        HttpStatus statusCode,
+        Class<R> responseType,
+        Consumer<R> verificationFunction
+    ) {}
 }

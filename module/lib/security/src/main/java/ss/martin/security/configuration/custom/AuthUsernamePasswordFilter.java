@@ -19,20 +19,19 @@ public class AuthUsernamePasswordFilter extends UsernamePasswordAuthenticationFi
     private String jsonPassword;
     
     @Override
-    protected String obtainPassword(HttpServletRequest request) {
+    protected String obtainPassword(final HttpServletRequest request) {
         return this.jsonPassword;
     }
     
     @Override
-    protected String obtainUsername(HttpServletRequest request) {
+    protected String obtainUsername(final HttpServletRequest request) {
         return this.jsonUsername;
     }
     
     @Override
-    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) {
+    public Authentication attemptAuthentication(final HttpServletRequest request, final HttpServletResponse response) {
         return ((ThrowingSupplier<Authentication>) () -> {
-            ObjectMapper mapper = new ObjectMapper();
-            LoginRequest loginRequest = mapper.readValue(request.getInputStream(), LoginRequest.class);
+            final var loginRequest = new ObjectMapper().readValue(request.getInputStream(), LoginRequest.class);
             this.jsonUsername = loginRequest.username();
             this.jsonPassword = loginRequest.password();
             return super.attemptAuthentication(request, response);
