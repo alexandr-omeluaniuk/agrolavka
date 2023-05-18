@@ -18,7 +18,9 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.http.HttpStatus;
 import ss.martin.security.configuration.custom.LoginResponse;
+import ss.martin.security.constants.LoginFaultCode;
 import ss.martin.security.model.LoginRequest;
+import ss.martin.security.model.RestResponse;
 
 public class AuthenticationTest extends AbstractMvcTest {
     
@@ -46,6 +48,38 @@ public class AuthenticationTest extends AbstractMvcTest {
                             assertNotNull(response.jwt());
                             assertFalse(response.jwt().isBlank());
                             assertNotNull(response.message());
+                        }
+                    )
+                )
+            ),
+            Arguments.of(
+                Named.of(
+                    "Wrong password", 
+                    new LoginTestCase<>(
+                        "admin@subscription.test", 
+                        "12345", 
+                        new LoginRequest("admin@subscription.test", "123456"),
+                        HttpStatus.UNAUTHORIZED,
+                        RestResponse.class,
+                        (response) -> {
+                            assertEquals(LoginFaultCode.BAD_CREDENTIALS.getCode(), response.code());
+                            assertEquals(LoginFaultCode.BAD_CREDENTIALS.getMessage(), response.message());
+                        }
+                    )
+                )
+            ),
+            Arguments.of(
+                Named.of(
+                    "Wrong username", 
+                    new LoginTestCase<>(
+                        "admin@subscription.test", 
+                        "12345", 
+                        new LoginRequest("admin2@subscription.test", "12345"),
+                        HttpStatus.UNAUTHORIZED,
+                        RestResponse.class,
+                        (response) -> {
+                            assertEquals(LoginFaultCode.WRONG_USERNAME.getCode(), response.code());
+                            assertEquals(LoginFaultCode.WRONG_USERNAME.getMessage(), response.message());
                         }
                     )
                 )
