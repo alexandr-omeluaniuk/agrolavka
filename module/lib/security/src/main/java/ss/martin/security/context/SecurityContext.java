@@ -12,14 +12,16 @@ import ss.martin.base.lang.ThrowingRunnable;
  * Provided access to current security context.
  * @author ss
  */
-public class SecurityContext {
+public final class SecurityContext {
+    
+    private SecurityContext() {}
+    
     /**
      * Get current user.
      * @return current user.
      */
     public static SystemUser currentUser() {
-        UserPrincipal userPrincipal = principal();
-        return userPrincipal == null ? null : userPrincipal.getUser();
+        return principal().getUser();
     }
     
     /**
