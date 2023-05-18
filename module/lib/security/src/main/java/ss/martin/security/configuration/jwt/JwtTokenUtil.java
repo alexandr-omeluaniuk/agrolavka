@@ -56,11 +56,17 @@ public class JwtTokenUtil {
         return ((ThrowingSupplier<String>) () -> {
             final var claims = createClaims(principal);
             final var subject = principal.getUser().getEmail();
-            return Jwts.builder().setClaims(claims).setSubject(subject)
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + TimeUnit.HOURS.toMillis(
-                        securityConfiguration.tokenValidityPeriodInHours()
-                ))).signWith(KEY).compact();
+            final var issuedAt = new Date(System.currentTimeMillis());
+            final var expirationDate = new Date(System.currentTimeMillis() + TimeUnit.HOURS.toMillis(
+                securityConfiguration.tokenValidityPeriodInHours()
+            ));
+            return Jwts.builder()
+                .setClaims(claims)
+                .setSubject(subject)
+                .setIssuedAt(issuedAt)
+                .setExpiration(expirationDate)
+                .signWith(KEY)
+                .compact();
         }).get();
     }
 
