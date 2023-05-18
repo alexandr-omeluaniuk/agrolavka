@@ -1,5 +1,6 @@
 package ss.martin.security.test;
 
+import ss.martin.security.test.util.DataFactory;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

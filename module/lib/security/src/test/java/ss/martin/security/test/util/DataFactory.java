@@ -1,4 +1,4 @@
-package ss.martin.security.test;
+package ss.martin.security.test.util;
 
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
