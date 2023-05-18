@@ -2,9 +2,6 @@ package ss.martin.security.test;
 
 import ss.martin.security.test.util.DataFactory;
 import java.util.Date;
-import java.util.Optional;
-import java.util.UUID;
-import java.util.function.Consumer;
 import java.util.stream.Stream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -104,6 +101,14 @@ public class AuthenticationTest extends AbstractMvcTest {
             final var response = callPost(navigationConfiguration.login(), testCase.request(), LoginResponse.class, HttpStatus.OK);
             assertFalse(response.jwt().isBlank());
             assertFalse(response.message().isBlank());
+            
+            callGet("/api/site/protected/test", Void.class, HttpStatus.FOUND);
+            
+            withAuthorization(response.jwt(), () -> {
+                final var respWithAuth = callGet("/api/site/protected/test", RestResponse.class, HttpStatus.OK);
+                assertTrue(respWithAuth.success());
+                assertEquals("Success response, Super!", respWithAuth.message());
+            });
         } else {
             final var response = callPost(navigationConfiguration.login(), testCase.request(), RestResponse.class, HttpStatus.UNAUTHORIZED);
             assertEquals(testCase.faultCode().getCode(), response.code());
