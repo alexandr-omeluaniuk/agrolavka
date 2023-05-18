@@ -14,7 +14,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
 import org.springframework.util.function.ThrowingConsumer;
-import ss.martin.base.lang.ThrowingRunnable;
 import ss.martin.security.constants.LoginFaultCode;
 import ss.martin.security.exception.SubscriptionHasExpiredException;
 import ss.martin.security.model.RestResponse;

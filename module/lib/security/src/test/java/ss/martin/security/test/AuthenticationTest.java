@@ -1,5 +1,7 @@
 package ss.martin.security.test;
 
+import java.util.Date;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
@@ -38,49 +40,55 @@ public class AuthenticationTest extends AbstractMvcTest {
             Arguments.of(
                 Named.of(
                     "Success login", 
-                    new LoginTestCase<>(
-                        "admin@subscription.test", 
+                    new LoginTestCase(
+                        "adminSuccess@subscription.test", 
                         "12345", 
-                        new LoginRequest("admin@subscription.test", "12345"),
-                        HttpStatus.OK,
-                        LoginResponse.class,
-                        (response) -> {
-                            assertNotNull(response.jwt());
-                            assertFalse(response.jwt().isBlank());
-                            assertNotNull(response.message());
-                        }
+                        new LoginRequest("adminSuccess@subscription.test", "12345"),
+                        null
                     )
                 )
             ),
             Arguments.of(
                 Named.of(
                     "Wrong password", 
-                    new LoginTestCase<>(
-                        "admin@subscription.test", 
+                    new LoginTestCase(
+                        "adminWrongPassword@subscription.test", 
                         "12345", 
-                        new LoginRequest("admin@subscription.test", "123456"),
-                        HttpStatus.UNAUTHORIZED,
-                        RestResponse.class,
-                        (response) -> {
-                            assertEquals(LoginFaultCode.BAD_CREDENTIALS.getCode(), response.code());
-                            assertEquals(LoginFaultCode.BAD_CREDENTIALS.getMessage(), response.message());
-                        }
+                        new LoginRequest("adminWrongPassword@subscription.test", "123456"),
+                        LoginFaultCode.BAD_CREDENTIALS
                     )
                 )
             ),
             Arguments.of(
                 Named.of(
                     "Wrong username", 
-                    new LoginTestCase<>(
-                        "admin@subscription.test", 
+                    new LoginTestCase(
+                        "adminWrongUsername@subscription.test", 
                         "12345", 
-                        new LoginRequest("admin2@subscription.test", "12345"),
-                        HttpStatus.UNAUTHORIZED,
-                        RestResponse.class,
-                        (response) -> {
-                            assertEquals(LoginFaultCode.WRONG_USERNAME.getCode(), response.code());
-                            assertEquals(LoginFaultCode.WRONG_USERNAME.getMessage(), response.message());
-                        }
+                        new LoginRequest("adminWrongUsername2@subscription.test", "12345"),
+                        LoginFaultCode.WRONG_USERNAME
+                    )
+                )
+            ),
+            Arguments.of(
+                Named.of(
+                    "Expired subscription", 
+                    new LoginTestCase(
+                        "adminExpiredSubscription@subscription.test", 
+                        "abc123Pass", 
+                        new LoginRequest("adminExpiredSubscription@subscription.test", "abc123Pass"),
+                        LoginFaultCode.SUBSCRIPTION_EXPIRED
+                    )
+                )
+            ),
+            Arguments.of(
+                Named.of(
+                    "Deactivated user", 
+                    new LoginTestCase(
+                        "adminDeactivated@subscription.test", 
+                        "uPwttr7876", 
+                        new LoginRequest("adminDeactivated@subscription.test", "uPwttr7876"),
+                        LoginFaultCode.DEACTIVATED
                     )
                 )
             )
@@ -89,32 +97,39 @@ public class AuthenticationTest extends AbstractMvcTest {
     
     @ParameterizedTest
     @MethodSource("loginRequests")
-    public <T, R> void testLogin(final LoginTestCase<T, R> testCase) {
-        userRegistration(testCase.registrationEmail(), testCase.registrationPassword());
-        
-        final var response = callPost(navigationConfiguration.login(), testCase.request(), testCase.responseType(), testCase.statusCode());
-
-        testCase.verificationFunction().accept(response);
+    public void testLogin(final LoginTestCase testCase) {
+        userRegistration(testCase);
+        if (testCase.faultCode() == null) {
+            final var response = callPost(navigationConfiguration.login(), testCase.request(), LoginResponse.class, HttpStatus.OK);
+            assertFalse(response.jwt().isBlank());
+            assertFalse(response.message().isBlank());
+        } else {
+            final var response = callPost(navigationConfiguration.login(), testCase.request(), RestResponse.class, HttpStatus.UNAUTHORIZED);
+            assertEquals(testCase.faultCode().getCode(), response.code());
+            assertEquals(testCase.faultCode().getMessage(), response.message());
+        }
     }
     
-    private void userRegistration(final String email, final String password) {
-        final var subscription = coreDao.create(DataFactory.generateSubscription(email));
-        final var user = DataFactory.generateSystemUser(email, "Sam Little");
+    private void userRegistration(final LoginTestCase testCase) {
+        final var subscriptionEntity = DataFactory.generateSubscription(testCase.registrationEmail());
+        if (testCase.faultCode() == LoginFaultCode.SUBSCRIPTION_EXPIRED) {
+            subscriptionEntity.setExpirationDate(new Date(System.currentTimeMillis() - 1));
+        }
+        final var subscription = coreDao.create(subscriptionEntity);
+        final var user = DataFactory.generateSystemUser(testCase.registrationEmail(), "Sam Little");
         user.setSubscription(subscription);
-        user.setPassword(passwordEncoder.encode(password));
+        user.setPassword(passwordEncoder.encode(testCase.registrationPassword()));
         user.setStandardRole(StandardRole.ROLE_SUBSCRIPTION_ADMINISTRATOR);
-        user.setStatus(SystemUserStatus.ACTIVE);
+        user.setStatus(testCase.faultCode() == LoginFaultCode.DEACTIVATED ? SystemUserStatus.INACTIVE : SystemUserStatus.ACTIVE);
         SecurityContext.executeBehalfUser(user, () -> {
             coreDao.create(user);
         });
     }
     
-    private static record LoginTestCase<T, R>(
+    private static record LoginTestCase(
         String registrationEmail,
         String registrationPassword,
-        T request,
-        HttpStatus statusCode,
-        Class<R> responseType,
-        Consumer<R> verificationFunction
+        LoginRequest request,
+        LoginFaultCode faultCode
     ) {}
 }
