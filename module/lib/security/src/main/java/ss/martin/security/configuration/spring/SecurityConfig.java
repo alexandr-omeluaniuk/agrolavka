@@ -1,6 +1,7 @@
 package ss.martin.security.configuration.spring;
 
 import jakarta.servlet.Filter;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,6 +20,7 @@ import org.springframework.security.web.authentication.logout.LogoutSuccessHandl
 import org.springframework.security.web.firewall.HttpFirewall;
 import org.springframework.security.web.firewall.StrictHttpFirewall;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.util.function.ThrowingConsumer;
 import ss.martin.security.configuration.custom.AuthUsernamePasswordFilter;
 import ss.martin.security.configuration.external.NavigationConfiguration;
 import ss.martin.security.configuration.external.SecurityConfiguration;
@@ -78,9 +80,10 @@ class SecurityConfig {
                 .and().exceptionHandling().authenticationEntryPoint(authEntryPoint);
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        if (securityConfiguration.contentSecurityPolicy() != null) {
-            http.headers().xssProtection().and().contentSecurityPolicy(securityConfiguration.contentSecurityPolicy());
-        }
+        ThrowingConsumer<String> contentSecurityPolicyConsumer = 
+            (policy) -> http.headers().xssProtection().and()
+                    .contentSecurityPolicy(securityConfiguration.contentSecurityPolicy());
+        Optional.ofNullable(securityConfiguration.contentSecurityPolicy()).ifPresent(contentSecurityPolicyConsumer);
         systemUserService.createSuperAdmin();
         return http.build();
     }
