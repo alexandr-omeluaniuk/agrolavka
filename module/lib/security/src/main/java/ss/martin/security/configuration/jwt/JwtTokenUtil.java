@@ -25,15 +25,6 @@ public class JwtTokenUtil {
     
     @Autowired
     private JwtTokenDateFactory dateFactory;
-    
-    /**
-     * Retrieve username from jwt token.
-     * @param token JWT token.
-     * @return username.
-     */
-    public String getUsernameFromToken(final String token) {
-        return getClaimFromToken(token, Claims::getSubject);
-    }
 
     public <T> T getClaimFromToken(final String token, final Function<Claims, T> claimsResolver) {
         return claimsResolver.apply(getAllClaimsFromToken(token));
@@ -58,8 +49,8 @@ public class JwtTokenUtil {
         }).get();
     }
 
-    public Boolean validateToken(final String token, final String email) {
-        return getUsernameFromToken(token).equals(email);
+    public String getSubject(final String token) {
+        return getClaimFromToken(token, Claims::getSubject);
     }
     
     private Claims getAllClaimsFromToken(final String token) {

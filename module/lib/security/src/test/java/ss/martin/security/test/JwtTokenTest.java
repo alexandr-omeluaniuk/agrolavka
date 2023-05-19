@@ -27,9 +27,8 @@ public class JwtTokenTest extends AbstractComponentTest {
     @Test
     @DisplayName("JWT token validation test")
     public void testValidateToken() {
-        final var validEmail = "jwt.test@test.com";
-        final var invalidEmail = "jwt.invalid@test.com";
-        final var user = DataFactory.generateSystemUser(validEmail, "Alan Gray");
+        final var email = "jwt.test@test.com";
+        final var user = DataFactory.generateSystemUser(email, "Alan Gray");
         user.setStandardRole(StandardRole.ROLE_SUBSCRIPTION_USER);
         final var principal = SecurityContext.createPrincipal(user);
         
@@ -40,8 +39,7 @@ public class JwtTokenTest extends AbstractComponentTest {
         
         final var jwt = jwtTokenUtil.generateToken(principal);
         
-        assertTrue(jwtTokenUtil.validateToken(jwt, validEmail));
-        assertFalse(jwtTokenUtil.validateToken(jwt, invalidEmail));
+        assertEquals(email, jwtTokenUtil.getSubject(jwt));
         
         Mockito.when(dateFactory.getIssuedAtDate()).thenReturn(
             new Date(System.currentTimeMillis() - TimeUnit.MINUTES.toMillis(2))
@@ -52,13 +50,9 @@ public class JwtTokenTest extends AbstractComponentTest {
         
         final var expiredJwt = jwtTokenUtil.generateToken(principal);
         
-        final var ex1 = assertThrows(ExpiredJwtException.class, 
-            () -> jwtTokenUtil.validateToken(expiredJwt, validEmail)
+        final var ex = assertThrows(ExpiredJwtException.class, 
+            () -> jwtTokenUtil.getSubject(expiredJwt)
         );
-        assertNotNull(ex1);
-        final var ex2 = assertThrows(ExpiredJwtException.class, 
-            () -> jwtTokenUtil.validateToken(expiredJwt, invalidEmail)
-        );
-        assertNotNull(ex2);
+        assertNotNull(ex);
     }
 }
