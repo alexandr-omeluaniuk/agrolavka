@@ -1,4 +1,4 @@
-package ss.martin.security.constants;
+package ss.martin.platform.constants;
 
 /**
  * Entity permissions.

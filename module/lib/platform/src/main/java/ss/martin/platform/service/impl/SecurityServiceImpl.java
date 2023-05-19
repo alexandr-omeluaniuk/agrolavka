@@ -23,7 +23,7 @@ import ss.martin.core.anno.EntityAccess;
 import ss.martin.core.constants.StandardRole;
 import ss.martin.core.dao.CoreDao;
 import ss.martin.platform.service.SecurityService;
-import ss.martin.security.constants.EntityPermission;
+import ss.martin.platform.constants.EntityPermission;
 import ss.martin.security.context.SecurityContext;
 import ss.martin.security.context.UserPrincipal;
 import ss.martin.security.dao.UserDao;

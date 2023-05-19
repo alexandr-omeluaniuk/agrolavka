@@ -44,7 +44,7 @@ import ss.martin.platform.exception.PlatformSecurityException;
 import ss.martin.platform.service.EntityService;
 import ss.martin.platform.util.PlatformEntityListener;
 import ss.martin.platform.service.SecurityService;
-import ss.martin.security.constants.EntityPermission;
+import ss.martin.platform.constants.EntityPermission;
 import ss.martin.security.api.RegistrationUserService;
 
 /**

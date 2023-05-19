@@ -49,10 +49,8 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     private void handleAuthorizationHeader(final HttpServletRequest request) {
         try {
             Optional.ofNullable(request.getHeader(HttpHeaders.AUTHORIZATION)).ifPresent(header -> {
-                if (header.startsWith(HEADER_BEARER)) {
-                    final var jwtToken = header.substring(HEADER_BEARER.length());
-                    setPrincipalFromJwtToken(jwtToken);
-                }
+                final var jwtToken = header.replace(HEADER_BEARER, "");
+                setPrincipalFromJwtToken(jwtToken);
             });
         } catch (final Exception e) {
             LOG.warn("Can't handle Authorization header!", e);
