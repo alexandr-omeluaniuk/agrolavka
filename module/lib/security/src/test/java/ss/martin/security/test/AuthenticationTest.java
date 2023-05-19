@@ -118,6 +118,11 @@ public class AuthenticationTest extends AbstractMvcTest {
                 assertTrue(respWithAuth.success());
                 assertEquals("Success response, Super!", respWithAuth.message());
             });
+            
+            final var logoutResponse = callPost(navigationConfiguration.logout(), null, RestResponse.class, HttpStatus.OK);
+            assertTrue(logoutResponse.success());
+            
+            callGet(PROTECTED_RESOURCE, Void.class, HttpStatus.FOUND);
         } else {
             final var response = callPost(navigationConfiguration.login(), testCase.request(), RestResponse.class, HttpStatus.UNAUTHORIZED);
             assertEquals(testCase.faultCode().getCode(), response.code());

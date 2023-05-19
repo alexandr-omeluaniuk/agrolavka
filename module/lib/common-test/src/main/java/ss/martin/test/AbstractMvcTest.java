@@ -1,6 +1,7 @@
 package ss.martin.test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -28,8 +29,9 @@ public abstract class AbstractMvcTest {
     
     protected <T, R> R callPost(final String url, final T requestBody, final Class<R> returnType, final HttpStatus status) {
         return assertDoesNotThrow(() -> {
+            final var payload = requestBody == null ? new byte[0] : objectMapper.writeValueAsBytes(requestBody);
             final var response = mockMvc.perform(
-                    post(url).content(objectMapper.writeValueAsBytes(requestBody))
+                    post(url).content(payload)
                     .headers(requestHeaders())
             ).andDo(print()).andExpect(status().is(status.value())).andReturn();
             final var content = response.getResponse().getContentAsByteArray();

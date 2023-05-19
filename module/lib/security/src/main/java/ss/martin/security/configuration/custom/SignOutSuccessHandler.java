@@ -18,10 +18,12 @@ import ss.martin.security.model.RestResponse;
 @Component
 class SignOutSuccessHandler implements LogoutSuccessHandler {
     @Override
-    public void onLogoutSuccess(HttpServletRequest hsr, HttpServletResponse hsr1, Authentication a)
-            throws IOException, ServletException {
-        hsr1.setStatus(HttpStatus.OK.value());
-        RestResponse success = new RestResponse(true, "Logout is OK!");
-        hsr1.getOutputStream().println(new ObjectMapper().writeValueAsString(success));
+    public void onLogoutSuccess(
+        final HttpServletRequest request, 
+        final HttpServletResponse response, 
+        final Authentication auth
+    ) throws IOException, ServletException {
+        response.setStatus(HttpStatus.OK.value());
+        response.getOutputStream().println(new ObjectMapper().writeValueAsString(new RestResponse()));
     }
 }
