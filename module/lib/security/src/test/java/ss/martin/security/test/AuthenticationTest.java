@@ -2,6 +2,7 @@ package ss.martin.security.test;
 
 import ss.martin.security.test.util.DataFactory;
 import java.util.Date;
+import java.util.UUID;
 import java.util.stream.Stream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -12,7 +13,9 @@ import ss.martin.security.constants.SystemUserStatus;
 import ss.martin.security.context.SecurityContext;
 import ss.martin.test.AbstractMvcTest;
 import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Named;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -23,6 +26,8 @@ import ss.martin.security.model.LoginRequest;
 import ss.martin.security.model.RestResponse;
 
 public class AuthenticationTest extends AbstractMvcTest {
+    
+    private static final String PROTECTED_RESOURCE = "/api/site/protected/test";
     
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
@@ -102,10 +107,10 @@ public class AuthenticationTest extends AbstractMvcTest {
             assertFalse(response.jwt().isBlank());
             assertFalse(response.message().isBlank());
             
-            callGet("/api/site/protected/test", Void.class, HttpStatus.FOUND);
+            callGet(PROTECTED_RESOURCE, Void.class, HttpStatus.FOUND);
             
             withAuthorization(response.jwt(), () -> {
-                final var respWithAuth = callGet("/api/site/protected/test", RestResponse.class, HttpStatus.OK);
+                final var respWithAuth = callGet(PROTECTED_RESOURCE, RestResponse.class, HttpStatus.OK);
                 assertTrue(respWithAuth.success());
                 assertEquals("Success response, Super!", respWithAuth.message());
             });
@@ -114,6 +119,14 @@ public class AuthenticationTest extends AbstractMvcTest {
             assertEquals(testCase.faultCode().getCode(), response.code());
             assertEquals(testCase.faultCode().getMessage(), response.message());
         }
+    }
+    
+    @Test
+    @DisplayName("Wrong Autorization header")
+    public void testWrongAuthorizationHeader() {
+        withAuthorization(UUID.randomUUID().toString(), () -> {
+            callGet(PROTECTED_RESOURCE, Void.class, HttpStatus.FOUND);
+        });
     }
     
     private void userRegistration(final LoginTestCase testCase) {

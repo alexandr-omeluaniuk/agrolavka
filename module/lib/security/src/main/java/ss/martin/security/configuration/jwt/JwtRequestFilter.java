@@ -62,22 +62,21 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     }
     
     private void setPrincipalFromJwtToken(final String jwtToken) {
-        if (jwtTokenUtil.getSubject(jwtToken) != null) {
-            ThrowingFunction<Claims, UserPrincipal> principalFunc = (claims) -> {
-                final var objectMapper = new ObjectMapper();
-                final var subscription = objectMapper.readValue(
-                    claims.get(JwtConstants.CLAIM_KEY_SUBSCRIPTION, String.class), Subscription.class);
-                final var systemUser = objectMapper.readValue(
-                    claims.get(JwtConstants.CLAIM_KEY_SYSTEM_USER, String.class), SystemUser.class);
-                systemUser.setSubscription(subscription);
-                final var userAgent = objectMapper.readValue(
-                    claims.get(JwtConstants.CLAIM_KEY_USER_AGENT, String.class), UserAgent.class);
-                final var restoredPrincipal = SecurityContext.createPrincipal(systemUser);
-                restoredPrincipal.setUserAgent(userAgent);
-                return restoredPrincipal;
-            };
-            final var principal = jwtTokenUtil.getClaimFromToken(jwtToken, principalFunc);
-            SecurityContextHolder.getContext().setAuthentication(principal);
-        }
+        jwtTokenUtil.getSubject(jwtToken);  // check expiration & signature here
+        ThrowingFunction<Claims, UserPrincipal> principalFunc = (claims) -> {
+            final var objectMapper = new ObjectMapper();
+            final var subscription = objectMapper.readValue(
+                claims.get(JwtConstants.CLAIM_KEY_SUBSCRIPTION, String.class), Subscription.class);
+            final var systemUser = objectMapper.readValue(
+                claims.get(JwtConstants.CLAIM_KEY_SYSTEM_USER, String.class), SystemUser.class);
+            systemUser.setSubscription(subscription);
+            final var userAgent = objectMapper.readValue(
+                claims.get(JwtConstants.CLAIM_KEY_USER_AGENT, String.class), UserAgent.class);
+            final var restoredPrincipal = SecurityContext.createPrincipal(systemUser);
+            restoredPrincipal.setUserAgent(userAgent);
+            return restoredPrincipal;
+        };
+        final var principal = jwtTokenUtil.getClaimFromToken(jwtToken, principalFunc);
+        SecurityContextHolder.getContext().setAuthentication(principal);
     }
 }
