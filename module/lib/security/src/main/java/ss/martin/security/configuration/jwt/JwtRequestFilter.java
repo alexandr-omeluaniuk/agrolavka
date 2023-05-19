@@ -42,9 +42,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         final HttpServletResponse response, 
         final FilterChain chain
     ) throws ServletException, IOException {
-        if (SecurityContext.principal() == null) {
-            handleAuthorizationHeader(request);
-        }
+        handleAuthorizationHeader(request);
         chain.doFilter(request, response);
     }
     

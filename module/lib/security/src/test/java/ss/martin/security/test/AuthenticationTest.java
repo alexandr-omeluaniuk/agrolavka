@@ -21,6 +21,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.http.HttpStatus;
 import ss.martin.security.configuration.custom.LoginResponse;
+import ss.martin.security.configuration.jwt.JwtTokenUtil;
 import ss.martin.security.constants.LoginFaultCode;
 import ss.martin.security.model.LoginRequest;
 import ss.martin.security.model.RestResponse;
@@ -37,6 +38,9 @@ public class AuthenticationTest extends AbstractMvcTest {
     
     @Autowired
     private NavigationConfiguration navigationConfiguration;
+    
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
     
     static Stream<Arguments> loginRequests() {
         return Stream.of(
@@ -128,7 +132,7 @@ public class AuthenticationTest extends AbstractMvcTest {
             callGet(PROTECTED_RESOURCE, Void.class, HttpStatus.FOUND);
         });
     }
-    
+        
     private void userRegistration(final LoginTestCase testCase) {
         final var subscriptionEntity = DataFactory.generateSubscription(testCase.registrationEmail());
         if (testCase.faultCode() == LoginFaultCode.SUBSCRIPTION_EXPIRED) {

@@ -27,10 +27,7 @@ public class JwtTokenTest extends AbstractComponentTest {
     @Test
     @DisplayName("JWT token validation test")
     public void testValidateToken() {
-        final var email = "jwt.test@test.com";
-        final var user = DataFactory.generateSystemUser(email, "Alan Gray");
-        user.setStandardRole(StandardRole.ROLE_SUBSCRIPTION_USER);
-        final var principal = SecurityContext.createPrincipal(user);
+        final var principal = DataFactory.generatePrincipal();
         
         Mockito.when(dateFactory.getIssuedAtDate()).thenReturn(new Date());
         Mockito.when(dateFactory.getExpiredAtDate()).thenReturn(
@@ -39,7 +36,7 @@ public class JwtTokenTest extends AbstractComponentTest {
         
         final var jwt = jwtTokenUtil.generateToken(principal);
         
-        assertEquals(email, jwtTokenUtil.getSubject(jwt));
+        assertEquals(principal.getUser().getEmail(), jwtTokenUtil.getSubject(jwt));
         
         Mockito.when(dateFactory.getIssuedAtDate()).thenReturn(
             new Date(System.currentTimeMillis() - TimeUnit.MINUTES.toMillis(2))
