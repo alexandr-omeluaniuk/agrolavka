@@ -8,12 +8,15 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Base64;
+import java.util.Optional;
+import java.util.stream.Stream;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ss.martin.base.lang.ThrowingConsumer;
 import ss.martin.base.lang.ThrowingRunnable;
 import ss.martin.notification.email.api.EmailService;
 import ss.martin.notification.email.api.model.EmailAttachment;
@@ -53,24 +56,25 @@ class MailjetSender implements EmailService {
             recipients.put(new JSONObject().put("Email", recipient.email()).put("Name", recipient.name()));
         }
         final var arrAttachments = new JSONArray();
-        if (emailRequest.attachments() != null) {
-            for (EmailAttachment attachment : emailRequest.attachments()) {
-                String base64 = Base64.getEncoder().encodeToString(
-                           Files.readAllBytes(Paths.get(attachment.file().toURI())));
-                JSONObject obj = new JSONObject()
-                        .put("ContentType", attachment.contentType())
-                        .put("Filename", attachment.name())
-                        .put("Base64Content", base64);
-                arrAttachments.put(obj);
+        final ThrowingConsumer<EmailAttachment[]> attachmentsConsumer = (attachments) -> {
+            for (final var attachment : attachments) {
+                final var data = Files.readAllBytes(Paths.get(attachment.file().toURI()));
+                final var base64 = Base64.getEncoder().encodeToString(data);
+                final var attachmentJson = new JSONObject()
+                    .put("ContentType", attachment.contentType())
+                    .put("Filename", attachment.name())
+                    .put("Base64Content", base64);
+                arrAttachments.put(attachmentJson);
             }
-        }
+        };
+        Optional.ofNullable(emailRequest.attachments()).ifPresent(attachmentsConsumer);
         final var props = new JSONArray()
             .put(new JSONObject().put(Emailv31.Message.FROM, new JSONObject()
             .put("Email", emailRequest.sender().email())
             .put("Name", emailRequest.sender().name()))
             .put(Emailv31.Message.TO, recipients)
             .put(Emailv31.Message.SUBJECT, emailRequest.subject())
-            .put(Emailv31.Message.TEXTPART, emailRequest.message() == null ? "" : emailRequest.message())
+            .put(Emailv31.Message.TEXTPART, Optional.ofNullable(emailRequest.message()).orElse(""))
             .put(Emailv31.Message.HTMLPART, "").put(Emailv31.Message.ATTACHMENTS, arrAttachments));
         return new MailjetRequest(Emailv31.resource).property(Emailv31.MESSAGES, props);
     }
