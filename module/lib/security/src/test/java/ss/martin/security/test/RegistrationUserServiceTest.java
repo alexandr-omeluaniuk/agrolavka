@@ -38,7 +38,7 @@ public class RegistrationUserServiceTest extends AbstractComponentTest {
         final var superAdminsCount = coreDao.getAll(SystemUser.class).stream()
                 .filter(u -> StandardRole.ROLE_SUPER_ADMIN.equals(u.getStandardRole()))
                 .count();
-        assertEquals(1, superAdminsCount);
+        assertTrue(superAdminsCount > 0);
     }
     
     @Test

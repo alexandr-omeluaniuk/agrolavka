@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ss.martin.security.model.RestResponse;
 
 @RestController
-@RequestMapping("/api/site/protected/test")
+@RequestMapping(TestConstants.PROTECTED_RESOURCE)
 public class ProtectedRestController {
     
     @GetMapping

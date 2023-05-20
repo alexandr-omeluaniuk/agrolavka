@@ -27,6 +27,8 @@ public abstract class AbstractMvcTest {
     
     private String jwt;
     
+    private HttpHeaders specificHeaders;
+    
     protected <T, R> R callPost(final String url, final T requestBody, final Class<R> returnType, final HttpStatus status) {
         return assertDoesNotThrow(() -> {
             final var payload = requestBody == null ? new byte[0] : objectMapper.writeValueAsBytes(requestBody);
@@ -64,8 +66,14 @@ public abstract class AbstractMvcTest {
         this.jwt = null;
     }
     
+    protected void withHeaders(final HttpHeaders headers, final Runnable runnable) {
+        this.specificHeaders = headers;
+        runnable.run();
+        this.specificHeaders = null;
+    }
+    
     private HttpHeaders requestHeaders() {
-        final var headers = new HttpHeaders();
+        final var headers = Optional.ofNullable(specificHeaders).orElse(new HttpHeaders());
         headers.add(HttpHeaders.USER_AGENT, USER_AGENT);
         if (jwt != null) {
             headers.add(HttpHeaders.AUTHORIZATION, "Bearer " + jwt);

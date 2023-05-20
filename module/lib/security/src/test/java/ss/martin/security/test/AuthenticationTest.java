@@ -24,10 +24,9 @@ import ss.martin.security.configuration.custom.LoginResponse;
 import ss.martin.security.constants.LoginFaultCode;
 import ss.martin.security.model.LoginRequest;
 import ss.martin.security.model.RestResponse;
+import ss.martin.security.test.util.TestConstants;
 
 public class AuthenticationTest extends AbstractMvcTest {
-    
-    private static final String PROTECTED_RESOURCE = "/api/site/protected/test";
     
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
@@ -108,10 +107,10 @@ public class AuthenticationTest extends AbstractMvcTest {
             assertFalse(response.jwt().isBlank());
             assertFalse(response.message().isBlank());
             
-            callGet(PROTECTED_RESOURCE, Void.class, HttpStatus.FOUND);
+            callGet(TestConstants.PROTECTED_RESOURCE, Void.class, HttpStatus.FOUND);
             
             withAuthorization(response.jwt(), () -> {
-                final var respWithAuth = callGet(PROTECTED_RESOURCE, RestResponse.class, HttpStatus.OK);
+                final var respWithAuth = callGet(TestConstants.PROTECTED_RESOURCE, RestResponse.class, HttpStatus.OK);
                 assertTrue(respWithAuth.success());
                 assertEquals("Success response, Super!", respWithAuth.message());
             });
@@ -119,7 +118,7 @@ public class AuthenticationTest extends AbstractMvcTest {
             final var logoutResponse = callPost(navigationConfiguration.logout(), null, RestResponse.class, HttpStatus.OK);
             assertTrue(logoutResponse.success());
             
-            callGet(PROTECTED_RESOURCE, Void.class, HttpStatus.FOUND);
+            callGet(TestConstants.PROTECTED_RESOURCE, Void.class, HttpStatus.FOUND);
         } else {
             final var response = callPost(navigationConfiguration.login(), testCase.request(), RestResponse.class, HttpStatus.UNAUTHORIZED);
             assertEquals(testCase.faultCode().getCode(), response.code());
@@ -131,7 +130,7 @@ public class AuthenticationTest extends AbstractMvcTest {
     @DisplayName("Wrong Autorization header")
     public void testWrongAuthorizationHeader() {
         withAuthorization(UUID.randomUUID().toString(), () -> {
-            callGet(PROTECTED_RESOURCE, Void.class, HttpStatus.FOUND);
+            callGet(TestConstants.PROTECTED_RESOURCE, Void.class, HttpStatus.FOUND);
         });
     }
         
