@@ -21,7 +21,8 @@ jacoco {
     toolVersion = "0.8.10"
 }
 def jacocoExclusions = [
-    "ss/entity/martin/*.class"
+    "ss/entity/martin/*.class",
+    "ss/entity/security/*.class"
 ]
 jacocoTestReport {
     dependsOn test

@@ -1,20 +1,4 @@
-/*
- * Copyright (C) 2018 Wisent Media
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-package ss.martin.security.service;
+package ss.martin.platform.service.impl;
 
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -38,12 +22,12 @@ import ss.entity.security.UserAgent;
 import ss.martin.core.anno.EntityAccess;
 import ss.martin.core.constants.StandardRole;
 import ss.martin.core.dao.CoreDao;
-import ss.martin.security.api.SecurityService;
-import ss.martin.security.constants.EntityPermission;
+import ss.martin.platform.service.SecurityService;
+import ss.martin.platform.constants.EntityPermission;
 import ss.martin.security.context.SecurityContext;
 import ss.martin.security.context.UserPrincipal;
 import ss.martin.security.dao.UserDao;
-import ss.martin.security.model.UserPermissions;
+import ss.martin.platform.wrapper.UserPermissions;
 
 /**
  * Security service implementation.
@@ -63,6 +47,7 @@ class SecurityServiceImpl implements SecurityService {
     /** User DAO. */
     @Autowired
     private UserDao userDAO;
+    
     @Override
     public UserPermissions getUserPermissions() throws Exception {
         UserPermissions permissions = new UserPermissions();

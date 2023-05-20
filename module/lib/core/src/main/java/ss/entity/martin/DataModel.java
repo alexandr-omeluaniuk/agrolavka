@@ -12,6 +12,8 @@ import java.io.Serializable;
  */
 @MappedSuperclass
 public abstract class DataModel implements Serializable {
+    /** Default UID. */
+    private static final long serialVersionUID = 1L;
     /** Primary key. */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

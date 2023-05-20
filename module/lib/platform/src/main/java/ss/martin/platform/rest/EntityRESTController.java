@@ -38,7 +38,7 @@ import ss.entity.martin.DataModel;
 import ss.martin.platform.service.EntityService;
 import ss.martin.core.model.EntitySearchRequest;
 import ss.martin.core.model.EntitySearchResponse;
-import ss.martin.security.model.RESTResponse;
+import ss.martin.security.model.RestResponse;
 
 /**
  * Entity REST controller.
@@ -127,10 +127,10 @@ public class EntityRESTController {
      */
     @RequestMapping(value = "/{entity}/{id}", method = RequestMethod.DELETE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public RESTResponse delete(@PathVariable("entity") String entityName, @PathVariable("id") Long id)
+    public RestResponse delete(@PathVariable("entity") String entityName, @PathVariable("id") Long id)
             throws Exception {
         entityService.delete(new HashSet(Arrays.asList(new Long[] {id})), getEntityClass(entityName));
-        return new RESTResponse();
+        return new RestResponse();
     }
     
     protected Class getEntityClass(String name) throws Exception {

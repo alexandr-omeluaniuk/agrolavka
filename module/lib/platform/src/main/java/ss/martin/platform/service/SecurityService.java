@@ -1,11 +1,11 @@
-package ss.martin.security.api;
+package ss.martin.platform.service;
 
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.Set;
 import ss.entity.martin.DataModel;
 import ss.entity.security.UserAgent;
-import ss.martin.security.constants.EntityPermission;
-import ss.martin.security.model.UserPermissions;
+import ss.martin.platform.constants.EntityPermission;
+import ss.martin.platform.wrapper.UserPermissions;
 
 /**
  * Security service.

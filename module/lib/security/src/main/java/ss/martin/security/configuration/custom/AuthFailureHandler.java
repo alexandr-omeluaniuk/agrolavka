@@ -5,6 +5,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Optional;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
@@ -12,8 +13,10 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
+import ss.martin.base.lang.ThrowingRunnable;
+import ss.martin.security.constants.LoginFaultCode;
 import ss.martin.security.exception.SubscriptionHasExpiredException;
-import ss.martin.security.model.RESTResponse;
+import ss.martin.security.model.RestResponse;
 
 /**
  * Authentication failure handler.
@@ -21,20 +24,36 @@ import ss.martin.security.model.RESTResponse;
  */
 @Component
 class AuthFailureHandler implements AuthenticationFailureHandler {
+    
     @Override
-    public void onAuthenticationFailure(HttpServletRequest hsr, HttpServletResponse hsr1,
-            AuthenticationException ae) throws IOException, ServletException {
-        hsr1.setStatus(HttpStatus.UNAUTHORIZED.value());
-        RESTResponse failback = new RESTResponse(false, ae.getMessage());
+    public void onAuthenticationFailure(
+            final HttpServletRequest request, 
+            final HttpServletResponse response, 
+            final AuthenticationException ae
+    ) throws IOException, ServletException {
+        response.setStatus(HttpStatus.UNAUTHORIZED.value());
+        final var message = Optional.ofNullable(getFaultCode(ae))
+            .map(faultCode -> new RestResponse(false, faultCode.getMessage(), faultCode.getCode()))
+            .orElseGet(() -> new RestResponse(false, "Unknown error"));
+        sendResponse(message, response);
+    }
+    
+    private LoginFaultCode getFaultCode(final AuthenticationException ae) {
         if (ae instanceof UsernameNotFoundException) {
-            failback.setCode("1");
+            return LoginFaultCode.WRONG_USERNAME;
         } else if (ae instanceof BadCredentialsException) {
-            failback.setCode("2");
+            return LoginFaultCode.BAD_CREDENTIALS;
         } else if (ae instanceof DisabledException) {
-            failback.setCode("3");
+            return LoginFaultCode.DEACTIVATED;
         } else if (ae instanceof SubscriptionHasExpiredException) {
-            failback.setCode("4");
+            return LoginFaultCode.SUBSCRIPTION_EXPIRED;
         }
-        hsr1.getOutputStream().println(new ObjectMapper().writeValueAsString(failback));
+        return null;
+    }
+    
+    private void sendResponse(final RestResponse message, final HttpServletResponse response) {
+        ThrowingRunnable runnable = () -> response.getOutputStream()
+            .println(new ObjectMapper().writeValueAsString(message));
+        runnable.run();
     }
 }

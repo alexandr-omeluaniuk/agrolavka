@@ -24,9 +24,6 @@ import ss.martin.security.constants.SystemUserStatus;
 @Table(name = "users")
 @EntityAccess(roles = { StandardRole.ROLE_SUBSCRIPTION_ADMINISTRATOR })
 public class SystemUser extends TenantEntity implements SoftDeleted {
-    /** Default UID. */
-    private static final long serialVersionUID = 1L;
-// ==================================== FIELDS ====================================================
     /** Email. */
     @Email
     @Updatable
@@ -66,112 +63,80 @@ public class SystemUser extends TenantEntity implements SoftDeleted {
     /** Active. */
     @Column(name = "active", nullable = false)
     private boolean active;
-// ==================================== SET & GET =================================================
-    /**
-     * @return the email
-     */
+    
     public String getEmail() {
         return email;
     }
-    /**
-     * @param email the email to set
-     */
+    
     public void setEmail(String email) {
         this.email = email;
     }
-    /**
-     * @return the password
-     */
+    
     public String getPassword() {
         return password;
     }
-    /**
-     * @param password the password to set
-     */
+    
     public void setPassword(String password) {
         this.password = password;
     }
-    /**
-     * @return the firstname
-     */
+    
     public String getFirstname() {
         return firstname;
     }
-    /**
-     * @param firstname the firstname to set
-     */
+    
     public void setFirstname(String firstname) {
         this.firstname = firstname;
     }
-    /**
-     * @return the lastName
-     */
+    
     public String getLastname() {
         return lastname;
     }
-    /**
-     * @param lastname the lastName to set
-     */
+    
     public void setLastname(String lastname) {
         this.lastname = lastname;
     }
-    /**
-     * @return the standardRole
-     */
+    
     public StandardRole getStandardRole() {
         return standardRole;
     }
-    /**
-     * @param standardRole the standardRole to set
-     */
+    
     public void setStandardRole(StandardRole standardRole) {
         this.standardRole = standardRole;
     }
-    /**
-     * @return the validationString
-     */
+    
     public String getValidationString() {
         return validationString;
     }
-    /**
-     * @param validationString the validationString to set
-     */
+    
     public void setValidationString(String validationString) {
         this.validationString = validationString;
     }
-    /**
-     * @return the status
-     */
+    
     public SystemUserStatus getStatus() {
         return status;
     }
-    /**
-     * @param status the status to set
-     */
+    
     public void setStatus(SystemUserStatus status) {
         this.status = status;
     }
-    /**
-     * @return the active
-     */
+    
     @Override
     public boolean isActive() {
         return active;
     }
-    /**
-     * @param active the active to set
-     */
+    
     @Override
     public void setActive(boolean active) {
         this.active = active;
     }
-// ================================================================================================
+    
     @Override
     public int hashCode() {
         int hash = 0;
         hash += (getId() != null ? getId().hashCode() : 0);
         return hash;
     }
+    
     @Override
     public boolean equals(Object object) {
         if (!(object instanceof SystemUser)) {
@@ -181,6 +146,7 @@ public class SystemUser extends TenantEntity implements SoftDeleted {
         return !((this.getId() == null && other.getId() != null)
                 || (this.getId() != null && !this.getId().equals(other.getId())));
     }
+    
     @Override
     public String toString() {
         return "ss.entity.martin.SystemUser[ id=" + getId() + " ]";

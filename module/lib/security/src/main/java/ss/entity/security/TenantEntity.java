@@ -24,15 +24,11 @@ public abstract class TenantEntity extends DataModel {
     @NotNull
     @JoinColumn(name = "subscription_id", nullable = false)
     private Subscription subscription;
-    /**
-     * @return the subscription
-     */
+    
     public Subscription getSubscription() {
         return subscription;
     }
-    /**
-     * @param subscription the subscription to set
-     */
+    
     public void setSubscription(Subscription subscription) {
         this.subscription = subscription;
     }

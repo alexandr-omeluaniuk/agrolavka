@@ -5,6 +5,7 @@ plugins {
 dependencies {
     api project (":module:lib:base")
     api "org.springframework.boot:spring-boot-starter-test"
+    api "org.springframework.boot:spring-boot-starter-web"
     compileOnly "org.springframework.boot:spring-boot-starter"
     runtimeOnly "com.h2database:h2"
 }

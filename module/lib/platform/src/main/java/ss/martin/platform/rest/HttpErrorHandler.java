@@ -33,7 +33,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import ss.martin.security.model.RESTResponse;
+import ss.martin.security.model.RestResponse;
 
 /**
  * HTTP errors interceptor.
@@ -51,9 +51,9 @@ class HttpErrorHandler {
     @ExceptionHandler(value = AccessDeniedException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
     @ResponseBody
-    public RESTResponse handleAccessDenied(final AccessDeniedException ex) {
+    public RestResponse handleAccessDenied(final AccessDeniedException ex) {
         LOG.warn("Access denied", ex);
-        return new RESTResponse(false, ex.getMessage());
+        return new RestResponse(false, ex.getMessage());
     }
     /**
      * Handle internal error exception.
@@ -63,14 +63,11 @@ class HttpErrorHandler {
     @ExceptionHandler(value = Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ResponseBody
-    public RESTResponse handleInternalError(final Exception ex) {
+    public RestResponse handleInternalError(final Exception ex) {
         LOG.error("Internal error", ex);
         StringWriter sw = new StringWriter();
         PrintWriter pw = new PrintWriter(sw);
         ex.printStackTrace(pw);
-        RESTResponse response = new RESTResponse(false, "Internal server error!");
-        response.setDetails(ex.getMessage());
-        response.setStacktrace(sw.toString());
-        return response;
+        return new RestResponse(false, "Internal server error!", null, ex.getMessage(), sw.toString());
     }
 }

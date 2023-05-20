@@ -17,7 +17,6 @@ import java.util.List;
 @Entity
 @Table(name = "user_agents")
 public class UserAgent extends EntityAudit {
-    // ============================================= FIELDS ===========================================================
     /** User agent string. */
     @NotNull
     @Size(max = 1000)
@@ -30,53 +29,40 @@ public class UserAgent extends EntityAudit {
     /** Notification subscriptions. */
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "userAgent", orphanRemoval = true, cascade = CascadeType.REMOVE)
     private List<NotificationTopicSubscription> notificationSubscriptions;
-    // ============================================= SET & GET ========================================================
-    /**
-     * @return the userAgentString
-     */
+    
     public String getUserAgentString() {
         return userAgentString;
     }
-    /**
-     * @param userAgentString the userAgentString to set
-     */
+    
     public void setUserAgentString(String userAgentString) {
         this.userAgentString = userAgentString;
     }
-    /**
-     * @return the firebaseToken
-     */
+    
     public String getFirebaseToken() {
         return firebaseToken;
     }
-    /**
-     * @param firebaseToken the firebaseToken to set
-     */
+    
     public void setFirebaseToken(String firebaseToken) {
         this.firebaseToken = firebaseToken;
     }
-    /**
-     * @return the notificationSubscriptions
-     */
+    
     public List<NotificationTopicSubscription> getNotificationSubscriptions() {
         return notificationSubscriptions;
     }
-    /**
-     * @param notificationSubscriptions the notificationSubscriptions to set
-     */
+    
     public void setNotificationSubscriptions(List<NotificationTopicSubscription> notificationSubscriptions) {
         this.notificationSubscriptions = notificationSubscriptions;
     }
-    // ================================================================================================================
+    
     @Override
     public int hashCode() {
         int hash = 0;
         hash += (getId() != null ? getId().hashCode() : 0);
         return hash;
     }
+    
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
         if (!(object instanceof UserAgent)) {
             return false;
         }
@@ -84,6 +70,7 @@ public class UserAgent extends EntityAudit {
         return !((this.getId() == null && other.getId() != null)
                 || (this.getId() != null && !this.getId().equals(other.getId())));
     }
+    
     @Override
     public String toString() {
         return "ss.entity.martin.UserAgent[ id=" + getId() + " ]";

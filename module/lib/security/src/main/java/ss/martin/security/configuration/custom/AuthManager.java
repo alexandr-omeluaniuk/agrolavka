@@ -1,19 +1,3 @@
-/*
- * Copyright (C) 2018 Wisent Media
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
 package ss.martin.security.configuration.custom;
 
 import java.util.Date;
@@ -43,20 +27,21 @@ class AuthManager implements AuthenticationManager {
     private static final Logger LOG = LoggerFactory.getLogger(AuthManager.class);
     /** Password encoder. */
     @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    private BCryptPasswordEncoder passwordEncoder;
     /** SystemUser DAO. */
     @Autowired
-    private UserDao userDAO;
+    private UserDao userDao;
+    
     @Override
-    public Authentication authenticate(Authentication auth) throws AuthenticationException {
-        String username = String.valueOf(auth.getPrincipal());
-        String password = String.valueOf(auth.getCredentials());
-        final var user = userDAO.findByUsername(username)
+    public Authentication authenticate(final Authentication auth) throws AuthenticationException {
+        final var username = String.valueOf(auth.getPrincipal());
+        final var password = String.valueOf(auth.getCredentials());
+        final var user = userDao.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
         if (SystemUserStatus.ACTIVE != user.getStatus()) {
             throw new DisabledException("User is deactivated: " + username);
         }
-        if (!bCryptPasswordEncoder.matches(password, user.getPassword())) {
+        if (!passwordEncoder.matches(password, user.getPassword())) {
             throw new BadCredentialsException("Wrong password: " + password);
         }
         if (user.getSubscription().getExpirationDate().before(new Date())) {

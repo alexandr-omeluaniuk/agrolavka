@@ -4,10 +4,10 @@ import ss.entity.martin.Subscription;
 import ss.entity.security.SystemUser;
 
 /**
- * System user service.
+ * Registration user service.
  * @author ss
  */
-public interface SystemUserService {
+public interface RegistrationUserService {
     
     /**
      * Create super admin user if it is not exist.

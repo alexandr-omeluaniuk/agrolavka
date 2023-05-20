@@ -1,4 +1,4 @@
-package ss.martin.security.model;
+package ss.martin.platform.wrapper;
 
 import ss.entity.martin.Subscription;
 import ss.entity.security.UserAgent;

@@ -23,7 +23,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 public abstract class EntityAudit extends TenantEntity {
-// ================================== FIELDS ======================================================
     /** Created by. */
     @CreatedBy
     @JsonIgnore
@@ -46,52 +45,35 @@ public abstract class EntityAudit extends TenantEntity {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "last_modified_date")
     private Date lastModifiedDate;
-// ================================= SET & GET ====================================================
-    /**
-     * @return the createdBy
-     */
+    
     public SystemUser getCreatedBy() {
         return createdBy;
     }
-    /**
-     * @param createdBy the createdBy to set
-     */
+    
     public void setCreatedBy(SystemUser createdBy) {
         this.createdBy = createdBy;
     }
-    /**
-     * @return the createdDate
-     */
+    
     public Date getCreatedDate() {
         return createdDate;
     }
-    /**
-     * @param createdDate the createdDate to set
-     */
+    
     public void setCreatedDate(Date createdDate) {
         this.createdDate = createdDate;
     }
-    /**
-     * @return the lastModifiedBy
-     */
+    
     public SystemUser getLastModifiedBy() {
         return lastModifiedBy;
     }
-    /**
-     * @param lastModifiedBy the lastModifiedBy to set
-     */
+    
     public void setLastModifiedBy(SystemUser lastModifiedBy) {
         this.lastModifiedBy = lastModifiedBy;
     }
-    /**
-     * @return the lastModifiedDate
-     */
+    
     public Date getLastModifiedDate() {
         return lastModifiedDate;
     }
-    /**
-     * @param lastModifiedDate the lastModifiedDate to set
-     */
+    
     public void setLastModifiedDate(Date lastModifiedDate) {
         this.lastModifiedDate = lastModifiedDate;
     }
