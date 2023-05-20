@@ -18,13 +18,13 @@ public class MailjetSenderTest extends AbstractComponentTest {
     @Test
     public void testSendEmail() {
         final var email = new EmailRequest(
-                new EmailContact("Site admin", "agrolavka.by@gmail.com"), 
-                new EmailContact[] { new EmailContact("Alex A", "alexandr.omeluaniuk@gmail.com") }, 
-                "Test email", 
-                "Some text for test email....",
-                new EmailAttachment[] {
-                    new EmailAttachment("test-attachment.txt", "plain/text", new File("src/test/resources/sample.txt"))
-                }
+            new EmailContact("Site admin", "sometestemail@app.test"), 
+            new EmailContact[] { new EmailContact("Alex A", "alexandr.omeluaniuk@gmail.com") }, 
+            "Test email", 
+            "Some text for test email....",
+            new EmailAttachment[] {
+                new EmailAttachment("test-attachment.txt", "plain/text", new File("src/test/resources/sample.txt"))
+            }
         );
         
         assertDoesNotThrow(() -> emailService.sendEmail(email));
