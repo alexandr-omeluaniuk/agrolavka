@@ -33,9 +33,9 @@ class AuthManager implements AuthenticationManager {
     private UserDao userDao;
     
     @Override
-    public Authentication authenticate(Authentication auth) throws AuthenticationException {
-        String username = String.valueOf(auth.getPrincipal());
-        String password = String.valueOf(auth.getCredentials());
+    public Authentication authenticate(final Authentication auth) throws AuthenticationException {
+        final var username = String.valueOf(auth.getPrincipal());
+        final var password = String.valueOf(auth.getCredentials());
         final var user = userDao.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
         if (SystemUserStatus.ACTIVE != user.getStatus()) {

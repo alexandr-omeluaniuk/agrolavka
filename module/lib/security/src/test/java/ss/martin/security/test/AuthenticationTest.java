@@ -107,6 +107,7 @@ public class AuthenticationTest extends AbstractMvcTest {
     public void testLogin(final LoginTestCase testCase) {
         userRegistration(testCase);
         if (testCase.faultCode() == null) {
+            callPost(navigationConfiguration.login(), testCase.request(), LoginResponse.class, HttpStatus.OK);
             final var response = callPost(navigationConfiguration.login(), testCase.request(), LoginResponse.class, HttpStatus.OK);
             assertFalse(response.jwt().isBlank());
             assertFalse(response.message().isBlank());

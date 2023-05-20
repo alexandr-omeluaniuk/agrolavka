@@ -13,7 +13,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
-import org.springframework.util.function.ThrowingConsumer;
+import ss.martin.base.lang.ThrowingRunnable;
 import ss.martin.security.constants.LoginFaultCode;
 import ss.martin.security.exception.SubscriptionHasExpiredException;
 import ss.martin.security.model.RestResponse;
@@ -27,25 +27,33 @@ class AuthFailureHandler implements AuthenticationFailureHandler {
     
     @Override
     public void onAuthenticationFailure(
-            final HttpServletRequest hsr, 
-            final HttpServletResponse hsr1, 
+            final HttpServletRequest request, 
+            final HttpServletResponse response, 
             final AuthenticationException ae
     ) throws IOException, ServletException {
-        hsr1.setStatus(HttpStatus.UNAUTHORIZED.value());
-        LoginFaultCode code = null;
+        response.setStatus(HttpStatus.UNAUTHORIZED.value());
+        final var message = Optional.ofNullable(getFaultCode(ae))
+            .map(faultCode -> new RestResponse(false, faultCode.getMessage(), faultCode.getCode()))
+            .orElseGet(() -> new RestResponse(false, "Unknown error"));
+        sendResponse(message, response);
+    }
+    
+    private LoginFaultCode getFaultCode(final AuthenticationException ae) {
         if (ae instanceof UsernameNotFoundException) {
-            code = LoginFaultCode.WRONG_USERNAME;
+            return LoginFaultCode.WRONG_USERNAME;
         } else if (ae instanceof BadCredentialsException) {
-            code = LoginFaultCode.BAD_CREDENTIALS;
+            return LoginFaultCode.BAD_CREDENTIALS;
         } else if (ae instanceof DisabledException) {
-            code = LoginFaultCode.DEACTIVATED;
+            return LoginFaultCode.DEACTIVATED;
         } else if (ae instanceof SubscriptionHasExpiredException) {
-            code = LoginFaultCode.SUBSCRIPTION_EXPIRED;
+            return LoginFaultCode.SUBSCRIPTION_EXPIRED;
         }
-        ThrowingConsumer<LoginFaultCode> runnable = (faultCode) -> hsr1.getOutputStream()
-            .println(new ObjectMapper().writeValueAsString(
-                new RestResponse(false, faultCode.getMessage(), faultCode.getCode())
-        ));
-        Optional.ofNullable(code).ifPresent(runnable);
+        return null;
+    }
+    
+    private void sendResponse(final RestResponse message, final HttpServletResponse response) {
+        ThrowingRunnable runnable = () -> response.getOutputStream()
+            .println(new ObjectMapper().writeValueAsString(message));
+        runnable.run();
     }
 }
