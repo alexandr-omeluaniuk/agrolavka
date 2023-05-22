@@ -22,7 +22,9 @@ jacoco {
 }
 def jacocoExclusions = [
     "ss/entity/martin/*.class",
-    "ss/entity/security/*.class"
+    "ss/entity/security/*.class",
+    "ss/martin/notification/push/firebase/*.class",
+    "ss/martin/notification/push/firebase/**/*.class"
 ]
 jacocoTestReport {
     dependsOn test
