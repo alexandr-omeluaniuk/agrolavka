@@ -1,4 +1,4 @@
-package ss.martin.notification.push.service;
+package ss.martin.notification.push.firebase.service;
 
 import com.google.auth.oauth2.GoogleCredentials;
 import java.nio.file.Files;

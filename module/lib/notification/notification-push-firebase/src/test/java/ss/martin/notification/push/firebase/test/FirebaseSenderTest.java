@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
 import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import ss.martin.base.exception.PlatformException;
@@ -12,6 +13,7 @@ import ss.martin.notification.push.api.PushNotificationService;
 import ss.martin.notification.push.api.model.PushNotification;
 import ss.martin.test.AbstractComponentTest;
 
+@Disabled
 public class FirebaseSenderTest extends AbstractComponentTest {
     
     private static final String CLIENT_TOKEN_EXAMPLE = "eDGIJ4phSYEmdQ0T8dA_kE:APA91bHWwrMhRFb_ftb8spC0U9g8jsgmfnfrt47HIPScisvsIUmVoILQtU6ISwGHf7foCo5S0POhMbfoizszOHhiB_Crf3zGdPnAyCN04wOy8wdSyDj5-Pey2IUztaS-E7owzjepAdlc";

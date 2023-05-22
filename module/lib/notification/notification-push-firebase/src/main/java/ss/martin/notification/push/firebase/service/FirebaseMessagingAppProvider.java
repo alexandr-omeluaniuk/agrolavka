@@ -1,4 +1,4 @@
-package ss.martin.notification.push.service;
+package ss.martin.notification.push.firebase.service;
 
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
@@ -15,7 +15,7 @@ import ss.martin.notification.push.firebase.api.MessagingAppProvider;
  * Firebase messaging app provider.
  * @author alex
  */
-@Service
+//@Service
 class FirebaseMessagingAppProvider implements MessagingAppProvider {
     
     private static final Logger LOG = LoggerFactory.getLogger(FirebaseMessagingAppProvider.class);
