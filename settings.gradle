@@ -12,7 +12,7 @@ dependencyResolutionManagement {
         libs {
             version('spring-boot', '3.0.5')
             version('jjwt', '0.11.5')
-            version('firebase', '7.1.1')
+            version('firebase', '9.1.1')
             version('mailjet', '5.2.2')
             library('spring-boot-dependencies', 'org.springframework.boot', 'spring-boot-dependencies').versionRef('spring-boot')
             library('jjwt-api', 'io.jsonwebtoken', 'jjwt-api').versionRef('jjwt')
