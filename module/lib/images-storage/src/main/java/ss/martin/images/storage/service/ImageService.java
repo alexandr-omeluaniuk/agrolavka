@@ -22,29 +22,41 @@ public class ImageService implements ImagesStorageApi {
     @Autowired
     private StorageConfiguration storageConfiguration;
 
-    public String saveImageToDisk(byte[] data) throws Exception {
-        String randomName = generateRandomFilename();
-        File file = new File(getRootFolder(), randomName);
-        Files.write(Paths.get(file.toURI()), data, StandardOpenOption.CREATE_NEW);
-        return randomName;
+    /**
+     * Save image to disk.
+     * @param data data.
+     * @return filename.
+     */
+    public String saveImageToDisk(final byte[] data) {
+        return ((ThrowingSupplier<String>) () -> {
+            final var randomName = generateRandomFilename();
+            final var file = new File(getRootFolder(), randomName);
+            Files.write(Paths.get(file.toURI()), data, StandardOpenOption.CREATE_NEW);
+            return randomName;
+        }).get();
     }
 
-    public byte[] readImageFromDisk(EntityImage image) {
+    @Override
+    public byte[] readImageFromDisk(final EntityImage image) {
         return ((ThrowingSupplier<byte[]>) () -> {
-            File file = new File(getRootFolder(), image.getFileNameOnDisk());
+            final var file = new File(getRootFolder(), image.getFileNameOnDisk());
             return Files.readAllBytes(Paths.get(file.toURI()));
         }).get();
     }
     
-    public void deleteImageFromDisk(EntityImage image) throws Exception {
-        File file = new File(getRootFolder(), image.getFileNameOnDisk());
+    /**
+     * Delete image from disk.
+     * @param image image.
+     */
+    public void deleteImageFromDisk(final EntityImage image) {
+        final var file = new File(getRootFolder(), image.getFileNameOnDisk());
         if (file.exists()) {
             file.delete();
         }
     }
     
     private File getRootFolder() {
-        File folder = new File(storageConfiguration.path());
+        final var folder = new File(storageConfiguration.path());
         if (!folder.exists()) {
             folder.mkdirs();
         }

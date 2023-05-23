@@ -12,14 +12,20 @@ import java.util.Base64;
  * @author ss
  */
 public class ByteArrayDeserializer extends StdDeserializer<byte[]> {
+    
     public ByteArrayDeserializer() { 
         this(null); 
-    } 
+    }
+    
     public ByteArrayDeserializer(Class<byte[]> t) { 
         super(t); 
     }
+    
     @Override
-    public byte[] deserialize(JsonParser jp, DeserializationContext dc) throws IOException, JsonProcessingException {
+    public byte[] deserialize(
+        final JsonParser jp, 
+        final DeserializationContext dc
+    ) throws IOException, JsonProcessingException {
         try {
             String value = jp.getText();
             if (value.contains(",")) {

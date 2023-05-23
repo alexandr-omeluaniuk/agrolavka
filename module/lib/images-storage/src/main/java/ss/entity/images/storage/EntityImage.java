@@ -20,7 +20,6 @@ import ss.martin.images.storage.jpa.listener.EntityImageListener;
 @Table(name = "entity_image")
 @EntityListeners(EntityImageListener.class)
 public class EntityImage extends EntityAudit {
-    // ============================================= FIELDS ===========================================================
     /** Image file name. */
     @Updatable
     @NotNull
@@ -47,77 +46,56 @@ public class EntityImage extends EntityAudit {
     @Updatable
     @Column(name = "image_data", nullable = true)
     private byte[] data;
-    // ============================================= SET & GET ========================================================
-    /**
-     * @return the name
-     */
+    
     public String getName() {
         return name;
     }
-    /**
-     * @param name the name to set
-     */
+    
     public void setName(String name) {
         this.name = name;
     }
-    /**
-     * @return the type
-     */
+    
     public String getType() {
         return type;
     }
-    /**
-     * @param type the type to set
-     */
+    
     public void setType(String type) {
         this.type = type;
     }
-    /**
-     * @return the size
-     */
+    
     public Long getSize() {
         return size;
     }
-    /**
-     * @param size the size to set
-     */
+    
     public void setSize(Long size) {
         this.size = size;
     }
-    /**
-     * @return the data
-     */
+    
     public byte[] getData() {
         return data;
     }
-    /**
-     * @param data the data to set
-     */
+    
     public void setData(byte[] data) {
         this.data = data;
     }
-    /**
-     * @return the fileNameOnDisk
-     */
+    
     public String getFileNameOnDisk() {
         return fileNameOnDisk;
     }
-    /**
-     * @param fileNameOnDisk the fileNameOnDisk to set
-     */
+    
     public void setFileNameOnDisk(String fileNameOnDisk) {
         this.fileNameOnDisk = fileNameOnDisk;
     }
-    // ================================================================================================================
+    
     @Override
     public int hashCode() {
         int hash = 0;
         hash += (getId() != null ? getId().hashCode() : 0);
         return hash;
     }
+    
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
         if (!(object instanceof EntityImage)) {
             return false;
         }
@@ -128,6 +106,7 @@ public class EntityImage extends EntityAudit {
         }
         return true;
     }
+    
     @Override
     public String toString() {
         return "ss.entity.martin.EntityImage[ id=" + getId() + " ]";
