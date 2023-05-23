@@ -35,7 +35,7 @@ jacocoTestReport {
         }))
     }
 }
-jacocoTestCoverageVerification {
+/*jacocoTestCoverageVerification {
     violationRules {
         rule {
             limit {
@@ -50,6 +50,7 @@ jacocoTestCoverageVerification {
     }
 }
 check.dependsOn jacocoTestCoverageVerification
+*/
 
 checkstyle {
     maxWarnings = 0

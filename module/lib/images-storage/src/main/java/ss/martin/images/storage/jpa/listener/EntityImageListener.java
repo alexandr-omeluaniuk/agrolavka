@@ -16,7 +16,7 @@ public class EntityImageListener {
     private ImageService imageService;
     
     @Autowired
-    public void init(ImageService imageService) {
+    public void init(final ImageService imageService) {
         this.imageService = imageService;
     }
     
