@@ -30,7 +30,7 @@ import org.hibernate.annotations.FetchMode;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import ss.agrolavka.wrapper.ProductVolume;
-import ss.entity.martin.EntityImage;
+import ss.entity.images.storage.EntityImage;
 import ss.martin.core.anno.Updatable;
 
 /**

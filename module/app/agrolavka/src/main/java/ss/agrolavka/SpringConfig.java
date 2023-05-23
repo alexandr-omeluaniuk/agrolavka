@@ -16,7 +16,7 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.resource.PathResourceResolver;
-import ss.martin.platform.configuration.external.StorageConfiguration;
+import ss.martin.images.storage.configuration.external.StorageConfiguration;
 import ss.martin.security.configuration.external.NavigationConfiguration;
 
 /**

@@ -24,7 +24,7 @@ import org.springframework.stereotype.Component;
 import ss.agrolavka.constants.SiteConstants;
 import ss.agrolavka.util.AppCache;
 import ss.entity.agrolavka.Shop;
-import ss.entity.martin.EntityImage;
+import ss.entity.images.storage.EntityImage;
 import ss.martin.core.dao.CoreDao;
 import ss.martin.platform.util.PlatformEntityListener;
 

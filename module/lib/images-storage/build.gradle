@@ -1,0 +1,8 @@
+plugins {
+    id "java-library-convention"
+}
+
+dependencies {
+    api project(":module:lib:security")
+    annotationProcessor "org.hibernate.orm:hibernate-jpamodelgen"
+}

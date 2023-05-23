@@ -1,4 +1,4 @@
-package ss.entity.martin;
+package ss.entity.images.storage;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import jakarta.persistence.Column;
@@ -9,8 +9,8 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import ss.entity.security.EntityAudit;
 import ss.martin.core.anno.Updatable;
-import ss.martin.platform.util.ByteArrayDeserializer;
-import ss.martin.platform.util.EntityImageListener;
+import ss.martin.images.storage.deserializer.ByteArrayDeserializer;
+import ss.martin.images.storage.jpa.listener.EntityImageListener;
 
 /**
  * Entity image.

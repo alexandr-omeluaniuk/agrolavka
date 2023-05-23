@@ -14,7 +14,7 @@ import ss.agrolavka.constants.SiteConstants;
 import ss.agrolavka.service.GroupProductsService;
 import ss.agrolavka.service.MySkladIntegrationService;
 import ss.entity.agrolavka.Product;
-import ss.entity.martin.EntityImage;
+import ss.entity.images.storage.EntityImage;
 import ss.martin.core.dao.CoreDao;
 import ss.martin.platform.util.PlatformEntityListener;
 

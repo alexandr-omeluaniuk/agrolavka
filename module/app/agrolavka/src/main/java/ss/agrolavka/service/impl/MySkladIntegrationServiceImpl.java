@@ -31,9 +31,9 @@ import ss.entity.agrolavka.Discount;
 import ss.entity.agrolavka.PriceType;
 import ss.entity.agrolavka.Product;
 import ss.entity.agrolavka.ProductsGroup;
-import ss.entity.martin.EntityImage;
+import ss.entity.images.storage.EntityImage;
 import ss.martin.core.dao.CoreDao;
-import ss.martin.platform.service.ImageService;
+import ss.martin.images.storage.api.ImagesStorageApi;
 
 /**
  * My Sklad integration service implementation.
@@ -51,7 +51,7 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
     private AgrolavkaConfiguration configuration;
     /** Image service. */
     @Autowired
-    private ImageService imageService;
+    private ImagesStorageApi imageService;
     /** Core DAO. */
     @Autowired
     private CoreDao coreDAO;

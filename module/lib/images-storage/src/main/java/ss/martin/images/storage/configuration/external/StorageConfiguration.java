@@ -1,4 +1,4 @@
-package ss.martin.platform.configuration.external;
+package ss.martin.images.storage.configuration.external;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import ss.martin.base.constants.PlatformConfiguration;
