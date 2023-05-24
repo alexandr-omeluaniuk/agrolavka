@@ -3,7 +3,7 @@ plugins {
 }
 
 dependencies {
-    api project(":module:lib:base")
+    api project(":module:lib:security")
     api project(":module:lib:notification:notification-push-api")
     implementation "org.springframework.boot:spring-boot-starter"
     implementation libs.firebase
