@@ -33,7 +33,7 @@ abstract class EntityWithImagesListener {
             final List<EntityImage> imagesDB,
             final List<EntityImage> images,
             final int thumbSize
-    ) throws Exception {
+    ) {
         Map<Long, EntityImage> map = imagesDB.stream()
                 .collect(Collectors.toMap(EntityImage::getId, Function.identity()));
         List<EntityImage> actualImages = new ArrayList();

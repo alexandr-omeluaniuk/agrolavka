@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package ss.agrolavka.service;
 
 import java.util.List;
@@ -18,84 +13,85 @@ import ss.entity.images.storage.EntityImage;
  * @author alex
  */
 public interface MySkladIntegrationService {
+    
     /**
      * Get product groups.
      * @return list of product groups.
-     * @throws Exception error.
      */
-    List<ProductsGroup> getProductGroups() throws Exception;
+    List<ProductsGroup> getProductGroups();
+    
     /**
      * Get products.
      * @param offset offset.
      * @param limit limit.
      * @return products.
-     * @throws Exception error.
      */
-    List<Product> getProducts(int offset, int limit) throws Exception;
+    List<Product> getProducts(int offset, int limit);
+    
     /**
      * Get product images.
      * @param productExternalId product external ID.
      * @return list of images.
-     * @throws Exception error.
      */
-    List<EntityImage> getProductImages(String productExternalId) throws Exception;
+    List<EntityImage> getProductImages(String productExternalId);
+    
     /**
      * Create product.
      * @param product product.
      * @return product with external ID.
-     * @throws Exception error.
      */
-    Product createProduct(Product product) throws Exception;
+    Product createProduct(Product product);
+    
     /**
      * Update product.
      * @param product product.
      * @return product.
-     * @throws Exception error.
      */
-    Product updateProduct(Product product) throws Exception;
+    Product updateProduct(Product product);
+    
     /**
      * Delete product.
      * @param product product.
-     * @throws Exception error.
      */
-    void deleteProduct(Product product) throws Exception;
+    void deleteProduct(Product product);
+    
     /**
      * Attach images to product.
      * @param product product with images.
-     * @throws Exception error.
      */
-    void attachImagesToProduct(Product product) throws Exception;
+    void attachImagesToProduct(Product product);
+    
     /**
      * Remove product images.
      * @param product product.
-     * @throws Exception error.
      */
-    void removeProductImages(Product product) throws Exception;
+    void removeProductImages(Product product);
+    
     /**
      * Get price types.
      * @return price type.
-     * @throws Exception error.
      */
-    List<PriceType> getPriceTypes() throws Exception;
+    List<PriceType> getPriceTypes();
+    
     /**
      * Create products group.
      * @param group products group.
      * @return external ID.
-     * @throws Exception error.
      */
-    String createProductsGroup(ProductsGroup group) throws Exception;
+    String createProductsGroup(ProductsGroup group);
+    
     /**
      * Delete product group.
      * @param group group.
-     * @throws Exception error.
      */
-    void deleteProductsGroup(ProductsGroup group) throws Exception;
+    void deleteProductsGroup(ProductsGroup group);
+    
     /**
      * Update products group.
      * @param group products group.
-     * @throws Exception error.
      */
-    void updateProductsGroup(ProductsGroup group) throws Exception;
+    void updateProductsGroup(ProductsGroup group);
+    
     /**
      * Get stock.
      * @param limit limit.
@@ -104,6 +100,7 @@ public interface MySkladIntegrationService {
      * @throws Exception error.
      */
     Map<String, Product> getStock(int offset, int limit) throws Exception;
+    
     /**
      * Get discounts.
      * @return discounts.

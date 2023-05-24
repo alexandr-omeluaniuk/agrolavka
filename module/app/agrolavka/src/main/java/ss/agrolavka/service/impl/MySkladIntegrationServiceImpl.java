@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package ss.agrolavka.service.impl;
 
 import java.io.ByteArrayOutputStream;
@@ -25,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
+import org.springframework.util.function.ThrowingSupplier;
 import ss.agrolavka.AgrolavkaConfiguration;
 import ss.agrolavka.service.MySkladIntegrationService;
 import ss.entity.agrolavka.Discount;
@@ -32,6 +28,7 @@ import ss.entity.agrolavka.PriceType;
 import ss.entity.agrolavka.Product;
 import ss.entity.agrolavka.ProductsGroup;
 import ss.entity.images.storage.EntityImage;
+import ss.martin.base.lang.ThrowingRunnable;
 import ss.martin.core.dao.CoreDao;
 import ss.martin.images.storage.api.ImagesStorageApi;
 
@@ -58,7 +55,7 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
     /** Authorization token. */
     private String token;
     @Override
-    public List<ProductsGroup> getProductGroups() throws Exception {
+    public List<ProductsGroup> getProductGroups() {
         String response = request("/entity/productfolder", "GET", null);
         JSONObject json = new JSONObject(response);
         List<ProductsGroup> result = new ArrayList<>();
@@ -84,28 +81,30 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
         return result;
     }
     @Override
-    public List<Product> getProducts(int offset, int limit) throws Exception {
-        String response = request("/entity/product?limit=" + limit + "&offset=" + offset, "GET", null);
-        JSONObject json = new JSONObject(response);
-        List<Product> result = new ArrayList<>();
-        JSONArray rows = json.getJSONArray("rows");
-        Map<String, ProductsGroup> productGroupsMap = new HashMap();
-        List<ProductsGroup> groups = coreDAO.getAll(ProductsGroup.class);
-        for (ProductsGroup group : groups) {
-            productGroupsMap.put(group.getExternalId(), group);
-        }
-        for (int i = 0; i < rows.length(); i++) {
-            JSONObject item = rows.getJSONObject(i);
-            Product product = fromJSON(item, productGroupsMap);
-            if (product.getGroup() != null) {
-                result.add(product);
+    public List<Product> getProducts(int offset, int limit) {
+        return ((ThrowingSupplier<List<Product>>) () -> {
+            String response = request("/entity/product?limit=" + limit + "&offset=" + offset, "GET", null);
+            JSONObject json = new JSONObject(response);
+            List<Product> result = new ArrayList<>();
+            JSONArray rows = json.getJSONArray("rows");
+            Map<String, ProductsGroup> productGroupsMap = new HashMap();
+            List<ProductsGroup> groups = coreDAO.getAll(ProductsGroup.class);
+            for (ProductsGroup group : groups) {
+                productGroupsMap.put(group.getExternalId(), group);
             }
-        }
-        LOG.debug("loaded products [" + result.size() + "]");
-        return result;
+            for (int i = 0; i < rows.length(); i++) {
+                JSONObject item = rows.getJSONObject(i);
+                Product product = fromJSON(item, productGroupsMap);
+                if (product.getGroup() != null) {
+                    result.add(product);
+                }
+            }
+            LOG.debug("loaded products [" + result.size() + "]");
+            return result;
+        }).get();
     }
     @Override
-    public List<EntityImage> getProductImages(String productExternalId) throws Exception {
+    public List<EntityImage> getProductImages(String productExternalId) {
         List<EntityImage> result = new ArrayList<>();
         String response = request("/entity/product/" + productExternalId + "/images", "GET", null);
         Map<String, String> headers = new HashMap<>();
@@ -131,7 +130,7 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
         return result;
     }
     @Override
-    public void removeProductImages(Product product) throws Exception {
+    public void removeProductImages(Product product) {
         String response = request("/entity/product/" + product.getExternalId() + "/images", "GET", null);
         JSONObject json = new JSONObject(response);
         if (json.has("rows")) {
@@ -142,24 +141,28 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
         }
     }
     @Override
-    public Product createProduct(Product product) throws Exception {
-        List<PriceType> priceTypes = coreDAO.getAll(PriceType.class);
-        String response = request("/entity/product", "POST", product.toMySkladJSON(priceTypes.get(0)).toString());
-        return fromJSON(new JSONObject(response), null);
+    public Product createProduct(Product product) {
+        return ((ThrowingSupplier<Product>) () -> {
+            List<PriceType> priceTypes = coreDAO.getAll(PriceType.class);
+            String response = request("/entity/product", "POST", product.toMySkladJSON(priceTypes.get(0)).toString());
+            return fromJSON(new JSONObject(response), null);
+        }).get();
     }
     @Override
-    public Product updateProduct(Product product) throws Exception {
-        List<PriceType> priceTypes = coreDAO.getAll(PriceType.class);
-        String response = request("/entity/product/" + product.getExternalId(), "PUT",
-                product.toMySkladJSON(priceTypes.get(0)).toString());
-        return fromJSON(new JSONObject(response), null);
+    public Product updateProduct(Product product) {
+        return ((ThrowingSupplier<Product>) () -> {
+            List<PriceType> priceTypes = coreDAO.getAll(PriceType.class);
+            String response = request("/entity/product/" + product.getExternalId(), "PUT",
+                    product.toMySkladJSON(priceTypes.get(0)).toString());
+            return fromJSON(new JSONObject(response), null);
+        }).get();
     }
     @Override
-    public void deleteProduct(Product product) throws Exception {
+    public void deleteProduct(Product product) {
         request("/entity/product/" + product.getExternalId(), "DELETE", null);
     }
     @Override
-    public List<PriceType> getPriceTypes() throws Exception {
+    public List<PriceType> getPriceTypes() {
         String response = request("/context/companysettings/pricetype", "GET", null);
         JSONArray arr = new JSONArray(response);
         List<PriceType> result = new ArrayList<>();
@@ -173,26 +176,28 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
         return result;
     }
     @Override
-    public void attachImagesToProduct(Product product) throws Exception {
-        for (EntityImage image : product.getImages()) {
-            JSONObject payload = new JSONObject();
-            payload.put("filename", image.getName());
-            payload.put("content", new String(Base64.getEncoder().encode(imageService.readImageFromDisk(image)), "UTF-8"));
-            request("/entity/product/" + product.getExternalId() + "/images", "POST", payload.toString());
-        }
+    public void attachImagesToProduct(Product product) {
+        ((ThrowingRunnable) () -> {
+            for (EntityImage image : product.getImages()) {
+                JSONObject payload = new JSONObject();
+                payload.put("filename", image.getName());
+                payload.put("content", new String(Base64.getEncoder().encode(imageService.readImageFromDisk(image)), "UTF-8"));
+                request("/entity/product/" + product.getExternalId() + "/images", "POST", payload.toString());
+            }
+        }).run();
     }
     @Override
-    public String createProductsGroup(ProductsGroup group) throws Exception {
+    public String createProductsGroup(ProductsGroup group) {
         String response = request("/entity/productfolder", "POST", group.toMySkladJSON().toString());
         JSONObject json = new JSONObject(response);
         return json.getString("id");
     }
     @Override
-    public void deleteProductsGroup(ProductsGroup group) throws Exception {
+    public void deleteProductsGroup(ProductsGroup group) {
         request("/entity/productfolder/" + group.getExternalId(), "DELETE", null);
     }
     @Override
-    public void updateProductsGroup(ProductsGroup group) throws Exception {
+    public void updateProductsGroup(ProductsGroup group) {
         request("/entity/productfolder/" + group.getExternalId(), "PUT", group.toMySkladJSON().toString());
     }
     @Override
@@ -249,7 +254,7 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
      * @return response as string.
      * @throws Exception request error.
      */
-    private String request(String url, String method, String payload) throws Exception {
+    private String request(String url, String method, String payload) {
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
         try {
@@ -270,35 +275,37 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
      * @return response as string.
      * @throws Exception error.
      */
-    private String request(String url, String method, Map<String, String> headers, String payload) throws Exception {
+    private String request(String url, String method, Map<String, String> headers, String payload) {
         LOG.debug("------------------------------ REQUEST TO MY SKLAD -----------------------------------------------");
         LOG.debug("url [" + url + "]");
         LOG.debug("method [" + method + "]");
         LOG.debug("payload [" + payload + "]");
-        HttpsURLConnection connection = (HttpsURLConnection) new URL(API_ENDPOINT + url).openConnection();
-        connection.setRequestMethod(method);
-        connection.setReadTimeout(Long.valueOf(TimeUnit.SECONDS.toMillis(30)).intValue());
-        for (String header : headers.keySet()) {
-            connection.setRequestProperty(header, headers.get(header));
-        }
-        connection.setDoInput(true);
-        connection.setDoOutput(true);
-        if (payload != null) {
-            connection.getOutputStream().write(payload.getBytes("UTF-8"));
-        }
-        int responseCode = connection.getResponseCode();
-        LOG.debug("response code [" + responseCode + "]");
-        String response = null;
-        if (responseCode == 200 || responseCode == 201) {
-            response = inputStreamToString(connection.getInputStream());
-            LOG.debug("response: " + response);
-            return response;
-        } else if (responseCode == 401) {
-            throw new MySkladAuthenticationException();
-        } else {
-            response = inputStreamToString(connection.getErrorStream());
-            throw new MySkladInternalErrorException(response);
-        }
+        return ((ThrowingSupplier<String>) () -> {
+            HttpsURLConnection connection = (HttpsURLConnection) new URL(API_ENDPOINT + url).openConnection();
+            connection.setRequestMethod(method);
+            connection.setReadTimeout(Long.valueOf(TimeUnit.SECONDS.toMillis(30)).intValue());
+            for (String header : headers.keySet()) {
+                connection.setRequestProperty(header, headers.get(header));
+            }
+            connection.setDoInput(true);
+            connection.setDoOutput(true);
+            if (payload != null) {
+                connection.getOutputStream().write(payload.getBytes("UTF-8"));
+            }
+            int responseCode = connection.getResponseCode();
+            LOG.debug("response code [" + responseCode + "]");
+            String response = null;
+            if (responseCode == 200 || responseCode == 201) {
+                response = inputStreamToString(connection.getInputStream());
+                LOG.debug("response: " + response);
+                return response;
+            } else if (responseCode == 401) {
+                throw new MySkladAuthenticationException();
+            } else {
+                response = inputStreamToString(connection.getErrorStream());
+                throw new MySkladInternalErrorException(response);
+            }
+        }).get();
     }
     /**
      * Request data.
@@ -308,25 +315,27 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
      * @return response as byte array.
      * @throws Exception request error. 
      */
-    private byte[] requestData(String url, String method, Map<String, String> headers) throws Exception {
+    private byte[] requestData(String url, String method, Map<String, String> headers) {
         LOG.debug("------------------------------ DATA REQUEST ------------------------------------------------------");
         LOG.debug("url [" + url + "]");
         LOG.debug("method [" + method + "]");
-        HttpsURLConnection connection = (HttpsURLConnection) new URL(url).openConnection();
-        connection.setRequestMethod(method);
-        connection.setReadTimeout(Long.valueOf(TimeUnit.SECONDS.toMillis(30)).intValue());
-        for (String header : headers.keySet()) {
-            connection.setRequestProperty(header, headers.get(header));
-        }
-        connection.setDoInput(true);
-        connection.setDoOutput(true);
-        int responseCode = connection.getResponseCode();
-        LOG.debug("response code [" + responseCode + "]");
-        if (responseCode == 200 || responseCode == 201) {
-            return inputStreamToByteArray(connection.getInputStream());
-        } else {
-            throw new IOException(inputStreamToString(connection.getErrorStream()));
-        }
+        return ((ThrowingSupplier<byte[]>) () -> {
+            HttpsURLConnection connection = (HttpsURLConnection) new URL(url).openConnection();
+            connection.setRequestMethod(method);
+            connection.setReadTimeout(Long.valueOf(TimeUnit.SECONDS.toMillis(30)).intValue());
+            for (String header : headers.keySet()) {
+                connection.setRequestProperty(header, headers.get(header));
+            }
+            connection.setDoInput(true);
+            connection.setDoOutput(true);
+            int responseCode = connection.getResponseCode();
+            LOG.debug("response code [" + responseCode + "]");
+            if (responseCode == 200 || responseCode == 201) {
+                return inputStreamToByteArray(connection.getInputStream());
+            } else {
+                throw new IOException(inputStreamToString(connection.getErrorStream()));
+            }
+        }).get();
     }
     /**
      * Convert input stream to UTF-8 string.
@@ -416,27 +425,29 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
      * Authentication.
      * @throws Exception error.
      */
-    private void authentication() throws Exception {
-        Map<String, String> headers = new HashMap<>();
-        String credentials = configuration.getMySkladUsername() + ":" + configuration.getMySkladPassword();
-        credentials = Base64.getEncoder().encodeToString(credentials.getBytes("UTF-8"));
-        LOG.debug("credentials: " + credentials);
-        headers.put("Authorization", "Basic " + credentials);
-        String tokenResponse = request("/security/token", "POST", headers, null);
-        LOG.debug("security token: " + tokenResponse);
-        JSONObject json = new JSONObject(tokenResponse);
-        token = json.getString("access_token");
-        LOG.debug("new acquired token: " + token);
+    private void authentication() {
+        ((ThrowingRunnable) () -> {
+            Map<String, String> headers = new HashMap<>();
+            String credentials = configuration.getMySkladUsername() + ":" + configuration.getMySkladPassword();
+            credentials = Base64.getEncoder().encodeToString(credentials.getBytes("UTF-8"));
+            LOG.debug("credentials: " + credentials);
+            headers.put("Authorization", "Basic " + credentials);
+            String tokenResponse = request("/security/token", "POST", headers, null);
+            LOG.debug("security token: " + tokenResponse);
+            JSONObject json = new JSONObject(tokenResponse);
+            token = json.getString("access_token");
+            LOG.debug("new acquired token: " + token);
+        }).run();
     }
     /**
      * MySklad authentication error.
      */
-    private static class MySkladAuthenticationException extends Exception {
+    private static class MySkladAuthenticationException extends RuntimeException {
     }
     /**
      * MySklad internal error.
      */
-    private static class MySkladInternalErrorException extends Exception {
+    private static class MySkladInternalErrorException extends RuntimeException {
         /**
          * Constructor.
          * @param msg message.

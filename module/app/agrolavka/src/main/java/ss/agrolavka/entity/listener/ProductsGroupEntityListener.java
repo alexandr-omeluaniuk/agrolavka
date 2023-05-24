@@ -39,19 +39,19 @@ class ProductsGroupEntityListener extends EntityWithImagesListener implements Pl
     }
 
     @Override
-    public void prePersist(ProductsGroup entity) throws Exception {
+    public void prePersist(ProductsGroup entity) {
         //cropImages(entity.getImages(), SiteConstants.IMAGE_THUMB_SIZE);
         entity.setUrl(UrlProducer.transliterate(entity.getName()));
         entity.setExternalId(mySkladIntegrationService.createProductsGroup(entity));
     }
     
     @Override
-    public void postPersist(ProductsGroup entity) throws Exception {
+    public void postPersist(ProductsGroup entity) {
         AppCache.flushCache(coreDAO.getAll(ProductsGroup.class));
     }
 
     @Override
-    public void preUpdate(ProductsGroup entity) throws Exception {
+    public void preUpdate(ProductsGroup entity) {
         ProductsGroup entityFromDB = coreDAO.findById(entity.getId(), ProductsGroup.class);
         final List<EntityImage> actualImages = getActualImages(
                 entityFromDB.getImages(), entity.getImages(), SiteConstants.IMAGE_THUMB_SIZE);
@@ -63,12 +63,12 @@ class ProductsGroupEntityListener extends EntityWithImagesListener implements Pl
     }
     
     @Override
-    public void postUpdate(ProductsGroup entity) throws Exception {
+    public void postUpdate(ProductsGroup entity) {
         AppCache.flushCache(coreDAO.getAll(ProductsGroup.class));
     }
 
     @Override
-    public void preDelete(Set<Long> ids) throws Exception {
+    public void preDelete(Set<Long> ids) {
         for (Long id : ids) {
             ProductsGroup group = coreDAO.findById(id, ProductsGroup.class);
             mySkladIntegrationService.deleteProductsGroup(group);

@@ -42,17 +42,17 @@ class SlideEntityListener implements PlatformEntityListener<Slide> {
     }
     
     @Override
-    public void postPersist(final Slide entity) throws Exception {
+    public void postPersist(final Slide entity) {
         AppCache.flushSlidesCache(coreDAO.getAll(Slide.class));
     }
     
     @Override
-    public void postUpdate(final Slide entity) throws Exception {
+    public void postUpdate(final Slide entity) {
         AppCache.flushSlidesCache(coreDAO.getAll(Slide.class));
     }
     
     @Override
-    public void postDelete(Set<Long> ids) throws Exception {
+    public void postDelete(Set<Long> ids) {
         AppCache.flushSlidesCache(coreDAO.getAll(Slide.class));
     }
 }

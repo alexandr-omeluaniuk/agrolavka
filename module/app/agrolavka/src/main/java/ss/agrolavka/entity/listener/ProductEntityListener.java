@@ -38,7 +38,7 @@ class ProductEntityListener extends EntityWithImagesListener implements Platform
     }
 
     @Override
-    public void prePersist(Product entity) throws Exception {
+    public void prePersist(Product entity) {
         Product mySkladEntity = mySkladIntegrationService.createProduct(entity);
         //cropImages(entity.getImages(), SiteConstants.IMAGE_THUMB_SIZE);
         entity.setExternalId(mySkladEntity.getExternalId());
@@ -46,7 +46,7 @@ class ProductEntityListener extends EntityWithImagesListener implements Platform
     }
     
     @Override
-    public void preUpdate(Product entity) throws Exception {
+    public void preUpdate(Product entity) {
         if (GroupProductsService.GROUPED_PRODUCT_EXTERNAL_ID.equals(entity.getExternalId())) {
             return;
         }
@@ -62,7 +62,7 @@ class ProductEntityListener extends EntityWithImagesListener implements Platform
     }
     
     @Override
-    public void preDelete(Set<Long> ids) throws Exception {
+    public void preDelete(Set<Long> ids) {
         for (Long id : ids) {
             Product product = coreDAO.findById(id, Product.class);
             if (!GroupProductsService.GROUPED_PRODUCT_EXTERNAL_ID.equals(product.getExternalId())) {

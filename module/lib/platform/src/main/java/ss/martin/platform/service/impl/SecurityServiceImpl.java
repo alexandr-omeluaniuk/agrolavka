@@ -10,10 +10,7 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.config.BeanDefinition;
-import org.springframework.context.annotation.Scope;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import ss.entity.martin.DataModel;
@@ -34,7 +31,6 @@ import ss.martin.platform.wrapper.UserPermissions;
  * @author Alexandr Omeluaniuk
  */
 @Service
-@Scope(BeanDefinition.SCOPE_PROTOTYPE)
 class SecurityServiceImpl implements SecurityService {
     /** Logger. */
     private static final Logger LOG = LoggerFactory.getLogger(SecurityService.class);
@@ -43,13 +39,13 @@ class SecurityServiceImpl implements SecurityService {
     private AuthenticationManager authManager;
     /** Core DAO. */
     @Autowired
-    private CoreDao coreDAO;
+    private CoreDao coreDao;
     /** User DAO. */
     @Autowired
-    private UserDao userDAO;
+    private UserDao userDao;
     
     @Override
-    public UserPermissions getUserPermissions() throws Exception {
+    public UserPermissions getUserPermissions() {
         UserPermissions permissions = new UserPermissions();
         UserPrincipal principal = SecurityContext.principal();
         if (principal != null) {
@@ -59,14 +55,15 @@ class SecurityServiceImpl implements SecurityService {
             permissions.setFullname((currentUser.getFirstname() == null ? "" : currentUser.getFirstname() + " ")
                     + currentUser.getLastname());
             permissions.setStandardRole(currentUser.getStandardRole());
-            UserAgent ua = coreDAO.findById(principal.getUserAgent().getId(), UserAgent.class);
+            UserAgent ua = coreDao.findById(principal.getUserAgent().getId(), UserAgent.class);
             principal.setUserAgent(ua);
             permissions.setUserAgent(ua);
         }
         return permissions;
     }
+    
     @Override
-    public Set<EntityPermission> getEntityPermissions(Class<? extends DataModel> clazz) throws Exception {
+    public Set<EntityPermission> getEntityPermissions(final Class<? extends DataModel> clazz) {
         Set<EntityPermission> permissions = new HashSet<>();
         // first level of security
         Optional.ofNullable(clazz.getAnnotation(EntityAccess.class)).ifPresentOrElse((anno) -> {
@@ -79,23 +76,25 @@ class SecurityServiceImpl implements SecurityService {
         });
         return permissions;
     }
+    
     @Override
-    public void backgroundAuthentication(String username, String password) {
-        Authentication a = authManager.authenticate(new UserPrincipal(username, password, new ArrayList<>()));
-        SecurityContextHolder.getContext().setAuthentication(a);
+    public void backgroundAuthentication(final String username, final String password) {
+        final var auth = authManager.authenticate(new UserPrincipal(username, password, new ArrayList<>()));
+        SecurityContextHolder.getContext().setAuthentication(auth);
     }
+    
     @Override
-    public UserAgent getUserAgent(HttpServletRequest httpRequest) {
+    public UserAgent getUserAgent(final HttpServletRequest httpRequest) {
         UserPrincipal principal = SecurityContext.principal();
         String userAgentString = httpRequest.getHeader("User-Agent");
-        List<UserAgent> userAgents = userDAO.getUserAgents(principal.getUser());
+        List<UserAgent> userAgents = userDao.getUserAgents(principal.getUser());
         UserAgent userAgent = userAgents.stream().filter(ua -> {
             return userAgentString.equals(ua.getUserAgentString());
         }).findFirst().map(ua -> ua).orElseGet(() -> {
             UserAgent ua = new UserAgent();
             ua.setUserAgentString(userAgentString);
             try {
-                coreDAO.create(ua);
+                coreDao.create(ua);
             } catch (Exception ex) {
                 LOG.error("can't create new user agent.", ex);
             }

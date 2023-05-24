@@ -40,43 +40,37 @@ public interface PlatformEntityListener<E extends DataModel> {
     /**
      * Invoked before persist action.
      * @param entity entity.
-     * @throws Exception error.
      */
-    default void prePersist(E entity) throws Exception {
+    default void prePersist(E entity) {
     }
     /**
      * Invoked after persist action.
      * @param entity entity.
-     * @throws Exception error.
      */
-    default void postPersist(E entity) throws Exception {
+    default void postPersist(E entity) {
     }
     /**
      * Invoked before update action.
      * @param entity entity.
-     * @throws Exception error.
      */
-    default void preUpdate(E entity) throws Exception {
+    default void preUpdate(E entity) {
     }
     /**
      * Invoked after update action.
      * @param entity entity.
-     * @throws Exception error.
      */
-    default void postUpdate(E entity) throws Exception {
+    default void postUpdate(E entity) {
     }
     /**
      * Invoked before delete action.
      * @param ids entity IDs.
-     * @throws Exception error.
      */
-    default void preDelete(Set<Long> ids) throws Exception {
+    default void preDelete(Set<Long> ids) {
     }
     /**
      * Invoked after delete action.
      * @param ids entity IDs.
-     * @throws Exception error.
      */
-    default void postDelete(Set<Long> ids) throws Exception {
+    default void postDelete(Set<Long> ids) {
     }
 }
