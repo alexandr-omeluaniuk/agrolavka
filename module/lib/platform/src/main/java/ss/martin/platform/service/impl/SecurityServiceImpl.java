@@ -46,20 +46,21 @@ class SecurityServiceImpl implements SecurityService {
     
     @Override
     public UserPermissions getUserPermissions() {
-        UserPermissions permissions = new UserPermissions();
         UserPrincipal principal = SecurityContext.principal();
         if (principal != null) {
             SystemUser currentUser = principal.getUser();
-            permissions.setUserId(currentUser.getId());
-            permissions.setSubscription(SecurityContext.subscription());
-            permissions.setFullname((currentUser.getFirstname() == null ? "" : currentUser.getFirstname() + " ")
-                    + currentUser.getLastname());
-            permissions.setStandardRole(currentUser.getStandardRole());
             UserAgent ua = coreDao.findById(principal.getUserAgent().getId(), UserAgent.class);
             principal.setUserAgent(ua);
-            permissions.setUserAgent(ua);
+            return new UserPermissions(
+                SecurityContext.subscription(),
+                (currentUser.getFirstname() == null ? "" : currentUser.getFirstname() + " ")
+                    + currentUser.getLastname(),
+                currentUser.getId(),
+                currentUser.getStandardRole(),
+                ua
+            );
         }
-        return permissions;
+        return new UserPermissions();
     }
     
     @Override

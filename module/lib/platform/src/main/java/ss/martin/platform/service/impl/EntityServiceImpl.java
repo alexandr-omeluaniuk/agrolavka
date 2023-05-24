@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.config.BeanDefinition;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import ss.entity.martin.DataModel;
 import ss.entity.martin.SoftDeleted;
@@ -30,11 +28,10 @@ import ss.martin.security.api.RegistrationUserService;
  * @author ss
  */
 @Service
-@Scope(BeanDefinition.SCOPE_PROTOTYPE)
 class EntityServiceImpl implements EntityService {
     /** Core DAO. */
     @Autowired
-    private CoreDao coreDAO;
+    private CoreDao coreDao;
     /** System user service. */
     @Autowired
     private RegistrationUserService systemUserService;
@@ -53,27 +50,27 @@ class EntityServiceImpl implements EntityService {
         if (!securityService.getEntityPermissions(clazz).contains(EntityPermission.READ)) {
             throw new PlatformSecurityException(EntityPermission.READ, clazz);
         }
-        return coreDAO.searchEntities(searchRequest, clazz);
+        return coreDao.searchEntities(searchRequest, clazz);
     }
     
     @Override
-    public <T extends DataModel> T create(final T entity) {
+    public DataModel create(final DataModel entity) {
         if (!securityService.getEntityPermissions(entity.getClass()).contains(EntityPermission.CREATE)) {
             throw new PlatformSecurityException(EntityPermission.CREATE, entity.getClass());
         }
         if (SoftDeleted.class.isAssignableFrom(entity.getClass())) {
             ((SoftDeleted) entity).setActive(true);
         }
-        if (entity instanceof Subscription) {
-            return (T) systemUserService.createSubscriptionAndAdmin((Subscription) entity);
-        } else if (entity instanceof SystemUser) {
-            return (T) systemUserService.createSubscriptionUser((SystemUser) entity);
+        if (entity instanceof Subscription subscription) {
+            return systemUserService.createSubscriptionAndAdmin(subscription);
+        } else if (entity instanceof SystemUser user) {
+            return systemUserService.createSubscriptionUser(user);
         } else {
             List<PlatformEntityListener> listeners = getEntityListener(entity.getClass());
             for (PlatformEntityListener l : listeners) {
                 l.prePersist(entity);
             }
-            final var entityCreated = coreDAO.create(entity);
+            final var entityCreated = coreDao.create(entity);
             for (PlatformEntityListener l : listeners) {
                 l.postPersist(entityCreated);
             }
@@ -87,17 +84,17 @@ class EntityServiceImpl implements EntityService {
             throw new PlatformSecurityException(EntityPermission.UPDATE, entity.getClass());
         }
         Class<T> entityClass = (Class<T>) entity.getClass();
-        T fromDB = coreDAO.findById(entity.getId(), entityClass);
-        setUpdatableFields(entityClass, fromDB, entity);
+        T fromDb = coreDao.findById(entity.getId(), entityClass);
+        setUpdatableFields(entityClass, fromDb, entity);
         List<PlatformEntityListener> listeners = getEntityListener(entity.getClass());
         for (PlatformEntityListener l : listeners) {
             l.preUpdate(entity);
         }
-        entity = coreDAO.update(fromDB);
+        entity = coreDao.update(fromDb);
         for (PlatformEntityListener l : listeners) {
             l.postUpdate(entity);
         }
-        return coreDAO.findById(entity.getId(), entityClass);
+        return coreDao.findById(entity.getId(), entityClass);
     }
     
     @Override
@@ -112,41 +109,43 @@ class EntityServiceImpl implements EntityService {
         for (PlatformEntityListener l : listeners) {
             l.preDelete(ids);
         }
-        coreDAO.massDelete(ids, cl);
+        coreDao.massDelete(ids, cl);
         for (PlatformEntityListener l : listeners) {
             l.postDelete(ids);
         }
     }
+    
     @Override
     public <T extends DataModel> T get(Long id, Class<T> cl) {
         if (!securityService.getEntityPermissions(cl).contains(EntityPermission.READ)) {
             throw new PlatformSecurityException(EntityPermission.READ, cl);
         }
-        return coreDAO.findById(id, cl);
+        return coreDao.findById(id, cl);
     }
     
     /**
      * Set values for updatable fields.
      * @param entityClass entity class.
-     * @param fromDB entity from database.
+     * @param fromDb entity from database.
      * @param fromUser entity from user.
      * @throws Exception error.
      */
-    private void setUpdatableFields(Class entityClass, Object fromDB, Object fromUser) {
+    private void setUpdatableFields(Class entityClass, Object fromDb, Object fromUser) {
         ((ThrowingRunnable) () -> {
             for (Field field : entityClass.getDeclaredFields()) {
                 Updatable formField = field.getAnnotation(Updatable.class);
                 if (formField != null) {    // field is updatable
                     field.setAccessible(true);
-                    field.set(fromDB, field.get(fromUser));
+                    field.set(fromDb, field.get(fromUser));
                     field.setAccessible(false);
                 }
             }
             if (entityClass.getSuperclass() != null) {
-                setUpdatableFields(entityClass.getSuperclass(), fromDB, fromUser);
+                setUpdatableFields(entityClass.getSuperclass(), fromDb, fromUser);
             }
         }).run();
     }
+    
     /**
      * Get platform entity listener.
      * @param cl entity class.

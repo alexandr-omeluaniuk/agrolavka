@@ -27,6 +27,7 @@ public class EntityRestController {
     /** Entity service. */
     @Autowired
     private EntityService entityService;
+    
     /**
      * Search entities.
      * @param entityName entity name.
@@ -53,6 +54,7 @@ public class EntityRestController {
                 orderBy
         ));
     }
+    
     /**
      * Get entity by ID.
      * @param entityName entity name.
@@ -65,6 +67,7 @@ public class EntityRestController {
         Class entityClass = getEntityClass(entityName);
         return entityService.get(id, entityClass);
     }
+    
     /**
      * Create entity.
      * @param entityName entity name.
@@ -80,6 +83,7 @@ public class EntityRestController {
         DataModel entity = (DataModel) mapper.convertValue(rawData, entityClass);
         return entityService.create(entity);
     }
+    
     /**
      * Update entity.
      * @param entityName entity name.
@@ -95,6 +99,7 @@ public class EntityRestController {
         DataModel entity = (DataModel) mapper.convertValue(rawData, entityClass);
         return entityService.update(entity);
     }
+    
     /**
      * Mass deletion.
      * @param entityName entity name.
@@ -111,11 +116,6 @@ public class EntityRestController {
     }
     
     protected Class getEntityClass(String name) throws Exception {
-//        Set<EntityType<?>> types = em.getMetamodel().getEntities();
-//        for (EntityType<?> entityType : types) {
-//            String n = entityType.getJavaType().getName();
-//            System.out.println(n);
-//        }
         return Class.forName(name);
     }
 }
