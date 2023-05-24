@@ -21,10 +21,11 @@ public interface EntityService {
     
     /**
      * Create entity.
+     * @param <T> entity type
      * @param entity entity.
      * @return entity.
      */
-    DataModel create(DataModel entity);
+    <T extends DataModel> T create(T entity);
     
     /**
      * Update entity.

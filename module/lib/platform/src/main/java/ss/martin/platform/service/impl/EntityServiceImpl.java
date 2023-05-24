@@ -54,7 +54,7 @@ class EntityServiceImpl implements EntityService {
     }
     
     @Override
-    public DataModel create(final DataModel entity) {
+    public <T extends DataModel> T create(final T entity) {
         if (!securityService.getEntityPermissions(entity.getClass()).contains(EntityPermission.CREATE)) {
             throw new PlatformSecurityException(EntityPermission.CREATE, entity.getClass());
         }
@@ -62,9 +62,9 @@ class EntityServiceImpl implements EntityService {
             ((SoftDeleted) entity).setActive(true);
         }
         if (entity instanceof Subscription subscription) {
-            return systemUserService.createSubscriptionAndAdmin(subscription);
+            return (T) systemUserService.createSubscriptionAndAdmin(subscription);
         } else if (entity instanceof SystemUser user) {
-            return systemUserService.createSubscriptionUser(user);
+            return (T) systemUserService.createSubscriptionUser(user);
         } else {
             List<PlatformEntityListener> listeners = getEntityListener(entity.getClass());
             for (PlatformEntityListener l : listeners) {
