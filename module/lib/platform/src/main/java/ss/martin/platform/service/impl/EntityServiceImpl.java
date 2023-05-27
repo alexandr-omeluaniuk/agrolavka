@@ -1,7 +1,10 @@
 package ss.martin.platform.service.impl;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -152,12 +155,10 @@ class EntityServiceImpl implements EntityService {
      * @return list of listeners.
      */
     private List<PlatformEntityListener> getEntityListener(Class<? extends DataModel> cl) {
-        return entityListeners.stream().filter(l -> {
-            try {
-                return cl.equals(l.entity()) || ReflectionUtils.hasSuperClass(cl, l.entity());
-            } catch (Exception ex) {
-                return false;
-            }
-        }).collect(Collectors.toList());
+        return Optional.ofNullable(entityListeners).map(
+            listeners -> listeners.stream().filter(
+                l -> cl.equals(l.entity()) || ReflectionUtils.hasSuperClass(cl, l.entity())
+            ).collect(Collectors.toList())
+        ).orElse(new ArrayList<>(0));
     }
 }

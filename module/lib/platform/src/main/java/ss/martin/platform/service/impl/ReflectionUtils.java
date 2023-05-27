@@ -10,9 +10,8 @@ public class ReflectionUtils {
      * @param clazz target class.
      * @param superClass super class.
      * @return true if has.
-     * @throws Exception error.
      */
-    public static boolean hasSuperClass(Class clazz, Class superClass) throws Exception {
+    public static boolean hasSuperClass(Class clazz, Class superClass) {
         Class curClass = clazz;
         while (curClass.getSuperclass() != null) {
             if (curClass.getSuperclass().equals(superClass)) {
