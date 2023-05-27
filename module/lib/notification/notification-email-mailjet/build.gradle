@@ -8,5 +8,5 @@ dependencies {
     implementation "org.springframework.boot:spring-boot-starter"
     implementation libs.mailjet
     
-    testImplementation project(":module:lib:common-test")
+    testImplementation project(":module:lib:test:common-test")
 }

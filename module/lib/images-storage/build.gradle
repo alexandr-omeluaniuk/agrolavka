@@ -6,5 +6,5 @@ dependencies {
     api project(":module:lib:security")
     annotationProcessor "org.hibernate.orm:hibernate-jpamodelgen"
     
-    testImplementation project(":module:lib:common-test")
+    testImplementation project(":module:lib:test:security-test")
 }

@@ -1,6 +1,6 @@
 rootProject.name = 'martin'
 
-include ':module:lib:common-test'
+include ':module:lib:test:common-test', ':module:lib:test:security-test'
 include ':module:lib:base', ':module:lib:core', ':module:lib:platform', ':module:lib:security', ':module:lib:images-storage'
 include ':module:lib:notification:notification-email-api', ':module:lib:notification:notification-email-mailjet', ':module:lib:notification:notification-email-smtp'
 include ':module:lib:notification:notification-push-api', ':module:lib:notification:notification-push-firebase'
