@@ -6,6 +6,7 @@ import ss.entity.martin.Subscription;
 import ss.martin.security.constants.PlatformUrl;
 import ss.martin.test.AbstractMvcTest;
 import static org.junit.jupiter.api.Assertions.*;
+import ss.martin.security.test.DataFactory;
 
 public class EntityRestControllerTest extends AbstractMvcTest {
     

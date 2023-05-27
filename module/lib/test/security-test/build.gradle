@@ -3,5 +3,6 @@ plugins {
 }
 
 dependencies {
+    implementation project(":module:lib:security")
     api project(":module:lib:test:common-test")
 }

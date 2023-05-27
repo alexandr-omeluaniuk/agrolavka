@@ -1,5 +1,6 @@
 package ss.martin.images.storage.test;
 
+import ss.martin.security.test.DataFactory;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.NoSuchFileException;
