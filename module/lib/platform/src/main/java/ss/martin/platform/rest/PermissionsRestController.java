@@ -7,13 +7,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import ss.martin.platform.service.SecurityService;
 import ss.martin.platform.wrapper.UserPermissions;
+import ss.martin.security.constants.PlatformUrl;
 
 /**
  * Security REST controller.
  * @author ss
  */
 @RestController
-@RequestMapping("/api/platform/security")
+@RequestMapping(PlatformUrl.SECURITY_URL)
 public class PermissionsRestController {
     /** Security service. */
     @Autowired

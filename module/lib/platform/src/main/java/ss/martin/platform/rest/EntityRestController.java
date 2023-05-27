@@ -15,6 +15,7 @@ import ss.entity.martin.DataModel;
 import ss.martin.platform.service.EntityService;
 import ss.martin.core.model.EntitySearchRequest;
 import ss.martin.core.model.EntitySearchResponse;
+import ss.martin.security.constants.PlatformUrl;
 import ss.martin.security.model.RestResponse;
 
 /**
@@ -22,7 +23,7 @@ import ss.martin.security.model.RestResponse;
  * @author ss
  */
 @RestController
-@RequestMapping("/api/platform/entity")
+@RequestMapping(PlatformUrl.ENTITY_URL)
 public class EntityRestController {
     /** Entity service. */
     @Autowired

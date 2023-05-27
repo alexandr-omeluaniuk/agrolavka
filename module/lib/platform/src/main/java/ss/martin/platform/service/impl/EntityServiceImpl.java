@@ -39,7 +39,7 @@ class EntityServiceImpl implements EntityService {
     @Autowired
     private SecurityService securityService;
     /** Platform entity listeners. */
-    @Autowired
+    @Autowired(required = false)
     private List<PlatformEntityListener> entityListeners;
     
     @Override
