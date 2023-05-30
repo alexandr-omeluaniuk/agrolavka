@@ -49,7 +49,6 @@ public interface EntityService {
      * @param id entity ID.
      * @param cl entity class.
      * @return entity.
-     * @throws Exception error.
      */
     <T extends DataModel> T get(Long id, Class<T> cl);
 }

@@ -29,7 +29,10 @@ public class ImageServiceTest extends AbstractComponentTest {
     
     @BeforeEach
     public void beforeTest() throws IOException {
-        FileUtils.forceDelete(new File(storageConfiguration.path()));
+        final var storageDir = new File(storageConfiguration.path());
+        if (storageDir.exists()) {
+            FileUtils.forceDelete(storageDir);
+        }
         DataFactory.silentAuthentication(coreDao);
     }
     

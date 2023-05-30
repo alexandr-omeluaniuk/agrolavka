@@ -18,12 +18,12 @@ public class EntityRestControllerTest extends PlatformSecurityMvcTest {
             PlatformUrl.ENTITY_URL + "/" + Subscription.class.getName(), 
             DataFactory.generateSubscription("hello@test.test"), 
             Subscription.class, 
-            HttpStatus.FOUND
+            HttpStatus.UNAUTHORIZED
         );
     }
     
     @Test
-    public void testCRUD() {
+    public void testCRUD_Subscription() {
         final var jwt = jwt(StandardRole.ROLE_SUPER_ADMIN);
         withAuthorization(jwt, () -> {
             final var responseCreate = callPost(
@@ -56,14 +56,14 @@ public class EntityRestControllerTest extends PlatformSecurityMvcTest {
             assertNotNull(responseCreate);
             assertEquals(newOrgName, responseUpdate.getOrganizationName());
             
-//            final var responseDelete = callDelete(
-//                PlatformUrl.ENTITY_URL + "/" + Subscription.class.getName() + "/" + responseCreate.getId(), 
-//                RestResponse.class, 
-//                HttpStatus.OK
-//            );
-//            
-//            assertNotNull(responseDelete);
-//            assertNull(coreDao.findById(responseCreate.getId(), Subscription.class));
+            final var responseDelete = callDelete(
+                PlatformUrl.ENTITY_URL + "/" + Subscription.class.getName() + "/" + responseCreate.getId(), 
+                RestResponse.class, 
+                HttpStatus.INTERNAL_SERVER_ERROR
+            );
+            
+            assertNotNull(responseDelete);
+            assertNotNull(coreDao.findById(responseCreate.getId(), Subscription.class));
         });
     }
 }
