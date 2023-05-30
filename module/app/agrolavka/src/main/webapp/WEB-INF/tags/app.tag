@@ -100,7 +100,6 @@
         <script type="module" src="/assets/js/modules/cart.js?v=1"></script>
         <script type="module" src="/assets/js/modules/scroll-events.js?v=1"></script>
         <script type="module" src="/assets/js/modules/menu.js?v=1"></script>
-        <script type="module" src="/assets/js/modules/navigation.js?v=1"></script>
         <script type="module" src="/assets/js/modules/util-functions.js?v=1"></script>
     </body>
 

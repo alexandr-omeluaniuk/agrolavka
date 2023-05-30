@@ -10,7 +10,6 @@ import { handleCartClickEvent, handleCartChangeEvent } from './modules/cart.js';
 import { initScrollEvents} from './modules/scroll-events.js';
 import { handleMenuEvent } from './modules/menu.js';
 import { handleProductCardEvent } from "./modules/product-card.js";
-import { handleNavigationEvent } from "./modules/navigation.js";
 
 (function () {
     "use strict";
@@ -22,7 +21,6 @@ import { handleNavigationEvent } from "./modules/navigation.js";
         if (preventModalEventOnDemand(evt)) {
             return;
         }
-        handleNavigationEvent(evt);
         handleMenuEvent(evt);
         handleProductCardEvent(evt);
         handleCartClickEvent(evt);

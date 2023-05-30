@@ -85,10 +85,6 @@ and open the template in the editor.
     .agr-menu-sidebar {
         width: 450px;
     }
-    .agr-nav-back-btn {
-        left: auto !important;
-        right: 10px;
-    }
 }
 
 @media (max-width: 992px) {
@@ -150,10 +146,6 @@ and open the template in the editor.
         position: fixed;
         left: 0;
         right: 0;
-    }
-    .agr-nav-back-btn {
-        top: auto !important;
-        bottom: 10px !important;
     }
 }
 @media (max-width: 576px) {
@@ -450,7 +442,7 @@ and open the template in the editor.
         transform: translateX(0%);
     }
 }
-.agr-desktop-menu-btn, .agr-nav-back-btn {
+.agr-desktop-menu-btn {
     position: fixed;
     display: flex; 
     justify-content: center; 
@@ -466,7 +458,7 @@ and open the template in the editor.
     color: white; 
     z-index: 4900;
 }
-.agr-desktop-menu-btn:hover, .agr-nav-back-btn:hover {
+.agr-desktop-menu-btn:hover {
     cursor: pointer;
 }
 .agr-menu-catalog-group-link {
