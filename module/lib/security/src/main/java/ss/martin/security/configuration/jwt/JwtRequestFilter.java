@@ -53,7 +53,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                 setPrincipalFromJwtToken(jwtToken);
             });
         } catch (final Exception e) {
-            LOG.warn("Can't handle Authorization header!", e.getMessage());
+            LOG.warn("Can't handle Authorization header! Reason: " + e.getMessage());
         }
     }
     
