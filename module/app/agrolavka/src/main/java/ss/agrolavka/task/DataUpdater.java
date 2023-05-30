@@ -35,7 +35,7 @@ import ss.entity.agrolavka.Discount;
 import ss.entity.agrolavka.PriceType;
 import ss.entity.agrolavka.Product;
 import ss.entity.agrolavka.ProductsGroup;
-import ss.entity.martin.EntityImage;
+import ss.entity.images.storage.EntityImage;
 import ss.martin.core.dao.CoreDao;
 import ss.martin.platform.service.SecurityService;
 

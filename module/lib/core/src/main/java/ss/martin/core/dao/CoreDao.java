@@ -105,7 +105,6 @@ public interface CoreDao {
      * @param <T> entity type.
      * @param cl entity class.
      * @return count of entities.
-     * @throws Exception error.
      */
     <T extends DataModel> Long count(Class<T> cl);
     

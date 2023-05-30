@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import ss.entity.martin.EntityImage;
+import ss.entity.images.storage.EntityImage;
 
 /**
  *
@@ -33,7 +33,7 @@ abstract class EntityWithImagesListener {
             final List<EntityImage> imagesDB,
             final List<EntityImage> images,
             final int thumbSize
-    ) throws Exception {
+    ) {
         Map<Long, EntityImage> map = imagesDB.stream()
                 .collect(Collectors.toMap(EntityImage::getId, Function.identity()));
         List<EntityImage> actualImages = new ArrayList();

@@ -42,9 +42,9 @@ import ss.agrolavka.service.GroupProductsService;
 import ss.agrolavka.util.UrlProducer;
 import ss.agrolavka.wrapper.ProductVolume;
 import ss.entity.agrolavka.Product;
-import ss.entity.martin.EntityImage;
+import ss.entity.images.storage.EntityImage;
 import ss.martin.core.dao.CoreDao;
-import ss.martin.platform.service.ImageService;
+import ss.martin.images.storage.api.ImagesStorageApi;
 
 /**
  * Group products service implementation.
@@ -65,7 +65,7 @@ class GroupProductsServiceImpl implements GroupProductsService {
     private CoreDao coreDAO;
     /** Image service. */
     @Autowired
-    private ImageService imageService;
+    private ImagesStorageApi imageService;
 
     @Override
     

@@ -39,12 +39,12 @@ public class NonSpecificAuthCasesTest extends AbstractMvcTest {
     @Test
     @DisplayName("Test an Unauthorized error http codes")
     public void testUnauthorizedHttpCode() {
-        callGet(TestConstants.PROTECTED_RESOURCE, Void.class, HttpStatus.FOUND);
+        callGet(TestConstants.PROTECTED_RESOURCE, Void.class, HttpStatus.UNAUTHORIZED);
         
         final var acceptJsonHeader = new HttpHeaders();
-        acceptJsonHeader.add(HttpHeaders.ACCEPT, "application/json");
+        acceptJsonHeader.add(HttpHeaders.ACCEPT, "application/xml");
         withHeaders(acceptJsonHeader, () -> {
-            callGet(TestConstants.PROTECTED_RESOURCE, Void.class, HttpStatus.UNAUTHORIZED);
+            callGet(TestConstants.PROTECTED_RESOURCE, Void.class, HttpStatus.FOUND);
         });
         
         final var acceptXmlHeader = new HttpHeaders();

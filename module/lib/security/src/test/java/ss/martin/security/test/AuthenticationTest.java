@@ -107,7 +107,7 @@ public class AuthenticationTest extends AbstractMvcTest {
             assertFalse(response.jwt().isBlank());
             assertFalse(response.message().isBlank());
             
-            callGet(TestConstants.PROTECTED_RESOURCE, Void.class, HttpStatus.FOUND);
+            callGet(TestConstants.PROTECTED_RESOURCE, Void.class, HttpStatus.UNAUTHORIZED);
             
             withAuthorization(response.jwt(), () -> {
                 final var respWithAuth = callGet(TestConstants.PROTECTED_RESOURCE, RestResponse.class, HttpStatus.OK);
@@ -118,7 +118,7 @@ public class AuthenticationTest extends AbstractMvcTest {
             final var logoutResponse = callPost(navigationConfiguration.logout(), null, RestResponse.class, HttpStatus.OK);
             assertTrue(logoutResponse.success());
             
-            callGet(TestConstants.PROTECTED_RESOURCE, Void.class, HttpStatus.FOUND);
+            callGet(TestConstants.PROTECTED_RESOURCE, Void.class, HttpStatus.UNAUTHORIZED);
         } else {
             final var response = callPost(navigationConfiguration.login(), testCase.request(), RestResponse.class, HttpStatus.UNAUTHORIZED);
             assertEquals(testCase.faultCode().getCode(), response.code());
@@ -130,7 +130,7 @@ public class AuthenticationTest extends AbstractMvcTest {
     @DisplayName("Wrong Autorization header")
     public void testWrongAuthorizationHeader() {
         withAuthorization(UUID.randomUUID().toString(), () -> {
-            callGet(TestConstants.PROTECTED_RESOURCE, Void.class, HttpStatus.FOUND);
+            callGet(TestConstants.PROTECTED_RESOURCE, Void.class, HttpStatus.UNAUTHORIZED);
         });
     }
         

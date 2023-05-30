@@ -7,4 +7,6 @@ dependencies {
     api project(":module:lib:notification:notification-push-api")
     runtimeOnly project(":module:lib:notification:notification-push-firebase")
     annotationProcessor "org.hibernate.orm:hibernate-jpamodelgen"
+    
+    testImplementation project(":module:lib:test:security-test")
 }

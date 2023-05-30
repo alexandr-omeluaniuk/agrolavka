@@ -1,0 +1,69 @@
+application:
+  version: 1.0
+server:
+  port: 9090
+  servlet:
+    session:
+      timeout: 96h
+      persistent: true
+      cookie:
+        http-only: true
+        secure: true
+        max-age: 96h
+spring:
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ENC(dKrIWk6PO8et/xqH4hNxMhlzjef5QAAooYDtQ9LyTYKWIsLFuEHkjLOE0/RxSN0qCf2uFGrjyhsTjNbJU8P26Q==)
+    password: ENC(JgA2xDrRh91SS0I+3IH8mIJxnANGSkq+MJ8EqgDnLUXaYYiNF925gf6PUI6OYIxbistSrFa6EsIGO+YzGHwMoQ==)
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+  mvc:
+    view:
+      prefix: /WEB-INF/jsp/
+      suffix: .jsp
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        show_sql: false
+        use_sql_comments: false
+        format_sql: true
+  datasource:
+    url: jdbc:h2:mem:db;DB_CLOSE_DELAY=-1
+    username: sa
+    password: sa
+jasypt:
+  encryptor:
+    password: ${JASYPT_ENCRYPTOR_PASSWORD}
+platform:
+  domain:
+    host: http://localhost:3000
+    email: platform.support@domain.com,
+    emailName: Platform support
+  admin:
+    email: superadmin@domain.com
+  mailjet:
+    apikey: ENC(Zf3zX2Q2uFDpR3OpdQvF5zEyaoZQNWWCooT3lxdwVZRh5AMAeStfQplYLSD5Azr+gOnNbnengmyyfD6KDKnz3loRHp0LcWpAoo5vgGoS5qg=)
+    secretkey: ENC(m/YyuW+7OxxLUV/vXkGE+WIevlII4Wai6G9PmTOFJ+J7iLKlwkO6FdTyPfgBlOxzjbeU0UNBasZkjVUh58A12JD9F46pssJJgv1oWcxBQrs=)
+  navigation:
+    login: /login
+    logout: /logout
+    loginPage: /admin/welcome
+    protectedRest: /api/site/protected/*
+    publicRest: /api/site/public/*
+    registrationVerification: /site/verification
+    views: /site/app
+  push:
+    firebaseConfigFilePath: /home/alex/secure/agrolavka/test/agrolavka-test-firebase-adminsdk.json
+  storage:
+    path: /tmp/martin/storage/test
+  security:
+    tokenValidityPeriodInHours: 8
+    contentSecurityPolicy: "img-src https://sp.tinymce.com https://agrolavka.by https://api.mapbox.com https://www.google.com https://www.google.by https://www.google-analytics.com data:; script-src 'self' 'unsafe-inline' https://*.com https://cdn.jsdelivr.net https://cdn.tiny.cloud; object-src 'self';"

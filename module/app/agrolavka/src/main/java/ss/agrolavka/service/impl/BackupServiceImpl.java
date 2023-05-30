@@ -27,7 +27,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import ss.agrolavka.service.BackupService;
-import ss.martin.platform.configuration.external.StorageConfiguration;
+import ss.martin.images.storage.configuration.external.StorageConfiguration;
 
 /**
  * Backup service implementation.

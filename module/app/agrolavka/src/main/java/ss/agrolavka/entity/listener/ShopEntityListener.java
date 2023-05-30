@@ -1,19 +1,3 @@
-/*
- * Copyright (C) 2022 alex
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
 package ss.agrolavka.entity.listener;
 
 import java.util.List;
@@ -24,7 +8,7 @@ import org.springframework.stereotype.Component;
 import ss.agrolavka.constants.SiteConstants;
 import ss.agrolavka.util.AppCache;
 import ss.entity.agrolavka.Shop;
-import ss.entity.martin.EntityImage;
+import ss.entity.images.storage.EntityImage;
 import ss.martin.core.dao.CoreDao;
 import ss.martin.platform.util.PlatformEntityListener;
 
@@ -45,17 +29,17 @@ class ShopEntityListener extends EntityWithImagesListener implements PlatformEnt
     }
     
     @Override
-    public void prePersist(final Shop entity) throws Exception {
+    public void prePersist(final Shop entity) {
         //cropImages(entity.getImages(), SiteConstants.IMAGE_SHOP_THUMB_SIZE);
     }
     
     @Override
-    public void postPersist(final Shop entity) throws Exception {
+    public void postPersist(final Shop entity) {
         AppCache.flushShopsCache(coreDAO.getAll(Shop.class));
     }
 
     @Override
-    public void preUpdate(final Shop entity) throws Exception {
+    public void preUpdate(final Shop entity) {
         Shop entityFromDB = coreDAO.findById(entity.getId(), Shop.class);
         final List<EntityImage> actualImages = getActualImages(
                 entityFromDB.getImages(), entity.getImages(), SiteConstants.IMAGE_SHOP_THUMB_SIZE);
@@ -66,12 +50,12 @@ class ShopEntityListener extends EntityWithImagesListener implements PlatformEnt
     }
     
     @Override
-    public void postUpdate(final Shop entity) throws Exception {
+    public void postUpdate(final Shop entity) {
         AppCache.flushShopsCache(coreDAO.getAll(Shop.class));
     }
     
     @Override
-    public void postDelete(Set<Long> ids) throws Exception {
+    public void postDelete(Set<Long> ids) {
         AppCache.flushShopsCache(coreDAO.getAll(Shop.class));
     }
     

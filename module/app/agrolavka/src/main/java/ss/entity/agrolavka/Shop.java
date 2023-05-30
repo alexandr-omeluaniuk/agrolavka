@@ -29,7 +29,7 @@ import jakarta.validation.constraints.Size;
 import java.util.List;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
-import ss.entity.martin.EntityImage;
+import ss.entity.images.storage.EntityImage;
 import ss.entity.security.EntityAudit;
 import ss.martin.core.anno.Updatable;
 

@@ -21,7 +21,7 @@ import jakarta.validation.constraints.Size;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.json.JSONObject;
-import ss.entity.martin.EntityImage;
+import ss.entity.images.storage.EntityImage;
 import ss.martin.core.anno.Updatable;
 
 /**

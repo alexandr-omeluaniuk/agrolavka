@@ -26,6 +26,7 @@ import ss.martin.security.configuration.external.NavigationConfiguration;
 import ss.martin.security.configuration.external.SecurityConfiguration;
 import ss.martin.security.configuration.jwt.JwtRequestFilter;
 import ss.martin.security.api.RegistrationUserService;
+import ss.martin.security.constants.PlatformUrl;
 
 /**
  * Spring security configuration.
@@ -68,8 +69,8 @@ class SecurityConfig {
         http.csrf().disable()
                 .authorizeHttpRequests().requestMatchers(
                         configuration.protectedRest() + "/**",
-                        "/api/platform/security/**", 
-                        "/api/platform/entity/**"
+                        PlatformUrl.SECURITY_URL + "/**", 
+                        PlatformUrl.ENTITY_URL + "/**"
                 ).authenticated().and()
                 .authorizeHttpRequests().requestMatchers("/**").permitAll().and()
                 .addFilterBefore(authFilter(), UsernamePasswordAuthenticationFilter.class)

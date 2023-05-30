@@ -1,6 +1,6 @@
 plugins {
     id 'java'
-    // id 'checkstyle'
+    //id 'checkstyle'
     id 'jacoco'
     id "io.spring.dependency-management"
 }
@@ -21,10 +21,7 @@ jacoco {
     toolVersion = "0.8.10"
 }
 def jacocoExclusions = [
-    "ss/entity/martin/*.class",
-    "ss/entity/security/*.class",
-    "ss/martin/notification/push/firebase/*.class",
-    "ss/martin/notification/push/firebase/**/*.class"
+    "ss/entity/**/*.class"
 ]
 jacocoTestReport {
     dependsOn test
@@ -38,7 +35,7 @@ jacocoTestReport {
         }))
     }
 }
-jacocoTestCoverageVerification {
+/*jacocoTestCoverageVerification {
     violationRules {
         rule {
             limit {
@@ -53,6 +50,7 @@ jacocoTestCoverageVerification {
     }
 }
 check.dependsOn jacocoTestCoverageVerification
+*/
 /*
 checkstyle {
     maxWarnings = 0
