@@ -80,6 +80,9 @@ class OrderServiceImpl implements OrderService {
         } else {
             LOG.info("Order delivery type - self");
         }
+        // if order was restored from session
+        order.setId(null);
+        order.getPositions().forEach(position -> position.setId(null));
         final Order savedOrder = coreDAO.create(order);
         sendNotification(savedOrder, total);
         LOG.info("---------------------------------------------------------------------------------------------------");

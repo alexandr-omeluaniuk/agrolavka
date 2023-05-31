@@ -4,9 +4,8 @@
     Author     : alex
 --%>
 
-<%@tag import="ss.entity.martin.EntityImage"%>
 <%@tag description="put the tag description here" pageEncoding="UTF-8" 
-       import="ss.entity.agrolavka.Shop,ss.entity.martin.EntityImage"%>
+       import="ss.entity.agrolavka.Shop,ss.entity.images.storage.EntityImage"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <%-- The list of normal or fragment attributes can be specified here: --%>
