@@ -12,8 +12,6 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
-import lombok.Getter;
-import lombok.Setter;
 import ss.agrolavka.wrapper.ProductVolume;
 import ss.entity.martin.DataModel;
 import ss.martin.core.anno.Updatable;
@@ -22,8 +20,6 @@ import ss.martin.core.anno.Updatable;
  * Order position.
  * @author alex
  */
-@Getter
-@Setter
 @Entity
 @Table(name = "customer_order_position")
 public class OrderPosition extends DataModel {
@@ -54,7 +50,55 @@ public class OrderPosition extends DataModel {
     /** Temporary ID. Should be used until entity is not save in DB. */
     @Transient
     private String positionId;
-   
+    
+    public Order getOrder() {
+        return order;
+    }
+    
+    public void setOrder(Order order) {
+        this.order = order;
+    }
+    
+    public Long getProductId() {
+        return productId;
+    }
+    
+    public void setProductId(Long productId) {
+        this.productId = productId;
+    }
+    
+    public Double getPrice() {
+        return price;
+    }
+    
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+    
+    public Integer getQuantity() {
+        return quantity;
+    }
+    
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
+    }
+    
+    public Product getProduct() {
+        return product;
+    }
+    
+    public void setProduct(Product product) {
+        this.product = product;
+    }
+    
+    public String getPositionId() {
+        return positionId;
+    }
+    
+    public void setPositionId(String tempId) {
+        this.positionId = tempId;
+    }
+    
     @JsonIgnore
     public String getQuantityLabel() throws JsonProcessingException {
         if (getProduct() != null && getProduct().getVolumes() != null) {
@@ -65,6 +109,7 @@ public class OrderPosition extends DataModel {
             return "за 1 ед";
         }
     }
+    
     public String getSubtotalLabel() throws JsonProcessingException {
         if (getProduct() != null && getProduct().getVolumes() != null) {
             final Optional<ProductVolume> volume = getProduct().getProductVolumes().stream()
@@ -74,6 +119,7 @@ public class OrderPosition extends DataModel {
             return String.format("за %s ед", getQuantity());
         }
     }
+    
     public String getProductName() throws JsonProcessingException {
         String name = "";
         if (getProduct() != null) {
@@ -87,15 +133,16 @@ public class OrderPosition extends DataModel {
         }
         return name;
     }
+    
     @Override
     public int hashCode() {
         int hash = 0;
         hash += (getProductId() != null ? getProductId().hashCode() : 0);
         return hash;
     }
+    
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
         if (!(object instanceof OrderPosition)) {
             return false;
         }
@@ -103,6 +150,7 @@ public class OrderPosition extends DataModel {
         return !((this.getProductId() == null && other.getProductId() != null)
             || (this.getProductId() != null && !this.getProductId().equals(other.getProductId())));
     }
+    
     @Override
     public String toString() {
         return "ss.entity.agrolavka.OrderPosition[ id=" + getId() + " ]";

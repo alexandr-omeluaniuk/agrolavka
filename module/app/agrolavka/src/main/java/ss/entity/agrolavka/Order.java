@@ -16,8 +16,6 @@ import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.Getter;
-import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 import ss.agrolavka.constants.OrderStatus;
 import ss.entity.martin.DataModel;
@@ -26,8 +24,6 @@ import ss.entity.martin.DataModel;
  * Customer order.
  * @author alex
  */
-@Getter
-@Setter
 @Entity
 @Table(name = "customer_order")
 public class Order extends DataModel {
@@ -70,6 +66,78 @@ public class Order extends DataModel {
     @Column(name = "one_click")
     private Boolean oneClick;
     
+    public List<OrderPosition> getPositions() {
+        return positions;
+    }
+    
+    public void setPositions(List<OrderPosition> positions) {
+        this.positions = positions;
+    }
+    
+    public Address getAddress() {
+        return address;
+    }
+    
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+    
+    public Date getCreated() {
+        return created;
+    }
+    
+    public void setCreated(Date created) {
+        this.created = created;
+    }
+    
+    public String getPhone() {
+        return phone;
+    }
+    
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+    
+    public OrderStatus getStatus() {
+        return status;
+    }
+    
+    public void setStatus(OrderStatus status) {
+        this.status = status;
+    }
+    
+    public String getComment() {
+        return comment;
+    }
+    
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+    
+    public String getAdminComment() {
+        return adminComment;
+    }
+    
+    public void setAdminComment(String adminComment) {
+        this.adminComment = adminComment;
+    }
+    
+    public EuropostLocationSnapshot getEuropostLocationSnapshot() {
+        return europostLocationSnapshot;
+    }
+    
+    public void setEuropostLocationSnapshot(EuropostLocationSnapshot europostLocationSnapshot) {
+        this.europostLocationSnapshot = europostLocationSnapshot;
+    }
+    
+    public Boolean getOneClick() {
+        return oneClick;
+    }
+    
+    public void setOneClick(Boolean oneClick) {
+        this.oneClick = oneClick;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 0;
@@ -83,11 +151,8 @@ public class Order extends DataModel {
             return false;
         }
         Order other = (Order) object;
-        if ((this.getId() == null && other.getId() != null)
-                || (this.getId() != null && !this.getId().equals(other.getId()))) {
-            return false;
-        }
-        return true;
+        return !((this.getId() == null && other.getId() != null)
+            || (this.getId() != null && !this.getId().equals(other.getId())));
     }
     
     @Override

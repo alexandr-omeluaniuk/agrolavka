@@ -7,8 +7,6 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import jakarta.validation.constraints.NotNull;
-import lombok.Getter;
-import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 import ss.entity.martin.DataModel;
 
@@ -16,8 +14,6 @@ import ss.entity.martin.DataModel;
  * User feedback.
  * @author alex
  */
-@Getter
-@Setter
 @Entity
 @Table(name = "feedback")
 public class Feedback extends DataModel {
@@ -35,6 +31,30 @@ public class Feedback extends DataModel {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created", nullable = false)
     private Date created;
+    
+    public String getMessage() {
+        return message;
+    }
+    
+    public Date getCreated() {
+        return created;
+    }
+    
+    public void setCreated(Date created) {
+        this.created = created;
+    }
+    
+    public void setMessage(String message) {
+        this.message = message;
+    }
+    
+    public String getContact() {
+        return contact;
+    }
+    
+    public void setContact(String contact) {
+        this.contact = contact;
+    }
     
     @Override
     public int hashCode() {

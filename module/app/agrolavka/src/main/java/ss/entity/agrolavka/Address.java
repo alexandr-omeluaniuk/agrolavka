@@ -5,16 +5,12 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.Getter;
-import lombok.Setter;
 import ss.entity.martin.DataModel;
 
 /**
  * Address.
  * @author alex
  */
-@Getter
-@Setter
 @Entity
 @Table(name = "address")
 public class Address extends DataModel {
@@ -64,6 +60,86 @@ public class Address extends DataModel {
     @Column(name = "middlename", length = 255)
     private String middlename;
     
+    public String getCity() {
+        return city;
+    }
+    
+    public void setCity(String city) {
+        this.city = city;
+    }
+    
+    public String getStreet() {
+        return street;
+    }
+    
+    public void setStreet(String street) {
+        this.street = street;
+    }
+    
+    public String getHouse() {
+        return house;
+    }
+    
+    public void setHouse(String house) {
+        this.house = house;
+    }
+    
+    public String getPostcode() {
+        return postcode;
+    }
+    
+    public void setPostcode(String postcode) {
+        this.postcode = postcode;
+    }
+    
+    public String getFlat() {
+        return flat;
+    }
+    
+    public void setFlat(String flat) {
+        this.flat = flat;
+    }
+    
+    public String getFirstname() {
+        return firstname;
+    }
+    
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
+    
+    public String getLastname() {
+        return lastname;
+    }
+    
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
+    
+    public String getRegion() {
+        return region;
+    }
+    
+    public void setRegion(String region) {
+        this.region = region;
+    }
+    
+    public String getDistrict() {
+        return district;
+    }
+    
+    public void setDistrict(String district) {
+        this.district = district;
+    }
+    
+    public String getMiddlename() {
+        return middlename;
+    }
+    
+    public void setMiddlename(String middlename) {
+        this.middlename = middlename;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -77,11 +153,8 @@ public class Address extends DataModel {
             return false;
         }
         Address other = (Address) object;
-        if ((this.getId() == null && other.getId() != null)
-                || (this.getId() != null && !this.getId().equals(other.getId()))) {
-            return false;
-        }
-        return true;
+        return !((this.getId() == null && other.getId() != null)
+            || (this.getId() != null && !this.getId().equals(other.getId())));
     }
     
     @Override

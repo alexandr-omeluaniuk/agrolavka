@@ -9,15 +9,11 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.Getter;
-import lombok.Setter;
 
 /**
  * Discount.
  * @author alex
  */
-@Getter
-@Setter
 @Entity
 @Table(name = "discount")
 public class Discount extends ExternalEntity {
@@ -34,6 +30,30 @@ public class Discount extends ExternalEntity {
     @NotNull
     @Column(name = "discount", nullable = false)
     private Double discount;
+    
+    public String getName() {
+        return name;
+    }
+    
+    public void setName(String name) {
+        this.name = name;
+    }
+    
+    public List<Product> getProducts() {
+        return products;
+    }
+    
+    public void setProducts(List<Product> products) {
+        this.products = products;
+    }
+    
+    public Double getDiscount() {
+        return discount;
+    }
+    
+    public void setDiscount(Double discount) {
+        this.discount = discount;
+    }
     
     @Override
     public int hashCode() {

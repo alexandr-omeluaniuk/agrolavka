@@ -5,15 +5,11 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.Getter;
-import lombok.Setter;
 
 /**
  * Price type.
  * @author alex
  */
-@Getter
-@Setter
 @Entity
 @Table(name = "price_type")
 public class PriceType extends ExternalEntity {
@@ -22,6 +18,14 @@ public class PriceType extends ExternalEntity {
     @Size(max = 255)
     @Column(name = "name", length = 255, nullable = false)
     private String name;
+    
+    public String getName() {
+        return name;
+    }
+    
+    public void setName(String name) {
+        this.name = name;
+    }
     
     @Override
     public int hashCode() {

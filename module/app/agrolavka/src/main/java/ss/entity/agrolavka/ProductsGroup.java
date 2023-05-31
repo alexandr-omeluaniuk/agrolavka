@@ -1,7 +1,6 @@
 package ss.entity.agrolavka;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import java.io.Serializable;
 import java.util.List;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -13,8 +12,6 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.Getter;
-import lombok.Setter;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.json.JSONObject;
@@ -25,8 +22,6 @@ import ss.martin.core.anno.Updatable;
  * Products group.
  * @author alex
  */
-@Getter
-@Setter
 @Entity
 @Table(name = "products_group")
 public class ProductsGroup extends ExternalEntity implements Comparable<ProductsGroup> {
@@ -76,6 +71,78 @@ public class ProductsGroup extends ExternalEntity implements Comparable<Products
             inverseJoinColumns = @JoinColumn(name = "image_id", referencedColumnName = "id"))
     @Fetch(FetchMode.SUBSELECT)
     private List<EntityImage> images;
+    
+    public String getName() {
+        return name;
+    }
+    
+    public void setName(String name) {
+        this.name = name;
+    }
+    
+    public String getParentId() {
+        return parentId;
+    }
+    
+    public void setParentId(String parentId) {
+        this.parentId = parentId;
+    }
+    
+    public List<Product> getProducts() {
+        return products;
+    }
+    
+    public void setProducts(List<Product> products) {
+        this.products = products;
+    }
+    
+    public String getUrl() {
+        return url;
+    }
+    
+    public void setUrl(String url) {
+        this.url = url;
+    }
+    
+    public Boolean isTopCategory() {
+        return topCategory;
+    }
+    
+    public void setTopCategory(Boolean topCategory) {
+        this.topCategory = topCategory;
+    }
+    
+    public String getDescription() {
+        return description;
+    }
+    
+    public void setDescription(String description) {
+        this.description = description;
+    }
+    
+    public String getSeoTitle() {
+        return seoTitle;
+    }
+    
+    public void setSeoTitle(String seoTitle) {
+        this.seoTitle = seoTitle;
+    }
+    
+    public String getSeoDescription() {
+        return seoDescription;
+    }
+    
+    public void setSeoDescription(String seoDescription) {
+        this.seoDescription = seoDescription;
+    }
+    
+    public List<EntityImage> getImages() {
+        return images;
+    }
+    
+    public void setImages(List<EntityImage> images) {
+        this.images = images;
+    }
     
     @Override
     public int hashCode() {

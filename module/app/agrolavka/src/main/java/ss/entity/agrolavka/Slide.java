@@ -11,8 +11,6 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.util.List;
-import lombok.Getter;
-import lombok.Setter;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import ss.entity.images.storage.EntityImage;
@@ -23,8 +21,6 @@ import ss.martin.core.anno.Updatable;
  * Site slide.
  * @author alex
  */
-@Getter
-@Setter
 @Entity
 @Table(name = "slide")
 public class Slide extends EntityAudit {
@@ -62,6 +58,54 @@ public class Slide extends EntityAudit {
             inverseJoinColumns = @JoinColumn(name = "image_id", referencedColumnName = "id"))
     @Fetch(FetchMode.SUBSELECT)
     private List<EntityImage> images;
+    
+    public String getName() {
+        return name;
+    }
+    
+    public void setName(String name) {
+        this.name = name;
+    }
+    
+    public String getTitle() {
+        return title;
+    }
+    
+    public void setTitle(String title) {
+        this.title = title;
+    }
+    
+    public String getSubtitle() {
+        return subtitle;
+    }
+    
+    public void setSubtitle(String subtitle) {
+        this.subtitle = subtitle;
+    }
+    
+    public String getButtonText() {
+        return buttonText;
+    }
+    
+    public void setButtonText(String buttonText) {
+        this.buttonText = buttonText;
+    }
+    
+    public String getButtonLink() {
+        return buttonLink;
+    }
+    
+    public void setButtonLink(String buttonLink) {
+        this.buttonLink = buttonLink;
+    }
+    
+    public List<EntityImage> getImages() {
+        return images;
+    }
+    
+    public void setImages(List<EntityImage> images) {
+        this.images = images;
+    }
     
     @Override
     public int hashCode() {

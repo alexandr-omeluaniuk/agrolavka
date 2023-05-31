@@ -11,8 +11,6 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.util.List;
-import lombok.Getter;
-import lombok.Setter;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import ss.entity.images.storage.EntityImage;
@@ -20,11 +18,9 @@ import ss.entity.security.EntityAudit;
 import ss.martin.core.anno.Updatable;
 
 /**
- * Shop
+ * Shop.
  * @author alex
  */
-@Getter
-@Setter
 @Entity
 @Table(name = "shop")
 public class Shop extends EntityAudit {
@@ -74,6 +70,70 @@ public class Shop extends EntityAudit {
     @Size(max = 255)
     @Column(name = "phone")
     private String phone;
+    
+    public String getTitle() {
+        return title;
+    }
+    
+    public void setTitle(String title) {
+        this.title = title;
+    }
+    
+    public String getDescription() {
+        return description;
+    }
+    
+    public void setDescription(String description) {
+        this.description = description;
+    }
+    
+    public List<EntityImage> getImages() {
+        return images;
+    }
+    
+    public void setImages(List<EntityImage> images) {
+        this.images = images;
+    }
+    
+    public Double getLatitude() {
+        return latitude;
+    }
+    
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+    
+    public Double getLongitude() {
+        return longitude;
+    }
+    
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
+    }
+    
+    public String getAddress() {
+        return address;
+    }
+    
+    public void setAddress(String address) {
+        this.address = address;
+    }
+    
+    public String getWorkingHours() {
+        return workingHours;
+    }
+    
+    public void setWorkingHours(String workingHours) {
+        this.workingHours = workingHours;
+    }
+    
+    public String getPhone() {
+        return phone;
+    }
+    
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
     
     @Override
     public int hashCode() {
