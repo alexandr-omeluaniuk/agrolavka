@@ -2,7 +2,6 @@ package ss.entity.agrolavka;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -24,8 +23,6 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
-import org.json.JSONArray;
-import org.json.JSONObject;
 import ss.agrolavka.wrapper.ProductVolume;
 import ss.entity.images.storage.EntityImage;
 import ss.martin.core.anno.Updatable;
@@ -168,23 +165,5 @@ public class Product extends ExternalEntity {
     public List<ProductVolume> getProductVolumes() throws JsonProcessingException {
         var list = getVolumes() == null ? new ProductVolume[0] : new ObjectMapper().readValue(getVolumes(), ProductVolume[].class);
         return Arrays.asList(list);
-    }
-    
-    public JSONObject toMySkladJSON(PriceType priceType) {
-        JSONObject json = new JSONObject();
-        json.put("name", getName());
-        json.put("article", getArticle());
-        JSONArray salePrices = new JSONArray();
-        JSONObject productPrice = new JSONObject();
-        productPrice.put("value", Double.valueOf(getPrice() * 100).intValue());
-        productPrice.put("priceType", priceType.toMySkladJSON());
-        salePrices.put(productPrice);
-        json.put("salePrices", salePrices);
-//        JSONObject buyPriceJSON = new JSONObject();
-//        buyPriceJSON.put("value", getBuyPrice() * 100);
-//        json.put("buyPrice", buyPriceJSON);
-        json.put("productFolder", getGroup().toMySkladJSONAsReference());
-        json.put("description", getDescription() == null ? "" : getDescription());
-        return json;
     }
 }

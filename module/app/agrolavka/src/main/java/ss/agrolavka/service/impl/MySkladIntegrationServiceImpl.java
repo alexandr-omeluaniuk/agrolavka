@@ -54,6 +54,7 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
     private CoreDao coreDAO;
     /** Authorization token. */
     private String token;
+    
     @Override
     public List<ProductsGroup> getProductGroups() {
         String response = request("/entity/productfolder", "GET", null);
@@ -80,6 +81,7 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
         LOG.debug("loaded product groups [" + result.size() + "]");
         return result;
     }
+    
     @Override
     public List<Product> getProducts(int offset, int limit) {
         return ((ThrowingSupplier<List<Product>>) () -> {
@@ -103,6 +105,7 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
             return result;
         }).get();
     }
+    
     @Override
     public List<EntityImage> getProductImages(String productExternalId) {
         List<EntityImage> result = new ArrayList<>();
@@ -129,6 +132,7 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
         }
         return result;
     }
+    
     @Override
     public void removeProductImages(Product product) {
         String response = request("/entity/product/" + product.getExternalId() + "/images", "GET", null);
@@ -140,27 +144,31 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
             }
         }
     }
+    
     @Override
     public Product createProduct(Product product) {
         return ((ThrowingSupplier<Product>) () -> {
             List<PriceType> priceTypes = coreDAO.getAll(PriceType.class);
-            String response = request("/entity/product", "POST", product.toMySkladJSON(priceTypes.get(0)).toString());
+            String response = request("/entity/product", "POST", toMySkladJSON(product, priceTypes.get(0)).toString());
             return fromJSON(new JSONObject(response), null);
         }).get();
     }
+    
     @Override
     public Product updateProduct(Product product) {
         return ((ThrowingSupplier<Product>) () -> {
             List<PriceType> priceTypes = coreDAO.getAll(PriceType.class);
             String response = request("/entity/product/" + product.getExternalId(), "PUT",
-                    product.toMySkladJSON(priceTypes.get(0)).toString());
+                    toMySkladJSON(product, priceTypes.get(0)).toString());
             return fromJSON(new JSONObject(response), null);
         }).get();
     }
+    
     @Override
     public void deleteProduct(Product product) {
         request("/entity/product/" + product.getExternalId(), "DELETE", null);
     }
+    
     @Override
     public List<PriceType> getPriceTypes() {
         String response = request("/context/companysettings/pricetype", "GET", null);
@@ -175,6 +183,7 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
         }
         return result;
     }
+    
     @Override
     public void attachImagesToProduct(Product product) {
         ((ThrowingRunnable) () -> {
@@ -186,20 +195,24 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
             }
         }).run();
     }
+    
     @Override
     public String createProductsGroup(ProductsGroup group) {
         String response = request("/entity/productfolder", "POST", group.toMySkladJSON().toString());
         JSONObject json = new JSONObject(response);
         return json.getString("id");
     }
+    
     @Override
     public void deleteProductsGroup(ProductsGroup group) {
         request("/entity/productfolder/" + group.getExternalId(), "DELETE", null);
     }
+    
     @Override
     public void updateProductsGroup(ProductsGroup group) {
         request("/entity/productfolder/" + group.getExternalId(), "PUT", group.toMySkladJSON().toString());
     }
+    
     @Override
     public Map<String, Product> getStock(int offset, int limit) throws Exception {
         String response = request("/report/stock/all?limit=" + limit + "&offset=" + offset, "GET", null);
@@ -216,6 +229,7 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
         }
         return result;
     }
+    
     @Override
     public List<Discount> getDiscounts() throws Exception {
         String response = request("/entity/discount", "GET", null);
@@ -245,7 +259,36 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
         }
         return discounts;
     }
-    // ============================================= PRIVATE ==========================================================
+    
+    private JSONObject toMySkladJSON(Product product, PriceType priceType) {
+        JSONObject json = new JSONObject();
+        json.put("name", product.getName());
+        json.put("article", product.getArticle());
+        JSONArray salePrices = new JSONArray();
+        JSONObject productPrice = new JSONObject();
+        productPrice.put("value", Double.valueOf(product.getPrice() * 100).intValue());
+        productPrice.put("priceType", toMySkladJSON(priceType));
+        salePrices.put(productPrice);
+        json.put("salePrices", salePrices);
+//        JSONObject buyPriceJSON = new JSONObject();
+//        buyPriceJSON.put("value", getBuyPrice() * 100);
+//        json.put("buyPrice", buyPriceJSON);
+        json.put("productFolder", product.getGroup().toMySkladJSONAsReference());
+        json.put("description", product.getDescription() == null ? "" : product.getDescription());
+        return json;
+    }
+    
+    private JSONObject toMySkladJSON(PriceType priceType) {
+        JSONObject json = new JSONObject();
+        JSONObject meta = new JSONObject();
+        meta.put("href", "https://online.moysklad.ru/api/remap/1.2/context/companysettings/pricetype/"
+                + priceType.getExternalId());
+        meta.put("type", "pricetype");
+        meta.put("mediaType", "application/json");
+        json.put("meta", meta);
+        return json;
+    }
+    
     /**
      * Request data from MySklad with predefined headers.
      * @param url URL.

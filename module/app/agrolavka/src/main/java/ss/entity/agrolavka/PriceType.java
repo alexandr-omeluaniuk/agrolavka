@@ -7,7 +7,6 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
-import org.json.JSONObject;
 
 /**
  * Price type.
@@ -44,16 +43,5 @@ public class PriceType extends ExternalEntity {
     @Override
     public String toString() {
         return "PriceType[ id=" + getId() + " ]";
-    }
-    
-    public JSONObject toMySkladJSON() {
-        JSONObject json = new JSONObject();
-        JSONObject meta = new JSONObject();
-        meta.put("href", "https://online.moysklad.ru/api/remap/1.2/context/companysettings/pricetype/"
-                + getExternalId());
-        meta.put("type", "pricetype");
-        meta.put("mediaType", "application/json");
-        json.put("meta", meta);
-        return json;
     }
 }
