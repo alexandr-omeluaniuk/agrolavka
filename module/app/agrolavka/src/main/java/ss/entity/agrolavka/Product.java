@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package ss.entity.agrolavka;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -25,6 +20,8 @@ import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.json.JSONArray;
@@ -37,12 +34,11 @@ import ss.martin.core.anno.Updatable;
  * Product.
  * @author alex
  */
+@Getter
+@Setter
 @Entity
 @Table(name = "product")
-public class Product extends ExternalEntity implements Serializable {
-    /** Default UID. */
-    private static final long serialVersionUID = 1L;
-    // ============================================== FIELDS ==========================================================
+public class Product extends ExternalEntity {
     /** Name. */
     @Updatable
     @Column(name = "name", length = 1000, nullable = false)
@@ -132,255 +128,14 @@ public class Product extends ExternalEntity implements Serializable {
     @Size(max = 3000)
     @Column(name = "video_url", length = 3000)
     private String videoURL;
-    // ============================================== SET & GET =======================================================
-    /**
-     * @return the name
-     */
-    public String getName() {
-        return name;
-    }
-    /**
-     * @param name the name to set
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
-    /**
-     * @return the price
-     */
-    public Double getPrice() {
-        return price;
-    }
-    /**
-     * @param price the price to set
-     */
-    public void setPrice(Double price) {
-        this.price = price;
-    }
-    /**
-     * @return the group
-     */
-    public ProductsGroup getGroup() {
-        return group;
-    }
-    /**
-     * @param group the group to set
-     */
-    public void setGroup(ProductsGroup group) {
-        this.group = group;
-    }
-    /**
-     * @return the images
-     */
-    //@JsonIgnore
-    public List<EntityImage> getImages() {
-        return images;
-    }
-    /**
-     * @param images the images to set
-     */
-    public void setImages(List<EntityImage> images) {
-        this.images = images;
-    }
-    /**
-     * @return the buyPrice
-     */
-    public Double getBuyPrice() {
-        return buyPrice;
-    }
-    /**
-     * @param buyPrice the buyPrice to set
-     */
-    public void setBuyPrice(Double buyPrice) {
-        this.buyPrice = buyPrice;
-    }
-    /**
-     * @return the article
-     */
-    public String getArticle() {
-        return article;
-    }
-    /**
-     * @param article the article to set
-     */
-    public void setArticle(String article) {
-        this.article = article;
-    }
-    /**
-     * @return the description
-     */
-    public String getDescription() {
-        return description;
-    }
-    /**
-     * @param description the description to set
-     */
-    public void setDescription(String description) {
-        this.description = description;
-    }
-    /**
-     * @return the code
-     */
-    public String getCode() {
-        return code;
-    }
-    /**
-     * @param code the code to set
-     */
-    public void setCode(String code) {
-        this.code = code;
-    }
-    /**
-     * @return the url
-     */
-    public String getUrl() {
-        return url;
-    }
-    /**
-     * @param url the url to set
-     */
-    public void setUrl(String url) {
-        this.url = url;
-    }
-    /**
-     * @return the quantity
-     */
-    public Double getQuantity() {
-        return quantity;
-    }
-    /**
-     * @param quantity the quantity to set
-     */
-    public void setQuantity(Double quantity) {
-        this.quantity = quantity;
-    }
-    /**
-     * @return the updated
-     */
-    public Date getUpdated() {
-        return updated;
-    }
-    /**
-     * @param updated the updated to set
-     */
-    public void setUpdated(Date updated) {
-        this.updated = updated;
-    }
-    /**
-     * @return the seoTitle
-     */
-    public String getSeoTitle() {
-        return seoTitle;
-    }
-    /**
-     * @param seoTitle the seoTitle to set
-     */
-    public void setSeoTitle(String seoTitle) {
-        this.seoTitle = seoTitle;
-    }
-    /**
-     * @return the seoDescription
-     */
-    public String getSeoDescription() {
-        return seoDescription;
-    }
-    /**
-     * @param seoDescription the seoDescription to set
-     */
-    public void setSeoDescription(String seoDescription) {
-        this.seoDescription = seoDescription;
-    }
-    /**
-     * @return the discount
-     */
-    public Discount getDiscount() {
-        return discount;
-    }
-    /**
-     * @param discount the discount to set
-     */
-    public void setDiscount(Discount discount) {
-        this.discount = discount;
-    }
-    /**
-     * @return the htmlDescription
-     */
-    public String getHtmlDescription() {
-        return htmlDescription;
-    }
-    /**
-     * @param htmlDescription the htmlDescription to set
-     */
-    public void setHtmlDescription(String htmlDescription) {
-        this.htmlDescription = htmlDescription;
-    }
-    /**
-     * @return the hidden
-     */
-    public boolean isHidden() {
-        return hidden;
-    }
-    /**
-     * @param hidden the hidden to set
-     */
-    public void setHidden(boolean hidden) {
-        this.hidden = hidden;
-    }
-    /**
-     * @return the volumes
-     */
-    public String getVolumes() {
-        return volumes;
-    }
-    /**
-     * @param volumes the volumes to set
-     */
-    public void setVolumes(String volumes) {
-        this.volumes = volumes;
-    }
-    /**
-     * @return the minPrice
-     */
-    public Double getMinPrice() {
-        return minPrice;
-    }
-    /**
-     * @param minPrice the minPrice to set
-     */
-    public void setMinPrice(Double minPrice) {
-        this.minPrice = minPrice;
-    }
-    /**
-     * @return the maxPrice
-     */
-    public Double getMaxPrice() {
-        return maxPrice;
-    }
-    /**
-     * @param maxPrice the maxPrice to set
-     */
-    public void setMaxPrice(Double maxPrice) {
-        this.maxPrice = maxPrice;
-    }
-    /**
-     * @return the videoURL
-     */
-    public String getVideoURL() {
-        return videoURL;
-    }
-    /**
-     * @param videoURL the videoURL to set
-     */
-    public void setVideoURL(String videoURL) {
-        this.videoURL = videoURL;
-    }
-    // ================================================================================================================
+    
     @Override
     public int hashCode() {
         int hash = 0;
         hash += (getId() != null ? getId().hashCode() : 0);
         return hash;
     }
+    
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
@@ -394,6 +149,7 @@ public class Product extends ExternalEntity implements Serializable {
         }
         return true;
     }
+    
     @Override
     public String toString() {
         return "Product[ id=" + getId() + ", name=" + getName() + ", price=" + getPrice()

@@ -117,7 +117,7 @@ public class AppCache {
      */
     public static synchronized List<ProductsGroup> getTopCategories() {
         List<ProductsGroup> topCategories = ALL_GROUPS.stream().filter(group -> {
-            return group.isTopCategory() != null && group.isTopCategory();
+            return group.getTopCategory() != null && group.getTopCategory();
         }).collect(Collectors.toList());
         Collections.sort(topCategories);
         return topCategories;

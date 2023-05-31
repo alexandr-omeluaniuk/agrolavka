@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package ss.entity.agrolavka;
 
 import jakarta.persistence.Column;
@@ -10,16 +5,19 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.Getter;
+import lombok.Setter;
 import ss.entity.martin.DataModel;
 
 /**
  * Address.
  * @author alex
  */
+@Getter
+@Setter
 @Entity
 @Table(name = "address")
 public class Address extends DataModel {
-    // ================================================ FIELDS ========================================================
     /** Region. */
     @NotNull
     @Size(max = 255)
@@ -65,137 +63,16 @@ public class Address extends DataModel {
     @Size(max = 255)
     @Column(name = "middlename", length = 255)
     private String middlename;
-    // ================================================ SET & GET =====================================================
-    /**
-     * @return the city
-     */
-    public String getCity() {
-        return city;
-    }
-    /**
-     * @param city the city to set
-     */
-    public void setCity(String city) {
-        this.city = city;
-    }
-    /**
-     * @return the street
-     */
-    public String getStreet() {
-        return street;
-    }
-    /**
-     * @param street the street to set
-     */
-    public void setStreet(String street) {
-        this.street = street;
-    }
-    /**
-     * @return the house
-     */
-    public String getHouse() {
-        return house;
-    }
-    /**
-     * @param house the house to set
-     */
-    public void setHouse(String house) {
-        this.house = house;
-    }
-    /**
-     * @return the postcode
-     */
-    public String getPostcode() {
-        return postcode;
-    }
-    /**
-     * @param postcode the postcode to set
-     */
-    public void setPostcode(String postcode) {
-        this.postcode = postcode;
-    }
-    /**
-     * @return the flat
-     */
-    public String getFlat() {
-        return flat;
-    }
-    /**
-     * @param flat the flat to set
-     */
-    public void setFlat(String flat) {
-        this.flat = flat;
-    }
-    /**
-     * @return the firstname
-     */
-    public String getFirstname() {
-        return firstname;
-    }
-    /**
-     * @param firstname the firstname to set
-     */
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
-    }
-    /**
-     * @return the lastname
-     */
-    public String getLastname() {
-        return lastname;
-    }
-    /**
-     * @param lastname the lastname to set
-     */
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
-    }
-    /**
-     * @return the region
-     */
-    public String getRegion() {
-        return region;
-    }
-    /**
-     * @param region the region to set
-     */
-    public void setRegion(String region) {
-        this.region = region;
-    }
-    /**
-     * @return the district
-     */
-    public String getDistrict() {
-        return district;
-    }
-    /**
-     * @param district the district to set
-     */
-    public void setDistrict(String district) {
-        this.district = district;
-    }
-    /**
-     * @return the middlename
-     */
-    public String getMiddlename() {
-        return middlename;
-    }
-    /**
-     * @param middlename the middlename to set
-     */
-    public void setMiddlename(String middlename) {
-        this.middlename = middlename;
-    }
-    // ================================================================================================================
+    
     @Override
     public int hashCode() {
         int hash = 0;
         hash += (getId() != null ? getId().hashCode() : 0);
         return hash;
     }
+    
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
         if (!(object instanceof Address)) {
             return false;
         }
@@ -206,6 +83,7 @@ public class Address extends DataModel {
         }
         return true;
     }
+    
     @Override
     public String toString() {
         return "ss.entity.agrolavka.Address[ id=" + getId() + " ]";

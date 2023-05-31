@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package ss.entity.agrolavka;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -17,6 +12,8 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
+import lombok.Getter;
+import lombok.Setter;
 import ss.agrolavka.wrapper.ProductVolume;
 import ss.entity.martin.DataModel;
 import ss.martin.core.anno.Updatable;
@@ -25,10 +22,11 @@ import ss.martin.core.anno.Updatable;
  * Order position.
  * @author alex
  */
+@Getter
+@Setter
 @Entity
 @Table(name = "customer_order_position")
 public class OrderPosition extends DataModel {
-    // ========================================== FIELDS ==============================================================
     /** Order. */
     @NotNull
     @JsonIgnore
@@ -56,80 +54,7 @@ public class OrderPosition extends DataModel {
     /** Temporary ID. Should be used until entity is not save in DB. */
     @Transient
     private String positionId;
-    // ========================================== SET & GET ===========================================================
-    /**
-     * @return the order
-     */
-    public Order getOrder() {
-        return order;
-    }
-    /**
-     * @param order the order to set
-     */
-    public void setOrder(Order order) {
-        this.order = order;
-    }
-    /**
-     * @return the productId
-     */
-    public Long getProductId() {
-        return productId;
-    }
-    /**
-     * @param productId the productId to set
-     */
-    public void setProductId(Long productId) {
-        this.productId = productId;
-    }
-    /**
-     * @return the price
-     */
-    public Double getPrice() {
-        return price;
-    }
-    /**
-     * @param price the price to set
-     */
-    public void setPrice(Double price) {
-        this.price = price;
-    }
-    /**
-     * @return the quantity
-     */
-    public Integer getQuantity() {
-        return quantity;
-    }
-    /**
-     * @param quantity the quantity to set
-     */
-    public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
-    }
-    /**
-     * @return the product
-     */
-    public Product getProduct() {
-        return product;
-    }
-    /**
-     * @param product the product to set
-     */
-    public void setProduct(Product product) {
-        this.product = product;
-    }
-    /**
-     * @return the tempId
-     */
-    public String getPositionId() {
-        return positionId;
-    }
-    /**
-     * @param tempId the tempId to set
-     */
-    public void setPositionId(String tempId) {
-        this.positionId = tempId;
-    }
-    // ================================================================================================================
+   
     @JsonIgnore
     public String getQuantityLabel() throws JsonProcessingException {
         if (getProduct() != null && getProduct().getVolumes() != null) {
@@ -175,11 +100,8 @@ public class OrderPosition extends DataModel {
             return false;
         }
         OrderPosition other = (OrderPosition) object;
-        if ((this.getProductId() == null && other.getProductId() != null)
-                || (this.getProductId() != null && !this.getProductId().equals(other.getProductId()))) {
-            return false;
-        }
-        return true;
+        return !((this.getProductId() == null && other.getProductId() != null)
+            || (this.getProductId() != null && !this.getProductId().equals(other.getProductId())));
     }
     @Override
     public String toString() {
