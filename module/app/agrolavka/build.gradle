@@ -13,6 +13,8 @@ dependencies {
     annotationProcessor "org.hibernate.orm:hibernate-jpamodelgen"
     implementation project(":module:lib:platform")
     implementation project(":module:lib:images-storage")
+    
+    testImplementation project(":module:lib:test:security-test")
 }
 
 def isDeploy = "deploy" in project.gradle.startParameter.taskNames

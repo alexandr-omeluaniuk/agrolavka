@@ -50,7 +50,7 @@ class ProductDAOImpl implements ProductDAO {
     private CoreDao coreDAO;
     @Override
     @Transactional(propagation = Propagation.SUPPORTS)
-    public List<Product> search(ProductsSearchRequest request) throws Exception {
+    public List<Product> search(ProductsSearchRequest request) {
         if (request.getPage() == null || request.getPage() < 1) {
             request.setPage(1);
         }
@@ -82,7 +82,7 @@ class ProductDAOImpl implements ProductDAO {
     }
     @Override
     @Transactional(propagation = Propagation.SUPPORTS)
-    public Long count(ProductsSearchRequest request) throws Exception {
+    public Long count(ProductsSearchRequest request) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Long> criteriaCount = cb.createQuery(Long.class);
         Root<Product> c = criteriaCount.from(Product.class);
@@ -113,7 +113,7 @@ class ProductDAOImpl implements ProductDAO {
      */
     @Transactional(propagation = Propagation.SUPPORTS)
     private List<Predicate> createSearchCriteria(CriteriaBuilder cb, Root<Product> c,
-            ProductsSearchRequest request) throws Exception {
+            ProductsSearchRequest request) {
         List<Predicate> predicates = new ArrayList<>();
         if (!request.isIncludesHidden()) {
             predicates.add(cb.equal(c.get(Product_.hidden), false));

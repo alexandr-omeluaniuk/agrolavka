@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package ss.agrolavka.rest;
 
 import java.util.ArrayList;
@@ -42,7 +37,7 @@ import ss.martin.core.dao.CoreDao;
  * @author alex
  */
 @RestController
-@RequestMapping("/api/agrolavka/public")
+@RequestMapping(SiteConstants.URL_PUBLIC)
 class AgrolavkaPublicRESTController {
     /** Core DAO. */
     @Autowired
@@ -53,6 +48,7 @@ class AgrolavkaPublicRESTController {
     /** Order service. */
     @Autowired
     private OrderService orderService;
+    
     /**
      * Search product.
      * @param searchText search text.
@@ -61,8 +57,7 @@ class AgrolavkaPublicRESTController {
      */
     @RequestMapping(value = "/search", method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> search(@RequestParam(value = "searchText", required = false) String searchText)
-            throws Exception {
+    public Map<String, Object> search(@RequestParam(value = "searchText", required = false) String searchText) {
         ProductsSearchRequest request = new ProductsSearchRequest();
         request.setPage(1);
         request.setPageSize(100);
@@ -80,6 +75,7 @@ class AgrolavkaPublicRESTController {
         result.put("count", productDAO.count(request));
         return result;
     }
+    
     /**
      * Add product to cart.
      * @param id product ID.
