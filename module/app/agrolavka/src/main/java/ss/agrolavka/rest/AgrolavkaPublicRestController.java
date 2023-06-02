@@ -38,7 +38,7 @@ import ss.martin.core.dao.CoreDao;
  */
 @RestController
 @RequestMapping(SiteConstants.URL_PUBLIC)
-class AgrolavkaPublicRESTController {
+class AgrolavkaPublicRestController {
     /** Core DAO. */
     @Autowired
     private CoreDao coreDAO;

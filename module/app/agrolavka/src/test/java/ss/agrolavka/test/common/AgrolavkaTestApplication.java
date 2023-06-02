@@ -1,4 +1,4 @@
-package ss.agrolavka.test;
+package ss.agrolavka.test.common;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
