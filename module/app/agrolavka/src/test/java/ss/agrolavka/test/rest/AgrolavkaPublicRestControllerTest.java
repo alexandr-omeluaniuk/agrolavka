@@ -16,7 +16,8 @@ public class AgrolavkaPublicRestControllerTest extends AbstractAgrolavkaMvcTest 
     @Test
     public void testSearch() {
         DataFactory.silentAuthentication(coreDao);
-        coreDao.create(AgrolavkaDataFactory.generateProduct("Hummer", 100.0, 2.0));
+        final var productGroup = coreDao.create(AgrolavkaDataFactory.generateProductGroup("New group"));
+        coreDao.create(AgrolavkaDataFactory.generateProduct(productGroup, "Hummer", 100.0, 2.0));
         
         withAuthorization(jwt(StandardRole.ROLE_SUBSCRIPTION_USER), () -> {    
             final var response = callGet(
@@ -26,7 +27,7 @@ public class AgrolavkaPublicRestControllerTest extends AbstractAgrolavkaMvcTest 
             );
             assertNotNull(response);
             assertEquals(1, response.count());
-            assertEquals(0, response.data().size());
+            assertEquals(1, response.data().size());
             
             final var response2 = callGet(
                 SiteConstants.URL_PUBLIC + "/search?searchText=D", 
