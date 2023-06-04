@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package ss.agrolavka.dao.impl;
 
 import jakarta.persistence.EntityManager;
@@ -48,6 +43,7 @@ class ProductDAOImpl implements ProductDAO {
     /** Core DAO. */
     @Autowired
     private CoreDao coreDAO;
+    
     @Override
     @Transactional(propagation = Propagation.SUPPORTS)
     public List<Product> search(ProductsSearchRequest request) {
@@ -59,7 +55,7 @@ class ProductDAOImpl implements ProductDAO {
         Root<Product> c = criteria.from(Product.class);
         c.fetch(Product_.group);
         List<Predicate> predicates = createSearchCriteria(cb, c, request);
-        criteria.select(c).where(predicates.toArray(new Predicate[0]));
+        criteria.select(c).where(predicates.toArray(Predicate[]::new));
         if (request.getOrder() != null && request.getOrderBy() != null) {
             if ("created_date".equals(request.getOrderBy())) {
                 criteria.where(cb.greaterThan(c.get(Product_.quantity), 0d));
@@ -80,6 +76,7 @@ class ProductDAOImpl implements ProductDAO {
                 .setFirstResult((request.getPage() - 1) * request.getPageSize())
                 .setMaxResults(request.getPageSize()).getResultList();
     }
+    
     @Override
     @Transactional(propagation = Propagation.SUPPORTS)
     public Long count(ProductsSearchRequest request) {
@@ -88,10 +85,11 @@ class ProductDAOImpl implements ProductDAO {
         Root<Product> c = criteriaCount.from(Product.class);
         Expression<Long> sum = cb.count(c);
         List<Predicate> predicates = createSearchCriteria(cb, c, request);
-        criteriaCount.select(sum).where(predicates.toArray(new Predicate[0]));
+        criteriaCount.select(sum).where(predicates.toArray(Predicate[]::new));
         List<Long> maxList = em.createQuery(criteriaCount).getResultList();
         return maxList.iterator().next();
     }
+    
     @Override
     @Transactional(propagation = Propagation.SUPPORTS)
     public Set<ProductsGroup> getCatalogProductGroups() {
@@ -104,6 +102,7 @@ class ProductDAOImpl implements ProductDAO {
 //                .having(cb.ge(cb.count(product), 1));
         return new HashSet<>(em.createQuery(criteria).getResultList());
     }
+    
     /**
      * Create search criteria from search request.
      * @param cb criteria builder.
@@ -149,6 +148,7 @@ class ProductDAOImpl implements ProductDAO {
         }
         return predicates;
     }
+    
     @Transactional(propagation = Propagation.SUPPORTS)
     private void walkProductGroup(ProductsGroup group, Set<Long> groupIds, Map<String, List<ProductsGroup>> groupsMap) {
         groupIds.add(group.getId());
@@ -158,6 +158,7 @@ class ProductDAOImpl implements ProductDAO {
             });
         }
     }
+    
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void deleteProductsByNotProductGroupIDs(Set<String> groupExternalIds) {
@@ -172,6 +173,7 @@ class ProductDAOImpl implements ProductDAO {
         }
         em.flush();
     }
+    
     @Override
     @Transactional(propagation = Propagation.SUPPORTS)
     public Product getProductByUrl(String url) {
@@ -182,6 +184,7 @@ class ProductDAOImpl implements ProductDAO {
         List<Product> list = em.createQuery(criteria).getResultList();
         return list.isEmpty() ? null : list.get(0);
     }
+    
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void resetDiscounts() {

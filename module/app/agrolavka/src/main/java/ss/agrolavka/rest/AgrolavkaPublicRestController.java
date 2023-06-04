@@ -54,7 +54,9 @@ class AgrolavkaPublicRestController {
      */
     @RequestMapping(value = "/search", method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ProductsSearchResponse search(@RequestParam(value = "searchText", required = false) String searchText) {
+    public ProductsSearchResponse search(
+        @RequestParam(value = "searchText", required = false) final String searchText
+    ) {
         return productService.quickSearchProducts(searchText);
     }
     
