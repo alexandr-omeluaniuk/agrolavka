@@ -1,19 +1,53 @@
-import { LitElement, css, html } from 'https://cdn.jsdelivr.net/gh/lit/dist@2/core/lit-core.min.js';
 
-export class SimpleGreeting extends LitElement {
-  static styles = css`p { color: blue }`;
+class XComponent extends HTMLElement {
 
-  static properties = {
-    name: {type: String}
-  };
+    constructor() {
+        super();
 
-  constructor() {
-    super();
-    this.name = 'Somebody';
-  }
+        this.createTemplate();
 
-  render() {
-    return html`<p>Hello, ${this.name}!</p>`;
-  }
+        const template = document.getElementById(this.tag()).content;
+        const shadowRoot = this.attachShadow({mode: "open"});
+        const stylesheet = document.createElement('link');
+        stylesheet.setAttribute('href', 'https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.5.0/mdb.min.css');
+        stylesheet.setAttribute('rel', 'stylesheet');
+        shadowRoot.appendChild(stylesheet);
+        shadowRoot.appendChild(template.cloneNode(true));
+    }
+
+    render() {
+        throw Error('Render function is not defined!');
+    }
+    
+    tag() {
+        throw Error('Tag is not defined!');
+    }
+    
+    createTemplate() {
+        const template = document.createElement('template');
+        template.setAttribute('id', this.tag());
+        template.innerHTML = this.render();
+        document.querySelector('body').appendChild(template);
+    }
 }
-customElements.define('simple-greeting', SimpleGreeting);
+
+class Panel extends XComponent {
+
+    constructor() {
+        super();
+    }
+
+    render() {
+        return `
+        <div class="d-flex rounded-pill shadow-sm p-2">
+            <slot></slot>
+        </div>
+        `;
+    }
+    
+    tag() {
+        return 'x-agr-panel';
+    }
+}
+
+customElements.define('x-agr-panel', Panel);

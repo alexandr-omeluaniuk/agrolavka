@@ -75,7 +75,7 @@
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
 
-        <!-- Vendor CSS Files -->
+        <!-- Vendor JS Files -->
         <script src="https://kit.fontawesome.com/c4a406170c.js" crossorigin="anonymous" async></script>
         <!-- Google Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet"/>
@@ -84,6 +84,7 @@
 
         <!-- Main CSS File -->
         <link href="/assets/css/style-mb.css?v=${staticResourceVersion}" rel="stylesheet">
+        <link href="/assets/css/custom-components.css?v=${staticResourceVersion}" rel="stylesheet">
         <jsp:invoke fragment="headSection"/>
     </head>
 
