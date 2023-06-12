@@ -25,25 +25,17 @@
         </div>
         <div class="agr-mobile-menu-slider">
             <div class="agr-mobile-menu-slide active agr-mobile-menu-main-slide">
-                <div class="list-group list-group-flush mt-4 " style="overflow-y: auto;">
+                <div class="list-group list-group-flush py-2" style="overflow-y: auto;">
                     <t:menu-item-link link="/" label="Главная" icon="home" iconColor="light" labelColor="dark"></t:menu-item-link>
                     <t:menu-item-link link="/catalog" label="Каталог продукции" icon="box-open" iconColor="primary" isCatalogLink="true"></t:menu-item-link>
-                    <!--a href="/catalog" class="list-group-item list-group-item-action py-2 ripple d-flex align-items-center" aria-current="true" data-catalog="-1">
-                        <div style="flex: 1;"><i class="fas fa-box-open fa-fw me-3"></i><b class="agr-menu-item-higlight">Каталог продукции</b></div>
-                        <i class="fas fa-chevron-right"></i>
-                    </a-->
                     <t:menu-item-link link="/promotions" label="Акции" icon="fire" iconColor="danger" labelColor="danger"></t:menu-item-link>
                     <t:menu-item-link link="/shops" label="Магазины" icon="store" iconColor="light" labelColor="dark"></t:menu-item-link>
                     <t:menu-item-link link="/delivery" label="Доставка" icon="truck" iconColor="light" labelColor="dark"></t:menu-item-link>
                     <t:menu-item-link link="/discount" label="Дисконтная программа" icon="percent" iconColor="light" labelColor="dark"></t:menu-item-link>
                     <t:menu-item-link link="#contacts" label="Контакты" icon="map-marker-alt" iconColor="light" labelColor="dark"></t:menu-item-link>
                     <t:menu-item-link link="/feedback" label="Написать нам" icon="comment" iconColor="light" labelColor="dark"></t:menu-item-link>
-                    <a class="list-group-item list-group-item-action py-2 ripple d-flex align-items-center agr-external-link" href="https://www.instagram.com/agrolavka.by" target="_blank" rel="noreferrer">
-                        <img src="/assets/img/instagram.ico" alt="Instagram"><span class="ms-2">Инстаграм</span>
-                    </a>
-                    <a class="list-group-item list-group-item-action py-2 ripple d-flex align-items-center agr-external-link" href="https://invite.viber.com/?g2=AQAg5Rkk2LluF0zHtRAvabtjZ4jDtGaaMApRoqe3%2FboHZogbep9nBgCTSKDPVqTl" target="_blank" rel="noreferrer">
-                        <i class="fab fa-viber" style="font-size: 32px; color: #574e92;"></i><span class="ms-2">Вайбер</span>
-                    </a>
+                    <t:menu-item-link-external link="https://www.instagram.com/agrolavka.by" label="Инстаграм" type="Instagram"></t:menu-item-link-external>
+                    <t:menu-item-link-external link="https://invite.viber.com/?g2=AQAg5Rkk2LluF0zHtRAvabtjZ4jDtGaaMApRoqe3%2FboHZogbep9nBgCTSKDPVqTl" label="Вайбер" type="Viber"></t:menu-item-link-external>
                 </div>
             </div>
         </div>
@@ -162,7 +154,6 @@
         };
 
         document.querySelector('.agr-mobile-menu-slider').addEventListener('click', (evt) => {
-            alert(evt);
             const catalogLink = evt.target.closest('a[data-catalog]');
             if (catalogLink) {
                 evt.stopPropagation();
