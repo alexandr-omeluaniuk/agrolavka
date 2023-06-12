@@ -89,7 +89,7 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
             JSONObject json = new JSONObject(response);
             List<Product> result = new ArrayList<>();
             JSONArray rows = json.getJSONArray("rows");
-            Map<String, ProductsGroup> productGroupsMap = new HashMap();
+            final var productGroupsMap = new HashMap<String, ProductsGroup>();
             List<ProductsGroup> groups = coreDAO.getAll(ProductsGroup.class);
             for (ProductsGroup group : groups) {
                 productGroupsMap.put(group.getExternalId(), group);
@@ -235,7 +235,7 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
         String response = request("/entity/discount", "GET", null);
         JSONObject json = new JSONObject(response);
         JSONArray rows = json.getJSONArray("rows");
-        List<Discount> discounts = new ArrayList();
+        final var discounts = new ArrayList<Discount>();
         for (int i = 0; i < rows.length(); i++) {
             JSONObject row = rows.getJSONObject(i);
             if (row.getBoolean("active") && row.getBoolean("allAgents")
@@ -243,7 +243,7 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
                 Discount discount = new Discount();
                 discount.setExternalId(row.getString("id"));
                 discount.setName(row.getString("name"));
-                discount.setProducts(new ArrayList());
+                discount.setProducts(new ArrayList<>());
                 discount.setDiscount(row.getDouble("discount"));
                 JSONArray assortment = row.getJSONArray("assortment");
                 for (int j = 0; j < assortment.length(); j++) {

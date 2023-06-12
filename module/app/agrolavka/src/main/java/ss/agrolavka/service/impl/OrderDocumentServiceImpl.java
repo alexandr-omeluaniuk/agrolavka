@@ -227,7 +227,7 @@ class OrderDocumentServiceImpl implements OrderDocumentService {
                 .horizontalAlignment(CENTER).build()
         );
         double grandTotal = 0;
-        final List<OrderPosition> positions = new ArrayList(order.getPositions());
+        final var positions = new ArrayList<OrderPosition>(order.getPositions());
         for (int i = 0; i < positions.size(); i++) {
             final OrderPosition position = positions.get(i);
             final String productName = position.getProduct().getName();
