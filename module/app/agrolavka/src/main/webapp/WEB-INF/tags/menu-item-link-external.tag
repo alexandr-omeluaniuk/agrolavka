@@ -14,7 +14,7 @@
 
 <%-- any content can be specified here e.g.: --%>
 <a href="${link}" class="p-1 d-flex align-items-center agr-external-link" target="_blank" rel="noreferrer">
-    <div class="list-group-item list-group-item-action d-flex rounded-pill p-2 align-items-center" style="min-height: 55px;">
+    <div class="list-group-item list-group-item-action d-flex rounded-pill p-2 align-items-center">
         <c:if test="${type == 'Viber'}">
             <i class="fab fa-viber" style="font-size: 32px; color: #574e92;"></i>
         </c:if>

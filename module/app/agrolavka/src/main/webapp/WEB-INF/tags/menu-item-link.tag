@@ -20,7 +20,7 @@
 <%-- any content can be specified here e.g.: --%>
 <a href="${link}" class="p-1 agr-mobile-menu-link" ${isCatalogLink == null ? "" : "data-catalog=\"-1\""}>
     <div class="list-group-item list-group-item-action d-flex rounded-pill p-2 align-items-center">
-        <button class="btn btn-${iconColor} btn-floating me-2" type="button">
+        <button class="btn btn-sm btn-${iconColor} btn-floating me-2" type="button">
             <i class="fas fa-${icon} fa-fw me-3"></i>
         </button>
         <c:if test="${empty isCatalogLink}">
