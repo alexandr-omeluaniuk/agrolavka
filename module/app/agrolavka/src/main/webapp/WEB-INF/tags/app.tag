@@ -84,7 +84,6 @@
 
         <!-- Main CSS File -->
         <link href="/assets/css/style-mb.css?v=${staticResourceVersion}" rel="stylesheet">
-        <link href="/assets/css/custom-components.css?v=${staticResourceVersion}" rel="stylesheet">
         <jsp:invoke fragment="headSection"/>
     </head>
 
@@ -105,7 +104,6 @@
         <script type="module" src="/assets/js/modules/scroll-events.js?v=${staticResourceVersion}"></script>
         <script type="module" src="/assets/js/modules/menu.js?v=${staticResourceVersion}"></script>
         <script type="module" src="/assets/js/modules/util-functions.js?v=${staticResourceVersion}"></script>
-        <script type="module" src="/assets/js/modules/custom-components.js?v=${staticResourceVersion}"></script>
     </body>
 
 </html>

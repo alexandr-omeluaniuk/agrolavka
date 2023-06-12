@@ -47,7 +47,7 @@
 
             <div class="col-12 col-sm-12 col-md-5 col-lg-5 col-xl-4 d-flex flex-column">
                 <div class="d-flex justify-content-end">
-                    <x-agr-panel class="me-4 w-100">
+                    <div class="me-4 d-flex rounded-pill shadow-sm p-2 w-100">
                         <button class="btn btn-primary btn-floating me-2" type="button" data-product-quantity-plus>
                             <i class="fas fa-plus"></i>
                         </button>
@@ -59,13 +59,13 @@
                         <button class="btn btn-primary btn-floating" type="button" data-product-quantity-minus>
                             <i class="fas fa-minus"></i>
                         </button>
-                    </x-agr-panel>
-                    <x-agr-panel>
+                    </div>
+                    <div class="d-flex rounded-pill shadow-sm p-2">
                         <button class="btn btn-danger btn-floating" data-remove-product-from-cart data-product-position-id="${position.positionId}"
                                 type="button">
                             <i class="fas fa-trash"></i>
                         </button>
-                    </x-agr-panel>
+                    </div>
                 </div>
 
                 <t:cart-item-info position="${position}"/>

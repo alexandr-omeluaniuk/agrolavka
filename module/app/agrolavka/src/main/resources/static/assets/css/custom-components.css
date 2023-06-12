@@ -1,7 +1,0 @@
-x-agr-panel {
-  opacity: 0;
-  display: flex;
-}
-x-agr-panel:defined {
-  opacity: 1;
-}
