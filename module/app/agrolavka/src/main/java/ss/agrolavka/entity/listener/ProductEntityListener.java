@@ -33,7 +33,7 @@ class ProductEntityListener extends EntityWithImagesListener implements Platform
     private CoreDao coreDAO;
 
     @Override
-    public Class entity() {
+    public Class<Product> entity() {
         return Product.class;
     }
 
