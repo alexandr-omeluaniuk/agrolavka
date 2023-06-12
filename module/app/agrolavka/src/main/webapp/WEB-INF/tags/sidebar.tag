@@ -7,6 +7,7 @@
 <%@tag description="put the tag description here" pageEncoding="UTF-8" 
        import="ss.agrolavka.util.UrlProducer,ss.entity.agrolavka.ProductsGroup"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 
 <%-- The list of normal or fragment attributes can be specified here: --%>
 
@@ -24,32 +25,19 @@
         </div>
         <div class="agr-mobile-menu-slider">
             <div class="agr-mobile-menu-slide active agr-mobile-menu-main-slide">
-                <div class="list-group list-group-flush mt-4 ">
-                    <a href="/" class="list-group-item list-group-item-action py-2 ripple agr-mobile-menu-link" aria-current="true">
-                        <i class="fas fa-home fa-fw me-3"></i><span>Главная</span>
-                    </a>
-                    <a href="/catalog" class="list-group-item list-group-item-action py-2 ripple d-flex align-items-center" aria-current="true" data-catalog="-1">
+                <div class="list-group list-group-flush mt-4 " style="overflow-y: auto;">
+                    <t:menu-item-link link="/" label="Главная" icon="home" iconColor="light" labelColor="dark"></t:menu-item-link>
+                    <t:menu-item-link link="/catalog" label="Каталог продукции" icon="box-open" iconColor="primary" isCatalogLink="true"></t:menu-item-link>
+                    <!--a href="/catalog" class="list-group-item list-group-item-action py-2 ripple d-flex align-items-center" aria-current="true" data-catalog="-1">
                         <div style="flex: 1;"><i class="fas fa-box-open fa-fw me-3"></i><b class="agr-menu-item-higlight">Каталог продукции</b></div>
                         <i class="fas fa-chevron-right"></i>
-                    </a>
-                    <a href="/promotions" class="list-group-item list-group-item-action py-2 ripple text-danger agr-mobile-menu-link" aria-current="true">
-                        <i class="fas fas fa-fire fa-fw me-3"></i><b>Акции</b>
-                    </a>
-                    <a href="/shops" class="list-group-item list-group-item-action py-2 ripple agr-mobile-menu-link" aria-current="true">
-                        <i class="fas fa-store fa-fw me-3"></i><span>Магазины</span>
-                    </a>
-                    <a href="/delivery" class="list-group-item list-group-item-action py-2 ripple agr-mobile-menu-link" aria-current="true">
-                        <i class="fas fa-truck fa-fw me-3"></i><span>Доставка</span>
-                    </a>
-                    <a href="/discount" class="list-group-item list-group-item-action py-2 ripple agr-mobile-menu-link" aria-current="true">
-                        <i class="fas fa-percent fa-fw me-3"></i><span>Дисконтная программа</span>
-                    </a>
-                    <a href="#contacts" class="list-group-item list-group-item-action py-2 ripple agr-mobile-menu-link" aria-current="true">
-                        <i class="fas fa-map-marker-alt fa-fw me-3"></i><span>Контакты</span>
-                    </a>
-                    <a href="/feedback" class="list-group-item list-group-item-action py-2 ripple agr-mobile-menu-link" aria-current="true">
-                        <i class="fas fa-comment fa-fw me-3"></i><span>Написать нам</span>
-                    </a>
+                    </a-->
+                    <t:menu-item-link link="/promotions" label="Акции" icon="fire" iconColor="danger" labelColor="danger"></t:menu-item-link>
+                    <t:menu-item-link link="/shops" label="Магазины" icon="store" iconColor="light" labelColor="dark"></t:menu-item-link>
+                    <t:menu-item-link link="/delivery" label="Доставка" icon="truck" iconColor="light" labelColor="dark"></t:menu-item-link>
+                    <t:menu-item-link link="/discount" label="Дисконтная программа" icon="percent" iconColor="light" labelColor="dark"></t:menu-item-link>
+                    <t:menu-item-link link="#contacts" label="Контакты" icon="map-marker-alt" iconColor="light" labelColor="dark"></t:menu-item-link>
+                    <t:menu-item-link link="/feedback" label="Написать нам" icon="comment" iconColor="light" labelColor="dark"></t:menu-item-link>
                     <a class="list-group-item list-group-item-action py-2 ripple d-flex align-items-center agr-external-link" href="https://www.instagram.com/agrolavka.by" target="_blank" rel="noreferrer">
                         <img src="/assets/img/instagram.ico" alt="Instagram"><span class="ms-2">Инстаграм</span>
                     </a>
@@ -174,6 +162,7 @@
         };
 
         document.querySelector('.agr-mobile-menu-slider').addEventListener('click', (evt) => {
+            alert(evt);
             const catalogLink = evt.target.closest('a[data-catalog]');
             if (catalogLink) {
                 evt.stopPropagation();
