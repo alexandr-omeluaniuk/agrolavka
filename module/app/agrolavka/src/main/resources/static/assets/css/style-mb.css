@@ -587,3 +587,6 @@ and open the template in the editor.
     border-color: var(--bs-purple);
     color: var(--bs-purple);
 }
+.text-primary {
+    color: var(--agr-bs-purple-dark) !important;
+}

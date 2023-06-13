@@ -26,14 +26,15 @@
         <div class="agr-mobile-menu-slider">
             <div class="agr-mobile-menu-slide active agr-mobile-menu-main-slide">
                 <div class="list-group list-group-flush py-2" style="overflow-y: auto;">
-                    <t:menu-item-link link="/" label="Главная" icon="home" iconColor="light" labelColor="dark"></t:menu-item-link>
-                    <t:menu-item-link link="/catalog" label="Каталог продукции" icon="box-open" iconColor="primary" isCatalogLink="true"></t:menu-item-link>
-                    <t:menu-item-link link="/promotions" label="Акции" icon="fire" iconColor="danger" labelColor="danger"></t:menu-item-link>
-                    <t:menu-item-link link="/shops" label="Магазины" icon="store" iconColor="light" labelColor="dark"></t:menu-item-link>
-                    <t:menu-item-link link="/delivery" label="Доставка" icon="truck" iconColor="light" labelColor="dark"></t:menu-item-link>
-                    <t:menu-item-link link="/discount" label="Дисконтная программа" icon="percent" iconColor="light" labelColor="dark"></t:menu-item-link>
-                    <t:menu-item-link link="#contacts" label="Контакты" icon="map-marker-alt" iconColor="light" labelColor="dark"></t:menu-item-link>
-                    <t:menu-item-link link="/feedback" label="Написать нам" icon="comment" iconColor="light" labelColor="dark"></t:menu-item-link>
+                    <x-agr-menu-item class="p-1" link="/" label="Главная" icon="home" icon-color="light" label-color="dark"></x-agr-menu-item>
+                    <x-agr-menu-item class="p-1" link="/catalog" label="Каталог продукции" icon="sitemap" icon-color="primary" label-color="primary" 
+                                     end-icon="chevron-right" link-attributes="data-catalog='-1'" bold-label></x-agr-menu-item>
+                    <x-agr-menu-item class="p-1" link="/promotions" label="Акции" icon="fire" icon-color="danger" label-color="danger" bold-label></x-agr-menu-item>
+                    <x-agr-menu-item class="p-1" link="/shops" label="Магазины" icon="store" icon-color="light" label-color="dark"></x-agr-menu-item>
+                    <x-agr-menu-item class="p-1" link="/delivery" label="Доставка" icon="truck" icon-color="light" label-color="dark"></x-agr-menu-item>
+                    <x-agr-menu-item class="p-1" link="/discount" label="Дисконтная программа" icon="percent" icon-color="light" label-color="dark"></x-agr-menu-item>
+                    <x-agr-menu-item class="p-1" link="#contacts" label="Контакты" icon="map-marker-alt" icon-color="light" label-color="dark"></x-agr-menu-item>
+                    <x-agr-menu-item class="p-1" link="/feedback" label="Написать нам" icon="comment" icon-color="light" label-color="dark"></x-agr-menu-item>
                     <t:menu-item-link-external link="https://www.instagram.com/agrolavka.by" label="Инстаграм" type="Instagram"></t:menu-item-link-external>
                     <t:menu-item-link-external link="https://invite.viber.com/?g2=AQAg5Rkk2LluF0zHtRAvabtjZ4jDtGaaMApRoqe3%2FboHZogbep9nBgCTSKDPVqTl" label="Вайбер" type="Viber"></t:menu-item-link-external>
                 </div>
@@ -41,7 +42,8 @@
         </div>
         <div class="d-flex w-100 align-items-center justify-content-center">
             <div class="text-center p-3">
-                &copy; <strong>Агролавка</strong>. Все права защищены
+                <x-agr-menu-item-icon icon="trademark" color="light"></x-agr-menu-item-icon>
+                <small>Торговая марка</small>. <small class="text-muted">Все права защищены</small>
             </div>
         </div>
     </div>

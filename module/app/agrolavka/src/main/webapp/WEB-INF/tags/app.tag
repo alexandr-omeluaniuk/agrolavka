@@ -104,6 +104,7 @@
         <script type="module" src="/assets/js/modules/scroll-events.js?v=${staticResourceVersion}"></script>
         <script type="module" src="/assets/js/modules/menu.js?v=${staticResourceVersion}"></script>
         <script type="module" src="/assets/js/modules/util-functions.js?v=${staticResourceVersion}"></script>
+        <script type="module" src="/assets/js/modules/custom-components.js?v=${staticResourceVersion}"></script>
     </body>
 
 </html>
