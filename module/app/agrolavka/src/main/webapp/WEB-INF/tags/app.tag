@@ -76,7 +76,9 @@
         <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
 
         <!-- Vendor JS Files -->
-        <script src="https://kit.fontawesome.com/c4a406170c.js" crossorigin="anonymous" async></script>
+        <link href="/assets/fontawesome/css/fontawesome.css" rel="stylesheet">
+        <link href="/assets/fontawesome/css/brands.css" rel="stylesheet">
+        <link href="/assets/fontawesome/css/solid.css" rel="stylesheet">
         <!-- Google Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet"/>
         <!-- MDB -->
