@@ -369,9 +369,6 @@ and open the template in the editor.
 .agr-mobile-menu-separator {
     border-top: 2px solid #dedede !important;
 }
-.agr-mobile-menu-back-button {
-    background-color: lightgray;
-}
 .agr-mobile-menu-back-button:hover {
     cursor: pointer;
 }

@@ -62,9 +62,12 @@ class XCatalogMenuItem extends XElement {
         const href = this.getAttribute('data-href');
         const isTopCategory = this.hasAttribute('data-top-category');
         const catalog = this.getAttribute('data-catalog');
+        const image = this.getAttribute('data-image');
         template.innerHTML = `
             <a href="${href}" class="agr-menu-catalog-group-link ${isTopCategory ? 'agr-menu-item-top-category' : ''}" ${href ? 'data-catalog-nav-link' : ''} ${catalog ? `data-catalog="${catalog}"` : ''}>
                 <div class="list-group-item list-group-item-action d-flex rounded-pill p-2 align-items-center">
+                    <button class="btn btn-sm btn-light btn-floating me-2" type="button" style="background-size: cover; background-image: url('${image}')">
+                    </button>
                     <span class="ms-2" style="flex: 1">${label}</span>
                     ${!href ? '<i class="fas fa-chevron-right fa-fw"></i>' : ''}
                 </div>

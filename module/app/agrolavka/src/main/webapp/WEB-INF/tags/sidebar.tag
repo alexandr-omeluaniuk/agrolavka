@@ -19,9 +19,7 @@
                 <h3 class="mb-0"><i class="fas fa-carrot agr-carrot-logo"></i></h3>
             </a>
             <h4 class="text-center mb-0" style="flex: 1">Агролавка</h4>
-            <button class="navbar-toggler agr-mobile-menu-close-btn" type="button">
-                <i class="fas fa-times fa-fw"></i>
-            </button>
+            <x-agr-menu-item-icon icon="times" color="light" class="agr-mobile-menu-close-btn"></x-agr-menu-item-icon>
         </div>
         <div class="agr-mobile-menu-slider">
             <div class="agr-mobile-menu-slide active agr-mobile-menu-main-slide">
@@ -94,20 +92,24 @@
             let sb = '';
             data.forEach(item => {
                 const isLeaf = !catalog[item.externalId];
+                const image = item.images[0];
+                const imageUrl = image ? '/media/' + image.fileNameOnDisk + '?timestamp=' + image.lastModifiedDate : '/assets/img/no-image.png';
                 sb += '<x-agr-catalog-menu-item class="p-1" data-label="' + item.name + '" ' 
                         + (isLeaf ? 'data-href="' + buildProguctGroupUrl(item) + '" data-catalog-nav-link=""' : ' data-catalog="' + item.externalId + '"') + (item.topCategory ? ' data-top-category' : '') 
-                        + '></x-agr-catalog-menu-item>';
+                        + ' data-image="' + imageUrl + '"></x-agr-catalog-menu-item>';
             });
             const category = findGroup(id);
-            const backButton = '<a class="list-group-item list-group-item-action py-2 agr-mobile-menu-back-button d-flex align-items-center" data-catalog-back="' + id + '">'
+            const backButton = '<a class="agr-mobile-menu-back-button" data-catalog-back="' + id + '">'
+                    + '<div class="list-group-item list-group-item-action d-flex rounded-pill p-2 align-items-center">'
                     + '<i class="fas fa-chevron-left fa-fw me-1"></i>'
                     + '<span class="ms-2">' + (id === "-1" ? "Каталог продукции" : category.name) + '</span>'
+                    + '</div>'
                     + '</a>';
             const template = '<div class="agr-mobile-menu-slide" data-slide="' + id + '">'
-                    + '<div class="list-group list-group-flush">'
+                    + '<div class="ps-2 pe-2 list-group list-group-flush">'
                     + backButton
                     + '<a class="agr-link agr-external-link text-center mt-2 mb-1" href="' + (category ? buildProguctGroupUrl(category) : '/catalog') + '" style="text-decoration: underline;">'
-                    + '«Посмотреть все»</a>'
+                    + '<small>«Посмотреть все»</small></a>'
                     + '</div>'
                     + '<div class="list-group list-group-flush mt-2 agr-scrollable-list-group">' + sb + '</div>'
                     + '</div>';
