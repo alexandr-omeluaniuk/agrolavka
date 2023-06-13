@@ -402,6 +402,9 @@ and open the template in the editor.
         inset 0px -11px 8px -10px #CCC;
     flex: 1;
 }
+.agr-scrollable-list-group {
+    padding: 10px 0px 10px 0px;
+}
 .agr-mobile-menu-slide.active {
     display: flex;
     flex-direction: column;
@@ -467,7 +470,7 @@ and open the template in the editor.
 .agr-menu-catalog-group-link:hover {
     cursor: pointer;
 }
-.agr-menu-item-top-category {
+.agr-menu-item-top-category span {
     font-weight: 800;
     color: var(--agr-bs-purple-dark);
 }
