@@ -14,7 +14,7 @@
 <%@attribute name="structuredData" fragment="true" required="false"%>
 <%@attribute name="headSection" fragment="true" required="false"%>
 
-<c:set var="staticResourceVersion" value="30"/>
+<c:set var="staticResourceVersion" value="32"/>
 
 <%-- any content can be specified here e.g.: --%>
 <!DOCTYPE html>
@@ -71,7 +71,6 @@
         <link href="/favicon.svg?" rel="icon">
         <link href="/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
         
-        <link rel="preconnect" href="https://kit.fontawesome.com" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
 
@@ -85,7 +84,7 @@
         <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.5.0/mdb.min.css" rel="stylesheet"/>
 
         <!-- Main CSS File -->
-        <link href="/assets/css/style-mb.css?v=${staticResourceVersion}" rel="stylesheet">
+        <link href="/assets/css/style-mb.css?version=${staticResourceVersion}" rel="stylesheet">
         <jsp:invoke fragment="headSection"/>
     </head>
 
@@ -100,13 +99,13 @@
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.5.0/mdb.min.js"></script>
         <script type="text/javascript" src="/assets/vendor/purecounter/purecounter.js"></script>
         <!-- Main JS Files -->
-        <script type="module" src="/assets/js/main-mb.js?v=${staticResourceVersion}"></script>
-        <script type="module" src="/assets/js/modules/product-card.js?v=${staticResourceVersion}"></script>
-        <script type="module" src="/assets/js/modules/cart.js?v=${staticResourceVersion}"></script>
-        <script type="module" src="/assets/js/modules/scroll-events.js?v=${staticResourceVersion}"></script>
-        <script type="module" src="/assets/js/modules/menu.js?v=${staticResourceVersion}"></script>
-        <script type="module" src="/assets/js/modules/util-functions.js?v=${staticResourceVersion}"></script>
-        <script type="module" src="/assets/js/modules/custom-components.js?v=${staticResourceVersion}"></script>
+        <script type="module" src="/assets/js/main-mb.js?version=${staticResourceVersion}"></script>
+        <script type="module" src="/assets/js/modules/product-card.js?version=${staticResourceVersion}"></script>
+        <script type="module" src="/assets/js/modules/cart.js?version=${staticResourceVersion}"></script>
+        <script type="module" src="/assets/js/modules/scroll-events.js?version=${staticResourceVersion}"></script>
+        <script type="module" src="/assets/js/modules/sidemenu.js?version=${staticResourceVersion}"></script>
+        <script type="module" src="/assets/js/modules/util-functions.js?version=${staticResourceVersion}"></script>
+        <script type="module" src="/assets/js/modules/custom-components.js?version=${staticResourceVersion}"></script>
     </body>
 
 </html>

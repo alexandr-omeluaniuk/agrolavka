@@ -2,7 +2,7 @@
 
 import { handleCartClickEvent, handleCartChangeEvent } from './modules/cart.js';
 import { initScrollEvents} from './modules/scroll-events.js';
-import { handleMenuEvent } from './modules/menu.js';
+import { handleMenuEvent } from './modules/sidemenu.js';
 import { handleProductCardEvent } from "./modules/product-card.js";
 
 (function () {

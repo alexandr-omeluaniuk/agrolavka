@@ -41,7 +41,7 @@
         <div class="d-flex w-100 align-items-center justify-content-center">
             <div class="text-center p-3">
                 <x-agr-menu-item-icon icon="trademark" color="light"></x-agr-menu-item-icon>
-                <small>Торговая марка</small>. <small class="text-muted">Все права защищены</small>
+                <small>Торговая марка</small>, <small class="text-muted">Все права защищены</small>
             </div>
         </div>
     </div>
