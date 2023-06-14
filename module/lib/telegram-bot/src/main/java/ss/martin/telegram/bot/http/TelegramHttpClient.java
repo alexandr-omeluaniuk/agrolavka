@@ -6,6 +6,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse.BodyHandlers;
 import java.time.Duration;
+import java.util.List;
 import ss.martin.base.lang.ThrowingSupplier;
 import ss.martin.telegram.bot.exception.TelegramBotException;
 import ss.martin.telegram.bot.model.Response;
@@ -31,12 +32,11 @@ public class TelegramHttpClient {
     }
 
     public <T> T get(final String endpoint, Class<T> responseType) {
-        final var response = get(endpoint);
-        if (response.ok()) {
-            return ((ThrowingSupplier<T>) () -> objectMapper.readValue(response.result().toString(), responseType)).get();
-        } else {
-            throw new TelegramBotException(response.result().toString());
-        }
+        return extractSingle(get(endpoint), responseType);
+    }
+    
+    public <T> List<T> getList(final String endpoint, Class<T> responseType) {
+        return extractList(get(endpoint), responseType);
     }
 
     private Response get(final String endpoint) {
@@ -47,6 +47,23 @@ public class TelegramHttpClient {
                     BodyHandlers.ofString()).body(),
                 Response.class
             )).get();
+    }
+    
+    private <T> T extractSingle(final Response response, final Class<T> responseType) {
+        if (response.ok()) {
+            return ((ThrowingSupplier<T>) () -> objectMapper.readValue(response.result(), responseType)).get();
+        } else {
+            throw new TelegramBotException(response.result());
+        }
+    }
+    
+    private <T> List<T> extractList(final Response response, final Class<T> responseType) {
+        if (response.ok()) {
+            final var javaType = objectMapper.getTypeFactory().constructCollectionType(List.class, responseType);
+            return ((ThrowingSupplier<List<T>>) () -> objectMapper.readValue(response.result(), javaType)).get();
+        } else {
+            throw new TelegramBotException(response.result());
+        }
     }
 
 }
