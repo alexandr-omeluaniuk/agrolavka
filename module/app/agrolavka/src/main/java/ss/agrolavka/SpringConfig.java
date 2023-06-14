@@ -19,6 +19,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.resource.PathResourceResolver;
 import ss.martin.images.storage.configuration.external.StorageConfiguration;
 import ss.martin.security.configuration.external.NavigationConfiguration;
+import ss.martin.telegram.bot.api.TelegramBot;
 
 /**
  * Spring configuration.
@@ -33,6 +34,10 @@ public class SpringConfig implements WebMvcConfigurer {
     private NavigationConfiguration navigationConfiguration;
     @Autowired
     private StorageConfiguration storageConfiguration;
+    
+    @Autowired
+    private AgrolavkaConfiguration agrolavkaConfiguration;
+    
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler(navigationConfiguration.loginPage())
@@ -99,5 +104,10 @@ public class SpringConfig implements WebMvcConfigurer {
     @Bean
     public RestTemplate restTemplate() {
         return new RestTemplate();
+    }
+    
+    @Bean("telegramBotOrders")
+    TelegramBot telegramBotOrders() {
+        return new TelegramBot(agrolavkaConfiguration.telegramBotOrders());
     }
 }

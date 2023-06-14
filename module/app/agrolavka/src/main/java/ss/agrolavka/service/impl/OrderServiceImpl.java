@@ -25,6 +25,7 @@ import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,8 +43,7 @@ import ss.entity.agrolavka.Order;
 import ss.entity.agrolavka.OrderPosition;
 import ss.entity.agrolavka.Product;
 import ss.martin.core.dao.CoreDao;
-import ss.martin.notification.push.api.PushNotificationService;
-import ss.martin.notification.push.api.model.PushNotification;
+import ss.martin.telegram.bot.api.TelegramBot;
 
 /**
  * Order service implementation.
@@ -58,7 +58,8 @@ class OrderServiceImpl implements OrderService {
     private CoreDao coreDAO;
     /** Firebase client. */
     @Autowired
-    private PushNotificationService pushNotificationService;
+    @Qualifier("telegramBotOrders")
+    private TelegramBot telegramBot;
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public Order createOrder(final Order order, final OrderDetailsWrapper orderDetails) throws Exception {
@@ -181,16 +182,16 @@ class OrderServiceImpl implements OrderService {
     }
     
     private void sendNotification(final Order order, final Double total) throws Exception {
-        final PushNotification notification = new PushNotification(
-                "Поступил новый заказ",
-                "Потенциальная сумма заказа - " + String.format("%.2f", total) + " BYN. Номер заказа: " + order.getId(),
-                "https://agrolavka.by/favicon.svg",
-                "https://agrolavka.by/admin/app/agrolavka/order/" + order.getId(),
-                "Открыть",
-                String.valueOf(TimeUnit.DAYS.toSeconds(1)),
-                ""
-        );
-        pushNotificationService.sendTopicNotification(SiteConstants.FIREBASE_TOPIC_ORDER_CREATED, notification);
-        LOG.info("Order created: notification sent");
+//        final PushNotification notification = new PushNotification(
+//                "Поступил новый заказ",
+//                "Потенциальная сумма заказа - " + String.format("%.2f", total) + " BYN. Номер заказа: " + order.getId(),
+//                "https://agrolavka.by/favicon.svg",
+//                "https://agrolavka.by/admin/app/agrolavka/order/" + order.getId(),
+//                "Открыть",
+//                String.valueOf(TimeUnit.DAYS.toSeconds(1)),
+//                ""
+//        );
+//        pushNotificationService.sendTopicNotification(SiteConstants.FIREBASE_TOPIC_ORDER_CREATED, notification);
+//        LOG.info("Order created: notification sent");
     }
 }

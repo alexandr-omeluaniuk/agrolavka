@@ -1,0 +1,9 @@
+plugins {
+    id "java-library-convention"
+}
+
+dependencies {
+    api project(":module:lib:core")
+    
+    testImplementation project(":module:lib:test:common-test")
+}
