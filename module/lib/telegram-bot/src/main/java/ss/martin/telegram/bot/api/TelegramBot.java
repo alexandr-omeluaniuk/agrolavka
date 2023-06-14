@@ -1,6 +1,7 @@
 package ss.martin.telegram.bot.api;
 
 import ss.martin.telegram.bot.http.TelegramHttpClient;
+import ss.martin.telegram.bot.model.User;
 
 /**
  * Telegram bot.
@@ -14,8 +15,14 @@ public class TelegramBot {
     
     public TelegramBot(final String token) {
         this.httpClient = new TelegramHttpClient(String.format(TELEGRAM_BOT_API, token));
-        final var handshakeResponse = this.httpClient.get("/getMe");
-        System.out.println(handshakeResponse);
+    }
+    
+//    private String getUpdates() {
+//        return this.httpClient.get("/getUpdates", Update.class);
+//    }
+    
+    public User getMe() {
+        return this.httpClient.get("/getMe", User.class);
     }
     
 }

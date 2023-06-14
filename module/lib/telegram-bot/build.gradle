@@ -3,7 +3,8 @@ plugins {
 }
 
 dependencies {
-    api project(":module:lib:core")
+    api project(":module:lib:base")
+    implementation "com.fasterxml.jackson.core:jackson-databind"
     
     testImplementation project(":module:lib:test:common-test")
 }

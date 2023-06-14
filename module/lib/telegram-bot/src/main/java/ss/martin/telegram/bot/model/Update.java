@@ -1,9 +1,9 @@
 package ss.martin.telegram.bot.model;
 
 /**
- * Telegram post.
+ * Update model.
  * @author alex
  */
-public class Message {
+public class Update {
     
 }
