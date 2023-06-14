@@ -1,13 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package ss.agrolavka.rest;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -22,18 +16,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ss.agrolavka.constants.SiteConstants;
-import ss.agrolavka.dao.ProductDAO;
 import ss.agrolavka.service.OrderService;
+import ss.agrolavka.service.ProductService;
 import ss.agrolavka.util.AppCache;
-import ss.agrolavka.util.UrlProducer;
 import ss.agrolavka.wrapper.CartProduct;
 import ss.agrolavka.wrapper.OneClickOrderWrapper;
 import ss.agrolavka.wrapper.OrderDetailsWrapper;
-import ss.agrolavka.wrapper.ProductsSearchRequest;
+import ss.agrolavka.wrapper.ProductsSearchResponse;
 import ss.entity.agrolavka.Feedback;
 import ss.entity.agrolavka.Order;
 import ss.entity.agrolavka.OrderPosition;
-import ss.entity.agrolavka.Product;
 import ss.entity.agrolavka.ProductsGroup;
 import ss.martin.core.dao.CoreDao;
 
@@ -42,17 +34,18 @@ import ss.martin.core.dao.CoreDao;
  * @author alex
  */
 @RestController
-@RequestMapping("/api/agrolavka/public")
-class AgrolavkaPublicRESTController {
+@RequestMapping(SiteConstants.URL_PUBLIC)
+class AgrolavkaPublicRestController {
     /** Core DAO. */
     @Autowired
     private CoreDao coreDAO;
-    /** Product DAO. */
+    
     @Autowired
-    private ProductDAO productDAO;
+    private ProductService productService;
     /** Order service. */
     @Autowired
     private OrderService orderService;
+    
     /**
      * Search product.
      * @param searchText search text.
@@ -61,25 +54,12 @@ class AgrolavkaPublicRESTController {
      */
     @RequestMapping(value = "/search", method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> search(@RequestParam(value = "searchText", required = false) String searchText)
-            throws Exception {
-        ProductsSearchRequest request = new ProductsSearchRequest();
-        request.setPage(1);
-        request.setPageSize(100);
-        request.setText(searchText);
-        request.setOrder("asc");
-        request.setOrderBy("name");
-        Map<String, Object> result = new HashMap<>();
-        List<Product> list = productDAO.search(request);
-        for (Product product : list) {
-            product.setBuyPrice(null);
-            product.setQuantity(product.getQuantity() != null && product.getQuantity() > 0 ? 1d : 0d);
-            product.setUrl(UrlProducer.buildProductUrl(product));
-        }
-        result.put("data", list);
-        result.put("count", productDAO.count(request));
-        return result;
+    public ProductsSearchResponse search(
+        @RequestParam(value = "searchText", required = false) final String searchText
+    ) {
+        return productService.quickSearchProducts(searchText);
     }
+    
     /**
      * Add product to cart.
      * @param id product ID.

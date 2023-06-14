@@ -36,7 +36,7 @@ abstract class EntityWithImagesListener {
     ) {
         Map<Long, EntityImage> map = imagesDB.stream()
                 .collect(Collectors.toMap(EntityImage::getId, Function.identity()));
-        List<EntityImage> actualImages = new ArrayList();
+        final var actualImages = new ArrayList<EntityImage>();
         for (EntityImage image : images) {
             if (image.getData() != null) {
                 actualImages.add(image);

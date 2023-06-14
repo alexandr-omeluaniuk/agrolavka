@@ -7,6 +7,7 @@
 <%@tag description="put the tag description here" pageEncoding="UTF-8" 
        import="ss.agrolavka.util.UrlProducer,ss.entity.agrolavka.ProductsGroup"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 
 <%-- The list of normal or fragment attributes can be specified here: --%>
 
@@ -18,50 +19,29 @@
                 <h3 class="mb-0"><i class="fas fa-carrot agr-carrot-logo"></i></h3>
             </a>
             <h4 class="text-center mb-0" style="flex: 1">Агролавка</h4>
-            <button class="navbar-toggler agr-mobile-menu-close-btn" type="button">
-                <i class="fas fa-times fa-fw"></i>
-            </button>
+            <x-agr-menu-item-icon icon="times" color="light" class="agr-mobile-menu-close-btn"></x-agr-menu-item-icon>
         </div>
         <div class="agr-mobile-menu-slider">
             <div class="agr-mobile-menu-slide active agr-mobile-menu-main-slide">
-                <div class="list-group list-group-flush mt-4 ">
-                    <a href="/" class="list-group-item list-group-item-action py-2 ripple agr-mobile-menu-link" aria-current="true">
-                        <i class="fas fa-home fa-fw me-3"></i><span>Главная</span>
-                    </a>
-                    <a href="/catalog" class="list-group-item list-group-item-action py-2 ripple d-flex align-items-center" aria-current="true" data-catalog="-1">
-                        <div style="flex: 1;"><i class="fas fa-box-open fa-fw me-3"></i><b class="agr-menu-item-higlight">Каталог продукции</b></div>
-                        <i class="fas fa-chevron-right"></i>
-                    </a>
-                    <a href="/promotions" class="list-group-item list-group-item-action py-2 ripple text-danger agr-mobile-menu-link" aria-current="true">
-                        <i class="fas fas fa-fire fa-fw me-3"></i><b>Акции</b>
-                    </a>
-                    <a href="/shops" class="list-group-item list-group-item-action py-2 ripple agr-mobile-menu-link" aria-current="true">
-                        <i class="fas fa-store fa-fw me-3"></i><span>Магазины</span>
-                    </a>
-                    <a href="/delivery" class="list-group-item list-group-item-action py-2 ripple agr-mobile-menu-link" aria-current="true">
-                        <i class="fas fa-truck fa-fw me-3"></i><span>Доставка</span>
-                    </a>
-                    <a href="/discount" class="list-group-item list-group-item-action py-2 ripple agr-mobile-menu-link" aria-current="true">
-                        <i class="fas fa-percent fa-fw me-3"></i><span>Дисконтная программа</span>
-                    </a>
-                    <a href="#contacts" class="list-group-item list-group-item-action py-2 ripple agr-mobile-menu-link" aria-current="true">
-                        <i class="fas fa-map-marker-alt fa-fw me-3"></i><span>Контакты</span>
-                    </a>
-                    <a href="/feedback" class="list-group-item list-group-item-action py-2 ripple agr-mobile-menu-link" aria-current="true">
-                        <i class="fas fa-comment fa-fw me-3"></i><span>Написать нам</span>
-                    </a>
-                    <a class="list-group-item list-group-item-action py-2 ripple d-flex align-items-center agr-external-link" href="https://www.instagram.com/agrolavka.by" target="_blank" rel="noreferrer">
-                        <img src="/assets/img/instagram.ico" alt="Instagram"><span class="ms-2">Инстаграм</span>
-                    </a>
-                    <a class="list-group-item list-group-item-action py-2 ripple d-flex align-items-center agr-external-link" href="https://invite.viber.com/?g2=AQAg5Rkk2LluF0zHtRAvabtjZ4jDtGaaMApRoqe3%2FboHZogbep9nBgCTSKDPVqTl" target="_blank" rel="noreferrer">
-                        <i class="fab fa-viber" style="font-size: 32px; color: #574e92;"></i><span class="ms-2">Вайбер</span>
-                    </a>
+                <div class="list-group list-group-flush py-2" style="overflow-y: auto;">
+                    <x-agr-menu-item class="p-1" link="/" label="Главная" icon="home" icon-color="light" label-color="dark"></x-agr-menu-item>
+                    <x-agr-menu-item class="p-1" link="/catalog" label="Каталог продукции" icon="sitemap" icon-color="primary" label-color="primary" 
+                                     end-icon="chevron-right" link-attributes="data-catalog='-1'" bold-label></x-agr-menu-item>
+                    <x-agr-menu-item class="p-1" link="/promotions" label="Акции" icon="fire" icon-color="danger" label-color="danger" bold-label></x-agr-menu-item>
+                    <x-agr-menu-item class="p-1" link="/shops" label="Магазины" icon="store" icon-color="light" label-color="dark"></x-agr-menu-item>
+                    <x-agr-menu-item class="p-1" link="/delivery" label="Доставка" icon="truck" icon-color="light" label-color="dark"></x-agr-menu-item>
+                    <x-agr-menu-item class="p-1" link="/discount" label="Дисконтная программа" icon="percent" icon-color="light" label-color="dark"></x-agr-menu-item>
+                    <x-agr-menu-item class="p-1" link="#contacts" label="Контакты" icon="map-marker-alt" icon-color="light" label-color="dark"></x-agr-menu-item>
+                    <x-agr-menu-item class="p-1" link="/feedback" label="Написать нам" icon="comment" icon-color="light" label-color="dark"></x-agr-menu-item>
+                    <t:menu-item-link-external link="https://www.instagram.com/agrolavka.by" label="Инстаграм" type="Instagram"></t:menu-item-link-external>
+                    <t:menu-item-link-external link="https://invite.viber.com/?g2=AQAg5Rkk2LluF0zHtRAvabtjZ4jDtGaaMApRoqe3%2FboHZogbep9nBgCTSKDPVqTl" label="Вайбер" type="Viber"></t:menu-item-link-external>
                 </div>
             </div>
         </div>
         <div class="d-flex w-100 align-items-center justify-content-center">
             <div class="text-center p-3">
-                &copy; <strong>Агролавка</strong>. Все права защищены
+                <x-agr-menu-item-icon icon="trademark" color="light"></x-agr-menu-item-icon>
+                <small>Торговая марка</small>, <small class="text-muted">Все права защищены</small>
             </div>
         </div>
     </div>
@@ -112,24 +92,24 @@
             let sb = '';
             data.forEach(item => {
                 const isLeaf = !catalog[item.externalId];
-                const attributes = isLeaf ? ' href="' + buildProguctGroupUrl(item) + '" data-catalog-nav-link=""' : ' data-catalog="' + item.externalId + '"';
-                const nextIcon = isLeaf ? '' : '<i class="fas fa-chevron-right fa-fw"></i>';
-                sb += '<a class="agr-menu-catalog-group-link list-group-item list-group-item-action py-2 d-flex align-items-center '
-                        + (item.topCategory ? 'agr-menu-item-top-category' : '') + '" ' + attributes + '>'
-                        + '<span class="ms-2" style="flex: 1">' + item.name + '</span>'
-                        + nextIcon
-                        + '</a>';
+                const image = item.images[0];
+                const imageUrl = image ? '/media/' + image.fileNameOnDisk + '?timestamp=' + image.lastModifiedDate : '/assets/img/no-image.png';
+                sb += '<x-agr-catalog-menu-item class="p-1" data-label="' + item.name + '" ' 
+                        + (isLeaf ? 'data-href="' + buildProguctGroupUrl(item) + '" data-catalog-nav-link=""' : ' data-catalog="' + item.externalId + '"') + (item.topCategory ? ' data-top-category' : '') 
+                        + ' data-image="' + imageUrl + '"></x-agr-catalog-menu-item>';
             });
             const category = findGroup(id);
-            const backButton = '<a class="list-group-item list-group-item-action py-2 agr-mobile-menu-back-button d-flex align-items-center" data-catalog-back="' + id + '">'
+            const backButton = '<a class="agr-mobile-menu-back-button" data-catalog-back="' + id + '">'
+                    + '<div class="list-group-item list-group-item-action d-flex rounded-pill p-2 align-items-center">'
                     + '<i class="fas fa-chevron-left fa-fw me-1"></i>'
                     + '<span class="ms-2">' + (id === "-1" ? "Каталог продукции" : category.name) + '</span>'
+                    + '</div>'
                     + '</a>';
             const template = '<div class="agr-mobile-menu-slide" data-slide="' + id + '">'
-                    + '<div class="list-group list-group-flush">'
+                    + '<div class="ps-2 pe-2 list-group list-group-flush">'
                     + backButton
                     + '<a class="agr-link agr-external-link text-center mt-2 mb-1" href="' + (category ? buildProguctGroupUrl(category) : '/catalog') + '" style="text-decoration: underline;">'
-                    + '«Посмотреть все»</a>'
+                    + '<small>«Посмотреть все»</small></a>'
                     + '</div>'
                     + '<div class="list-group list-group-flush mt-2 agr-scrollable-list-group">' + sb + '</div>'
                     + '</div>';

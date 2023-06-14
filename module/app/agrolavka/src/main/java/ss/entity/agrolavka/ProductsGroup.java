@@ -1,12 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package ss.entity.agrolavka;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import java.io.Serializable;
 import java.util.List;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -30,10 +24,7 @@ import ss.martin.core.anno.Updatable;
  */
 @Entity
 @Table(name = "products_group")
-public class ProductsGroup extends ExternalEntity implements Serializable, Comparable<ProductsGroup> {
-    /** Default UID. */
-    private static final long serialVersionUID = 1L;
-    // =============================================== FIELDS =========================================================
+public class ProductsGroup extends ExternalEntity implements Comparable<ProductsGroup> {
     /** Name. */
     @Updatable
     @NotNull
@@ -80,125 +71,88 @@ public class ProductsGroup extends ExternalEntity implements Serializable, Compa
             inverseJoinColumns = @JoinColumn(name = "image_id", referencedColumnName = "id"))
     @Fetch(FetchMode.SUBSELECT)
     private List<EntityImage> images;
-    // =============================================== SET & GET ======================================================
-    /**
-     * @return the name
-     */
+    
     public String getName() {
         return name;
     }
-    /**
-     * @param name the name to set
-     */
+    
     public void setName(String name) {
         this.name = name;
     }
-    /**
-     * @return the parentId
-     */
+    
     public String getParentId() {
         return parentId;
     }
-    /**
-     * @param parentId the parentId to set
-     */
+    
     public void setParentId(String parentId) {
         this.parentId = parentId;
     }
-    /**
-     * @return the products
-     */
+    
     public List<Product> getProducts() {
         return products;
     }
-    /**
-     * @param products the products to set
-     */
+    
     public void setProducts(List<Product> products) {
         this.products = products;
     }
-    /**
-     * @return the url
-     */
+    
     public String getUrl() {
         return url;
     }
-    /**
-     * @param url the url to set
-     */
+    
     public void setUrl(String url) {
         this.url = url;
     }
-    /**
-     * @return the topCategory
-     */
+    
     public Boolean isTopCategory() {
         return topCategory;
     }
-    /**
-     * @param topCategory the topCategory to set
-     */
+    
     public void setTopCategory(Boolean topCategory) {
         this.topCategory = topCategory;
     }
-    /**
-     * @return the description
-     */
+    
     public String getDescription() {
         return description;
     }
-    /**
-     * @param description the description to set
-     */
+    
     public void setDescription(String description) {
         this.description = description;
     }
-    /**
-     * @return the seoTitle
-     */
+    
     public String getSeoTitle() {
         return seoTitle;
     }
-    /**
-     * @param seoTitle the seoTitle to set
-     */
+    
     public void setSeoTitle(String seoTitle) {
         this.seoTitle = seoTitle;
     }
-    /**
-     * @return the seoDescription
-     */
+    
     public String getSeoDescription() {
         return seoDescription;
     }
-    /**
-     * @param seoDescription the seoDescription to set
-     */
+    
     public void setSeoDescription(String seoDescription) {
         this.seoDescription = seoDescription;
     }
-    /**
-     * @return the images
-     */
+    
     public List<EntityImage> getImages() {
         return images;
     }
-    /**
-     * @param images the images to set
-     */
+    
     public void setImages(List<EntityImage> images) {
         this.images = images;
     }
-    // ================================================================================================================
+    
     @Override
     public int hashCode() {
         int hash = 0;
         hash += (getId() != null ? getId().hashCode() : 0);
         return hash;
     }
+    
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
         if (!(object instanceof ProductsGroup)) {
             return false;
         }
@@ -206,6 +160,7 @@ public class ProductsGroup extends ExternalEntity implements Serializable, Compa
         return !((this.getId() == null && other.getId() != null)
                 || (this.getId() != null && !this.getId().equals(other.getId())));
     }
+    
     @Override
     public String toString() {
         return "ProductsGroup[ id=" + getId() + ", name=" + getName()

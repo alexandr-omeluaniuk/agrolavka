@@ -30,6 +30,9 @@ const openMobileMenu = (evt, element) => {
 };
 
 const closeMobileMenu = (evt, element) => {
+    if (evt.target.closest('a[data-catalog]')) {
+        return;
+    }
     evt.stopPropagation();
     const sidebar = document.querySelector('.agr-menu-sidebar');
     const body = document.querySelector('body');

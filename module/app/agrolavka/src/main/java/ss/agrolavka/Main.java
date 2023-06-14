@@ -17,7 +17,7 @@ import ss.martin.base.constants.PlatformConfiguration;
  * @author ss
  */
 @SpringBootApplication
-@ConfigurationPropertiesScan(PlatformConfiguration.BASE_PACKAGE_SCAN)
+@ConfigurationPropertiesScan({ PlatformConfiguration.BASE_PACKAGE_SCAN, "ss.agrolavka" })
 public class Main extends SpringBootServletInitializer {
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {

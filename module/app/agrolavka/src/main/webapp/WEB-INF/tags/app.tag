@@ -4,6 +4,7 @@
     Author     : alex
 --%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@tag description="Application template" pageEncoding="UTF-8"%>
 
 <%-- The list of normal or fragment attributes can be specified here: --%>
@@ -12,6 +13,8 @@
 <%@attribute name="canonical" required="true" type="String"%>
 <%@attribute name="structuredData" fragment="true" required="false"%>
 <%@attribute name="headSection" fragment="true" required="false"%>
+
+<c:set var="staticResourceVersion" value="32"/>
 
 <%-- any content can be specified here e.g.: --%>
 <!DOCTYPE html>
@@ -68,19 +71,20 @@
         <link href="/favicon.svg?" rel="icon">
         <link href="/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
         
-        <link rel="preconnect" href="https://kit.fontawesome.com" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
 
-        <!-- Vendor CSS Files -->
-        <script src="https://kit.fontawesome.com/c4a406170c.js" crossorigin="anonymous" async></script>
+        <!-- Vendor JS Files -->
+        <link href="/assets/fontawesome/css/fontawesome.css" rel="stylesheet">
+        <link href="/assets/fontawesome/css/brands.css" rel="stylesheet">
+        <link href="/assets/fontawesome/css/solid.css" rel="stylesheet">
         <!-- Google Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet"/>
         <!-- MDB -->
         <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.5.0/mdb.min.css" rel="stylesheet"/>
 
         <!-- Main CSS File -->
-        <link href="/assets/css/style-mb.css?v=28" rel="stylesheet">
+        <link href="/assets/css/style-mb.css?version=${staticResourceVersion}" rel="stylesheet">
         <jsp:invoke fragment="headSection"/>
     </head>
 
@@ -95,12 +99,13 @@
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.5.0/mdb.min.js"></script>
         <script type="text/javascript" src="/assets/vendor/purecounter/purecounter.js"></script>
         <!-- Main JS Files -->
-        <script type="module" src="/assets/js/main-mb.js?v=18"></script>
-        <script type="module" src="/assets/js/modules/product-card.js?v=1"></script>
-        <script type="module" src="/assets/js/modules/cart.js?v=1"></script>
-        <script type="module" src="/assets/js/modules/scroll-events.js?v=1"></script>
-        <script type="module" src="/assets/js/modules/menu.js?v=1"></script>
-        <script type="module" src="/assets/js/modules/util-functions.js?v=1"></script>
+        <script type="module" src="/assets/js/main-mb.js?version=${staticResourceVersion}"></script>
+        <script type="module" src="/assets/js/modules/product-card.js?version=${staticResourceVersion}"></script>
+        <script type="module" src="/assets/js/modules/cart.js?version=${staticResourceVersion}"></script>
+        <script type="module" src="/assets/js/modules/scroll-events.js?version=${staticResourceVersion}"></script>
+        <script type="module" src="/assets/js/modules/sidemenu.js?version=${staticResourceVersion}"></script>
+        <script type="module" src="/assets/js/modules/util-functions.js?version=${staticResourceVersion}"></script>
+        <script type="module" src="/assets/js/modules/custom-components.js?version=${staticResourceVersion}"></script>
     </body>
 
 </html>
