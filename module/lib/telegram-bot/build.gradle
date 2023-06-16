@@ -6,5 +6,6 @@ dependencies {
     api project(":module:lib:base")
     implementation "com.fasterxml.jackson.core:jackson-databind"
     
-    testImplementation project(":module:lib:test:common-test")
+    testImplementation(platform('org.junit:junit-bom'))
+    testImplementation('org.junit.jupiter:junit-jupiter')
 }

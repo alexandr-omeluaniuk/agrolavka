@@ -24,27 +24,39 @@ public class TelegramBot {
         this.httpClient = new TelegramHttpClient(String.format(TELEGRAM_BOT_API, token));
     }
     
-    public synchronized void listenUpdates(final Consumer<List<Update>> updatesConsumer, final long interval) {
+    public synchronized void listenUpdates(
+        final Consumer<List<Update>> updatesConsumer, 
+        final long interval,
+        final Consumer<Exception> errorHandler
+    ) {
         Optional.ofNullable(updatesListener).map(thread -> {
             thread.interrupt();
-            return newUpdatesListener(updatesConsumer, interval);
-        }).orElseGet(() -> newUpdatesListener(updatesConsumer, interval))
+            return newUpdatesListener(updatesConsumer, interval, errorHandler);
+        }).orElseGet(() -> newUpdatesListener(updatesConsumer, interval, errorHandler))
             .start();
-    }
-    
-    private List<Update> getUpdates() {
-        return this.httpClient.getList("/getUpdates", Update.class);
     }
     
     public User getMe() {
         return this.httpClient.get("/getMe", User.class);
     }
     
-    private Thread newUpdatesListener(final Consumer<List<Update>> updatesConsumer, final long interval) {
+    private List<Update> getUpdates() {
+        return this.httpClient.getList("/getUpdates", Update.class);
+    }
+    
+    private Thread newUpdatesListener(
+        final Consumer<List<Update>> updatesConsumer, 
+        final long interval, 
+        final Consumer<Exception> errorHandler
+    ) {
         return new Thread((ThrowingRunnable) () -> {
-            while (true) {
-                updatesConsumer.accept(getUpdates());
-                Thread.sleep(interval);
+            try {
+                while (true) {
+                    updatesConsumer.accept(getUpdates());
+                    Thread.sleep(interval);
+                }
+            } catch (Exception e) {
+                errorHandler.accept(e);
             }
         });
     }
