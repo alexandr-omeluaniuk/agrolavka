@@ -3,11 +3,14 @@ package ss.martin.telegram.bot.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
- * Update model.
- * @author alex
+ * Message.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public record Update(
-    Integer update_id,
-    Message message
+public record Message(
+    Long message_id,
+    User from,
+    Chat chat,
+    Long date,
+    String text,
+    MessageEntity[] entities
 ) {}
