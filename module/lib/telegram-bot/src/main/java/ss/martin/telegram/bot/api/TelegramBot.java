@@ -1,9 +1,7 @@
 package ss.martin.telegram.bot.api;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.function.Consumer;
-import ss.martin.base.lang.ThrowingRunnable;
 import ss.martin.telegram.bot.http.TelegramHttpClient;
 import ss.martin.telegram.bot.model.SendMessage;
 import ss.martin.telegram.bot.model.Update;
@@ -30,11 +28,11 @@ public class TelegramBot {
         final long interval,
         final Consumer<Exception> errorHandler
     ) {
-        Optional.ofNullable(updatesListener).map(thread -> {
-            thread.interrupt();
-            return newUpdatesListener(updatesConsumer, interval, errorHandler);
-        }).orElseGet(() -> newUpdatesListener(updatesConsumer, interval, errorHandler))
-            .start();
+        if (updatesListener == null) {
+            updatesListener = new Thread(new UpdatesThread(updatesConsumer, interval, errorHandler));
+            updatesListener.setName("telegram-bot-" + getMe().username().toLowerCase());
+            updatesListener.start();
+        }
     }
     
     public User getMe() {
@@ -45,25 +43,42 @@ public class TelegramBot {
         return this.httpClient.post("/sendMessage", message);
     }
     
-    private List<Update> getUpdates() {
-        return this.httpClient.getList("/getUpdates", Update.class);
+    private List<Update> getUpdates(final long offset) {
+        return this.httpClient.getList("/getUpdates?offset=" + offset, Update.class);
     }
     
-    private Thread newUpdatesListener(
-        final Consumer<List<Update>> updatesConsumer, 
-        final long interval, 
-        final Consumer<Exception> errorHandler
-    ) {
-        return new Thread((ThrowingRunnable) () -> {
-            try {
-                while (true) {
-                    updatesConsumer.accept(getUpdates());
+    private class UpdatesThread implements Runnable {
+        
+        private final Consumer<List<Update>> updatesConsumer;
+        private final long interval;
+        private final Consumer<Exception> errorHandler;
+        
+        private long offset = 0;
+        
+        public UpdatesThread(
+            final Consumer<List<Update>> updatesConsumer, 
+            final long interval, 
+            final Consumer<Exception> errorHandler
+        ) {
+            this.updatesConsumer = updatesConsumer;
+            this.interval = interval;
+            this.errorHandler = errorHandler;
+        }
+
+        @Override
+        public void run() {
+            while (true) {
+                try {
+                    final var updates = getUpdates(offset);
+                    updates.stream().reduce((first, second) -> second).ifPresent(upd -> {
+                        offset = upd.update_id() + 1;
+                    });
+                    updatesConsumer.accept(updates);
                     Thread.sleep(interval);
+                } catch (Exception e) {
+                    errorHandler.accept(e);
                 }
-            } catch (Exception e) {
-                errorHandler.accept(e);
             }
-        });
+        }
     }
-    
 }
