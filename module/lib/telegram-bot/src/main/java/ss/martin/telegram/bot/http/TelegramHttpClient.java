@@ -30,6 +30,19 @@ public class TelegramHttpClient {
             .connectTimeout(Duration.ofSeconds(20)).build();
         this.objectMapper = new ObjectMapper();
     }
+    
+    public String post(final String endpoint, Object payload) {
+        final var response = ((ThrowingSupplier<Response>) () -> objectMapper.readValue(
+                httpClient.send(
+                    HttpRequest.newBuilder().uri(new URI(rootUri + endpoint))
+                        .header("Content-Type", "application/json").POST(
+                            HttpRequest.BodyPublishers.ofString(objectMapper.writeValueAsString(payload))
+                        ).build(),
+                    BodyHandlers.ofString()).body(),
+                Response.class
+            )).get();
+        return extractString(response);
+    }
 
     public <T> T get(final String endpoint, Class<T> responseType) {
         return extractSingle(get(endpoint), responseType);
@@ -61,6 +74,14 @@ public class TelegramHttpClient {
         if (response.ok()) {
             final var javaType = objectMapper.getTypeFactory().constructCollectionType(List.class, responseType);
             return ((ThrowingSupplier<List<T>>) () -> objectMapper.readValue(response.result(), javaType)).get();
+        } else {
+            throw new TelegramBotException(response.result());
+        }
+    }
+    
+    private String extractString(final Response response) {
+        if (response.ok()) {
+            return response.result();
         } else {
             throw new TelegramBotException(response.result());
         }

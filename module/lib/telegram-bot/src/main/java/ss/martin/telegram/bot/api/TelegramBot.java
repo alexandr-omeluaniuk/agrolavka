@@ -5,6 +5,7 @@ import java.util.Optional;
 import java.util.function.Consumer;
 import ss.martin.base.lang.ThrowingRunnable;
 import ss.martin.telegram.bot.http.TelegramHttpClient;
+import ss.martin.telegram.bot.model.SendMessage;
 import ss.martin.telegram.bot.model.Update;
 import ss.martin.telegram.bot.model.User;
 
@@ -38,6 +39,10 @@ public class TelegramBot {
     
     public User getMe() {
         return this.httpClient.get("/getMe", User.class);
+    }
+    
+    public String sendMessage(final SendMessage message) {
+        return this.httpClient.post("/sendMessage", message);
     }
     
     private List<Update> getUpdates() {

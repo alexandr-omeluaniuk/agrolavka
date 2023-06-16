@@ -10,5 +10,7 @@ import ss.martin.telegram.bot.util.RawJsonDeserializer;
 public record Response(
     boolean ok,
     @JsonDeserialize(using = RawJsonDeserializer.class)
-    String result
+    String result,
+    String error_code,
+    String description
 ) {}
