@@ -15,13 +15,6 @@ public class TelegramBotTest {
     private static final long CHAT_ID = 5288729591L;
     
     @Test
-    public void testGetMe() {
-        final var user = bot.getMe();
-        assertNotNull(user);
-        assertEquals("AgrolavkaTestBot", user.username());
-    }
-    
-    @Test
     public void testSendMessage() {
         final var message = new SendMessage(
             CHAT_ID,

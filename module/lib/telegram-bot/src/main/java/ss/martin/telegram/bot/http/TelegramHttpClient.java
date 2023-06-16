@@ -24,6 +24,10 @@ public class TelegramHttpClient {
 
     private final ObjectMapper objectMapper;
 
+    /**
+     * Constructor.
+     * @param rootUri root URI. 
+     */
     public TelegramHttpClient(final String rootUri) {
         this.rootUri = rootUri;
         this.httpClient = HttpClient.newBuilder().version(HttpClient.Version.HTTP_2)
@@ -31,6 +35,12 @@ public class TelegramHttpClient {
         this.objectMapper = new ObjectMapper();
     }
     
+    /**
+     * Post request.
+     * @param endpoint endpoint.
+     * @param payload payload.
+     * @return response text.
+     */
     public String post(final String endpoint, Object payload) {
         final var response = ((ThrowingSupplier<Response>) () -> objectMapper.readValue(
                 httpClient.send(
@@ -44,12 +54,15 @@ public class TelegramHttpClient {
         return extractString(response);
     }
 
-    public <T> T get(final String endpoint, Class<T> responseType) {
+    /**
+     * Get request.
+     * @param <T> type.
+     * @param endpoint endpoint.
+     * @param responseType response type.
+     * @return response.
+     */
+    public <T> T get(final String endpoint, final Class<T> responseType) {
         return extractSingle(get(endpoint), responseType);
-    }
-    
-    public <T> List<T> getList(final String endpoint, Class<T> responseType) {
-        return extractList(get(endpoint), responseType);
     }
 
     private Response get(final String endpoint) {
@@ -60,6 +73,10 @@ public class TelegramHttpClient {
                     BodyHandlers.ofString()).body(),
                 Response.class
             )).get();
+    }
+    
+    public <T> List<T> getList(final String endpoint, Class<T> responseType) {
+        return extractList(get(endpoint), responseType);
     }
     
     private <T> T extractSingle(final Response response, final Class<T> responseType) {

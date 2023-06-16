@@ -1,14 +1,22 @@
 package ss.martin.telegram.bot.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * Send message.
  * @author alex
  */
 public record SendMessage(
-    Long chat_id,
+    @JsonProperty("chat_id")
+    Long chatId,
     String text,
-    ParseMode parse_mode
+    @JsonProperty("parse_mode")
+    ParseMode parseMode
 ) {
+    
+    /**
+     * Parse mode.
+     */
     public enum ParseMode {
         Markdown, MarkdownV2, HTML
     }

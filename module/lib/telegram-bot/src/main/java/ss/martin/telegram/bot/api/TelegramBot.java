@@ -23,6 +23,12 @@ public class TelegramBot {
         this.httpClient = new TelegramHttpClient(String.format(TELEGRAM_BOT_API, token));
     }
     
+    /**
+     * Listen bot updates.
+     * @param updatesConsumer updates consumer.
+     * @param interval interval for requests.
+     * @param errorHandler error handler.
+     */
     public synchronized void listenUpdates(
         final Consumer<List<Update>> updatesConsumer, 
         final long interval,
@@ -35,16 +41,16 @@ public class TelegramBot {
         }
     }
     
-    public User getMe() {
-        return this.httpClient.get("/getMe", User.class);
-    }
-    
     public String sendMessage(final SendMessage message) {
         return this.httpClient.post("/sendMessage", message);
     }
     
     private List<Update> getUpdates(final long offset) {
         return this.httpClient.getList("/getUpdates?offset=" + offset, Update.class);
+    }
+    
+    private User getMe() {
+        return this.httpClient.get("/getMe", User.class);
     }
     
     private class UpdatesThread implements Runnable {
@@ -71,7 +77,7 @@ public class TelegramBot {
                 try {
                     final var updates = getUpdates(offset);
                     updates.stream().reduce((first, second) -> second).ifPresent(upd -> {
-                        offset = upd.update_id() + 1;
+                        offset = upd.updateId() + 1;
                     });
                     updatesConsumer.accept(updates);
                     Thread.sleep(interval);

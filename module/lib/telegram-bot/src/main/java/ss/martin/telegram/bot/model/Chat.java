@@ -10,7 +10,5 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 public record Chat(
     Long id,
     String type,
-    String first_name,
-    String last_name,
     String username
 ) {}
