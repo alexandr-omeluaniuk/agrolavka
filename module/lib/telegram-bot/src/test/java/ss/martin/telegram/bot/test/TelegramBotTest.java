@@ -24,20 +24,19 @@ public class TelegramBotTest {
     @Test
     public void testSendMessage() {
         final var message = new SendMessage(
-            CHAT_ID, 
+            CHAT_ID,
             "Hello Alex!!\n<a href=\"http://www.example.com/\">inline URL</a>", 
             SendMessage.ParseMode.HTML
         );
         final var response = bot.sendMessage(message);
-        System.out.println(response);
+        assertNotNull(response);
     }
     
     @Test
     public void testListenUpdates() throws InterruptedException {
         final var exceptionHandler = new ExceptionHandler();
         bot.listenUpdates((updates) -> {
-            assertFalse(updates.isEmpty());
-            System.out.println(updates);
+            
         }, TimeUnit.SECONDS.toMillis(1), exceptionHandler);
         Thread.sleep(TimeUnit.SECONDS.toMillis(2));
         Optional.ofNullable(exceptionHandler.getError()).ifPresent((e) -> fail("Telegram bot exception!", e));

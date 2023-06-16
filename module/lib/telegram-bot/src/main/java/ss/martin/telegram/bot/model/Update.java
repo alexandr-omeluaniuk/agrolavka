@@ -8,6 +8,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public record Update(
-    Integer update_id,
+    Long update_id,
     Message message
 ) {}

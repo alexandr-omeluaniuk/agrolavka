@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public record Chat(
-    Integer id,
+    Long id,
     String type,
     String first_name,
     String last_name,
