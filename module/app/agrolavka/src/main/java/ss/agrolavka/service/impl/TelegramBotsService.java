@@ -14,6 +14,7 @@ import ss.agrolavka.AgrolavkaConfiguration;
 import ss.entity.agrolavka.Order;
 import ss.entity.agrolavka.TelegramUser;
 import ss.martin.core.dao.CoreDao;
+import ss.martin.security.configuration.external.DomainConfiguration;
 import ss.martin.telegram.bot.api.TelegramBot;
 import ss.martin.telegram.bot.model.Chat;
 import ss.martin.telegram.bot.model.SendMessage;
@@ -38,6 +39,9 @@ public class TelegramBotsService {
     @Autowired
     private AgrolavkaConfiguration agrolavkaConfiguration;
     
+    @Autowired
+    private DomainConfiguration domainConfiguration;
+    
     @PostConstruct
     void init() {
         LOG.info("Whitelisted Telegram users: " + agrolavkaConfiguration.telegramUsers());
@@ -55,7 +59,7 @@ public class TelegramBotsService {
 Номер заказа: <a href="%s">%s</a>
 """;
         final var sum = String.format("%.2f", total);
-        final var link = "https://agrolavka.by/admin/app/agrolavka/order/" + order.getId();
+        final var link = domainConfiguration.host() + "/admin/app/agrolavka/order/" + order.getId();
         final var text = String.format(textTemplate, sum, link, order.getId());
         coreDao.getAll(TelegramUser.class).stream()
             .filter(user -> user.getBotName().equals(telegramBot.getBotName())).forEach(user -> {
