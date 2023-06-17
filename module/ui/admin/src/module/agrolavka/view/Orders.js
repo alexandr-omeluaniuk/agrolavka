@@ -19,14 +19,12 @@ import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
-import { requestFirebaseToken } from '../../../conf/firebase';
 import AppURLs from '../../../conf/app-urls';
 import { NavLink } from "react-router-dom";
 import moment from 'moment';
 import Price from '../component/Price';
 import { ORDER_CREATED } from '../constants/NotificationTopics';
 import useAuth from '../../../hooks/useAuth';
-import useNotification from '../../../hooks/useNotification';
 import useOrdersForPrint from '../hooks/useOrdersForPrint';
 import Dropdown from '../../../component/form/input/Dropdown';
 import { WAITING_FOR_APPROVAL, APPROVED, DELIVERY, CLOSED} from '../constants/OrderStatus';
@@ -50,8 +48,7 @@ const useStyles = makeStyles(theme => ({
 
 function Orders() {
     const { t } = useTranslation();
-    const { permissions, updatePermissions } = useAuth();
-    const { showNotification } = useNotification();
+    const { permissions } = useAuth();
     const { addOrder, removeOrder, ordersForPrint, clear } = useOrdersForPrint();
     const classes = useStyles();
     const [tableConfig, setTableConfig] = React.useState(null);
@@ -91,41 +88,6 @@ function Orders() {
         );
     };
     const toolbarBefore = () => {
-        const notificationButton = notificationsOn ? (
-                <Tooltip title={t('m_agrolavka:orders.disable_notifications')} key="0">
-                    <IconButton onClick={() => {
-                        requestFirebaseToken().then(token => {
-                            if (token) {
-                                dataService.put(`/platform/firebase/topic/unsubscribe/${token}/${ORDER_CREATED}`).then(() => {
-                                    updatePermissions(() => {
-                                        showNotification(t('m_agrolavka:orders.disable_notifications_success'), '', 'success');
-                                        setNotificationsOn(false);
-                                    });
-                                });
-                            }
-                        });
-                    }}>
-                        <Icon className={classes.notificationsOn}>notifications</Icon>
-                    </IconButton>
-                </Tooltip>
-                ) : (
-                <Tooltip title={t('m_agrolavka:orders.enable_notifications')} key="1">
-                    <IconButton onClick={() => {
-                        requestFirebaseToken().then(token => {
-                            if (token) {
-                                dataService.put(`/platform/firebase/topic/subscribe/${token}/${ORDER_CREATED}`).then(() => {
-                                    updatePermissions(() => {
-                                        showNotification(t('m_agrolavka:orders.enable_notifications_success'), '', 'success');
-                                        setNotificationsOn(true);
-                                    });
-                                });
-                            }
-                        });
-                    }}>
-                        <Icon className={classes.notificationsOff}>notifications_off</Icon>
-                    </IconButton>
-                </Tooltip>
-        );
         const ordersForPrintButton = ordersForPrint.length === 0 ? null : (
                 <Tooltip title={t('m_agrolavka:orders.print')} key="2">
                     <IconButton onClick={() => {
@@ -143,7 +105,6 @@ function Orders() {
         );
         const buttons = [];
         buttons.push(ordersForPrintButton);
-        buttons.push(notificationButton);
         return buttons;
     };
     

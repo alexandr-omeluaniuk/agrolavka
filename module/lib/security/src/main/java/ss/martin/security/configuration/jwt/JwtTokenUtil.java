@@ -60,7 +60,6 @@ public class JwtTokenUtil {
     private Claims createClaims(final UserPrincipal principal) throws Exception {
         final var claims = Jwts.claims();
         claims.put(JwtConstants.CLAIM_KEY_SYSTEM_USER, serializeObjectToJson(principal.getUser()));
-        claims.put(JwtConstants.CLAIM_KEY_USER_AGENT, serializeObjectToJson(principal.getUserAgent()));
         claims.put(
                 JwtConstants.CLAIM_KEY_SUBSCRIPTION, 
                 serializeObjectToJson(principal.getUser().getSubscription())

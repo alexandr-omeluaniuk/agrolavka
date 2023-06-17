@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package ss.agrolavka.task;
 
 import jakarta.annotation.PostConstruct;
@@ -96,7 +91,7 @@ public class DataUpdater {
         try {
             LOG.info("====================================== MY SKLAD DATA UPDATE ===================================");
             securityService.backgroundAuthentication(
-                    configuration.getBackgroundUserUsername(), configuration.getBackgroundUserPassword());
+                    configuration.backgroundUserUsername(), configuration.backgroundUserPassword());
             importPriceTypes();
             importProductGroups();
             importProducts();
@@ -195,7 +190,7 @@ public class DataUpdater {
             coreDAO.delete(discount.getId(), Discount.class);
         }
         List<Discount> discounts = mySkladIntegrationService.getDiscounts();
-        Map<String, Discount> discountsMap = new HashMap();
+        final var discountsMap = new HashMap<String, Discount>();
         for (Discount discount : discounts) {
             discount.getProducts().forEach(p -> {
                 discountsMap.put(p.getExternalId(), discount);

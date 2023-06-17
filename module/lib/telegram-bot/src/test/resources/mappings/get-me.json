@@ -1,0 +1,13 @@
+{
+    "request": {
+        "method": "GET",
+        "url": "/bottoken/getMe"
+    },
+    "response": {
+        "status": 200,
+        "bodyFileName": "getme.json",
+        "headers": {
+            "Content-Type": "application/json"
+        }
+    }
+}

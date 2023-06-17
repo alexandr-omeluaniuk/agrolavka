@@ -11,7 +11,6 @@ import useAuth from '../hooks/useAuth';
 import { DESKTOP_MENU_OPEN } from '../conf/local-storage-keys';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { ToolbarContext } from '../context/ToolbarContext';
-import { initFirebase } from '../conf/firebase';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -58,7 +57,6 @@ function App() {
             history.listen(location => {
                 setCurrentModule(getCurrentModule());
             });
-            initFirebase();
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [permissions, routes]);

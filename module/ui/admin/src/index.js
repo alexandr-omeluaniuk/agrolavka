@@ -89,7 +89,7 @@ serviceWorkerRegistration.register();
 
 // Any other custom service worker logic can go here.
 if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/firebase-messaging-sw.js');
+    // navigator.serviceWorker.register('/firebase-messaging-sw.js');
 }
 
 // If you want to start measuring performance in your app, pass a function

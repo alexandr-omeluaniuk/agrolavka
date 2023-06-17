@@ -1,7 +1,6 @@
 package ss.martin.platform.wrapper;
 
 import ss.entity.martin.Subscription;
-import ss.entity.security.UserAgent;
 import ss.martin.core.constants.StandardRole;
 
 /**
@@ -12,11 +11,10 @@ public record UserPermissions(
     Subscription subscription,
     String fullname,
     Long userId,
-    StandardRole standardRole,
-    UserAgent userAgent
+    StandardRole standardRole
 ) {
 
     public UserPermissions() {
-        this(null, null, null, null, null);
+        this(null, null, null, null);
     }
 }

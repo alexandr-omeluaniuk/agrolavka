@@ -471,7 +471,7 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
     private void authentication() {
         ((ThrowingRunnable) () -> {
             Map<String, String> headers = new HashMap<>();
-            String credentials = configuration.getMySkladUsername() + ":" + configuration.getMySkladPassword();
+            String credentials = configuration.mySkladUsername() + ":" + configuration.mySkladPassword();
             credentials = Base64.getEncoder().encodeToString(credentials.getBytes("UTF-8"));
             LOG.debug("credentials: " + credentials);
             headers.put("Authorization", "Basic " + credentials);

@@ -1,7 +1,7 @@
 rootProject.name = 'martin'
 
 include ':module:lib:test:common-test', ':module:lib:test:security-test'
-include ':module:lib:base', ':module:lib:core', ':module:lib:platform', ':module:lib:security', ':module:lib:images-storage'
+include ':module:lib:base', ':module:lib:core', ':module:lib:platform', ':module:lib:security', ':module:lib:images-storage', ':module:lib:telegram-bot'
 include ':module:lib:notification:notification-email-api', ':module:lib:notification:notification-email-mailjet', ':module:lib:notification:notification-email-smtp'
 include ':module:lib:notification:notification-push-api', ':module:lib:notification:notification-push-firebase'
 include ':module:app:agrolavka'
@@ -14,6 +14,7 @@ dependencyResolutionManagement {
             version('jjwt', '0.11.5')
             version('firebase', '9.1.1')
             version('mailjet', '5.2.2')
+            version('wiremock', '3.0.0-beta-8')
             library('spring-boot-dependencies', 'org.springframework.boot', 'spring-boot-dependencies').versionRef('spring-boot')
             library('jjwt-api', 'io.jsonwebtoken', 'jjwt-api').versionRef('jjwt')
             library('jjwt-impl', 'io.jsonwebtoken', 'jjwt-impl').versionRef('jjwt')
@@ -21,6 +22,7 @@ dependencyResolutionManagement {
             library('firebase', 'com.google.firebase', 'firebase-admin').versionRef('firebase')
             library('mailjet', 'com.mailjet', 'mailjet-client').versionRef('mailjet')
             library('jasypt', 'com.github.ulisesbocchio', 'jasypt-spring-boot-starter').versionRef('spring-boot')
+            library('wiremock', 'com.github.tomakehurst', 'wiremock-standalone').versionRef('wiremock')
         }
     }
 }
