@@ -14,7 +14,7 @@
 <%@attribute name="structuredData" fragment="true" required="false"%>
 <%@attribute name="headSection" fragment="true" required="false"%>
 
-<c:set var="staticResourceVersion" value="32"/>
+<c:set var="staticResourceVersion" value="33"/>
 
 <%-- any content can be specified here e.g.: --%>
 <!DOCTYPE html>
@@ -78,6 +78,7 @@
         <link href="/assets/fontawesome/css/fontawesome.css" rel="stylesheet">
         <link href="/assets/fontawesome/css/brands.css" rel="stylesheet">
         <link href="/assets/fontawesome/css/solid.css" rel="stylesheet">
+        <link href="/assets/fontawesome/css/regular.css" rel="stylesheet">
         <!-- Google Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet"/>
         <!-- MDB -->

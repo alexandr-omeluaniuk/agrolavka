@@ -19,6 +19,8 @@ public class TelegramBot {
     
     private Thread updatesListener;
     
+    private String botName;
+    
     public TelegramBot(final String token) {
         this.httpClient = new TelegramHttpClient(String.format(TELEGRAM_BOT_API, token));
     }
@@ -36,9 +38,14 @@ public class TelegramBot {
     ) {
         if (updatesListener == null) {
             updatesListener = new Thread(new UpdatesThread(updatesConsumer, interval, errorHandler));
-            updatesListener.setName("telegram-bot-" + getMe().username().toLowerCase());
+            this.botName = getMe().username();
+            updatesListener.setName("telegram-bot-" + botName.toLowerCase());
             updatesListener.start();
         }
+    }
+    
+    public String getBotName() {
+        return this.botName;
     }
     
     public String sendMessage(final SendMessage message) {

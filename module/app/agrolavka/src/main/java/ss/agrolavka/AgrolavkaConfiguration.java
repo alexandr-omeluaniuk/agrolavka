@@ -1,7 +1,7 @@
 package ss.agrolavka;
 
+import java.util.List;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
 
 /**
  * Site configuration.
@@ -13,5 +13,6 @@ public record AgrolavkaConfiguration(
     String mySkladPassword,
     String backgroundUserUsername,
     String backgroundUserPassword,
-    String telegramBotOrders
+    String telegramBotOrders,
+    List<String> telegramUsers
 ) {}
