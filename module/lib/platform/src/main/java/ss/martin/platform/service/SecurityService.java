@@ -1,9 +1,7 @@
 package ss.martin.platform.service;
 
-import jakarta.servlet.http.HttpServletRequest;
 import java.util.Set;
 import ss.entity.martin.DataModel;
-import ss.entity.security.UserAgent;
 import ss.martin.platform.constants.EntityPermission;
 import ss.martin.platform.wrapper.UserPermissions;
 
@@ -33,11 +31,4 @@ public interface SecurityService {
      * @param password password.
      */
     void backgroundAuthentication(String username, String password);
-    
-    /**
-     * Get current user agent.
-     * @param httpRequest HTTP request.
-     * @return user agent.
-     */
-    UserAgent getUserAgent(HttpServletRequest httpRequest);
 }

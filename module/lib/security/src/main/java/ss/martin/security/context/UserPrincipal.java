@@ -4,7 +4,6 @@ import java.util.Collection;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import ss.entity.security.SystemUser;
-import ss.entity.security.UserAgent;
 
 /**
  * SystemUser principal.
@@ -13,8 +12,6 @@ import ss.entity.security.UserAgent;
 public class UserPrincipal extends UsernamePasswordAuthenticationToken {
     /** SystemUser. */
     private SystemUser user;
-    /** User agent of logged in user. */
-    private UserAgent userAgent;
     
     /**
      * Constructor.
@@ -33,13 +30,5 @@ public class UserPrincipal extends UsernamePasswordAuthenticationToken {
     
     public void setUser(SystemUser user) {
         this.user = user;
-    }
-    
-    public UserAgent getUserAgent() {
-        return userAgent;
-    }
-    
-    public void setUserAgent(UserAgent userAgent) {
-        this.userAgent = userAgent;
     }
 }
