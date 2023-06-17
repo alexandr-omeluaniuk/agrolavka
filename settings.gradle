@@ -14,6 +14,7 @@ dependencyResolutionManagement {
             version('jjwt', '0.11.5')
             version('firebase', '9.1.1')
             version('mailjet', '5.2.2')
+            version('wiremock', '2.35.0')
             library('spring-boot-dependencies', 'org.springframework.boot', 'spring-boot-dependencies').versionRef('spring-boot')
             library('jjwt-api', 'io.jsonwebtoken', 'jjwt-api').versionRef('jjwt')
             library('jjwt-impl', 'io.jsonwebtoken', 'jjwt-impl').versionRef('jjwt')
@@ -21,6 +22,7 @@ dependencyResolutionManagement {
             library('firebase', 'com.google.firebase', 'firebase-admin').versionRef('firebase')
             library('mailjet', 'com.mailjet', 'mailjet-client').versionRef('mailjet')
             library('jasypt', 'com.github.ulisesbocchio', 'jasypt-spring-boot-starter').versionRef('spring-boot')
+            library('wiremock', 'com.github.tomakehurst', 'wiremock-jre8').versionRef('wiremock')
         }
     }
 }
