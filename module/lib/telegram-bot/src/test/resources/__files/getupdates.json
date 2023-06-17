@@ -1,0 +1,29 @@
+{
+   "ok":true,
+   "result":[
+      {
+         "update_id":372937858,
+         "message":{
+            "message_id":22,
+            "from":{
+               "id":5288729591,
+               "is_bot":false,
+               "first_name":"Alex",
+               "last_name":"Amelyaniuk",
+               "username":"StarshiStrelok",
+               "language_code":"ru"
+            },
+            "chat":{
+               "id":5288729591,
+               "first_name":"Alex",
+               "last_name":"Amelyaniuk",
+               "username":"StarshiStrelok",
+               "type":"private"
+            },
+            "date":1687026009,
+            "text":"123123"
+         }
+      }
+   ]
+}
+

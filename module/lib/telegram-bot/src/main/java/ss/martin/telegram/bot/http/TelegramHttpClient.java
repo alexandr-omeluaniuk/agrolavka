@@ -66,13 +66,14 @@ public class TelegramHttpClient {
     }
 
     private Response get(final String endpoint) {
-        return ((ThrowingSupplier<Response>) () -> objectMapper.readValue(
+        final var response = ((ThrowingSupplier<Response>) () -> objectMapper.readValue(
                 httpClient.send(
                     HttpRequest.newBuilder().uri(new URI(rootUri + endpoint))
                         .header("Content-Type", "application/json").GET().build(),
                     BodyHandlers.ofString()).body(),
                 Response.class
             )).get();
+        return response;
     }
     
     public <T> List<T> getList(final String endpoint, Class<T> responseType) {

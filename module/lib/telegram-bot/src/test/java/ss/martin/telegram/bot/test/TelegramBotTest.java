@@ -7,10 +7,12 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 import ss.martin.telegram.bot.api.TelegramBot;
 import ss.martin.telegram.bot.model.SendMessage;
+import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 
+@WireMockTest(httpPort = 20233)
 public class TelegramBotTest {
     
-    private final TelegramBot bot = new TelegramBot("6228786851:AAEGxRSAF9EcvgZycosFxrG0CWjfSGw4xhY");
+    private final TelegramBot bot = new TelegramBot("token", "http://localhost:20233");
     
     private static final long CHAT_ID = 5288729591L;
     
@@ -31,7 +33,7 @@ public class TelegramBotTest {
         bot.listenUpdates((updates) -> {
             
         }, TimeUnit.SECONDS.toMillis(1), exceptionHandler);
-        Thread.sleep(TimeUnit.SECONDS.toMillis(2));
+        Thread.sleep(TimeUnit.SECONDS.toMillis(1));
         Optional.ofNullable(exceptionHandler.getError()).ifPresent((e) -> fail("Telegram bot exception!", e));
     }
     

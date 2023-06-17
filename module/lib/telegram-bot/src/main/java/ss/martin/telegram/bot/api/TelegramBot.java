@@ -2,6 +2,8 @@ package ss.martin.telegram.bot.api;
 
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import ss.martin.telegram.bot.http.TelegramHttpClient;
 import ss.martin.telegram.bot.model.SendMessage;
 import ss.martin.telegram.bot.model.Update;
@@ -13,7 +15,9 @@ import ss.martin.telegram.bot.model.User;
  */
 public class TelegramBot {
     
-    private static final String TELEGRAM_BOT_API = "https://api.telegram.org/bot%s";
+    public static final String TELEGRAM_HOST = "https://api.telegram.org";
+    
+    private static final String TELEGRAM_BOT_API = "/bot%s";
     
     private final TelegramHttpClient httpClient;
     
@@ -22,7 +26,11 @@ public class TelegramBot {
     private String botName;
     
     public TelegramBot(final String token) {
-        this.httpClient = new TelegramHttpClient(String.format(TELEGRAM_BOT_API, token));
+        this.httpClient = new TelegramHttpClient(String.format(TELEGRAM_HOST + TELEGRAM_BOT_API, token));
+    }
+    
+    public TelegramBot(final String token, final String telegramHost) {
+        this.httpClient = new TelegramHttpClient(String.format(telegramHost + TELEGRAM_BOT_API, token));
     }
     
     /**
@@ -87,9 +95,13 @@ public class TelegramBot {
                         offset = upd.updateId() + 1;
                     });
                     updatesConsumer.accept(updates);
-                    Thread.sleep(interval);
                 } catch (Exception e) {
                     errorHandler.accept(e);
+                }
+                try {
+                    Thread.sleep(interval);
+                } catch (InterruptedException ex) {
+                    errorHandler.accept(ex);
                 }
             }
         }
