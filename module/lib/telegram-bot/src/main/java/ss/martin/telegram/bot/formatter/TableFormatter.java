@@ -14,10 +14,10 @@ public class TableFormatter {
         final var lengthMap = lengthMap(table, columns);
         final var wPadding = table.paddingOfWidth * columns * 2;
         final var tableWidth = Stream.of(lengthMap).reduce(0, Integer::sum) + columns + 1 + wPadding;
-        //sb.append(line(tableWidth));
+        sb.append(line(tableWidth));
         Stream.of(table.rows).forEach(row -> {
             sb.append(printRow(row, lengthMap, table));
-            //sb.append(line(tableWidth));
+            sb.append(line(tableWidth));
         });
         return sb.toString();
     }
@@ -26,7 +26,7 @@ public class TableFormatter {
         final var sb = new StringBuilder(table.columnSeparator);
         for (int i = 0; i < row.cells.length; i++) {
             final var cell = row.cells[i];
-            final var len = lengthMap[i];
+            final var len = columnWidth(cell, i, lengthMap, table);
             final var cellText = cellText(cell, len);
             sb.append(" ".repeat(table.paddingOfWidth));
             sb.append(cellText);
@@ -34,6 +34,17 @@ public class TableFormatter {
         }
         sb.append("\n");
         return sb.toString();
+    }
+    
+    private static int columnWidth(final Cell cell, final int columnNum, final Integer[] lengthMap, final Table table) {
+        final var colspan = cell.colSpan;
+        var len = 0;
+        for (int i = columnNum; i < columnNum + colspan; i++) {
+            len += lengthMap[i];
+        }
+        len += table.paddingOfWidth * (colspan - 1) * 2;
+        len += table.columnSeparator.length() * (colspan - 1);
+        return len;
     }
     
     private static String cellText(final Cell cell, final Integer maxLength) {
@@ -72,7 +83,11 @@ public class TableFormatter {
         Row[] rows,
         int paddingOfWidth,
         String columnSeparator
-    ) {}
+    ) {
+        public Table(Row[] rows) {
+            this(rows, 1, "|");
+        }
+    }
     
     public static record Row(
         Cell[] cells

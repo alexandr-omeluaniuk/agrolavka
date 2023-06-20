@@ -18,15 +18,13 @@ public class TableFormatterTest {
         final var table = new Table(new Row[] {
             header,
             new Row(new Cell[] {
-                new Cell("Комбикорм 123 супер", Align.LEFT),
-                new Cell(null, Align.RIGHT),
+                new Cell("Комбикорм 123 супер", Align.LEFT, 2),
                 new Cell("20", Align.RIGHT),
                 new Cell("50.00 BYN", Align.RIGHT),
                 new Cell("1000.00 BYN", Align.RIGHT)
             }),
             new Row(new Cell[] {
-                new Cell("Семена льна", Align.LEFT),
-                new Cell(null, Align.RIGHT),
+                new Cell("Семена льна", Align.LEFT, 2),
                 new Cell("2", Align.RIGHT),
                 new Cell("40.00 BYN", Align.RIGHT),
                 new Cell("80.00 BYN", Align.RIGHT)

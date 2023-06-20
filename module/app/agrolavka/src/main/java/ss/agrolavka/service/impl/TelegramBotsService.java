@@ -107,7 +107,7 @@ public class TelegramBotsService {
                 new Cell(String.format("%.2f", total), Align.RIGHT)
             }
         );
-        return new Table(rows, 0, " ");
+        return new Table(rows);
     }
     
     private void handleUpdates(final List<Update> updates, final String botName) {
