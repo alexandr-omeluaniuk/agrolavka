@@ -1,6 +1,7 @@
 package ss.martin.telegram.bot.formatter;
 
 import java.util.stream.Stream;
+import ss.martin.telegram.bot.exception.FormatException;
 
 /**
  * Table formatter.
@@ -8,46 +9,50 @@ import java.util.stream.Stream;
  */
 public class TableFormatter {
     
-    public static String formatTable(final Table table) {
-        final var sb = new StringBuilder();
-        final var columns = table.rows[0].cells.length;
-        final var lengthMap = lengthMap(table, columns);
-        final var wPadding = table.paddingOfWidth * columns * 2;
-        final var tableWidth = Stream.of(lengthMap).reduce(0, Integer::sum) + columns + 1 + wPadding;
-        sb.append(line(tableWidth));
+    private Table table;
+    
+    private final int columns;
+    
+    private final int[] lengthMap;
+    
+    private final int tableWidth;
+    
+    private final StringBuilder sb = new StringBuilder();
+    
+    public TableFormatter(final Table table) {
+        this.table = table;
+        this.columns = table.rows[0].cells.length;
+        this.lengthMap = lengthMap();
+        this.tableWidth = table.tableWidth;
+    }
+    
+    public String format() {
+        line();
+        printHeader();
         Stream.of(table.rows).forEach(row -> {
-            sb.append(printRow(row, lengthMap, table));
-            sb.append(line(tableWidth));
+            printRow(row);
+            line();
         });
         return sb.toString();
     }
     
-    private static String printRow(final Row row, final Integer[] lengthMap, final Table table) {
-        final var sb = new StringBuilder(table.columnSeparator);
-        for (int i = 0; i < row.cells.length; i++) {
-            final var cell = row.cells[i];
-            final var len = columnWidth(cell, i, lengthMap, table);
-            final var cellText = cellText(cell, len);
-            sb.append(" ".repeat(table.paddingOfWidth));
-            sb.append(cellText);
-            sb.append(" ".repeat(table.paddingOfWidth)).append(table.columnSeparator);
+    private void printHeader() {
+        final var buff = new StringBuilder(table.columnSeparator);
+        final var cells = table.header.cells;
+        for (int i = 0; i < cells.length; i++) {
+            final var cell = cells[i];
+            final var len = lengthMap[i];
+            final var cellText = headerCellText(cell, len);
+            buff.append(" ".repeat(table.paddingOfWidth));
+            buff.append(cellText);
+            buff.append(" ".repeat(table.paddingOfWidth)).append(table.columnSeparator);
         }
-        sb.append("\n");
-        return sb.toString();
+        buff.append("\n");
+        sb.append(buff);
+        line();
     }
     
-    private static int columnWidth(final Cell cell, final int columnNum, final Integer[] lengthMap, final Table table) {
-        final var colspan = cell.colSpan;
-        var len = 0;
-        for (int i = columnNum; i < columnNum + colspan; i++) {
-            len += lengthMap[i];
-        }
-        len += table.paddingOfWidth * (colspan - 1) * 2;
-        len += table.columnSeparator.length() * (colspan - 1);
-        return len;
-    }
-    
-    private static String cellText(final Cell cell, final Integer maxLength) {
+    private String headerCellText(final HeaderCell cell, final Integer maxLength) {
         var temp = cell.text == null ? "" : cell.text;
         while (temp.length() < maxLength) {
             if (cell.align == Align.LEFT) {
@@ -59,33 +64,91 @@ public class TableFormatter {
         return temp;
     }
     
-    private static String line(final Integer width) {
-        return "-".repeat(width) + "\n";
+    private void printRow(final Row row) {
+        final var buff = new StringBuilder(table.columnSeparator);
+        for (int i = 0; i < row.cells.length; i++) {
+            final var cell = row.cells[i];
+            final var len = lengthMap[i];
+            final var cellText = cellText(cell, len);
+            buff.append(" ".repeat(table.paddingOfWidth));
+            buff.append(cellText);
+            buff.append(" ".repeat(table.paddingOfWidth)).append(table.columnSeparator);
+        }
+        buff.append("\n");
+        sb.append(buff);
     }
     
-    private static Integer[] lengthMap(final Table tableData, final int columns) {
-        final var lengthMap = new Integer[columns];
-        for (int i = 0; i < lengthMap.length; i++) {
-            lengthMap[i] = 0;
+    private String cellText(final Cell cell, final Integer maxLength) {
+        var temp = cell.text == null ? "" : cell.text;
+        while (temp.length() < maxLength) {
+            //if (cell.align == Align.LEFT) {
+                temp = temp + " ";
+//            } else {
+//                temp = " " + temp;
+//            }
         }
-        for (Row row : tableData.rows) {
+        return temp;
+    }
+    
+    private void line() {
+        sb.append("-".repeat(tableWidth)).append("\n");
+    }
+    
+    private int[] lengthMap() {
+        final var map = new int[columns];
+        for (int i = 0; i < columns; i++) {
+            final var cell = table.header.cells[i];
+            if (cell.text != null && map[i] < cell.text.length()) {
+                map[i] = cell.text.length();
+            }
+        }
+        for (final Row row : table.rows) {
             for (int colNum = 0; colNum < row.cells.length; colNum++) {
                 final var cell = row.cells[colNum];
-                if (cell.text != null && lengthMap[colNum] < cell.text.length()) {
-                    lengthMap[colNum] = cell.text.length();
+                if (cell.text != null && map[colNum] < cell.text.length()) {
+                    map[colNum] = cell.text.length();
                 }
             }
         }
-        return lengthMap;
+//        int sum = 0;
+//        for (int i : map) {
+//            sum += i;
+//        }
+        return map;
     }
     
     public static record Table(
+        Header header,
         Row[] rows,
+        int tableWidth,
         int paddingOfWidth,
         String columnSeparator
     ) {
-        public Table(Row[] rows) {
-            this(rows, 1, "|");
+        public Table(final Header header, final Row[] rows, final int tableWidth) {
+            this(header, rows, tableWidth, 1, "|");
+        }
+    }
+    
+    public static record Header(
+        HeaderCell[] cells
+    ) {}
+    
+    public static record HeaderCell(
+        String text,
+        Align align,
+        int width
+    ) {
+        
+        public static final int WIDTH_MAX_VAL = 0;
+        
+        public static final int WIDTH_AUTO = -1;
+        
+        public HeaderCell(final String text) {
+            this(text, Align.LEFT, WIDTH_MAX_VAL);
+        }
+        
+        public HeaderCell(final String text, final Align align) {
+            this(text, align, WIDTH_MAX_VAL);
         }
     }
     
@@ -94,18 +157,8 @@ public class TableFormatter {
     ) {}
     
     public static record Cell(
-        String text,
-        Align align,
-        int colSpan
-    ) {
-        public Cell(String text) {
-            this(text, Align.LEFT, 1);
-        }
-        
-        public Cell(String text, Align align) {
-            this(text, align, 1);
-        }
-    }
+        String text
+    ) {}
     
     public static enum Align {
         LEFT, RIGHT;

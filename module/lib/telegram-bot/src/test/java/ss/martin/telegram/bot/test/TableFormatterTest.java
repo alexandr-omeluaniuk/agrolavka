@@ -8,30 +8,31 @@ public class TableFormatterTest {
     
     @Test
     public void testFormatTable() {
-        final var header = new Row(new Cell[] {
-            new Cell("Наименование", Align.LEFT),
-            new Cell("Обьем", Align.RIGHT),
-            new Cell("Количество", Align.RIGHT),
-            new Cell("Цена", Align.RIGHT),
-            new Cell("Сумма", Align.RIGHT),
+        final var header = new Header(new HeaderCell[] {
+            new HeaderCell("Наименование", Align.LEFT, HeaderCell.WIDTH_AUTO),
+            new HeaderCell("Обьем", Align.RIGHT),
+            new HeaderCell("Кол-во", Align.RIGHT),
+            new HeaderCell("Цена", Align.RIGHT),
+            new HeaderCell("Сумма", Align.RIGHT)
         });
-        final var table = new Table(new Row[] {
-            header,
+        final var table = new Table(header, new Row[] {
             new Row(new Cell[] {
-                new Cell("Комбикорм 123 супер", Align.LEFT, 2),
-                new Cell("20", Align.RIGHT),
-                new Cell("50.00 BYN", Align.RIGHT),
-                new Cell("1000.00 BYN", Align.RIGHT)
+                new Cell("Комбикорм 123 супер"),
+                new Cell(null),
+                new Cell("20"),
+                new Cell("50.00 BYN"),
+                new Cell("1000.00 BYN")
             }),
             new Row(new Cell[] {
-                new Cell("Семена льна", Align.LEFT, 2),
-                new Cell("2", Align.RIGHT),
-                new Cell("40.00 BYN", Align.RIGHT),
-                new Cell("80.00 BYN", Align.RIGHT)
+                new Cell("Семена льна"),
+                new Cell(null),
+                new Cell("2"),
+                new Cell("40.00 BYN"),
+                new Cell("80.00 BYN")
             })
-        }, 1, "|");
+        }, 60, 1, "|");
         
-        final var result = TableFormatter.formatTable(table);
+        final var result = new TableFormatter(table).format();
         
         System.out.println(result);
     }
