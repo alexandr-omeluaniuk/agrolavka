@@ -17,18 +17,18 @@ public class TableFormatterTest {
         });
         final var table = new Table(header, new Row[] {
             new Row(new Cell[] {
-                new Cell("Комбикорм 123 супер"),
+                new Cell("Комбикорм 123 супер натуральный"),
                 new Cell(null),
                 new Cell("20"),
-                new Cell("50.00 BYN"),
-                new Cell("1000.00 BYN")
+                new Cell("50.00"),
+                new Cell("1000.00")
             }),
             new Row(new Cell[] {
                 new Cell("Семена льна"),
                 new Cell(null),
                 new Cell("2"),
-                new Cell("40.00 BYN"),
-                new Cell("80.00 BYN")
+                new Cell("40.00"),
+                new Cell("80.00")
             })
         }, 60, 1, "|");
         

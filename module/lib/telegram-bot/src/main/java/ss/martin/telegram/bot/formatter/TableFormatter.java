@@ -68,8 +68,7 @@ public class TableFormatter {
         final var buff = new StringBuilder(table.columnSeparator);
         for (int i = 0; i < row.cells.length; i++) {
             final var cell = row.cells[i];
-            final var len = lengthMap[i];
-            final var cellText = cellText(cell, len);
+            final var cellText = cellText(cell, i);
             buff.append(" ".repeat(table.paddingOfWidth));
             buff.append(cellText);
             buff.append(" ".repeat(table.paddingOfWidth)).append(table.columnSeparator);
@@ -78,14 +77,20 @@ public class TableFormatter {
         sb.append(buff);
     }
     
-    private String cellText(final Cell cell, final Integer maxLength) {
+    private String cellText(final Cell cell, final int columnNum) {
         var temp = cell.text == null ? "" : cell.text;
-        while (temp.length() < maxLength) {
-            //if (cell.align == Align.LEFT) {
-                temp = temp + " ";
-//            } else {
-//                temp = " " + temp;
-//            }
+        final var headerCell = table.header.cells[columnNum];
+        final var len = lengthMap[columnNum];
+        if (temp.length() > len) {
+            return temp.substring(0, len);
+        } else {
+            while (temp.length() < len) {
+                if (headerCell.align == Align.LEFT) {
+                    temp = temp + " ";
+                } else {
+                    temp = " " + temp;
+                }
+            }
         }
         return temp;
     }
@@ -98,27 +103,57 @@ public class TableFormatter {
         final var map = new int[columns];
         for (int i = 0; i < columns; i++) {
             final var cell = table.header.cells[i];
-            if (cell.text != null && map[i] < cell.text.length()) {
-                map[i] = cell.text.length();
+            if (cell.width == HeaderCell.WIDTH_AUTO) {
+                map[i] = HeaderCell.WIDTH_AUTO;
+            } else if (cell.width == HeaderCell.WIDTH_MAX_VAL) {
+                if (cell.text != null && map[i] < cell.text.length()) {
+                    map[i] = cell.text.length();
+                }
+            } else if (cell.width > 0) {
+                map[i] = cell.width;
             }
         }
         for (final Row row : table.rows) {
             for (int colNum = 0; colNum < row.cells.length; colNum++) {
                 final var cell = row.cells[colNum];
-                if (cell.text != null && map[colNum] < cell.text.length()) {
-                    map[colNum] = cell.text.length();
+                final var headerCell = table.header.cells[colNum];
+                if (headerCell.width == HeaderCell.WIDTH_AUTO) {
+                    map[colNum] = HeaderCell.WIDTH_AUTO;
+                } else if (headerCell.width == HeaderCell.WIDTH_MAX_VAL) {
+                    if (cell.text != null && map[colNum] < cell.text.length()) {
+                        map[colNum] = cell.text.length();
+                    }
+                } else {
+                    map[colNum] = headerCell.width;
                 }
             }
         }
-        int sum = 0;
-        for (int i : map) {
-            sum += i;
+        final var paddingAndBorderWidth = (table.paddingOfWidth * 2 * columns) 
+            + (table.columnSeparator.length() * columns - 1);
+        for (int i = 0; i < columns; i++) {
+            if (map[i] == HeaderCell.WIDTH_AUTO) {
+                map[i] = tableWidth - sumPositive(map) - paddingAndBorderWidth;
+            }
         }
-        sum += (table.paddingOfWidth * 2 * columns) + (table.columnSeparator.length() * columns - 1);
-        if (sum > tableWidth) {
-            throw new FormatException("Actual table width [" + sum + "] more than " + tableWidth + " chars");
+        int actualWidth = 0;
+        for (int len : map) {
+            actualWidth += len;
+        }
+        actualWidth += paddingAndBorderWidth;
+        if (actualWidth > tableWidth) {
+            throw new FormatException("Actual table width [" + actualWidth + "] more than " + tableWidth + " chars");
         }
         return map;
+    }
+    
+    private int sumPositive(int[] map) {
+        var sumPositive = 0;
+        for (int len : map) {
+            if (len > 0) {
+                sumPositive += len;
+            }
+        }
+        return sumPositive;
     }
     
     public static record Table(
