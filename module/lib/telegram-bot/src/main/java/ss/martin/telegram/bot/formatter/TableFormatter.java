@@ -40,45 +40,32 @@ public class TableFormatter {
         final var buff = new StringBuilder(table.columnSeparator);
         final var cells = table.header.cells;
         for (int i = 0; i < cells.length; i++) {
-            final var cell = cells[i];
-            final var len = lengthMap[i];
-            final var cellText = headerCellText(cell, len);
-            buff.append(" ".repeat(table.paddingOfWidth));
-            buff.append(cellText);
-            buff.append(" ".repeat(table.paddingOfWidth)).append(table.columnSeparator);
+            buff.append(printCell(cells[i].text, i));
         }
         buff.append("\n");
         sb.append(buff);
         line();
     }
     
-    private String headerCellText(final HeaderCell cell, final Integer maxLength) {
-        var temp = cell.text == null ? "" : cell.text;
-        while (temp.length() < maxLength) {
-            if (cell.align == Align.LEFT) {
-                temp = temp + " ";
-            } else {
-                temp = " " + temp;
-            }
-        }
-        return temp;
-    }
-    
     private void printRow(final Row row) {
         final var buff = new StringBuilder(table.columnSeparator);
         for (int i = 0; i < row.cells.length; i++) {
-            final var cell = row.cells[i];
-            final var cellText = cellText(cell, i);
-            buff.append(" ".repeat(table.paddingOfWidth));
-            buff.append(cellText);
-            buff.append(" ".repeat(table.paddingOfWidth)).append(table.columnSeparator);
+            buff.append(printCell(row.cells[i].text, i));
         }
         buff.append("\n");
         sb.append(buff);
     }
     
-    private String cellText(final Cell cell, final int columnNum) {
-        var temp = cell.text == null ? "" : cell.text;
+    private StringBuilder printCell(final String text, int colNum) {
+        final var buff = new StringBuilder();
+        buff.append(" ".repeat(table.paddingOfWidth));
+        buff.append(cellText(text, colNum));
+        buff.append(" ".repeat(table.paddingOfWidth)).append(table.columnSeparator);
+        return buff;
+    }
+    
+    private String cellText(final String text, final int columnNum) {
+        var temp = text == null ? "" : text;
         final var headerCell = table.header.cells[columnNum];
         final var len = lengthMap[columnNum];
         if (temp.length() > len) {
