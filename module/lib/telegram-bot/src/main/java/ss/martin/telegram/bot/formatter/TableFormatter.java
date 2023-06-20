@@ -129,7 +129,7 @@ public class TableFormatter {
             }
         }
         final var paddingAndBorderWidth = (table.paddingOfWidth * 2 * columns) 
-            + (table.columnSeparator.length() * columns - 1);
+            + (table.columnSeparator.length() * columns + 1);
         for (int i = 0; i < columns; i++) {
             if (map[i] == HeaderCell.WIDTH_AUTO) {
                 map[i] = tableWidth - sumPositive(map) - paddingAndBorderWidth;
