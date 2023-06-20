@@ -21,9 +21,9 @@ public class TableFormatter {
     
     public TableFormatter(final Table table) {
         this.table = table;
+        this.tableWidth = table.tableWidth;
         this.columns = table.rows[0].cells.length;
         this.lengthMap = lengthMap();
-        this.tableWidth = table.tableWidth;
     }
     
     public String format() {
@@ -110,10 +110,14 @@ public class TableFormatter {
                 }
             }
         }
-//        int sum = 0;
-//        for (int i : map) {
-//            sum += i;
-//        }
+        int sum = 0;
+        for (int i : map) {
+            sum += i;
+        }
+        sum += (table.paddingOfWidth * 2 * columns) + (table.columnSeparator.length() * columns - 1);
+        if (sum > tableWidth) {
+            throw new FormatException("Actual table width [" + sum + "] more than " + tableWidth + " chars");
+        }
         return map;
     }
     
