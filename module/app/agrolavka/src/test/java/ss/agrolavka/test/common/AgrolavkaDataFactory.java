@@ -1,7 +1,10 @@
 package ss.agrolavka.test.common;
 
+import java.util.ArrayList;
 import java.util.UUID;
 import ss.agrolavka.util.UrlProducer;
+import ss.entity.agrolavka.Order;
+import ss.entity.agrolavka.OrderPosition;
 import ss.entity.agrolavka.Product;
 import ss.entity.agrolavka.ProductsGroup;
 
@@ -27,5 +30,19 @@ public class AgrolavkaDataFactory {
         product.setExternalId(UUID.randomUUID().toString());
         product.setGroup(group);
         return product;
+    }
+    
+    public static Order generateOrder() {
+        final var order = new Order();
+        order.setPositions(new ArrayList<>());
+        return order;
+    }
+    
+    public static OrderPosition generateOrderPosition(final Product product) {
+        final var position = new OrderPosition();
+        position.setProduct(product);
+        position.setPrice(product.getDiscountPrice());
+        position.setQuantity(1);
+        return position;
     }
 }

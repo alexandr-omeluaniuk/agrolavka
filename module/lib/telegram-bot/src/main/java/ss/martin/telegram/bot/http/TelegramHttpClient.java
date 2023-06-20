@@ -101,7 +101,7 @@ public class TelegramHttpClient {
         if (response.ok()) {
             return response.result();
         } else {
-            throw new TelegramBotException(response.result());
+            throw new TelegramBotException(response.result() == null ? response.description() : response.result());
         }
     }
 

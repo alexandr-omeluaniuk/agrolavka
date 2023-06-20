@@ -1,6 +1,7 @@
 package ss.agrolavka.service.impl;
 
 import jakarta.annotation.PostConstruct;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -16,6 +17,8 @@ import ss.entity.agrolavka.TelegramUser;
 import ss.martin.core.dao.CoreDao;
 import ss.martin.security.configuration.external.DomainConfiguration;
 import ss.martin.telegram.bot.api.TelegramBot;
+import ss.martin.telegram.bot.formatter.TableFormatter;
+import static ss.martin.telegram.bot.formatter.TableFormatter.*;
 import ss.martin.telegram.bot.model.Chat;
 import ss.martin.telegram.bot.model.SendMessage;
 import ss.martin.telegram.bot.model.Update;
@@ -28,6 +31,11 @@ import ss.martin.telegram.bot.model.Update;
 public class TelegramBotsService {
     
     private static final Logger LOG = LoggerFactory.getLogger(TelegramBotsService.class);
+    
+    private static final String ORDER_TEMPLATE = """
+Поступил новый заказ <a href="%s">%s</a>,
+<pre>%s</pre>
+""";
     
     @Autowired
     @Qualifier("telegramBotOrders")
@@ -53,19 +61,53 @@ public class TelegramBotsService {
     }
     
     public void sendNewOrderNotification(final Order order, final Double total) {
-        final var textTemplate = """
-Поступил новый заказ,
-Потенциальная сумма заказа - %s BYN,
-Номер заказа: <a href="%s">%s</a>
-""";
-        final var sum = String.format("%.2f", total);
         final var link = domainConfiguration.host() + "/admin/app/agrolavka/order/" + order.getId();
-        final var text = String.format(textTemplate, sum, link, order.getId());
+        final var text = String.format(
+            ORDER_TEMPLATE, 
+            link, 
+            order.getId(), 
+            TableFormatter.formatTable(createTable(order, total))
+        );
         coreDao.getAll(TelegramUser.class).stream()
             .filter(user -> user.getBotName().equals(telegramBot.getBotName())).forEach(user -> {
-                final var message = new SendMessage(user.getChatId(), text, SendMessage.ParseMode.HTML);
+                final var message = new SendMessage(
+                    user.getChatId(), 
+                    text, 
+                    SendMessage.ParseMode.HTML
+                );
                 telegramBot.sendMessage(message);
         });
+    }
+    
+    private Table createTable(final Order order, final Double total) {
+        final var positions = order.getPositions();
+        Collections.sort(positions);
+        final var rows = new Row[positions.size() + 2];
+        final var header = new Cell[] { 
+            new Cell("Наименование"),
+            new Cell("Кол", Align.RIGHT), 
+            new Cell("Цена", Align.RIGHT), 
+            new Cell("Сумма", Align.RIGHT) 
+        };
+        rows[0] = new Row(header);
+        for (int i = 0; i < positions.size(); i++) {
+            final var position = positions.get(i);
+            rows[i + 1] = new Row(
+                new Cell[] {
+                    new Cell(position.getProductName()),
+                    new Cell(position.getQuantity().toString(), Align.RIGHT),
+                    new Cell(String.format("%.2f", position.getPrice()), Align.RIGHT),
+                    new Cell(String.format("%.2f", position.getPrice() * position.getQuantity()), Align.RIGHT)
+                }
+            );
+        }
+        rows[rows.length - 1] = new Row(
+            new Cell[] {
+                new Cell("Сумма", Align.LEFT, 3),
+                new Cell(String.format("%.2f", total), Align.RIGHT)
+            }
+        );
+        return new Table(rows, 0, " ");
     }
     
     private void handleUpdates(final List<Update> updates, final String botName) {
