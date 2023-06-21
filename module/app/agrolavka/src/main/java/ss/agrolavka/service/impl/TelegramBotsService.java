@@ -95,7 +95,7 @@ public class TelegramBotsService {
             Optional.ofNullable(europost.getMiddlename()).ifPresent(v -> sb.append(v));
         });
         sb.append("\n");
-        sb.append("<a href=\"tel:+375").append(order.getPhone().replaceAll("[^\\d.]", "")).append("\">");
+        sb.append("<a href=\"https://t.me/+375").append(order.getPhone().replaceAll("[^\\d.]", "")).append("\">+375 ");
         sb.append(order.getPhone());
         sb.append("</a>");
         return sb.toString();
