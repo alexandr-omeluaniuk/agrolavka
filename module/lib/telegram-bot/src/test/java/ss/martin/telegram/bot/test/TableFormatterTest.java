@@ -30,7 +30,7 @@ public class TableFormatterTest {
                 new Cell("40.00"),
                 new Cell("80.00")
             })
-        }, 60, 1, "|");
+        }, 60, 1, "");
         
         final var result = new TableFormatter(table).format();
         

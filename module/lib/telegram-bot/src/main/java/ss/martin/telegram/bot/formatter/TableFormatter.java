@@ -160,16 +160,9 @@ public class TableFormatter {
             + (table.columnSeparator.length() * columns + 1);
         for (int i = 0; i < columns; i++) {
             if (map[i] == HeaderCell.WIDTH_AUTO) {
-                map[i] = tableWidth - sumPositive(map) - paddingAndBorderWidth;
+                final var separatorPadding = table.columnSeparator.length() == 0 ? 1 : 0;
+                map[i] = tableWidth - sumPositive(map) - paddingAndBorderWidth + separatorPadding;
             }
-        }
-        int actualWidth = 0;
-        for (int len : map) {
-            actualWidth += len;
-        }
-        actualWidth += paddingAndBorderWidth;
-        if (actualWidth > tableWidth) {
-            throw new FormatException("Actual table width [" + actualWidth + "] more than " + tableWidth + " chars");
         }
         return map;
     }

@@ -3,6 +3,7 @@ package ss.agrolavka.test.common;
 import java.util.ArrayList;
 import java.util.UUID;
 import ss.agrolavka.util.UrlProducer;
+import ss.entity.agrolavka.Address;
 import ss.entity.agrolavka.Order;
 import ss.entity.agrolavka.OrderPosition;
 import ss.entity.agrolavka.Product;
@@ -35,7 +36,16 @@ public class AgrolavkaDataFactory {
     public static Order generateOrder() {
         final var order = new Order();
         order.setPositions(new ArrayList<>());
+        order.setPhone("29 888-88-88");
         return order;
+    }
+    
+    public static Address generateAddress() {
+        final var address = new Address();
+        address.setFirstname("Петр");
+        address.setLastname("Иванов");
+        address.setMiddlename("Васильевич");
+        return address;
     }
     
     public static OrderPosition generateOrderPosition(final Product product) {

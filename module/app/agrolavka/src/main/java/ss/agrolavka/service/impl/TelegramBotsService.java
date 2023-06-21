@@ -4,6 +4,7 @@ import jakarta.annotation.PostConstruct;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import org.slf4j.Logger;
@@ -34,6 +35,7 @@ public class TelegramBotsService {
     
     private static final String ORDER_TEMPLATE = """
 Поступил новый заказ <a href="%s">%s</a>,
+%s
 <pre>%s</pre>
 """;
     
@@ -64,8 +66,9 @@ public class TelegramBotsService {
         final var link = domainConfiguration.host() + "/admin/app/agrolavka/order/" + order.getId();
         final var text = String.format(
             ORDER_TEMPLATE, 
-            link, 
-            order.getId(), 
+            link,
+            order.getId(),
+            getContactInfo(order),
             new TableFormatter(createTable(order, total)).format()
         );
         coreDao.getAll(TelegramUser.class).stream()
@@ -77,6 +80,25 @@ public class TelegramBotsService {
                 );
                 telegramBot.sendMessage(message);
         });
+    }
+    
+    private String getContactInfo(final Order order) {
+        final var sb = new StringBuilder();
+        Optional.ofNullable(order.getAddress()).ifPresent(address -> {
+            Optional.ofNullable(address.getLastname()).ifPresent(v -> sb.append(v).append(" "));
+            Optional.ofNullable(address.getFirstname()).ifPresent(v -> sb.append(v).append(" "));
+            Optional.ofNullable(address.getMiddlename()).ifPresent(v -> sb.append(v));
+        });
+        Optional.ofNullable(order.getEuropostLocationSnapshot()).ifPresent(europost -> {
+            Optional.ofNullable(europost.getLastname()).ifPresent(v -> sb.append(v).append(" "));
+            Optional.ofNullable(europost.getFirstname()).ifPresent(v -> sb.append(v).append(" "));
+            Optional.ofNullable(europost.getMiddlename()).ifPresent(v -> sb.append(v));
+        });
+        sb.append("\n");
+        sb.append("<a href=\"tel:+375").append(order.getPhone().replaceAll("[^\\d.]", "")).append("\">");
+        sb.append(order.getPhone());
+        sb.append("</a>");
+        return sb.toString();
     }
     
     private Table createTable(final Order order, final Double total) {
