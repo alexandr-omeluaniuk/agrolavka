@@ -45,6 +45,13 @@ public class AgrolavkaDataFactory {
         address.setFirstname("Петр");
         address.setLastname("Иванов");
         address.setMiddlename("Васильевич");
+        address.setCity("Борисов");
+        address.setDistrict("Борисовский райен");
+        address.setFlat("20");
+        address.setPostcode("224000");
+        address.setRegion("Минская область");
+        address.setHouse("33");
+        address.setStreet("Вишневая");
         return address;
     }
     

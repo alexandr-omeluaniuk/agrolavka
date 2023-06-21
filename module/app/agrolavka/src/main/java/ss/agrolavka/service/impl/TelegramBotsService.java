@@ -37,6 +37,7 @@ public class TelegramBotsService {
 Поступил новый заказ <a href="%s">%s</a>,
 %s
 <pre>%s</pre>
+%s
 """;
     
     @Autowired
@@ -69,7 +70,8 @@ public class TelegramBotsService {
             link,
             order.getId(),
             getContactInfo(order),
-            new TableFormatter(createTable(order, total)).format()
+            new TableFormatter(createTable(order, total)).format(),
+            getDeliveryInfo(order)
         );
         coreDao.getAll(TelegramUser.class).stream()
             .filter(user -> user.getBotName().equals(telegramBot.getBotName())).forEach(user -> {
@@ -98,6 +100,28 @@ public class TelegramBotsService {
         sb.append("<a href=\"https://t.me/+375").append(order.getPhone().replaceAll("[^\\d.]", "")).append("\">+375 ");
         sb.append(order.getPhone());
         sb.append("</a>");
+        return sb.toString();
+    }
+    
+    private String getDeliveryInfo(final Order order) {
+        final var sb = new StringBuilder();
+        sb.append("<i>");
+        final var address = order.getAddress();
+        if (address != null) {
+            sb.append("<b>Почта:</b>\n");
+            Optional.ofNullable(address.getRegion()).ifPresent(v -> sb.append("Область: ").append(v).append("\n"));
+            Optional.ofNullable(address.getDistrict()).ifPresent(v -> sb.append("Район: ").append(v).append("\n"));
+            Optional.ofNullable(address.getCity()).ifPresent(v -> sb.append("Населенный пункт: ").append(v).append("\n"));
+            Optional.ofNullable(address.getStreet()).ifPresent(v -> sb.append("Улица: ").append(v).append("\n"));
+            Optional.ofNullable(address.getHouse()).ifPresent(v -> sb.append("Дом: ").append(v).append("\n"));
+            Optional.ofNullable(address.getFlat()).ifPresent(v -> sb.append("Квартира: ").append(v).append("\n"));
+            Optional.ofNullable(address.getPostcode()).ifPresent(v -> sb.append("Почтовый индекс: ").append(v).append("\n"));
+        } else if (order.getEuropostLocationSnapshot() != null) {
+            sb.append("<b>Европочта:</b> ").append(order.getEuropostLocationSnapshot().getAddress());
+        } else {
+            sb.append("<b>Самовывоз</b>");
+        }
+        sb.append("</i>");
         return sb.toString();
     }
     

@@ -1,5 +1,6 @@
 package ss.martin.telegram.bot.test;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import ss.martin.telegram.bot.formatter.TableFormatter;
 import static ss.martin.telegram.bot.formatter.TableFormatter.*;
@@ -34,6 +35,6 @@ public class TableFormatterTest {
         
         final var result = new TableFormatter(table).format();
         
-        System.out.println(result);
+        Assertions.assertFalse(result.isBlank());
     }
 }

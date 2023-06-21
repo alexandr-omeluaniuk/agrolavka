@@ -8,6 +8,6 @@ import ss.martin.telegram.bot.api.TelegramBot;
 @SpringBootTest(classes = AgrolavkaTestApplication.class)
 public abstract class AbstractAgrolavkaMvcTest extends PlatformSecurityMvcTest {
     
-//    @MockBean(name = "telegramBotOrders")
-//    protected TelegramBot telegramBot;
+    @MockBean(name = "telegramBotOrders")
+    protected TelegramBot telegramBot;
 }
