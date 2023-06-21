@@ -1,5 +1,7 @@
 package ss.martin.telegram.bot.formatter;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Stream;
 import ss.martin.telegram.bot.exception.FormatException;
 
@@ -49,11 +51,47 @@ public class TableFormatter {
     
     private void printRow(final Row row) {
         final var buff = new StringBuilder(table.columnSeparator);
-        for (int i = 0; i < row.cells.length; i++) {
-            buff.append(printCell(row.cells[i].text, i));
+        final var tokensList = breakRowText(row);
+        var lineNum = 0;
+        var maxLineNum = tokensList.get(0).size();
+        while (lineNum < maxLineNum) {
+            for (int i = 0; i < columns; i++) {
+                buff.append(printCell(tokensList.get(i).get(lineNum), i));
+            }
+            lineNum++;
+            buff.append("\n").append(table.columnSeparator);
         }
-        buff.append("\n");
+        buff.setLength(buff.length() - 1);
         sb.append(buff);
+    }
+    
+    private List<List<String>> breakRowText(final Row row) {
+        final var result = new ArrayList<List<String>>(columns);
+        final var textsMap = new String[columns];
+        for (int i = 0; i < columns; i++) {
+            result.add(new ArrayList<>());
+            textsMap[i] = row.cells[i].text == null ? "" : row.cells[i].text;
+        }
+        while (true) {
+            var countComplete = 0;
+            for (int i = 0; i < columns; i++) {
+                final var text = textsMap[i];
+                final var len = lengthMap[i];
+                if (text.length() > len) {
+                    final var token = text.substring(0, len);
+                    textsMap[i] = text.substring(len);
+                    result.get(i).add(token);
+                } else {
+                    textsMap[i] = "";
+                    result.get(i).add(text);
+                    countComplete++;
+                }
+            }
+            if (countComplete == columns) {
+                break;
+            }
+        }
+        return result;
     }
     
     private StringBuilder printCell(final String text, int colNum) {
@@ -65,7 +103,7 @@ public class TableFormatter {
     }
     
     private String cellText(final String text, final int columnNum) {
-        var temp = text == null ? "" : text;
+        var temp = text == null ? "" : text.trim();
         final var headerCell = table.header.cells[columnNum];
         final var len = lengthMap[columnNum];
         if (temp.length() > len) {
@@ -83,6 +121,9 @@ public class TableFormatter {
     }
     
     private void line() {
+        if (!sb.toString().endsWith("\n")) {
+            sb.append("\n");
+        }
         sb.append("-".repeat(tableWidth)).append("\n");
     }
     

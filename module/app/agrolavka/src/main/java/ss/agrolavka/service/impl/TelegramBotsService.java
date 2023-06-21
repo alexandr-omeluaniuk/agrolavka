@@ -66,7 +66,7 @@ public class TelegramBotsService {
             ORDER_TEMPLATE, 
             link, 
             order.getId(), 
-            TableFormatter.formatTable(createTable(order, total))
+            new TableFormatter(createTable(order, total)).format()
         );
         coreDao.getAll(TelegramUser.class).stream()
             .filter(user -> user.getBotName().equals(telegramBot.getBotName())).forEach(user -> {
@@ -82,32 +82,30 @@ public class TelegramBotsService {
     private Table createTable(final Order order, final Double total) {
         final var positions = order.getPositions();
         Collections.sort(positions);
-        final var rows = new Row[positions.size() + 2];
-        final var header = new Cell[] { 
-            new Cell("Наименование"),
-            new Cell("Кол", Align.RIGHT), 
-            new Cell("Цена", Align.RIGHT), 
-            new Cell("Сумма", Align.RIGHT) 
-        };
-        rows[0] = new Row(header);
+        final var rows = new Row[positions.size() + 1];
+        final var header = new Header(new HeaderCell[]{
+            new HeaderCell("Наименование", Align.LEFT, HeaderCell.WIDTH_AUTO),
+            new HeaderCell("Кол", Align.RIGHT), 
+            new HeaderCell("Сумма", Align.RIGHT)
+        });
         for (int i = 0; i < positions.size(); i++) {
             final var position = positions.get(i);
-            rows[i + 1] = new Row(
+            rows[i] = new Row(
                 new Cell[] {
                     new Cell(position.getProductName()),
-                    new Cell(position.getQuantity().toString(), Align.RIGHT),
-                    new Cell(String.format("%.2f", position.getPrice()), Align.RIGHT),
-                    new Cell(String.format("%.2f", position.getPrice() * position.getQuantity()), Align.RIGHT)
+                    new Cell(position.getQuantity().toString()),
+                    new Cell(String.format("%.2f", position.getPrice() * position.getQuantity()))
                 }
             );
         }
         rows[rows.length - 1] = new Row(
             new Cell[] {
-                new Cell("Сумма", Align.LEFT, 3),
-                new Cell(String.format("%.2f", total), Align.RIGHT)
+                new Cell("Сумма"),
+                new Cell(null),
+                new Cell(String.format("%.2f", total))
             }
         );
-        return new Table(rows);
+        return new Table(header, rows, 34, 1, "");
     }
     
     private void handleUpdates(final List<Update> updates, final String botName) {

@@ -27,7 +27,7 @@ public class TelegramBotServiceTest extends AbstractAgrolavkaMvcTest {
         final var order = generateOrder();
         order.getPositions().add(generateOrderPosition(generateProduct(null, "Семена тыквы", 20d, 2d)));
         order.getPositions().add(generateOrderPosition(generateProduct(null, "Семена льна", 35.20d, 1d)));
-        order.getPositions().add(generateOrderPosition(generateProduct(null, "Комбикорм супер сила природы", 230d, 2d)));
+        order.getPositions().add(generateOrderPosition(generateProduct(null, "Комбикорм супер сила природы", 1000d, 2d)));
         order.setId(25L);
         service.sendNewOrderNotification(order, 100d);
     }
