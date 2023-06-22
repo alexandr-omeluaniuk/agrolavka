@@ -64,8 +64,24 @@ public class TelegramBotsService {
     }
     
     public void sendNewOrderNotification(final Order order, final Double total) {
+        try {
+            coreDao.getAll(TelegramUser.class).stream()
+                .filter(user -> user.getBotName().equals(telegramBot.getBotName())).forEach(user -> {
+                    final var message = new SendMessage(
+                        user.getChatId(), 
+                        getOrderMessage(order, total), 
+                        SendMessage.ParseMode.HTML
+                    );
+                    telegramBot.sendMessage(message);
+            });
+        } catch (Exception e) {
+            LOG.error("Can't send Telegram notification for order: " + order.getId(), e);
+        }
+    }
+    
+    private String getOrderMessage(final Order order, final Double total) {
         final var link = domainConfiguration.host() + "/admin/app/agrolavka/order/" + order.getId();
-        final var text = String.format(
+        return String.format(
             ORDER_TEMPLATE, 
             link,
             order.getId(),
@@ -73,15 +89,6 @@ public class TelegramBotsService {
             new TableFormatter(createTable(order, total)).format(),
             getDeliveryInfo(order)
         );
-        coreDao.getAll(TelegramUser.class).stream()
-            .filter(user -> user.getBotName().equals(telegramBot.getBotName())).forEach(user -> {
-                final var message = new SendMessage(
-                    user.getChatId(), 
-                    text, 
-                    SendMessage.ParseMode.HTML
-                );
-                telegramBot.sendMessage(message);
-        });
     }
     
     private String getContactInfo(final Order order) {
@@ -97,7 +104,7 @@ public class TelegramBotsService {
             Optional.ofNullable(europost.getMiddlename()).ifPresent(v -> sb.append(v));
         });
         sb.append("\n");
-        sb.append("<a href=\"https://t.me/+375").append(order.getPhone().replaceAll("[^\\d.]", "")).append("\">+375 ");
+        sb.append("<a href=\"https://t.me/+375").append(order.getPhone().replaceAll("[^\\d.]", ""));
         sb.append(order.getPhone());
         sb.append("</a>");
         return sb.toString();
@@ -151,7 +158,7 @@ public class TelegramBotsService {
                 new Cell(String.format("%.2f", total))
             }
         );
-        return new Table(header, rows, 34, 1, "");
+        return new Table(header, rows, 30, 1, "");
     }
     
     private void handleUpdates(final List<Update> updates, final String botName) {
