@@ -5,16 +5,16 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.mockito.Mockito.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import ss.agrolavka.service.impl.TelegramBotsService;
+import ss.agrolavka.service.TelegramBotOrderService;
 import ss.agrolavka.test.common.AbstractAgrolavkaMvcTest;
 import static ss.agrolavka.test.common.AgrolavkaDataFactory.*;
 import ss.entity.agrolavka.EuropostLocationSnapshot;
 import ss.entity.agrolavka.TelegramUser;
 
-public class TelegramBotServiceTest extends AbstractAgrolavkaMvcTest {
+public class TelegramBotOrderServiceTest extends AbstractAgrolavkaMvcTest {
     
     @Autowired
-    private TelegramBotsService service;
+    private TelegramBotOrderService service;
     
     @BeforeEach
     protected void before() {
@@ -23,7 +23,7 @@ public class TelegramBotServiceTest extends AbstractAgrolavkaMvcTest {
         telegramUser.setUsername("StarshiStrelok");
         telegramUser.setChatId(5288729591L);
         coreDao.create(telegramUser);
-        when(telegramBot.getBotName()).thenReturn("agrolavkadev_bot");
+        when(telegramBotOrders.getBotName()).thenReturn("agrolavkadev_bot");
     }
     
     @Test
@@ -35,7 +35,7 @@ public class TelegramBotServiceTest extends AbstractAgrolavkaMvcTest {
         order.getPositions().add(generateOrderPosition(generateProduct(null, "Комбикорм супер сила природы", 1000d, 2d)));
         order.setId(25L);
         Assertions.assertDoesNotThrow(() -> service.sendNewOrderNotification(order, 100d));
-        verify(telegramBot, atLeast(1)).sendMessage(any());
+        verify(telegramBotOrders, atLeast(1)).sendMessage(any());
     }
     
     @Test
@@ -47,7 +47,7 @@ public class TelegramBotServiceTest extends AbstractAgrolavkaMvcTest {
         order.getPositions().add(generateOrderPosition(generateProduct(null, "Комбикорм супер сила природы", 1000d, 2d)));
         order.setId(25L);
         Assertions.assertDoesNotThrow(() -> service.sendNewOrderNotification(order, 100d));
-        verify(telegramBot, atLeast(1)).sendMessage(any());
+        verify(telegramBotOrders, atLeast(1)).sendMessage(any());
     }
     
     @Test
@@ -64,6 +64,6 @@ public class TelegramBotServiceTest extends AbstractAgrolavkaMvcTest {
         order.getPositions().add(generateOrderPosition(generateProduct(null, "Комбикорм супер сила природы", 1000d, 2d)));
         order.setId(25L);
         Assertions.assertDoesNotThrow(() -> service.sendNewOrderNotification(order, 100d));
-        verify(telegramBot, atLeast(1)).sendMessage(any());
+        verify(telegramBotOrders, atLeast(1)).sendMessage(any());
     }
 }

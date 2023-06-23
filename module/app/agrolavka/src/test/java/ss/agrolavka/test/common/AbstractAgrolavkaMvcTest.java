@@ -9,5 +9,8 @@ import ss.martin.telegram.bot.api.TelegramBot;
 public abstract class AbstractAgrolavkaMvcTest extends PlatformSecurityMvcTest {
     
     @MockBean(name = "telegramBotOrders")
-    protected TelegramBot telegramBot;
+    protected TelegramBot telegramBotOrders;
+    
+    @MockBean(name = "telegramBotErrors")
+    protected TelegramBot telegramBotErrors;
 }

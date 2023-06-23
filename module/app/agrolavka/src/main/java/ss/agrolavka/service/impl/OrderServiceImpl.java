@@ -1,5 +1,6 @@
 package ss.agrolavka.service.impl;
 
+import ss.agrolavka.service.TelegramBotOrderService;
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Date;
@@ -39,7 +40,7 @@ class OrderServiceImpl implements OrderService {
     private CoreDao coreDAO;
     
     @Autowired
-    private TelegramBotsService telegramBotsService;
+    private TelegramBotOrderService telegramBotOrderService;
     
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
@@ -164,7 +165,7 @@ class OrderServiceImpl implements OrderService {
     
     private void sendTelegramNotification(final Order order, final Double total) {
         try {
-            telegramBotsService.sendNewOrderNotification(order, total);
+            telegramBotOrderService.sendNewOrderNotification(order, total);
         } catch (Exception e) {
             LOG.error("Can't send Telegram notification for order: " + order.getId(), e);
         }

@@ -1,4 +1,4 @@
-package ss.martin.platform.rest;
+package ss.agrolavka.rest;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
