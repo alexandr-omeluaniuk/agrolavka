@@ -37,6 +37,7 @@ public class AgrolavkaDataFactory {
         final var order = new Order();
         order.setPositions(new ArrayList<>());
         order.setPhone("29 796-04-03");
+        order.setOneClick(null);
         return order;
     }
     

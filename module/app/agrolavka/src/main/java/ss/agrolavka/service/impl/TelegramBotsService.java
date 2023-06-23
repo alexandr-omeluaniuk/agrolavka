@@ -64,19 +64,15 @@ public class TelegramBotsService {
     }
     
     public void sendNewOrderNotification(final Order order, final Double total) {
-        try {
-            coreDao.getAll(TelegramUser.class).stream()
-                .filter(user -> user.getBotName().equals(telegramBot.getBotName())).forEach(user -> {
-                    final var message = new SendMessage(
-                        user.getChatId(), 
-                        getOrderMessage(order, total), 
-                        SendMessage.ParseMode.HTML
-                    );
-                    telegramBot.sendMessage(message);
-            });
-        } catch (Exception e) {
-            LOG.error("Can't send Telegram notification for order: " + order.getId(), e);
-        }
+        coreDao.getAll(TelegramUser.class).stream()
+            .filter(user -> user.getBotName().equals(telegramBot.getBotName())).forEach(user -> {
+                final var message = new SendMessage(
+                    user.getChatId(), 
+                    getOrderMessage(order, total), 
+                    SendMessage.ParseMode.HTML
+                );
+                telegramBot.sendMessage(message);
+        });
     }
     
     private String getOrderMessage(final Order order, final Double total) {
@@ -104,7 +100,7 @@ public class TelegramBotsService {
             Optional.ofNullable(europost.getMiddlename()).ifPresent(v -> sb.append(v));
         });
         sb.append("\n");
-        sb.append("<a href=\"https://t.me/+375").append(order.getPhone().replaceAll("[^\\d.]", ""));
+        sb.append("<a href=\"https://t.me/+375").append(order.getPhone().replaceAll("[^\\d.]", "")).append("\">");
         sb.append(order.getPhone());
         sb.append("</a>");
         return sb.toString();
@@ -129,6 +125,9 @@ public class TelegramBotsService {
             sb.append("<b>Самовывоз</b>");
         }
         sb.append("</i>");
+        if (Boolean.TRUE.equals(order.getOneClick())) {
+            sb.append("\n").append("<i>Заказ в один клик</i>");
+        }
         return sb.toString();
     }
     

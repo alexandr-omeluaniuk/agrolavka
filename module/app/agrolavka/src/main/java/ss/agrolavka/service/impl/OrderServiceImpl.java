@@ -66,7 +66,7 @@ class OrderServiceImpl implements OrderService {
         order.setId(null);
         order.getPositions().forEach(position -> position.setId(null));
         final Order savedOrder = coreDAO.create(order);
-        telegramBotsService.sendNewOrderNotification(savedOrder, total);
+        sendTelegramNotification(savedOrder, total);
         LOG.info("---------------------------------------------------------------------------------------------------");
         return savedOrder;
     }
@@ -92,7 +92,7 @@ class OrderServiceImpl implements OrderService {
         order.setOneClick(true);
         positions.forEach(position -> position.setOrder(order));
         final Order savedOrder = coreDAO.create(order);
-        telegramBotsService.sendNewOrderNotification(savedOrder, total);
+        sendTelegramNotification(savedOrder, total);
         return order;
     }
     
@@ -160,5 +160,13 @@ class OrderServiceImpl implements OrderService {
         snapshot.setLastname(orderDetails.getEuropostLastname());
         snapshot.setMiddlename(orderDetails.getEuropostMiddlename());
         return snapshot;
+    }
+    
+    private void sendTelegramNotification(final Order order, final Double total) {
+        try {
+            telegramBotsService.sendNewOrderNotification(order, total);
+        } catch (Exception e) {
+            LOG.error("Can't send Telegram notification for order: " + order.getId(), e);
+        }
     }
 }
