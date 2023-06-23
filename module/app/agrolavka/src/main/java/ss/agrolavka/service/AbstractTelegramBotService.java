@@ -13,6 +13,7 @@ import ss.entity.agrolavka.TelegramUser;
 import ss.martin.core.dao.CoreDao;
 import ss.martin.telegram.bot.api.TelegramBot;
 import ss.martin.telegram.bot.model.Chat;
+import ss.martin.telegram.bot.model.SendMessage;
 import ss.martin.telegram.bot.model.Update;
 
 /**
@@ -40,6 +41,19 @@ public abstract class AbstractTelegramBotService {
             TimeUnit.MINUTES.toMillis(1), 
             (e) -> LOG.error("Get updates for Telegram bot [" + telegramBot.getBotName() + "] - fail!", e)
         );
+    }
+    
+    protected void sendHtml(final String text) {
+        final var telegramBot = getTelegramBot();
+        coreDao.getAll(TelegramUser.class).stream()
+            .filter(user -> user.getBotName().equals(telegramBot.getBotName())).forEach(user -> {
+                final var message = new SendMessage(
+                    user.getChatId(), 
+                    text, 
+                    SendMessage.ParseMode.HTML
+                );
+                telegramBot.sendMessage(message);
+        });
     }
     
     private void handleUpdates(final List<Update> updates) {

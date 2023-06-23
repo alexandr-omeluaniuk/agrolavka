@@ -6,12 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import ss.entity.agrolavka.Order;
-import ss.entity.agrolavka.TelegramUser;
 import ss.martin.security.configuration.external.DomainConfiguration;
 import ss.martin.telegram.bot.api.TelegramBot;
 import ss.martin.telegram.bot.formatter.TableFormatter;
 import static ss.martin.telegram.bot.formatter.TableFormatter.*;
-import ss.martin.telegram.bot.model.SendMessage;
 
 /**
  * Telegram bots service.
@@ -35,15 +33,7 @@ public class TelegramBotOrderService extends AbstractTelegramBotService {
     private DomainConfiguration domainConfiguration;
     
     public void sendNewOrderNotification(final Order order, final Double total) {
-        coreDao.getAll(TelegramUser.class).stream()
-            .filter(user -> user.getBotName().equals(telegramBot.getBotName())).forEach(user -> {
-                final var message = new SendMessage(
-                    user.getChatId(), 
-                    getOrderMessage(order, total), 
-                    SendMessage.ParseMode.HTML
-                );
-                telegramBot.sendMessage(message);
-        });
+        sendHtml(getOrderMessage(order, total));
     }
     
     private String getOrderMessage(final Order order, final Double total) {
