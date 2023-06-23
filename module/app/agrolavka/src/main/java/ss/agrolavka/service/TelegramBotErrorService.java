@@ -15,8 +15,6 @@ import ss.martin.telegram.bot.api.TelegramBot;
 public class TelegramBotErrorService extends AbstractTelegramBotService {
     
     private static final String ERROR_ALERT_TEMPLATE = """
-Новая ошибка,
-%s
 <code>%s</code>
 """;
     
@@ -29,14 +27,19 @@ public class TelegramBotErrorService extends AbstractTelegramBotService {
     }
     
     private String getMessageText(final Exception exception) {
-        return String.format(ERROR_ALERT_TEMPLATE, exception.getMessage(), getStacktrace(exception));
+        var text = String.format(ERROR_ALERT_TEMPLATE, exception.getMessage(), getStacktrace(exception));
+        final var limit = MESSAGE_TEXT_LIMIT - ERROR_ALERT_TEMPLATE.length();
+        if (text.length() > limit) {
+            text = text.substring(0, limit) + "</code>";
+        }
+        return text;
     }
     
     private String getStacktrace(final Exception exception) {
         final var sw = new StringWriter();
         final var pw = new PrintWriter(sw);
         exception.printStackTrace(pw);
-        return pw.toString();
+        return sw.toString();
     }
 
     @Override
