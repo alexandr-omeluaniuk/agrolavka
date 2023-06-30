@@ -1,4 +1,4 @@
-package ss.agrolavka.rest;
+package ss.martin.security.rest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import ss.agrolavka.service.TelegramBotErrorService;
+import ss.martin.security.api.AlertService;
 import ss.martin.security.model.RestResponse;
 
 /**
@@ -22,7 +22,7 @@ class HttpErrorHandler {
     private static final Logger LOG = LoggerFactory.getLogger(HttpErrorHandler.class);
     
     @Autowired
-    private TelegramBotErrorService telegramBotErrorService;
+    private AlertService alertService;
     
     /**
      * Handle access denied exception.
@@ -48,7 +48,7 @@ class HttpErrorHandler {
     public RestResponse handleInternalError(final Exception ex) {
         LOG.error("Internal error", ex);
         try {
-            telegramBotErrorService.sendAlert(ex);
+            alertService.sendAlert("HTTP request error!\n" + ex.getMessage(), ex);
         } catch (Exception e) {
             LOG.error("Can't send error message via telegram bot", e);
         }
