@@ -1,10 +1,10 @@
 package ss.agrolavka.service;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
+import java.util.stream.Stream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import ss.martin.base.constants.PlatformConfiguration;
 import ss.martin.security.api.AlertService;
 import ss.martin.telegram.bot.api.TelegramBot;
 
@@ -16,7 +16,9 @@ import ss.martin.telegram.bot.api.TelegramBot;
 public class TelegramBotErrorService extends AbstractTelegramBotService implements AlertService {
     
     private static final String ERROR_ALERT_TEMPLATE = """
-<code>%s</code>
+%s
+
+%s
 """;
     
     @Autowired
@@ -25,23 +27,45 @@ public class TelegramBotErrorService extends AbstractTelegramBotService implemen
     
     @Override
     public void sendAlert(final String message, final Exception exception) {
-        sendHtml(getMessageText(exception));
+        final var alertMessage = String.format(ERROR_ALERT_TEMPLATE, message, getExceptionText(exception, message));
+        System.out.println(alertMessage);
+        sendHtml(alertMessage);
     }
     
-    private String getMessageText(final Exception exception) {
-        var text = String.format(ERROR_ALERT_TEMPLATE, getStacktrace(exception));
-        final var limit = MESSAGE_TEXT_LIMIT - ERROR_ALERT_TEMPLATE.length();
-        if (text.length() > limit) {
-            text = text.substring(0, limit) + "</code>";
+    private String getExceptionText(final Exception exception, final String message) {
+        if (exception == null) {
+            return "";
         }
-        return text;
+        final var startTag = "<code>";
+        final var endTag = "</code>";
+        var stacktrace = getStacktrace(exception);
+        final var limit = MESSAGE_TEXT_LIMIT - startTag.length() - endTag.length() - message.length() 
+            - ERROR_ALERT_TEMPLATE.length();
+        if (stacktrace.length() > limit) {
+            stacktrace = stacktrace.substring(0, limit);
+        }
+        return startTag + stacktrace + endTag;
     }
     
     private String getStacktrace(final Exception exception) {
-        final var sw = new StringWriter();
-        final var pw = new PrintWriter(sw);
-        exception.printStackTrace(pw);
-        return sw.toString();
+        final var sb = new StringBuilder();
+        Throwable e = exception;
+        while (e != null) {
+            sb.append(e.getClass().getName()).append(": ").append(e.getMessage()).append("\n");
+            sb.append(getPlatformStacktrace(e)).append("\n");
+            e = e.getCause();
+        }
+        return sb.toString();
+    }
+    
+    private String getPlatformStacktrace(final Throwable th) {
+        final var sb = new StringBuilder();
+        Stream.of(th.getStackTrace())
+            .filter(line -> line.getClassName().startsWith(PlatformConfiguration.BASE_PACKAGE_SCAN))
+            .forEach(line -> {
+                sb.append(line.toString().replace("<", "&lt;").replace("<", "&gt;")).append("\n");
+            });
+        return sb.toString();
     }
 
     @Override
