@@ -33,6 +33,7 @@ import ss.entity.agrolavka.ProductsGroup;
 import ss.entity.images.storage.EntityImage;
 import ss.martin.core.dao.CoreDao;
 import ss.martin.platform.service.SecurityService;
+import ss.martin.security.api.AlertService;
 
 /**
  * Data updater.
@@ -64,13 +65,12 @@ public class DataUpdater {
     @Autowired
     private GroupProductsService groupProductsService;
     
+    @Autowired
+    private AlertService alertService;
+    
     @PostConstruct
     protected void init() {
-        try {
-            AppCache.flushCache(coreDAO.getAll(ProductsGroup.class));
-        } catch (Exception ex) {
-            LOG.error("Update URL producer catalog - fail!");
-        }
+        AppCache.flushCache(coreDAO.getAll(ProductsGroup.class));
     }
     /**
      * Import MySklad data.
@@ -78,7 +78,7 @@ public class DataUpdater {
     @Scheduled(cron = "0 30 2 * * *")
     public void importMySkladData() {
         int attempts = 0;
-        while (attempts < 5) {
+        while (attempts < 3) {
             if (doImport()) {
                 return;
             } else {
@@ -100,8 +100,9 @@ public class DataUpdater {
             AppCache.flushCache(coreDAO.getAll(ProductsGroup.class));
             LOG.info("===============================================================================================");
             return true;
-        } catch (Exception e) {
-            LOG.warn("Import MySklad data - fail!", e);
+        } catch (final Exception e) {
+            LOG.error("Import MySklad data - fail!", e);
+            alertService.sendAlert("Import MySklad data - fail!", e);
             return false;
         }
     }

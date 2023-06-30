@@ -1,5 +1,6 @@
 package ss.agrolavka.service;
 
+import java.util.Optional;
 import java.util.stream.Stream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -27,8 +28,8 @@ public class TelegramBotErrorService extends AbstractTelegramBotService implemen
     
     @Override
     public void sendAlert(final String message, final Exception exception) {
-        final var alertMessage = String.format(ERROR_ALERT_TEMPLATE, message, getExceptionText(exception, message));
-        System.out.println(alertMessage);
+        final var title = Optional.ofNullable(message).orElse("An unknown Agrolavka error");
+        final var alertMessage = String.format(ERROR_ALERT_TEMPLATE, title, getExceptionText(exception, title));
         sendHtml(alertMessage);
     }
     
