@@ -1,6 +1,5 @@
 package ss.agrolavka.task;
 
-import jakarta.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -45,7 +44,6 @@ public class EuropostLocationScanner {
     /**
      * Update Europost locations.
      */
-    @PostConstruct
     @Scheduled(cron = "0 0 0 * * *")
     public void runTask() {
         try {
