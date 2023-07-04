@@ -34,3 +34,5 @@ jobs:
         arguments: build
       env:
         JASYPT_ENCRYPTOR_PASSWORD: ${{ secrets.JASYPT_ENCRYPTOR_PASSWORD }}
+    - name: jacoco-badge-generator
+      uses: cicirello/jacoco-badge-generator@v2.9.0
