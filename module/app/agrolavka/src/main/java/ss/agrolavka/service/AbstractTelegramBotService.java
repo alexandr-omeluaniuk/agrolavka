@@ -1,74 +1,73 @@
-package ss.agrolavka.service.impl;
+package ss.agrolavka.service;
 
 import jakarta.annotation.PostConstruct;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Service;
 import ss.agrolavka.AgrolavkaConfiguration;
-import ss.entity.agrolavka.Order;
 import ss.entity.agrolavka.TelegramUser;
 import ss.martin.core.dao.CoreDao;
-import ss.martin.security.configuration.external.DomainConfiguration;
 import ss.martin.telegram.bot.api.TelegramBot;
 import ss.martin.telegram.bot.model.Chat;
 import ss.martin.telegram.bot.model.SendMessage;
 import ss.martin.telegram.bot.model.Update;
 
 /**
- * Telegram bots service.
+ * Telegram bot service
  * @author alex
  */
-@Service
-public class TelegramBotsService {
+public abstract class AbstractTelegramBotService {
     
-    private static final Logger LOG = LoggerFactory.getLogger(TelegramBotsService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(AbstractTelegramBotService.class);
     
-    @Autowired
-    @Qualifier("telegramBotOrders")
-    private TelegramBot telegramBot;
+    protected static final int MESSAGE_TEXT_LIMIT = 4096;
     
     @Autowired
-    private CoreDao coreDao;
+    protected AgrolavkaConfiguration agrolavkaConfiguration;
     
     @Autowired
-    private AgrolavkaConfiguration agrolavkaConfiguration;
+    protected CoreDao coreDao;
     
-    @Autowired
-    private DomainConfiguration domainConfiguration;
+    private Set<TelegramUser> botUsers;
+    
+    protected abstract TelegramBot getTelegramBot();
     
     @PostConstruct
-    void init() {
-        LOG.info("Whitelisted Telegram users: " + agrolavkaConfiguration.telegramUsers());
+    private void init() {
+        LOG.debug("Whitelisted Telegram users: " + agrolavkaConfiguration.telegramUsers());
+        final var telegramBot = getTelegramBot();
+        final var botName = telegramBot.getBotName();
+        this.botUsers = coreDao.getAll(TelegramUser.class).stream()
+            .filter(u -> u.getBotName().equals(botName))
+            .collect(Collectors.toSet());
         telegramBot.listenUpdates(
-            (updates) -> handleUpdates(updates, telegramBot.getBotName()), 
+            (updates) -> handleUpdates(updates), 
             TimeUnit.MINUTES.toMillis(1), 
-            (e) -> LOG.error("Get updates for Telegram bot - fail!", e)
+            (e) -> LOG.error("Get updates for Telegram bot [" + telegramBot.getBotName() + "] - fail!", e)
         );
+        LOG.info("Telegram bot [" + botName + "] started for " + botUsers + " users");
     }
     
-    public void sendNewOrderNotification(final Order order, final Double total) {
-        final var textTemplate = """
-Поступил новый заказ,
-Потенциальная сумма заказа - %s BYN,
-Номер заказа: <a href="%s">%s</a>
-""";
-        final var sum = String.format("%.2f", total);
-        final var link = domainConfiguration.host() + "/admin/app/agrolavka/order/" + order.getId();
-        final var text = String.format(textTemplate, sum, link, order.getId());
+    protected void sendHtml(final String text) {
+        final var telegramBot = getTelegramBot();
         coreDao.getAll(TelegramUser.class).stream()
             .filter(user -> user.getBotName().equals(telegramBot.getBotName())).forEach(user -> {
-                final var message = new SendMessage(user.getChatId(), text, SendMessage.ParseMode.HTML);
+                final var message = new SendMessage(
+                    user.getChatId(), 
+                    text, 
+                    SendMessage.ParseMode.HTML
+                );
                 telegramBot.sendMessage(message);
         });
     }
     
-    private void handleUpdates(final List<Update> updates, final String botName) {
+    private void handleUpdates(final List<Update> updates) {
+        final var botName = getTelegramBot().getBotName();
         final var chatsMap = new HashMap<String, Chat>();
         for (final var update : updates) {
             if (update.message() != null && update.message().from() != null && update.message().chat() != null) {
@@ -78,15 +77,15 @@ public class TelegramBotsService {
         final var whiteListedUsernames = chatsMap.keySet().stream()
             .filter(u -> agrolavkaConfiguration.telegramUsers().contains(u)).collect(Collectors.toList());
         if (!whiteListedUsernames.isEmpty()) {
-            final var existUsernames = coreDao.getAll(TelegramUser.class).stream().map(u -> u.getUsername())
-                .collect(Collectors.toList());
+            final var existUsernames = botUsers.stream().map(u -> u.getUsername()).collect(Collectors.toSet());
             whiteListedUsernames.stream().filter(u -> !existUsernames.contains(u)).forEach(username -> {
                 final var user = new TelegramUser();
                 user.setUsername(username);
                 user.setChatId(chatsMap.get(username).id());
                 user.setBotName(botName);
                 coreDao.create(user);
-                LOG.info("New Telegram user has been registered: " + username);
+                botUsers.add(user);
+                LOG.info("New Telegram user has been registered [" + username + "] for bot [" + botName + "]");
             });
         }
     }

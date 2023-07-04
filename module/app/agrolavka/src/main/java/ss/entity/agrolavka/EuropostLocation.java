@@ -26,7 +26,7 @@ public class EuropostLocation extends DataModel implements Comparable<EuropostLo
     @Column(name = "city", length = 255, nullable = false)
     private String city;
     @JsonProperty("Info1")
-    @Column(name = "working_hours", length = 255)
+    @Column(name = "working_hours", length = 1024)
     private String workingHours;
     @JsonProperty("Latitude")
     @Column(name = "latitude", length = 255)

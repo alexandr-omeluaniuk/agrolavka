@@ -22,7 +22,7 @@ public class EuropostLocationSnapshot extends DataModel {
     @NotNull
     @Column(name = "city", length = 255, nullable = false)
     private String city;
-    @Column(name = "working_hours", length = 255)
+    @Column(name = "working_hours", length = 1024)
     private String workingHours;
     @Column(name = "latitude", length = 255)
     private String latitude;

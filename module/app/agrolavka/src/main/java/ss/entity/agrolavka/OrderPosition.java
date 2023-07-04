@@ -14,6 +14,7 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import ss.agrolavka.wrapper.ProductVolume;
 import ss.entity.martin.DataModel;
+import ss.martin.base.lang.ThrowingSupplier;
 import ss.martin.core.anno.Updatable;
 
 /**
@@ -22,7 +23,7 @@ import ss.martin.core.anno.Updatable;
  */
 @Entity
 @Table(name = "customer_order_position")
-public class OrderPosition extends DataModel {
+public class OrderPosition extends DataModel implements Comparable<OrderPosition> {
     /** Order. */
     @NotNull
     @JsonIgnore
@@ -120,18 +121,20 @@ public class OrderPosition extends DataModel {
         }
     }
     
-    public String getProductName() throws JsonProcessingException {
-        String name = "";
-        if (getProduct() != null) {
-            if (getProduct().getVolumes() != null) {
-                final Optional<ProductVolume> volume = getProduct().getProductVolumes().stream()
-                    .filter(item -> item.getPrice().equals(getPrice())).findFirst();
-                name = getProduct().getName() + (volume.isEmpty() ? "" : (" (" + volume.get().getVolumeLabel() + ")"));
-            } else {
-                name = getProduct().getName();
+    public String getProductName() {
+        return ((ThrowingSupplier<String>) () -> {
+            String name = "";
+            if (getProduct() != null) {
+                if (getProduct().getVolumes() != null) {
+                    final Optional<ProductVolume> volume = getProduct().getProductVolumes().stream()
+                        .filter(item -> item.getPrice().equals(getPrice())).findFirst();
+                    name = getProduct().getName() + (volume.isEmpty() ? "" : (" (" + volume.get().getVolumeLabel() + ")"));
+                } else {
+                    name = getProduct().getName();
+                }
             }
-        }
-        return name;
+            return name;
+        }).get();
     }
     
     @Override
@@ -154,5 +157,10 @@ public class OrderPosition extends DataModel {
     @Override
     public String toString() {
         return "ss.entity.agrolavka.OrderPosition[ id=" + getId() + " ]";
+    }
+
+    @Override
+    public int compareTo(final OrderPosition o) {
+        return getProductName().compareTo(o.getProductName());
     }
 }

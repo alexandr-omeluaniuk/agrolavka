@@ -69,7 +69,7 @@ public class TelegramUser extends DataModel {
 
     @Override
     public String toString() {
-        return "ss.entity.agrolavka.TelegramUser[ id=" + getId() + " ]";
+        return "TelegramUser[ " + getUsername() + " ]";
     }
     
 }

@@ -110,4 +110,9 @@ public class SpringConfig implements WebMvcConfigurer {
     TelegramBot telegramBotOrders() {
         return new TelegramBot(agrolavkaConfiguration.telegramBotOrders());
     }
+    
+    @Bean("telegramBotErrors")
+    TelegramBot telegramBotErrors() {
+        return new TelegramBot(agrolavkaConfiguration.telegramBotErrors());
+    }
 }

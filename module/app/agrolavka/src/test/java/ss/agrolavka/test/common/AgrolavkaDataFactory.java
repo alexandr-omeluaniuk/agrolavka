@@ -1,7 +1,11 @@
 package ss.agrolavka.test.common;
 
+import java.util.ArrayList;
 import java.util.UUID;
 import ss.agrolavka.util.UrlProducer;
+import ss.entity.agrolavka.Address;
+import ss.entity.agrolavka.Order;
+import ss.entity.agrolavka.OrderPosition;
 import ss.entity.agrolavka.Product;
 import ss.entity.agrolavka.ProductsGroup;
 
@@ -27,5 +31,36 @@ public class AgrolavkaDataFactory {
         product.setExternalId(UUID.randomUUID().toString());
         product.setGroup(group);
         return product;
+    }
+    
+    public static Order generateOrder() {
+        final var order = new Order();
+        order.setPositions(new ArrayList<>());
+        order.setPhone("29 796-04-03");
+        order.setOneClick(null);
+        return order;
+    }
+    
+    public static Address generateAddress() {
+        final var address = new Address();
+        address.setFirstname("Петр");
+        address.setLastname("Иванов");
+        address.setMiddlename("Васильевич");
+        address.setCity("Борисов");
+        address.setDistrict("Борисовский райен");
+        address.setFlat("20");
+        address.setPostcode("224000");
+        address.setRegion("Минская область");
+        address.setHouse("33");
+        address.setStreet("Вишневая");
+        return address;
+    }
+    
+    public static OrderPosition generateOrderPosition(final Product product) {
+        final var position = new OrderPosition();
+        position.setProduct(product);
+        position.setPrice(product.getDiscountPrice());
+        position.setQuantity(1);
+        return position;
     }
 }
