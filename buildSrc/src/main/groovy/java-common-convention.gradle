@@ -27,7 +27,7 @@ jacocoTestReport {
     dependsOn test
     reports {
         xml.required = false
-        csv.required = false
+        csv.required = true
     }
     afterEvaluate {
         classDirectories.setFrom(files(classDirectories.files.collect {
