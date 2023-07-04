@@ -26,7 +26,7 @@ import ss.martin.security.api.AlertService;
  * @author alex
  */
 @Component
-class EuropostLocationScanner {
+public class EuropostLocationScanner {
     /** Logger. */
     private static final Logger LOG = LoggerFactory.getLogger(EuropostLocationScanner.class);
     /** Europost URL. */

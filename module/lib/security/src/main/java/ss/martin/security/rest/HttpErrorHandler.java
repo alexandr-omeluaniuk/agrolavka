@@ -59,12 +59,6 @@ class HttpErrorHandler {
             final var sb = new StringBuilder();
             sb.append("\n");
             sb.append(request.getMethod()).append(": ").append(request.getRequestURI()).append("\n");
-//            try (final var is = request.getInputStream()) {
-//                System.out.println(is.available());
-//                final var buff = new byte[is.available()];
-//                is.read(buff, 0, is.available());
-//                sb.append(new String(buff, StandardCharsets.UTF_8)).append("\n");
-//            }
             return sb.toString();
         }).get();
     }
