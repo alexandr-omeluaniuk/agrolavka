@@ -55,6 +55,7 @@ jobs:
     - name: Commit the badge (if it changed)
       run: |
         if [[ `git status --porcelain` ]]; then
+          git pull --rebase
           git config --global user.name 'alex'
           git config --global user.email 'starshistrelok@gmail.com'
           git add -A
