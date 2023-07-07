@@ -7,6 +7,12 @@ import jakarta.persistence.EntityListeners;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import ss.entity.security.EntityAudit;
 import ss.martin.core.anno.Updatable;
 import ss.martin.images.storage.deserializer.ByteArrayDeserializer;
@@ -110,5 +116,21 @@ public class EntityImage extends EntityAudit {
     @Override
     public String toString() {
         return "ss.entity.martin.EntityImage[ id=" + getId() + " ]";
+    }
+    
+    public static List<EntityImage> getActualImages(
+            final List<EntityImage> imagesDB,
+            final List<EntityImage> images
+    ) {
+        final var map = imagesDB.stream().collect(Collectors.toMap(EntityImage::getId, Function.identity()));
+        final var actualImages = new ArrayList<EntityImage>();
+        images.forEach(image -> {
+            if (image.getData() != null) {
+                actualImages.add(image);
+            } else if (image.getId() != null && map.containsKey(image.getId())) {
+                actualImages.add(map.get(image.getId()));
+            }
+        });
+        return actualImages;
     }
 }

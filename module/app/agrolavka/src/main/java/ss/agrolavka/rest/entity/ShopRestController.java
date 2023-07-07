@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ss.agrolavka.constants.SiteConstants;
+import ss.agrolavka.util.AppCache;
 import ss.entity.agrolavka.Shop;
+import ss.entity.images.storage.EntityImage;
 import ss.martin.core.dao.CoreDao;
 import ss.martin.core.model.EntitySearchRequest;
 import ss.martin.core.model.EntitySearchResponse;
@@ -52,16 +54,25 @@ public class ShopRestController {
     
     @PostMapping
     public Shop create(@RequestBody final Shop shop) {
-        return coreDAO.create(shop);
+        final var newShop = coreDAO.create(shop);
+        AppCache.flushShopsCache(coreDAO.getAll(Shop.class));
+        return newShop;
     }
     
     @PutMapping
     public Shop update(@RequestBody final Shop shop) {
-        return coreDAO.update(shop);
+        final var entityFromDB = coreDAO.findById(shop.getId(), Shop.class);
+        shop.setImages(
+            EntityImage.getActualImages(entityFromDB.getImages(), shop.getImages())
+        );
+        final var updatedShop = coreDAO.update(shop);
+        AppCache.flushShopsCache(coreDAO.getAll(Shop.class));
+        return updatedShop;
     }
     
     @DeleteMapping("/{id}")
     public void delete(@PathVariable("id") final Long id) {
         coreDAO.delete(id, Shop.class);
+        AppCache.flushShopsCache(coreDAO.getAll(Shop.class));
     }
 }
