@@ -590,3 +590,7 @@ and open the template in the editor.
 .text-primary {
     color: var(--agr-bs-purple-dark) !important;
 }
+.bg-gray {
+    background-color: #6c757d !important;
+    color: white !important;
+}
