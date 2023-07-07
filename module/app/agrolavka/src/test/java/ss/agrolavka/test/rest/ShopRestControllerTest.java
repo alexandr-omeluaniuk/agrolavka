@@ -8,13 +8,13 @@ import ss.agrolavka.test.common.AbstractAgrolavkaMvcTest;
 import ss.agrolavka.test.common.AgrolavkaDataFactory;
 import static org.junit.jupiter.api.Assertions.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import ss.agrolavka.constants.SiteConstants;
 import ss.entity.agrolavka.Shop;
 import ss.martin.core.constants.StandardRole;
+import ss.martin.security.test.DataFactory;
 
 public class ShopRestControllerTest extends AbstractAgrolavkaMvcTest {
     
@@ -31,15 +31,7 @@ public class ShopRestControllerTest extends AbstractAgrolavkaMvcTest {
             final var newShop = callMultipart(SiteConstants.URL_PROTECTED + "/shop", new MockMultipartFile[] {
                 shopJson
             }, Shop.class, HttpStatus.OK);
-            assertNotNull(newShop);
-            assertTrue(newShop.getId() > 0);
-            assertNotNull(newShop.getAddress());
-            assertNotNull(newShop.getDescription());
-            assertNotNull(newShop.getLatitude());
-            assertNotNull(newShop.getLongitude());
-            assertNotNull(newShop.getPhone());
-            assertNotNull(newShop.getTitle());
-            assertNotNull(newShop.getWorkingHours());
+            shopAsserts(newShop);
             assertNull(newShop.getImages());
         });
     }
@@ -56,17 +48,26 @@ public class ShopRestControllerTest extends AbstractAgrolavkaMvcTest {
             final var newShop = callMultipart(SiteConstants.URL_PROTECTED + "/shop", new MockMultipartFile[] {
                 shopJson, image1, image2
             }, Shop.class, HttpStatus.OK);
-            assertNotNull(newShop);
-            assertTrue(newShop.getId() > 0);
-            assertNotNull(newShop.getAddress());
-            assertNotNull(newShop.getDescription());
-            assertNotNull(newShop.getLatitude());
-            assertNotNull(newShop.getLongitude());
-            assertNotNull(newShop.getPhone());
-            assertNotNull(newShop.getTitle());
-            assertNotNull(newShop.getWorkingHours());
+            shopAsserts(newShop);
             assertEquals(2, newShop.getImages().size());
+            
+            // get by id
+            final var getShop = callGet(SiteConstants.URL_PROTECTED + "/shop/" + newShop.getId(), Shop.class, HttpStatus.OK);
+            shopAsserts(getShop);
+            assertEquals(2, getShop.getImages().size());
         });
+    }
+    
+    private void shopAsserts(final Shop shop) {
+        assertNotNull(shop);
+        assertTrue(shop.getId() > 0);
+        assertNotNull(shop.getAddress());
+        assertNotNull(shop.getDescription());
+        assertNotNull(shop.getLatitude());
+        assertNotNull(shop.getLongitude());
+        assertNotNull(shop.getPhone());
+        assertNotNull(shop.getTitle());
+        assertNotNull(shop.getWorkingHours());
     }
     
     private byte[] data() throws IOException {
