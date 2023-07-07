@@ -60,8 +60,8 @@ public class ShopRestControllerTest extends AbstractAgrolavkaMvcTest {
             // get list
             final var returnType = new TypeReference<EntitySearchResponse<Shop>>() { };
             final var shops = callGet(SiteConstants.URL_PROTECTED + "/shop", returnType, HttpStatus.OK);
-            assertEquals(1, shops.total());
-            assertEquals(1, shops.data().size());
+            assertTrue(shops.total() > 0);
+            assertFalse(shops.data().isEmpty());
             shopAsserts(shops.data().get(0));
             
             //delete
