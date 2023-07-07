@@ -9,11 +9,11 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import org.springframework.web.multipart.MultipartFile;
 import ss.entity.security.EntityAudit;
+import ss.martin.base.lang.ThrowingRunnable;
 import ss.martin.core.anno.Updatable;
 import ss.martin.images.storage.deserializer.ByteArrayDeserializer;
 import ss.martin.images.storage.jpa.listener.EntityImageListener;
@@ -52,6 +52,18 @@ public class EntityImage extends EntityAudit {
     @Updatable
     @Column(name = "image_data", nullable = true)
     private byte[] data;
+    
+    public EntityImage() {
+    }
+    
+    public EntityImage(final MultipartFile file) {
+        ((ThrowingRunnable) () -> {
+            name = file.getName();
+            type = file.getContentType();
+            size = file.getSize();
+            data = file.getBytes();
+        }).run();
+    }
     
     public String getName() {
         return name;

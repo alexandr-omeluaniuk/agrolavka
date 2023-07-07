@@ -1,6 +1,10 @@
 package ss.agrolavka.rest.entity;
 
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -9,7 +13,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import ss.agrolavka.constants.SiteConstants;
 import ss.agrolavka.util.AppCache;
 import ss.entity.agrolavka.Shop;
@@ -52,8 +58,17 @@ public class ShopRestController {
         return coreDAO.findById(id, Shop.class);
     }
     
-    @PostMapping
-    public Shop create(@RequestBody final Shop shop) {
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public Shop create(
+        @RequestPart(value = "image", required = false) final MultipartFile[] files, 
+        @RequestPart(value = "shop", required = true) final Shop shop
+    ) {
+        Optional.ofNullable(files).ifPresent(filesArray -> 
+            shop.setImages(Stream.of(filesArray).map(file -> 
+                    new EntityImage(file)
+                ).collect(Collectors.toList())
+            )
+        );
         final var newShop = coreDAO.create(shop);
         AppCache.flushShopsCache(coreDAO.getAll(Shop.class));
         return newShop;
@@ -61,9 +76,11 @@ public class ShopRestController {
     
     @PutMapping
     public Shop update(@RequestBody final Shop shop) {
-        final var entityFromDB = coreDAO.findById(shop.getId(), Shop.class);
         shop.setImages(
-            EntityImage.getActualImages(entityFromDB.getImages(), shop.getImages())
+            EntityImage.getActualImages(
+                coreDAO.findById(shop.getId(), Shop.class).getImages(), 
+                shop.getImages()
+            )
         );
         final var updatedShop = coreDAO.update(shop);
         AppCache.flushShopsCache(coreDAO.getAll(Shop.class));

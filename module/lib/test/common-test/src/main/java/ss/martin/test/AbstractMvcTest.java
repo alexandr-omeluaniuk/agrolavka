@@ -2,6 +2,7 @@ package ss.martin.test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.Optional;
+import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -9,8 +10,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
+import org.springframework.test.web.servlet.request.MockMultipartHttpServletRequestBuilder;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -39,6 +43,23 @@ public abstract class AbstractMvcTest {
                     post(url).content(payload)
                     .headers(requestHeaders())
             ).andDo(print()).andExpect(status().is(status.value())).andReturn();
+            final var content = response.getResponse().getContentAsByteArray();
+            if (content.length > 0) {
+                return objectMapper.readValue(content, returnType);
+            } else {
+                return null;
+            }
+        });
+    }
+    
+    protected <T, R> R callMultipart(final String url, final MockMultipartFile[] files, final Class<R> returnType, final HttpStatus status) {
+        return assertDoesNotThrow(() -> {
+            final MockMultipartHttpServletRequestBuilder builder = multipart(url);
+            Stream.of(files).forEach(file -> builder.file(file));
+            final var headers = requestHeaders();
+            headers.add(HttpHeaders.CONTENT_TYPE, MediaType.MULTIPART_FORM_DATA_VALUE);
+            final var response = mockMvc.perform(builder.headers(headers))
+                .andDo(print()).andExpect(status().is(status.value())).andReturn();
             final var content = response.getResponse().getContentAsByteArray();
             if (content.length > 0) {
                 return objectMapper.readValue(content, returnType);
