@@ -36,7 +36,7 @@ public class ShopRestController {
     private CoreDao coreDAO;
     
     @GetMapping
-    public EntitySearchResponse list(
+    public EntitySearchResponse<Shop> list(
             @RequestParam(value = "page", required = false) Integer page,
             @RequestParam(value = "page_size", required = false) Integer pageSize,
             @RequestParam(value = "order", required = false) String order,
@@ -44,8 +44,8 @@ public class ShopRestController {
     ) {
         return coreDAO.searchEntities(
             new EntitySearchRequest(
-                page == null ? 1 : page,
-                pageSize == null ? Integer.MAX_VALUE : pageSize,
+                Optional.ofNullable(page).orElse(1),
+                Optional.ofNullable(pageSize).orElse(100),
                 order,
                 orderBy
             ), 

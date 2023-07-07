@@ -1,6 +1,7 @@
 package ss.agrolavka.test.rest;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import org.junit.jupiter.api.Test;
@@ -14,7 +15,7 @@ import org.springframework.mock.web.MockMultipartFile;
 import ss.agrolavka.constants.SiteConstants;
 import ss.entity.agrolavka.Shop;
 import ss.martin.core.constants.StandardRole;
-import ss.martin.security.test.DataFactory;
+import ss.martin.core.model.EntitySearchResponse;
 
 public class ShopRestControllerTest extends AbstractAgrolavkaMvcTest {
     
@@ -55,6 +56,17 @@ public class ShopRestControllerTest extends AbstractAgrolavkaMvcTest {
             final var getShop = callGet(SiteConstants.URL_PROTECTED + "/shop/" + newShop.getId(), Shop.class, HttpStatus.OK);
             shopAsserts(getShop);
             assertEquals(2, getShop.getImages().size());
+            
+            // get list
+            final var returnType = new TypeReference<EntitySearchResponse<Shop>>() { };
+            final var shops = callGet(SiteConstants.URL_PROTECTED + "/shop", returnType, HttpStatus.OK);
+            assertEquals(1, shops.total());
+            assertEquals(1, shops.data().size());
+            shopAsserts(shops.data().get(0));
+            
+            //delete
+            callDelete(SiteConstants.URL_PROTECTED + "/shop/" + newShop.getId(), Void.class, HttpStatus.OK);
+            assertNull(coreDao.findById(newShop.getId(), Shop.class));
         });
     }
     

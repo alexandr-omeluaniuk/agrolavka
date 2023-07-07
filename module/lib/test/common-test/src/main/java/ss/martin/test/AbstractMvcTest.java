@@ -1,7 +1,9 @@
 package ss.martin.test;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,7 @@ import org.springframework.test.web.servlet.request.MockMultipartHttpServletRequ
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import ss.martin.base.lang.ThrowingFunction;
 
 @ActiveProfiles("test")
 @SpringBootTest(classes = TestSpringBootApplication.class)
@@ -85,6 +88,16 @@ public abstract class AbstractMvcTest {
     }
     
     protected <T, R> R callGet(final String url, final Class<R> returnType, final HttpStatus status) {
+        final ThrowingFunction<byte[], R> converter = (content) -> objectMapper.readValue(content, returnType);
+        return callGet(url, status, converter);
+    }
+    
+    protected <T, R> R callGet(final String url, final TypeReference<R> returnType, final HttpStatus status) {
+        final ThrowingFunction<byte[], R> converter = (content) -> objectMapper.readValue(content, returnType);
+        return callGet(url, status, converter);
+    }
+    
+    private <T, R> R callGet(final String url, final HttpStatus status, final Function<byte[], R> converter) {
         return assertDoesNotThrow(() -> {
             final var response = mockMvc.perform(
                     get(url)
@@ -92,7 +105,7 @@ public abstract class AbstractMvcTest {
             ).andDo(print()).andExpect(status().is(status.value())).andReturn();
             final var content = response.getResponse().getContentAsByteArray();
             if (content.length > 0) {
-                return objectMapper.readValue(content, returnType);
+                return converter.apply(content);
             } else {
                 return null;
             }

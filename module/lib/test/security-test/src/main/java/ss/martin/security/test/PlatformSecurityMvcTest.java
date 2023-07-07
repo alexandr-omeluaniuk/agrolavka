@@ -36,7 +36,7 @@ public abstract class PlatformSecurityMvcTest extends AbstractMvcTest {
     
     private LoginRequest userRegistration(final StandardRole role) {
         final var email = "test.security@fake.test";
-        final var password = UUID.randomUUID().toString();
+        final var password = "verySimplePassword";
         final var subscriptionEntity = DataFactory.generateSubscription(email);
         final var subscription = coreDao.create(subscriptionEntity);
         final var user = DataFactory.generateSystemUser(email, "August Rokwood");
