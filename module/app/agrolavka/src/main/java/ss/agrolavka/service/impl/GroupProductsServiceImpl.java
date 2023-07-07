@@ -68,7 +68,6 @@ class GroupProductsServiceImpl implements GroupProductsService {
     private ImagesStorageApi imageService;
 
     @Override
-    
     public void groupProductByVolumes() throws Exception {
         resetHiddenFlag();
         final Set<Long> hiddenProducts = doGrouping();
@@ -78,13 +77,15 @@ class GroupProductsServiceImpl implements GroupProductsService {
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     private Set<Long> doGrouping() throws Exception {
         final List<Product> allProducts = coreDAO.getAll(Product.class).stream()
-                .filter(distinctByKey(Product::getName))
-                .collect(Collectors.toList());
+            .filter(p -> p.getDiscount() == null)
+            .filter(distinctByKey(Product::getName))
+            .collect(Collectors.toList());
         final Map<String, Product> productsMap = allProducts.stream()
                 .collect(Collectors.toMap(Product::getName, (p) -> p));
         final Map<String, List<Product>> groups = grouping(allProducts);
         final Set<Long> hiddenProducts = new HashSet<>();
-        for (String groupedProductName : groups.keySet()) {
+        final var uniqueGroupedProductNames = groups.keySet();
+        for (String groupedProductName : uniqueGroupedProductNames) {
             final List<Product> products = groups.get(groupedProductName);
             products.forEach(p -> hiddenProducts.add(p.getId()));
             Product newProduct = createProductsWithVolumes(products, groupedProductName);
@@ -120,6 +121,14 @@ class GroupProductsServiceImpl implements GroupProductsService {
                 coreDAO.update(newProduct);
             }
         }
+        final var grouped = coreDAO.getAll(Product.class).stream()
+            .filter(p -> GROUPED_PRODUCT_EXTERNAL_ID.equals(p.getExternalId()))
+            .filter(p -> !uniqueGroupedProductNames.contains(p.getName()))
+            .collect(Collectors.toList());
+        grouped.forEach(p -> {
+            LOG.info("Outdated grouped product and will be deleted: " + p.toString());
+            coreDAO.delete(p.getId(), Product.class);
+        });
         return hiddenProducts;
     }
     

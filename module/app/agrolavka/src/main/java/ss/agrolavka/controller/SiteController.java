@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package ss.agrolavka.controller;
 
 import java.text.SimpleDateFormat;
@@ -388,9 +383,14 @@ public class SiteController {
             searchRequest.setOrder("asc");
             searchRequest.setOrderBy("name");
             searchRequest.setWithDiscounts(true);
-            final List<Product> products = productDAO.search(searchRequest).stream()
+            final var products = productDAO.search(searchRequest).stream()
                     .filter(product -> product.getQuantity() != null && product.getQuantity() > 0)
                     .collect(Collectors.toList());
+            Collections.sort(products, (p1, p2) -> {
+                final var id1 = p1.getDiscount().getId();
+                final var id2 = p2.getDiscount().getId();
+                return id1 > id2 ? -1 : 1;
+            });
             AppCache.setProductsWithDiscounts(products);
             productsWithDiscounts = AppCache.getProductsWithDiscounts();
         }

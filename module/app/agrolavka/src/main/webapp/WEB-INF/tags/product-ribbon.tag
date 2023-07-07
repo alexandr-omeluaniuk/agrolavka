@@ -12,12 +12,20 @@
 <%-- The list of normal or fragment attributes can be specified here: --%>
 <%@attribute name="product" required="true" type="Product"%>
 <%-- any content can be specified here e.g.: --%>
-<% if (!AppCache.isBelongsToGroup("Средства защиты растений (СЗР)", product.getGroup())) { %>
+<% if (product.getDiscount() == null && !AppCache.isBelongsToGroup("Средства защиты растений (СЗР)", product.getGroup())) { %>
 <div class="ribbon ribbon-top-left">
-    <span class="${product.quantity > 0 ? 'bg-success' : 'bg-danger'}">
+    <span class="${product.quantity > 0 ? 'bg-success' : 'bg-gray'}">
         <small>${product.quantity > 0 ? 'в наличии' : 'под заказ'}</small>
     </span>
 </div>
 <%
     }
 %>
+
+<% if (product.getDiscount() != null) { %>
+<div class="ribbon ribbon-top-left">
+    <span class="bg-danger">
+        <small><i class="fas fa-fire me-1"></i>-${String.format("%100.0f", product.getDiscount().getDiscount())}%</small>
+    </span>
+</div>
+<% } %>
