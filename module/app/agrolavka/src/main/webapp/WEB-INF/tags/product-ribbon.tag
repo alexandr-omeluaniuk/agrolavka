@@ -25,7 +25,7 @@
 <% if (product.getDiscount() != null) { %>
 <div class="ribbon ribbon-top-left">
     <span class="bg-danger">
-        <small><i class="fas fa-fire me-1"></i>акция -${String.format("%100.0f", product.getDiscount().getDiscount())}%</small>
+        <small><i class="fas fa-fire me-1"></i>-${String.format("%100.0f", product.getDiscount().getDiscount())}%</small>
     </span>
 </div>
 <% } %>
