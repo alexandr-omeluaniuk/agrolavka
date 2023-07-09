@@ -156,11 +156,12 @@ function DataTable(props) {
                 if (field) {
                     if (field.attributes && field.attributes.multipart) {
                         if (value instanceof Array) {
-                            value.forEach(v => formData.append(field.attributes.multipart, v));
-                        } else {
+                            value.filter(v => v instanceof File).forEach(v => formData.append(field.attributes.multipart, v));
+                            data[key] = value.filter(v => !(v instanceof File));
+                        } else if (value instanceof File) {
                             formData.append(field.attributes.multipart, value);
+                            delete data[key];
                         }
-                        delete data[key];
                     }
                 }
             }
@@ -174,7 +175,12 @@ function DataTable(props) {
             if (tableConfig.apiUrl.beforeUpdate) {
                 data = tableConfig.apiUrl.beforeUpdate(data, record);
             }
-            dataService.put(tableConfig.apiUrl instanceof ApiURL ? tableConfig.apiUrl.putUrl : tableConfig.apiUrl, data).then(() => onCompleteFun());
+            const updateUrl = tableConfig.apiUrl instanceof ApiURL ? tableConfig.apiUrl.putUrl : tableConfig.apiUrl;
+            if (tableConfig.multipart) {
+                dataService.putMultipart(updateUrl, toFormData(data)).then(() => onCompleteFun());
+            } else {
+                dataService.put(updateUrl, data).then(() => onCompleteFun());
+            }
         } else {
             if (tableConfig.apiUrl.beforeCreate) {
                 data = tableConfig.apiUrl.beforeCreate(data);

@@ -28,8 +28,10 @@ public class EntityImageListener {
     
     @PreUpdate
     protected void preUpdate(EntityImage entity) throws Exception {
-        imageService.deleteImageFromDisk(entity);
-        entity.setFileNameOnDisk(imageService.saveImageToDisk(entity.getData()));
+        if (entity.getData() != null && entity.getData().length > 0) {
+            imageService.deleteImageFromDisk(entity);
+            entity.setFileNameOnDisk(imageService.saveImageToDisk(entity.getData()));
+        }
         entity.setData(new byte[0]);  // release space in DB
     }
     
