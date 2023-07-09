@@ -19,6 +19,7 @@ export class TableConfig {
         this.elevation = 1;
         this.toolbarFilter = null;
         this.isFormDialog = true;
+        this.multipart = false;
     }
     
     setElevation(elevation) {
@@ -53,6 +54,10 @@ export class TableConfig {
     setLastRow(lastRow) {
         this.lastRow = lastRow;
         return this;
+    }
+    
+    setMultipart(multipart) {
+        this.multipart = multipart;
     }
 }
 

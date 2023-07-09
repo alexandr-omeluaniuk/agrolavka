@@ -51,7 +51,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function Images (props) {
-    const { label, value, name, helperText, onChange, ...other } = props;
+    const { label, value, name, helperText, onChange, valueType, ...other } = props;
     const classes = useStyles();
     const { t } = useTranslation();
     let inputRef = React.createRef();
@@ -62,13 +62,18 @@ function Images (props) {
     };
     const onFileSelected = (e) => {
         let file = e.target.files[0];
-        var reader = new FileReader();
-        reader.onloadend = function() {
-            file.data = reader.result;
+        if (valueType === 'file') {
             value.push(file);
             onChange(name, value);
-        };
-        reader.readAsDataURL(file);
+        } else {
+            var reader = new FileReader();
+            reader.onloadend = function() {
+                file.data = reader.result;
+                value.push(file);
+                onChange(name, value);
+            };
+            reader.readAsDataURL(file);
+        }
     };
     const deleteImage = (img) => {
         const newValue = value.filter(v => {
@@ -98,7 +103,7 @@ function Images (props) {
                         return (
                                 <Grid item key={idx} xs={12} md={4} lg={2}>
                                     <Card>
-                                        <CardMedia className={classes.media} image={img.data} title={img.name}/>
+                                        <CardMedia className={classes.media} image={img instanceof File ? URL.createObjectURL(img) : img.data} title={img.name}/>
                                         <CardActions className={classes.imageActions}>
                                             <Typography className={classes.imageName} variant={'caption'}>
                                                 {img.name.length > 16 ? img.name.substring(0, 16) + '...' : img.name}

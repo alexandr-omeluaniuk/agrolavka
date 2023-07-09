@@ -16,10 +16,10 @@ function Shops() {
     // ------------------------------------------------------- METHODS --------------------------------------------------------------------
     const updateTable = () => {
         const apiUrl = new ApiURL(
-                '/platform/entity/ss.entity.agrolavka.Shop',
-                '/platform/entity/ss.entity.agrolavka.Shop',
-                '/platform/entity/ss.entity.agrolavka.Shop',
-                '/platform/entity/ss.entity.agrolavka.Shop'
+                '/agrolavka/protected/shop',
+                '/agrolavka/protected/shop',
+                '/agrolavka/protected/shop',
+                '/agrolavka/protected/shop'
         );
         const newTableConfig = new TableConfig(t('m_agrolavka:agrolavka.shops'), apiUrl, [
             new TableColumn('avatar', '', (row) => {
@@ -58,7 +58,7 @@ function Shops() {
             new FormField('longitude', TYPES.DOUBLE_NUMBER, t('m_agrolavka:shops.longitude')).setGrid({xs: 12, md: 6}).validation([
                 new Validator(VALIDATORS.REQUIRED)
             ]).setAttributes({decimalScale: 6}),
-            new FormField('images', TYPES.IMAGES, t('m_agrolavka:shops.images')).setGrid({xs: 12})
+            new FormField('images', TYPES.IMAGES, t('m_agrolavka:shops.images')).setAttributes({valueType: 'file', multipart: 'image'}).setGrid({xs: 12})
         ]).setBeforeOnEditRecord((record) => {
             return new Promise((resolve) => {
                 record.images.forEach(i => {
@@ -67,6 +67,7 @@ function Shops() {
                 resolve(record);
             });
         })).setElevation(1);
+        newTableConfig.setMultipart('shop');
         setTableConfig(newTableConfig);
     };
     // ------------------------------------------------------- HOOKS ----------------------------------------------------------------------

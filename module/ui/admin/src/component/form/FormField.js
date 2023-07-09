@@ -86,7 +86,7 @@ function FormField (props) {
                             entryId={entryId} variant={variant}/>;
         } else if (fieldConfig.type === TYPES.IMAGES) {
             return <Images label={label} onChange={onChangeFieldValue} fullWidth={true} value={fieldValue ? fieldValue : []} 
-                            helperText={invalidFields.get(name)} name={name} required={isRequired} variant={variant}/>;
+                            helperText={invalidFields.get(name)} name={name} required={isRequired} variant={variant} valueType={attributes.valueType}/>;
         } else if (fieldConfig.type === TYPES.IMAGE) {
             return <Image label={label} onChange={onChangeFieldValue} fullWidth={true} value={fieldValue} 
                             helperText={invalidFields.get(name)} name={name} required={isRequired} variant={variant}/>;

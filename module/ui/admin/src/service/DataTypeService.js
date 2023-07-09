@@ -119,7 +119,7 @@ export class DataTypeService {
         } else if (value && field.type === TYPES.IMAGES) {
             const images = [];
             value.forEach(v => {
-                images.push({
+                images.push(field.attributes && field.attributes.valueType === 'file' ? v : {
                     id: v.id,
                     name: v.name,
                     size: v.size,

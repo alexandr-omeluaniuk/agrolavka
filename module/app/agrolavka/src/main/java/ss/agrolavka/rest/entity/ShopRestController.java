@@ -5,7 +5,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -58,7 +57,7 @@ public class ShopRestController {
         return coreDAO.findById(id, Shop.class);
     }
     
-    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping
     public Shop create(
         @RequestPart(value = "image", required = false) final MultipartFile[] files, 
         @RequestPart(value = "shop", required = true) final Shop shop
@@ -69,7 +68,7 @@ public class ShopRestController {
         return newShop;
     }
     
-    @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PutMapping
     public Shop update(
         @RequestPart(value = "image", required = false) final MultipartFile[] files, 
         @RequestPart(value = "shop", required = true) final Shop shop
