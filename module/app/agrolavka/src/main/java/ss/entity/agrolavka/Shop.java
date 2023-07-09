@@ -22,7 +22,7 @@ import ss.entity.security.EntityAudit;
  */
 @Entity
 @Table(name = "shop")
-public class Shop extends EntityAudit {
+public class Shop extends EntityAudit implements EntityWithImages {
     /** Shop title. */
     @NotNull
     @Size(min = 1, max = 255)

@@ -27,7 +27,7 @@ public class ShopRestControllerTest extends AbstractAgrolavkaMvcTest {
     public void testCreate_WithoutFiles() throws JsonProcessingException {
         final var shop = AgrolavkaDataFactory.generateShop();
         final var shopJson = new MockMultipartFile(
-            "shop", null, MediaType.APPLICATION_JSON_VALUE, objectMapper.writeValueAsBytes(shop)
+            "entity", null, MediaType.APPLICATION_JSON_VALUE, objectMapper.writeValueAsBytes(shop)
         );
         withAuthorization(jwt(StandardRole.ROLE_SUBSCRIPTION_USER), () -> {
             final var newShop = callMultipart(HttpMethod.POST, SiteConstants.URL_PROTECTED + "/shop", new MockMultipartFile[] {
@@ -42,7 +42,7 @@ public class ShopRestControllerTest extends AbstractAgrolavkaMvcTest {
     public void testCreate_WithFiles() throws JsonProcessingException, IOException {
         final var shop = AgrolavkaDataFactory.generateShop();
         final var shopJson = new MockMultipartFile(
-            "shop", null, MediaType.APPLICATION_JSON_VALUE, objectMapper.writeValueAsBytes(shop)
+            "entity", null, MediaType.APPLICATION_JSON_VALUE, objectMapper.writeValueAsBytes(shop)
         );
         final var image1 = new MockMultipartFile("image", "fileX1.jpg", MediaType.IMAGE_JPEG_VALUE, data());
         final var image2 = new MockMultipartFile("image", "fileX2.jpg", MediaType.IMAGE_JPEG_VALUE, data());
@@ -73,7 +73,7 @@ public class ShopRestControllerTest extends AbstractAgrolavkaMvcTest {
             final var imageForRemoval = getShop.getImages().get(0);
             getShop.getImages().remove(imageForRemoval);
             final var shopJsonUpdate = new MockMultipartFile(
-                "shop", null, MediaType.APPLICATION_JSON_VALUE, objectMapper.writeValueAsBytes(getShop)
+                "entity", null, MediaType.APPLICATION_JSON_VALUE, objectMapper.writeValueAsBytes(getShop)
             );
             final var updatedShop = callMultipart(
                 HttpMethod.PUT, 

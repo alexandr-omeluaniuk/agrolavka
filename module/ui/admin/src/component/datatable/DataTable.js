@@ -168,7 +168,7 @@ function DataTable(props) {
             const blob = new Blob([JSON.stringify(data)], {
                 type: "application/json"
             });
-            formData.append(tableConfig.multipart, blob);
+            formData.append('entity', blob);
             return formData;
         };
         if (id) {

@@ -67,7 +67,7 @@ function Shops() {
                 resolve(record);
             });
         })).setElevation(1);
-        newTableConfig.setMultipart('shop');
+        newTableConfig.setMultipart(true);
         setTableConfig(newTableConfig);
     };
     // ------------------------------------------------------- HOOKS ----------------------------------------------------------------------
