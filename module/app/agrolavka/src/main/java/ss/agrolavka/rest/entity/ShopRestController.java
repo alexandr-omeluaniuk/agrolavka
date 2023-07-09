@@ -1,5 +1,6 @@
 package ss.agrolavka.rest.entity;
 
+import java.util.ArrayList;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -10,7 +11,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -63,25 +63,18 @@ public class ShopRestController {
         @RequestPart(value = "image", required = false) final MultipartFile[] files, 
         @RequestPart(value = "shop", required = true) final Shop shop
     ) {
-        Optional.ofNullable(files).ifPresent(filesArray -> 
-            shop.setImages(Stream.of(filesArray).map(file -> 
-                    new EntityImage(file)
-                ).collect(Collectors.toList())
-            )
-        );
+        setImages(shop, files);
         final var newShop = coreDAO.create(shop);
         AppCache.flushShopsCache(coreDAO.getAll(Shop.class));
         return newShop;
     }
     
-    @PutMapping
-    public Shop update(@RequestBody final Shop shop) {
-        shop.setImages(
-            EntityImage.getActualImages(
-                coreDAO.findById(shop.getId(), Shop.class).getImages(), 
-                shop.getImages()
-            )
-        );
+    @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public Shop update(
+        @RequestPart(value = "image", required = false) final MultipartFile[] files, 
+        @RequestPart(value = "shop", required = true) final Shop shop
+    ) {
+        setImages(shop, files);
         final var updatedShop = coreDAO.update(shop);
         AppCache.flushShopsCache(coreDAO.getAll(Shop.class));
         return updatedShop;
@@ -91,5 +84,15 @@ public class ShopRestController {
     public void delete(@PathVariable("id") final Long id) {
         coreDAO.delete(id, Shop.class);
         AppCache.flushShopsCache(coreDAO.getAll(Shop.class));
+    }
+    
+    private void setImages(final Shop shop, final MultipartFile[] files) {
+        shop.setImages(Optional.ofNullable(shop.getImages()).orElse(new ArrayList<>()));
+        Optional.ofNullable(files).ifPresent(filesArray ->
+            shop.getImages().addAll(Stream.of(filesArray).map(file ->
+                    new EntityImage(file)
+                ).collect(Collectors.toList())
+            )
+        );
     }
 }

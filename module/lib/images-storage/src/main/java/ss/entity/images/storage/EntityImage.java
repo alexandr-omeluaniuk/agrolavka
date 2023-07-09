@@ -7,10 +7,6 @@ import jakarta.persistence.EntityListeners;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 import org.springframework.web.multipart.MultipartFile;
 import ss.entity.security.EntityAudit;
 import ss.martin.base.lang.ThrowingRunnable;
@@ -58,7 +54,7 @@ public class EntityImage extends EntityAudit {
     
     public EntityImage(final MultipartFile file) {
         ((ThrowingRunnable) () -> {
-            name = file.getName();
+            name = file.getOriginalFilename();
             type = file.getContentType();
             size = file.getSize();
             data = file.getBytes();
@@ -127,22 +123,6 @@ public class EntityImage extends EntityAudit {
     
     @Override
     public String toString() {
-        return "ss.entity.martin.EntityImage[ id=" + getId() + " ]";
-    }
-    
-    public static List<EntityImage> getActualImages(
-            final List<EntityImage> imagesDB,
-            final List<EntityImage> images
-    ) {
-        final var map = imagesDB.stream().collect(Collectors.toMap(EntityImage::getId, Function.identity()));
-        final var actualImages = new ArrayList<EntityImage>();
-        images.forEach(image -> {
-            if (image.getData() != null) {
-                actualImages.add(image);
-            } else if (image.getId() != null && map.containsKey(image.getId())) {
-                actualImages.add(map.get(image.getId()));
-            }
-        });
-        return actualImages;
+        return "ss.entity.martin.EntityImage[ id=" + getId() + ", name=" + getName() + " ]";
     }
 }

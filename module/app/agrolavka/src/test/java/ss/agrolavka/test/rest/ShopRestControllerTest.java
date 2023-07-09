@@ -9,6 +9,7 @@ import ss.agrolavka.test.common.AbstractAgrolavkaMvcTest;
 import ss.agrolavka.test.common.AgrolavkaDataFactory;
 import static org.junit.jupiter.api.Assertions.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
@@ -29,11 +30,11 @@ public class ShopRestControllerTest extends AbstractAgrolavkaMvcTest {
             "shop", null, MediaType.APPLICATION_JSON_VALUE, objectMapper.writeValueAsBytes(shop)
         );
         withAuthorization(jwt(StandardRole.ROLE_SUBSCRIPTION_USER), () -> {
-            final var newShop = callMultipart(SiteConstants.URL_PROTECTED + "/shop", new MockMultipartFile[] {
+            final var newShop = callMultipart(HttpMethod.POST, SiteConstants.URL_PROTECTED + "/shop", new MockMultipartFile[] {
                 shopJson
             }, Shop.class, HttpStatus.OK);
             shopAsserts(newShop);
-            assertNull(newShop.getImages());
+            assertTrue(newShop.getImages().isEmpty());
         });
     }
     
@@ -45,10 +46,17 @@ public class ShopRestControllerTest extends AbstractAgrolavkaMvcTest {
         );
         final var image1 = new MockMultipartFile("image", "fileX1.jpg", MediaType.IMAGE_JPEG_VALUE, data());
         final var image2 = new MockMultipartFile("image", "fileX2.jpg", MediaType.IMAGE_JPEG_VALUE, data());
+        final var image3 = new MockMultipartFile("image", "fileX3.jpg", MediaType.IMAGE_JPEG_VALUE, data());
         withAuthorization(jwt(StandardRole.ROLE_SUBSCRIPTION_USER), () -> {
-            final var newShop = callMultipart(SiteConstants.URL_PROTECTED + "/shop", new MockMultipartFile[] {
-                shopJson, image1, image2
-            }, Shop.class, HttpStatus.OK);
+            final var newShop = callMultipart(
+                HttpMethod.POST, 
+                SiteConstants.URL_PROTECTED + "/shop", 
+                new MockMultipartFile[] {
+                    shopJson, image1, image2
+                }, 
+                Shop.class, 
+                HttpStatus.OK
+            );
             shopAsserts(newShop);
             assertEquals(2, newShop.getImages().size());
             
@@ -56,6 +64,33 @@ public class ShopRestControllerTest extends AbstractAgrolavkaMvcTest {
             final var getShop = callGet(SiteConstants.URL_PROTECTED + "/shop/" + newShop.getId(), Shop.class, HttpStatus.OK);
             shopAsserts(getShop);
             assertEquals(2, getShop.getImages().size());
+            
+            // update
+            final var newAddress = "New address";
+            final var newDescription = "New description";
+            getShop.setAddress(newAddress);
+            getShop.setDescription(newDescription);
+            final var imageForRemoval = getShop.getImages().get(0);
+            getShop.getImages().remove(imageForRemoval);
+            final var shopJsonUpdate = new MockMultipartFile(
+                "shop", null, MediaType.APPLICATION_JSON_VALUE, objectMapper.writeValueAsBytes(getShop)
+            );
+            final var updatedShop = callMultipart(
+                HttpMethod.PUT, 
+                SiteConstants.URL_PROTECTED + "/shop", 
+                new MockMultipartFile[] {
+                    shopJsonUpdate, image3
+                }, 
+                Shop.class, 
+                HttpStatus.OK
+            );
+            assertNotNull(updatedShop);
+            final var getShopAfterUpdate = callGet(SiteConstants.URL_PROTECTED + "/shop/" + newShop.getId(), Shop.class, HttpStatus.OK);
+            assertEquals(newAddress, getShopAfterUpdate.getAddress());
+            assertEquals(newDescription, getShopAfterUpdate.getDescription());
+            assertEquals(2, getShopAfterUpdate.getImages().size());
+            assertEquals("fileX2.jpg", getShopAfterUpdate.getImages().get(0).getName());
+            assertEquals("fileX3.jpg", getShopAfterUpdate.getImages().get(1).getName());
             
             // get list
             final var returnType = new TypeReference<EntitySearchResponse<Shop>>() { };
