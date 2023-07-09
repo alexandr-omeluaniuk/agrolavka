@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package ss.agrolavka.util;
 
 import java.util.ArrayList;
@@ -13,7 +8,6 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import ss.entity.agrolavka.Product;
 import ss.entity.agrolavka.ProductsGroup;
-import ss.entity.agrolavka.Shop;
 import ss.entity.agrolavka.Slide;
 
 /**
@@ -31,8 +25,6 @@ public class AppCache {
     private static List<Product> productWithDiscounts = null;
     /** Products count. */
     private static Long productsCount = null;
-    /** All shops. */
-    private static List<Shop> allShops = null;
     /** Slides. */
     private static List<Slide> allSlides = null;
     /**
@@ -54,13 +46,6 @@ public class AppCache {
             String parentId = group.getParentId();
             GROUPS_PARENT_MAP.put(group.getExternalId(), parentId == null ? null : externalIdsMap.get(parentId));
         }
-    }
-    /**
-     * Flush shops cache.
-     * @param shops actual shops.
-     */
-    public static synchronized void flushShopsCache(final List<Shop> shops) {
-        allShops = shops;
     }
     /**
      * Flush slides cache.
@@ -152,9 +137,6 @@ public class AppCache {
         return GROUPS_PARENT_MAP;
     }
     
-    public static synchronized List<Shop> getShops() {
-        return allShops;
-    }
     public static synchronized List<Slide> getSlides() {
         return allSlides;
     }

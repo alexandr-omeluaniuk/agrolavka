@@ -17,6 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import ss.agrolavka.constants.JspValue;
 import ss.agrolavka.constants.SiteConstants;
 import ss.agrolavka.dao.ProductDAO;
 import ss.agrolavka.service.OrderService;
@@ -361,13 +362,7 @@ public class SiteController {
             AppCache.setProductsCount(productsCount);
         }
         model.addAttribute("productsCount", productsCount);
-        // shop
-        List<Shop> shops = AppCache.getShops();
-        if (shops == null) {
-            AppCache.flushShopsCache(coreDAO.getAll(Shop.class));
-            shops = AppCache.getShops();
-        }
-        model.addAttribute("shops", shops);
+        model.addAttribute(JspValue.SHOPS.name(), coreDAO.getAll(Shop.class));
     }
     /**
      * Get products with discount.
