@@ -73,12 +73,7 @@ public class SiteController {
             newProducts = AppCache.getNewProducts();
         }
         model.addAttribute("newProducts", newProducts);
-        List<Slide> slides = AppCache.getSlides();
-        if (slides == null) {
-            AppCache.flushSlidesCache(coreDAO.getAll(Slide.class));
-            slides = AppCache.getSlides();
-        }
-        model.addAttribute("slides", slides);
+        model.addAttribute(JspValue.SLIDES, coreDAO.getAll(Slide.class));
         List<Product> withDiscount = getProductsWithDiscount();
         List<Product> withDiscountFirst12 = withDiscount.size() > 12 ? withDiscount.subList(0, 12) : withDiscount;
         model.addAttribute("productsWithDiscount", withDiscountFirst12);
@@ -362,7 +357,7 @@ public class SiteController {
             AppCache.setProductsCount(productsCount);
         }
         model.addAttribute("productsCount", productsCount);
-        model.addAttribute(JspValue.SHOPS.name(), coreDAO.getAll(Shop.class));
+        model.addAttribute(JspValue.SHOPS, coreDAO.getAll(Shop.class));
     }
     /**
      * Get products with discount.

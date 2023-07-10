@@ -8,7 +8,6 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import ss.entity.agrolavka.Product;
 import ss.entity.agrolavka.ProductsGroup;
-import ss.entity.agrolavka.Slide;
 
 /**
  * Application cache.
@@ -25,8 +24,6 @@ public class AppCache {
     private static List<Product> productWithDiscounts = null;
     /** Products count. */
     private static Long productsCount = null;
-    /** Slides. */
-    private static List<Slide> allSlides = null;
     /**
      * Update catalog data.
      * @param groups product groups.
@@ -46,13 +43,6 @@ public class AppCache {
             String parentId = group.getParentId();
             GROUPS_PARENT_MAP.put(group.getExternalId(), parentId == null ? null : externalIdsMap.get(parentId));
         }
-    }
-    /**
-     * Flush slides cache.
-     * @param slides actual slides.
-     */
-    public static synchronized void flushSlidesCache(final List<Slide> slides) {
-        allSlides = slides;
     }
     /**
      * Get new products.
@@ -137,9 +127,6 @@ public class AppCache {
         return GROUPS_PARENT_MAP;
     }
     
-    public static synchronized List<Slide> getSlides() {
-        return allSlides;
-    }
     /**
      * Get root product groups.
      * @return root product groups.
