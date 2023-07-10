@@ -33,7 +33,18 @@
             "price": "${productPrice}",
             "priceValidUntil": "${priceValidUntil}",
             "itemCondition": "https://schema.org/UsedCondition",
-            "availability": "https://schema.org/InStock"
+            "availability": "https://schema.org/InStock",
+            "seller": {
+                "@type": "Organization",
+                "name": "Agrolavka.by"
+            },
+            "review": [],
+            "aggregateRating": {
+                "@type": "AggregateRating",
+                "ratingValue": "100",
+                "bestRating": "100",
+                "ratingCount": "100"
+            }
           }
         }
         </script>
