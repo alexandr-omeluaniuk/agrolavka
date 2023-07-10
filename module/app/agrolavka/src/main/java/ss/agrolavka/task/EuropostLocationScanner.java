@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -31,6 +32,8 @@ public class EuropostLocationScanner {
     private static final Logger LOG = LoggerFactory.getLogger(EuropostLocationScanner.class);
     /** Europost URL. */
     private static final String EUROPOST_URL = "https://evropochta.by/api/directory.Json/?What=Postal.OfficesOut";
+    
+    private static final String USER_AGENT = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36";
     /** REST template. */
     @Autowired
     private RestTemplate restTemplate;
@@ -56,10 +59,12 @@ public class EuropostLocationScanner {
     
     private void updateLocations() throws Exception {
         LOG.info("Update Europost locations");
+        final var headers = new HttpHeaders();
+        headers.set(HttpHeaders.USER_AGENT, USER_AGENT);
         final EuropostResponse response = restTemplate.exchange(
                 EUROPOST_URL,
                 HttpMethod.POST,
-                new HttpEntity<>(new EuropostPayload()),
+                new HttpEntity<>(new EuropostPayload(), headers),
                 EuropostResponse.class
         ).getBody();
         final List<EuropostLocation> locations = response.getTable();

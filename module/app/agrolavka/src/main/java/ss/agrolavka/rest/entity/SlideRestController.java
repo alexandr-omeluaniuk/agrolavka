@@ -2,6 +2,7 @@ package ss.agrolavka.rest.entity;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import ss.agrolavka.constants.CacheKey;
 import ss.agrolavka.constants.SiteConstants;
 import ss.entity.agrolavka.Slide;
 
@@ -18,4 +19,8 @@ public class SlideRestController extends BasicEntityWithImagesRestController<Sli
         return Slide.class;
     }
     
+    @Override
+    protected String cacheKey() {
+        return CacheKey.SLIDES;
+    }
 }

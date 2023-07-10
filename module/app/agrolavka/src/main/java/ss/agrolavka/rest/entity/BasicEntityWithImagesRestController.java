@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.CacheManager;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,6 +24,9 @@ import ss.entity.martin.DataModel;
 public abstract class BasicEntityWithImagesRestController<T extends DataModel & EntityWithImages> 
     extends BasicEntityRestController<T> {
     
+    @Autowired
+    private CacheManager cacheManager;
+    
     @PostMapping
     public T create(
         @RequestPart(value = "image", required = false) final MultipartFile[] files, 
@@ -29,6 +34,7 @@ public abstract class BasicEntityWithImagesRestController<T extends DataModel & 
     ) {
         setImages(entity, files);
         final var newEntity = coreDAO.create(entity);
+        entityModifiedCallback();
         return newEntity;
     }
     
@@ -39,12 +45,25 @@ public abstract class BasicEntityWithImagesRestController<T extends DataModel & 
     ) {
         setImages(entity, files);
         final var updatedEntity = coreDAO.update(entity);
+        entityModifiedCallback();
         return updatedEntity;
     }
     
     @DeleteMapping("/{id}")
     public void delete(@PathVariable("id") final Long id) {
         coreDAO.delete(id, entityClass());
+        entityModifiedCallback();
+    }
+    
+    protected String cacheKey() {
+        return null;
+    }
+    
+    private void entityModifiedCallback() {
+        Optional.ofNullable(cacheKey())
+            .ifPresent(key -> 
+                Optional.ofNullable(cacheManager.getCache(key)).ifPresent(cache -> cache.clear())
+            );
     }
     
     private void setImages(final EntityWithImages entity, final MultipartFile[] files) {
