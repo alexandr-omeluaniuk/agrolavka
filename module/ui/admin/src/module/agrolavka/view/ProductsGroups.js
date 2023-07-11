@@ -182,11 +182,6 @@ function ProductsGroups(props) {
             setProductGroups(null);
         });
     };
-//    const normalize = () => {
-//        dataService.put('/agrolavka/protected/product-group/normalize').then(() => {
-//            setProductGroups(null);
-//        });
-//    };
     // -------------------------------------------------------- HOOKS ---------------------------------------------------------------------
     useEffect(() => {
         if (productGroups === null) {
