@@ -17,9 +17,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import ss.agrolavka.constants.JspValue;
 import ss.agrolavka.constants.SiteConstants;
 import ss.agrolavka.dao.ProductDAO;
 import ss.agrolavka.service.OrderService;
+import ss.agrolavka.service.SiteDataService;
 import ss.agrolavka.util.AppCache;
 import ss.agrolavka.util.UrlProducer;
 import ss.agrolavka.wrapper.ProductsSearchRequest;
@@ -28,8 +30,6 @@ import ss.entity.agrolavka.Order;
 import ss.entity.agrolavka.OrderPosition;
 import ss.entity.agrolavka.Product;
 import ss.entity.agrolavka.ProductsGroup;
-import ss.entity.agrolavka.Shop;
-import ss.entity.agrolavka.Slide;
 import ss.entity.martin.DataModel;
 import ss.martin.core.dao.CoreDao;
 
@@ -50,6 +50,9 @@ public class SiteController {
     /** Order service. */
     @Autowired
     private OrderService orderService;
+    /** Site data service. */
+    @Autowired
+    private SiteDataService siteDataService;
     /**
      * Home page.
      * @param model data model.
@@ -72,12 +75,7 @@ public class SiteController {
             newProducts = AppCache.getNewProducts();
         }
         model.addAttribute("newProducts", newProducts);
-        List<Slide> slides = AppCache.getSlides();
-        if (slides == null) {
-            AppCache.flushSlidesCache(coreDAO.getAll(Slide.class));
-            slides = AppCache.getSlides();
-        }
-        model.addAttribute("slides", slides);
+        model.addAttribute(JspValue.SLIDES, siteDataService.getAllSlides());
         List<Product> withDiscount = getProductsWithDiscount();
         List<Product> withDiscountFirst12 = withDiscount.size() > 12 ? withDiscount.subList(0, 12) : withDiscount;
         model.addAttribute("productsWithDiscount", withDiscountFirst12);
@@ -151,7 +149,6 @@ public class SiteController {
     @RequestMapping("/shops")
     public String shops(Model model, HttpServletRequest httpRequest) throws Exception {
         insertCommonDataToModel(httpRequest, model);
-        model.addAttribute("shops", coreDAO.getAll(Shop.class));
         return "shops";
     }
     /**
@@ -361,13 +358,7 @@ public class SiteController {
             AppCache.setProductsCount(productsCount);
         }
         model.addAttribute("productsCount", productsCount);
-        // shop
-        List<Shop> shops = AppCache.getShops();
-        if (shops == null) {
-            AppCache.flushShopsCache(coreDAO.getAll(Shop.class));
-            shops = AppCache.getShops();
-        }
-        model.addAttribute("shops", shops);
+        model.addAttribute(JspValue.SHOPS, siteDataService.getAllShops());
     }
     /**
      * Get products with discount.

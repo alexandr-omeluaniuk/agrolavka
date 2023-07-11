@@ -6,6 +6,7 @@ import org.apache.catalina.Context;
 import org.apache.tomcat.util.scan.StandardJarScanner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -27,6 +28,7 @@ import ss.martin.telegram.bot.api.TelegramBot;
  */
 @Configuration
 @EnableScheduling
+@EnableCaching
 @ComponentScan({"ss.agrolavka", "ss.martin"})
 public class SpringConfig implements WebMvcConfigurer {
     /** Platform configuration. */

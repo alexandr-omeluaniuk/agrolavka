@@ -1,19 +1,27 @@
 package ss.martin.test;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.Optional;
+import java.util.function.Function;
+import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMultipartHttpServletRequestBuilder;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import ss.martin.base.lang.ThrowingFunction;
+import ss.martin.base.lang.ThrowingRunnable;
 
 @ActiveProfiles("test")
 @SpringBootTest(classes = TestSpringBootApplication.class)
@@ -32,7 +40,12 @@ public abstract class AbstractMvcTest {
     
     private HttpHeaders specificHeaders;
     
-    protected <T, R> R callPost(final String url, final T requestBody, final Class<R> returnType, final HttpStatus status) {
+    protected <T, R> R callPost(
+        final String url, 
+        final T requestBody, 
+        final Class<R> returnType, 
+        final HttpStatus status
+    ) {
         return assertDoesNotThrow(() -> {
             final var payload = requestBody == null ? new byte[0] : objectMapper.writeValueAsBytes(requestBody);
             final var response = mockMvc.perform(
@@ -48,7 +61,35 @@ public abstract class AbstractMvcTest {
         });
     }
     
-    protected <T, R> R callPut(final String url, final T requestBody, final Class<R> returnType, final HttpStatus status) {
+    protected <T, R> R callMultipart(
+        final HttpMethod method, 
+        final String url, 
+        final MockMultipartFile[] files, 
+        final Class<R> returnType, 
+        final HttpStatus status
+    ) {
+        return assertDoesNotThrow(() -> {
+            final MockMultipartHttpServletRequestBuilder builder = multipart(method, url);
+            Stream.of(files).forEach(file -> builder.file(file));
+            final var headers = requestHeaders();
+            headers.add(HttpHeaders.CONTENT_TYPE, MediaType.MULTIPART_FORM_DATA_VALUE);
+            final var response = mockMvc.perform(builder.headers(headers))
+                .andDo(print()).andExpect(status().is(status.value())).andReturn();
+            final var content = response.getResponse().getContentAsByteArray();
+            if (content.length > 0) {
+                return objectMapper.readValue(content, returnType);
+            } else {
+                return null;
+            }
+        });
+    }
+    
+    protected <T, R> R callPut(
+        final String url, 
+        final T requestBody, 
+        final Class<R> returnType, 
+        final HttpStatus status
+    ) {
         return assertDoesNotThrow(() -> {
             final var payload = requestBody == null ? new byte[0] : objectMapper.writeValueAsBytes(requestBody);
             final var response = mockMvc.perform(
@@ -65,6 +106,16 @@ public abstract class AbstractMvcTest {
     }
     
     protected <T, R> R callGet(final String url, final Class<R> returnType, final HttpStatus status) {
+        final ThrowingFunction<byte[], R> converter = (content) -> objectMapper.readValue(content, returnType);
+        return callGet(url, status, converter);
+    }
+    
+    protected <T, R> R callGet(final String url, final TypeReference<R> returnType, final HttpStatus status) {
+        final ThrowingFunction<byte[], R> converter = (content) -> objectMapper.readValue(content, returnType);
+        return callGet(url, status, converter);
+    }
+    
+    private <T, R> R callGet(final String url, final HttpStatus status, final Function<byte[], R> converter) {
         return assertDoesNotThrow(() -> {
             final var response = mockMvc.perform(
                     get(url)
@@ -72,7 +123,7 @@ public abstract class AbstractMvcTest {
             ).andDo(print()).andExpect(status().is(status.value())).andReturn();
             final var content = response.getResponse().getContentAsByteArray();
             if (content.length > 0) {
-                return objectMapper.readValue(content, returnType);
+                return converter.apply(content);
             } else {
                 return null;
             }
@@ -94,7 +145,7 @@ public abstract class AbstractMvcTest {
         });
     }
     
-    protected void withAuthorization(final String jwtToken, final Runnable runnable) {
+    protected void withAuthorization(final String jwtToken, final ThrowingRunnable runnable) {
         this.jwt = jwtToken;
         runnable.run();
         this.jwt = null;

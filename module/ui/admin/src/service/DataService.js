@@ -33,6 +33,12 @@ class DataService {
     post = (url, data) => {
         return this._request('POST', AppURLs.api + url, data);
     };
+    putMultipart = (url, data) => {
+        return this._requestMultipart('PUT', AppURLs.api + url, data);
+    };
+    postMultipart = (url, data) => {
+        return this._requestMultipart('POST', AppURLs.api + url, data);
+    };
     delete = (url) => {
         return this._request('DELETE', AppURLs.api + url);
     };
@@ -78,6 +84,36 @@ class DataService {
             signal: signal,
             headers: headers,
             body: payload ? JSON.stringify(payload) : null
+        }).then(function(response) {
+            if (response.ok) {
+                return response.text().then(function(text) {
+                    return text ? JSON.parse(text) : {};
+                });
+            } else if (response.status === 401) {
+                history.push(AppURLs.welcome);
+            } else {
+                response.json().then(errJson => {
+                    DataService.showNotification(errJson.message, errJson.details, 'error');
+                });
+            }
+        }).catch(error => {
+            console.error('HTTP error occurred: ' + error);
+        });
+    };
+    
+    _requestMultipart = (method, url, payload) => {
+        let signal = this.abortController.signal;
+        const headers = {
+            'Accept': 'application/json'
+        };
+        if (DataService.jwt) {
+            headers['Authorization'] = 'Bearer ' + DataService.jwt;
+        }
+        return fetch(url, {
+            method: method,
+            signal: signal,
+            headers: headers,
+            body: payload
         }).then(function(response) {
             if (response.ok) {
                 return response.text().then(function(text) {

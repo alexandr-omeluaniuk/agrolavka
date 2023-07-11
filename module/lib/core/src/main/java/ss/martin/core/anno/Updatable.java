@@ -8,6 +8,7 @@ import java.lang.annotation.Target;
 /**
  * Updatable field.
  */
+@Deprecated
 @Target(value = {ElementType.FIELD})
 @Retention(value = RetentionPolicy.RUNTIME)
 public @interface Updatable {

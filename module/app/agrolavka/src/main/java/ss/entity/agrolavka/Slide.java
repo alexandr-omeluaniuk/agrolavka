@@ -15,7 +15,6 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import ss.entity.images.storage.EntityImage;
 import ss.entity.security.EntityAudit;
-import ss.martin.core.anno.Updatable;
 
 /**
  * Site slide.
@@ -23,32 +22,27 @@ import ss.martin.core.anno.Updatable;
  */
 @Entity
 @Table(name = "slide")
-public class Slide extends EntityAudit {
+public class Slide extends EntityAudit implements EntityWithImages {
     /** Name. */
     @NotNull
     @Size(max = 255)
-    @Updatable
     @Column(name = "name", length = 255, nullable = false)
     private String name;
     /** Title. */
     @NotNull
     @Size(max = 1000)
-    @Updatable
     @Column(name = "title", length = 1000, nullable = false)
     private String title;
     /** Subtitle. */
     @Size(max = 3000)
-    @Updatable
     @Column(name = "subtitle", length = 3000)
     private String subtitle;
     /** Button text. */
     @Size(max = 255)
-    @Updatable
     @Column(name = "button_text", length = 255)
     private String buttonText;
     /** Button link. */
     @Size(max = 1000)
-    @Updatable
     @Column(name = "button_link", length = 1000)
     private String buttonLink;
     /** Images. */
@@ -99,10 +93,12 @@ public class Slide extends EntityAudit {
         this.buttonLink = buttonLink;
     }
     
+    @Override
     public List<EntityImage> getImages() {
         return images;
     }
     
+    @Override
     public void setImages(List<EntityImage> images) {
         this.images = images;
     }

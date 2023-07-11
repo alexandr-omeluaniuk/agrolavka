@@ -144,24 +144,53 @@ function DataTable(props) {
     const onFormSubmitAction = (data) => {
         setFormDisabled(true);
         let id = DataTypeService.getIdValue(tableConfig.formConfig, data);
+        const onCompleteFun = () => {
+            setFormDisabled(false);
+            setFormOpen(false);
+            setLoad(!load);
+        };
+        const toFormData = (data) => {
+            const formData = new FormData();
+            for (const [key, value] of Object.entries(data)) {
+                const field = tableConfig.formConfig.formFields.filter(f => f.name === key)[0];
+                if (field) {
+                    if (field.attributes && field.attributes.multipart) {
+                        if (value instanceof Array) {
+                            value.filter(v => v instanceof File).forEach(v => formData.append(field.attributes.multipart, v));
+                            data[key] = value.filter(v => !(v instanceof File));
+                        } else if (value instanceof File) {
+                            formData.append(field.attributes.multipart, value);
+                            delete data[key];
+                        }
+                    }
+                }
+            }
+            const blob = new Blob([JSON.stringify(data)], {
+                type: "application/json"
+            });
+            formData.append('entity', blob);
+            return formData;
+        };
         if (id) {
             if (tableConfig.apiUrl.beforeUpdate) {
                 data = tableConfig.apiUrl.beforeUpdate(data, record);
             }
-            dataService.put(tableConfig.apiUrl instanceof ApiURL ? tableConfig.apiUrl.putUrl : tableConfig.apiUrl, data).then(() => {
-                setFormDisabled(false);
-                setFormOpen(false);
-                setLoad(!load);
-            });
+            const updateUrl = tableConfig.apiUrl instanceof ApiURL ? tableConfig.apiUrl.putUrl : tableConfig.apiUrl;
+            if (tableConfig.multipart) {
+                dataService.putMultipart(updateUrl, toFormData(data)).then(() => onCompleteFun());
+            } else {
+                dataService.put(updateUrl, data).then(() => onCompleteFun());
+            }
         } else {
             if (tableConfig.apiUrl.beforeCreate) {
                 data = tableConfig.apiUrl.beforeCreate(data);
             }
-            dataService.post(tableConfig.apiUrl instanceof ApiURL ? tableConfig.apiUrl.postUrl : tableConfig.apiUrl, data).then(() => {
-                setFormDisabled(false);
-                setFormOpen(false);
-                setLoad(!load);
-            });
+            const createUrl = tableConfig.apiUrl instanceof ApiURL ? tableConfig.apiUrl.postUrl : tableConfig.apiUrl;
+            if (tableConfig.multipart) {
+                dataService.postMultipart(createUrl, toFormData(data)).then(() => onCompleteFun());
+            } else {
+                dataService.post(createUrl, data).then(() => onCompleteFun());
+            }
         }
     };
     const onRefresh = () => {

@@ -1,9 +1,9 @@
 rootProject.name = 'martin'
 
+// include ':module:lib:notification:notification-push-api', ':module:lib:notification:notification-push-firebase', ':module:lib:notification:notification-email-smtp'
 include ':module:lib:test:common-test', ':module:lib:test:security-test'
 include ':module:lib:base', ':module:lib:core', ':module:lib:platform', ':module:lib:security', ':module:lib:images-storage', ':module:lib:telegram-bot'
-include ':module:lib:notification:notification-email-api', ':module:lib:notification:notification-email-mailjet', ':module:lib:notification:notification-email-smtp'
-include ':module:lib:notification:notification-push-api', ':module:lib:notification:notification-push-firebase'
+include ':module:lib:notification:notification-email-api', ':module:lib:notification:notification-email-mailjet'
 include ':module:app:agrolavka'
 include ':module:ui:admin'
 

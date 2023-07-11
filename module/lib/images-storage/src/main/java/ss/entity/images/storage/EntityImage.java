@@ -7,7 +7,9 @@ import jakarta.persistence.EntityListeners;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import org.springframework.web.multipart.MultipartFile;
 import ss.entity.security.EntityAudit;
+import ss.martin.base.lang.ThrowingRunnable;
 import ss.martin.core.anno.Updatable;
 import ss.martin.images.storage.deserializer.ByteArrayDeserializer;
 import ss.martin.images.storage.jpa.listener.EntityImageListener;
@@ -46,6 +48,18 @@ public class EntityImage extends EntityAudit {
     @Updatable
     @Column(name = "image_data", nullable = true)
     private byte[] data;
+    
+    public EntityImage() {
+    }
+    
+    public EntityImage(final MultipartFile file) {
+        ((ThrowingRunnable) () -> {
+            name = file.getOriginalFilename();
+            type = file.getContentType();
+            size = file.getSize();
+            data = file.getBytes();
+        }).run();
+    }
     
     public String getName() {
         return name;
@@ -109,6 +123,6 @@ public class EntityImage extends EntityAudit {
     
     @Override
     public String toString() {
-        return "ss.entity.martin.EntityImage[ id=" + getId() + " ]";
+        return "ss.entity.martin.EntityImage[ id=" + getId() + ", name=" + getName() + " ]";
     }
 }

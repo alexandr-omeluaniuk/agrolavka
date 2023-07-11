@@ -15,7 +15,6 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import ss.entity.images.storage.EntityImage;
 import ss.entity.security.EntityAudit;
-import ss.martin.core.anno.Updatable;
 
 /**
  * Shop.
@@ -23,15 +22,13 @@ import ss.martin.core.anno.Updatable;
  */
 @Entity
 @Table(name = "shop")
-public class Shop extends EntityAudit {
+public class Shop extends EntityAudit implements EntityWithImages {
     /** Shop title. */
-    @Updatable
     @NotNull
     @Size(min = 1, max = 255)
     @Column(name = "title", length = 255)
     private String title;
     /** Shop description. */
-    @Updatable
     @NotNull
     @Size(min = 1, max = 5000)
     @Column(name = "description", length = 5000)
@@ -44,29 +41,24 @@ public class Shop extends EntityAudit {
     @Fetch(FetchMode.SUBSELECT)
     private List<EntityImage> images;
     /** Latitude. */
-    @Updatable
     @NotNull
     @Column(name = "latitude")
     private Double latitude;
     /** Longitude. */
-    @Updatable
     @NotNull
     @Column(name = "longitude")
     private Double longitude;
     /** Address. */
-    @Updatable
     @NotNull
     @Size(min = 1, max = 255)
     @Column(name = "address")
     private String address;
     /** Working hours. */
-    @Updatable
     @NotNull
     @Size(min = 1, max = 255)
     @Column(name = "working_hours")
     private String workingHours;
     /** Phone */
-    @Updatable
     @Size(max = 255)
     @Column(name = "phone")
     private String phone;

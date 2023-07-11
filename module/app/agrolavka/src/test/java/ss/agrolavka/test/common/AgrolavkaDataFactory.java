@@ -8,6 +8,7 @@ import ss.entity.agrolavka.Order;
 import ss.entity.agrolavka.OrderPosition;
 import ss.entity.agrolavka.Product;
 import ss.entity.agrolavka.ProductsGroup;
+import ss.entity.agrolavka.Shop;
 
 public class AgrolavkaDataFactory {
     
@@ -62,5 +63,17 @@ public class AgrolavkaDataFactory {
         position.setPrice(product.getDiscountPrice());
         position.setQuantity(1);
         return position;
+    }
+    
+    public static Shop generateShop() {
+        final var shop = new Shop();
+        shop.setAddress("Brest, Rabinovaya st. 31");
+        shop.setDescription("The best shop in the world");
+        shop.setLatitude(52.0);
+        shop.setLongitude(28.0);
+        shop.setWorkingHours("Some working hours");
+        shop.setTitle("Main shop");
+        shop.setPhone("+375 666 66 66");
+        return shop;
     }
 }

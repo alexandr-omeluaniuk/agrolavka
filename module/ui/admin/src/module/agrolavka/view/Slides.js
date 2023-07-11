@@ -16,10 +16,10 @@ function Slides() {
     // ------------------------------------------------------- METHODS --------------------------------------------------------------------
     const updateTable = () => {
         const apiUrl = new ApiURL(
-                '/platform/entity/ss.entity.agrolavka.Slide',
-                '/platform/entity/ss.entity.agrolavka.Slide',
-                '/platform/entity/ss.entity.agrolavka.Slide',
-                '/platform/entity/ss.entity.agrolavka.Slide'
+                '/agrolavka/protected/slide',
+                '/agrolavka/protected/slide',
+                '/agrolavka/protected/slide',
+                '/agrolavka/protected/slide'
         );
         const newTableConfig = new TableConfig(t('m_agrolavka:agrolavka.slides'), apiUrl, [
             new TableColumn('avatar', '', (row) => {
@@ -50,7 +50,7 @@ function Slides() {
             new FormField('buttonLink', TYPES.TEXTFIELD, t('m_agrolavka:slides.button_link')).setGrid({xs: 12, md: 6}).validation([
                 new Validator(VALIDATORS.MAX_LENGTH, {length: 1000})
             ]),
-            new FormField('images', TYPES.IMAGES, t('m_agrolavka:shops.images')).setGrid({xs: 12}).validation([
+            new FormField('images', TYPES.IMAGES, t('m_agrolavka:shops.images')).setAttributes({valueType: 'file', multipart: 'image'}).setGrid({xs: 12}).validation([
                 new Validator(VALIDATORS.REQUIRED)
             ])
         ]).setBeforeOnEditRecord((record) => {
@@ -61,6 +61,7 @@ function Slides() {
                 resolve(record);
             });
         })).setElevation(1);
+        newTableConfig.setMultipart(true);
         setTableConfig(newTableConfig);
     };
     // ------------------------------------------------------- HOOKS ----------------------------------------------------------------------
