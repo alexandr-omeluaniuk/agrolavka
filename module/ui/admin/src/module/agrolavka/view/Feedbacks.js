@@ -18,10 +18,10 @@ function Feedbacks() {
     // ------------------------------------------------------- METHODS --------------------------------------------------------------------
     const updateTable = () => {
         const apiUrl = new ApiURL(
-                '/platform/entity/ss.entity.agrolavka.Feedback',
+                '/agrolavka/protected/feedback',
                 null,
                 null,
-                '/platform/entity/ss.entity.agrolavka.Feedback'
+                '/agrolavka/protected/feedback'
         );
         apiUrl.addGetExtraParam('order_by', 'created');
         const newTableConfig = new TableConfig(t('m_agrolavka:agrolavka.feedbacks'), apiUrl, [
