@@ -129,35 +129,41 @@ function ProductsGroups(props) {
         }
         setSelectedProductGroup(node.getId() > 0 ? node.getOrigin() : null);
     };
-    const onFormSubmitAction = (data) => {
+    const onFormSubmitAction = async (data) => {
         setFormDisabled(true);
+        const toFormData = (data) => {
+            const formData = new FormData();
+            if (data.images) {
+                data.images.filter(image => image instanceof File).forEach(imageFile => formData.append('image', imageFile));
+                data.images = data.images.filter(image => !(image instanceof File));
+            }
+            const blob = new Blob([JSON.stringify(data)], {
+                type: "application/json"
+            });
+            formData.append('entity', blob);
+            return formData;
+        };
+        const onComplete = (group) => {
+            const updated = [];
+            productGroups.forEach(pg => {
+                updated.push(group.id === pg.id ? group : pg);
+            });
+            setProductGroups(updated);
+            setFormDisabled(false);
+            setFormOpen(false);
+            setSelectedProductGroup(group);
+        };
         if (data.id) {
             data.parentId = record.parentId;
             data.externalId = record.externalId;
-            dataService.put('/platform/entity/ss.entity.agrolavka.ProductsGroup', data).then((group) => {
-                const updated = [];
-                productGroups.forEach(pg => {
-                    updated.push(group.id === pg.id ? group : pg);
-                });
-                setProductGroups(updated);
-                setFormDisabled(false);
-                setFormOpen(false);
-                setSelectedProductGroup(group);
-            });
+            const group = await dataService.putMultipart('/agrolavka/protected/products-group', toFormData(data));
+            onComplete(group);
         } else {
             if (selectedProductGroup) {
                 data.parentId = selectedProductGroup.externalId;
             }
-            dataService.post('/platform/entity/ss.entity.agrolavka.ProductsGroup', data).then((group) => {
-                const updated = [];
-                productGroups.forEach(pg => {
-                    updated.push(pg);
-                });
-                updated.push(group);
-                setProductGroups(updated);
-                setFormDisabled(false);
-                setFormOpen(false);
-            });
+            const group = await dataService.postMultipart('/agrolavka/protected/products-group', toFormData(data));
+            onComplete(group);
         }
     };
     const onCreateNewGroup = () => {
@@ -178,19 +184,14 @@ function ProductsGroups(props) {
     };
     const doDelete = () => {
         setConfirmDialogOpen(false);
-        dataService.delete('/platform/entity/ss.entity.agrolavka.ProductsGroup/' + selectedProductGroup.id).then(() => {
+        dataService.delete('/agrolavka/protected/products-group/' + selectedProductGroup.id).then(() => {
             setProductGroups(null);
         });
     };
-//    const normalize = () => {
-//        dataService.put('/agrolavka/protected/product-group/normalize').then(() => {
-//            setProductGroups(null);
-//        });
-//    };
     // -------------------------------------------------------- HOOKS ---------------------------------------------------------------------
     useEffect(() => {
         if (productGroups === null) {
-            dataService.get('/platform/entity/ss.entity.agrolavka.ProductsGroup').then(resp => {
+            dataService.get('/agrolavka/protected/products-group').then(resp => {
                 setProductGroups(resp.data);
             });
         }
@@ -220,7 +221,8 @@ function ProductsGroups(props) {
                         .validation([
                     new Validator(VALIDATORS.MAX_LENGTH, {length: 255})
                 ]),
-                new FormField('images', TYPES.IMAGES, t('m_agrolavka:products_groups.image')).setGrid({xs: 12})
+                new FormField('images', TYPES.IMAGES, t('m_agrolavka:products_groups.image'))
+                        .setAttributes({valueType: 'file', multipart: 'image'}).setGrid({xs: 12})
             ]));
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps

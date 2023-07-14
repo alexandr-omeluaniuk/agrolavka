@@ -16,7 +16,6 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.json.JSONObject;
 import ss.entity.images.storage.EntityImage;
-import ss.martin.core.anno.Updatable;
 
 /**
  * Products group.
@@ -24,9 +23,8 @@ import ss.martin.core.anno.Updatable;
  */
 @Entity
 @Table(name = "products_group")
-public class ProductsGroup extends ExternalEntity implements Comparable<ProductsGroup> {
+public class ProductsGroup extends ExternalEntity implements Comparable<ProductsGroup>, EntityWithImages {
     /** Name. */
-    @Updatable
     @NotNull
     @Size(max = 255)
     @Column(name = "name", length = 255, nullable = false)
@@ -37,7 +35,7 @@ public class ProductsGroup extends ExternalEntity implements Comparable<Products
     private String parentId;
     /** Products. */
     @JsonIgnore
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "group", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "group", cascade = CascadeType.REMOVE)
     private List<Product> products;
     /** URL. */
     @NotNull
@@ -45,26 +43,21 @@ public class ProductsGroup extends ExternalEntity implements Comparable<Products
     @Column(name = "url", length = 255, unique = true)
     private String url;
     /** Top category. */
-    @Updatable
     @Column(name = "is_top_category")
     private Boolean topCategory;
     /** Description. */
-    @Updatable
     @Size(max = 4096)
     @Column(name = "description", length = 4096)
     private String description;
     /** SEO title. */
-    @Updatable
     @Size(max = 255)
     @Column(name = "seo_title", length = 255)
     private String seoTitle;
     /** SEO description. */
-    @Updatable
     @Size(max = 255)
     @Column(name = "seo_description", length = 255)
     private String seoDescription;
     /** Images. */
-    //@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinTable(name = "product_group_images",
             joinColumns = @JoinColumn(name = "product_group_id", referencedColumnName = "id"),
@@ -136,10 +129,12 @@ public class ProductsGroup extends ExternalEntity implements Comparable<Products
         this.seoDescription = seoDescription;
     }
     
+    @Override
     public List<EntityImage> getImages() {
         return images;
     }
     
+    @Override
     public void setImages(List<EntityImage> images) {
         this.images = images;
     }

@@ -67,7 +67,7 @@ export const AuthProvider = ({ children }) => {
     // ------------------------------------------------------------- METHODS --------------------------------------------------------------
     const login = (data) => {
         dataService.login(data).then((authResponse) => {
-            console.log(authResponse);
+            // console.log(authResponse);
             if (authResponse) {
                 DataService.jwt = authResponse.jwt;
                 localStorage.setItem('access_token', authResponse.jwt);

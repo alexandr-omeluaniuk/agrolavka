@@ -25,7 +25,7 @@ public abstract class BasicEntityWithImagesRestController<T extends DataModel & 
     extends BasicEntityRestController<T> {
     
     @Autowired
-    private CacheManager cacheManager;
+    protected CacheManager cacheManager;
     
     @PostMapping
     public T create(
@@ -66,7 +66,7 @@ public abstract class BasicEntityWithImagesRestController<T extends DataModel & 
             );
     }
     
-    private void setImages(final EntityWithImages entity, final MultipartFile[] files) {
+    protected void setImages(final EntityWithImages entity, final MultipartFile[] files) {
         entity.setImages(Optional.ofNullable(entity.getImages()).orElse(new ArrayList<>()));
         Optional.ofNullable(files).ifPresent(filesArray ->
             entity.getImages().addAll(Stream.of(filesArray).map(file ->
