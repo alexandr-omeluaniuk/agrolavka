@@ -32,7 +32,7 @@ public abstract class BasicEntityRestController<T extends DataModel> {
         return coreDAO.searchEntities(
             new EntitySearchRequest(
                 Optional.ofNullable(page).orElse(1),
-                Optional.ofNullable(pageSize).orElse(100),
+                Optional.ofNullable(pageSize).orElse(Integer.MAX_VALUE),
                 order,
                 orderBy
             ), 

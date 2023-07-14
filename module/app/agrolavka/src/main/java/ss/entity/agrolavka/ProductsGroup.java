@@ -35,7 +35,7 @@ public class ProductsGroup extends ExternalEntity implements Comparable<Products
     private String parentId;
     /** Products. */
     @JsonIgnore
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "group", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "group")
     private List<Product> products;
     /** URL. */
     @NotNull
