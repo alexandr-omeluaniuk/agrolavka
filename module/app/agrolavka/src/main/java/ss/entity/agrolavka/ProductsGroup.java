@@ -35,7 +35,7 @@ public class ProductsGroup extends ExternalEntity implements Comparable<Products
     private String parentId;
     /** Products. */
     @JsonIgnore
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "group")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "group", cascade = CascadeType.REMOVE)
     private List<Product> products;
     /** URL. */
     @NotNull
@@ -58,7 +58,6 @@ public class ProductsGroup extends ExternalEntity implements Comparable<Products
     @Column(name = "seo_description", length = 255)
     private String seoDescription;
     /** Images. */
-    //@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinTable(name = "product_group_images",
             joinColumns = @JoinColumn(name = "product_group_id", referencedColumnName = "id"),
