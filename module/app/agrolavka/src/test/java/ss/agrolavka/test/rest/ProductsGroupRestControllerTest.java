@@ -2,7 +2,6 @@ package ss.agrolavka.test.rest;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import java.util.UUID;
-import org.junit.jupiter.api.AfterEach;
 import ss.agrolavka.test.common.AgrolavkaDataFactory;
 import ss.entity.agrolavka.ProductsGroup;
 import ss.martin.core.model.EntitySearchResponse;
@@ -11,6 +10,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import ss.agrolavka.service.MySkladIntegrationService;
 import static org.mockito.Mockito.*;
+import ss.entity.agrolavka.Product;
 
 public class ProductsGroupRestControllerTest extends AbstractEntityWithImagesRestControllerTest<ProductsGroup> {
     
@@ -19,16 +19,13 @@ public class ProductsGroupRestControllerTest extends AbstractEntityWithImagesRes
     
     @BeforeEach
     public void beforeTest() {
+        coreDao.massDelete(coreDao.getAll(Product.class));
+        coreDao.massDelete(coreDao.getAll(ProductsGroup.class));
         when(mySklad.createProductsGroup(any())).thenReturn(UUID.randomUUID().toString());
         doNothing().when(mySklad).updateProductsGroup(any());
         doNothing().when(mySklad).deleteProductsGroup(any());
     }
     
-    @AfterEach
-    public void afterTest() {
-        coreDao.massDelete(coreDao.getAll(ProductsGroup.class));
-    }
-
     @Override
     protected Class<ProductsGroup> entityClass() {
         return ProductsGroup.class;
