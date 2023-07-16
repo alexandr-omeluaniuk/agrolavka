@@ -9,4 +9,5 @@ public final class JspValue {
     public static final String SHOPS = "shops";
     public static final String SLIDES = "slides";
     public static final String NEW_PRODUCTS = "newProducts";
+    public static final String PRODUCTS_WITH_DISCOUNT = "productsWithDiscount";
 }

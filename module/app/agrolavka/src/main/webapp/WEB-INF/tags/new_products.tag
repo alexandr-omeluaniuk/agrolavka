@@ -14,8 +14,8 @@
 
 <%-- any content can be specified here e.g.: --%>
 <section class="text-center">
-    <h4 class="mb-4"><strong>Новинки</strong></h4>
-    <h6 class="mb-3">Последнее поступление товаров</h6>
+    <h4 class="mb-3"><strong>Новинки</strong></h4>
+    <h6 class="mb-2">Последнее поступление товаров</h6>
     <!-- Carousel wrapper -->
     <div class="agr-new-products-swiper swiper p-3">
         <div class="swiper-wrapper">
@@ -37,7 +37,7 @@
                 spaceBetween: 25,
                 grabCursor: true,
                 autoplay: {
-                    delay: 2500,
+                    delay: 4500,
                     disableOnInteraction: true
                 },
                 pagination: {

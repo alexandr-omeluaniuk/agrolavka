@@ -12,4 +12,5 @@ public final class CacheKey {
     public static final String SLIDES = "slides";
     public static final String PRODUCTS_GROUPS = "productsGroups";
     public static final String NEW_PRODUCTS = "newProducts";
+    public static final String PRODUCTS_WITH_DISCOUNT = "productsWithDiscount";
 }

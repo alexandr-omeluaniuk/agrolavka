@@ -22,4 +22,10 @@ public interface ProductService {
      * @return new products.
      */
     List<Product> getNewProducts();
+    
+    /**
+     * Get all products with discount.
+     * @return products with discount.
+     */
+    List<Product> getProductsWithDiscount();
 }

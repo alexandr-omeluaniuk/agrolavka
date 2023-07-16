@@ -71,9 +71,9 @@ public class SiteController {
         model.addAttribute("title", "Все для сада и огорода");
         model.addAttribute(JspValue.NEW_PRODUCTS, productService.getNewProducts());
         model.addAttribute(JspValue.SLIDES, siteDataService.getAllSlides());
-        List<Product> withDiscount = getProductsWithDiscount();
-        List<Product> withDiscountFirst12 = withDiscount.size() > 12 ? withDiscount.subList(0, 12) : withDiscount;
-        model.addAttribute("productsWithDiscount", withDiscountFirst12);
+        final var withDiscount = productService.getProductsWithDiscount();
+        final var withDiscountFirst12 = withDiscount.size() > 12 ? withDiscount.subList(0, 12) : withDiscount;
+        model.addAttribute(JspValue.PRODUCTS_WITH_DISCOUNT, withDiscountFirst12);
         return "home";
     }
     /**
