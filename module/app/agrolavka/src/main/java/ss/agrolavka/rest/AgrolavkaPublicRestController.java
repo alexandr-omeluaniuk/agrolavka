@@ -42,6 +42,7 @@ class AgrolavkaPublicRestController {
     
     @Autowired
     private ProductService productService;
+    
     /** Order service. */
     @Autowired
     private OrderService orderService;
