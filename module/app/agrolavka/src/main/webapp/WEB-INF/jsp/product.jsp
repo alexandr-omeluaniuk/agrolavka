@@ -12,8 +12,8 @@
 <t:app title="${title}" metaDescription="${title}" canonical="${canonical}">
     
     <jsp:attribute name="headSection">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css"/>
-        <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
+        <link rel="stylesheet" href="/assets/vendor/swiper/swiper-bundle.min.css"/>
+        <script src="/assets/vendor/swiper/swiper-bundle.min.js"></script>
     </jsp:attribute>
     
     <jsp:attribute name="structuredData">
