@@ -12,8 +12,8 @@
 <t:app title="${title}" metaDescription="${title}" canonical="${canonical}">
     
     <jsp:attribute name="headSection">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css"/>
-        <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
+        <link rel="stylesheet" href="/assets/vendor/swiper/swiper-bundle.min.css"/>
+        <script src="/assets/vendor/swiper/swiper-bundle.min.js"></script>
     </jsp:attribute>
     
     <jsp:attribute name="structuredData">
@@ -57,7 +57,7 @@
                     <t:breadcrumb label="${breadcrumbLabel}" groups="${breadcrumbPath}"></t:breadcrumb>
                     <article>
                         <div class="row">
-                            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 d-flex flex-column">
+                            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 d-flex flex-column gx-5">
                                 <t:product-images product="${product}"></t:product-images>
                                 <hr/>
                                 <t:product-price product="${product}"></t:product-price>
@@ -65,7 +65,7 @@
                                 <t:product-actions cart="${cart}" product="${product}"></t:product-actions>
                                 <hr/>
                             </div>
-                            <div class="col-xs-12 col-sm-6 col-md-8 col-lg-9">
+                            <div class="col-xs-12 col-sm-6 col-md-8 col-lg-9 gx-5">
                                 <t:product-description product="${product}"/>
                             </div>
                         </div>

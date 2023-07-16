@@ -14,7 +14,7 @@
 <footer class="bg-dark text-white shadow-2" id="footer">
     <div class="container pt-4">
         <div class="row">
-            <div class="col-lg-9">
+            <div class="col-lg-9 gx-5">
                 <div class="row">
                     <div class="col-sm-8">
                         <h3>Агролавка</h3>
@@ -45,7 +45,7 @@
                 </div>
             </div>
 
-            <div class="col-lg-3" id="contacts">
+            <div class="col-lg-3 gx-5" id="contacts">
                 <h4>Контакты</h4>
                 <c:forEach items="${shops}" var="shop">
                     <t:shop-short-info shop="${shop}"/>
@@ -56,7 +56,7 @@
         </div>
 
         <div class="text-center p-3">
-            &copy; <strong>Агролавка</strong>. Все права защищены
+            <small>&copy; <strong>Агролавка</strong>. Все права защищены</small>
         </div>
 
     </div>

@@ -12,13 +12,18 @@
 <t:app title="Агролавка | ${title}" canonical=""
        metaDescription="Большой выбор семян, удобрений, средств для защиты растений. Комплектующие для капельного полива. Зоотовары. Приглашаем за покупками.">
 
+    <jsp:attribute name="headSection">
+        <link rel="stylesheet" href="/assets/vendor/swiper/swiper-bundle.min.css"/>
+        <script src="/assets/vendor/swiper/swiper-bundle.min.js"></script>
+    </jsp:attribute>
+    
     <jsp:body>
         <main class="min-vh-100" id="home">
             <t:intro visible="true" slides="${slides}"/>
             <div class="container pt-5">
 
                 <!--Section: Content-->
-                <t:top-product-groups />
+                <t:top-product-groups topCategories="${topCategories}"/>
                 
                 <c:if test="${productsWithDiscount.size() > 0}">
                     <hr class="my-5" />

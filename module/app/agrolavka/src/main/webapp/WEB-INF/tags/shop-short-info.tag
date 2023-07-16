@@ -12,11 +12,11 @@
 <%@attribute name="shop" required="true" type="ss.entity.agrolavka.Shop"%>
 
 <%-- any content can be specified here e.g.: --%>
-<a class="agr-shop-address-link" href="/shops"><p class="agr-shop-address">${shop.address}</p></a>
+<a class="agr-shop-address-link" href="/shops"><h6 class="agr-shop-address">${shop.address}</h6></a>
 <% if (shop.getPhone() != null) { %>
 <div class="d-flex justify-content-between align-items-center">
     <h6 class="mt-2">Телефон</h6>
-    <a class="text-white agr-shop-phone" href="tel:${shop.phone}">${shop.phone}</a>
+    <a class="text-white agr-shop-phone" href="tel:${shop.phone}"><h6>${shop.phone}</h6></a>
 </div>
 <% } %>
 <h6 class="mt-2">Время работы</h6>

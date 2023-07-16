@@ -9,11 +9,13 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.CacheManager;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
@@ -25,7 +27,6 @@ import ss.agrolavka.service.GroupProductsService;
 import ss.agrolavka.service.MySkladIntegrationService;
 import ss.agrolavka.util.AppCache;
 import ss.agrolavka.util.UrlProducer;
-import ss.agrolavka.wrapper.ProductsSearchRequest;
 import ss.entity.agrolavka.Discount;
 import ss.entity.agrolavka.PriceType;
 import ss.entity.agrolavka.Product;
@@ -68,6 +69,9 @@ public class DataUpdater {
     @Autowired
     private AlertService alertService;
     
+    @Autowired
+    private CacheManager cacheManager;
+    
     @PostConstruct
     protected void init() {
         AppCache.flushCache(coreDAO.getAll(ProductsGroup.class));
@@ -99,6 +103,7 @@ public class DataUpdater {
             groupProductsService.groupProductByVolumes();
             AppCache.flushCache(coreDAO.getAll(ProductsGroup.class));
             LOG.info("===============================================================================================");
+            resetAllCaches();
             return true;
         } catch (final Exception e) {
             LOG.error("Import MySklad data - fail!", e);
@@ -259,10 +264,6 @@ public class DataUpdater {
         coreDAO.massCreate(newProducts);
         // remove unused groups.
         externalEntityDAO.removeExternalEntitiesNotInIDs(deleteNotIn, Product.class);
-        ProductsSearchRequest requestX = new ProductsSearchRequest();
-        requestX.setPage(1);
-        requestX.setPageSize(Integer.MAX_VALUE);
-        AppCache.setProductsCount(productDAO.count(requestX));
     }
     
     @Transactional(propagation = Propagation.SUPPORTS, rollbackFor = Exception.class)
@@ -305,5 +306,12 @@ public class DataUpdater {
         LOG.info("images import completed...");
         LOG.info("elapsed time [" + (System.currentTimeMillis() - start) + "] ms");
     }
-   
+    
+    
+    private void resetAllCaches() {
+        cacheManager.getCacheNames().parallelStream()
+            .forEach(name -> Optional.ofNullable(
+                cacheManager.getCache(name)).ifPresent(it -> it.clear())
+            );
+    }
 }
