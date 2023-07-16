@@ -56,7 +56,7 @@
         </div>
 
         <div class="text-center p-3">
-            &copy; <strong>Агролавка</strong>. Все права защищены
+            <small>&copy; <strong>Агролавка</strong>. Все права защищены</small>
         </div>
 
     </div>
