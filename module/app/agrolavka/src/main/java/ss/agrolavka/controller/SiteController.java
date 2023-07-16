@@ -7,7 +7,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.stream.Collectors;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,19 +16,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-import ss.agrolavka.constants.JspValue;
 import ss.agrolavka.constants.SiteConstants;
 import ss.agrolavka.dao.ProductDAO;
-import ss.agrolavka.service.OrderService;
-import ss.agrolavka.service.ProductService;
-import ss.agrolavka.service.ProductsGroupService;
-import ss.agrolavka.service.SiteDataService;
 import ss.agrolavka.util.AppCache;
 import ss.agrolavka.util.UrlProducer;
 import ss.agrolavka.wrapper.ProductsSearchRequest;
 import ss.entity.agrolavka.EuropostLocation;
-import ss.entity.agrolavka.Order;
-import ss.entity.agrolavka.OrderPosition;
 import ss.entity.agrolavka.Product;
 import ss.entity.agrolavka.ProductsGroup;
 import ss.entity.martin.DataModel;
@@ -40,7 +32,7 @@ import ss.martin.core.dao.CoreDao;
  * @author alex
  */
 @Controller
-public class SiteController {
+public class SiteController extends BaseJspController {
     /** Logger. */
     private static final Logger LOG = LoggerFactory.getLogger(SiteController.class);
     /** Product DAO. */
@@ -49,38 +41,7 @@ public class SiteController {
     /** Core DAO. */
     @Autowired
     private CoreDao coreDAO;
-    /** Order service. */
-    @Autowired
-    private OrderService orderService;
-    /** Site data service. */
-    @Autowired
-    private SiteDataService siteDataService;
     
-    @Autowired
-    private ProductService productService;
-    
-    @Autowired
-    private ProductsGroupService productsGroupService;
-    
-    /**
-     * Home page.
-     * @param model data model.
-     * @param httpRequest HTTP request.
-     * @return JSP page.
-     * @throws Exception error.
-     */
-    @RequestMapping("/")
-    public String home(Model model, HttpServletRequest httpRequest) throws Exception {
-        insertCommonDataToModel(httpRequest, model);
-        model.addAttribute("title", "Все для сада и огорода");
-        model.addAttribute(JspValue.TOP_CATEGORIES, productsGroupService.getTopCategories());
-        model.addAttribute(JspValue.NEW_PRODUCTS, productService.getNewProducts());
-        model.addAttribute(JspValue.SLIDES, siteDataService.getAllSlides());
-        final var withDiscount = productService.getProductsWithDiscount();
-        final var withDiscountFirst12 = withDiscount.size() > 12 ? withDiscount.subList(0, 12) : withDiscount;
-        model.addAttribute(JspValue.PRODUCTS_WITH_DISCOUNT, withDiscountFirst12);
-        return "home";
-    }
     /**
      * Cart page.
      * @param model page model.
@@ -142,7 +103,7 @@ public class SiteController {
     @RequestMapping("/promotions")
     public String promotions(Model model, HttpServletRequest httpRequest) throws Exception {
         insertCommonDataToModel(httpRequest, model);
-        model.addAttribute("products", getProductsWithDiscount());
+        model.addAttribute("products", productService.getProductsWithDiscount());
         return "promotions";
     }
     
@@ -331,60 +292,5 @@ public class SiteController {
             }
         }
         return productDAO.getProductByUrl(last);
-    }
-    /**
-     * Insert common to data model.
-     * @param request HTTP request.
-     * @param model page model.
-     */
-    private void insertCommonDataToModel(HttpServletRequest request, Model model) throws Exception {
-        // cart
-        final Order order = orderService.getCurrentOrder(request);
-        Double total = 0d;
-        for (OrderPosition pos : order.getPositions()) {
-            total += pos.getPrice() * pos.getQuantity();
-        }
-        String totalStr = String.format("%.2f", total);
-        String[] parts = totalStr.split("\\.");
-        model.addAttribute("cart", order);
-        model.addAttribute("totalInteger", parts[0]);
-        model.addAttribute("totalDecimal", parts[1]);
-        Long productsCount = AppCache.getProductsCount();
-        if (productsCount == null) {
-            ProductsSearchRequest requestX = new ProductsSearchRequest();
-            requestX.setPage(1);
-            requestX.setPageSize(Integer.MAX_VALUE);
-            productsCount = productDAO.count(requestX);
-            AppCache.setProductsCount(productsCount);
-        }
-        model.addAttribute("productsCount", productsCount);
-        model.addAttribute(JspValue.SHOPS, siteDataService.getAllShops());
-    }
-    /**
-     * Get products with discount.
-     * @return products with discount.
-     * @throws Exception error.
-     */
-    private List<Product> getProductsWithDiscount() throws Exception {
-        List<Product> productsWithDiscounts = AppCache.getProductsWithDiscounts();
-        if (productsWithDiscounts == null) {
-            ProductsSearchRequest searchRequest = new ProductsSearchRequest();
-            searchRequest.setPage(1);
-            searchRequest.setPageSize(Integer.MAX_VALUE);
-            searchRequest.setOrder("asc");
-            searchRequest.setOrderBy("name");
-            searchRequest.setWithDiscounts(true);
-            final var products = productDAO.search(searchRequest).stream()
-                    .filter(product -> product.getQuantity() != null && product.getQuantity() > 0)
-                    .collect(Collectors.toList());
-            Collections.sort(products, (p1, p2) -> {
-                final var id1 = p1.getDiscount().getId();
-                final var id2 = p2.getDiscount().getId();
-                return id1 > id2 ? -1 : 1;
-            });
-            AppCache.setProductsWithDiscounts(products);
-            productsWithDiscounts = AppCache.getProductsWithDiscounts();
-        }
-        return productsWithDiscounts;
     }
 }

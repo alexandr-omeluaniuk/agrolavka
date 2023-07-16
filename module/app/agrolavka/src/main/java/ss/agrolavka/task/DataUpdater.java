@@ -27,7 +27,6 @@ import ss.agrolavka.service.GroupProductsService;
 import ss.agrolavka.service.MySkladIntegrationService;
 import ss.agrolavka.util.AppCache;
 import ss.agrolavka.util.UrlProducer;
-import ss.agrolavka.wrapper.ProductsSearchRequest;
 import ss.entity.agrolavka.Discount;
 import ss.entity.agrolavka.PriceType;
 import ss.entity.agrolavka.Product;
@@ -265,10 +264,6 @@ public class DataUpdater {
         coreDAO.massCreate(newProducts);
         // remove unused groups.
         externalEntityDAO.removeExternalEntitiesNotInIDs(deleteNotIn, Product.class);
-        ProductsSearchRequest requestX = new ProductsSearchRequest();
-        requestX.setPage(1);
-        requestX.setPageSize(Integer.MAX_VALUE);
-        AppCache.setProductsCount(productDAO.count(requestX));
     }
     
     @Transactional(propagation = Propagation.SUPPORTS, rollbackFor = Exception.class)

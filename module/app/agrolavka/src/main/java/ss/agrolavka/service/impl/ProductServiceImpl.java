@@ -74,4 +74,13 @@ class ProductServiceImpl implements ProductService{
         });
         return products;
     }
+
+    @Override
+    @Cacheable(CacheKey.PRODUCTS_COUNT)
+    public Long getProductsCount() {
+        final var request = new ProductsSearchRequest();
+        request.setPage(1);
+        request.setPageSize(Integer.MAX_VALUE);
+        return productDao.count(request);
+    }
 }

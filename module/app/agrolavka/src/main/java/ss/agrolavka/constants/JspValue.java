@@ -11,4 +11,5 @@ public final class JspValue {
     public static final String NEW_PRODUCTS = "newProducts";
     public static final String PRODUCTS_WITH_DISCOUNT = "productsWithDiscount";
     public static final String TOP_CATEGORIES = "topCategories";
+    public static final String PRODUCTS_COUNT = "productsCount";
 }

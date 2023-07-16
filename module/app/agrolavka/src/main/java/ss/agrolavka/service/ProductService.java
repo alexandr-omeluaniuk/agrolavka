@@ -28,4 +28,10 @@ public interface ProductService {
      * @return products with discount.
      */
     List<Product> getProductsWithDiscount();
+    
+    /**
+     * Get all products count.
+     * @return products count.
+     */
+    Long getProductsCount();
 }

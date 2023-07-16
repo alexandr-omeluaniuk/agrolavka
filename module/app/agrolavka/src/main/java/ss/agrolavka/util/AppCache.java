@@ -1,12 +1,10 @@
 package ss.agrolavka.util;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import ss.entity.agrolavka.Product;
 import ss.entity.agrolavka.ProductsGroup;
 
 /**
@@ -18,16 +16,11 @@ public class AppCache {
     private static final Map<String, ProductsGroup> GROUPS_PARENT_MAP = new HashMap<>();
     /** All groups. */
     private static final List<ProductsGroup> ALL_GROUPS = new ArrayList<>();
-    /** Product with discounts. */
-    private static List<Product> productWithDiscounts = null;
-    /** Products count. */
-    private static Long productsCount = null;
     /**
      * Update catalog data.
      * @param groups product groups.
      */
     public static synchronized void flushCache(List<ProductsGroup> groups) {
-        productWithDiscounts = null;
         GROUPS_PARENT_MAP.clear();
         ALL_GROUPS.clear();
         ALL_GROUPS.addAll(groups);
@@ -40,34 +33,6 @@ public class AppCache {
             String parentId = group.getParentId();
             GROUPS_PARENT_MAP.put(group.getExternalId(), parentId == null ? null : externalIdsMap.get(parentId));
         }
-    }
-    /**
-     * Get products with discounts.
-     * @return  products with discounts.
-     */
-    public static synchronized List<Product> getProductsWithDiscounts() {
-        return productWithDiscounts;
-    }
-    /**
-     * Set products with discounts.
-     * @param products products with discounts.
-     */
-    public static synchronized void setProductsWithDiscounts(List<Product> products) {
-        productWithDiscounts = products;
-    }
-    /**
-     * Get products count.
-     * @return products count.
-     */
-    public static synchronized Long getProductsCount() {
-        return productsCount;
-    }
-    /**
-     * Set products count to cache.
-     * @param count products count.
-     */
-    public static synchronized void setProductsCount(Long count) {
-        productsCount = count;
     }
     /**
      * Get categories tree.
