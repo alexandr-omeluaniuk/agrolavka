@@ -9,7 +9,6 @@ import ss.agrolavka.service.ProductService;
 import ss.agrolavka.service.ProductsGroupService;
 import ss.agrolavka.service.SiteDataService;
 import ss.entity.agrolavka.Order;
-import ss.entity.agrolavka.OrderPosition;
 
 /**
  * Base JSP controller.
@@ -29,19 +28,17 @@ abstract class BaseJspController {
     @Autowired
     protected SiteDataService siteDataService;
     
-    protected void insertCommonDataToModel(HttpServletRequest request, Model model) throws Exception {
+    protected void insertCommonDataToModel(final HttpServletRequest request, final Model model) {
         // cart
         final Order order = orderService.getCurrentOrder(request);
-        Double total = 0d;
-        for (OrderPosition pos : order.getPositions()) {
+        var total = 0d;
+        for (final var pos : order.getPositions()) {
             total += pos.getPrice() * pos.getQuantity();
         }
-        String totalStr = String.format("%.2f", total);
-        String[] parts = totalStr.split("\\.");
-        model.addAttribute("cart", order);
-        model.addAttribute("totalInteger", parts[0]);
-        model.addAttribute("totalDecimal", parts[1]);
-        model.addAttribute(JspValue.PRODUCTS_COUNT, productService.getProductsCount());
+        final var parts = String.format("%.2f", total).split("\\.");
+        model.addAttribute(JspValue.CART, order);
+        model.addAttribute(JspValue.TOTAL_INTEGER, parts[0]);
+        model.addAttribute(JspValue.TOTAL_DECIMAL, parts[1]);
         model.addAttribute(JspValue.SHOPS, siteDataService.getAllShops());
     }
 }
