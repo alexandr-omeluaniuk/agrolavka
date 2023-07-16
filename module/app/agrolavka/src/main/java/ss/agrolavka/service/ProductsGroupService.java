@@ -1,5 +1,6 @@
 package ss.agrolavka.service;
 
+import java.util.List;
 import ss.entity.agrolavka.ProductsGroup;
 
 /**
@@ -27,4 +28,10 @@ public interface ProductsGroupService {
      * @param id group ID.
      */
     void delete(Long id);
+    
+    /**
+     * Get top categories.
+     * @return top product groups.
+     */
+    List<ProductsGroup> getTopCategories();
 }

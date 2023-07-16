@@ -22,6 +22,7 @@ import ss.agrolavka.constants.SiteConstants;
 import ss.agrolavka.dao.ProductDAO;
 import ss.agrolavka.service.OrderService;
 import ss.agrolavka.service.ProductService;
+import ss.agrolavka.service.ProductsGroupService;
 import ss.agrolavka.service.SiteDataService;
 import ss.agrolavka.util.AppCache;
 import ss.agrolavka.util.UrlProducer;
@@ -58,6 +59,9 @@ public class SiteController {
     @Autowired
     private ProductService productService;
     
+    @Autowired
+    private ProductsGroupService productsGroupService;
+    
     /**
      * Home page.
      * @param model data model.
@@ -69,6 +73,7 @@ public class SiteController {
     public String home(Model model, HttpServletRequest httpRequest) throws Exception {
         insertCommonDataToModel(httpRequest, model);
         model.addAttribute("title", "Все для сада и огорода");
+        model.addAttribute(JspValue.TOP_CATEGORIES, productsGroupService.getTopCategories());
         model.addAttribute(JspValue.NEW_PRODUCTS, productService.getNewProducts());
         model.addAttribute(JspValue.SLIDES, siteDataService.getAllSlides());
         final var withDiscount = productService.getProductsWithDiscount();

@@ -16,7 +16,7 @@
 <section class="text-center">
     <h4 class="mb-3"><strong>Новинки</strong></h4>
     <h6 class="mb-2">Последнее поступление товаров</h6>
-    <!-- Carousel wrapper -->
+    
     <div class="agr-new-products-swiper swiper p-3">
         <div class="swiper-wrapper">
             <c:forEach items="${newProducts}" var="product">

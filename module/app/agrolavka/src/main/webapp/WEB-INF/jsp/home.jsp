@@ -23,7 +23,7 @@
             <div class="container pt-5">
 
                 <!--Section: Content-->
-                <t:top-product-groups />
+                <t:top-product-groups topCategories="${topCategories}"/>
                 
                 <c:if test="${productsWithDiscount.size() > 0}">
                     <hr class="my-5" />
