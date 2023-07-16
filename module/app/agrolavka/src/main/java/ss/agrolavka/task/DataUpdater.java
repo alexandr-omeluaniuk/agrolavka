@@ -9,11 +9,13 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.CacheManager;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
@@ -68,6 +70,9 @@ public class DataUpdater {
     @Autowired
     private AlertService alertService;
     
+    @Autowired
+    private CacheManager cacheManager;
+    
     @PostConstruct
     protected void init() {
         AppCache.flushCache(coreDAO.getAll(ProductsGroup.class));
@@ -99,6 +104,7 @@ public class DataUpdater {
             groupProductsService.groupProductByVolumes();
             AppCache.flushCache(coreDAO.getAll(ProductsGroup.class));
             LOG.info("===============================================================================================");
+            resetAllCaches();
             return true;
         } catch (final Exception e) {
             LOG.error("Import MySklad data - fail!", e);
@@ -305,5 +311,12 @@ public class DataUpdater {
         LOG.info("images import completed...");
         LOG.info("elapsed time [" + (System.currentTimeMillis() - start) + "] ms");
     }
-   
+    
+    
+    private void resetAllCaches() {
+        cacheManager.getCacheNames().parallelStream()
+            .forEach(name -> Optional.ofNullable(
+                cacheManager.getCache(name)).ifPresent(it -> it.clear())
+            );
+    }
 }

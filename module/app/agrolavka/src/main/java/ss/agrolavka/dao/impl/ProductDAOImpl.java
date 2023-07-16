@@ -50,14 +50,14 @@ class ProductDAOImpl implements ProductDAO {
         if (request.getPage() == null || request.getPage() < 1) {
             request.setPage(1);
         }
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<Product> criteria = cb.createQuery(Product.class);
-        Root<Product> c = criteria.from(Product.class);
+        final var cb = em.getCriteriaBuilder();
+        final var criteria = cb.createQuery(Product.class);
+        final var c = criteria.from(Product.class);
         c.fetch(Product_.group);
-        List<Predicate> predicates = createSearchCriteria(cb, c, request);
+        final var predicates = createSearchCriteria(cb, c, request);
         criteria.select(c).where(predicates.toArray(Predicate[]::new));
         if (request.getOrder() != null && request.getOrderBy() != null) {
-            if ("created_date".equals(request.getOrderBy())) {
+            if (EntityAudit_.CREATED_DATE.equals(request.getOrderBy())) {
                 criteria.where(cb.greaterThan(c.get(Product_.quantity), 0d));
                 if ("asc".equals(request.getOrder())) {
                     criteria.orderBy(cb.asc(c.get(EntityAudit_.createdDate)));

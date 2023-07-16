@@ -21,6 +21,7 @@ import ss.agrolavka.constants.JspValue;
 import ss.agrolavka.constants.SiteConstants;
 import ss.agrolavka.dao.ProductDAO;
 import ss.agrolavka.service.OrderService;
+import ss.agrolavka.service.ProductService;
 import ss.agrolavka.service.SiteDataService;
 import ss.agrolavka.util.AppCache;
 import ss.agrolavka.util.UrlProducer;
@@ -53,6 +54,10 @@ public class SiteController {
     /** Site data service. */
     @Autowired
     private SiteDataService siteDataService;
+    
+    @Autowired
+    private ProductService productService;
+    
     /**
      * Home page.
      * @param model data model.
@@ -64,17 +69,7 @@ public class SiteController {
     public String home(Model model, HttpServletRequest httpRequest) throws Exception {
         insertCommonDataToModel(httpRequest, model);
         model.addAttribute("title", "Все для сада и огорода");
-        List<Product> newProducts = AppCache.getNewProducts();
-        if (newProducts == null) {
-            ProductsSearchRequest searchRequest = new ProductsSearchRequest();
-            searchRequest.setPage(1);
-            searchRequest.setPageSize(12);
-            searchRequest.setOrder("desc");
-            searchRequest.setOrderBy("created_date");
-            AppCache.setNewProducts(productDAO.search(searchRequest));
-            newProducts = AppCache.getNewProducts();
-        }
-        model.addAttribute("newProducts", newProducts);
+        model.addAttribute(JspValue.NEW_PRODUCTS, productService.getNewProducts());
         model.addAttribute(JspValue.SLIDES, siteDataService.getAllSlides());
         List<Product> withDiscount = getProductsWithDiscount();
         List<Product> withDiscountFirst12 = withDiscount.size() > 12 ? withDiscount.subList(0, 12) : withDiscount;
