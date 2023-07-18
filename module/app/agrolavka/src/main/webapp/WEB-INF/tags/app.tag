@@ -106,6 +106,7 @@
         <script type="module" src="/assets/js/modules/sidemenu.js?version=${staticResourceVersion}"></script>
         <script type="module" src="/assets/js/modules/util-functions.js?version=${staticResourceVersion}"></script>
         <script type="module" src="/assets/js/modules/custom-components.js?version=${staticResourceVersion}"></script>
+        <script type="module" src="/assets/js/modules/quick-search.js?version=${staticResourceVersion}"></script>
     </body>
 
 </html>

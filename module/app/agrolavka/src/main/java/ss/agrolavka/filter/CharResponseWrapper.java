@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServletResponseWrapper;
 import java.io.CharArrayWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Optional;
 
 /**
  *
@@ -19,19 +20,19 @@ class CharResponseWrapper extends HttpServletResponseWrapper {
 
     public CharResponseWrapper(HttpServletResponse response) {
         super(response);
-
         charWriter = new CharArrayWriter();
     }
 
+    @Override
     public ServletOutputStream getOutputStream() throws IOException {
         if (getWriterCalled) {
             throw new IllegalStateException("getWriter already called");
         }
-
         getOutputStreamCalled = true;
         return super.getOutputStream();
     }
 
+    @Override
     public PrintWriter getWriter() throws IOException {
         if (writer != null) {
             return writer;
@@ -44,12 +45,8 @@ class CharResponseWrapper extends HttpServletResponseWrapper {
         return writer;
     }
 
+    @Override
     public String toString() {
-        String s = null;
-
-        if (writer != null) {
-            s = charWriter.toString();
-        }
-        return s;
+        return Optional.ofNullable(writer).map(w -> charWriter.toString()).orElse(null);
     }
 }
