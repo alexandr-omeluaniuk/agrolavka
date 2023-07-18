@@ -16,7 +16,7 @@
     <h4 class="mb-3"><strong>Акции</strong></h4>
     <h6 class="mb-2">Покупайте товары дешевле чем обычно!</h6>
     
-    <div class="agr-products-with-discounts-swiper swiper p-3">
+    <div class="agr-products-with-discounts-swiper swiper p-2">
         <div class="swiper-wrapper">
             <c:forEach items="${products}" var="product">
                 <div class="swiper-slide">
