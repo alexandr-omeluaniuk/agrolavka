@@ -39,7 +39,7 @@
                 spaceBetween: 25,
                 grabCursor: true,
                 autoplay: {
-                    delay: 4500,
+                    delay: 10000,
                     disableOnInteraction: true
                 },
                 pagination: {

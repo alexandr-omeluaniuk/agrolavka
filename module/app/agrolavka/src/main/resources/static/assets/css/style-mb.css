@@ -12,6 +12,7 @@ and open the template in the editor.
     --agr-bs-purple-dark: #563296;
     --swiper-pagination-color: #563296;
     --swiper-navigation-color: #563296;
+    --swiper-navigation-size: 18px !important;
 }
 .dropdown-toggle:after  {
     float: right;
@@ -593,4 +594,10 @@ and open the template in the editor.
 .bg-gray {
     background-color: #6c757d !important;
     color: white !important;
+}
+.swiper-button-prev.shadow-1-strong, .swiper-button-next.shadow-1-strong {
+    height: 40px; 
+    width: 40px; 
+    background-color: white; 
+    border-radius: 50%;
 }

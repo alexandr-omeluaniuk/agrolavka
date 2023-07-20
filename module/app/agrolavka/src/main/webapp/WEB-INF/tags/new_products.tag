@@ -27,6 +27,8 @@
         </div>
         
         <div class="swiper-pagination" style="bottom: 0px;"></div>
+        <!--div class="swiper-button-prev shadow-1-strong"></div>
+        <div class="swiper-button-next shadow-1-strong"></div-->
     </div>
         
     <script>
@@ -37,12 +39,16 @@
                 spaceBetween: 25,
                 grabCursor: true,
                 autoplay: {
-                    delay: 4500,
+                    delay: 10000,
                     disableOnInteraction: true
                 },
                 pagination: {
                     el: '.swiper-pagination'
                 },
+//                navigation: {
+//                    nextEl: '.swiper-button-next',
+//                    prevEl: '.swiper-button-prev'
+//                },
                 breakpoints: {
                     768: {
                         slidesPerView: 3
