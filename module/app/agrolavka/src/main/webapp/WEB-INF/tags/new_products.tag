@@ -27,8 +27,8 @@
         </div>
         
         <div class="swiper-pagination" style="bottom: 0px;"></div>
-        <!--div class="swiper-button-prev shadow-1-strong"></div>
-        <div class="swiper-button-next shadow-1-strong"></div-->
+        <div class="swiper-button-prev shadow-1-strong"></div>
+        <div class="swiper-button-next shadow-1-strong"></div>
     </div>
         
     <script>
@@ -45,10 +45,10 @@
                 pagination: {
                     el: '.swiper-pagination'
                 },
-//                navigation: {
-//                    nextEl: '.swiper-button-next',
-//                    prevEl: '.swiper-button-prev'
-//                },
+                navigation: {
+                    nextEl: '.swiper-button-next',
+                    prevEl: '.swiper-button-prev'
+                },
                 breakpoints: {
                     768: {
                         slidesPerView: 3
