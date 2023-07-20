@@ -77,3 +77,31 @@ class XCatalogMenuItem extends XElement {
     }
 }
 window.customElements.define('x-agr-catalog-menu-item', XCatalogMenuItem);
+
+class XCategoryCard extends XElement {    
+    createTemplate() {
+        let template = document.createElement('template');
+        const name = this.getAttribute('data-name');
+        const image = this.getAttribute('data-image');
+        const imageCreatedDate = this.getAttribute('data-image-created');
+        const link = this.getAttribute('data-link');
+        const imageElement = image 
+            ? `<div class="card-img-top agr-card-image" style="background-image: url('/media/${image}?timestamp=${imageCreatedDate}')"></div>` 
+            : `<div class="card-img-top agr-card-image" style="background-image: url('/assets/img/no-image.png')"></div>`;
+        template.innerHTML = `
+            <div class="card shadow-1-strong mb-4 hover-shadow">
+                <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
+                    ${imageElement}
+                    <a href="${link}">
+                        <div class="mask" style="background-color: rgba(0, 0, 0, 0.05)"></div>
+                    </a>
+                    <div class="card-body agr-card-body-category">
+                        <h6 class="card-title mb-0">${name}</h6>
+                    </div>
+                </div>
+            </div>
+        `;
+        return template;
+    }
+}
+window.customElements.define('x-agr-category-card', XCategoryCard);
