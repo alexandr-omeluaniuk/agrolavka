@@ -48,7 +48,7 @@
             <!-- Single item -->
             <div class="carousel-item ${slides.size() > 0 ? "" : "active"}" style="background-image: url('/assets/img/intro/catalog.webp');">
                 <div class="mask" style="background-color: rgba(0, 0, 0, 0.5);">
-                    <div class="d-flex justify-content-center align-items-center h-100">
+                    <div class="d-flex justify-content-center align-items-center h-100 pt-4 ps-2 pe-2">
                         <div class="text-white text-center">
                             <h1>Более <span class="fw-bold">${productsCount}</span> наименований, приглашаем за покупками!</h1>
                             <h5>выгодные и всегда актуальные цены, акции и скидки</h5>

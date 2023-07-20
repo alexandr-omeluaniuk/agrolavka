@@ -25,12 +25,9 @@
         </c:if>
     </div>
     <c:if test="${not empty product.images}">
-        <!-- If we need pagination -->
-        <div class="swiper-pagination" style="bottom: 0px;"></div>
-
-        <!-- If we need navigation buttons -->
-        <div class="swiper-button-prev"></div>
-        <div class="swiper-button-next"></div>
+        <div class="swiper-pagination"></div>
+        <div class="swiper-button-prev shadow-1-strong"></div>
+        <div class="swiper-button-next shadow-1-strong"></div>
     </c:if>
 </div>
 

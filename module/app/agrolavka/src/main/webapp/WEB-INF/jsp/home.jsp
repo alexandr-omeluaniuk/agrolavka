@@ -39,7 +39,7 @@
                 <!--Section: Content-->
                 <section class="mb-4">
                     <div class="row">
-                        <div class="col-md-6 gx-5 mb-4">
+                        <div class="col-md-6 gx-4 mb-4">
                             <div class="bg-image hover-overlay ripple shadow-2-strong" data-mdb-ripple-color="light">
                                 <img src="/assets/img/agrolavka-location.webp" class="img-fluid"
                                      alt="Фасад магазина Агролавка" height="100"/>
@@ -47,7 +47,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-6 gx-5 mb-4">
+                        <div class="col-md-6 gx-4">
                             <h4><strong>О магазине Агролавка</strong></h4>
                             <p class="text-muted">
                                 Магазин Агролавка – это самые востребованные товары, которые делают жизнь комфортнее, приятнее и радостнее. 

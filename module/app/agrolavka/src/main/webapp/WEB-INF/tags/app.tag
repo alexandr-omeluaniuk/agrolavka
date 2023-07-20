@@ -14,7 +14,7 @@
 <%@attribute name="structuredData" fragment="true" required="false"%>
 <%@attribute name="headSection" fragment="true" required="false"%>
 
-<c:set var="staticResourceVersion" value="35"/>
+<c:set var="staticResourceVersion" value="36"/>
 
 <%-- any content can be specified here e.g.: --%>
 <!DOCTYPE html>
@@ -106,6 +106,8 @@
         <script type="module" src="/assets/js/modules/sidemenu.js?version=${staticResourceVersion}"></script>
         <script type="module" src="/assets/js/modules/util-functions.js?version=${staticResourceVersion}"></script>
         <script type="module" src="/assets/js/modules/custom-components.js?version=${staticResourceVersion}"></script>
+        <script type="module" src="/assets/js/modules/quick-search.js?version=${staticResourceVersion}"></script>
+        <script type="module" src="/assets/js/modules/sidebar.js?version=${staticResourceVersion}"></script>
     </body>
 
 </html>
