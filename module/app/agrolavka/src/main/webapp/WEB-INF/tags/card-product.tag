@@ -63,4 +63,5 @@
     data-price="${product.price}"
     data-image="${product.images.size() > 0 ? product.images.get(0).fileNameOnDisk : ""}"
     data-image-created="${product.images.size() > 0 ? product.images.get(0).createdDate : ""}"
+    data-created="<%= Boolean.TRUE.equals(showCreatedDate) ? new SimpleDateFormat("dd.MM.yyyy").format(product.getCreatedDate()) : "" %>"
     data-link="<%= UrlProducer.buildProductUrl(product)%>"></x-agr-product-card>

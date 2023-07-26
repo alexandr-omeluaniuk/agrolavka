@@ -208,7 +208,7 @@ class XProductCard extends XElement {
         const inStock = this.getAttribute('data-in-stock');
         const hide = this.getAttribute('data-hide-ribbon');
         const inCart = this.getAttribute('data-in-cart');
-        
+        const createdDate = this.getAttribute('data-created');
         const name = this.getAttribute('data-name');
         const price = this.getAttribute('data-price');
         const image = this.getAttribute('data-image');
@@ -226,6 +226,12 @@ class XProductCard extends XElement {
                         <div class="card-body" style="min-height: 100px;">
                             <h6 class="card-title text-dark text-left" style="min-height: 60px;">${name}</h6>
                             <x-agr-product-price data-row-class="agr-card-line" data-discount="${discount}" data-price="${price}"></x-agr-product-price>
+                            ${createdDate ? `
+                                <div class="d-flex align-items-center justify-content-between mb-1 agr-card-line">
+                                    <small class="text-muted">Добавлено</small>
+                                    <small class="text-muted">${createdDate}</small>
+                                </div>
+                            ` : ''}
                             <x-agr-product-actions data-id="${id}" data-cls="agr-card-button" data-in-cart="${inCart}"></x-agr-product-actions>
                         </div>
                     </div>
