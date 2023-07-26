@@ -16,7 +16,6 @@
 <%-- The list of normal or fragment attributes can be specified here: --%>
 <%@attribute name="product" required="true" type="Product"%>
 <%@attribute name="cart" required="true" type="Order"%>
-<%@attribute name="noHover" required="false" type="Boolean"%>
 <%@attribute name="showCreatedDate" required="false" type="Boolean"%>
 
 <%-- any content can be specified here e.g.: --%>
@@ -55,9 +54,11 @@
 </a-->
                 
 <x-agr-product-card 
+    data-id="${product.id}"
     data-discount="${product.discount != null && product.discount.discount != null ? product.discount.discount : ""}"
+    data-in-cart="<%= cart.getPositions().stream().filter(pos -> Objects.equals(product.getId(), pos.getProductId())).findFirst().isPresent() ? "true" : "" %>"
     data-in-stock="${product.quantity > 0 ? "true" : ""}"
-    data-hide="<%= AppCache.isBelongsToGroup("Средства защиты растений (СЗР)", product.getGroup()) ? "true" : "" %>"
+    data-hide-ribbon="<%= AppCache.isBelongsToGroup("Средства защиты растений (СЗР)", product.getGroup()) ? "true" : "" %>"
     data-name="${product.name}"
     data-price="${product.price}"
     data-image="${product.images.size() > 0 ? product.images.get(0).fileNameOnDisk : ""}"

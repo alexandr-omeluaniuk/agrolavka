@@ -19,13 +19,7 @@
 <%-- any content can be specified here e.g.: --%>
 
 <%
-    boolean inCart = false;
-    for (OrderPosition pos : cart.getPositions()) {
-        if (Objects.equals(product.getId(), pos.getProductId())) {
-            inCart = true;
-            break;
-        }
-    }
+    boolean inCart = cart.getPositions().stream().filter(pos -> Objects.equals(product.getId(), pos.getProductId())).findFirst().isPresent();
 %>
 
 <%

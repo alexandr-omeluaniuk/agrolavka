@@ -175,12 +175,39 @@ class XProductRibbon extends XElement {
 }
 window.customElements.define('x-agr-product-ribbon', XProductRibbon);
 
+class XProductActions extends XElement {    
+    createTemplate() {
+        let template = document.createElement('template');
+        const id = this.getAttribute('data-id');
+        const cls = this.getAttribute('data-cls');
+        const inCart = this.getAttribute('data-in-cart');
+        template.innerHTML = `
+            <button class="btn btn-outline-info btn-rounded w-100 mt-1 ${cls}" data-product-id="${id}" data-order="">
+                <i class="far fa-hand-point-up me-2"></i> Заказать сразу
+            </button>
+            ${inCart ? `
+                <button class="btn btn-outline-danger btn-rounded w-100 mt-1 ${cls}" data-product-id="${id}" data-remove="">
+                    <i class="fas fa-minus-circle me-2"></i> Из корзины
+                </button>
+            ` : `
+                <button class="btn btn-outline-success btn-rounded w-100 mt-1 ${cls}" data-product-id="${id}" data-add="">
+                    <i class="fas fa-cart-plus me-2"></i> В корзину
+                </button>
+            `}
+        `;
+        return template;
+    }
+}
+window.customElements.define('x-agr-product-actions', XProductActions);
+
 class XProductCard extends XElement {    
     createTemplate() {
         let template = document.createElement('template');
+        const id = this.getAttribute('data-id');
         const discount = this.getAttribute('data-discount');
         const inStock = this.getAttribute('data-in-stock');
-        const hide = this.getAttribute('data-hide');
+        const hide = this.getAttribute('data-hide-ribbon');
+        const inCart = this.getAttribute('data-in-cart');
         
         const name = this.getAttribute('data-name');
         const price = this.getAttribute('data-price');
@@ -199,6 +226,7 @@ class XProductCard extends XElement {
                         <div class="card-body" style="min-height: 100px;">
                             <h6 class="card-title text-dark text-left" style="min-height: 60px;">${name}</h6>
                             <x-agr-product-price data-row-class="agr-card-line" data-discount="${discount}" data-price="${price}"></x-agr-product-price>
+                            <x-agr-product-actions data-id="${id}" data-cls="agr-card-button" data-in-cart="${inCart}"></x-agr-product-actions>
                         </div>
                     </div>
                 </div>
