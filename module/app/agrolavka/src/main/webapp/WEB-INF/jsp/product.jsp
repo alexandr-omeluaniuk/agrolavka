@@ -47,7 +47,6 @@
     </jsp:attribute>
     
     <jsp:body>
-        
         <main class="min-vh-100">
             <div class="container">
                 
@@ -60,9 +59,14 @@
                             <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 d-flex flex-column gx-5">
                                 <t:product-images product="${product}"></t:product-images>
                                 <hr/>
-                                <t:product-price product="${product}"></t:product-price>
+                                <x-agr-product-price 
+                                    data-discount="${product.discount != null && product.discount.discount != null ? product.discount.discount : ""}" 
+                                    data-price="${product.price}"></x-agr-product-price>
                                 <hr/>
-                                <t:product-actions cart="${cart}" product="${product}"></t:product-actions>
+                                <x-agr-product-actions 
+                                    data-id="${product.id}" 
+                                    data-in-cart="${inCart ? "true" : ""}" 
+                                    data-volume="${volumes}"></x-agr-product-actions>
                                 <hr/>
                             </div>
                             <div class="col-xs-12 col-sm-6 col-md-8 col-lg-9 gx-5">

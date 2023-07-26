@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import jakarta.servlet.http.HttpServletRequest;
+import java.util.Objects;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -220,6 +221,10 @@ public class SiteController extends BaseJspController {
             model.addAttribute("breadcrumbPath", UrlProducer.getBreadcrumbPath(product.getGroup()));
             model.addAttribute("productPrice", String.format("%.2f", product.getPrice()));
             model.addAttribute("productURL", "https://agrolavka.by" + request.getRequestURI());
+            final var inCart = orderService.getCurrentOrder(request).getPositions().stream()
+                .filter(pos -> Objects.equals(product.getId(), pos.getProductId())).findFirst().isPresent();
+            model.addAttribute("inCart", inCart);
+            model.addAttribute("volumes", product.getVolumes() != null ? product.getVolumes().replace("\"", "'") : "");
             String description = product.getDescription();
             String meta = "Купить " + product.getName();
             if (product.getSeoDescription() != null && !product.getSeoDescription().isBlank()) {
