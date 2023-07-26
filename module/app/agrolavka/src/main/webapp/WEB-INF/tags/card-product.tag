@@ -11,7 +11,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@tag description="Product card" pageEncoding="UTF-8" 
-       import="ss.entity.agrolavka.*,ss.agrolavka.util.UrlProducer"%>
+       import="ss.entity.agrolavka.*,ss.agrolavka.util.*"%>
 
 <%-- The list of normal or fragment attributes can be specified here: --%>
 <%@attribute name="product" required="true" type="Product"%>
@@ -55,6 +55,9 @@
 </a-->
                 
 <x-agr-product-card 
+    data-discount="${product.discount != null && product.discount.discount != null ? product.discount.discount : ""}"
+    data-in-stock="${product.quantity > 0 ? "true" : ""}"
+    data-hide="<%= AppCache.isBelongsToGroup("Средства защиты растений (СЗР)", product.getGroup()) ? "true" : "" %>"
     data-name="${product.name}" 
     data-image="${product.images.size() > 0 ? product.images.get(0).fileNameOnDisk : ""}"
     data-image-created="${product.images.size() > 0 ? product.images.get(0).createdDate : ""}"

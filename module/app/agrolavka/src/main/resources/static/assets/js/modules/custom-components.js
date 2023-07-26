@@ -106,9 +106,47 @@ class XCategoryCard extends XElement {
 }
 window.customElements.define('x-agr-category-card', XCategoryCard);
 
+class XProductRibbon extends XElement {    
+    createTemplate() {
+        let template = document.createElement('template');
+        const discount = this.getAttribute('data-discount');
+        const inStock = this.getAttribute('data-in-stock');
+        const hide = this.getAttribute('data-hide');
+        if (hide && !discount) {
+            return template;
+        }
+        let color;
+        let label;
+        const icon = discount ? '<i class="fas fa-fire me-1"></i>' : '';
+        if (discount) {
+            color = 'danger';
+            label = ' -' + parseFloat(discount).toFixed(0) + '%';
+        } else if (inStock) {
+            color = 'success';
+            label = 'в наличии';
+        } else {
+            color = 'gray';
+            label = 'под заказ';
+        }
+        template.innerHTML = `
+            <div class="ribbon ribbon-top-left">
+                <span class="bg-${color}">
+                    <small>${icon}${label}</small>
+                </span>
+            </div>
+        `;
+        return template;
+    }
+}
+window.customElements.define('x-agr-product-ribbon', XProductRibbon);
+
 class XProductCard extends XElement {    
     createTemplate() {
         let template = document.createElement('template');
+        const discount = this.getAttribute('data-discount');
+        const inStock = this.getAttribute('data-in-stock');
+        const hide = this.getAttribute('data-hide');
+        
         const name = this.getAttribute('data-name');
         const image = this.getAttribute('data-image');
         const imageCreatedDate = this.getAttribute('data-image-created');
@@ -119,7 +157,7 @@ class XProductCard extends XElement {
         template.innerHTML = `
             <a href="${link}">
                 <div class="card shadow-1-strong mb-4 hover-shadow">
-                    
+                    <x-agr-product-ribbon data-discount="${discount}" data-in-stock="${inStock}" data-hide="${hide}"></x-agr-product-ribbon>
                     <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
                         ${imageElement}
                         <div class="card-body" style="min-height: 100px;">
