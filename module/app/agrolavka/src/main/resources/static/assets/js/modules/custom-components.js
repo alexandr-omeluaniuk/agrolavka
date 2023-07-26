@@ -105,3 +105,31 @@ class XCategoryCard extends XElement {
     }
 }
 window.customElements.define('x-agr-category-card', XCategoryCard);
+
+class XProductCard extends XElement {    
+    createTemplate() {
+        let template = document.createElement('template');
+        const name = this.getAttribute('data-name');
+        const image = this.getAttribute('data-image');
+        const imageCreatedDate = this.getAttribute('data-image-created');
+        const link = this.getAttribute('data-link');
+        const imageElement = image 
+            ? `<div class="card-img-top agr-card-image" style="background-image: url('/media/${image}?timestamp=${imageCreatedDate}')"></div>` 
+            : `<div class="card-img-top agr-card-image" style="background-image: url('/assets/img/no-image.png')"></div>`;
+        template.innerHTML = `
+            <a href="${link}">
+                <div class="card shadow-1-strong mb-4 hover-shadow">
+                    
+                    <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
+                        ${imageElement}
+                        <div class="card-body" style="min-height: 100px;">
+                            <h6 class="card-title text-dark text-left" style="min-height: 60px;">${name}</h6>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        `;
+        return template;
+    }
+}
+window.customElements.define('x-agr-product-card', XProductCard);

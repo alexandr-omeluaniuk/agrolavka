@@ -10,7 +10,7 @@
 <%@tag import="java.util.Objects"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
-<%@tag description="put the tag description here" pageEncoding="UTF-8" 
+<%@tag description="Product card" pageEncoding="UTF-8" 
        import="ss.entity.agrolavka.*,ss.agrolavka.util.UrlProducer"%>
 
 <%-- The list of normal or fragment attributes can be specified here: --%>
@@ -20,8 +20,8 @@
 <%@attribute name="showCreatedDate" required="false" type="Boolean"%>
 
 <%-- any content can be specified here e.g.: --%>
-<a href="<%= UrlProducer.buildProductUrl(product) %>">
-    <div class="card shadow-1-strong mb-4 ${noHover ? '' : 'hover-shadow'} ${product.quantity > 0 ? '' : 'agr-product-not-available'}">
+<!--a href="<%= UrlProducer.buildProductUrl(product) %>">
+    <div class="card shadow-1-strong mb-4 hover-shadow">
         <t:product-ribbon product="${product}"></t:product-ribbon>
         <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
             <c:choose>
@@ -32,8 +32,6 @@
                     <div class="card-img-top agr-card-image" style="background-image: url('/assets/img/no-image.png')"></div>
                 </c:otherwise>
             </c:choose>
-                    
-                <!--div class="mask" style="background-color: rgba(0, 0, 0, 0.05)"></div-->
 
             <div class="card-body" style="min-height: 100px;">
                 <h6 class="card-title text-dark text-left" style="min-height: 60px;">${product.name}</h6>
@@ -54,4 +52,10 @@
             </div>
         </div>
     </div>
-</a>
+</a-->
+                
+<x-agr-product-card 
+    data-name="${product.name}" 
+    data-image="${product.images.size() > 0 ? product.images.get(0).fileNameOnDisk : ""}"
+    data-image-created="${product.images.size() > 0 ? product.images.get(0).createdDate : ""}"
+    data-link="<%= UrlProducer.buildProductUrl(product)%>"></x-agr-product-card>
