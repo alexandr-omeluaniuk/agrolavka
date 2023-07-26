@@ -4,7 +4,7 @@
     Author     : alex
 --%>
 
-<%@tag import="ss.entity.agrolavka.Product"%>
+<%@tag import="ss.entity.agrolavka.Product,ss.agrolavka.util.*"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@tag description="Product images" pageEncoding="UTF-8"%>
@@ -14,8 +14,10 @@
 <%-- any content can be specified here e.g.: --%>
 
 <div class="agr-product-photo-swiper swiper shadow-1-strong w-100 mb-2" style="height: 360px;">
-    <t:product-ribbon product="${product}"></t:product-ribbon>
-    <!-- Additional required wrapper -->
+    <x-agr-product-ribbon 
+        data-discount="${product.discount != null && product.discount.discount != null ? product.discount.discount : ""}"
+        data-hide="<%= AppCache.isBelongsToGroup("Средства защиты растений (СЗР)", product.getGroup()) ? "true" : "" %>"
+        data-in-stock="${product.quantity > 0 ? "true" : ""}"></x-agr-product-ribbon>
     <div class="swiper-wrapper">
         <c:forEach items="${product.images}" var="image" varStatus="loop">
             <div class="swiper-slide agr-product-image-carousel" style="background-image: url('/media/${image.fileNameOnDisk}?timestamp=${image.createdDate}')"></div>
