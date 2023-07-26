@@ -106,6 +106,41 @@ class XCategoryCard extends XElement {
 }
 window.customElements.define('x-agr-category-card', XCategoryCard);
 
+class XProductPrice extends XElement {    
+    createTemplate() {
+        let template = document.createElement('template');
+        const rowClass = this.getAttribute('data-row-class');
+        const discount = this.getAttribute('data-discount');
+        const rawPrice = this.getAttribute('data-price');
+        const price = parseFloat(rawPrice).toFixed(2).split('.');
+        const priceInt = price[0];
+        const priceFloat = price[1];
+        const discountPrice = parseFloat(rawPrice * (1 - discount/100)).toFixed(2).split('.');
+        const discountPriceInt = discountPrice[0];
+        const discountPriceFloat = discountPrice[1];
+        template.innerHTML = `
+            <div class="d-flex align-items-center justify-content-between ${rowClass}">
+                <small class="text-muted">Цена</small>
+                <span class="agr-price fw-bold ${discount ? 'text-decoration-line-through text-muted' : 'text-dark'}">
+                    ${priceInt}<small>.${priceFloat}</small>
+                    <small class="text-muted">BYN</small>
+                </span>
+            </div>
+            ${discount ? `
+                <div class="d-flex align-items-center justify-content-between ${rowClass}">
+                    <small class="text-danger"><i class="fas fa-fire me-1"></i> Акция</small>
+                    <div class="text-danger fw-bold">
+                        ${discountPriceInt}<small>.${discountPriceFloat}</small>
+                        <small>BYN</small>
+                    </div>
+                </div>
+            ` : ''}
+        `;
+        return template;
+    }
+}
+window.customElements.define('x-agr-product-price', XProductPrice);
+
 class XProductRibbon extends XElement {    
     createTemplate() {
         let template = document.createElement('template');
@@ -148,6 +183,7 @@ class XProductCard extends XElement {
         const hide = this.getAttribute('data-hide');
         
         const name = this.getAttribute('data-name');
+        const price = this.getAttribute('data-price');
         const image = this.getAttribute('data-image');
         const imageCreatedDate = this.getAttribute('data-image-created');
         const link = this.getAttribute('data-link');
@@ -162,6 +198,7 @@ class XProductCard extends XElement {
                         ${imageElement}
                         <div class="card-body" style="min-height: 100px;">
                             <h6 class="card-title text-dark text-left" style="min-height: 60px;">${name}</h6>
+                            <x-agr-product-price data-row-class="agr-card-line" data-discount="${discount}" data-price="${price}"></x-agr-product-price>
                         </div>
                     </div>
                 </div>

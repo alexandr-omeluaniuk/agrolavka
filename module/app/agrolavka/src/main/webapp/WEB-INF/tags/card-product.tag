@@ -58,7 +58,8 @@
     data-discount="${product.discount != null && product.discount.discount != null ? product.discount.discount : ""}"
     data-in-stock="${product.quantity > 0 ? "true" : ""}"
     data-hide="<%= AppCache.isBelongsToGroup("Средства защиты растений (СЗР)", product.getGroup()) ? "true" : "" %>"
-    data-name="${product.name}" 
+    data-name="${product.name}"
+    data-price="${product.price}"
     data-image="${product.images.size() > 0 ? product.images.get(0).fileNameOnDisk : ""}"
     data-image-created="${product.images.size() > 0 ? product.images.get(0).createdDate : ""}"
     data-link="<%= UrlProducer.buildProductUrl(product)%>"></x-agr-product-card>
