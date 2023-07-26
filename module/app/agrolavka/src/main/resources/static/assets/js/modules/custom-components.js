@@ -175,13 +175,51 @@ class XProductRibbon extends XElement {
 }
 window.customElements.define('x-agr-product-ribbon', XProductRibbon);
 
+class XProductVolumes extends XElement {    
+    createTemplate() {
+        let template = document.createElement('template');
+        const cls = this.getAttribute('data-cls');
+        const rawVolumes = this.getAttribute('data-volume');
+        const volumes = JSON.parse(rawVolumes.replaceAll("'", '"'));
+        const minPrice = volumes[0].price;
+        const selectedQuantity = volumes[0].amount;
+        let sb = '';
+        const getLabel = (v) => {
+            const fractional = v.amount - parseInt(v.amount);
+            return (fractional >= 0.1 ? v.amount : parseInt(v.amount)) + "л";
+        };
+        for (let i = 0; i < volumes.length; i++) {
+            const v = volumes[i];
+            const btnClass = i === 0 ? "btn-info" : "btn-outline-info";
+            sb += `
+                <button type="button" class="agr-volume-btn btn ${btnClass} btn-rounded ${cls}" data-mdb-color="dark"
+                        data-product-volume-price="${v.price}" data-product-volume-quantity="${v.amount}">
+                    ${getLabel(v)}
+                </button>
+            `;
+        }
+        template.innerHTML = `
+            <div class="btn-group w-100 shadow-0 mt-1" role="group" aria-label="Volumes" 
+                data-volumes="${rawVolumes}" 
+                data-selected-volume-quantity="${selectedQuantity}" 
+                data-selected-volume-price="${minPrice}">
+                    ${sb}
+            </div>
+        `;
+        return template;
+    }
+}
+window.customElements.define('x-agr-product-volumes', XProductVolumes);
+
 class XProductActions extends XElement {    
     createTemplate() {
         let template = document.createElement('template');
         const id = this.getAttribute('data-id');
         const cls = this.getAttribute('data-cls');
         const inCart = this.getAttribute('data-in-cart');
+        const volumes = this.getAttribute('data-volume');
         template.innerHTML = `
+            ${volumes ? `<x-agr-product-volumes data-cls="${cls}" data-volume="${volumes}"></x-agr-product-volumes>` : ''}
             <button class="btn btn-outline-info btn-rounded w-100 mt-1 ${cls}" data-product-id="${id}" data-order="">
                 <i class="far fa-hand-point-up me-2"></i> Заказать сразу
             </button>
@@ -214,6 +252,7 @@ class XProductCard extends XElement {
         const image = this.getAttribute('data-image');
         const imageCreatedDate = this.getAttribute('data-image-created');
         const link = this.getAttribute('data-link');
+        const volumes = this.getAttribute('data-volume');
         const imageElement = image 
             ? `<div class="card-img-top agr-card-image" style="background-image: url('/media/${image}?timestamp=${imageCreatedDate}')"></div>` 
             : `<div class="card-img-top agr-card-image" style="background-image: url('/assets/img/no-image.png')"></div>`;
@@ -232,7 +271,7 @@ class XProductCard extends XElement {
                                     <small class="text-muted">${createdDate}</small>
                                 </div>
                             ` : ''}
-                            <x-agr-product-actions data-id="${id}" data-cls="agr-card-button" data-in-cart="${inCart}"></x-agr-product-actions>
+                            <x-agr-product-actions data-id="${id}" data-cls="agr-card-button" data-in-cart="${inCart}" data-volume="${volumes}"></x-agr-product-actions>
                         </div>
                     </div>
                 </div>
