@@ -1,6 +1,7 @@
 package ss.agrolavka.service;
 
 import java.util.List;
+import java.util.Map;
 import ss.entity.agrolavka.ProductsGroup;
 
 /**
@@ -53,4 +54,10 @@ public interface ProductsGroupService {
      * @return sequence of product groups.
      */
     List<ProductsGroup> getBreadcrumbPath(ProductsGroup group);
+    
+    /**
+     * Get categories tree. Key is products group external ID, value is child products groups.
+     * @return map.
+     */
+    Map<String, List<ProductsGroup>> getCategoriesTree();
 }

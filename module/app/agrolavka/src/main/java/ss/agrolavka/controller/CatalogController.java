@@ -116,7 +116,7 @@ class CatalogController extends BaseJspController {
     private void setCatalogRootAttributes(final Model model) {
         model.addAttribute(TITLE, "Широкий выбор товаров для сада и огорода");
         model.addAttribute(META_DESCRIPTION, "Каталог товаров для сада и огорода");
-        model.addAttribute(ROOT_PRODUCT_GROUPS, productsGroupService.getRootProductGroups());
+        model.addAttribute(CATEGORIES, productsGroupService.getRootProductGroups());
     }
     
     private void setCatalogAttributes(final Model model, final ProductsGroup group) {
@@ -127,11 +127,11 @@ class CatalogController extends BaseJspController {
         breadcrumb.remove(group);
         model.addAttribute(BREADCRUMB_PATH, breadcrumb);
         model.addAttribute(META_DESCRIPTION, getMetaDescription(group));
-        List<ProductsGroup> categories = AppCache.getCategoriesTree().get(group.getExternalId());
+        final var categories = productsGroupService.getCategoriesTree().get(group.getExternalId());
         if (categories != null) {
             Collections.sort(categories);
         }
-        model.addAttribute("categories", categories);
+        model.addAttribute(CATEGORIES, categories);
     }
     
     private String getMetaDescription(final ProductsGroup group) {
