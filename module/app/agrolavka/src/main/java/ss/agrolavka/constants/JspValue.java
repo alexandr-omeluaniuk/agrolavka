@@ -21,9 +21,12 @@ public final class JspValue {
     public static final String VIEW = "view";
     public static final String SORT = "sort";
     public static final String AVAILABLE = "available";
-    public static final String PRODUCT_GROUPS = "groups";
     public static final String CANONICAL = "canonical";
     public static final String META_DESCRIPTION = "metaDescription";
     public static final String ROOT_PRODUCT_GROUPS = "categories";
     public static final String PRODUCTS_SEARCH_RESULT = "searchResult";
+    public static final String PRODUCTS_SEARCH_RESULT_PAGES = "searchResultPages";
+    public static final String PRODUCT_GROUP = "group";
+    public static final String BREADCRUMB_LABEL = "breadcrumbLabel";
+    public static final String BREADCRUMB_PATH = "breadcrumbPath";
 }
