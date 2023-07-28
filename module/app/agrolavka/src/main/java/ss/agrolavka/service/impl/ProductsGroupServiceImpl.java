@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import ss.agrolavka.constants.CacheKey;
 import ss.agrolavka.service.MySkladIntegrationService;
 import ss.agrolavka.service.ProductsGroupService;
-import ss.agrolavka.util.AppCache;
 import ss.agrolavka.util.UrlProducer;
 import ss.entity.agrolavka.ProductsGroup;
 import ss.martin.core.dao.CoreDao;

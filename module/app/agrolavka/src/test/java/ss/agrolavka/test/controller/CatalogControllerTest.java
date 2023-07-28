@@ -1,22 +1,9 @@
 package ss.agrolavka.test.controller;
 
+import java.util.Optional;
 import org.junit.jupiter.api.Test;
+import ss.agrolavka.constants.CacheKey;
 import ss.agrolavka.constants.JspValue;
-import static ss.agrolavka.constants.JspValue.BREADCRUMB_LABEL;
-import static ss.agrolavka.constants.JspValue.BREADCRUMB_PATH;
-import static ss.agrolavka.constants.JspValue.IN_CART;
-import static ss.agrolavka.constants.JspValue.META_DESCRIPTION;
-import static ss.agrolavka.constants.JspValue.PRICE_VALID_UNTIL;
-import static ss.agrolavka.constants.JspValue.PRODUCT;
-import static ss.agrolavka.constants.JspValue.PRODUCTS_SEARCH_RESULT;
-import static ss.agrolavka.constants.JspValue.PRODUCTS_SEARCH_RESULT_PAGES;
-import static ss.agrolavka.constants.JspValue.PRODUCT_GROUP;
-import static ss.agrolavka.constants.JspValue.PRODUCT_PRICE;
-import static ss.agrolavka.constants.JspValue.PRODUCT_URL;
-import static ss.agrolavka.constants.JspValue.STRUCTURED_DATA_DESCRIPTION;
-import static ss.agrolavka.constants.JspValue.STRUCTURED_DATA_NAME;
-import static ss.agrolavka.constants.JspValue.STRUCTURED_IMAGE;
-import static ss.agrolavka.constants.JspValue.VOLUMES;
 import ss.agrolavka.constants.SiteUrls;
 import ss.agrolavka.test.common.AgrolavkaDataFactory;
 import ss.martin.security.test.DataFactory;
@@ -42,6 +29,7 @@ public class CatalogControllerTest extends BasePageControllerTest {
         DataFactory.silentAuthentication(coreDao);
         final var rootGroup = AgrolavkaDataFactory.generateProductGroup("my-test-root");
         coreDao.create(rootGroup);
+        resetProductGroupsCache();
         
         call(SiteUrls.PAGE_CATALOG_ROOT, 
             JspValue.CANONICAL, 
@@ -58,11 +46,12 @@ public class CatalogControllerTest extends BasePageControllerTest {
     @Test
     public void testCatalog_NoGroups() throws Exception {
         DataFactory.silentAuthentication(coreDao);
-        final var rootGroup = AgrolavkaDataFactory.generateProductGroup("My test group");
-        rootGroup.setUrl("my-test-root");
+        final var rootGroup = AgrolavkaDataFactory.generateProductGroup("Ups");
+        rootGroup.setUrl("ups-x");
         coreDao.create(rootGroup);
+        resetProductGroupsCache();
         
-        call(SiteUrls.PAGE_CATALOG_ROOT + "/my-test-root", 
+        call(SiteUrls.PAGE_CATALOG_ROOT + "/ups-x", 
             JspValue.CANONICAL, 
             JspValue.PAGE,
             JspValue.VIEW,

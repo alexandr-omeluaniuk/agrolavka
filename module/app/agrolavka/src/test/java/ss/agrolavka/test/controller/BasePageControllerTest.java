@@ -1,14 +1,21 @@
 package ss.agrolavka.test.controller;
 
+import java.util.Optional;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.CacheManager;
 import org.springframework.test.web.servlet.ResultActions;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import ss.agrolavka.constants.CacheKey;
 import ss.agrolavka.constants.JspValue;
 import ss.agrolavka.test.common.AbstractAgrolavkaMvcTest;
 
 abstract class BasePageControllerTest extends AbstractAgrolavkaMvcTest {
+    
+    @Autowired
+    private CacheManager cacheManager;
     
     protected ResultActions call(final String url, final String ...attributes) throws Exception {
         final var commonAttributes = new String[] {
@@ -19,5 +26,9 @@ abstract class BasePageControllerTest extends AbstractAgrolavkaMvcTest {
         )).andExpect(model().attributeExists(
             attributes
         )).andExpect(model().size(attributes.length + commonAttributes.length));
+    }
+    
+    protected void resetProductGroupsCache() {
+        Optional.ofNullable(cacheManager.getCache(CacheKey.PRODUCTS_GROUPS)).ifPresent(cache -> cache.clear());
     }
 }
