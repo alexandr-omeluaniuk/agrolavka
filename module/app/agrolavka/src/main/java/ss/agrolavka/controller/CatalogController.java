@@ -129,7 +129,7 @@ class CatalogController extends BaseJspController {
         if (categories != null) {
             Collections.sort(categories);
         }
-        model.addAttribute(CATEGORIES, categories);
+        model.addAttribute(CATEGORIES, Optional.ofNullable(categories).orElse(Collections.emptyList()));
     }
     
     private String getMetaDescription(final ProductsGroup group) {
@@ -167,7 +167,7 @@ class CatalogController extends BaseJspController {
     
     private DataModel resolveUrlToProductGroup(String url) {
         String last = url.substring(url.lastIndexOf("/") + 1);
-        for (ProductsGroup group : AppCache.getProductsGroups()) {
+        for (final var group : productsGroupService.getAllGroups()) {
             if (last.equals(group.getUrl())) {
                 return group;
             }

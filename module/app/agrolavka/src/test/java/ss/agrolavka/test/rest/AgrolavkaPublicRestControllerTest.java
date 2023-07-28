@@ -2,7 +2,6 @@ package ss.agrolavka.test.rest;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
-import ss.agrolavka.constants.SiteConstants;
 import static org.junit.jupiter.api.Assertions.*;
 import ss.agrolavka.constants.SiteUrls;
 import ss.agrolavka.test.common.AbstractAgrolavkaMvcTest;
