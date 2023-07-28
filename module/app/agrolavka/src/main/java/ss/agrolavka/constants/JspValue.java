@@ -29,4 +29,13 @@ public final class JspValue {
     public static final String PRODUCT_GROUP = "group";
     public static final String BREADCRUMB_LABEL = "breadcrumbLabel";
     public static final String BREADCRUMB_PATH = "breadcrumbPath";
+    public static final String PRODUCT = "product";
+    public static final String STRUCTURED_IMAGE = "structuredImage";
+    public static final String STRUCTURED_DATA_NAME = "structuredDataName";
+    public static final String STRUCTURED_DATA_DESCRIPTION = "structuredDataDescription";
+    public static final String PRODUCT_PRICE = "productPrice";
+    public static final String PRODUCT_URL = "productURL";
+    public static final String IN_CART = "inCart";
+    public static final String VOLUMES = "volumes";
+    public static final String PRICE_VALID_UNTIL = "priceValidUntil";
 }

@@ -25,6 +25,7 @@ import ss.agrolavka.wrapper.ProductsSearchRequest;
 import ss.entity.agrolavka.Product;
 import ss.entity.agrolavka.ProductsGroup;
 import ss.entity.martin.DataModel;
+import ss.martin.security.configuration.external.DomainConfiguration;
 
 /**
  * Catalog page controller.
@@ -38,6 +39,9 @@ class CatalogController extends BaseJspController {
     private static final String SORT_ALPHABET = "alphabet";
     
     private static final String REDIRECT_TO_404 = "redirect:/error/page-not-found";
+    
+    @Autowired
+    private DomainConfiguration domainConfiguration;
     
     /** Product DAO. */
     @Autowired
@@ -65,52 +69,43 @@ class CatalogController extends BaseJspController {
                 return new ModelAndView(REDIRECT_TO_404);
             }
             if (entity instanceof ProductsGroup group) {
-                setProducts(model, group.getId(), page, sort, available);
                 setCatalogAttributes(model, group);
+                setProducts(model, group.getId(), page, sort, available);
                 return JspPage.CATALOG;
-            } else if (entity instanceof Product) {
-                model.addAttribute("canonical", url);
-                Product product = (Product) entity;
-                model.addAttribute("title", product.getSeoTitle() != null
-                        ? product.getSeoTitle() : "Купить " + product.getGroup().getName() + " " + product.getName()
-                        + ". Способ применения, инструкция, описание " + product.getName());
-                model.addAttribute("id", product.getId());
-                model.addAttribute("product", product);
-                model.addAttribute("structuredImage", product.getImages().isEmpty() 
-                        ? "https://agrolavka.by/assets/img/no-image.png"
-                        : "https://agrolavka.by/media/" + product.getImages().get(0).getFileNameOnDisk());
-                model.addAttribute("structuredDataName", product.getName().replace("\\", "").replace("\"", "'"));
-                model.addAttribute("structuredDataDescription", product.getDescription() == null
-                        ? "" : product.getDescription().replace("\\", "").replace("\"", "'"));
-                model.addAttribute("groupId", product.getGroup() != null ? product.getGroup().getId() : null);
-                model.addAttribute("breadcrumbLabel", product.getName());
-                model.addAttribute("breadcrumbPath", productsGroupService.getBreadcrumbPath(product.getGroup()));
-                model.addAttribute("productPrice", String.format("%.2f", product.getPrice()));
-                model.addAttribute("productURL", "https://agrolavka.by" + request.getRequestURI());
-                final var inCart = orderService.getCurrentOrder(request).getPositions().stream()
-                    .filter(pos -> Objects.equals(product.getId(), pos.getProductId())).findFirst().isPresent();
-                model.addAttribute("inCart", inCart);
-                model.addAttribute("volumes", product.getVolumes() != null ? product.getVolumes().replace("\"", "'") : "");
-                String description = product.getDescription();
-                String meta = "Купить " + product.getName();
-                if (product.getSeoDescription() != null && !product.getSeoDescription().isBlank()) {
-                    meta = product.getSeoDescription();
-                } else {
-                    if (description != null) {
-                        meta = (description.length() > 255 ? description.substring(0, 255) : description);
-                    }
-                }
-                model.addAttribute("metaDescription", meta);
-                Calendar calendar = new GregorianCalendar();
-                calendar.setTime(new Date());
-                calendar.add(Calendar.MONTH, 1);
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                model.addAttribute("priceValidUntil", sdf.format(calendar.getTime()));
-                return "product";
+            } else if (entity instanceof Product product) {
+                model.addAttribute(CANONICAL, url);
+                setProductAttributes(model, product, request);
+                return JspPage.PRODUCT;
             } else {
                 return new ModelAndView("redirect:/error/page-not-found");
             }
         }
+    }
+    
+    private void setProductAttributes(final Model model, final Product product, final HttpServletRequest request) {
+        model.addAttribute(TITLE, product.getSeoTitle() != null
+                ? product.getSeoTitle() : "Купить " + product.getGroup().getName() + " " + product.getName()
+                + ". Способ применения, инструкция, описание " + product.getName());
+        model.addAttribute(PRODUCT, product);
+        model.addAttribute(STRUCTURED_IMAGE, product.getImages().isEmpty() 
+                ? domainConfiguration.host() + "/assets/img/no-image.png"
+                : domainConfiguration.host() + "/media/" + product.getImages().get(0).getFileNameOnDisk());
+        model.addAttribute(STRUCTURED_DATA_NAME, product.getName().replace("\\", "").replace("\"", "'"));
+        model.addAttribute(STRUCTURED_DATA_DESCRIPTION, product.getDescription() == null
+                ? "" : product.getDescription().replace("\\", "").replace("\"", "'"));
+        model.addAttribute(BREADCRUMB_LABEL, product.getName());
+        model.addAttribute(BREADCRUMB_PATH, productsGroupService.getBreadcrumbPath(product.getGroup()));
+        model.addAttribute(PRODUCT_PRICE, String.format("%.2f", product.getDiscountPrice()));
+        model.addAttribute(PRODUCT_URL, domainConfiguration.host() + request.getRequestURI());
+        final var inCart = orderService.getCurrentOrder(request).getPositions().stream()
+            .filter(pos -> Objects.equals(product.getId(), pos.getProductId())).findFirst().isPresent();
+        model.addAttribute(IN_CART, inCart);
+        model.addAttribute(VOLUMES, product.getVolumes() != null ? product.getVolumes().replace("\"", "'") : "");
+        model.addAttribute(META_DESCRIPTION, getMetaDescription(product));
+        final var calendar = new GregorianCalendar();
+        calendar.setTime(new Date());
+        calendar.add(Calendar.MONTH, 1);
+        model.addAttribute(PRICE_VALID_UNTIL, new SimpleDateFormat("yyyy-MM-dd").format(calendar.getTime()));
     }
     
     private void setCatalogRootAttributes(final Model model) {
@@ -140,6 +135,16 @@ class CatalogController extends BaseJspController {
             meta = group.getSeoDescription();
         } else if (group.getDescription() != null && !group.getDescription().isBlank()) {
             meta = group.getDescription();
+        }
+        return meta.length() > 255 ? meta.substring(0, 255) : meta;
+    }
+    
+    private String getMetaDescription(final Product product) {
+        String meta = "Купить " + product.getName();
+        if (product.getSeoDescription() != null && !product.getSeoDescription().isBlank()) {
+            meta = product.getSeoDescription();
+        } else if (product.getDescription() != null && !product.getDescription().isBlank()) {
+            meta = product.getDescription();
         }
         return meta.length() > 255 ? meta.substring(0, 255) : meta;
     }
