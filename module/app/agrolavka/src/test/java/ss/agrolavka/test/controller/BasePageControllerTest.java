@@ -10,11 +10,15 @@ import ss.agrolavka.test.common.AbstractAgrolavkaMvcTest;
 
 abstract class BasePageControllerTest extends AbstractAgrolavkaMvcTest {
     
+    
     protected ResultActions call(final String url, final String ...attributes) throws Exception {
-        return mockMvc.perform(get(url)).andDo(print()).andExpect(status().isOk()).andExpect(model().attributeExists(
+        final var commonAttributes = new String[] {
             JspValue.SHOPS, JspValue.CART, JspValue.TOTAL_DECIMAL, JspValue.TOTAL_INTEGER
+        };
+        return mockMvc.perform(get(url)).andDo(print()).andExpect(status().isOk()).andExpect(model().attributeExists(
+            commonAttributes
         )).andExpect(model().attributeExists(
             attributes
-        ));
+        )).andExpect(model().size(attributes.length + commonAttributes.length));
     }
 }

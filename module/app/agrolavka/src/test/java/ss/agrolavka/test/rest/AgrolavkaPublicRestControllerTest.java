@@ -2,8 +2,8 @@ package ss.agrolavka.test.rest;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
-import ss.agrolavka.constants.SiteConstants;
 import static org.junit.jupiter.api.Assertions.*;
+import ss.agrolavka.constants.SiteUrls;
 import ss.agrolavka.test.common.AbstractAgrolavkaMvcTest;
 import ss.agrolavka.test.common.AgrolavkaDataFactory;
 import ss.agrolavka.wrapper.ProductsSearchResponse;
@@ -19,7 +19,7 @@ public class AgrolavkaPublicRestControllerTest extends AbstractAgrolavkaMvcTest 
         coreDao.create(AgrolavkaDataFactory.generateProduct(productGroup, "Hummer", 100.0, 2.0));
         
         final var response = callGet(
-            SiteConstants.URL_PUBLIC + "/search?searchText=", 
+            SiteUrls.URL_PUBLIC + "/search?searchText=", 
             ProductsSearchResponse.class, 
             HttpStatus.OK
         );
@@ -28,7 +28,7 @@ public class AgrolavkaPublicRestControllerTest extends AbstractAgrolavkaMvcTest 
         assertEquals(1, response.data().size());
 
         final var response2 = callGet(
-            SiteConstants.URL_PUBLIC + "/search?searchText=D", 
+            SiteUrls.URL_PUBLIC + "/search?searchText=D", 
             ProductsSearchResponse.class, 
             HttpStatus.OK
         );
@@ -37,7 +37,7 @@ public class AgrolavkaPublicRestControllerTest extends AbstractAgrolavkaMvcTest 
         assertEquals(0, response2.data().size());
 
         final var response3 = callGet(
-            SiteConstants.URL_PUBLIC + "/search?searchText=mm", 
+            SiteUrls.URL_PUBLIC + "/search?searchText=mm", 
             ProductsSearchResponse.class, 
             HttpStatus.OK
         );

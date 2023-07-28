@@ -1,7 +1,10 @@
 package ss.agrolavka.service.impl;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,9 +71,52 @@ class ProductsGroupServiceImpl implements ProductsGroupService {
         return topCategories;
     }
     
+    @Override
     @Cacheable(CacheKey.PRODUCTS_GROUPS)
-    private List<ProductsGroup> getAllGroups() {
+    public List<ProductsGroup> getAllGroups() {
         return coreDao.getAll(ProductsGroup.class);
+    }
+    
+    @Override
+    public List<ProductsGroup> getRootProductGroups() {
+        final var rootGroups = getAllGroups().stream().filter(group -> {
+            return group.getParentId() == null;
+        }).collect(Collectors.toList());
+        Collections.sort(rootGroups);
+        return rootGroups;
+    }
+    
+    @Override
+    public List<ProductsGroup> getBreadcrumbPath(final ProductsGroup group) {
+        final var path = new ArrayList<ProductsGroup>();
+        var current = group;
+        final var groups = getAllGroups();
+        while (current != null) {
+            path.add(current);
+            final var parentId = current.getParentId();
+            if (parentId != null) {
+                current = groups.stream().filter(g -> {
+                    return parentId.equals(g.getExternalId());
+                }).findFirst().get();
+            } else {
+                current = null;
+            }
+        }
+        Collections.reverse(path);
+        return path;
+    }
+    
+    @Override
+    public Map<String, List<ProductsGroup>> getCategoriesTree() {
+        final var tree = new HashMap<String, List<ProductsGroup>>();
+        for (final var group : getAllGroups()) {
+            final var parentId = Optional.ofNullable(group.getParentId()).orElse("-1");
+            if (!tree.containsKey(parentId)) {
+                tree.put(parentId, new ArrayList<>());
+            }
+            tree.get(parentId).add(group);
+        }
+        return tree;
     }
     
     private void resetCache() {

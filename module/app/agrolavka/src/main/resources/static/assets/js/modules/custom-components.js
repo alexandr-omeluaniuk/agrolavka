@@ -105,3 +105,179 @@ class XCategoryCard extends XElement {
     }
 }
 window.customElements.define('x-agr-category-card', XCategoryCard);
+
+class XProductPrice extends XElement {    
+    createTemplate() {
+        let template = document.createElement('template');
+        const rowClass = this.getAttribute('data-row-class');
+        const discount = this.getAttribute('data-discount');
+        const rawPrice = this.getAttribute('data-price');
+        const price = parseFloat(rawPrice).toFixed(2).split('.');
+        const priceInt = price[0];
+        const priceFloat = price[1];
+        const discountPrice = parseFloat(rawPrice * (1 - discount/100)).toFixed(2).split('.');
+        const discountPriceInt = discountPrice[0];
+        const discountPriceFloat = discountPrice[1];
+        template.innerHTML = `
+            <div class="d-flex align-items-center justify-content-between ${rowClass}">
+                <small class="text-muted">Цена</small>
+                <span class="agr-price fw-bold ${discount ? 'text-decoration-line-through text-muted' : 'text-dark'}">
+                    ${priceInt}<small>.${priceFloat}</small>
+                    <small class="text-muted">BYN</small>
+                </span>
+            </div>
+            ${discount ? `
+                <div class="d-flex align-items-center justify-content-between ${rowClass}">
+                    <small class="text-danger"><i class="fas fa-fire me-1"></i> Акция</small>
+                    <div class="text-danger fw-bold">
+                        ${discountPriceInt}<small>.${discountPriceFloat}</small>
+                        <small>BYN</small>
+                    </div>
+                </div>
+            ` : ''}
+        `;
+        return template;
+    }
+}
+window.customElements.define('x-agr-product-price', XProductPrice);
+
+class XProductRibbon extends XElement {    
+    createTemplate() {
+        let template = document.createElement('template');
+        const discount = this.getAttribute('data-discount');
+        const inStock = this.getAttribute('data-in-stock');
+        const hide = this.getAttribute('data-hide');
+        if (hide && !discount) {
+            return template;
+        }
+        let color;
+        let label;
+        const icon = discount ? '<i class="fas fa-fire me-1"></i>' : '';
+        if (discount) {
+            color = 'danger';
+            label = ' -' + parseFloat(discount).toFixed(0) + '%';
+        } else if (inStock) {
+            color = 'success';
+            label = 'в наличии';
+        } else {
+            color = 'gray';
+            label = 'под заказ';
+        }
+        template.innerHTML = `
+            <div class="ribbon ribbon-top-left">
+                <span class="bg-${color}">
+                    <small>${icon}${label}</small>
+                </span>
+            </div>
+        `;
+        return template;
+    }
+}
+window.customElements.define('x-agr-product-ribbon', XProductRibbon);
+
+class XProductVolumes extends XElement {    
+    createTemplate() {
+        let template = document.createElement('template');
+        const cls = this.getAttribute('data-cls');
+        const rawVolumes = this.getAttribute('data-volume');
+        const volumes = JSON.parse(rawVolumes.replaceAll("'", '"'));
+        const minPrice = volumes[0].price;
+        const selectedQuantity = volumes[0].amount;
+        let sb = '';
+        const getLabel = (v) => {
+            const fractional = v.amount - parseInt(v.amount);
+            return (fractional >= 0.1 ? v.amount : parseInt(v.amount)) + "л";
+        };
+        for (let i = 0; i < volumes.length; i++) {
+            const v = volumes[i];
+            const btnClass = i === 0 ? "btn-info" : "btn-outline-info";
+            sb += `
+                <button type="button" class="agr-volume-btn btn ${btnClass} btn-rounded ${cls}" data-mdb-color="dark"
+                        data-product-volume-price="${v.price}" data-product-volume-quantity="${v.amount}">
+                    ${getLabel(v)}
+                </button>
+            `;
+        }
+        template.innerHTML = `
+            <div class="btn-group w-100 shadow-0 mt-1" role="group" aria-label="Volumes" 
+                data-volumes="${rawVolumes}" 
+                data-selected-volume-quantity="${selectedQuantity}" 
+                data-selected-volume-price="${minPrice}">
+                    ${sb}
+            </div>
+        `;
+        return template;
+    }
+}
+window.customElements.define('x-agr-product-volumes', XProductVolumes);
+
+class XProductActions extends XElement {    
+    createTemplate() {
+        let template = document.createElement('template');
+        const id = this.getAttribute('data-id');
+        const cls = this.getAttribute('data-cls');
+        const inCart = this.getAttribute('data-in-cart');
+        const volumes = this.getAttribute('data-volume');
+        template.innerHTML = `
+            ${volumes ? `<x-agr-product-volumes data-cls="${cls}" data-volume="${volumes}"></x-agr-product-volumes>` : ''}
+            <button class="btn btn-outline-info btn-rounded w-100 mt-1 ${cls}" data-product-id="${id}" data-order="">
+                <i class="far fa-hand-point-up me-2"></i> Заказать сразу
+            </button>
+            ${inCart ? `
+                <button class="btn btn-outline-danger btn-rounded w-100 mt-1 ${cls}" data-product-id="${id}" data-remove="">
+                    <i class="fas fa-minus-circle me-2"></i> Из корзины
+                </button>
+            ` : `
+                <button class="btn btn-outline-success btn-rounded w-100 mt-1 ${cls}" data-product-id="${id}" data-add="">
+                    <i class="fas fa-cart-plus me-2"></i> В корзину
+                </button>
+            `}
+        `;
+        return template;
+    }
+}
+window.customElements.define('x-agr-product-actions', XProductActions);
+
+class XProductCard extends XElement {    
+    createTemplate() {
+        let template = document.createElement('template');
+        const id = this.getAttribute('data-id');
+        const discount = this.getAttribute('data-discount');
+        const inStock = this.getAttribute('data-in-stock');
+        const hide = this.getAttribute('data-hide-ribbon');
+        const inCart = this.getAttribute('data-in-cart');
+        const createdDate = this.getAttribute('data-created');
+        const name = this.getAttribute('data-name');
+        const price = this.getAttribute('data-price');
+        const image = this.getAttribute('data-image');
+        const imageCreatedDate = this.getAttribute('data-image-created');
+        const link = this.getAttribute('data-link');
+        const volumes = this.getAttribute('data-volume');
+        const imageElement = image 
+            ? `<div class="card-img-top agr-card-image" style="background-image: url('/media/${image}?timestamp=${imageCreatedDate}')"></div>` 
+            : `<div class="card-img-top agr-card-image" style="background-image: url('/assets/img/no-image.png')"></div>`;
+        template.innerHTML = `
+            <a href="${link}">
+                <div class="card shadow-1-strong mb-4 hover-shadow">
+                    <x-agr-product-ribbon data-discount="${discount}" data-in-stock="${inStock}" data-hide="${hide}"></x-agr-product-ribbon>
+                    <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
+                        ${imageElement}
+                        <div class="card-body" style="min-height: 100px;">
+                            <h6 class="card-title text-dark text-left" style="min-height: 60px;">${name}</h6>
+                            <x-agr-product-price data-row-class="agr-card-line" data-discount="${discount}" data-price="${price}"></x-agr-product-price>
+                            ${createdDate ? `
+                                <div class="d-flex align-items-center justify-content-between mb-1 agr-card-line">
+                                    <small class="text-muted">Добавлено</small>
+                                    <small class="text-muted">${createdDate}</small>
+                                </div>
+                            ` : ''}
+                            <x-agr-product-actions data-id="${id}" data-cls="agr-card-button" data-in-cart="${inCart}" data-volume="${volumes}"></x-agr-product-actions>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        `;
+        return template;
+    }
+}
+window.customElements.define('x-agr-product-card', XProductCard);

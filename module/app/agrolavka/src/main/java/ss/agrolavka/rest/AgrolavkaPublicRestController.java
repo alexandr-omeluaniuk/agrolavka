@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ss.agrolavka.constants.SiteConstants;
+import ss.agrolavka.constants.SiteUrls;
 import ss.agrolavka.service.OrderService;
 import ss.agrolavka.service.ProductService;
 import ss.agrolavka.util.AppCache;
@@ -34,7 +35,7 @@ import ss.martin.core.dao.CoreDao;
  * @author alex
  */
 @RestController
-@RequestMapping(SiteConstants.URL_PUBLIC)
+@RequestMapping(SiteUrls.URL_PUBLIC)
 class AgrolavkaPublicRestController {
     /** Core DAO. */
     @Autowired

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import ss.agrolavka.constants.SiteConstants;
+import ss.agrolavka.constants.SiteUrls;
 import ss.agrolavka.service.ProductsGroupService;
 import ss.entity.agrolavka.ProductsGroup;
 
@@ -18,7 +18,7 @@ import ss.entity.agrolavka.ProductsGroup;
  * @author alex
  */
 @RestController
-@RequestMapping(SiteConstants.URL_PROTECTED + "/products-group")
+@RequestMapping(SiteUrls.URL_PROTECTED + "/products-group")
 public class ProductGroupRestController extends BasicEntityWithImagesRestController<ProductsGroup> {
     
     @Autowired

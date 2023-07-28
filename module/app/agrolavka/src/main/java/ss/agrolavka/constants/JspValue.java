@@ -16,4 +16,26 @@ public final class JspValue {
     public static final String TOTAL_INTEGER = "totalInteger";
     public static final String TOTAL_DECIMAL = "totalDecimal";
     public static final String TITLE = "title";
+    
+    public static final String PAGE = "page";
+    public static final String VIEW = "view";
+    public static final String SORT = "sort";
+    public static final String AVAILABLE = "available";
+    public static final String CANONICAL = "canonical";
+    public static final String META_DESCRIPTION = "metaDescription";
+    public static final String CATEGORIES = "categories";
+    public static final String PRODUCTS_SEARCH_RESULT = "searchResult";
+    public static final String PRODUCTS_SEARCH_RESULT_PAGES = "searchResultPages";
+    public static final String PRODUCT_GROUP = "group";
+    public static final String BREADCRUMB_LABEL = "breadcrumbLabel";
+    public static final String BREADCRUMB_PATH = "breadcrumbPath";
+    public static final String PRODUCT = "product";
+    public static final String STRUCTURED_IMAGE = "structuredImage";
+    public static final String STRUCTURED_DATA_NAME = "structuredDataName";
+    public static final String STRUCTURED_DATA_DESCRIPTION = "structuredDataDescription";
+    public static final String PRODUCT_PRICE = "productPrice";
+    public static final String PRODUCT_URL = "productURL";
+    public static final String IN_CART = "inCart";
+    public static final String VOLUMES = "volumes";
+    public static final String PRICE_VALID_UNTIL = "priceValidUntil";
 }

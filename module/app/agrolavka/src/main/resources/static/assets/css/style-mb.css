@@ -248,9 +248,6 @@ and open the template in the editor.
 .agr-product-search-link {
     border-bottom: 1px solid #ececec;
 }
-.agr-product-not-available {
-    
-}
 #footer {
     background-color: var(--agr-background-color) !important;
 }

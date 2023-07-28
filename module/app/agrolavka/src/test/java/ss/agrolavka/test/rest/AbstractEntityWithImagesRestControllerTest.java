@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import ss.agrolavka.constants.SiteConstants;
+import ss.agrolavka.constants.SiteUrls;
 import ss.agrolavka.test.common.AbstractAgrolavkaMvcTest;
 import ss.entity.agrolavka.EntityWithImages;
 import ss.entity.martin.DataModel;
@@ -49,7 +50,7 @@ public abstract class AbstractEntityWithImagesRestControllerTest<T extends DataM
             "entity", null, MediaType.APPLICATION_JSON_VALUE, objectMapper.writeValueAsBytes(entity)
         );
         withAuthorization(jwt(StandardRole.ROLE_SUBSCRIPTION_USER), () -> {
-            final var newEntity = callMultipart(HttpMethod.POST, SiteConstants.URL_PROTECTED + endpoint(), new MockMultipartFile[] {
+            final var newEntity = callMultipart(HttpMethod.POST, SiteUrls.URL_PROTECTED + endpoint(), new MockMultipartFile[] {
                 entityJson
             }, entityClass(), HttpStatus.OK);
             entityAsserts(newEntity);
@@ -69,7 +70,7 @@ public abstract class AbstractEntityWithImagesRestControllerTest<T extends DataM
         withAuthorization(jwt(StandardRole.ROLE_SUBSCRIPTION_USER), () -> {
             final var newEntity = callMultipart(
                 HttpMethod.POST, 
-                SiteConstants.URL_PROTECTED + endpoint(), 
+                SiteUrls.URL_PROTECTED + endpoint(), 
                 new MockMultipartFile[] {
                     entityJson, image1, image2
                 }, 
@@ -81,7 +82,7 @@ public abstract class AbstractEntityWithImagesRestControllerTest<T extends DataM
             
             // get by id
             final var getEntity = callGet(
-                SiteConstants.URL_PROTECTED + endpoint() + "/" + newEntity.getId(), 
+                SiteUrls.URL_PROTECTED + endpoint() + "/" + newEntity.getId(), 
                 entityClass(), 
                 HttpStatus.OK
             );
@@ -97,7 +98,7 @@ public abstract class AbstractEntityWithImagesRestControllerTest<T extends DataM
             );
             final var updatedEntity = callMultipart(
                 HttpMethod.PUT, 
-                SiteConstants.URL_PROTECTED + endpoint(), 
+                SiteUrls.URL_PROTECTED + endpoint(), 
                 new MockMultipartFile[] {
                     entityJsonUpdate, image3
                 }, 
@@ -106,7 +107,7 @@ public abstract class AbstractEntityWithImagesRestControllerTest<T extends DataM
             );
             assertNotNull(updatedEntity);
             final var getEntityAfterUpdate = callGet(
-                SiteConstants.URL_PROTECTED + endpoint() + "/" + newEntity.getId(), 
+                SiteUrls.URL_PROTECTED + endpoint() + "/" + newEntity.getId(), 
                 entityClass(), 
                 HttpStatus.OK
             );
@@ -116,13 +117,13 @@ public abstract class AbstractEntityWithImagesRestControllerTest<T extends DataM
             assertEquals("fileX3.jpg", getEntityAfterUpdate.getImages().get(1).getName());
             
             // get list
-            final var entitiesList = callGet(SiteConstants.URL_PROTECTED + endpoint(), listType(), HttpStatus.OK);
+            final var entitiesList = callGet(SiteUrls.URL_PROTECTED + endpoint(), listType(), HttpStatus.OK);
             assertTrue(entitiesList.total() > 0);
             assertFalse(entitiesList.data().isEmpty());
             entityAsserts(entitiesList.data().get(0));
             
             //delete
-            callDelete(SiteConstants.URL_PROTECTED + endpoint() + "/" + newEntity.getId(), Void.class, HttpStatus.OK);
+            callDelete(SiteUrls.URL_PROTECTED + endpoint() + "/" + newEntity.getId(), Void.class, HttpStatus.OK);
             assertNull(coreDao.findById(newEntity.getId(), entityClass()));
         });
     }

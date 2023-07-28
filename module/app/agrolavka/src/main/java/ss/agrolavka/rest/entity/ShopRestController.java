@@ -3,7 +3,7 @@ package ss.agrolavka.rest.entity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ss.agrolavka.constants.CacheKey;
-import ss.agrolavka.constants.SiteConstants;
+import ss.agrolavka.constants.SiteUrls;
 import ss.entity.agrolavka.Shop;
 
 /**
@@ -11,7 +11,7 @@ import ss.entity.agrolavka.Shop;
  * @author alex
  */
 @RestController
-@RequestMapping(SiteConstants.URL_PROTECTED + "/shop")
+@RequestMapping(SiteUrls.URL_PROTECTED + "/shop")
 public class ShopRestController extends BasicEntityWithImagesRestController<Shop> {
 
     @Override

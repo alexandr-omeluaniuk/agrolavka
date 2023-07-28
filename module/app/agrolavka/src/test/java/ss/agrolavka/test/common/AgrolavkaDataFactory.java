@@ -16,7 +16,7 @@ public class AgrolavkaDataFactory {
         final var group = new ProductsGroup();
         group.setName(name);
         group.setExternalId(UUID.randomUUID().toString());
-        group.setUrl(UrlProducer.buildProductGroupUrl(group));
+        group.setUrl(UrlProducer.transliterate(name));
         return group;
     }
     
@@ -27,7 +27,7 @@ public class AgrolavkaDataFactory {
         product.setName(name);
         product.setPrice(price);
         product.setQuantity(quantity);
-        product.setUrl(UrlProducer.buildProductUrl(product));
+        product.setUrl(UrlProducer.transliterate(name));
         product.setBuyPrice(price);
         product.setExternalId(UUID.randomUUID().toString());
         product.setGroup(group);
