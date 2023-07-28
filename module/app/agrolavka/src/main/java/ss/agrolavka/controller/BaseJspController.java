@@ -28,7 +28,7 @@ abstract class BaseJspController {
     @Autowired
     protected SiteDataService siteDataService;
     
-    protected void insertCommonDataToModel(final HttpServletRequest request, final Model model) {
+    protected void setCommonAttributes(final HttpServletRequest request, final Model model) {
         // cart
         final Order order = orderService.getCurrentOrder(request);
         var total = 0d;

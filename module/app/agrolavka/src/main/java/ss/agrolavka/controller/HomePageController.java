@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ss.agrolavka.constants.JspPage;
 import ss.agrolavka.constants.JspValue;
+import ss.agrolavka.constants.SiteUrls;
 
 /**
  * Home page controller.
@@ -14,9 +15,9 @@ import ss.agrolavka.constants.JspValue;
 @Controller
 class HomePageController extends BaseJspController {
     
-    @RequestMapping("/")
+    @RequestMapping(SiteUrls.PAGE_HOME)
     public String home(Model model, HttpServletRequest httpRequest) {
-        insertCommonDataToModel(httpRequest, model);
+        setCommonAttributes(httpRequest, model);
         model.addAttribute(JspValue.TITLE, "Все для сада и огорода");
         model.addAttribute(JspValue.TOP_CATEGORIES, productsGroupService.getTopCategories());
         model.addAttribute(JspValue.NEW_PRODUCTS, productService.getNewProducts());

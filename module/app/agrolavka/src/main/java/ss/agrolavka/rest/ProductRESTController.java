@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package ss.agrolavka.rest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import ss.agrolavka.constants.SiteConstants;
+import ss.agrolavka.constants.SiteUrls;
 import ss.agrolavka.dao.ProductDAO;
 import ss.agrolavka.service.GroupProductsService;
 import ss.agrolavka.wrapper.ProductsSearchRequest;
@@ -25,7 +20,7 @@ import ss.martin.core.model.EntitySearchResponse;
  * @author alex
  */
 @RestController
-@RequestMapping(SiteConstants.URL_PROTECTED + "/product")
+@RequestMapping(SiteUrls.URL_PROTECTED + "/product")
 public class ProductRESTController {
     /** Product DAO. */
     @Autowired

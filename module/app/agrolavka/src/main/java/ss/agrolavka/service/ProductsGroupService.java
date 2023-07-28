@@ -34,4 +34,23 @@ public interface ProductsGroupService {
      * @return top product groups.
      */
     List<ProductsGroup> getTopCategories();
+    
+    /**
+     * Get all groups.
+     * @return all groups.
+     */
+    List<ProductsGroup> getAllGroups();
+    
+    /**
+     * Get root groups.
+     * @return root groups.
+     */
+    List<ProductsGroup> getRootProductGroups();
+    
+    /**
+     * Get breadcrumb path for target product group.
+     * @param group group.
+     * @return sequence of product groups.
+     */
+    List<ProductsGroup> getBreadcrumbPath(ProductsGroup group);
 }

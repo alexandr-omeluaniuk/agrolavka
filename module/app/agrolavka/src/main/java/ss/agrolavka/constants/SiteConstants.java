@@ -23,8 +23,4 @@ public final class SiteConstants {
     public static final int IMAGE_SHOP_THUMB_SIZE = 459;
     /** Min order sum. */
     public static final int MIN_ORDER_SUM = 0;
-    
-    public static final String URL_PUBLIC = "/api/agrolavka/public";
-    
-    public static final String URL_PROTECTED = "/api/agrolavka/protected";
 }

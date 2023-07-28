@@ -4,7 +4,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ss.agrolavka.constants.SiteConstants;
+import ss.agrolavka.constants.SiteUrls;
 import ss.entity.agrolavka.Feedback;
 
 /**
@@ -12,7 +12,7 @@ import ss.entity.agrolavka.Feedback;
  * @author alex
  */
 @RestController
-@RequestMapping(SiteConstants.URL_PROTECTED + "/feedback")
+@RequestMapping(SiteUrls.URL_PROTECTED + "/feedback")
 public class FeedbackRestController extends BasicEntityRestController<Feedback> {
 
     @Override
