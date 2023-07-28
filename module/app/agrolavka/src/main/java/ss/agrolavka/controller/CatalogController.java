@@ -23,6 +23,7 @@ import ss.agrolavka.dao.ProductDAO;
 import ss.agrolavka.util.AppCache;
 import ss.agrolavka.wrapper.ProductsSearchRequest;
 import ss.entity.agrolavka.Product;
+import ss.entity.agrolavka.Product_;
 import ss.entity.agrolavka.ProductsGroup;
 import ss.entity.martin.DataModel;
 import ss.martin.security.configuration.external.DomainConfiguration;
@@ -37,6 +38,8 @@ class CatalogController extends BaseJspController {
     private static final String VIEW_TILES = "TILES";
     
     private static final String SORT_ALPHABET = "alphabet";
+    private static final String SORT_CHEAP = "cheap";
+    private static final String SORT_EXPENSIVE = "expensive";
     
     private static final String REDIRECT_TO_404 = "redirect:/error/page-not-found";
     
@@ -77,7 +80,7 @@ class CatalogController extends BaseJspController {
                 setProductAttributes(model, product, request);
                 return JspPage.PRODUCT;
             } else {
-                return new ModelAndView("redirect:/error/page-not-found");
+                return new ModelAndView(REDIRECT_TO_404);
             }
         }
     }
@@ -179,18 +182,18 @@ class CatalogController extends BaseJspController {
         searchRequest.setAvailable(available);
         int pageSize = SiteConstants.SEARCH_RESULT_TILES_COLUMNS * SiteConstants.SEARCH_RESULT_TILES_ROWS;
         searchRequest.setPageSize(pageSize);
-        if ("alphabet".equals(sort)) {
+        if (SORT_ALPHABET.equals(sort)) {
             searchRequest.setOrder("asc");
-            searchRequest.setOrderBy("name");
-        } else if ("cheap".equals(sort)) {
+            searchRequest.setOrderBy(Product_.NAME);
+        } else if (SORT_CHEAP.equals(sort)) {
             searchRequest.setOrder("asc");
-            searchRequest.setOrderBy("price");
-        } else if ("expensive".equals(sort)) {
+            searchRequest.setOrderBy(Product_.PRICE);
+        } else if (SORT_EXPENSIVE.equals(sort)) {
             searchRequest.setOrder("desc");
-            searchRequest.setOrderBy("price");
+            searchRequest.setOrderBy(Product_.PRICE);
         } else {
             searchRequest.setOrder("asc");
-            searchRequest.setOrderBy("name");
+            searchRequest.setOrderBy(Product_.NAME);
         }
         model.addAttribute(PRODUCTS_SEARCH_RESULT, productDAO.search(searchRequest));
         Long count = productDAO.count(searchRequest);
