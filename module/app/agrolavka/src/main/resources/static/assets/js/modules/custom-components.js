@@ -296,7 +296,7 @@ class XProductDescription extends XElement {
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
                 </iframe>
             ` : ''}
-            ${description ? `<div class="text-justify" style="white-space: pre-line;">${description}</div>` : ''}
+            ${description ? `<div class="text-justify mb-3" style="white-space: pre-line;">${description}</div>` : ''}
         `;
         return template;
     }

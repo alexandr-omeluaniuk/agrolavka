@@ -71,16 +71,13 @@
         <link href="/favicon.svg?" rel="icon">
         <link href="/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
         
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
-
         <!-- Vendor JS Files -->
         <link href="/assets/fontawesome/css/fontawesome.css" rel="stylesheet">
         <link href="/assets/fontawesome/css/brands.css" rel="stylesheet">
         <link href="/assets/fontawesome/css/solid.css" rel="stylesheet">
         <link href="/assets/fontawesome/css/regular.css" rel="stylesheet">
         <!-- Google Fonts -->
-        <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet"/>
+        <link href="/assets/css/font-roboto.css?version=${staticResourceVersion}" rel="stylesheet"/>
         <!-- MDB -->
         <link href="/assets/vendor/mdb/mdb.3.5.0.min.css?version=${staticResourceVersion}" rel="stylesheet"/>
 
