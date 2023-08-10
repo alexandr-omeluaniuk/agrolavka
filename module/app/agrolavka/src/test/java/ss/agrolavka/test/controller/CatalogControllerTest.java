@@ -89,7 +89,8 @@ public class CatalogControllerTest extends BasePageControllerTest {
             JspValue.PRODUCT_URL,
             JspValue.IN_CART,
             JspValue.VOLUMES,
-            JspValue.PRICE_VALID_UNTIL
+            JspValue.PRICE_VALID_UNTIL,
+            JspValue.FULL_PRODUCT_DESCRIPTION
         );
     }
 }

@@ -73,12 +73,6 @@ public class Product extends ExternalEntity {
     @Size(max = 65535)
     @Column(name = "description", length = 65535)
     private String description;
-    /** Description in HTML format. */
-    @Updatable
-    @Lob
-    @Size(max = 65535)
-    @Column(name = "html_description", length = 65535)
-    private String htmlDescription;
     /** Code. */
     @Size(max = 255)
     @Column(name = "code", length = 255)
@@ -232,14 +226,6 @@ public class Product extends ExternalEntity {
     
     public void setDiscount(Discount discount) {
         this.discount = discount;
-    }
-    
-    public String getHtmlDescription() {
-        return htmlDescription;
-    }
-    
-    public void setHtmlDescription(String htmlDescription) {
-        this.htmlDescription = htmlDescription;
     }
     
     public boolean isHidden() {

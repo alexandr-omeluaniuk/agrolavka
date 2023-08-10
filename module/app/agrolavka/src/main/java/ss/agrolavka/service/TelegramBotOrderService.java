@@ -89,7 +89,7 @@ public class TelegramBotOrderService extends AbstractTelegramBotService {
         if (Boolean.TRUE.equals(order.getOneClick())) {
             sb.append("\n").append("<i>Заказ в один клик</i>");
         }
-        Optional.of(order.getComment()).ifPresent(comment -> {
+        Optional.ofNullable(order.getComment()).ifPresent(comment -> {
             if (!comment.isBlank()) {
                 sb.append("\n\n").append("<i><b>Комментарий</b></i>: ").append(comment);
             }
