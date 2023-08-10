@@ -6,7 +6,6 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +19,6 @@ import static ss.agrolavka.constants.JspValue.*;
 import ss.agrolavka.constants.SiteConstants;
 import ss.agrolavka.constants.SiteUrls;
 import ss.agrolavka.dao.ProductDAO;
-import ss.agrolavka.util.AppCache;
 import ss.agrolavka.wrapper.ProductsSearchRequest;
 import ss.entity.agrolavka.Product;
 import ss.entity.agrolavka.Product_;
@@ -42,9 +40,6 @@ class CatalogController extends BaseJspController {
     private static final String SORT_EXPENSIVE = "expensive";
     
     private static final String REDIRECT_TO_404 = "redirect:/error/page-not-found";
-    
-    @Autowired
-    private DomainConfiguration domainConfiguration;
     
     /** Product DAO. */
     @Autowired
@@ -86,6 +81,9 @@ class CatalogController extends BaseJspController {
     }
     
     private void setProductAttributes(final Model model, final Product product, final HttpServletRequest request) {
+        final var metaDescription = getMetaDescription(product);
+        final var fullDescription = Optional.ofNullable(product.getDescription())
+            .map(desc -> desc.replace("\"", "&quot;")).orElse("");
         model.addAttribute(TITLE, product.getSeoTitle() != null
                 ? product.getSeoTitle() : "Купить " + product.getGroup().getName() + " " + product.getName()
                 + ". Способ применения, инструкция, описание " + product.getName());
@@ -94,8 +92,7 @@ class CatalogController extends BaseJspController {
                 ? domainConfiguration.host() + "/assets/img/no-image.png"
                 : domainConfiguration.host() + "/media/" + product.getImages().get(0).getFileNameOnDisk());
         model.addAttribute(STRUCTURED_DATA_NAME, product.getName().replace("\\", "").replace("\"", "'"));
-        model.addAttribute(STRUCTURED_DATA_DESCRIPTION, product.getDescription() == null
-                ? "" : product.getDescription().replace("\\", "").replace("\"", "'"));
+        model.addAttribute(STRUCTURED_DATA_DESCRIPTION, metaDescription);
         model.addAttribute(BREADCRUMB_LABEL, product.getName());
         model.addAttribute(BREADCRUMB_PATH, productsGroupService.getBreadcrumbPath(product.getGroup()));
         model.addAttribute(PRODUCT_PRICE, String.format("%.2f", product.getDiscountPrice()));
@@ -104,7 +101,8 @@ class CatalogController extends BaseJspController {
             .filter(pos -> Objects.equals(product.getId(), pos.getProductId())).findFirst().isPresent();
         model.addAttribute(IN_CART, inCart);
         model.addAttribute(VOLUMES, product.getVolumes() != null ? product.getVolumes().replace("\"", "'") : "");
-        model.addAttribute(META_DESCRIPTION, getMetaDescription(product));
+        model.addAttribute(META_DESCRIPTION, metaDescription);
+        model.addAttribute(FULL_PRODUCT_DESCRIPTION, fullDescription);
         final var calendar = new GregorianCalendar();
         calendar.setTime(new Date());
         calendar.add(Calendar.MONTH, 1);

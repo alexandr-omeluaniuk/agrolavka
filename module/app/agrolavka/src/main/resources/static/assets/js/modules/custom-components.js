@@ -281,3 +281,36 @@ class XProductCard extends XElement {
     }
 }
 window.customElements.define('x-agr-product-card', XProductCard);
+
+class XProductDescription extends XElement {    
+    createTemplate() {
+        let template = document.createElement('template');
+        const name = this.getAttribute('data-name');
+        const video = this.getAttribute('data-video');
+        const description = this.getAttribute('data-description');
+        template.innerHTML = `
+            <h4>${name}</h4>
+            ${video ? `
+                <iframe src="${video}" width="100%"  height="350"
+                    title="YouTube video player" frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+                </iframe>
+            ` : ''}
+            ${description ? `<div class="text-justify mb-3" style="white-space: pre-line;">${description}</div>` : ''}
+        `;
+        return template;
+    }
+    
+    connectedCallback() {
+        const node = this.appendChild(this._contents);
+        this.querySelectorAll('table').forEach(el => {
+            const parent = el.parentElement;
+            el.remove();
+            const responsiveDiv = document.createElement('div');
+            responsiveDiv.setAttribute("class", "table-responsive");
+            parent.appendChild(responsiveDiv);
+            responsiveDiv.appendChild(el);
+        });
+    }
+}
+window.customElements.define('x-agr-product-description', XProductDescription);

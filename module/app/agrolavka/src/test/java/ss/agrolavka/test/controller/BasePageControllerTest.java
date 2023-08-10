@@ -13,7 +13,7 @@ abstract class BasePageControllerTest extends AbstractAgrolavkaMvcTest {
     
     protected ResultActions call(final String url, final String ...attributes) throws Exception {
         final var commonAttributes = new String[] {
-            JspValue.SHOPS, JspValue.CART, JspValue.TOTAL_DECIMAL, JspValue.TOTAL_INTEGER
+            JspValue.SHOPS, JspValue.CART, JspValue.TOTAL_DECIMAL, JspValue.TOTAL_INTEGER, JspValue.DOMAIN
         };
         return mockMvc.perform(get(url)).andDo(print()).andExpect(status().isOk()).andExpect(model().attributeExists(
             commonAttributes

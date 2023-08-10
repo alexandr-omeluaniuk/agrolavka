@@ -14,7 +14,7 @@
 <%@attribute name="structuredData" fragment="true" required="false"%>
 <%@attribute name="headSection" fragment="true" required="false"%>
 
-<c:set var="staticResourceVersion" value="37"/>
+<c:set var="staticResourceVersion" value="38"/>
 
 <%-- any content can be specified here e.g.: --%>
 <!DOCTYPE html>
@@ -38,8 +38,8 @@
         {
           "@context": "https://schema.org",
           "@type": "Organization",
-          "url": "https://agrolavka.by",
-          "logo": "https://agrolavka.by/assets/img/apple-touch-icon.png"
+          "url": "${domain}",
+          "logo": "${domain}/assets/img/apple-touch-icon.png"
         }
         </script>
         <jsp:invoke fragment="structuredData"/>
@@ -47,14 +47,14 @@
         <title>${title}</title>
         <meta name="title" content="Все для сада и огорода">
         <meta name="description" content="${metaDescription}">
-        <link rel="canonical" href="https://agrolavka.by${canonical}"/>
+        <link rel="canonical" href="${domain}${canonical}"/>
         <!-- Open Graph / Facebook -->
         <meta property="og:type" content="website">
         <meta property="og:site_name" content="Агролавка">
-        <meta property="og:url" content="https://agrolavka.by">
+        <meta property="og:url" content="${domain}">
         <meta property="og:title" content="Все для сада и огорода">
         <meta property="og:description" content="Большой выбор семян, удобрений, средств для защиты растений. Комплектующие для капельного полива. Зоотовары. Приглашаем за покупками.">
-        <meta property="og:image" content="https://agrolavka.by/assets/img/agrolavka-location.webp">
+        <meta property="og:image" content="${domain}/assets/img/agrolavka-location.webp">
         <meta property="og:image:width" content="908">
         <meta property="og:image:height" content="920">
         <meta property="og:locale" content="ru_RU">
@@ -62,27 +62,24 @@
         <!-- Twitter -->
         <meta name="twitter:card" content="summary_large_image">
         <meta name="twitter:site" content="insales.ru">
-        <meta name="twitter:url" content="https://agrolavka.by">
+        <meta name="twitter:url" content="${domain}">
         <meta name="twitter:title" content="Все для сада и огорода">
         <meta name="twitter:description" content="Большой выбор семян, удобрений, средств для защиты растений. Комплектующие для капельного полива. Зоотовары. Приглашаем за покупками.">
-        <meta name="twitter:image" content="https://agrolavka.by/assets/img/agrolavka-location.webp">
+        <meta name="twitter:image" content="${domain}/assets/img/agrolavka-location.webp">
         
         <!-- Favicons -->
         <link href="/favicon.svg?" rel="icon">
         <link href="/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
         
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
-
         <!-- Vendor JS Files -->
         <link href="/assets/fontawesome/css/fontawesome.css" rel="stylesheet">
         <link href="/assets/fontawesome/css/brands.css" rel="stylesheet">
         <link href="/assets/fontawesome/css/solid.css" rel="stylesheet">
         <link href="/assets/fontawesome/css/regular.css" rel="stylesheet">
         <!-- Google Fonts -->
-        <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet"/>
+        <link href="/assets/css/font-roboto.css?version=${staticResourceVersion}" rel="stylesheet"/>
         <!-- MDB -->
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.5.0/mdb.min.css" rel="stylesheet"/>
+        <link href="/assets/vendor/mdb/mdb.3.5.0.min.css?version=${staticResourceVersion}" rel="stylesheet"/>
 
         <!-- Main CSS File -->
         <link href="/assets/css/style-mb.css?version=${staticResourceVersion}" rel="stylesheet">
@@ -97,7 +94,7 @@
         <t:footer></t:footer>
 
         <!-- Vendor JS Files -->
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.5.0/mdb.min.js"></script>
+        <script type="text/javascript" src="/assets/vendor/mdb/mdb.3.5.0.min.js?version=${staticResourceVersion}"></script>
         <!-- Main JS Files -->
         <script type="module" src="/assets/js/main-mb.js?version=${staticResourceVersion}"></script>
         <script type="module" src="/assets/js/modules/product-card.js?version=${staticResourceVersion}"></script>

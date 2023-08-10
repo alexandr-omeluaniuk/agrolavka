@@ -16,14 +16,10 @@
     <div class="card-body">
         <div class="row">
 
-            <div class="col-12">
-                <a href="<%= UrlProducer.buildProductUrl(position.getProduct())%>" class="agr-link" style="text-decoration: underline"><h5>${position.getProductName()}</h5></a>
-            </div>
-
             <div class="col-12 col-sm-12 col-md-7 col-lg-7 col-xl-8 d-flex mb-2">
                 <c:choose>
                     <c:when test="${position.product.images.size() > 0}">
-                        <div class="agr-cart-position-image shadow-1-strong rounded-circle" 
+                        <div class="agr-cart-position-image shadow-1-strong" 
                                  style="background-image: url('/media/${position.product.images.get(0).fileNameOnDisk}')" 
                                  alt="${position.product.name}"></div>
                     </c:when>
@@ -34,7 +30,7 @@
                     </c:otherwise>
                 </c:choose>
                 <div class="ms-3" style="flex: 1;">
-                    
+                    <a href="<%= UrlProducer.buildProductUrl(position.getProduct())%>" class="agr-link" style="text-decoration: underline"><h5>${position.getProductName()}</h5></a>
                 </div>
             </div>
 

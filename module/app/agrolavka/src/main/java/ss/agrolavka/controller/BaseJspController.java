@@ -9,6 +9,7 @@ import ss.agrolavka.service.ProductService;
 import ss.agrolavka.service.ProductsGroupService;
 import ss.agrolavka.service.SiteDataService;
 import ss.entity.agrolavka.Order;
+import ss.martin.security.configuration.external.DomainConfiguration;
 
 /**
  * Base JSP controller.
@@ -28,6 +29,9 @@ abstract class BaseJspController {
     @Autowired
     protected SiteDataService siteDataService;
     
+    @Autowired
+    protected DomainConfiguration domainConfiguration;
+    
     protected void setCommonAttributes(final HttpServletRequest request, final Model model) {
         // cart
         final Order order = orderService.getCurrentOrder(request);
@@ -40,5 +44,6 @@ abstract class BaseJspController {
         model.addAttribute(JspValue.TOTAL_INTEGER, parts[0]);
         model.addAttribute(JspValue.TOTAL_DECIMAL, parts[1]);
         model.addAttribute(JspValue.SHOPS, siteDataService.getAllShops());
+        model.addAttribute(JspValue.DOMAIN, domainConfiguration.host());
     }
 }
