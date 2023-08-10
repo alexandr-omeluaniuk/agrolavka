@@ -41,9 +41,6 @@ class CatalogController extends BaseJspController {
     
     private static final String REDIRECT_TO_404 = "redirect:/error/page-not-found";
     
-    @Autowired
-    private DomainConfiguration domainConfiguration;
-    
     /** Product DAO. */
     @Autowired
     private ProductDAO productDAO;

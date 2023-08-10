@@ -38,8 +38,8 @@
         {
           "@context": "https://schema.org",
           "@type": "Organization",
-          "url": "https://agrolavka.by",
-          "logo": "https://agrolavka.by/assets/img/apple-touch-icon.png"
+          "url": "${domain}",
+          "logo": "${domain}/assets/img/apple-touch-icon.png"
         }
         </script>
         <jsp:invoke fragment="structuredData"/>
@@ -47,14 +47,14 @@
         <title>${title}</title>
         <meta name="title" content="Все для сада и огорода">
         <meta name="description" content="${metaDescription}">
-        <link rel="canonical" href="https://agrolavka.by${canonical}"/>
+        <link rel="canonical" href="${domain}${canonical}"/>
         <!-- Open Graph / Facebook -->
         <meta property="og:type" content="website">
         <meta property="og:site_name" content="Агролавка">
-        <meta property="og:url" content="https://agrolavka.by">
+        <meta property="og:url" content="${domain}">
         <meta property="og:title" content="Все для сада и огорода">
         <meta property="og:description" content="Большой выбор семян, удобрений, средств для защиты растений. Комплектующие для капельного полива. Зоотовары. Приглашаем за покупками.">
-        <meta property="og:image" content="https://agrolavka.by/assets/img/agrolavka-location.webp">
+        <meta property="og:image" content="${domain}/assets/img/agrolavka-location.webp">
         <meta property="og:image:width" content="908">
         <meta property="og:image:height" content="920">
         <meta property="og:locale" content="ru_RU">
@@ -62,10 +62,10 @@
         <!-- Twitter -->
         <meta name="twitter:card" content="summary_large_image">
         <meta name="twitter:site" content="insales.ru">
-        <meta name="twitter:url" content="https://agrolavka.by">
+        <meta name="twitter:url" content="${domain}">
         <meta name="twitter:title" content="Все для сада и огорода">
         <meta name="twitter:description" content="Большой выбор семян, удобрений, средств для защиты растений. Комплектующие для капельного полива. Зоотовары. Приглашаем за покупками.">
-        <meta name="twitter:image" content="https://agrolavka.by/assets/img/agrolavka-location.webp">
+        <meta name="twitter:image" content="${domain}/assets/img/agrolavka-location.webp">
         
         <!-- Favicons -->
         <link href="/favicon.svg?" rel="icon">

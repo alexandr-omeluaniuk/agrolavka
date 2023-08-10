@@ -6,6 +6,8 @@ package ss.agrolavka.constants;
  */
 public final class JspValue {
     
+    public static final String DOMAIN = "domain";
+    
     public static final String SHOPS = "shops";
     public static final String SLIDES = "slides";
     public static final String NEW_PRODUCTS = "newProducts";
