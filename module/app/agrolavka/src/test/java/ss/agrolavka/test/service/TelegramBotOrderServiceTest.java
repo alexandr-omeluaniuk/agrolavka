@@ -17,6 +17,7 @@ public class TelegramBotOrderServiceTest extends AbstractAgrolavkaMvcTest {
     private TelegramBotOrderService service;
     
     @BeforeEach
+    @Override
     protected void before() {
         final var telegramUser = new TelegramUser();
         telegramUser.setBotName("agrolavkadev_bot");
