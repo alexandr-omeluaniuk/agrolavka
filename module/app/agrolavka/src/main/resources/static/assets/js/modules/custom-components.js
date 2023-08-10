@@ -300,5 +300,17 @@ class XProductDescription extends XElement {
         `;
         return template;
     }
+    
+    connectedCallback() {
+        const node = this.appendChild(this._contents);
+        this.querySelectorAll('table').forEach(el => {
+            const parent = el.parentElement;
+            el.remove();
+            const responsiveDiv = document.createElement('div');
+            responsiveDiv.setAttribute("class", "table-responsive");
+            parent.appendChild(responsiveDiv);
+            responsiveDiv.appendChild(el);
+        });
+    }
 }
 window.customElements.define('x-agr-product-description', XProductDescription);
