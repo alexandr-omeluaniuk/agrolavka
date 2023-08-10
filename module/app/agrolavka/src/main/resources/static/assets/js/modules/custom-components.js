@@ -281,3 +281,24 @@ class XProductCard extends XElement {
     }
 }
 window.customElements.define('x-agr-product-card', XProductCard);
+
+class XProductDescription extends XElement {    
+    createTemplate() {
+        let template = document.createElement('template');
+        const name = this.getAttribute('data-name');
+        const video = this.getAttribute('data-video');
+        const description = this.getAttribute('data-description');
+        template.innerHTML = `
+            <h4>${name}</h4>
+            ${video ? `
+                <iframe src="${video}" width="100%"  height="350"
+                    title="YouTube video player" frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+                </iframe>
+            ` : ''}
+            ${description ? `<div class="text-justify" style="white-space: pre-line;">${description}</div>` : ''}
+        `;
+        return template;
+    }
+}
+window.customElements.define('x-agr-product-description', XProductDescription);

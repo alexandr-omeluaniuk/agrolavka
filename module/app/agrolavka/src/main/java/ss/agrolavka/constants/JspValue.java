@@ -23,6 +23,7 @@ public final class JspValue {
     public static final String AVAILABLE = "available";
     public static final String CANONICAL = "canonical";
     public static final String META_DESCRIPTION = "metaDescription";
+    public static final String FULL_PRODUCT_DESCRIPTION = "fullProductDescription";
     public static final String CATEGORIES = "categories";
     public static final String PRODUCTS_SEARCH_RESULT = "searchResult";
     public static final String PRODUCTS_SEARCH_RESULT_PAGES = "searchResultPages";

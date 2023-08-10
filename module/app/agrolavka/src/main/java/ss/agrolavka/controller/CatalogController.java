@@ -85,6 +85,8 @@ class CatalogController extends BaseJspController {
     
     private void setProductAttributes(final Model model, final Product product, final HttpServletRequest request) {
         final var metaDescription = getMetaDescription(product);
+        final var fullDescription = Optional.ofNullable(product.getDescription())
+            .map(desc -> desc.replace("\"", "&quot;")).orElse("");
         model.addAttribute(TITLE, product.getSeoTitle() != null
                 ? product.getSeoTitle() : "Купить " + product.getGroup().getName() + " " + product.getName()
                 + ". Способ применения, инструкция, описание " + product.getName());
@@ -103,6 +105,7 @@ class CatalogController extends BaseJspController {
         model.addAttribute(IN_CART, inCart);
         model.addAttribute(VOLUMES, product.getVolumes() != null ? product.getVolumes().replace("\"", "'") : "");
         model.addAttribute(META_DESCRIPTION, metaDescription);
+        model.addAttribute(FULL_PRODUCT_DESCRIPTION, fullDescription);
         final var calendar = new GregorianCalendar();
         calendar.setTime(new Date());
         calendar.add(Calendar.MONTH, 1);

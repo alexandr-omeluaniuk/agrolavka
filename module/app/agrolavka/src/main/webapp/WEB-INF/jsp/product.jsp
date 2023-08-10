@@ -70,7 +70,11 @@
                                 <hr/>
                             </div>
                             <div class="col-xs-12 col-sm-6 col-md-8 col-lg-9 gx-5">
-                                <t:product-description product="${product}"/>
+                                <x-agr-product-description
+                                    data-name="${product.name}"
+                                    data-video="${product.videoURL}"
+                                    data-description="${fullProductDescription}"
+                                    ></x-agr-product-description>
                             </div>
                         </div>
                     </article>
