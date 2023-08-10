@@ -82,7 +82,7 @@
         <!-- Google Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet"/>
         <!-- MDB -->
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.5.0/mdb.min.css" rel="stylesheet"/>
+        <link href="/assets/vendor/mdb/mdb.3.5.0.min.css?version=${staticResourceVersion}" rel="stylesheet"/>
 
         <!-- Main CSS File -->
         <link href="/assets/css/style-mb.css?version=${staticResourceVersion}" rel="stylesheet">
@@ -97,7 +97,7 @@
         <t:footer></t:footer>
 
         <!-- Vendor JS Files -->
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.5.0/mdb.min.js"></script>
+        <script type="text/javascript" src="/assets/vendor/mdb/mdb.3.5.0.min.js?version=${staticResourceVersion}"></script>
         <!-- Main JS Files -->
         <script type="module" src="/assets/js/main-mb.js?version=${staticResourceVersion}"></script>
         <script type="module" src="/assets/js/modules/product-card.js?version=${staticResourceVersion}"></script>
