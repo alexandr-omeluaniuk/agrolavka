@@ -1,6 +1,8 @@
 package ss.agrolavka.service.impl;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -11,13 +13,16 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import ss.agrolavka.constants.OrderStatus;
 import ss.entity.agrolavka.Order;
+import ss.martin.base.lang.ThrowingRunnable;
 import ss.martin.base.lang.ThrowingSupplier;
 import ss.martin.security.configuration.external.DomainConfiguration;
 import ss.martin.telegram.bot.api.TelegramBot;
 import ss.martin.telegram.bot.formatter.TableFormatter;
 import static ss.martin.telegram.bot.formatter.TableFormatter.*;
 import ss.martin.telegram.bot.model.CallbackQuery;
-import ss.martin.telegram.bot.model.CreatedMessage;
+import ss.martin.telegram.bot.model.EditMessageReplyMarkup;
+import ss.martin.telegram.bot.model.EditMessageText;
+import ss.martin.telegram.bot.model.SendMessage;
 import ss.martin.telegram.bot.model.Update;
 import ss.martin.telegram.bot.model.replymarkup.InlineKeyboardButton;
 import ss.martin.telegram.bot.model.replymarkup.InlineKeyboardMarkup;
@@ -31,6 +36,7 @@ public class TelegramBotOrderService extends AbstractTelegramBotService {
     
     private static final String ORDER_TEMPLATE = """
 Поступил новый заказ <a href="%s">%s</a>,
+<i><b>Статус заказа</b>: %s</i>
 %s
 <pre>%s</pre>
 %s
@@ -46,37 +52,68 @@ public class TelegramBotOrderService extends AbstractTelegramBotService {
     private TelegramBot telegramBot;
     
     @Autowired
+    private ObjectMapper objectMapper;
+    
+    @Autowired
     private DomainConfiguration domainConfiguration;
     
     public void sendNewOrderNotification(final Order order) {
-        final var messages = sendHtml(
+        final var messages = sendTelegramMessage(
             getOrderMessage(order), 
             createKeyboard(order)
         );
-        order.setTelegramMessages(messages.stream().map(CreatedMessage::messageId)
-            .collect(Collectors.toList()).toArray(Long[]::new));
+        final var createdMessages = messages.stream()
+            .map(m -> new CreatedTelegramMessageMetadata(m.messageId(), m.chat().id()))
+            .collect(Collectors.toList());
+        ((ThrowingRunnable) () -> order.setTelegramMessages(objectMapper.writeValueAsString(createdMessages))).run();
         coreDao.update(order);
     }
     
-    private InlineKeyboardMarkup createKeyboard(final Order order) {
-        if (OrderStatus.CLOSED.equals(order.getStatus())) {
-            return null;
-        } else {
-            return ((ThrowingSupplier<InlineKeyboardMarkup>) () -> {
-                return new InlineKeyboardMarkup(Arrays.asList(
-                    Arrays.asList(
-                        new InlineKeyboardButton(
-                            new String(new byte[]{ (byte) 0xE2, (byte) 0x9C, (byte) 0x85 }, StandardCharsets.UTF_8), 
-                            String.format(CALLBACK_DATA_PATTERN, APPROVE_ORDER, order.getId())
-                        ),
-                        new InlineKeyboardButton(
-                            new String(new byte[]{ (byte) 0xE2, (byte) 0x9D, (byte) 0x8C }, StandardCharsets.UTF_8),
-                            String.format(CALLBACK_DATA_PATTERN, DECLINE_ORDER, order.getId())
-                        )
+    public void updateExistingOrderMessage(final Order order) {
+        final var javaType = objectMapper.getTypeFactory().constructCollectionType(List.class, CreatedTelegramMessageMetadata.class);
+        ((ThrowingRunnable) () -> {
+            final List<CreatedTelegramMessageMetadata> orderMessages = objectMapper.readValue(order.getTelegramMessages(), javaType);
+            orderMessages.stream().forEach(m -> {
+                telegramBot.updateMessageText(
+                    new EditMessageText(
+                        m.messageId,
+                        m.chatId,
+                        getOrderMessage(order),
+                        SendMessage.ParseMode.HTML
                     )
-                ));
-            }).get();
+                );
+                telegramBot.updateMessageReplyMarkup(
+                    new EditMessageReplyMarkup(
+                        m.messageId,
+                        m.chatId,
+                        createKeyboard(order)
+                    )
+                );
+            });
+        }).run();
+    }
+    
+    private InlineKeyboardMarkup createKeyboard(final Order order) {
+        final var buttons = new ArrayList<InlineKeyboardButton>();
+        final var approveButton = new InlineKeyboardButton(
+            new String(new byte[]{ (byte) 0xE2, (byte) 0x9C, (byte) 0x85 }, StandardCharsets.UTF_8) + " Подтвержден", 
+            String.format(CALLBACK_DATA_PATTERN, APPROVE_ORDER, order.getId())
+        );
+        final var declineButton = new InlineKeyboardButton(
+            new String(new byte[]{ (byte) 0xE2, (byte) 0x9D, (byte) 0x8C }, StandardCharsets.UTF_8) + " Закрыт",
+            String.format(CALLBACK_DATA_PATTERN, DECLINE_ORDER, order.getId())
+        );
+        if (OrderStatus.WAITING_FOR_APPROVAL.equals(order.getStatus())) {
+            buttons.add(approveButton);
+            buttons.add(declineButton);
+        } else if (OrderStatus.APPROVED.equals(order.getStatus())) {
+            buttons.add(declineButton);
+        } else if (OrderStatus.DELIVERY.equals(order.getStatus())) {
+            buttons.add(declineButton);
         }
+        return ((ThrowingSupplier<InlineKeyboardMarkup>) () -> {
+            return new InlineKeyboardMarkup(Arrays.asList(buttons));
+        }).get();
     }
     
     private String getOrderMessage(final Order order) {
@@ -85,6 +122,7 @@ public class TelegramBotOrderService extends AbstractTelegramBotService {
             ORDER_TEMPLATE, 
             link,
             order.getId(),
+            order.getStatus().getLabel(),
             getContactInfo(order),
             new TableFormatter(createTable(order)).format(),
             getDeliveryInfo(order)
@@ -179,7 +217,7 @@ public class TelegramBotOrderService extends AbstractTelegramBotService {
                 order.setStatus(OrderStatus.CLOSED);
             }
             coreDao.update(order);
-            
+            updateExistingOrderMessage(order);
         });
     }
     
@@ -192,4 +230,9 @@ public class TelegramBotOrderService extends AbstractTelegramBotService {
     protected void handleExternalUpdates(final List<Update> updates) {
         updates.stream().filter(u -> u.callbackQuery() != null).forEach(u -> processCallbackQuery(u.callbackQuery()));
     }
+    
+    public static record CreatedTelegramMessageMetadata(
+        Long messageId,
+        Long chatId
+    ) {}
 }

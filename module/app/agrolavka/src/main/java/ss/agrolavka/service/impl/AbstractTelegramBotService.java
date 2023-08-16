@@ -15,7 +15,7 @@ import ss.martin.core.dao.CoreDao;
 import ss.martin.telegram.bot.api.ReplyMarkupModel;
 import ss.martin.telegram.bot.api.TelegramBot;
 import ss.martin.telegram.bot.model.Chat;
-import ss.martin.telegram.bot.model.CreatedMessage;
+import ss.martin.telegram.bot.model.Message;
 import ss.martin.telegram.bot.model.SendMessage;
 import ss.martin.telegram.bot.model.Update;
 
@@ -58,7 +58,7 @@ public abstract class AbstractTelegramBotService {
         LOG.info("Telegram bot [" + botName + "] started for " + botUsers + " users");
     }
     
-    protected List<CreatedMessage> sendHtml(final String text, final ReplyMarkupModel keyboard) {
+    protected List<Message> sendTelegramMessage(final String text, final ReplyMarkupModel keyboard) {
         final var telegramBot = getTelegramBot();
         return coreDao.getAll(TelegramUser.class).stream()
             .filter(user -> user.getBotName().equals(telegramBot.getBotName())).map(user -> {

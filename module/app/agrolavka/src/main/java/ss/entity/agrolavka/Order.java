@@ -27,6 +27,8 @@ import ss.entity.martin.DataModel;
 @Entity
 @Table(name = "customer_order")
 public class Order extends DataModel {
+    /** Default UID. */
+    private static final long serialVersionUID = 1L;
     /** Order positions. */
     @Size(min = 1)
     @OneToMany(fetch = FetchType.EAGER, orphanRemoval = true, cascade = CascadeType.ALL, mappedBy = "order")
@@ -66,8 +68,8 @@ public class Order extends DataModel {
     @Column(name = "one_click")
     private Boolean oneClick;
     /** References to Telegram messages. */
-    @Column(name = "telegram_messages")
-    private Long[] telegramMessages;
+    @Column(name = "telegram_messages", length = 1023)
+    private String telegramMessages;
     
     public List<OrderPosition> getPositions() {
         return positions;
@@ -133,11 +135,11 @@ public class Order extends DataModel {
         this.europostLocationSnapshot = europostLocationSnapshot;
     }
 
-    public Long[] getTelegramMessages() {
+    public String getTelegramMessages() {
         return telegramMessages;
     }
 
-    public void setTelegramMessages(Long[] telegramMessages) {
+    public void setTelegramMessages(String telegramMessages) {
         this.telegramMessages = telegramMessages;
     }
     
