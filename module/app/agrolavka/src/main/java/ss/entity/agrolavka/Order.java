@@ -149,6 +149,10 @@ public class Order extends DataModel {
         this.oneClick = oneClick;
     }
     
+    public double calculateTotal() {
+        return positions.stream().map(pos -> pos.getQuantity() * pos.getPrice()).reduce(0d, Double::sum);
+    }
+    
     @Override
     public int hashCode() {
         int hash = 0;

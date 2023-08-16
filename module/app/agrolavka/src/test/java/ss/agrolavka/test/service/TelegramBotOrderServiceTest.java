@@ -35,7 +35,7 @@ public class TelegramBotOrderServiceTest extends AbstractAgrolavkaMvcTest {
         order.getPositions().add(generateOrderPosition(generateProduct(null, "Семена льна", 35.20d, 1d)));
         order.getPositions().add(generateOrderPosition(generateProduct(null, "Комбикорм супер сила природы", 1000d, 2d)));
         order.setId(25L);
-        Assertions.assertDoesNotThrow(() -> service.sendNewOrderNotification(order, 100d));
+        Assertions.assertDoesNotThrow(() -> service.sendNewOrderNotification(order));
         verify(telegramBotOrders, atLeast(1)).sendMessage(any());
     }
     
@@ -47,7 +47,7 @@ public class TelegramBotOrderServiceTest extends AbstractAgrolavkaMvcTest {
         order.getPositions().add(generateOrderPosition(generateProduct(null, "Семена льна", 35.20d, 1d)));
         order.getPositions().add(generateOrderPosition(generateProduct(null, "Комбикорм супер сила природы", 1000d, 2d)));
         order.setId(25L);
-        Assertions.assertDoesNotThrow(() -> service.sendNewOrderNotification(order, 100d));
+        Assertions.assertDoesNotThrow(() -> service.sendNewOrderNotification(order));
         verify(telegramBotOrders, atLeast(1)).sendMessage(any());
     }
     
@@ -64,7 +64,7 @@ public class TelegramBotOrderServiceTest extends AbstractAgrolavkaMvcTest {
         order.getPositions().add(generateOrderPosition(generateProduct(null, "Семена льна", 35.20d, 1d)));
         order.getPositions().add(generateOrderPosition(generateProduct(null, "Комбикорм супер сила природы", 1000d, 2d)));
         order.setId(25L);
-        Assertions.assertDoesNotThrow(() -> service.sendNewOrderNotification(order, 100d));
+        Assertions.assertDoesNotThrow(() -> service.sendNewOrderNotification(order));
         verify(telegramBotOrders, atLeast(1)).sendMessage(any());
     }
 }

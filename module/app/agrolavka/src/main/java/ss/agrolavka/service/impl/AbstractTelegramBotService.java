@@ -39,6 +39,9 @@ public abstract class AbstractTelegramBotService {
     
     protected abstract TelegramBot getTelegramBot();
     
+    protected void handleExternalUpdates(final List<Update> updates) {
+    }
+    
     @PostConstruct
     private void init() {
         LOG.debug("Whitelisted Telegram users: " + agrolavkaConfiguration.telegramUsers());
@@ -49,7 +52,7 @@ public abstract class AbstractTelegramBotService {
             .collect(Collectors.toSet());
         telegramBot.listenUpdates(
             (updates) -> handleUpdates(updates), 
-            TimeUnit.MINUTES.toMillis(1), 
+            TimeUnit.SECONDS.toMillis(3), 
             (e) -> LOG.error("Get updates for Telegram bot [" + telegramBot.getBotName() + "] - fail!", e)
         );
         LOG.info("Telegram bot [" + botName + "] started for " + botUsers + " users");
@@ -70,6 +73,11 @@ public abstract class AbstractTelegramBotService {
     }
     
     private void handleUpdates(final List<Update> updates) {
+        handleUserRegistration(updates);
+        handleExternalUpdates(updates);
+    }
+    
+    private void handleUserRegistration(final List<Update> updates) {
         final var botName = getTelegramBot().getBotName();
         final var chatsMap = new HashMap<String, Chat>();
         for (final var update : updates) {

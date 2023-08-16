@@ -45,9 +45,7 @@ class OrderServiceImpl implements OrderService {
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public Order createOrder(final Order order, final OrderDetailsWrapper orderDetails) throws Exception {
         LOG.info("----------------------------------- Create new order ----------------------------------------------");
-        final Double total = order.getPositions().stream().mapToDouble(e -> e.getPrice() * e.getQuantity())
-                .reduce(0, (a, b) -> a + b);
-        LOG.info("Order total [" + total + "]");
+        LOG.info("Order total [" + order.calculateTotal() + "]");
         LOG.info("Order phone [" + orderDetails.getPhone() + "]");
         order.setPhone(orderDetails.getPhone());
         order.setComment(orderDetails.getComment());
@@ -66,7 +64,7 @@ class OrderServiceImpl implements OrderService {
         order.setId(null);
         order.getPositions().forEach(position -> position.setId(null));
         final Order savedOrder = coreDAO.create(order);
-        sendTelegramNotification(savedOrder, total);
+        sendTelegramNotification(savedOrder);
         LOG.info("---------------------------------------------------------------------------------------------------");
         return savedOrder;
     }
@@ -83,7 +81,6 @@ class OrderServiceImpl implements OrderService {
             position.setPrice(price);
             positions.add(position);
         });
-        final Double total = positions.stream().map(pos -> pos.getQuantity() * pos.getPrice()).reduce(0d, Double::sum);
         final Order order = new Order();
         order.setPhone(orderDetails.getPhone());
         order.setCreated(new Date());
@@ -92,7 +89,7 @@ class OrderServiceImpl implements OrderService {
         order.setOneClick(true);
         positions.forEach(position -> position.setOrder(order));
         final Order savedOrder = coreDAO.create(order);
-        sendTelegramNotification(savedOrder, total);
+        sendTelegramNotification(savedOrder);
         return order;
     }
     
@@ -162,9 +159,9 @@ class OrderServiceImpl implements OrderService {
         return snapshot;
     }
     
-    private void sendTelegramNotification(final Order order, final Double total) {
+    private void sendTelegramNotification(final Order order) {
         try {
-            telegramBotOrderService.sendNewOrderNotification(order, total);
+            telegramBotOrderService.sendNewOrderNotification(order);
         } catch (Exception e) {
             LOG.error("Can't send Telegram notification for order: " + order.getId(), e);
         }

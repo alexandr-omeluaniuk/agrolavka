@@ -3,18 +3,22 @@ package ss.agrolavka.service.impl;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import ss.agrolavka.constants.OrderStatus;
 import ss.entity.agrolavka.Order;
 import ss.martin.base.lang.ThrowingSupplier;
 import ss.martin.security.configuration.external.DomainConfiguration;
 import ss.martin.telegram.bot.api.TelegramBot;
 import ss.martin.telegram.bot.formatter.TableFormatter;
 import static ss.martin.telegram.bot.formatter.TableFormatter.*;
+import ss.martin.telegram.bot.model.CallbackQuery;
 import ss.martin.telegram.bot.model.CreatedMessage;
+import ss.martin.telegram.bot.model.Update;
 import ss.martin.telegram.bot.model.replymarkup.InlineKeyboardButton;
 import ss.martin.telegram.bot.model.replymarkup.InlineKeyboardMarkup;
 
@@ -32,8 +36,10 @@ public class TelegramBotOrderService extends AbstractTelegramBotService {
 %s
 """;
     
-    private static final String APPROVE_ORDER = "1";
-    private static final String DECLINE_ORDER = "-1";
+    private static final String CALLBACK_DATA_SEPARATOR = ":";
+    private static final String CALLBACK_DATA_PATTERN = "%s" + CALLBACK_DATA_SEPARATOR + "%s";
+    private static final String APPROVE_ORDER = "approve";
+    private static final String DECLINE_ORDER = "decline";
     
     @Autowired
     @Qualifier("telegramBotOrders")
@@ -42,33 +48,45 @@ public class TelegramBotOrderService extends AbstractTelegramBotService {
     @Autowired
     private DomainConfiguration domainConfiguration;
     
-    public void sendNewOrderNotification(final Order order, final Double total) {
-        final var keyboard = ((ThrowingSupplier<InlineKeyboardMarkup>) () -> {
-            return new InlineKeyboardMarkup(Arrays.asList(
-                Arrays.asList(
-                    new InlineKeyboardButton(
-                        new String(new byte[]{ (byte) 0xE2, (byte) 0x9C, (byte) 0x85 }, StandardCharsets.UTF_8), APPROVE_ORDER
-                    ),
-                    new InlineKeyboardButton(
-                        new String(new byte[]{ (byte) 0xE2, (byte) 0x9D, (byte) 0x8C }, StandardCharsets.UTF_8), DECLINE_ORDER
-                    )
-                )
-            ));
-        }).get();
-        final var messages = sendHtml(getOrderMessage(order, total), keyboard);
+    public void sendNewOrderNotification(final Order order) {
+        final var messages = sendHtml(
+            getOrderMessage(order), 
+            createKeyboard(order)
+        );
         order.setTelegramMessages(messages.stream().map(CreatedMessage::messageId)
             .collect(Collectors.toList()).toArray(Long[]::new));
         coreDao.update(order);
     }
     
-    private String getOrderMessage(final Order order, final Double total) {
+    private InlineKeyboardMarkup createKeyboard(final Order order) {
+        if (OrderStatus.CLOSED.equals(order.getStatus())) {
+            return null;
+        } else {
+            return ((ThrowingSupplier<InlineKeyboardMarkup>) () -> {
+                return new InlineKeyboardMarkup(Arrays.asList(
+                    Arrays.asList(
+                        new InlineKeyboardButton(
+                            new String(new byte[]{ (byte) 0xE2, (byte) 0x9C, (byte) 0x85 }, StandardCharsets.UTF_8), 
+                            String.format(CALLBACK_DATA_PATTERN, APPROVE_ORDER, order.getId())
+                        ),
+                        new InlineKeyboardButton(
+                            new String(new byte[]{ (byte) 0xE2, (byte) 0x9D, (byte) 0x8C }, StandardCharsets.UTF_8),
+                            String.format(CALLBACK_DATA_PATTERN, DECLINE_ORDER, order.getId())
+                        )
+                    )
+                ));
+            }).get();
+        }
+    }
+    
+    private String getOrderMessage(final Order order) {
         final var link = domainConfiguration.host() + "/admin/app/agrolavka/order/" + order.getId();
         return String.format(
             ORDER_TEMPLATE, 
             link,
             order.getId(),
             getContactInfo(order),
-            new TableFormatter(createTable(order, total)).format(),
+            new TableFormatter(createTable(order)).format(),
             getDeliveryInfo(order)
         );
     }
@@ -122,7 +140,7 @@ public class TelegramBotOrderService extends AbstractTelegramBotService {
         return sb.toString();
     }
     
-    private Table createTable(final Order order, final Double total) {
+    private Table createTable(final Order order) {
         final var positions = order.getPositions();
         Collections.sort(positions);
         final var rows = new Row[positions.size() + 1];
@@ -145,14 +163,33 @@ public class TelegramBotOrderService extends AbstractTelegramBotService {
             new Cell[] {
                 new Cell("Сумма"),
                 new Cell(null),
-                new Cell(String.format("%.2f", total))
+                new Cell(String.format("%.2f", order.calculateTotal()))
             }
         );
         return new Table(header, rows, 30, 1, "");
     }
     
+    private void processCallbackQuery(final CallbackQuery callbackQuery) {
+        final var callbackData = callbackQuery.data().split(CALLBACK_DATA_SEPARATOR);
+        final var callbackStatus = callbackData[0];
+        Optional.ofNullable(coreDao.findById(callbackData[1], Order.class)).ifPresent(order -> {
+            if (APPROVE_ORDER.equals(callbackStatus)) {
+                order.setStatus(OrderStatus.APPROVED);
+            } else if (DECLINE_ORDER.equals(callbackStatus)) {
+                order.setStatus(OrderStatus.CLOSED);
+            }
+            coreDao.update(order);
+            
+        });
+    }
+    
     @Override
     protected TelegramBot getTelegramBot() {
         return telegramBot;
+    }
+    
+    @Override
+    protected void handleExternalUpdates(final List<Update> updates) {
+        updates.stream().filter(u -> u.callbackQuery() != null).forEach(u -> processCallbackQuery(u.callbackQuery()));
     }
 }
