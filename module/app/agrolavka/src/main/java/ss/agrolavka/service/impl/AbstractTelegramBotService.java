@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import ss.agrolavka.AgrolavkaConfiguration;
 import ss.entity.agrolavka.TelegramUser;
 import ss.martin.core.dao.CoreDao;
+import ss.martin.telegram.bot.api.ReplyMarkupModel;
 import ss.martin.telegram.bot.api.TelegramBot;
 import ss.martin.telegram.bot.model.Chat;
 import ss.martin.telegram.bot.model.CreatedMessage;
@@ -54,14 +55,15 @@ public abstract class AbstractTelegramBotService {
         LOG.info("Telegram bot [" + botName + "] started for " + botUsers + " users");
     }
     
-    protected List<CreatedMessage> sendHtml(final String text) {
+    protected List<CreatedMessage> sendHtml(final String text, final ReplyMarkupModel keyboard) {
         final var telegramBot = getTelegramBot();
         return coreDao.getAll(TelegramUser.class).stream()
             .filter(user -> user.getBotName().equals(telegramBot.getBotName())).map(user -> {
                 final var message = new SendMessage(
                     user.getChatId(), 
                     text, 
-                    SendMessage.ParseMode.HTML
+                    SendMessage.ParseMode.HTML,
+                    keyboard
                 );
                 return telegramBot.sendMessage(message);
         }).collect(Collectors.toList());

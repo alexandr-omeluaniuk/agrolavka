@@ -87,7 +87,7 @@ public class TelegramHttpClient {
         if (response.ok()) {
             return ((ThrowingSupplier<T>) () -> objectMapper.readValue(response.result(), responseType)).get();
         } else {
-            throw new TelegramBotException(response.result());
+            throw new TelegramBotException(response.errorCode() + ", " + response.description());
         }
     }
     

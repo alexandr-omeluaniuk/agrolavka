@@ -30,7 +30,7 @@ public class TelegramBotErrorService extends AbstractTelegramBotService implemen
     public void sendAlert(final String message, final Exception exception) {
         final var title = Optional.ofNullable(message).orElse("An unknown Agrolavka error");
         final var alertMessage = String.format(ERROR_ALERT_TEMPLATE, title, getExceptionText(exception, title));
-        sendHtml(alertMessage);
+        sendHtml(alertMessage, null);
     }
     
     private String getExceptionText(final Exception exception, final String message) {

@@ -1,5 +1,6 @@
 package ss.agrolavka.service.impl;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -7,12 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import ss.entity.agrolavka.Order;
-import ss.martin.core.dao.CoreDao;
 import ss.martin.security.configuration.external.DomainConfiguration;
 import ss.martin.telegram.bot.api.TelegramBot;
 import ss.martin.telegram.bot.formatter.TableFormatter;
 import static ss.martin.telegram.bot.formatter.TableFormatter.*;
 import ss.martin.telegram.bot.model.CreatedMessage;
+import ss.martin.telegram.bot.model.replymarkup.InlineKeyboardButton;
+import ss.martin.telegram.bot.model.replymarkup.InlineKeyboardMarkup;
 
 /**
  * Telegram bots service.
@@ -36,7 +38,14 @@ public class TelegramBotOrderService extends AbstractTelegramBotService {
     private DomainConfiguration domainConfiguration;
     
     public void sendNewOrderNotification(final Order order, final Double total) {
-        final var messages = sendHtml(getOrderMessage(order, total));
+        final var keyboard = new InlineKeyboardMarkup(Arrays.asList(
+            Arrays.asList(
+                new InlineKeyboardButton(
+                    "One", "1"
+                )
+            )
+        ));
+        final var messages = sendHtml(getOrderMessage(order, total), keyboard);
         order.setTelegramMessages(messages.stream().map(CreatedMessage::messageId)
             .collect(Collectors.toList()).toArray(Long[]::new));
         coreDao.update(order);
