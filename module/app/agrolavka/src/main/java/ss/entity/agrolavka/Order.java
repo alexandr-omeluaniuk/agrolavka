@@ -65,6 +65,9 @@ public class Order extends DataModel {
     /** One click order. */
     @Column(name = "one_click")
     private Boolean oneClick;
+    /** References to Telegram messages. */
+    @Column(name = "telegram_messages")
+    private Long[] telegramMessages;
     
     public List<OrderPosition> getPositions() {
         return positions;
@@ -128,6 +131,14 @@ public class Order extends DataModel {
     
     public void setEuropostLocationSnapshot(EuropostLocationSnapshot europostLocationSnapshot) {
         this.europostLocationSnapshot = europostLocationSnapshot;
+    }
+
+    public Long[] getTelegramMessages() {
+        return telegramMessages;
+    }
+
+    public void setTelegramMessages(Long[] telegramMessages) {
+        this.telegramMessages = telegramMessages;
     }
     
     public Boolean getOneClick() {

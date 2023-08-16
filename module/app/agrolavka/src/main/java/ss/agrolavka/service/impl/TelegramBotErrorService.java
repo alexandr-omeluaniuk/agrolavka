@@ -1,4 +1,4 @@
-package ss.agrolavka.service;
+package ss.agrolavka.service.impl;
 
 import java.util.Optional;
 import java.util.stream.Stream;

@@ -5,7 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.mockito.Mockito.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import ss.agrolavka.service.TelegramBotOrderService;
+import ss.agrolavka.service.impl.TelegramBotOrderService;
 import ss.agrolavka.test.common.AbstractAgrolavkaMvcTest;
 import static ss.agrolavka.test.common.AgrolavkaDataFactory.*;
 import ss.entity.agrolavka.EuropostLocationSnapshot;

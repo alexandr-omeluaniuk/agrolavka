@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import ss.agrolavka.service.TelegramBotErrorService;
+import ss.agrolavka.service.impl.TelegramBotErrorService;
 import ss.agrolavka.test.common.AbstractAgrolavkaMvcTest;
 import ss.entity.agrolavka.TelegramUser;
 import ss.martin.base.exception.PlatformException;

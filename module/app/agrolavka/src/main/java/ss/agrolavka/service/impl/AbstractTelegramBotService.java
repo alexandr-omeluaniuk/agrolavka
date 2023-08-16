@@ -1,4 +1,4 @@
-package ss.agrolavka.service;
+package ss.agrolavka.service.impl;
 
 import jakarta.annotation.PostConstruct;
 import java.util.HashMap;
@@ -14,6 +14,7 @@ import ss.entity.agrolavka.TelegramUser;
 import ss.martin.core.dao.CoreDao;
 import ss.martin.telegram.bot.api.TelegramBot;
 import ss.martin.telegram.bot.model.Chat;
+import ss.martin.telegram.bot.model.CreatedMessage;
 import ss.martin.telegram.bot.model.SendMessage;
 import ss.martin.telegram.bot.model.Update;
 
@@ -53,17 +54,17 @@ public abstract class AbstractTelegramBotService {
         LOG.info("Telegram bot [" + botName + "] started for " + botUsers + " users");
     }
     
-    protected void sendHtml(final String text) {
+    protected List<CreatedMessage> sendHtml(final String text) {
         final var telegramBot = getTelegramBot();
-        coreDao.getAll(TelegramUser.class).stream()
-            .filter(user -> user.getBotName().equals(telegramBot.getBotName())).forEach(user -> {
+        return coreDao.getAll(TelegramUser.class).stream()
+            .filter(user -> user.getBotName().equals(telegramBot.getBotName())).map(user -> {
                 final var message = new SendMessage(
                     user.getChatId(), 
                     text, 
                     SendMessage.ParseMode.HTML
                 );
-                telegramBot.sendMessage(message);
-        });
+                return telegramBot.sendMessage(message);
+        }).collect(Collectors.toList());
     }
     
     private void handleUpdates(final List<Update> updates) {
