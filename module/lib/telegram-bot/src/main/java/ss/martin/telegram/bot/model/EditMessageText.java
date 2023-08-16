@@ -2,6 +2,7 @@ package ss.martin.telegram.bot.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import ss.martin.telegram.bot.api.ReplyMarkupModel;
 
 /**
  * Edit message text
@@ -15,5 +16,7 @@ public record EditMessageText(
     Long chatId,
     String text,
     @JsonProperty("parse_mode")
-    SendMessage.ParseMode parseMode
+    SendMessage.ParseMode parseMode,
+    @JsonProperty("reply_markup")
+    ReplyMarkupModel replyMarkup
 ) {}

@@ -20,7 +20,6 @@ import ss.martin.telegram.bot.api.TelegramBot;
 import ss.martin.telegram.bot.formatter.TableFormatter;
 import static ss.martin.telegram.bot.formatter.TableFormatter.*;
 import ss.martin.telegram.bot.model.CallbackQuery;
-import ss.martin.telegram.bot.model.EditMessageReplyMarkup;
 import ss.martin.telegram.bot.model.EditMessageText;
 import ss.martin.telegram.bot.model.SendMessage;
 import ss.martin.telegram.bot.model.Update;
@@ -79,13 +78,7 @@ public class TelegramBotOrderService extends AbstractTelegramBotService {
                         m.messageId,
                         m.chatId,
                         getOrderMessage(order),
-                        SendMessage.ParseMode.HTML
-                    )
-                );
-                telegramBot.updateMessageReplyMarkup(
-                    new EditMessageReplyMarkup(
-                        m.messageId,
-                        m.chatId,
+                        SendMessage.ParseMode.HTML,
                         createKeyboard(order)
                     )
                 );
