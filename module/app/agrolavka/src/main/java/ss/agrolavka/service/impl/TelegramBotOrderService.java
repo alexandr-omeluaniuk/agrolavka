@@ -1,5 +1,6 @@
 package ss.agrolavka.service.impl;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Optional;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import ss.entity.agrolavka.Order;
+import ss.martin.base.lang.ThrowingSupplier;
 import ss.martin.security.configuration.external.DomainConfiguration;
 import ss.martin.telegram.bot.api.TelegramBot;
 import ss.martin.telegram.bot.formatter.TableFormatter;
@@ -30,6 +32,9 @@ public class TelegramBotOrderService extends AbstractTelegramBotService {
 %s
 """;
     
+    private static final String APPROVE_ORDER = "1";
+    private static final String DECLINE_ORDER = "-1";
+    
     @Autowired
     @Qualifier("telegramBotOrders")
     private TelegramBot telegramBot;
@@ -38,13 +43,18 @@ public class TelegramBotOrderService extends AbstractTelegramBotService {
     private DomainConfiguration domainConfiguration;
     
     public void sendNewOrderNotification(final Order order, final Double total) {
-        final var keyboard = new InlineKeyboardMarkup(Arrays.asList(
-            Arrays.asList(
-                new InlineKeyboardButton(
-                    "One", "1"
+        final var keyboard = ((ThrowingSupplier<InlineKeyboardMarkup>) () -> {
+            return new InlineKeyboardMarkup(Arrays.asList(
+                Arrays.asList(
+                    new InlineKeyboardButton(
+                        new String(new byte[]{ (byte) 0xE2, (byte) 0x9C, (byte) 0x85 }, StandardCharsets.UTF_8), APPROVE_ORDER
+                    ),
+                    new InlineKeyboardButton(
+                        new String(new byte[]{ (byte) 0xE2, (byte) 0x9D, (byte) 0x8C }, StandardCharsets.UTF_8), DECLINE_ORDER
+                    )
                 )
-            )
-        ));
+            ));
+        }).get();
         final var messages = sendHtml(getOrderMessage(order, total), keyboard);
         order.setTelegramMessages(messages.stream().map(CreatedMessage::messageId)
             .collect(Collectors.toList()).toArray(Long[]::new));
