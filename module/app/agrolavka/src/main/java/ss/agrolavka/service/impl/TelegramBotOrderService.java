@@ -7,12 +7,15 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import ss.agrolavka.constants.OrderStatus;
 import ss.entity.agrolavka.Order;
+import ss.entity.agrolavka.OrderPosition;
+import ss.entity.agrolavka.Product;
 import ss.martin.base.lang.ThrowingRunnable;
 import ss.martin.base.lang.ThrowingSupplier;
 import ss.martin.security.configuration.external.DomainConfiguration;
@@ -69,6 +72,10 @@ public class TelegramBotOrderService extends AbstractTelegramBotService {
     }
     
     public void updateExistingOrderMessage(final Order order) {
+        final var productIds = order.getPositions().stream().map(OrderPosition::getProductId).collect(Collectors.toSet());
+        final var productsMap = coreDao.findByIds(productIds, Product.class).stream()
+            .collect(Collectors.toMap(Product::getId, Function.identity()));
+        order.getPositions().forEach(pos -> pos.setProduct(productsMap.get(pos.getProductId())));
         final var javaType = objectMapper.getTypeFactory().constructCollectionType(List.class, CreatedTelegramMessageMetadata.class);
         ((ThrowingRunnable) () -> {
             final List<CreatedTelegramMessageMetadata> orderMessages = objectMapper.readValue(order.getTelegramMessages(), javaType);

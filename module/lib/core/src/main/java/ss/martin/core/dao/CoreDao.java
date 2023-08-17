@@ -39,6 +39,15 @@ public interface CoreDao {
     <T extends DataModel> T findById(Serializable id, Class<T> cl);
     
     /**
+     * Find entity by IDs.
+     * @param <T> entity type.
+     * @param ids entity IDs.
+     * @param cl entity class.
+     * @return entity.
+     */
+    <T extends DataModel> List<T> findByIds(Set<Long> ids, Class<T> cl);
+    
+    /**
      * Delete entity.
      * @param <T> entity type.
      * @param id entity ID.
