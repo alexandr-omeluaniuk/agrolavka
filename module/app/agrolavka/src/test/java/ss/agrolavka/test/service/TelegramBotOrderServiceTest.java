@@ -1,17 +1,27 @@
 package ss.agrolavka.test.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.Arrays;
 import java.util.UUID;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Named;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import static org.mockito.Mockito.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import ss.agrolavka.constants.OrderStatus;
 import ss.agrolavka.service.impl.TelegramBotOrderService;
 import ss.agrolavka.test.common.AbstractAgrolavkaMvcTest;
 import static ss.agrolavka.test.common.AgrolavkaDataFactory.*;
 import ss.entity.agrolavka.EuropostLocationSnapshot;
 import ss.entity.agrolavka.Order;
 import ss.entity.agrolavka.TelegramUser;
+import ss.martin.security.constants.LoginFaultCode;
+import ss.martin.security.model.LoginRequest;
 import ss.martin.security.test.DataFactory;
 import ss.martin.telegram.bot.model.Chat;
 import ss.martin.telegram.bot.model.Message;
@@ -20,6 +30,9 @@ public class TelegramBotOrderServiceTest extends AbstractAgrolavkaMvcTest {
     
     @Autowired
     private TelegramBotOrderService service;
+    
+    @Autowired
+    private ObjectMapper objectMapper;
     
     @BeforeEach
     @Override
@@ -71,6 +84,36 @@ public class TelegramBotOrderServiceTest extends AbstractAgrolavkaMvcTest {
         order.setEuropostLocationSnapshot(europostLocation);
         Assertions.assertDoesNotThrow(() -> service.sendNewOrderNotification(order));
         verify(telegramBotOrders, atLeast(1)).sendMessage(any());
+    }
+    
+    static Stream<Arguments> orderStatuses() {
+        return Stream.of(
+            Arguments.of(
+                OrderStatus.APPROVED
+            ),
+            Arguments.of(
+                OrderStatus.WAITING_FOR_APPROVAL
+            ),
+            Arguments.of(
+                OrderStatus.DELIVERY
+            ),
+            Arguments.of(
+                OrderStatus.CLOSED
+            )
+        );
+    }
+    
+    @ParameterizedTest
+    @MethodSource("orderStatuses")
+    public void testUpdateExistingOrderMessage(OrderStatus status) throws Exception {
+        final var order = createOrder("4 " + status.name());
+        order.setComment("Some comment");
+        order.setStatus(status);
+        order.setTelegramMessages(objectMapper.writeValueAsString(Arrays.asList(
+            new TelegramBotOrderService.CreatedTelegramMessageMetadata(22L, 33L))
+        ));
+        Assertions.assertDoesNotThrow(() -> service.updateExistingOrderMessage(order));
+        verify(telegramBotOrders, atLeast(1)).updateMessageText(any());
     }
     
     private Order createOrder(final String postfix) {
