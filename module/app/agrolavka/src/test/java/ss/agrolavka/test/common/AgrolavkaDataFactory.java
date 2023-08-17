@@ -1,7 +1,9 @@
 package ss.agrolavka.test.common;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.UUID;
+import ss.agrolavka.constants.OrderStatus;
 import ss.agrolavka.util.UrlProducer;
 import ss.entity.agrolavka.Address;
 import ss.entity.agrolavka.Order;
@@ -39,6 +41,8 @@ public class AgrolavkaDataFactory {
         order.setPositions(new ArrayList<>());
         order.setPhone("29 796-04-03");
         order.setOneClick(null);
+        order.setStatus(OrderStatus.WAITING_FOR_APPROVAL);
+        order.setCreated(new Date());
         return order;
     }
     
@@ -60,6 +64,7 @@ public class AgrolavkaDataFactory {
     public static OrderPosition generateOrderPosition(final Product product) {
         final var position = new OrderPosition();
         position.setProduct(product);
+        position.setProductId(product.getId());
         position.setPrice(product.getDiscountPrice());
         position.setQuantity(1);
         return position;
