@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package ss.agrolavka.constants;
 
 /**
@@ -11,11 +6,21 @@ package ss.agrolavka.constants;
  */
 public enum OrderStatus {
     /** Waiting for approval. */
-    WAITING_FOR_APPROVAL,
+    WAITING_FOR_APPROVAL("В ожидании подтверждения"),
     /** Approved. */
-    APPROVED,
+    APPROVED("Подтвержден и принят в обработку"),
     /** Delivery. */
-    DELIVERY,
+    DELIVERY("В процессе доставки"),
     /** Closed. */
-    CLOSED;
+    CLOSED("Закрыт");
+    
+    private final String label;
+    
+    private OrderStatus(final String label) {
+        this.label = label;
+    }
+    
+    public String getLabel() {
+        return label;
+    }
 }

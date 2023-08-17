@@ -1,4 +1,4 @@
-package ss.agrolavka.service;
+package ss.agrolavka.service.impl;
 
 import jakarta.annotation.PostConstruct;
 import java.util.HashMap;
@@ -12,8 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import ss.agrolavka.AgrolavkaConfiguration;
 import ss.entity.agrolavka.TelegramUser;
 import ss.martin.core.dao.CoreDao;
+import ss.martin.telegram.bot.api.ReplyMarkupModel;
 import ss.martin.telegram.bot.api.TelegramBot;
 import ss.martin.telegram.bot.model.Chat;
+import ss.martin.telegram.bot.model.Message;
 import ss.martin.telegram.bot.model.SendMessage;
 import ss.martin.telegram.bot.model.Update;
 
@@ -37,6 +39,9 @@ public abstract class AbstractTelegramBotService {
     
     protected abstract TelegramBot getTelegramBot();
     
+    protected void handleExternalUpdates(final List<Update> updates) {
+    }
+    
     @PostConstruct
     private void init() {
         LOG.debug("Whitelisted Telegram users: " + agrolavkaConfiguration.telegramUsers());
@@ -47,26 +52,32 @@ public abstract class AbstractTelegramBotService {
             .collect(Collectors.toSet());
         telegramBot.listenUpdates(
             (updates) -> handleUpdates(updates), 
-            TimeUnit.MINUTES.toMillis(1), 
+            TimeUnit.SECONDS.toMillis(3), 
             (e) -> LOG.error("Get updates for Telegram bot [" + telegramBot.getBotName() + "] - fail!", e)
         );
         LOG.info("Telegram bot [" + botName + "] started for " + botUsers + " users");
     }
     
-    protected void sendHtml(final String text) {
+    protected List<Message> sendTelegramMessage(final String text, final ReplyMarkupModel keyboard) {
         final var telegramBot = getTelegramBot();
-        coreDao.getAll(TelegramUser.class).stream()
-            .filter(user -> user.getBotName().equals(telegramBot.getBotName())).forEach(user -> {
+        return coreDao.getAll(TelegramUser.class).stream()
+            .filter(user -> user.getBotName().equals(telegramBot.getBotName())).map(user -> {
                 final var message = new SendMessage(
                     user.getChatId(), 
                     text, 
-                    SendMessage.ParseMode.HTML
+                    SendMessage.ParseMode.HTML,
+                    keyboard
                 );
-                telegramBot.sendMessage(message);
-        });
+                return telegramBot.sendMessage(message);
+        }).collect(Collectors.toList());
     }
     
     private void handleUpdates(final List<Update> updates) {
+        handleUserRegistration(updates);
+        handleExternalUpdates(updates);
+    }
+    
+    private void handleUserRegistration(final List<Update> updates) {
         final var botName = getTelegramBot().getBotName();
         final var chatsMap = new HashMap<String, Chat>();
         for (final var update : updates) {

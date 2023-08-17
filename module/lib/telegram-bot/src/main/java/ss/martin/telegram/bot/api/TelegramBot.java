@@ -2,9 +2,10 @@ package ss.martin.telegram.bot.api;
 
 import java.util.List;
 import java.util.function.Consumer;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import ss.martin.telegram.bot.http.TelegramHttpClient;
+import ss.martin.telegram.bot.model.EditMessageReplyMarkup;
+import ss.martin.telegram.bot.model.EditMessageText;
+import ss.martin.telegram.bot.model.Message;
 import ss.martin.telegram.bot.model.SendMessage;
 import ss.martin.telegram.bot.model.Update;
 import ss.martin.telegram.bot.model.User;
@@ -56,8 +57,16 @@ public class TelegramBot {
         return this.botName;
     }
     
-    public String sendMessage(final SendMessage message) {
-        return this.httpClient.post("/sendMessage", message);
+    public Message sendMessage(final SendMessage message) {
+        return this.httpClient.post("/sendMessage", message, Message.class);
+    }
+    
+    public Message updateMessageText(final EditMessageText updates) {
+        return this.httpClient.post("/editMessageText", updates, Message.class);
+    }
+    
+    public Message updateMessageReplyMarkup(final EditMessageReplyMarkup updates) {
+        return this.httpClient.post("/editMessageReplyMarkup", updates, Message.class);
     }
     
     private List<Update> getUpdates(final long offset) {

@@ -3,6 +3,7 @@ package ss.martin.core.dao;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.stream.Collectors;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
@@ -55,6 +56,20 @@ public class CoreDAOTest extends AbstractComponentTest {
         
         assertNotNull(retrievedEntity);
         assertNotNull(retrievedEntity.getId());
+    }
+    
+    @Test
+    public void testFindByIds() {
+        final var entity = coreDAO.create(generateEntity());
+        assertNotNull(entity);
+        assertNotNull(entity.getId());
+        
+        final var list = coreDAO.findByIds(new HashSet<>(Arrays.asList(entity.getId())), Subscription.class);
+        
+        assertNotNull(list);
+        assertFalse(list.isEmpty());
+        assertEquals(1, list.size());
+        assertNotNull(list.get(0).getId());
     }
     
     @Test

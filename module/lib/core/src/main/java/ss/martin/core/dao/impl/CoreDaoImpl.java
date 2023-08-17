@@ -55,6 +55,17 @@ class CoreDaoImpl implements CoreDao {
     }
     
     @Override
+    public <T extends DataModel> List<T> findByIds(final Set<Long> ids, final Class<T> cl) {
+        final var cb = em.getCriteriaBuilder();
+        final var criteria = cb.createQuery(cl);
+        final var c = criteria.from(cl);
+        final var predicates = new ArrayList<>();
+        predicates.add(c.get(DataModel_.id).in(ids));
+        criteria.select(c).where(predicates.toArray(Predicate[]::new));
+        return em.createQuery(criteria).getResultList();
+    }
+    
+    @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public <T extends DataModel> void delete(final Serializable id, final Class<T> cl) {
         Optional.ofNullable(findById(id, cl)).ifPresent(entity -> em.remove(entity));

@@ -35,14 +35,18 @@ public class TelegramHttpClient {
         this.objectMapper = new ObjectMapper();
     }
     
+    public <T> T post(final String endpoint, Object payload, final Class<T> responseType) {
+        return extractSingle(post(endpoint, payload), responseType);
+    }
+    
     /**
      * Post request.
      * @param endpoint endpoint.
      * @param payload payload.
      * @return response text.
      */
-    public String post(final String endpoint, Object payload) {
-        final var response = ((ThrowingSupplier<Response>) () -> objectMapper.readValue(
+    public Response post(final String endpoint, Object payload) {
+        return ((ThrowingSupplier<Response>) () -> objectMapper.readValue(
                 httpClient.send(
                     HttpRequest.newBuilder().uri(new URI(rootUri + endpoint))
                         .header("Content-Type", "application/json").POST(
@@ -51,7 +55,6 @@ public class TelegramHttpClient {
                     BodyHandlers.ofString()).body(),
                 Response.class
             )).get();
-        return extractString(response);
     }
 
     /**
@@ -84,7 +87,7 @@ public class TelegramHttpClient {
         if (response.ok()) {
             return ((ThrowingSupplier<T>) () -> objectMapper.readValue(response.result(), responseType)).get();
         } else {
-            throw new TelegramBotException(response.result());
+            throw new TelegramBotException(response.errorCode() + ", " + response.description());
         }
     }
     

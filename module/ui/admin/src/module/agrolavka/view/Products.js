@@ -36,7 +36,12 @@ const useStyles = makeStyles(theme => ({
         marginBottom: theme.spacing(1)
     },
     image: {
-        borderRadius: 0
+        borderRadius: 0,
+        boxShadow: '0 .125rem .25rem rgba(0,0,0,.275)'
+    },
+    imageLarge: {
+        borderRadius: 0,
+        boxShadow: '0 .125rem .25rem rgba(255,0,0,1)'
     },
     quantityAvailable: {
         color: theme.palette.success.main
@@ -162,7 +167,8 @@ function Products() {
         const newTableConfig = new TableConfig(
                 t('m_agrolavka:agrolavka.products') + (selectedProductGroup ? ` (${selectedProductGroup.name})` : ''), apiUrl, [
             new TableColumn('avatar', '', (row) => {
-                return <Avatar className={classes.image} alt={row.name}
+                const isLargeImage = row.images && row.images[0] && row.images[0].size > 200000;
+                return <Avatar className={isLargeImage ? classes.imageLarge : classes.image} alt={row.name}
                         src={row.images && row.images.length > 0 && row.images[0].fileNameOnDisk 
                         ? `/media/${row.images[0].fileNameOnDisk}?timestamp=${new Date().getTime()}`
                         : `/assets/img/no-image.png`} />;
