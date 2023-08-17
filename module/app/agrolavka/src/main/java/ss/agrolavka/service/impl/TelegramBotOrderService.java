@@ -96,11 +96,11 @@ public class TelegramBotOrderService extends AbstractTelegramBotService {
     private InlineKeyboardMarkup createKeyboard(final Order order) {
         final var buttons = new ArrayList<InlineKeyboardButton>();
         final var approveButton = new InlineKeyboardButton(
-            new String(new byte[]{ (byte) 0xE2, (byte) 0x9C, (byte) 0x85 }, StandardCharsets.UTF_8) + " Подтвержден", 
+            new String(new byte[]{ (byte) 0xE2, (byte) 0x9C, (byte) 0x85 }, StandardCharsets.UTF_8) + " Подтвердить", 
             String.format(CALLBACK_DATA_PATTERN, APPROVE_ORDER, order.getId())
         );
         final var declineButton = new InlineKeyboardButton(
-            new String(new byte[]{ (byte) 0xE2, (byte) 0x9D, (byte) 0x8C }, StandardCharsets.UTF_8) + " Закрыт",
+            new String(new byte[]{ (byte) 0xE2, (byte) 0x9D, (byte) 0x8C }, StandardCharsets.UTF_8) + " Закрыть",
             String.format(CALLBACK_DATA_PATTERN, DECLINE_ORDER, order.getId())
         );
         if (OrderStatus.WAITING_FOR_APPROVAL.equals(order.getStatus())) {

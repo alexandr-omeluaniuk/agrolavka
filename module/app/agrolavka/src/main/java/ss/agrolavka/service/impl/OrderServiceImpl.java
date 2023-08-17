@@ -70,6 +70,18 @@ class OrderServiceImpl implements OrderService {
     }
     
     @Override
+    public void updateOrder(final Order orderForm) {
+        final var order = coreDAO.findById(orderForm.getId(), Order.class);
+        final var originStatus = order.getStatus();
+        order.setAdminComment(orderForm.getAdminComment());
+        order.setStatus(orderForm.getStatus());
+        coreDAO.update(order);
+        if (!originStatus.equals(order.getStatus())) {
+            telegramBotOrderService.updateExistingOrderMessage(order);
+        }
+    }
+    
+    @Override
     public Order createOneClickOrder(final OneClickOrderWrapper orderDetails) throws Exception {
         final Product product = coreDAO.findById(orderDetails.getProductId(), Product.class);
         final List<OrderPosition> positions = new ArrayList<>();

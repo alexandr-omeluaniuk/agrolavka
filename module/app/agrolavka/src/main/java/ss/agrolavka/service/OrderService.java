@@ -35,6 +35,12 @@ public interface OrderService {
      * @throws Exception exception.
      */
     Order createOrder(Order order, OrderDetailsWrapper orderDetails) throws Exception;
+    
+    /**
+     * Update order.
+     * @param orderForm order form. 
+     */
+    void updateOrder(Order orderForm);
     /**
      * Create one click order.
      * @param orderDetails order details.
