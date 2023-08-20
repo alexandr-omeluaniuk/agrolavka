@@ -72,25 +72,27 @@ public class TelegramBotOrderService extends AbstractTelegramBotService {
     }
     
     public void updateExistingOrderMessage(final Order order) {
-        final var productIds = order.getPositions().stream().map(OrderPosition::getProductId).collect(Collectors.toSet());
-        final var productsMap = coreDao.findByIds(productIds, Product.class).stream()
-            .collect(Collectors.toMap(Product::getId, Function.identity()));
-        order.getPositions().forEach(pos -> pos.setProduct(productsMap.get(pos.getProductId())));
-        final var javaType = objectMapper.getTypeFactory().constructCollectionType(List.class, CreatedTelegramMessageMetadata.class);
-        ((ThrowingRunnable) () -> {
-            final List<CreatedTelegramMessageMetadata> orderMessages = objectMapper.readValue(order.getTelegramMessages(), javaType);
-            orderMessages.stream().forEach(m -> {
-                telegramBot.updateMessageText(
-                    new EditMessageText(
-                        m.messageId,
-                        m.chatId,
-                        getOrderMessage(order),
-                        SendMessage.ParseMode.HTML,
-                        createKeyboard(order)
-                    )
-                );
-            });
-        }).run();
+        Optional.ofNullable(order.getTelegramMessages()).ifPresent(tm -> {
+            final var productIds = order.getPositions().stream().map(OrderPosition::getProductId).collect(Collectors.toSet());
+            final var productsMap = coreDao.findByIds(productIds, Product.class).stream()
+                .collect(Collectors.toMap(Product::getId, Function.identity()));
+            order.getPositions().forEach(pos -> pos.setProduct(productsMap.get(pos.getProductId())));
+            final var javaType = objectMapper.getTypeFactory().constructCollectionType(List.class, CreatedTelegramMessageMetadata.class);
+            ((ThrowingRunnable) () -> {
+                final List<CreatedTelegramMessageMetadata> orderMessages = objectMapper.readValue(tm, javaType);
+                orderMessages.stream().forEach(m -> {
+                    telegramBot.updateMessageText(
+                        new EditMessageText(
+                            m.messageId,
+                            m.chatId,
+                            getOrderMessage(order),
+                            SendMessage.ParseMode.HTML,
+                            createKeyboard(order)
+                        )
+                    );
+                });
+            }).run();
+        });
     }
     
     private InlineKeyboardMarkup createKeyboard(final Order order) {
