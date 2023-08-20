@@ -241,7 +241,9 @@ public class DataUpdater {
             eProduct.setGroup(actualProduct.getGroup());
             eProduct.setArticle(actualProduct.getArticle());
             eProduct.setBuyPrice(actualProduct.getBuyPrice());
-            eProduct.setDescription(actualProduct.getDescription());
+            if (eProduct.getDescription() == null || eProduct.getDescription().isBlank()) {
+                eProduct.setDescription(actualProduct.getDescription());
+            }
             eProduct.setCode(actualProduct.getCode());
             eProduct.setUrl(actualProduct.getUrl());
             eProduct.setQuantity(stockProduct != null ? stockProduct.getQuantity() : 0);
