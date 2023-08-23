@@ -310,6 +310,9 @@ class XProductDescription extends XElement {
             responsiveDiv.setAttribute("class", "table-responsive");
             parent.appendChild(responsiveDiv);
             responsiveDiv.appendChild(el);
+            el.setAttribute("class", "table table-sm table-bordered table-light");
+            el.setAttribute("style", "");
+            el.querySelectorAll("td").forEach(td => td.setAttribute("style", ""));
         });
     }
 }
