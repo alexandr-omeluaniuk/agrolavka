@@ -313,6 +313,7 @@ class XProductDescription extends XElement {
             el.setAttribute("class", "table table-sm table-bordered table-light");
             el.setAttribute("style", "");
             el.querySelectorAll("td").forEach(td => td.setAttribute("style", ""));
+            el.querySelectorAll("th").forEach(td => td.setAttribute("style", ""));
         });
     }
 }
