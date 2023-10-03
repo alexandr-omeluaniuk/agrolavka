@@ -60,7 +60,7 @@
         <div class="col-sm-12 col-md-3">
             <div class="form-floating mb-3">
                 <input type="text" class="form-control" id="address-postcode" placeholder="Почтовый индекс"
-                       name="postcode">
+                       name="postcode" maxlength="6">
                 <label for="address-postcode">Почтовый индекс</label>
             </div>
         </div>
