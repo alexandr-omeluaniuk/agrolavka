@@ -56,8 +56,6 @@ public class SpringConfig implements WebMvcConfigurer {
         registry.addResourceHandler("/sitemap.xml").addResourceLocations("classpath:/static/sitemap.xml");
         registry.addResourceHandler("/robots.txt").addResourceLocations("classpath:/static/robots.txt");
         registry.addResourceHandler("/firebase-messaging-sw.js").addResourceLocations("classpath:/static/assets/js/firebase-messaging-sw.js");
-        registry.addResourceHandler("/.well-known/acme-challenge/**")
-                .addResourceLocations("classpath:/static/");
         registry.addResourceHandler("/admin/**").addResourceLocations("classpath:/static/admin/build/");
     }
     /**

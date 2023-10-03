@@ -40,7 +40,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "node ./update-build.js && react-scripts build",
+    "build": "node ./update-build.js && react-scripts --openssl-legacy-provider --no-experimental-fetch build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -64,5 +64,5 @@
   },
   "proxy": "http://localhost:9090",
   "homepage": "/admin",
-  "buildDate": 1692967581433
+  "buildDate": 1696350289013
 }
