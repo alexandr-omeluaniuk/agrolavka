@@ -41,6 +41,8 @@ import ss.martin.images.storage.api.ImagesStorageApi;
 class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
     /** Logger. */
     private static final Logger LOG = LoggerFactory.getLogger(MySkladIntegrationServiceImpl.class);
+    
+    private static final String SITE_PRICE_TYPE = "Цена продажи";
     /** My sklad API endpoint. */
     private static final String API_ENDPOINT = "https://online.moysklad.ru/api/remap/1.2";
     /** Configuration. */
@@ -148,8 +150,10 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
     @Override
     public Product createProduct(Product product) {
         return ((ThrowingSupplier<Product>) () -> {
-            List<PriceType> priceTypes = coreDAO.getAll(PriceType.class);
-            String response = request("/entity/product", "POST", toMySkladJSON(product, priceTypes.get(0)).toString());
+            String response = request(
+                "/entity/product", "POST", 
+                toMySkladJSON(product, getRetailPriceType()
+            ).toString());
             return fromJSON(new JSONObject(response), null);
         }).get();
     }
@@ -157,9 +161,8 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
     @Override
     public Product updateProduct(Product product) {
         return ((ThrowingSupplier<Product>) () -> {
-            List<PriceType> priceTypes = coreDAO.getAll(PriceType.class);
             String response = request("/entity/product/" + product.getExternalId(), "PUT",
-                    toMySkladJSON(product, priceTypes.get(0)).toString());
+                    toMySkladJSON(product, getRetailPriceType()).toString());
             return fromJSON(new JSONObject(response), null);
         }).get();
     }
@@ -276,6 +279,11 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
         json.put("productFolder", product.getGroup().toMySkladJSONAsReference());
         json.put("description", product.getDescription() == null ? "" : product.getDescription());
         return json;
+    }
+    
+    private PriceType getRetailPriceType() {
+        return coreDAO.getAll(PriceType.class).stream()
+            .filter(type -> SITE_PRICE_TYPE.equals(type.getName())).findFirst().orElseThrow();
     }
     
     private JSONObject toMySkladJSON(PriceType priceType) {
@@ -451,7 +459,9 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
             JSONArray prices = item.getJSONArray("salePrices");
             for (int j = 0; j < prices.length(); j++) {
                 JSONObject price = prices.getJSONObject(j);
-                product.setPrice(price.getDouble("value") / 100);
+                if (SITE_PRICE_TYPE.equals(price.getJSONObject("priceType").getString("name"))) {
+                    product.setPrice(price.getDouble("value") / 100);
+                }
             }
         }
         if (item.has("buyPrice")) {
