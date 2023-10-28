@@ -242,7 +242,7 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
         for (int i = 0; i < rows.length(); i++) {
             JSONObject row = rows.getJSONObject(i);
             if (row.getBoolean("active") && row.getBoolean("allAgents")
-                    && !row.getBoolean("allProducts") && row.has("assortment")) {
+                    && !row.getBoolean("allProducts") && row.has("assortment") && row.has("discount")) {
                 Discount discount = new Discount();
                 discount.setExternalId(row.getString("id"));
                 discount.setName(row.getString("name"));
