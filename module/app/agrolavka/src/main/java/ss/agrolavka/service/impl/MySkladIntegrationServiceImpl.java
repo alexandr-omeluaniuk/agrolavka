@@ -3,6 +3,7 @@ package ss.agrolavka.service.impl;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -11,6 +12,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
 import javax.net.ssl.HttpsURLConnection;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -44,7 +47,7 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
     
     private static final String SITE_PRICE_TYPE = "Цена продажи";
     /** My sklad API endpoint. */
-    private static final String API_ENDPOINT = "https://online.moysklad.ru/api/remap/1.2";
+    private static final String API_ENDPOINT = "https://api.moysklad.ru/api/remap/1.2";
     /** Configuration. */
     @Autowired
     private AgrolavkaConfiguration configuration;
@@ -334,6 +337,7 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
         return ((ThrowingSupplier<String>) () -> {
             HttpsURLConnection connection = (HttpsURLConnection) new URL(API_ENDPOINT + url).openConnection();
             connection.setRequestMethod(method);
+            connection.addRequestProperty("Accept-Encoding", "gzip");
             connection.setReadTimeout(Long.valueOf(TimeUnit.SECONDS.toMillis(30)).intValue());
             for (String header : headers.keySet()) {
                 connection.setRequestProperty(header, headers.get(header));
@@ -345,9 +349,12 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
             }
             int responseCode = connection.getResponseCode();
             LOG.debug("response code [" + responseCode + "]");
+            final var contentEncoding = connection.getHeaderField("Content-Encoding");
+            LOG.debug("Content-Encoding: " + contentEncoding);
             String response = null;
             if (responseCode == 200 || responseCode == 201) {
-                response = inputStreamToString(connection.getInputStream());
+                final var is = "gzip".equals(contentEncoding) ? new GZIPInputStream(connection.getInputStream()) : connection.getInputStream();
+                response = inputStreamToString(is);
                 LOG.debug("response: " + response);
                 return response;
             } else if (responseCode == 401) {
@@ -373,6 +380,7 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
         return ((ThrowingSupplier<byte[]>) () -> {
             HttpsURLConnection connection = (HttpsURLConnection) new URL(url).openConnection();
             connection.setRequestMethod(method);
+            connection.addRequestProperty("Accept-Encoding", "gzip");
             connection.setReadTimeout(Long.valueOf(TimeUnit.SECONDS.toMillis(30)).intValue());
             for (String header : headers.keySet()) {
                 connection.setRequestProperty(header, headers.get(header));
@@ -381,8 +389,11 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
             connection.setDoOutput(true);
             int responseCode = connection.getResponseCode();
             LOG.debug("response code [" + responseCode + "]");
+            final var contentEncoding = connection.getHeaderField("Content-Encoding");
+            LOG.debug("Content-Encoding: " + contentEncoding);
             if (responseCode == 200 || responseCode == 201) {
-                return inputStreamToByteArray(connection.getInputStream());
+                final var is = "gzip".equals(contentEncoding) ? new GZIPInputStream(connection.getInputStream()) : connection.getInputStream();
+                return inputStreamToByteArray(is);
             } else {
                 throw new IOException(inputStreamToString(connection.getErrorStream()));
             }
