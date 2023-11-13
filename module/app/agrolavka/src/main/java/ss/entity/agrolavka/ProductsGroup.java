@@ -170,11 +170,11 @@ public class ProductsGroup extends ExternalEntity implements Comparable<Products
     public JSONObject toMySkladJSONAsReference() {
         JSONObject json = new JSONObject();
         JSONObject meta = new JSONObject();
-        meta.put("href", "https://online.moysklad.ru/api/remap/1.2/entity/productfolder/" + getExternalId());
-        meta.put("metadataHref", "https://online.moysklad.ru/api/remap/1.2/entity/productfolder/metadata");
+        meta.put("href", "https://api.moysklad.ru/api/remap/1.2/entity/productfolder/" + getExternalId());
+        meta.put("metadataHref", "https://api.moysklad.ru/api/remap/1.2/entity/productfolder/metadata");
         meta.put("type", "productfolder");
         meta.put("mediaType", "application/json");
-        meta.put("uuidHref", "https://online.moysklad.ru/app/#good/edit?id=" + getExternalId());
+        meta.put("uuidHref", "https://api.moysklad.ru/app/#good/edit?id=" + getExternalId());
         json.put("meta", meta);
         return json;
     }

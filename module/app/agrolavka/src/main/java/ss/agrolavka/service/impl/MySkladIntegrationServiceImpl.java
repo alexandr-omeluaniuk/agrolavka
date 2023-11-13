@@ -3,7 +3,6 @@ package ss.agrolavka.service.impl;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -13,7 +12,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.zip.GZIPInputStream;
-import java.util.zip.GZIPOutputStream;
 import javax.net.ssl.HttpsURLConnection;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -292,7 +290,7 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
     private JSONObject toMySkladJSON(PriceType priceType) {
         JSONObject json = new JSONObject();
         JSONObject meta = new JSONObject();
-        meta.put("href", "https://online.moysklad.ru/api/remap/1.2/context/companysettings/pricetype/"
+        meta.put("href", "https://api.moysklad.ru/api/remap/1.2/context/companysettings/pricetype/"
                 + priceType.getExternalId());
         meta.put("type", "pricetype");
         meta.put("mediaType", "application/json");
