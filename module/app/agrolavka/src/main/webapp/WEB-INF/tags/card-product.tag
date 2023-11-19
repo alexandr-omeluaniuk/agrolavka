@@ -24,7 +24,7 @@
     data-in-cart="<%= cart.getPositions().stream().filter(pos -> Objects.equals(product.getId(), pos.getProductId())).findFirst().isPresent() ? "true" : "" %>"
     data-in-stock="${product.quantity > 0 ? "true" : ""}"
     data-hide-ribbon="<%= AppCache.isBelongsToGroup("Средства защиты растений (СЗР)", product.getGroup()) ? "true" : "" %>"
-    data-name="${product.name}"
+    data-name="<%= product.getName().replace("\"", "'") %>"
     data-price="${product.price}"
     data-image="${product.images.size() > 0 ? product.images.get(0).fileNameOnDisk : ""}"
     data-image-created="${product.images.size() > 0 ? product.images.get(0).createdDate : ""}"
