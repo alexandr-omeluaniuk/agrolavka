@@ -31,19 +31,5 @@
     data-created="<%= Boolean.TRUE.equals(showCreatedDate) ? new SimpleDateFormat("dd.MM.yyyy").format(product.getCreatedDate()) : "" %>"
     data-volume="<%= product.getVolumes() != null ? product.getVolumes().replace("\"", "'") : "" %>"
     data-link="<%= UrlProducer.buildProductUrl(product)%>">
-        <div class="card shadow-1-strong mb-4" aria-hidden="true">
-            <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
-                <div class="card-img-top agr-card-image" style="background-image: url('/assets/img/no-image.png')"></div>
-                <div class="card-body agr-card-body-category">
-                    <a href="#" tabindex="-1" class="btn disabled placeholder col-12 bg-dark"></a>
-                    <a href="#" tabindex="-1" class="btn disabled placeholder col-5 bg-dark"></a>
-                    <a href="#" tabindex="-1" class="btn disabled placeholder col-5 bg-dark"></a>
-                    <a href="#" tabindex="-1" class="btn disabled placeholder col-12 bg-dark"></a>
-                    <a href="#" tabindex="-1" class="btn disabled placeholder col-12 bg-dark"></a>
-                    <a href="#" tabindex="-1" class="btn disabled placeholder col-5 bg-dark"></a>
-                    <a href="#" tabindex="-1" class="btn disabled placeholder col-5 bg-dark"></a>
-                    <a href="#" tabindex="-1" class="btn disabled placeholder col-12 bg-dark"></a>
-                </div>
-            </div>
-        </div>
+    <t:card-placeholder isProduct="true"></t:card-placeholder>
 </x-agr-product-card>

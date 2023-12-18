@@ -5,7 +5,8 @@
 --%>
 
 <%@tag import="java.util.Objects"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@tag description="put the tag description here" pageEncoding="UTF-8" 
        import="ss.entity.agrolavka.*,ss.agrolavka.util.UrlProducer,ss.agrolavka.util.AppCache"%>
 
@@ -17,4 +18,6 @@
     data-name="${group.name}" 
     data-image="${group.images.size() > 0 ? group.images.get(0).fileNameOnDisk : ""}"
     data-image-created="${group.images.size() > 0 ? group.images.get(0).createdDate : ""}"
-    data-link="<%= UrlProducer.buildProductGroupUrl(group)%>"></x-agr-category-card>
+    data-link="<%= UrlProducer.buildProductGroupUrl(group)%>">
+    <t:card-placeholder isProduct="false"></t:card-placeholder>
+</x-agr-category-card>
