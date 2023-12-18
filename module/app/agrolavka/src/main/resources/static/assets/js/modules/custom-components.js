@@ -7,6 +7,7 @@ class XElement extends HTMLElement {
     }
     
     connectedCallback() {
+        this.innerHTML = "";
         this.appendChild(this._contents);
     }
     

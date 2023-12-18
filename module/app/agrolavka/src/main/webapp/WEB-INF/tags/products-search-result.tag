@@ -52,7 +52,6 @@
         </c:choose>
         <t:products-search-result-pagination pages="${pages}" page="${page}" view="${view}" sort="${sort}" url="<%= url %>"
                                              available="${available}" group="${group}">
-            
         </t:products-search-result-pagination>
     </div>
 </div>

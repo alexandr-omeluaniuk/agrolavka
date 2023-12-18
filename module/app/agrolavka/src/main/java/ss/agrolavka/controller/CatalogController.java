@@ -91,7 +91,7 @@ class CatalogController extends BaseJspController {
                 ? domainConfiguration.host() + "/assets/img/no-image.png"
                 : domainConfiguration.host() + "/media/" + product.getImages().get(0).getFileNameOnDisk());
         model.addAttribute(STRUCTURED_DATA_NAME, product.getName().replace("\\", "").replace("\"", "'"));
-        model.addAttribute(STRUCTURED_DATA_DESCRIPTION, metaDescription.replace("\"", "'"));
+        model.addAttribute(STRUCTURED_DATA_DESCRIPTION, metaDescription.replace("\\", "").replace("\"", "'"));
         model.addAttribute(BREADCRUMB_LABEL, product.getName());
         model.addAttribute(BREADCRUMB_PATH, productsGroupService.getBreadcrumbPath(product.getGroup()));
         model.addAttribute(PRODUCT_PRICE, String.format("%.2f", product.getDiscountPrice()));

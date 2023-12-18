@@ -14,7 +14,7 @@
 <%@attribute name="structuredData" fragment="true" required="false"%>
 <%@attribute name="headSection" fragment="true" required="false"%>
 
-<c:set var="staticResourceVersion" value="40"/>
+<c:set var="staticResourceVersion" value="41"/>
 
 <%-- any content can be specified here e.g.: --%>
 <!DOCTYPE html>
@@ -83,16 +83,7 @@
 
         <!-- Main CSS File -->
         <link href="/assets/css/style-mb.css?version=${staticResourceVersion}" rel="stylesheet">
-        <jsp:invoke fragment="headSection"/>
-    </head>
-
-    <body>
-        <t:navbar></t:navbar>
-        <t:navbar-mobile></t:navbar-mobile>
-        <t:sidebar></t:sidebar>
-        <jsp:doBody/>
-        <t:footer></t:footer>
-
+        
         <!-- Vendor JS Files -->
         <script type="text/javascript" src="/assets/vendor/mdb/mdb.3.5.0.min.js?version=${staticResourceVersion}"></script>
         <!-- Main JS Files -->
@@ -105,6 +96,16 @@
         <script type="module" src="/assets/js/modules/custom-components.js?version=${staticResourceVersion}"></script>
         <script type="module" src="/assets/js/modules/quick-search.js?version=${staticResourceVersion}"></script>
         <script type="module" src="/assets/js/modules/sidebar.js?version=${staticResourceVersion}"></script>
+        
+        <jsp:invoke fragment="headSection"/>
+    </head>
+
+    <body>
+        <t:navbar></t:navbar>
+        <t:navbar-mobile></t:navbar-mobile>
+        <t:sidebar></t:sidebar>
+        <jsp:doBody/>
+        <t:footer></t:footer>
     </body>
 
 </html>
