@@ -61,6 +61,14 @@ public class TelegramBotOrderServiceTest extends AbstractAgrolavkaMvcTest {
     }
     
     @Test
+    public void testSendNewOrderNotification_BigOrder() {
+        final var order = createBigOrder();
+        order.setAddress(generateAddress());
+        Assertions.assertDoesNotThrow(() -> service.sendNewOrderNotification(order));
+        verify(telegramBotOrders, atLeast(1)).sendMessage(any());
+    }
+    
+    @Test
     public void testSendNewOrderNotification_OneClick() {
         final var order = createOrder("2");
         order.setOneClick(true);
@@ -121,6 +129,16 @@ public class TelegramBotOrderServiceTest extends AbstractAgrolavkaMvcTest {
         order.getPositions().add(generateOrderPosition(product2));
         final var product3 = coreDao.create(generateProduct(null, "Комбикорм супер сила природы " + postfix, 1000d, 2d));
         order.getPositions().add(generateOrderPosition(product3));
+        order.getPositions().stream().forEach(pos -> pos.setOrder(order));
+        return coreDao.create(order);
+    }
+    
+    private Order createBigOrder() {
+        final var order = generateOrder();
+        for (int i = 0; i < 100; i++) {
+            final var product1 = coreDao.create(generateProduct(null, "Big product " + i, 20d, 2d));
+            order.getPositions().add(generateOrderPosition(product1));
+        }
         order.getPositions().stream().forEach(pos -> pos.setOrder(order));
         return coreDao.create(order);
     }

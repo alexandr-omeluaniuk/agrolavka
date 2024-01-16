@@ -120,7 +120,7 @@ public class TelegramBotOrderService extends AbstractTelegramBotService {
     
     private String getOrderMessage(final Order order) {
         final var link = domainConfiguration.host() + "/admin/app/agrolavka/order/" + order.getId();
-        return String.format(
+        final var message = String.format(
             ORDER_TEMPLATE, 
             link,
             order.getId(),
@@ -129,6 +129,18 @@ public class TelegramBotOrderService extends AbstractTelegramBotService {
             new TableFormatter(createTable(order)).format(),
             getDeliveryInfo(order)
         );
+        if (message.length() > MESSAGE_TEXT_LIMIT) {
+            return String.format(
+                ORDER_TEMPLATE, 
+                link,
+                order.getId(),
+                order.getStatus().getLabel(),
+                getContactInfo(order),
+                "Заказ слишком большой, пройдите по ссылке чтобы увидеть",
+                getDeliveryInfo(order)
+            );
+        }
+        return message;
     }
     
     private String getContactInfo(final Order order) {

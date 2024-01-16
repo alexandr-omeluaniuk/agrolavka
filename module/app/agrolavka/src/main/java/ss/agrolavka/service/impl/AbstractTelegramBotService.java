@@ -53,7 +53,9 @@ public abstract class AbstractTelegramBotService {
         telegramBot.listenUpdates(
             (updates) -> handleUpdates(updates), 
             TimeUnit.SECONDS.toMillis(3), 
-            (e) -> LOG.error("Get updates for Telegram bot [" + telegramBot.getBotName() + "] - fail!", e)
+            (e) -> LOG.error(
+                "Get updates for Telegram bot [" + telegramBot.getBotName() + "] - fail! " + e.getMessage()
+            )
         );
         LOG.info("Telegram bot [" + botName + "] started for " + botUsers + " users");
     }
