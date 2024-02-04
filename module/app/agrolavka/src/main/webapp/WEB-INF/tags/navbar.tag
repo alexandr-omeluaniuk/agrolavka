@@ -37,9 +37,9 @@
                     <li class="nav-item">
                         <a class="nav-link" href="#contacts">Контакты</a>
                     </li>
-                    <li class="nav-item d-lg-none d-xl-none d-xxl-none">
+                    <!--li class="nav-item d-lg-none d-xl-none d-xxl-none">
                         <a class="nav-link" href="/feedback">Написать нам</a>
-                    </li>
+                    </li-->
                 </ul>
                 <div class="d-none d-lg-flex align-items-center me-4">
                     <a class="text-white" href="tel:+375292848848"><i class="fas fa-phone-alt"></i> <b>(29) 2-848-848</b></a><br>
