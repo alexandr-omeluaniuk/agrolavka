@@ -32,7 +32,7 @@
                     <x-agr-menu-item class="p-1" link="/delivery" label="Доставка" icon="truck" icon-color="light" label-color="dark"></x-agr-menu-item>
                     <x-agr-menu-item class="p-1" link="/discount" label="Дисконтная программа" icon="percent" icon-color="light" label-color="dark"></x-agr-menu-item>
                     <x-agr-menu-item class="p-1" link="#contacts" label="Контакты" icon="map-marker-alt" icon-color="light" label-color="dark"></x-agr-menu-item>
-                    <x-agr-menu-item class="p-1" link="/feedback" label="Написать нам" icon="comment" icon-color="light" label-color="dark"></x-agr-menu-item>
+                    <!--x-agr-menu-item class="p-1" link="/feedback" label="Написать нам" icon="comment" icon-color="light" label-color="dark"></x-agr-menu-item-->
                     <t:menu-item-link-external link="https://www.instagram.com/agrolavka.by" label="Инстаграм" type="Instagram"></t:menu-item-link-external>
                     <t:menu-item-link-external link="https://invite.viber.com/?g2=AQAg5Rkk2LluF0zHtRAvabtjZ4jDtGaaMApRoqe3%2FboHZogbep9nBgCTSKDPVqTl" label="Вайбер" type="Viber"></t:menu-item-link-external>
                 </div>

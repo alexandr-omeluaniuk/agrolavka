@@ -37,12 +37,12 @@
                     <li class="nav-item">
                         <a class="nav-link" href="#contacts">Контакты</a>
                     </li>
-                    <li class="nav-item d-lg-none d-xl-none d-xxl-none">
+                    <!--li class="nav-item d-lg-none d-xl-none d-xxl-none">
                         <a class="nav-link" href="/feedback">Написать нам</a>
-                    </li>
+                    </li-->
                 </ul>
                 <div class="d-none d-lg-flex align-items-center me-4">
-                    <a class="text-white" href="tel:+375292848848"><i class="fas fa-phone-alt"></i> (29) 2-848-848</a><br>
+                    <a class="text-white" href="tel:+375292848848"><i class="fas fa-phone-alt"></i> <b>(29) 2-848-848</b></a><br>
                 </div>
                 <div class="d-none d-lg-flex">
                     <t:quick-search-desktop />
@@ -57,7 +57,10 @@
                     </li>
                     <li>
                         <a class="nav-link d-flex align-items-center" href="https://invite.viber.com/?g2=AQAg5Rkk2LluF0zHtRAvabtjZ4jDtGaaMApRoqe3%2FboHZogbep9nBgCTSKDPVqTl" target="_blank" rel="noreferrer">
-                            <i class="fab fa-viber" style="font-size: 32px;"></i><span class="ms-2 d-block d-lg-none">Вайбер</span>
+                            <div class="agr-viber">
+                                <i class="fab fa-viber"></i>
+                            </div>
+                            <span class="ms-2 d-block d-lg-none">Вайбер</span>
                         </a>
                     </li>
                 </ul>

@@ -19,10 +19,10 @@
                     <div class="col-sm-8">
                         <h3>Агролавка</h3>
                         <p>Наш магазин «Агролавка» открылся в феврале 2020 года. Наша главная цель предложить нашим клиентам самый широкий выбор товаров для сада и дачи по самым низким ценам. Мы настроены на долгосрочное сотрудничество и очень надеемся, что Вы станете нашим постоянным клиентом.</p>
-                        <p>Помогите улучшить наш сайт, напишите нам ваши замечания и предложения</p>
-                        <a href="/feedback" class="btn btn-outline-light mb-3" type="button">
+                        <!--p>Помогите улучшить наш сайт, напишите нам ваши замечания и предложения</p-->
+                        <!--a href="/feedback" class="btn btn-outline-light mb-3" type="button">
                             Написать нам
-                        </a>
+                        </a-->
                     </div>
                     <div class="col-sm-4">
                         <h4>Полезные ссылки</h4>
@@ -37,7 +37,9 @@
                                     <img src="/assets/img/instagram.ico" alt="Instagram">
                                 </a>
                                 <a href="https://invite.viber.com/?g2=AQAg5Rkk2LluF0zHtRAvabtjZ4jDtGaaMApRoqe3%2FboHZogbep9nBgCTSKDPVqTl">
-                                    <i class="fab fa-viber" style="font-size: 32px; color: white;"></i>
+                                    <div class="agr-viber">
+                                        <i class="fab fa-viber"></i>
+                                    </div>
                                 </a>
                             </li>
                         </ul>
