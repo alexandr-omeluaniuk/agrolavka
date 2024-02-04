@@ -20,7 +20,7 @@
                                 <i class="fas fa-carrot agr-carrot-logo"></i>
                             </strong>
                         </a>
-                        <a class="nav-link" href="tel:+375292848848" style="flex: 1"><i class="fas fa-phone-alt"></i> <b>+375 29 2-848-848</b></a>
+                        <a class="nav-link" href="tel:+375292848848" style="flex: 1"><i class="fas fa-phone-alt"></i> <b>(29) 2-848-848</b></a>
                         <a href="https://www.instagram.com/agrolavka.by" target="_blank" rel="noreferrer" class="me-2">
                             <img src="/assets/img/instagram.ico" alt="Instagram">
                         </a>
