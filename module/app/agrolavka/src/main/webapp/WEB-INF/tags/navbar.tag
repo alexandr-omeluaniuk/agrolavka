@@ -57,7 +57,10 @@
                     </li>
                     <li>
                         <a class="nav-link d-flex align-items-center" href="https://invite.viber.com/?g2=AQAg5Rkk2LluF0zHtRAvabtjZ4jDtGaaMApRoqe3%2FboHZogbep9nBgCTSKDPVqTl" target="_blank" rel="noreferrer">
-                            <i class="fab fa-viber" style="font-size: 32px;"></i><span class="ms-2 d-block d-lg-none">Вайбер</span>
+                            <div class="agr-viber">
+                                <i class="fab fa-viber"></i>
+                            </div>
+                            <span class="ms-2 d-block d-lg-none">Вайбер</span>
                         </a>
                     </li>
                 </ul>

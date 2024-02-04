@@ -37,7 +37,9 @@
                                     <img src="/assets/img/instagram.ico" alt="Instagram">
                                 </a>
                                 <a href="https://invite.viber.com/?g2=AQAg5Rkk2LluF0zHtRAvabtjZ4jDtGaaMApRoqe3%2FboHZogbep9nBgCTSKDPVqTl">
-                                    <i class="fab fa-viber" style="font-size: 32px; color: white;"></i>
+                                    <div class="agr-viber">
+                                        <i class="fab fa-viber"></i>
+                                    </div>
                                 </a>
                             </li>
                         </ul>
