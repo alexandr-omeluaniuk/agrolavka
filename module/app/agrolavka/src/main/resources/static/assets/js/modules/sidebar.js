@@ -9,9 +9,58 @@
         }
     }).then(response => {
         if (response.ok) {
-            response.json().then(json => catalog = json);
+            response.json().then(json => {
+                catalog = json;
+                forwardToCatalogGroup();
+            });
         }
     });
+    
+    const forwardToCatalogGroup = () => {
+        const url = window.location.pathname;
+        if (url.indexOf('/catalog') === 0) {
+            try {
+                const parts = url.split('/');
+                const lastName = parts[parts.length - 1];
+                const success = checkUrlPath(lastName);
+                if (!success && parts.length > 1) {
+                    const prevLastName = parts[parts.length - 2];
+                    checkUrlPath(prevLastName);
+                }
+            } catch (e) {
+                console.error(e);
+            }
+        }
+    };
+    
+    const checkUrlPath = (path) => {
+        var group = null;
+        const keys = Object.keys(catalog);
+        const groupsMap = {};
+        for (var i = 0; i < keys.length; i++) {
+            var groups = catalog[keys[i]];
+            groups.forEach(g => groupsMap[g.externalId] = g);
+            if (!group) {
+                group = groups.filter(g => g.url === path)[0];
+            }
+        }
+        if (group) {
+            const isLeaf = !catalog[group.externalId];
+            var currentId = isLeaf ? group.parentId : group.externalId;
+            var ids = [];
+            while (currentId) {
+                ids.push(currentId);
+                const currentGroup = groupsMap[currentId];
+                currentId = currentGroup ? currentGroup.parentId : null;
+                if (ids.length > 10) {
+                    break;
+                }
+            }
+            ids.push("-1");
+            ids.reverse().forEach(id => openCatalog(id));
+            return group;
+        }
+    };
 
     const findGroup = (id) => {
         const keys = Object.keys(catalog);
