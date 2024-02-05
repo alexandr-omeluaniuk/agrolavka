@@ -42,6 +42,7 @@ public class MySkladServiceTest extends AbstractAgrolavkaMvcTest {
             Assertions.assertTrue(names.contains(variant.getName()));
             Assertions.assertTrue(parentIds.contains(variant.getParentId()));
             Assertions.assertNotNull(variant.getPrice());
+            Assertions.assertNotNull(variant.getExternalId());
         });
     }
 }

@@ -131,6 +131,7 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
             if (item.has("product")) {
                 final var variant = new ProductVariant();
                 if (item.has("name")) {
+                    variant.setExternalId(item.getString("id"));
                     variant.setName(item.getString("name"));
                     variant.setPrice(extractPriceValue(item));
                     final var productUrlParts = item.getJSONObject("product").getJSONObject("meta")

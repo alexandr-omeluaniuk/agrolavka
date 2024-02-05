@@ -25,6 +25,7 @@ import ss.agrolavka.dao.ExternalEntityDAO;
 import ss.agrolavka.dao.ProductDAO;
 import ss.agrolavka.service.GroupProductsService;
 import ss.agrolavka.service.MySkladIntegrationService;
+import ss.agrolavka.task.mysklad.ProductVariantSynchronizator;
 import ss.agrolavka.util.AppCache;
 import ss.agrolavka.util.UrlProducer;
 import ss.entity.agrolavka.Discount;
@@ -72,6 +73,9 @@ public class DataUpdater {
     @Autowired
     private CacheManager cacheManager;
     
+    @Autowired
+    private ProductVariantSynchronizator productVariantSynchronizator;
+    
     @PostConstruct
     protected void init() {
         AppCache.flushCache(coreDAO.getAll(ProductsGroup.class));
@@ -100,6 +104,7 @@ public class DataUpdater {
             importProductGroups();
             importProducts();
             importImages();
+            productVariantSynchronizator.doImport();
             groupProductsService.groupProductByVolumes();
             AppCache.flushCache(coreDAO.getAll(ProductsGroup.class));
             LOG.info("===============================================================================================");
