@@ -128,12 +128,17 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
         final var rows = json.getJSONArray("rows");
         for (int i = 0; i < rows.length(); i++) {
             final var item = rows.getJSONObject(i);
-            final var variant = new ProductVariant();
-            if (item.has("name")) {
-                variant.setName(item.getString("name"));
-                variant.setPrice(extractPriceValue(item));
+            if (item.has("product")) {
+                final var variant = new ProductVariant();
+                if (item.has("name")) {
+                    variant.setName(item.getString("name"));
+                    variant.setPrice(extractPriceValue(item));
+                    final var productUrlParts = item.getJSONObject("product").getJSONObject("meta")
+                        .getString("href").split("/");
+                    variant.setParentId(productUrlParts[productUrlParts.length - 1]);
+                }
+                result.add(variant);
             }
-            result.add(variant);
         }
         return result;
     }
