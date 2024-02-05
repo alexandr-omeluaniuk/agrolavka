@@ -11,7 +11,7 @@ import ss.agrolavka.test.common.AbstractAgrolavkaMvcTest;
 public class MySkladServiceTest extends AbstractAgrolavkaMvcTest {
     
     static {
-        System.setProperty("mysklad.api.url", "http://localhost:20233/mysklad/");
+        System.setProperty("mysklad.api.url", "http://localhost:20233/mysklad");
         WireMockServer wireMockServer = new WireMockServer(20233);
         wireMockServer.start();
     }
@@ -34,6 +34,7 @@ public class MySkladServiceTest extends AbstractAgrolavkaMvcTest {
         Assertions.assertEquals(5, productVariants.size());
         productVariants.forEach(variant -> {
             Assertions.assertTrue(names.contains(variant.getName()));
+            Assertions.assertNotNull(variant.getPrice());
         });
     }
 }

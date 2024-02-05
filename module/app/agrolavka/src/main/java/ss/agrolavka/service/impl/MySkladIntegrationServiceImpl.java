@@ -46,6 +46,13 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
     /** Logger. */
     private static final Logger LOG = LoggerFactory.getLogger(MySkladIntegrationServiceImpl.class);
     
+    private static final String URL_PRODUCT_GROUPS = "/entity/productfolder";
+    private static final String URL_MODIFICATIONS = "/entity/variant";
+    private static final String URL_PRODUCTS = "/entity/product?limit=%d&offset=%d";
+    private static final String URL_PRODUCT_IMAGES = "/entity/product/%s/images";
+    
+    private static final String METHOD_GET = "GET";
+    
     private static final String SITE_PRICE_TYPE = "Цена продажи";
     /** My sklad API endpoint. */
     @Value("${mysklad.api.url:https://api.moysklad.ru/api/remap/1.2}")
@@ -64,7 +71,7 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
     
     @Override
     public List<ProductsGroup> getProductGroups() {
-        String response = request("/entity/productfolder", "GET", null);
+        String response = request(URL_PRODUCT_GROUPS, METHOD_GET, null);
         JSONObject json = new JSONObject(response);
         List<ProductsGroup> result = new ArrayList<>();
         if (json.has("rows")) {
@@ -92,7 +99,7 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
     @Override
     public List<Product> getProducts(int offset, int limit) {
         return ((ThrowingSupplier<List<Product>>) () -> {
-            String response = request("/entity/product?limit=" + limit + "&offset=" + offset, "GET", null);
+            String response = request(String.format(URL_PRODUCTS, limit, offset), METHOD_GET, null);
             JSONObject json = new JSONObject(response);
             List<Product> result = new ArrayList<>();
             JSONArray rows = json.getJSONArray("rows");
@@ -115,7 +122,7 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
     
     @Override
     public List<ProductVariant> getProductVariants() {
-        final var response = request("entity/variant", "GET", null);
+        final var response = request(URL_MODIFICATIONS, METHOD_GET, null);
         final var json = new JSONObject(response);
         final var result = new ArrayList<ProductVariant>();
         final var rows = json.getJSONArray("rows");
@@ -124,6 +131,7 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
             final var variant = new ProductVariant();
             if (item.has("name")) {
                 variant.setName(item.getString("name"));
+                variant.setPrice(extractPriceValue(item));
             }
             result.add(variant);
         }
@@ -133,7 +141,7 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
     @Override
     public List<EntityImage> getProductImages(String productExternalId) {
         List<EntityImage> result = new ArrayList<>();
-        String response = request("/entity/product/" + productExternalId + "/images", "GET", null);
+        String response = request(String.format(URL_PRODUCT_IMAGES, productExternalId), METHOD_GET, null);
         Map<String, String> headers = new HashMap<>();
         headers.put("Authorization", "Bearer " + token);
         JSONObject json = new JSONObject(response);
@@ -487,15 +495,7 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
                 product.setGroup(productGroupsMap.get(productGroupId));
             }
         }
-        if (item.has("salePrices")) {
-            JSONArray prices = item.getJSONArray("salePrices");
-            for (int j = 0; j < prices.length(); j++) {
-                JSONObject price = prices.getJSONObject(j);
-                if (SITE_PRICE_TYPE.equals(price.getJSONObject("priceType").getString("name"))) {
-                    product.setPrice(price.getDouble("value") / 100);
-                }
-            }
-        }
+        product.setPrice(extractPriceValue(item));
         if (item.has("buyPrice")) {
             JSONObject buyPrice = item.getJSONObject("buyPrice");
             product.setBuyPrice(buyPrice.getDouble("value") / 100);
@@ -524,6 +524,20 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
             LOG.debug("new acquired token: " + token);
         }).run();
     }
+    
+    private Double extractPriceValue(JSONObject item) {
+        if (item.has("salePrices")) {
+            JSONArray prices = item.getJSONArray("salePrices");
+            for (int j = 0; j < prices.length(); j++) {
+                JSONObject price = prices.getJSONObject(j);
+                if (SITE_PRICE_TYPE.equals(price.getJSONObject("priceType").getString("name"))) {
+                    return price.getDouble("value") / 100;
+                }
+            }
+        }
+        return null;
+    }
+    
     /**
      * MySklad authentication error.
      */
