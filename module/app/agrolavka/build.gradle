@@ -18,6 +18,7 @@ dependencies {
     implementation project(":module:lib:images-storage")
     
     testImplementation project(":module:lib:test:security-test")
+    testImplementation libs.wiremock
     
     developmentOnly("org.springframework.boot:spring-boot-devtools")
 }

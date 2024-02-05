@@ -3,6 +3,7 @@ package ss.agrolavka.service.impl;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -18,6 +19,7 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
@@ -27,6 +29,7 @@ import ss.agrolavka.service.MySkladIntegrationService;
 import ss.entity.agrolavka.Discount;
 import ss.entity.agrolavka.PriceType;
 import ss.entity.agrolavka.Product;
+import ss.entity.agrolavka.ProductVariant;
 import ss.entity.agrolavka.ProductsGroup;
 import ss.entity.images.storage.EntityImage;
 import ss.martin.base.lang.ThrowingRunnable;
@@ -45,7 +48,8 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
     
     private static final String SITE_PRICE_TYPE = "Цена продажи";
     /** My sklad API endpoint. */
-    private static final String API_ENDPOINT = "https://api.moysklad.ru/api/remap/1.2";
+    @Value("${mysklad.api.url:https://api.moysklad.ru/api/remap/1.2}")
+    private String rootUrl;
     /** Configuration. */
     @Autowired
     private AgrolavkaConfiguration configuration;
@@ -107,6 +111,23 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
             LOG.debug("loaded products [" + result.size() + "]");
             return result;
         }).get();
+    }
+    
+    @Override
+    public List<ProductVariant> getProductVariants() {
+        final var response = request("entity/variant", "GET", null);
+        final var json = new JSONObject(response);
+        final var result = new ArrayList<ProductVariant>();
+        final var rows = json.getJSONArray("rows");
+        for (int i = 0; i < rows.length(); i++) {
+            final var item = rows.getJSONObject(i);
+            final var variant = new ProductVariant();
+            if (item.has("name")) {
+                variant.setName(item.getString("name"));
+            }
+            result.add(variant);
+        }
+        return result;
     }
     
     @Override
@@ -328,12 +349,14 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
      * @throws Exception error.
      */
     private String request(String url, String method, Map<String, String> headers, String payload) {
-        LOG.debug("------------------------------ REQUEST TO MY SKLAD -----------------------------------------------");
-        LOG.debug("url [" + url + "]");
-        LOG.debug("method [" + method + "]");
-        LOG.debug("payload [" + payload + "]");
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("------------------------------ REQUEST TO MY SKLAD -----------------------------------------------");
+            LOG.debug("url [" + url + "]");
+            LOG.debug("method [" + method + "]");
+            LOG.debug("payload [" + payload + "]");
+        }
         return ((ThrowingSupplier<String>) () -> {
-            HttpsURLConnection connection = (HttpsURLConnection) new URL(API_ENDPOINT + url).openConnection();
+            HttpURLConnection connection = (HttpURLConnection) new URL(rootUrl + url).openConnection();
             connection.setRequestMethod(method);
             connection.addRequestProperty("Accept-Encoding", "gzip");
             connection.setReadTimeout(Long.valueOf(TimeUnit.SECONDS.toMillis(30)).intValue());
