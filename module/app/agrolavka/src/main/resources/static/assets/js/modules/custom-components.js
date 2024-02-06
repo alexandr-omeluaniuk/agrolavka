@@ -212,6 +212,28 @@ class XProductVolumes extends XElement {
 }
 window.customElements.define('x-agr-product-volumes', XProductVolumes);
 
+class XProductVariants extends XElement {    
+    createTemplate() {
+        let template = document.createElement('template');
+        const cls = this.getAttribute('data-cls');
+        const rawVariants = this.getAttribute('data-variants');
+        const variants = JSON.parse(rawVariants.replaceAll("'", '"'));
+        let sb = '';
+        for (let i = 0; i < variants.length; i++) {
+            const variant = variants[i];
+            console.log(variant);
+            sb += '<button type="button" class="btn btn-primary" data-mdb-ripple-init>' + variant.name + '</button>';
+        }
+        template.innerHTML = `
+            <div>
+                ${sb}
+            </div>
+        `;
+        return template;
+    }
+}
+window.customElements.define('x-agr-product-variants', XProductVariants);
+
 class XProductActions extends XElement {    
     createTemplate() {
         let template = document.createElement('template');
@@ -219,8 +241,10 @@ class XProductActions extends XElement {
         const cls = this.getAttribute('data-cls');
         const inCart = this.getAttribute('data-in-cart');
         const volumes = this.getAttribute('data-volume');
+        const variants = this.getAttribute('data-variants');
         template.innerHTML = `
             ${volumes ? `<x-agr-product-volumes data-cls="${cls}" data-volume="${volumes}"></x-agr-product-volumes>` : ''}
+            ${variants && variants !== "[]" ? `<x-agr-product-variants data-cls="${cls}" data-variants="${variants}"></x-agr-product-variants>` : ''}
             <button class="btn btn-outline-info btn-rounded w-100 mt-1 ${cls}" data-product-id="${id}" data-order="">
                 <i class="far fa-hand-point-up me-2"></i> Заказать сразу
             </button>

@@ -100,7 +100,7 @@ class CatalogController extends BaseJspController {
             .filter(pos -> Objects.equals(product.getId(), pos.getProductId())).findFirst().isPresent();
         model.addAttribute(IN_CART, inCart);
         model.addAttribute(VOLUMES, product.getVolumes() != null ? product.getVolumes().replace("\"", "'") : "");
-        model.addAttribute(VARIANTS, productService.getVariants(product.getExternalId()).toString().replace("\"", "'"));
+        model.addAttribute(VARIANTS, productService.getVariants(product).toString().replace("\"", "'"));
         model.addAttribute(META_DESCRIPTION, metaDescription);
         model.addAttribute(FULL_PRODUCT_DESCRIPTION, fullDescription);
         final var calendar = new GregorianCalendar();
