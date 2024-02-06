@@ -185,6 +185,29 @@ const productVolumeClickListener = (evt, btn) => {
             + '</small> <small class="text-muted">BYN</small>';
 };
 
+const productVariantClickListener = (evt, btn) => {
+    evt.preventDefault();
+    evt.stopPropagation();
+    btn.parentElement.querySelectorAll('button').forEach(b => {
+        b.classList.add("btn-outline-primary");
+        b.classList.remove("btn-primary");
+    });
+    btn.classList.remove("btn-outline-primary");
+    btn.classList.add("btn-primary");
+    const price = btn.getAttribute("data-product-variant-price");
+    const name = btn.getAttribute("data-product-variant-name");
+    btn.closest('div[data-variants]').setAttribute("data-selected-variant-name", name);
+    btn.closest('div[data-variants]').setAttribute("data-selected-variant-price", price);
+    const priceBig = parseFloat(price).toFixed(2).split('.')[0];
+    const priceSmall = parseFloat(price).toFixed(2).split('.')[1];
+    let container = btn.closest('.card');
+    if (!container) {
+        container = btn.closest('.row');
+    }
+    container.querySelector('.agr-price').innerHTML = priceBig + ".<small>" + priceSmall
+            + '</small> <small class="text-muted">BYN</small>';
+};
+
 const photoClickListener = (evt, image) => {
     evt.preventDefault();
     evt.stopPropagation();
@@ -231,5 +254,6 @@ export const handleProductCardEvent = (evt) => {
     addElementEvent(evt, "[data-product-id][data-order]", orderOneClickButtonListener);
     addElementEvent(evt, "button[data-one-click-order]", orderOneClickConfirmButtonListener);
     addElementEvent(evt, ".agr-volume-btn", productVolumeClickListener);
+    addElementEvent(evt, ".agr-variant-btn", productVariantClickListener);
     addElementEvent(evt, ".agr-product-image-carousel", photoClickListener);
 };

@@ -221,10 +221,17 @@ class XProductVariants extends XElement {
         let sb = '';
         for (let i = 0; i < variants.length; i++) {
             const variant = variants[i];
+            const price = parseFloat(variant.price).toFixed(2).split('.');
+            const priceInt = price[0];
+            const priceFloat = price[1];
             sb += `<button type="button" class="w-100 mb-1 agr-variant-btn btn 
                     btn-sm btn-rounded btn-${i === 0 ? 'primary' : 'outline-primary'}" data-mdb-ripple-init
-                    data-product-variant-price="${variant.price}">
-                        ${variant.name}
+                    data-product-variant-price="${variant.price}"
+                    data-product-variant-name="${variant.name}">
+                        <div class="d-flex justify-content-between">
+                            <div>${variant.name}</div>
+                            <div>${priceInt}<small>.${priceFloat}</small></div>
+                        </div>
                     </button>`;
         }
         template.innerHTML = `
