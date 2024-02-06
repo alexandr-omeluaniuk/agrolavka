@@ -1,6 +1,7 @@
 package ss.agrolavka.service;
 
 import java.util.List;
+import ss.agrolavka.wrapper.ProductsSearchRequest;
 import ss.agrolavka.wrapper.ProductsSearchResponse;
 import ss.entity.agrolavka.Product;
 import ss.entity.agrolavka.ProductVariant;
@@ -35,6 +36,13 @@ public interface ProductService {
      * @return products count.
      */
     Long getProductsCount();
+    
+    /**
+     * Search products.
+     * @param request search request.
+     * @return list of products.
+     */
+    List<Product> search(ProductsSearchRequest request);
     
     /**
      * Get product variants.

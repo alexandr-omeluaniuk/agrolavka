@@ -106,4 +106,11 @@ class ProductServiceImpl implements ProductService{
             Collectors.groupingBy(ProductVariant::getParentId)
         );
     }
+
+    @Override
+    public List<Product> search(ProductsSearchRequest request) {
+        final var products = productDao.search(request);
+        products.forEach(product -> product.setVariants(getVariants(product.getExternalId())));
+        return products;
+    }
 }

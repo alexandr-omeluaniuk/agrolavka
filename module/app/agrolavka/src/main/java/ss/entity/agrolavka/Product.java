@@ -17,6 +17,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
+import jakarta.persistence.Transient;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import org.hibernate.annotations.Fetch;
@@ -115,6 +116,9 @@ public class Product extends ExternalEntity {
     @Size(max = 3000)
     @Column(name = "video_url", length = 3000)
     private String videoURL;
+    
+    @Transient
+    private List<ProductVariant> variants;
     
     public String getName() {
         return name;
@@ -266,6 +270,14 @@ public class Product extends ExternalEntity {
     
     public void setVideoURL(String videoURL) {
         this.videoURL = videoURL;
+    }
+
+    public List<ProductVariant> getVariants() {
+        return variants;
+    }
+
+    public void setVariants(List<ProductVariant> variants) {
+        this.variants = variants;
     }
     
     @Override

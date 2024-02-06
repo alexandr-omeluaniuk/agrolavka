@@ -43,7 +43,7 @@ class CatalogController extends BaseJspController {
     /** Product DAO. */
     @Autowired
     private ProductDAO productDAO;
-    
+        
     @RequestMapping(SiteUrls.PAGE_CATALOG)
     public Object catalog(
         final Model model, 
@@ -100,6 +100,7 @@ class CatalogController extends BaseJspController {
             .filter(pos -> Objects.equals(product.getId(), pos.getProductId())).findFirst().isPresent();
         model.addAttribute(IN_CART, inCart);
         model.addAttribute(VOLUMES, product.getVolumes() != null ? product.getVolumes().replace("\"", "'") : "");
+        model.addAttribute(VARIANTS, productService.getVariants(product.getExternalId()).toString().replace("\"", "'"));
         model.addAttribute(META_DESCRIPTION, metaDescription);
         model.addAttribute(FULL_PRODUCT_DESCRIPTION, fullDescription);
         final var calendar = new GregorianCalendar();
@@ -173,7 +174,7 @@ class CatalogController extends BaseJspController {
     }
     
     private void setProducts(Model model, Long groupId, Integer page, String sort, boolean available) {
-        ProductsSearchRequest searchRequest = new ProductsSearchRequest();
+        final var searchRequest = new ProductsSearchRequest();
         searchRequest.setGroupId(groupId);
         searchRequest.setPage(page == null ? 1 : page);
         searchRequest.setAvailable(available);
@@ -192,7 +193,7 @@ class CatalogController extends BaseJspController {
             searchRequest.setOrder("asc");
             searchRequest.setOrderBy(Product_.NAME);
         }
-        model.addAttribute(PRODUCTS_SEARCH_RESULT, productDAO.search(searchRequest));
+        model.addAttribute(PRODUCTS_SEARCH_RESULT, productService.search(searchRequest));
         Long count = productDAO.count(searchRequest);
         model.addAttribute(PRODUCTS_SEARCH_RESULT_PAGES, Double.valueOf(Math.ceil((double) count / pageSize)).intValue());
     }

@@ -4,6 +4,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
+import org.json.JSONObject;
 
 /**
  * Product variant.
@@ -85,7 +86,9 @@ public class ProductVariant extends ExternalEntity {
     
     @Override
     public String toString() {
-        return "ProductVariant[ id=" + getId() + ", name=" + getName() + ", price=" + getPrice()
-                + ", parent ID =" + getParentId() + " ]";
+        final var json = new JSONObject();
+        json.put("name", getName());
+        json.put("price", getPrice());
+        return json.toString();
     }
 }
