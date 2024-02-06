@@ -221,13 +221,20 @@ class XProductVariants extends XElement {
         let sb = '';
         for (let i = 0; i < variants.length; i++) {
             const variant = variants[i];
-            console.log(variant);
-            sb += '<button type="button" class="btn btn-primary" data-mdb-ripple-init>' + variant.name + '</button>';
+            sb += `<button type="button" class="w-100 mb-1 agr-variant-btn btn 
+                    btn-sm btn-rounded btn-${i === 0 ? 'primary' : 'outline-primary'}" data-mdb-ripple-init
+                    data-product-variant-price="${variant.price}">
+                        ${variant.name}
+                    </button>`;
         }
         template.innerHTML = `
-            <div>
+            <div class="d-flex flex-column mb-2"
+                data-variants="${rawVariants}" 
+                data-selected-variant-name="${variants[0].name}" 
+                data-selected-variant-price="${variants[0].price}">
                 ${sb}
             </div>
+            <hr/>
         `;
         return template;
     }
@@ -242,9 +249,10 @@ class XProductActions extends XElement {
         const inCart = this.getAttribute('data-in-cart');
         const volumes = this.getAttribute('data-volume');
         const variants = this.getAttribute('data-variants');
+        const hasVariants = variants && variants !== "[]";
         template.innerHTML = `
-            ${volumes ? `<x-agr-product-volumes data-cls="${cls}" data-volume="${volumes}"></x-agr-product-volumes>` : ''}
-            ${variants && variants !== "[]" ? `<x-agr-product-variants data-cls="${cls}" data-variants="${variants}"></x-agr-product-variants>` : ''}
+            ${hasVariants ? `<x-agr-product-variants data-cls="${cls}" data-variants="${variants}"></x-agr-product-variants>` : ''}
+            ${volumes && !hasVariants ? `<x-agr-product-volumes data-cls="${cls}" data-volume="${volumes}"></x-agr-product-volumes>` : ''}
             <button class="btn btn-outline-info btn-rounded w-100 mt-1 ${cls}" data-product-id="${id}" data-order="">
                 <i class="far fa-hand-point-up me-2"></i> Заказать сразу
             </button>

@@ -14,7 +14,7 @@
 <%@attribute name="structuredData" fragment="true" required="false"%>
 <%@attribute name="headSection" fragment="true" required="false"%>
 
-<c:set var="staticResourceVersion" value="42"/>
+<c:set var="staticResourceVersion" value="43"/>
 
 <%-- any content can be specified here e.g.: --%>
 <!DOCTYPE html>
