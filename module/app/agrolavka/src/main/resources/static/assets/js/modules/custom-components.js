@@ -255,11 +255,13 @@ class XProductActions extends XElement {
         const id = this.getAttribute('data-id');
         const cls = this.getAttribute('data-cls');
         const inCart = this.getAttribute('data-in-cart');
+        const inCartVariants = this.getAttribute('data-in-cart-variants');
+        console.log(inCartVariants);
         const volumes = this.getAttribute('data-volume');
         const variants = this.getAttribute('data-variants');
         const hasVariants = variants && variants !== "[]";
         template.innerHTML = `
-            ${hasVariants ? `<x-agr-product-variants data-cls="${cls}" data-variants="${variants}"></x-agr-product-variants>` : ''}
+            ${hasVariants ? `<x-agr-product-variants data-cls="${cls}" data-variants="${variants}" data-variants-in-cart="${inCartVariants}"></x-agr-product-variants>` : ''}
             ${volumes && !hasVariants ? `<x-agr-product-volumes data-cls="${cls}" data-volume="${volumes}"></x-agr-product-volumes>` : ''}
             <button class="btn btn-outline-info btn-rounded w-100 mt-1 ${cls}" data-product-id="${id}" data-order="">
                 <i class="far fa-hand-point-up me-2"></i> Заказать сразу

@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,6 +22,7 @@ import ss.agrolavka.constants.SiteUrls;
 import ss.agrolavka.dao.ProductDAO;
 import ss.agrolavka.util.PriceCalculator;
 import ss.agrolavka.wrapper.ProductsSearchRequest;
+import ss.entity.agrolavka.OrderPosition;
 import ss.entity.agrolavka.Product;
 import ss.entity.agrolavka.Product_;
 import ss.entity.agrolavka.ProductsGroup;
@@ -86,7 +88,12 @@ class CatalogController extends BaseJspController {
             .map(desc -> desc.replace("\"", "&quot;")).orElse("");
         final var variants = productService.getVariants(product.getExternalId());
         final var basePrice = PriceCalculator.getBasePrice(product, variants);
-        final var discount = product.getDiscount() != null && product.getDiscount().getDiscount() != null ? product.getDiscount().getDiscount() : null;
+        final var shopPrice = PriceCalculator.getShopPrice(basePrice, product.getDiscount());
+        final var discount = product.getDiscount() != null && product.getDiscount().getDiscount() != null 
+            ? product.getDiscount().getDiscount() : null;
+        final var orderPositions = orderService.getCurrentOrder(request).getPositions();
+        final var inCartVariants = orderPositions.stream().filter(pos -> pos.getVariantId() != null)
+            .map(OrderPosition::getVariantId).collect(Collectors.toSet());
         model.addAttribute(TITLE, product.getSeoTitle() != null
                 ? product.getSeoTitle() : "Купить " + product.getGroup().getName() + " " + product.getName()
                 + ". Способ применения, инструкция, описание " + product.getName());
@@ -98,12 +105,13 @@ class CatalogController extends BaseJspController {
         model.addAttribute(STRUCTURED_DATA_DESCRIPTION, metaDescription.replace("\\", "").replace("\"", "'"));
         model.addAttribute(BREADCRUMB_LABEL, product.getName());
         model.addAttribute(BREADCRUMB_PATH, productsGroupService.getBreadcrumbPath(product.getGroup()));
-        model.addAttribute(PRODUCT_PRICE, String.format("%.2f", PriceCalculator.getShopPrice(basePrice, product.getDiscount())));
+        model.addAttribute(PRODUCT_PRICE, String.format("%.2f", shopPrice));
         model.addAttribute(PRODUCT_DISCOUNT, discount != null ? discount : "");
         model.addAttribute(PRODUCT_URL, domainConfiguration.host() + request.getRequestURI());
-        final var inCart = orderService.getCurrentOrder(request).getPositions().stream()
+        final var inCart = orderPositions.stream()
             .filter(pos -> Objects.equals(product.getId(), pos.getProductId())).findFirst().isPresent();
         model.addAttribute(IN_CART, inCart);
+        model.addAttribute(IN_CART_VARIANTS, inCartVariants.toString().replace("\"", "'"));
         model.addAttribute(VOLUMES, product.getVolumes() != null ? product.getVolumes().replace("\"", "'") : "");
         model.addAttribute(VARIANTS, variants.toString().replace("\"", "'"));
         model.addAttribute(META_DESCRIPTION, metaDescription);

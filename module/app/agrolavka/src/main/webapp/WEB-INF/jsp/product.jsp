@@ -65,7 +65,8 @@
                                 <hr/>
                                 <x-agr-product-actions 
                                     data-id="${product.id}" 
-                                    data-in-cart="${inCart ? "true" : ""}" 
+                                    data-in-cart="${inCart ? "true" : ""}"
+                                    data-in-cart-variants="${inCartVariants}"
                                     data-variants="${variants}"
                                     data-volume="${volumes}"></x-agr-product-actions>
                                 <hr/>

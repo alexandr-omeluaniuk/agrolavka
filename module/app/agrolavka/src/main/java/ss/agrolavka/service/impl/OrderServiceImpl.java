@@ -98,6 +98,8 @@ class OrderServiceImpl implements OrderService {
             position.setProduct(product);
             position.setProductId(orderDetails.getProductId());
             position.setPrice(price);
+            position.setVariantId(orderDetails.getVariantId());
+            position.setVariant(variant.orElse(null));
             positions.add(position);
         });
         final Order order = new Order();
@@ -137,6 +139,8 @@ class OrderServiceImpl implements OrderService {
                 position.setPrice(price);
                 position.setProduct(product);
                 position.setProductId(product.getId());
+                position.setVariantId(cartProduct.getVariantId());
+                position.setVariant(variant.orElse(null));
                 order.getPositions().add(position);
             });
             request.getSession().setAttribute(SiteConstants.CART_SESSION_ATTRIBUTE, order);
