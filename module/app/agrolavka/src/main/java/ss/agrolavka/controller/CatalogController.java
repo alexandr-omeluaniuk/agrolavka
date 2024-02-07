@@ -84,7 +84,7 @@ class CatalogController extends BaseJspController {
         final var metaDescription = getMetaDescription(product);
         final var fullDescription = Optional.ofNullable(product.getDescription())
             .map(desc -> desc.replace("\"", "&quot;")).orElse("");
-        final var variants = productService.getVariants(product);
+        final var variants = productService.getVariants(product.getExternalId());
         final var basePrice = PriceCalculator.getBasePrice(product, variants);
         final var discount = product.getDiscount() != null && product.getDiscount().getDiscount() != null ? product.getDiscount().getDiscount() : null;
         model.addAttribute(TITLE, product.getSeoTitle() != null

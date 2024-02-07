@@ -91,10 +91,10 @@ class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public List<ProductVariant> getVariants(Product product) {
+    public List<ProductVariant> getVariants(String externalId) {
         final var variantsMap = getVariantsMap();
-        if (variantsMap.containsKey(product.getExternalId())) {
-            final var variants = variantsMap.get(product.getExternalId());
+        if (variantsMap.containsKey(externalId)) {
+            final var variants = variantsMap.get(externalId);
             Collections.sort(variants);
             return variants;
         } else {
@@ -112,7 +112,7 @@ class ProductServiceImpl implements ProductService{
     @Override
     public List<Product> search(ProductsSearchRequest request) {
         final var products = productDao.search(request);
-        products.forEach(product -> product.setVariants(getVariants(product)));
+        products.forEach(product -> product.setVariants(getVariants(product.getExternalId())));
         return products;
     }
 }

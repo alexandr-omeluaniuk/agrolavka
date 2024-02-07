@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ss.agrolavka.constants.OrderStatus;
 import ss.agrolavka.constants.SiteConstants;
 import ss.agrolavka.service.OrderService;
+import ss.agrolavka.service.ProductService;
 import ss.agrolavka.util.PriceCalculator;
 import ss.agrolavka.wrapper.CartProduct;
 import ss.agrolavka.wrapper.OneClickOrderWrapper;
@@ -24,6 +26,7 @@ import ss.entity.agrolavka.EuropostLocationSnapshot;
 import ss.entity.agrolavka.Order;
 import ss.entity.agrolavka.OrderPosition;
 import ss.entity.agrolavka.Product;
+import ss.entity.agrolavka.ProductVariant;
 import ss.martin.core.dao.CoreDao;
 
 /**
@@ -40,6 +43,9 @@ class OrderServiceImpl implements OrderService {
     
     @Autowired
     private TelegramBotOrderService telegramBotOrderService;
+    
+    @Autowired
+    private ProductService productService;
     
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
@@ -84,8 +90,9 @@ class OrderServiceImpl implements OrderService {
     @Override
     public Order createOneClickOrder(final OneClickOrderWrapper orderDetails) throws Exception {
         final Product product = coreDAO.findById(orderDetails.getProductId(), Product.class);
+        final var variant = getVariant(orderDetails.getVariantId(), product);
         final List<OrderPosition> positions = new ArrayList<>();
-        PriceCalculator.breakQuantityByVolume(product, orderDetails.getQuantity()).forEach((price, quantity) -> {
+        PriceCalculator.breakQuantityByVolume(product, variant, orderDetails.getQuantity()).forEach((price, quantity) -> {
             final OrderPosition position = new OrderPosition();
             position.setQuantity(quantity);
             position.setProduct(product);
@@ -119,9 +126,10 @@ class OrderServiceImpl implements OrderService {
     @Override
     public Order addProductToCart(final CartProduct cartProduct, final HttpServletRequest request) throws Exception {
         Product product = coreDAO.findById(cartProduct.getProductId(), Product.class);
+        final var variant = getVariant(cartProduct.getVariantId(), product);
         final Order order = getCurrentOrder(request);
         if (product != null) {
-            PriceCalculator.breakQuantityByVolume(product, cartProduct.getQuantity()).forEach((price, quantity) -> {
+            PriceCalculator.breakQuantityByVolume(product, variant, cartProduct.getQuantity()).forEach((price, quantity) -> {
                 OrderPosition position = new OrderPosition();
                 position.setPositionId(UUID.randomUUID().toString());
                 position.setOrder(order);
@@ -134,6 +142,15 @@ class OrderServiceImpl implements OrderService {
             request.getSession().setAttribute(SiteConstants.CART_SESSION_ATTRIBUTE, order);
         }
         return order;
+    }
+    
+    private Optional<ProductVariant> getVariant(final String variantId, final Product product) {
+        if (variantId != null) {
+            return productService.getVariants(product.getExternalId()).stream()
+                .filter(v -> v.getExternalId().equals(variantId)).findFirst();
+        } else {
+            return Optional.empty();
+        }
     }
     
     private Address getOrderAddress(final OrderDetailsWrapper orderDetails) {

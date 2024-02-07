@@ -46,8 +46,8 @@ public interface ProductService {
     
     /**
      * Get product variants.
-     * @param product product.
+     * @param externalId product externalId.
      * @return list of product variants.
      */
-    List<ProductVariant> getVariants(Product product);
+    List<ProductVariant> getVariants(String externalId);
 }

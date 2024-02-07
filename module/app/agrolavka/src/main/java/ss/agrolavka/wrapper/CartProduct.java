@@ -25,6 +25,8 @@ public class CartProduct {
     private Long productId;
     /** Quantity. */
     private Double quantity;
+    /** Variant ID. */
+    private String variantId;
 
     /**
      * @return the productId
@@ -49,5 +51,13 @@ public class CartProduct {
      */
     public void setQuantity(Double quantity) {
         this.quantity = quantity;
+    }
+
+    public String getVariantId() {
+        return variantId;
+    }
+
+    public void setVariantId(String variantId) {
+        this.variantId = variantId;
     }
 }

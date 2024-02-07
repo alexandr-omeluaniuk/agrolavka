@@ -27,6 +27,8 @@ public class OneClickOrderWrapper {
     private String phone;
     /** Quantity. */
     private Double quantity;
+    /** Variant ID. */
+    private String variantId;
     /**
      * @return the productId
      */
@@ -62,5 +64,13 @@ public class OneClickOrderWrapper {
      */
     public void setQuantity(Double quantity) {
         this.quantity = quantity;
+    }
+
+    public String getVariantId() {
+        return variantId;
+    }
+
+    public void setVariantId(String variantId) {
+        this.variantId = variantId;
     }
 }
