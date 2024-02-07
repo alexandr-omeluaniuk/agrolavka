@@ -19,6 +19,7 @@ import static ss.agrolavka.constants.JspValue.*;
 import ss.agrolavka.constants.SiteConstants;
 import ss.agrolavka.constants.SiteUrls;
 import ss.agrolavka.dao.ProductDAO;
+import ss.agrolavka.util.PriceCalculator;
 import ss.agrolavka.wrapper.ProductsSearchRequest;
 import ss.entity.agrolavka.Product;
 import ss.entity.agrolavka.Product_;
@@ -94,7 +95,7 @@ class CatalogController extends BaseJspController {
         model.addAttribute(STRUCTURED_DATA_DESCRIPTION, metaDescription.replace("\\", "").replace("\"", "'"));
         model.addAttribute(BREADCRUMB_LABEL, product.getName());
         model.addAttribute(BREADCRUMB_PATH, productsGroupService.getBreadcrumbPath(product.getGroup()));
-        model.addAttribute(PRODUCT_PRICE, String.format("%.2f", product.getDiscountPrice()));
+        model.addAttribute(PRODUCT_PRICE, String.format("%.2f", PriceCalculator.getShopPrice(product.getPrice(), product.getDiscount())));
         model.addAttribute(PRODUCT_URL, domainConfiguration.host() + request.getRequestURI());
         final var inCart = orderService.getCurrentOrder(request).getPositions().stream()
             .filter(pos -> Objects.equals(product.getId(), pos.getProductId())).findFirst().isPresent();

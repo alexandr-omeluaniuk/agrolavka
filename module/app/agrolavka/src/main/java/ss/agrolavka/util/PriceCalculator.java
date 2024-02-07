@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import ss.agrolavka.wrapper.ProductVolume;
+import ss.entity.agrolavka.Discount;
 import ss.entity.agrolavka.Product;
 
 /**
@@ -49,12 +50,20 @@ public class PriceCalculator {
                 }
             }
         } else {
-            result.put(product.getDiscountPrice(), quantity.intValue());
+            result.put(getShopPrice(product.getPrice(), product.getDiscount()), quantity.intValue());
         }
         return result;
     }
     
     private static int toMilliliters(final double quantityInLiters) {
         return Double.valueOf(String.valueOf(quantityInLiters * MILLILITER_IN_LITER)).intValue();
+    }
+    
+    public static Double getShopPrice(Double basePrice, Discount discount) {
+        if (discount != null) {
+            return basePrice - (basePrice * discount.getDiscount() / 100);
+        } else {
+            return basePrice;
+        }
     }
 }

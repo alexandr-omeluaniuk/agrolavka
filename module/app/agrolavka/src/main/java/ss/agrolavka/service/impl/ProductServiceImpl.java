@@ -94,11 +94,7 @@ class ProductServiceImpl implements ProductService{
     public List<ProductVariant> getVariants(Product product) {
         final var variantsMap = getVariantsMap();
         if (variantsMap.containsKey(product.getExternalId())) {
-            final var origin = new ProductVariant();
-            origin.setName(product.getName());
-            origin.setPrice(product.getDiscountPrice());
             final var variants = variantsMap.get(product.getExternalId());
-            variants.add(origin);
             Collections.sort(variants);
             return variants;
         } else {

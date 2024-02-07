@@ -304,14 +304,6 @@ public class Product extends ExternalEntity {
                 + ", article=" + (getArticle() == null ? "" : getArticle()) + " ]";
     }
     
-    public Double getDiscountPrice() {
-        if (this.getDiscount() != null) {
-            return this.getPrice() - (this.getPrice() * this.getDiscount().getDiscount() / 100);
-        } else {
-            return this.getPrice();
-        }
-    }
-    
     public List<ProductVolume> getProductVolumes() throws JsonProcessingException {
         var list = getVolumes() == null ? new ProductVolume[0] : new ObjectMapper().readValue(getVolumes(), ProductVolume[].class);
         return Arrays.asList(list);
