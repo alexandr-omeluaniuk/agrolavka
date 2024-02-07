@@ -226,6 +226,7 @@ class XProductVariants extends XElement {
             const priceFloat = price[1];
             sb += `<button type="button" class="w-100 mb-1 agr-variant-btn btn 
                     btn-sm btn-rounded btn-${i === 0 ? 'primary' : 'outline-primary'}" data-mdb-ripple-init
+                    data-product-variant-id="${variant.id}"
                     data-product-variant-price="${variant.price}"
                     data-product-variant-name="${variant.name}">
                         <div class="d-flex justify-content-between">
@@ -236,7 +237,7 @@ class XProductVariants extends XElement {
         }
         template.innerHTML = `
             <div class="d-flex flex-column mb-2"
-                data-variants="${rawVariants}" 
+                data-selected-variant-id="${variants[0].id}" 
                 data-selected-variant-name="${variants[0].name}" 
                 data-selected-variant-price="${variants[0].price}">
                 ${sb}

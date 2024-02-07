@@ -89,6 +89,7 @@ public class ProductVariant extends ExternalEntity implements Comparable<Product
         final var json = new JSONObject();
         json.put("name", getName());
         json.put("price", getPrice());
+        json.put("id", getExternalId());
         return json.toString();
     }
 

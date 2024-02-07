@@ -27,8 +27,9 @@ const addToCartListener = (evt, button) => {
     modalElement.cartButton = button;
     const fieldProductId = modalElement.querySelector('input[name="productId"]');
     const fieldQuantity = modalElement.querySelector('input[name="quantity"]');
+    const variantIdField = modalElement.querySelector('input[name="variantId"]');
     fieldProductId.value = button.getAttribute('data-product-id');
-    modifyQuantityField(fieldQuantity, button);
+    modifyQuantityField(fieldQuantity, variantIdField, button);
     const modal = new mdb.Modal(modalElement, {});
     modal.toggle();
     setTimeout(() => {
@@ -108,8 +109,9 @@ const orderOneClickButtonListener = (evt, button) => {
     const productId = button.getAttribute('data-product-id');
     const modalElement = document.getElementById('agr-one-click-order-modal');
     modalElement.querySelector('input[name="productId"]').value = productId;
+    const variantIdField = modalElement.querySelector('input[name="variantId"]');
     const fieldQuantity = modalElement.querySelector('input[name="quantity"]');
-    modifyQuantityField(fieldQuantity, button);
+    modifyQuantityField(fieldQuantity, variantIdField, button);
     const confirmButton = modalElement.querySelector('button[data-one-click-order]');
     confirmButton.removeAttribute('disabled');
     confirmButton.querySelector('.spinner-border').classList.add('d-none');
@@ -196,8 +198,11 @@ const productVariantClickListener = (evt, btn) => {
     btn.classList.add("btn-primary");
     const price = btn.getAttribute("data-product-variant-price");
     const name = btn.getAttribute("data-product-variant-name");
-    btn.closest('div[data-variants]').setAttribute("data-selected-variant-name", name);
-    btn.closest('div[data-variants]').setAttribute("data-selected-variant-price", price);
+    const id = btn.getAttribute("data-product-variant-id");
+    const variantsComponent = btn.closest('div[data-selected-variant-id]');
+    variantsComponent.setAttribute("data-selected-variant-name", name);
+    variantsComponent.setAttribute("data-selected-variant-price", price);
+    variantsComponent.setAttribute("data-selected-variant-id", id);
     const priceBig = parseFloat(price).toFixed(2).split('.')[0];
     const priceSmall = parseFloat(price).toFixed(2).split('.')[1];
     let container = btn.closest('.card');
@@ -216,10 +221,17 @@ const photoClickListener = (evt, image) => {
     modal.toggle();
 };
 
-const modifyQuantityField = (fieldQuantity, button) => {
+const modifyQuantityField = (fieldQuantity, variantIdField, button) => {
     const volumesComponent = button.closest('div').querySelector('div[data-volumes]');
+    const variantsComponent = button.closest('div').querySelector('div[data-selected-variant-id]');
     const helpText = fieldQuantity.closest('form').querySelector('.agr-volume-help-text');
-    if (volumesComponent) {
+    if (variantsComponent) {
+        variantIdField.value = variantsComponent.getAttribute("data-selected-variant-id");
+        fieldQuantity.removeAttribute("step");
+        fieldQuantity.setAttribute("min", "1");
+        fieldQuantity.value = 1;
+        helpText.classList.add('d-none');
+    } else if (volumesComponent) {
         fieldQuantity.setAttribute("step", ".1");
         try {
             const volumes = volumesComponent.getAttribute("data-volumes");

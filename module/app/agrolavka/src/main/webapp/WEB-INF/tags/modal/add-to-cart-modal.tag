@@ -25,6 +25,7 @@
                     </div>
                     <small class="text-muted d-none agr-volume-help-text">Минимальное количество для заказа <b class="text-danger">0.1л</b></small>
                     <input name="productId" hidden required>
+                    <input name="variantId" hidden>
                 </form>
             </div>
             <div class="modal-footer d-flex justify-content-between">
