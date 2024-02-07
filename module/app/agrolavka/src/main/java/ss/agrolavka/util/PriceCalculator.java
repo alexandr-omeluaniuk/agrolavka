@@ -24,6 +24,7 @@ import java.util.TreeMap;
 import ss.agrolavka.wrapper.ProductVolume;
 import ss.entity.agrolavka.Discount;
 import ss.entity.agrolavka.Product;
+import ss.entity.agrolavka.ProductVariant;
 
 /**
  * Price calculator.
@@ -57,6 +58,10 @@ public class PriceCalculator {
     
     private static int toMilliliters(final double quantityInLiters) {
         return Double.valueOf(String.valueOf(quantityInLiters * MILLILITER_IN_LITER)).intValue();
+    }
+    
+    public static Double getBasePrice(Product product, List<ProductVariant> variants) {
+        return variants.isEmpty() ? product.getPrice() : variants.get(0).getPrice();
     }
     
     public static Double getShopPrice(Double basePrice, Discount discount) {

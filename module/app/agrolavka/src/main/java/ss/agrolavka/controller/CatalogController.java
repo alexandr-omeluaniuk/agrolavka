@@ -84,6 +84,8 @@ class CatalogController extends BaseJspController {
         final var metaDescription = getMetaDescription(product);
         final var fullDescription = Optional.ofNullable(product.getDescription())
             .map(desc -> desc.replace("\"", "&quot;")).orElse("");
+        final var variants = productService.getVariants(product);
+        final var basePrice = PriceCalculator.getBasePrice(product, variants);
         model.addAttribute(TITLE, product.getSeoTitle() != null
                 ? product.getSeoTitle() : "Купить " + product.getGroup().getName() + " " + product.getName()
                 + ". Способ применения, инструкция, описание " + product.getName());
@@ -95,13 +97,13 @@ class CatalogController extends BaseJspController {
         model.addAttribute(STRUCTURED_DATA_DESCRIPTION, metaDescription.replace("\\", "").replace("\"", "'"));
         model.addAttribute(BREADCRUMB_LABEL, product.getName());
         model.addAttribute(BREADCRUMB_PATH, productsGroupService.getBreadcrumbPath(product.getGroup()));
-        model.addAttribute(PRODUCT_PRICE, String.format("%.2f", PriceCalculator.getShopPrice(product.getPrice(), product.getDiscount())));
+        model.addAttribute(PRODUCT_PRICE, String.format("%.2f", PriceCalculator.getShopPrice(basePrice, product.getDiscount())));
         model.addAttribute(PRODUCT_URL, domainConfiguration.host() + request.getRequestURI());
         final var inCart = orderService.getCurrentOrder(request).getPositions().stream()
             .filter(pos -> Objects.equals(product.getId(), pos.getProductId())).findFirst().isPresent();
         model.addAttribute(IN_CART, inCart);
         model.addAttribute(VOLUMES, product.getVolumes() != null ? product.getVolumes().replace("\"", "'") : "");
-        model.addAttribute(VARIANTS, productService.getVariants(product).toString().replace("\"", "'"));
+        model.addAttribute(VARIANTS, variants.toString().replace("\"", "'"));
         model.addAttribute(META_DESCRIPTION, metaDescription);
         model.addAttribute(FULL_PRODUCT_DESCRIPTION, fullDescription);
         final var calendar = new GregorianCalendar();

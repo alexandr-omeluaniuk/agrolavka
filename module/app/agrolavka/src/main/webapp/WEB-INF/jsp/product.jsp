@@ -61,7 +61,7 @@
                                 <hr/>
                                 <x-agr-product-price 
                                     data-discount="${product.discount != null && product.discount.discount != null ? product.discount.discount : ""}" 
-                                    data-price="${product.price}"></x-agr-product-price>
+                                    data-price="${productPrice}"></x-agr-product-price>
                                 <hr/>
                                 <x-agr-product-actions 
                                     data-id="${product.id}" 
