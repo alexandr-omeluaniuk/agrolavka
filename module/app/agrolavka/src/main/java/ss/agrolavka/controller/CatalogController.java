@@ -86,6 +86,7 @@ class CatalogController extends BaseJspController {
             .map(desc -> desc.replace("\"", "&quot;")).orElse("");
         final var variants = productService.getVariants(product);
         final var basePrice = PriceCalculator.getBasePrice(product, variants);
+        final var discount = product.getDiscount() != null && product.getDiscount().getDiscount() != null ? product.getDiscount().getDiscount() : null;
         model.addAttribute(TITLE, product.getSeoTitle() != null
                 ? product.getSeoTitle() : "Купить " + product.getGroup().getName() + " " + product.getName()
                 + ". Способ применения, инструкция, описание " + product.getName());
@@ -98,6 +99,7 @@ class CatalogController extends BaseJspController {
         model.addAttribute(BREADCRUMB_LABEL, product.getName());
         model.addAttribute(BREADCRUMB_PATH, productsGroupService.getBreadcrumbPath(product.getGroup()));
         model.addAttribute(PRODUCT_PRICE, String.format("%.2f", PriceCalculator.getShopPrice(basePrice, product.getDiscount())));
+        model.addAttribute(PRODUCT_DISCOUNT, discount != null ? discount : "");
         model.addAttribute(PRODUCT_URL, domainConfiguration.host() + request.getRequestURI());
         final var inCart = orderService.getCurrentOrder(request).getPositions().stream()
             .filter(pos -> Objects.equals(product.getId(), pos.getProductId())).findFirst().isPresent();

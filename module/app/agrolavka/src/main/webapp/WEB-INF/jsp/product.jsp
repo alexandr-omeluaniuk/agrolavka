@@ -60,7 +60,7 @@
                                 <t:product-images product="${product}"></t:product-images>
                                 <hr/>
                                 <x-agr-product-price 
-                                    data-discount="${product.discount != null && product.discount.discount != null ? product.discount.discount : ""}" 
+                                    data-discount="${productDiscount}" 
                                     data-price="${productPrice}"></x-agr-product-price>
                                 <hr/>
                                 <x-agr-product-actions 

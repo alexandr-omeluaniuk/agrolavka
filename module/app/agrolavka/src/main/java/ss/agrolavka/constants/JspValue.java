@@ -37,6 +37,7 @@ public final class JspValue {
     public static final String STRUCTURED_DATA_NAME = "structuredDataName";
     public static final String STRUCTURED_DATA_DESCRIPTION = "structuredDataDescription";
     public static final String PRODUCT_PRICE = "productPrice";
+    public static final String PRODUCT_DISCOUNT = "productDiscount";
     public static final String PRODUCT_URL = "productURL";
     public static final String IN_CART = "inCart";
     public static final String VOLUMES = "volumes";
