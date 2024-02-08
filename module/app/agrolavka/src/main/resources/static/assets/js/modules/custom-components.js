@@ -212,42 +212,61 @@ class XProductVolumes extends XElement {
 }
 window.customElements.define('x-agr-product-volumes', XProductVolumes);
 
+class XProductVariant extends XElement {    
+    createTemplate() {
+        this.state = {
+            variant: null,
+            selected: false
+        };
+        this.state.variant = JSON.parse(this.getAttribute('data-variant').replaceAll("'", '"'));
+        this.state.selected = this.getAttribute('data-selected') === 'true';
+        this.render = () => {
+            const price = parseFloat(this.state.variant.price).toFixed(2).split('.');
+            const priceInt = price[0];
+            const priceFloat = price[1];
+            return `<button type="button" class="w-100 mb-1 agr-variant-btn btn 
+                        btn-sm btn-rounded btn-${this.state.selected ? 'primary' : 'outline-primary'}" data-mdb-ripple-init
+                        data-product-variant-id="${this.state.variant.id}"
+                        data-product-variant-price="${this.state.variant.price}"
+                        data-product-variant-name="${this.state.variant.name}">
+                            <div class="d-flex justify-content-between">
+                                <div>${this.state.variant.name}</div>
+                                <div>${priceInt}<small>.${priceFloat}</small></div>
+                            </div>
+                        </button>`;
+        };
+        this.template = document.createElement('template');
+        this.template.innerHTML = this.render();
+        return this.template;
+    }
+}
+window.customElements.define('x-agr-product-variant', XProductVariant);
+
 class XProductVariants extends XElement {    
     createTemplate() {
         this.state = {
+            selectedVariant: null,
             variants: []
         };
-        let template = document.createElement('template');
         const rawVariants = this.getAttribute('data-variants');
         this.state.variants = JSON.parse(rawVariants.replaceAll("'", '"'));
-        let sb = '';
-        for (let i = 0; i < this.state.variants.length; i++) {
-            const variant = this.state.variants[i];
-            const price = parseFloat(variant.price).toFixed(2).split('.');
-            const priceInt = price[0];
-            const priceFloat = price[1];
-            sb += `<button type="button" class="w-100 mb-1 agr-variant-btn btn 
-                    btn-sm btn-rounded btn-${i === 0 ? 'primary' : 'outline-primary'}" data-mdb-ripple-init
-                    data-product-variant-id="${variant.id}"
-                    data-product-variant-price="${variant.price}"
-                    data-product-variant-name="${variant.name}">
-                        <div class="d-flex justify-content-between">
-                            <div>${variant.name}</div>
-                            <div>${priceInt}<small>.${priceFloat}</small></div>
-                        </div>
-                    </button>`;
-        }
-        const selectedVariant = this.state.variants[0];
-        template.innerHTML = `
-            <div class="d-flex flex-column mb-2"
-                data-selected-variant-id="${selectedVariant.id}" 
-                data-selected-variant-name="${selectedVariant.name}" 
-                data-selected-variant-price="${selectedVariant.price}">
-                ${sb}
-            </div>
-            <hr/>
-        `;
-        return template;
+        this.state.selectedVariant = this.state.variants[0];
+        this.template = document.createElement('template');
+        this.render = () => {
+            const buttons = this.state.variants.map(v => 
+                `<x-agr-product-variant data-variant="${JSON.stringify(v).replaceAll('"', "'")}" 
+                    data-selected="${this.state.selectedVariant.id === v.id}"></x-agr-product-variant>`
+            ).join('');
+            return `
+                <div class="d-flex flex-column mb-2">
+                    ${buttons}
+                </div>
+                <hr/>
+            `;
+        };
+        
+        this.template.innerHTML = this.render();
+        return this.template;
     }
 }
 window.customElements.define('x-agr-product-variants', XProductVariants);
@@ -256,19 +275,17 @@ class XProductActions extends XElement {
     createTemplate() {
         this.state = {
             id: null,
-            inCart: false,
-            inCartVariants: []
+            inCart: false
         };
         let template = document.createElement('template');
         this.state.id = this.getAttribute('data-id');
         const cls = this.getAttribute('data-cls');
         this.state.inCart = this.getAttribute('data-in-cart');
-        this.state.inCartVariants = JSON.parse(this.getAttribute('data-in-cart-variants').replaceAll("'", '"'));
         const volumes = this.getAttribute('data-volume');
         const rawVariants = this.getAttribute('data-variants');
         const hasVariants = rawVariants && rawVariants.length > 2;
         template.innerHTML = `
-            ${hasVariants ? `<x-agr-product-variants data-variants="${rawVariants}"></x-agr-product-variants>` : ''}
+            ${hasVariants ? `<x-agr-product-variants data-variants="${rawVariants}" data-in-cart-variants="${this.getAttribute('data-in-cart-variants')}"></x-agr-product-variants>` : ''}
             ${volumes && !hasVariants ? `<x-agr-product-volumes data-cls="${cls}" data-volume="${volumes}"></x-agr-product-volumes>` : ''}
             <button class="btn btn-outline-info btn-rounded w-100 mt-1 ${cls}" data-product-id="${this.state.id}" data-order="">
                 <i class="far fa-hand-point-up me-2"></i> Заказать сразу
