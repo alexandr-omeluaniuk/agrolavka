@@ -180,26 +180,6 @@ const productVolumeClickListener = (evt, btn) => {
             + '</small> <small class="text-muted">BYN</small>';
 };
 
-//const productVariantClickListener = (evt, btn) => {
-//    evt.preventDefault();
-//    evt.stopPropagation();
-//    btn.parentElement.querySelectorAll('button').forEach(b => {
-//        b.classList.add("btn-outline-primary");
-//        b.classList.remove("btn-primary");
-//    });
-//    btn.classList.remove("btn-outline-primary");
-//    btn.classList.add("btn-primary");
-//    const variantsInCart = JSON.parse(btn.closest('[data-variants-in-cart]').getAttribute("data-variants-in-cart"));
-//    console.log(variantsInCart);
-//    const price = btn.getAttribute("data-product-variant-price");
-//    const name = btn.getAttribute("data-product-variant-name");
-//    const id = btn.getAttribute("data-product-variant-id");
-//    const variantsComponent = btn.closest('div[data-selected-variant-id]');
-//    variantsComponent.setAttribute("data-selected-variant-name", name);
-//    variantsComponent.setAttribute("data-selected-variant-price", price);
-//    variantsComponent.setAttribute("data-selected-variant-id", id);
-//};
-
 const photoClickListener = (evt, image) => {
     evt.preventDefault();
     evt.stopPropagation();

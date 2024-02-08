@@ -12,6 +12,9 @@ class XElement extends HTMLElement {
         if (this.onClick) {
             this.addEventListener('click', this.onClick);
         }
+        if (this.postConstruct) {
+            this.postConstruct();
+        }
     }
     
     createTemplate() {
@@ -269,6 +272,10 @@ class XProductVariants extends XElement {
         this.template = document.createElement('template'); 
         this.template.innerHTML = this.render();
         return this.template;
+    }
+    
+    postConstruct() {
+        this._switchButtons(this.state.selectedVariant);
     }
     
     render() {
