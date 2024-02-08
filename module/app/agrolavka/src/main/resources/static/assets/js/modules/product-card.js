@@ -50,13 +50,8 @@ const removeFromCartListener = (evt, button) => {
     }).then(function (response) {
         if (response.ok) {
             response.json().then(cart => {
-                button.removeAttribute('disabled');
-                button.removeAttribute('data-remove');
-                button.setAttribute('data-add', '');
                 updateCartTotal(cart);
-                button.innerHTML = '<i class="fas fa-cart-plus me-2"></i> В корзину';
-                button.classList.add('btn-outline-success');
-                button.classList.remove('btn-outline-danger');
+                btnToAddToCart(button);
             });
         }
     }).catch(error => {
@@ -87,13 +82,11 @@ const addToCartConfirmListener = (evt, button) => {
         }).then(function (response) {
             if (response.ok) {
                 response.json().then(cart => {
-                    modalElement.cartButton.removeAttribute('disabled');
-                    modalElement.cartButton.removeAttribute('data-add');
-                    modalElement.cartButton.setAttribute('data-remove', '');
                     updateCartTotal(cart);
-                    modalElement.cartButton.innerHTML = '<i class="fas fa-minus-circle me-2"></i> Из корзины';
-                    modalElement.cartButton.classList.remove('btn-outline-success');
-                    modalElement.cartButton.classList.add('btn-outline-danger');
+                    btnToRemoveFromCart(modalElement.cartButton);
+                    if (formData.variantId) {
+                        modifyVariantsInCart(formData.variantId, 'add');
+                    }
                 });
             }
         }).catch(error => {
@@ -196,6 +189,8 @@ const productVariantClickListener = (evt, btn) => {
     });
     btn.classList.remove("btn-outline-primary");
     btn.classList.add("btn-primary");
+    const variantsInCart = JSON.parse(btn.closest('[data-variants-in-cart]').getAttribute("data-variants-in-cart"));
+    console.log(variantsInCart);
     const price = btn.getAttribute("data-product-variant-price");
     const name = btn.getAttribute("data-product-variant-name");
     const id = btn.getAttribute("data-product-variant-id");
@@ -219,6 +214,36 @@ const photoClickListener = (evt, image) => {
     const modalElement = document.getElementById('agr-photo-modal');
     const modal = new mdb.Modal(modalElement, {});
     modal.toggle();
+};
+
+const modifyVariantsInCart = (variantId, action) => {
+    const productVariantsComponent = document.querySelector('[data-product-variant-id="' + variantId + '"]')
+        .closest('x-agr-product-variants');
+    const inCartVariants = JSON.parse(productVariantsComponent.getAttribute("data-variants-in-cart"));
+    if (action === 'add') {
+        inCartVariants.push(variantId);
+    } else {
+        inCartVariants = inCartVariants.filter(v => v !== variantId);
+    }
+    productVariantsComponent.setAttribute("data-variants-in-cart", JSON.stringify(inCartVariants));
+};
+
+const btnToRemoveFromCart = (cartButton) => {
+    cartButton.removeAttribute('disabled');
+    cartButton.removeAttribute('data-add');
+    cartButton.setAttribute('data-remove', '');
+    cartButton.innerHTML = '<i class="fas fa-minus-circle me-2"></i> Из корзины';
+    cartButton.classList.remove('btn-outline-success');
+    cartButton.classList.add('btn-outline-danger');
+};
+
+const btnToAddToCart = (cartButton) => {
+    cartButton.removeAttribute('disabled');
+    cartButton.removeAttribute('data-remove');
+    cartButton.setAttribute('data-add', '');
+    cartButton.innerHTML = '<i class="fas fa-cart-plus me-2"></i> В корзину';
+    cartButton.classList.add('btn-outline-success');
+    cartButton.classList.remove('btn-outline-danger');
 };
 
 const modifyQuantityField = (fieldQuantity, variantIdField, button) => {

@@ -214,13 +214,15 @@ window.customElements.define('x-agr-product-volumes', XProductVolumes);
 
 class XProductVariants extends XElement {    
     createTemplate() {
+        this.state = {
+            variants: []
+        };
         let template = document.createElement('template');
-        const cls = this.getAttribute('data-cls');
         const rawVariants = this.getAttribute('data-variants');
-        const variants = JSON.parse(rawVariants.replaceAll("'", '"'));
+        this.state.variants = JSON.parse(rawVariants.replaceAll("'", '"'));
         let sb = '';
-        for (let i = 0; i < variants.length; i++) {
-            const variant = variants[i];
+        for (let i = 0; i < this.state.variants.length; i++) {
+            const variant = this.state.variants[i];
             const price = parseFloat(variant.price).toFixed(2).split('.');
             const priceInt = price[0];
             const priceFloat = price[1];
@@ -235,11 +237,12 @@ class XProductVariants extends XElement {
                         </div>
                     </button>`;
         }
+        const selectedVariant = this.state.variants[0];
         template.innerHTML = `
             <div class="d-flex flex-column mb-2"
-                data-selected-variant-id="${variants[0].id}" 
-                data-selected-variant-name="${variants[0].name}" 
-                data-selected-variant-price="${variants[0].price}">
+                data-selected-variant-id="${selectedVariant.id}" 
+                data-selected-variant-name="${selectedVariant.name}" 
+                data-selected-variant-price="${selectedVariant.price}">
                 ${sb}
             </div>
             <hr/>
@@ -251,27 +254,31 @@ window.customElements.define('x-agr-product-variants', XProductVariants);
 
 class XProductActions extends XElement {    
     createTemplate() {
+        this.state = {
+            id: null,
+            inCart: false,
+            inCartVariants: []
+        };
         let template = document.createElement('template');
-        const id = this.getAttribute('data-id');
+        this.state.id = this.getAttribute('data-id');
         const cls = this.getAttribute('data-cls');
-        const inCart = this.getAttribute('data-in-cart');
-        const inCartVariants = this.getAttribute('data-in-cart-variants');
-        console.log(inCartVariants);
+        this.state.inCart = this.getAttribute('data-in-cart');
+        this.state.inCartVariants = JSON.parse(this.getAttribute('data-in-cart-variants').replaceAll("'", '"'));
         const volumes = this.getAttribute('data-volume');
-        const variants = this.getAttribute('data-variants');
-        const hasVariants = variants && variants !== "[]";
+        const rawVariants = this.getAttribute('data-variants');
+        const hasVariants = rawVariants && rawVariants.length > 2;
         template.innerHTML = `
-            ${hasVariants ? `<x-agr-product-variants data-cls="${cls}" data-variants="${variants}" data-variants-in-cart="${inCartVariants}"></x-agr-product-variants>` : ''}
+            ${hasVariants ? `<x-agr-product-variants data-variants="${rawVariants}"></x-agr-product-variants>` : ''}
             ${volumes && !hasVariants ? `<x-agr-product-volumes data-cls="${cls}" data-volume="${volumes}"></x-agr-product-volumes>` : ''}
-            <button class="btn btn-outline-info btn-rounded w-100 mt-1 ${cls}" data-product-id="${id}" data-order="">
+            <button class="btn btn-outline-info btn-rounded w-100 mt-1 ${cls}" data-product-id="${this.state.id}" data-order="">
                 <i class="far fa-hand-point-up me-2"></i> Заказать сразу
             </button>
-            ${inCart ? `
-                <button class="btn btn-outline-danger btn-rounded w-100 mt-1 ${cls}" data-product-id="${id}" data-remove="">
+            ${this.state.inCart ? `
+                <button class="btn btn-outline-danger btn-rounded w-100 mt-1 ${cls}" data-product-id="${this.state.id}" data-remove="">
                     <i class="fas fa-minus-circle me-2"></i> Из корзины
                 </button>
             ` : `
-                <button class="btn btn-outline-success btn-rounded w-100 mt-1 ${cls}" data-product-id="${id}" data-add="">
+                <button class="btn btn-outline-success btn-rounded w-100 mt-1 ${cls}" data-product-id="${this.state.id}" data-add="">
                     <i class="fas fa-cart-plus me-2"></i> В корзину
                 </button>
             `}

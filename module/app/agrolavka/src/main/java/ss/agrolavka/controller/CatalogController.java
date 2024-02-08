@@ -1,5 +1,6 @@
 package ss.agrolavka.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -27,6 +28,7 @@ import ss.entity.agrolavka.Product;
 import ss.entity.agrolavka.Product_;
 import ss.entity.agrolavka.ProductsGroup;
 import ss.entity.martin.DataModel;
+import ss.martin.base.lang.ThrowingRunnable;
 
 /**
  * Catalog page controller.
@@ -46,6 +48,9 @@ class CatalogController extends BaseJspController {
     /** Product DAO. */
     @Autowired
     private ProductDAO productDAO;
+    
+    @Autowired
+    private ObjectMapper objectMapper;
         
     @RequestMapping(SiteUrls.PAGE_CATALOG)
     public Object catalog(
@@ -111,7 +116,9 @@ class CatalogController extends BaseJspController {
         final var inCart = orderPositions.stream()
             .filter(pos -> Objects.equals(product.getId(), pos.getProductId())).findFirst().isPresent();
         model.addAttribute(IN_CART, inCart);
-        model.addAttribute(IN_CART_VARIANTS, inCartVariants.toString().replace("\"", "'"));
+        ((ThrowingRunnable) () -> {
+            model.addAttribute(IN_CART_VARIANTS, objectMapper.writeValueAsString(inCartVariants).replace("\"", "'"));
+        }).run();
         model.addAttribute(VOLUMES, product.getVolumes() != null ? product.getVolumes().replace("\"", "'") : "");
         model.addAttribute(VARIANTS, variants.toString().replace("\"", "'"));
         model.addAttribute(META_DESCRIPTION, metaDescription);
