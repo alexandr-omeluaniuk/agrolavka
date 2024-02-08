@@ -9,6 +9,9 @@ class XElement extends HTMLElement {
     connectedCallback() {
         this.innerHTML = "";
         this.appendChild(this._contents);
+        if (this.onClick) {
+            this.addEventListener('click', this.onClick);
+        }
     }
     
     createTemplate() {
@@ -139,6 +142,13 @@ class XProductPrice extends XElement {
         `;
         return template;
     }
+    
+    _setPrice(price) {
+        const priceBig = parseFloat(price).toFixed(2).split('.')[0];
+        const priceSmall = parseFloat(price).toFixed(2).split('.')[1];
+        this.querySelector('.agr-price').innerHTML = priceBig + ".<small>" + priceSmall
+            + '</small> <small class="text-muted">BYN</small>';
+    }
 }
 window.customElements.define('x-agr-product-price', XProductPrice);
 
@@ -212,33 +222,38 @@ class XProductVolumes extends XElement {
 }
 window.customElements.define('x-agr-product-volumes', XProductVolumes);
 
-class XProductVariant extends XElement {    
+class XProductVariant extends XElement {  
+    
+    onClick() {
+        const variantsComponent = this.closest('x-agr-product-variants');
+        variantsComponent._switchButtons(this.state.variant);
+    }
+    
     createTemplate() {
         this.state = {
-            variant: null,
-            selected: false
+            variant: null
         };
         this.state.variant = JSON.parse(this.getAttribute('data-variant').replaceAll("'", '"'));
-        this.state.selected = this.getAttribute('data-selected') === 'true';
-        this.render = () => {
-            const price = parseFloat(this.state.variant.price).toFixed(2).split('.');
-            const priceInt = price[0];
-            const priceFloat = price[1];
-            return `<button type="button" class="w-100 mb-1 agr-variant-btn btn 
-                        btn-sm btn-rounded btn-${this.state.selected ? 'primary' : 'outline-primary'}" data-mdb-ripple-init
-                        data-product-variant-id="${this.state.variant.id}"
-                        data-product-variant-price="${this.state.variant.price}"
-                        data-product-variant-name="${this.state.variant.name}">
-                            <div class="d-flex justify-content-between">
-                                <div>${this.state.variant.name}</div>
-                                <div>${priceInt}<small>.${priceFloat}</small></div>
-                            </div>
-                        </button>`;
-        };
         this.template = document.createElement('template');
         this.template.innerHTML = this.render();
         return this.template;
     }
+    
+    render() {
+        const price = parseFloat(this.state.variant.price).toFixed(2).split('.');
+        const priceInt = price[0];
+        const priceFloat = price[1];
+        return `<button type="button" class="w-100 mb-1 agr-variant-btn btn 
+                    btn-sm btn-rounded btn-outline-primary" data-mdb-ripple-init
+                    data-product-variant-id="${this.state.variant.id}"
+                    data-product-variant-price="${this.state.variant.price}"
+                    data-product-variant-name="${this.state.variant.name}">
+                        <div class="d-flex justify-content-between">
+                            <div>${this.state.variant.name}</div>
+                            <div>${priceInt}<small>.${priceFloat}</small></div>
+                        </div>
+                    </button>`;
+    };
 }
 window.customElements.define('x-agr-product-variant', XProductVariant);
 
@@ -251,22 +266,38 @@ class XProductVariants extends XElement {
         const rawVariants = this.getAttribute('data-variants');
         this.state.variants = JSON.parse(rawVariants.replaceAll("'", '"'));
         this.state.selectedVariant = this.state.variants[0];
-        this.template = document.createElement('template');
-        this.render = () => {
-            const buttons = this.state.variants.map(v => 
-                `<x-agr-product-variant data-variant="${JSON.stringify(v).replaceAll('"', "'")}" 
-                    data-selected="${this.state.selectedVariant.id === v.id}"></x-agr-product-variant>`
-            ).join('');
-            return `
-                <div class="d-flex flex-column mb-2">
-                    ${buttons}
-                </div>
-                <hr/>
-            `;
-        };
-        
+        this.template = document.createElement('template'); 
         this.template.innerHTML = this.render();
         return this.template;
+    }
+    
+    render() {
+        const buttons = this.state.variants.map(v => 
+            `<x-agr-product-variant data-variant="${JSON.stringify(v).replaceAll('"', "'")}" 
+                data-selected="${this.state.selectedVariant.id === v.id}"></x-agr-product-variant>`
+        ).join('');
+        return `
+            <div class="d-flex flex-column mb-2">
+                ${buttons}
+            </div>
+            <hr/>
+        `;
+    };
+    
+    _switchButtons(variant) {
+        this.state.selectedVariant = variant;
+        this.querySelectorAll('x-agr-product-variant').forEach(btn => {
+            const isActive = btn.state.variant.id === variant.id;
+            const innerBtn = btn.querySelector('button');
+            if (isActive) {
+                innerBtn.classList.remove("btn-outline-primary");
+                innerBtn.classList.add("btn-primary");
+            } else {
+                innerBtn.classList.remove("btn-primary");
+                innerBtn.classList.add("btn-outline-primary");
+            }
+        });
+        this.closest('div').querySelector('x-agr-product-price')._setPrice(variant.price);
     }
 }
 window.customElements.define('x-agr-product-variants', XProductVariants);
