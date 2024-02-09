@@ -264,11 +264,13 @@ class XProductVariants extends XElement {
     createTemplate() {
         this.state = {
             selectedVariant: null,
-            variants: []
+            variants: [],
+            inCartVariants: []
         };
         const rawVariants = this.getAttribute('data-variants');
         this.state.variants = JSON.parse(rawVariants.replaceAll("'", '"'));
         this.state.selectedVariant = this.state.variants[0];
+        this.state.inCartVariants = JSON.parse(this.getAttribute('data-in-cart-variants').replaceAll("'", '"'));
         this.template = document.createElement('template'); 
         this.template.innerHTML = this.render();
         return this.template;
@@ -305,6 +307,9 @@ class XProductVariants extends XElement {
             }
         });
         this.closest('div').querySelector('x-agr-product-price')._setPrice(variant.price);
+        this.closest('x-agr-product-actions')._setInCartButtonState(
+            this.state.inCartVariants.includes(this.state.selectedVariant.id)
+        );
     }
 }
 window.customElements.define('x-agr-product-variants', XProductVariants);
@@ -315,14 +320,19 @@ class XProductActions extends XElement {
             id: null,
             inCart: false
         };
-        let template = document.createElement('template');
         this.state.id = this.getAttribute('data-id');
+        this.state.inCart = this.getAttribute('data-in-cart') === 'true';
+        let template = document.createElement('template');
+        template.innerHTML = this.render();
+        return template;
+    }
+    
+    render() {
         const cls = this.getAttribute('data-cls');
-        this.state.inCart = this.getAttribute('data-in-cart');
-        const volumes = this.getAttribute('data-volume');
         const rawVariants = this.getAttribute('data-variants');
         const hasVariants = rawVariants && rawVariants.length > 2;
-        template.innerHTML = `
+        const volumes = this.getAttribute('data-volume');
+        return `
             ${hasVariants ? `<x-agr-product-variants data-variants="${rawVariants}" data-in-cart-variants="${this.getAttribute('data-in-cart-variants')}"></x-agr-product-variants>` : ''}
             ${volumes && !hasVariants ? `<x-agr-product-volumes data-cls="${cls}" data-volume="${volumes}"></x-agr-product-volumes>` : ''}
             <button class="btn btn-outline-info btn-rounded w-100 mt-1 ${cls}" data-product-id="${this.state.id}" data-order="">
@@ -338,7 +348,29 @@ class XProductActions extends XElement {
                 </button>
             `}
         `;
-        return template;
+    }
+    
+    _setInCartButtonState(inCart) {
+        if (this.state.inCart !== inCart) {
+            this.state.inCart = inCart;
+            if (inCart) {
+                const cartButton = this.querySelector('button[data-add]');
+                cartButton.removeAttribute('disabled');
+                cartButton.removeAttribute('data-add');
+                cartButton.setAttribute('data-remove', '');
+                cartButton.innerHTML = '<i class="fas fa-minus-circle me-2"></i> Из корзины';
+                cartButton.classList.remove('btn-outline-success');
+                cartButton.classList.add('btn-outline-danger');
+            } else {
+                const cartButton = this.querySelector('button[data-remove]');
+                cartButton.removeAttribute('disabled');
+                cartButton.removeAttribute('data-remove');
+                cartButton.setAttribute('data-add', '');
+                cartButton.innerHTML = '<i class="fas fa-cart-plus me-2"></i> В корзину';
+                cartButton.classList.add('btn-outline-success');
+                cartButton.classList.remove('btn-outline-danger');
+            }
+        }
     }
 }
 window.customElements.define('x-agr-product-actions', XProductActions);
