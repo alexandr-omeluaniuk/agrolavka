@@ -85,7 +85,10 @@ const addToCartConfirmListener = (evt, button) => {
                     updateCartTotal(cart);
                     modalElement.cartButton.closest('x-agr-product-actions')._setInCartButtonState(true);
                     if (formData.variantId) {
-                        modifyVariantsInCart(formData.variantId, 'add');
+                        modalElement.cartButton
+                            .closest('x-agr-product-actions')
+                            .querySelector('x-agr-product-variants')
+                            ._modifyVariantsInCart(formData.variantId, 'add');
                     }
                 });
             }
@@ -188,29 +191,14 @@ const photoClickListener = (evt, image) => {
     modal.toggle();
 };
 
-const modifyVariantsInCart = (variantId, action) => {
-    const productVariantsComponent = document.querySelector('[data-product-variant-id="' + variantId + '"]')
-        .closest('x-agr-product-variants');
-    const inCartVariants = JSON.parse(productVariantsComponent.getAttribute("data-variants-in-cart"));
-    if (action === 'add') {
-        inCartVariants.push(variantId);
-    } else {
-        inCartVariants = inCartVariants.filter(v => v !== variantId);
-    }
-    productVariantsComponent.setAttribute("data-variants-in-cart", JSON.stringify(inCartVariants));
-};
-
 const modifyQuantityField = (fieldQuantity, variantIdField, button) => {
     const volumesComponent = button.closest('div').querySelector('div[data-volumes]');
-    const variantsComponent = button.closest('div').querySelector('div[data-selected-variant-id]');
+    const variantsComponent = button.closest('x-agr-product-actions').querySelector('x-agr-product-variants');
     const helpText = fieldQuantity.closest('form').querySelector('.agr-volume-help-text');
     if (variantsComponent) {
-        variantIdField.value = variantsComponent.getAttribute("data-selected-variant-id");
-        fieldQuantity.removeAttribute("step");
-        fieldQuantity.setAttribute("min", "1");
-        fieldQuantity.value = 1;
-        helpText.classList.add('d-none');
-    } else if (volumesComponent) {
+        variantIdField.value = variantsComponent.state.selectedVariant.id;
+    }
+    if (volumesComponent) {
         fieldQuantity.setAttribute("step", ".1");
         try {
             const volumes = volumesComponent.getAttribute("data-volumes");

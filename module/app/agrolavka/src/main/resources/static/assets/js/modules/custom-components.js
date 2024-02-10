@@ -311,6 +311,14 @@ class XProductVariants extends XElement {
             this.state.inCartVariants.includes(this.state.selectedVariant.id)
         );
     }
+    
+    _modifyVariantsInCart(variantId, action) {
+        if (action === 'add') {
+            this.state.inCartVariants.push(variantId);
+        } else {
+            this.state.inCartVariants = this.state.inCartVariants.filter(v => v !== variantId);
+        }
+    }
 }
 window.customElements.define('x-agr-product-variants', XProductVariants);
 
