@@ -41,7 +41,11 @@ const removeFromCartListener = (evt, button) => {
     evt.preventDefault();
     evt.stopPropagation();
     button.setAttribute('disabled', 'true');
-    fetch('/api/agrolavka/public/cart/product/' + button.getAttribute('data-product-id'), {
+    const actionsComponent = button.closest('x-agr-product-actions');
+    const variantsComponent = actionsComponent.querySelector('x-agr-product-variants');
+    const variantId = variantsComponent ? variantsComponent.state.selectedVariant.id : null;
+    const url = variantId ? `/variant/${variantId}` : `/product/${button.getAttribute('data-product-id')}`;
+    fetch('/api/agrolavka/public/cart' + url, {
         method: 'DELETE',
         headers: {
             'Accept': 'application/json',
@@ -51,7 +55,10 @@ const removeFromCartListener = (evt, button) => {
         if (response.ok) {
             response.json().then(cart => {
                 updateCartTotal(cart);
-                button.closest('x-agr-product-actions')._setInCartButtonState(false);
+                actionsComponent._setInCartButtonState(false);
+                if (variantId) {
+                    variantsComponent._modifyVariantsInCart(variantId, 'remove');
+                }
             });
         }
     }).catch(error => {
