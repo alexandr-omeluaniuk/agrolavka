@@ -30,7 +30,18 @@
                     </c:otherwise>
                 </c:choose>
                 <div class="ms-3" style="flex: 1;">
-                    <a href="<%= UrlProducer.buildProductUrl(position.getProduct())%>" class="agr-link" style="text-decoration: underline"><h5>${position.getProductName()}</h5></a>
+                    <a href="<%= UrlProducer.buildProductUrl(position.getProduct())%>" class="agr-link" style="text-decoration: underline">
+                        <h5>
+                            <c:choose>
+                                <c:when test="${not empty position.variant}">
+                                    ${position.getVariant().getName()}
+                                </c:when>
+                                <c:otherwise>
+                                    ${position.getProductName()}
+                                </c:otherwise>
+                            </c:choose>
+                        </h5>
+                    </a>
                 </div>
             </div>
 

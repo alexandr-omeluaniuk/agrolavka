@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 import java.util.zip.GZIPInputStream;
 import javax.net.ssl.HttpsURLConnection;
 import org.json.JSONArray;
@@ -137,6 +138,12 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
                     final var productUrlParts = item.getJSONObject("product").getJSONObject("meta")
                         .getString("href").split("/");
                     variant.setParentId(productUrlParts[productUrlParts.length - 1]);
+                    final var characteristics = item.getJSONArray("characteristics");
+                    final var characteristicsNames = new ArrayList<String>();
+                    for (int j = 0; j < characteristics.length(); j++) {
+                        characteristicsNames.add(characteristics.getJSONObject(j).getString("value"));
+                    }
+                    variant.setCharacteristics(characteristicsNames.stream().collect(Collectors.joining("::")));
                 }
                 result.add(variant);
             }

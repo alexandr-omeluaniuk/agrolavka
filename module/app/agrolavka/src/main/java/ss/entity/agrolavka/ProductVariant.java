@@ -24,6 +24,10 @@ public class ProductVariant extends ExternalEntity implements Comparable<Product
     @NotNull
     @Column(name = "parent_id", length = 255, nullable = false)
     private String parentId;
+    
+    @NotNull
+    @Column(name = "characteristics", length = 255, nullable = false)
+    private String characteristics;
 
     /**
      * @return the name
@@ -66,6 +70,14 @@ public class ProductVariant extends ExternalEntity implements Comparable<Product
     public void setParentId(String parentId) {
         this.parentId = parentId;
     }
+
+    public String getCharacteristics() {
+        return characteristics;
+    }
+
+    public void setCharacteristics(String characteristics) {
+        this.characteristics = characteristics;
+    }
     
     @Override
     public int hashCode() {
@@ -90,6 +102,7 @@ public class ProductVariant extends ExternalEntity implements Comparable<Product
         json.put("name", getName());
         json.put("price", getPrice());
         json.put("id", getExternalId());
+        json.put("characteristics", getCharacteristics());
         return json.toString();
     }
 

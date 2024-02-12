@@ -252,7 +252,7 @@ class XProductVariant extends XElement {
                     data-product-variant-price="${this.state.variant.price}"
                     data-product-variant-name="${this.state.variant.name}">
                         <div class="d-flex justify-content-between">
-                            <div>${this.state.variant.name}</div>
+                            <div>${this.state.variant.characteristics}</div>
                             <div>${priceInt}<small>.${priceFloat}</small></div>
                         </div>
                     </button>`;
