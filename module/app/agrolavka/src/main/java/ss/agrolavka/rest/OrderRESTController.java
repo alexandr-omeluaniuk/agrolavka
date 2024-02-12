@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package ss.agrolavka.rest;
 
 import java.text.SimpleDateFormat;
@@ -23,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ss.agrolavka.dao.OrderDAO;
 import ss.agrolavka.service.OrderDocumentService;
+import ss.agrolavka.service.OrderPositionService;
 import ss.agrolavka.service.OrderService;
 import ss.agrolavka.wrapper.OrderSearchRequest;
 import ss.entity.agrolavka.Order;
@@ -53,6 +49,9 @@ public class OrderRESTController {
     
     @Autowired
     private OrderService orderService;
+    
+    @Autowired
+    private OrderPositionService orderPositionService;
     /**
      * Delete order.
      * @param id order ID.
@@ -81,11 +80,7 @@ public class OrderRESTController {
      */
     @RequestMapping(value = "/positions/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public List<OrderPosition> getPositions(@PathVariable("id") Long id) throws Exception {
-        Order order = coreDAO.findById(id, Order.class);
-        for (OrderPosition pos : order.getPositions()) {
-            pos.setProduct(coreDAO.findById(pos.getProductId(), Product.class));
-        }
-        return order.getPositions();
+        return orderPositionService.getPositions(coreDAO.findById(id, Order.class));
     }
     /**
      * Update order.

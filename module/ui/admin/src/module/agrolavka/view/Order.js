@@ -138,7 +138,13 @@ function Order(props) {
                                 : `/assets/img/no-image.png`} />;
                 }).setSortable().width('40px'),
                 new TableColumn('name', t('m_agrolavka:order.position.name'), (row) => {
-                    return row.product ? row.product.name : '<--->';
+                    if (row.variant) {
+                        return row.variant.name;
+                    } else if (row.product) {
+                        return row.product.name;
+                    } else {
+                        return '<--->';
+                    }
                 }).setSortable(),
                 new TableColumn('volume', t('m_agrolavka:order.position.volume'), (row) => {
                     let volume = '';
