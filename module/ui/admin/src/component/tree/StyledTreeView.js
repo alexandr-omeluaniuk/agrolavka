@@ -51,7 +51,7 @@ function StyledTreeView(props) {
     const getDefaultExpanded = () => {
         const result = [];
         const walk = (node) => {
-            if (node.id == selected.id) {
+            if (node.id === (selected.id + '')) {
                 result.push(node.id);
                 return true;
             }

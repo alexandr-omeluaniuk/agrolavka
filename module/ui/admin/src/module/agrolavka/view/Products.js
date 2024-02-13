@@ -233,7 +233,7 @@ function Products() {
                     <ProductsGroups onSelect={setSelectedProductGroup}/>
                 </Grid>
                 <Grid item sm={12} md={9}>
-                    <DataTable tableConfig={tableConfig}/>
+                    {selectedProductGroup ? <DataTable tableConfig={tableConfig}/> : null}
                 </Grid>
             </Grid>
     );

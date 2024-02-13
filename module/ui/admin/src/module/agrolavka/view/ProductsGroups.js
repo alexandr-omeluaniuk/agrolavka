@@ -130,6 +130,7 @@ function ProductsGroups(props) {
         const group = node.getId() > 0 ? node.getOrigin() : null;
         setSelectedProductGroup(group);
         sessionStorage.setItem('product-group', JSON.stringify(group));
+        sessionStorage.removeItem('last-page-number');
     };
     const onFormSubmitAction = async (data) => {
         setFormDisabled(true);
