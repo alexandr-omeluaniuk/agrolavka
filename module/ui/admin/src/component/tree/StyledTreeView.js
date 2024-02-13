@@ -29,7 +29,7 @@ const useStyles = makeStyles({
 
 function StyledTreeView(props) {
     const classes = useStyles();
-    const { data, onSelect } = props;
+    const { data, onSelect, selected } = props;
     // ----------------------------------------------------- METHODS ----------------------------------------------------------------------
     const renderLabel = (treeNode) => {
         return (
@@ -47,9 +47,38 @@ function StyledTreeView(props) {
             {Array.isArray(treeNode.getChildren()) ? treeNode.getChildren().map((node) => renderTree(node)) : null}
         </TreeItem>
     );
+
+    const getDefaultExpanded = () => {
+        const result = [];
+        const walk = (node) => {
+            if (node.id == selected.id) {
+                result.push(node.id);
+                return true;
+            }
+            if (node.children) {
+                const matches = node.children.filter(n => walk(n));
+                const hasMatches = matches.length > 0;
+                if (hasMatches) {
+                    result.push(node.id);
+                }
+                return hasMatches;
+            }
+        };
+        if (selected) {
+            data.forEach(n => walk(n));
+        }
+        return result;
+    }
+
+    const getDefaultSelected = () => {
+        return selected ? selected.id + '' : null;
+    };
     // ----------------------------------------------------- RENDERING --------------------------------------------------------------------
     return (
-            <TreeView className={classes.root} defaultCollapseIcon={(<Icon>expand_more</Icon>)}
+            <TreeView className={classes.root}
+                expanded={getDefaultExpanded()}
+                selected={getDefaultSelected()}
+                defaultCollapseIcon={(<Icon>expand_more</Icon>)}
                 defaultExpandIcon={(<Icon>chevron_right</Icon>)}>
                 {data.length > 0 ? data.map((node, idx) => {
                     return renderTree(node);

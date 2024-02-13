@@ -127,7 +127,9 @@ function ProductsGroups(props) {
         if (onSelect) {
             onSelect(node.getId() > 0 ? node.getOrigin() : null);
         }
-        setSelectedProductGroup(node.getId() > 0 ? node.getOrigin() : null);
+        const group = node.getId() > 0 ? node.getOrigin() : null;
+        setSelectedProductGroup(group);
+        sessionStorage.setItem('product-group', JSON.stringify(group));
     };
     const onFormSubmitAction = async (data) => {
         setFormDisabled(true);
@@ -193,6 +195,11 @@ function ProductsGroups(props) {
         if (productGroups === null) {
             dataService.get('/agrolavka/protected/products-group').then(resp => {
                 setProductGroups(resp.data);
+                const predefined = getDefaultProductGroup();
+                setSelectedProductGroup(predefined);
+                if (onSelect && predefined) {
+                    onSelect(predefined);
+                }
             });
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -260,7 +267,7 @@ function ProductsGroups(props) {
                     </div>
                 </div>
                 <Divider className={classes.divider}/>
-                <StyledTreeView data={buildTree()} onSelect={onProductGroupSelect}/>
+                <StyledTreeView data={buildTree()} onSelect={onProductGroupSelect} selected={selectedProductGroup}/>
                 {formConfig ? (
                     <FormDialog title={formTitle} open={formOpen} handleClose={() => setFormOpen(false)}>
                         <Form formConfig={formConfig} onSubmitAction={onFormSubmitAction} record={record}
@@ -274,6 +281,10 @@ function ProductsGroups(props) {
             </Paper>
     );
 }
+
+const getDefaultProductGroup = () => {
+    return sessionStorage.getItem('product-group') ? JSON.parse(sessionStorage.getItem('product-group')) : null;
+};
 
 export default ProductsGroups;
 
