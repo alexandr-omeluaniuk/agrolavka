@@ -126,10 +126,10 @@ function Order(props) {
         if (order) {
             setAdminComment(order.adminComment);
             setTableConfig(new TableConfig(t('m_agrolavka:order.positions'), new ApiURL(
-                        '/agrolavka/protected/order/positions/' + order.id,
+                        '/agrolavka/protected/order-position/' + order.id,
                         null,
-                        '/platform/entity/ss.entity.agrolavka.OrderPosition',
-                        '/platform/entity/ss.entity.agrolavka.OrderPosition'
+                        '/agrolavka/protected/order-position',
+                        '/agrolavka/protected/order-position'
                     ), [
                 new TableColumn('avatar', '', (row) => {
                     return <Avatar className={classes.image} alt={row.name}

@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ss.agrolavka.dao.OrderDAO;
 import ss.agrolavka.service.OrderDocumentService;
-import ss.agrolavka.service.OrderPositionService;
 import ss.agrolavka.service.OrderService;
 import ss.agrolavka.wrapper.OrderSearchRequest;
 import ss.entity.agrolavka.Order;
@@ -49,9 +48,6 @@ public class OrderRESTController {
     
     @Autowired
     private OrderService orderService;
-    
-    @Autowired
-    private OrderPositionService orderPositionService;
     /**
      * Delete order.
      * @param id order ID.
@@ -72,16 +68,7 @@ public class OrderRESTController {
         Order order = coreDAO.findById(id, Order.class);
         return order;
     }
-    /**
-     * Get order positions.
-     * @param id order ID.
-     * @return order positions.
-     * @throws Exception error.
-     */
-    @RequestMapping(value = "/positions/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<OrderPosition> getPositions(@PathVariable("id") Long id) throws Exception {
-        return orderPositionService.getPositions(coreDAO.findById(id, Order.class));
-    }
+
     /**
      * Update order.
      * @param orderForm order form.
