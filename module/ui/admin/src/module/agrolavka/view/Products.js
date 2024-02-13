@@ -36,12 +36,12 @@ const useStyles = makeStyles(theme => ({
         marginBottom: theme.spacing(1)
     },
     image: {
-        borderRadius: 0,
-        boxShadow: '0 .125rem .25rem rgba(0,0,0,.275)'
+        borderRadius: '10%',
+        border: '1px solid rgba(0,0,0,.275)'
     },
     imageLarge: {
-        borderRadius: 0,
-        boxShadow: '0 .125rem .25rem rgba(255,0,0,1)'
+        borderRadius: '10%',
+        border: '1px solid red'
     },
     quantityAvailable: {
         color: theme.palette.success.main

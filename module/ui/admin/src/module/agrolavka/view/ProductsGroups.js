@@ -61,7 +61,10 @@ const useStyles = makeStyles(theme => ({
     small: {
         width: theme.spacing(3),
         height: theme.spacing(3),
-        marginRight: theme.spacing(1)
+        marginRight: theme.spacing(1),
+        marginTop: theme.spacing(1),
+        borderRadius: '10%',
+        border: '1px solid rgba(0,0,0,.275)'
     }
 }));
 
@@ -117,7 +120,7 @@ function ProductsGroups(props) {
             return node;
         };
         roots.sort(compare);
-        roots.unshift(new TreeNode(-1, t('m_agrolavka:products.all_product_groups')));
+        // roots.unshift(new TreeNode(-1, t('m_agrolavka:products.all_product_groups')));
         roots.forEach(root => {
             result.push(recursiveWalkTree(root));
         });
