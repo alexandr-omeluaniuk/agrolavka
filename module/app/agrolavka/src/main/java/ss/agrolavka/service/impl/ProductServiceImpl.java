@@ -1,9 +1,5 @@
 package ss.agrolavka.service.impl;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -18,6 +14,11 @@ import ss.entity.agrolavka.ProductVariant;
 import ss.entity.agrolavka.Product_;
 import ss.entity.security.EntityAudit_;
 import ss.martin.core.dao.CoreDao;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Product service.
@@ -60,7 +61,9 @@ class ProductServiceImpl implements ProductService{
         searchRequest.setPageSize(12);
         searchRequest.setOrder("desc");
         searchRequest.setOrderBy(EntityAudit_.CREATED_DATE);
-        return productDao.search(searchRequest);
+        final var products =  productDao.search(searchRequest);
+        products.forEach(p -> p.setVariants(getVariants(p.getExternalId())));
+        return products;
     }
 
     @Override
@@ -78,6 +81,7 @@ class ProductServiceImpl implements ProductService{
             final var id2 = p2.getDiscount().getId();
             return id1 > id2 ? -1 : 1;
         });
+        products.forEach(p -> p.setVariants(getVariants(p.getExternalId())));
         return products;
     }
 
