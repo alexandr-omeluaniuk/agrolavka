@@ -398,7 +398,7 @@ class XProductCard extends XElement {
         const imageCreatedDate = this.getAttribute('data-image-created');
         const link = this.getAttribute('data-link');
         const volumes = this.getAttribute('data-volume');
-        const imageElement = image 
+        const imageElement = image
             ? `<div class="card-img-top agr-card-image" style="background-image: url('/media/${image}?timestamp=${imageCreatedDate}')"></div>` 
             : `<div class="card-img-top agr-card-image" style="background-image: url('/assets/img/no-image.png')"></div>`;
         template.innerHTML = `
@@ -416,7 +416,13 @@ class XProductCard extends XElement {
                                     <small class="text-muted">${createdDate}</small>
                                 </div>
                             ` : ''}
-                            <x-agr-product-actions data-id="${id}" data-cls="agr-card-button" data-in-cart="${inCart}" data-volume="${volumes}"></x-agr-product-actions>
+                            <x-agr-product-actions
+                                data-id="${id}"
+                                data-cls="agr-card-button"
+                                data-in-cart="${inCart}"
+                                data-volume="${volumes}"
+                                data-variants="${this.getAttribute('data-variants')}"
+                                data-in-cart-variants="${this.getAttribute('data-in-cart-variants')}"></x-agr-product-actions>
                         </div>
                     </div>
                 </div>
