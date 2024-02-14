@@ -17,7 +17,7 @@ test {
     useJUnitPlatform()
     finalizedBy jacocoTestReport
     testLogging {
-        events "failed"
+        events "STANDARD_OUT"
         exceptionFormat "full"
     }
 }
