@@ -1,6 +1,6 @@
 package ss.agrolavka.test.service;
 
-import com.github.tomakehurst.wiremock.junit5.WireMockTest;
+import com.github.tomakehurst.wiremock.WireMockServer;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,11 +9,12 @@ import ss.agrolavka.test.common.AbstractAgrolavkaMvcTest;
 
 import java.util.Arrays;
 
-@WireMockTest(httpPort = 20233)
 public class MySkladServiceTest extends AbstractAgrolavkaMvcTest {
     
     static {
         System.setProperty("mysklad.api.url", "http://localhost:20233/mysklad");
+        WireMockServer wireMockServer = new WireMockServer(20233);
+        wireMockServer.start();
     }
     
     @Autowired
