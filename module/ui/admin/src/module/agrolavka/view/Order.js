@@ -126,10 +126,10 @@ function Order(props) {
         if (order) {
             setAdminComment(order.adminComment);
             setTableConfig(new TableConfig(t('m_agrolavka:order.positions'), new ApiURL(
-                        '/agrolavka/protected/order/positions/' + order.id,
+                        '/agrolavka/protected/order-position/' + order.id,
                         null,
-                        '/platform/entity/ss.entity.agrolavka.OrderPosition',
-                        '/platform/entity/ss.entity.agrolavka.OrderPosition'
+                        '/agrolavka/protected/order-position',
+                        '/agrolavka/protected/order-position'
                     ), [
                 new TableColumn('avatar', '', (row) => {
                     return <Avatar className={classes.image} alt={row.name}
@@ -138,7 +138,13 @@ function Order(props) {
                                 : `/assets/img/no-image.png`} />;
                 }).setSortable().width('40px'),
                 new TableColumn('name', t('m_agrolavka:order.position.name'), (row) => {
-                    return row.product ? row.product.name : '<--->';
+                    if (row.variant) {
+                        return row.variant.name;
+                    } else if (row.product) {
+                        return row.product.name;
+                    } else {
+                        return '<--->';
+                    }
                 }).setSortable(),
                 new TableColumn('volume', t('m_agrolavka:order.position.volume'), (row) => {
                     let volume = '';

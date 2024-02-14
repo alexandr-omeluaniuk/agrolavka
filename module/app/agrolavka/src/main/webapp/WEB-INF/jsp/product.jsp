@@ -60,12 +60,14 @@
                                 <t:product-images product="${product}"></t:product-images>
                                 <hr/>
                                 <x-agr-product-price 
-                                    data-discount="${product.discount != null && product.discount.discount != null ? product.discount.discount : ""}" 
-                                    data-price="${product.price}"></x-agr-product-price>
+                                    data-discount="${productDiscount}" 
+                                    data-price="${productPrice}"></x-agr-product-price>
                                 <hr/>
                                 <x-agr-product-actions 
                                     data-id="${product.id}" 
-                                    data-in-cart="${inCart ? "true" : ""}" 
+                                    data-in-cart="${inCart ? "true" : ""}"
+                                    data-in-cart-variants="${inCartVariants}"
+                                    data-variants="${variants}"
                                     data-volume="${volumes}"></x-agr-product-actions>
                                 <hr/>
                             </div>

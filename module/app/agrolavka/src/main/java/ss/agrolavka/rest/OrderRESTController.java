@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package ss.agrolavka.rest;
 
 import java.text.SimpleDateFormat;
@@ -73,20 +68,7 @@ public class OrderRESTController {
         Order order = coreDAO.findById(id, Order.class);
         return order;
     }
-    /**
-     * Get order positions.
-     * @param id order ID.
-     * @return order positions.
-     * @throws Exception error.
-     */
-    @RequestMapping(value = "/positions/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<OrderPosition> getPositions(@PathVariable("id") Long id) throws Exception {
-        Order order = coreDAO.findById(id, Order.class);
-        for (OrderPosition pos : order.getPositions()) {
-            pos.setProduct(coreDAO.findById(pos.getProductId(), Product.class));
-        }
-        return order.getPositions();
-    }
+
     /**
      * Update order.
      * @param orderForm order form.

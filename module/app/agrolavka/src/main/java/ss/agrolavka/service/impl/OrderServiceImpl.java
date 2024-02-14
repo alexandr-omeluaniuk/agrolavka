@@ -4,7 +4,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +16,9 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import ss.agrolavka.constants.OrderStatus;
 import ss.agrolavka.constants.SiteConstants;
+import ss.agrolavka.service.OrderPositionService;
 import ss.agrolavka.service.OrderService;
+import ss.agrolavka.service.ProductService;
 import ss.agrolavka.util.PriceCalculator;
 import ss.agrolavka.wrapper.CartProduct;
 import ss.agrolavka.wrapper.OneClickOrderWrapper;
@@ -24,6 +29,7 @@ import ss.entity.agrolavka.EuropostLocationSnapshot;
 import ss.entity.agrolavka.Order;
 import ss.entity.agrolavka.OrderPosition;
 import ss.entity.agrolavka.Product;
+import ss.entity.agrolavka.ProductVariant;
 import ss.martin.core.dao.CoreDao;
 
 /**
@@ -36,10 +42,13 @@ class OrderServiceImpl implements OrderService {
     private static final Logger LOG = LoggerFactory.getLogger(OrderServiceImpl.class);
     /** Core DAO. */
     @Autowired
-    private CoreDao coreDAO;
+    private CoreDao coreDao;
     
     @Autowired
     private TelegramBotOrderService telegramBotOrderService;
+    
+    @Autowired
+    private ProductService productService;
     
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
@@ -63,7 +72,7 @@ class OrderServiceImpl implements OrderService {
         // if order was restored from session
         order.setId(null);
         order.getPositions().forEach(position -> position.setId(null));
-        final Order savedOrder = coreDAO.create(order);
+        final Order savedOrder = coreDao.create(order);
         sendTelegramNotification(savedOrder);
         LOG.info("---------------------------------------------------------------------------------------------------");
         return savedOrder;
@@ -71,11 +80,11 @@ class OrderServiceImpl implements OrderService {
     
     @Override
     public void updateOrder(final Order orderForm) {
-        final var order = coreDAO.findById(orderForm.getId(), Order.class);
+        final var order = coreDao.findById(orderForm.getId(), Order.class);
         final var originStatus = order.getStatus();
         order.setAdminComment(orderForm.getAdminComment());
         order.setStatus(orderForm.getStatus());
-        coreDAO.update(order);
+        coreDao.update(order);
         if (!originStatus.equals(order.getStatus())) {
             telegramBotOrderService.updateExistingOrderMessage(order);
         }
@@ -83,14 +92,17 @@ class OrderServiceImpl implements OrderService {
     
     @Override
     public Order createOneClickOrder(final OneClickOrderWrapper orderDetails) throws Exception {
-        final Product product = coreDAO.findById(orderDetails.getProductId(), Product.class);
+        final Product product = coreDao.findById(orderDetails.getProductId(), Product.class);
+        final var variant = getVariant(orderDetails.getVariantId(), product);
         final List<OrderPosition> positions = new ArrayList<>();
-        PriceCalculator.breakQuantityByVolume(product, orderDetails.getQuantity()).forEach((price, quantity) -> {
+        PriceCalculator.breakQuantityByVolume(product, variant, orderDetails.getQuantity()).forEach((price, quantity) -> {
             final OrderPosition position = new OrderPosition();
             position.setQuantity(quantity);
             position.setProduct(product);
             position.setProductId(orderDetails.getProductId());
             position.setPrice(price);
+            position.setVariantId(orderDetails.getVariantId());
+            position.setVariant(variant.orElse(null));
             positions.add(position);
         });
         final Order order = new Order();
@@ -100,7 +112,7 @@ class OrderServiceImpl implements OrderService {
         order.setPositions(positions);
         order.setOneClick(true);
         positions.forEach(position -> position.setOrder(order));
-        final Order savedOrder = coreDAO.create(order);
+        final Order savedOrder = coreDao.create(order);
         sendTelegramNotification(savedOrder);
         return order;
     }
@@ -118,10 +130,11 @@ class OrderServiceImpl implements OrderService {
     
     @Override
     public Order addProductToCart(final CartProduct cartProduct, final HttpServletRequest request) throws Exception {
-        Product product = coreDAO.findById(cartProduct.getProductId(), Product.class);
+        Product product = coreDao.findById(cartProduct.getProductId(), Product.class);
+        final var variant = getVariant(cartProduct.getVariantId(), product);
         final Order order = getCurrentOrder(request);
         if (product != null) {
-            PriceCalculator.breakQuantityByVolume(product, cartProduct.getQuantity()).forEach((price, quantity) -> {
+            PriceCalculator.breakQuantityByVolume(product, variant, cartProduct.getQuantity()).forEach((price, quantity) -> {
                 OrderPosition position = new OrderPosition();
                 position.setPositionId(UUID.randomUUID().toString());
                 position.setOrder(order);
@@ -129,11 +142,22 @@ class OrderServiceImpl implements OrderService {
                 position.setPrice(price);
                 position.setProduct(product);
                 position.setProductId(product.getId());
+                position.setVariantId(cartProduct.getVariantId());
+                position.setVariant(variant.orElse(null));
                 order.getPositions().add(position);
             });
             request.getSession().setAttribute(SiteConstants.CART_SESSION_ATTRIBUTE, order);
         }
         return order;
+    }
+    
+    private Optional<ProductVariant> getVariant(final String variantId, final Product product) {
+        if (variantId != null) {
+            return productService.getVariants(product.getExternalId()).stream()
+                .filter(v -> v.getExternalId().equals(variantId)).findFirst();
+        } else {
+            return Optional.empty();
+        }
     }
     
     private Address getOrderAddress(final OrderDetailsWrapper orderDetails) {
@@ -154,7 +178,7 @@ class OrderServiceImpl implements OrderService {
     private EuropostLocationSnapshot getOrderEuropostLocation(final OrderDetailsWrapper orderDetails) throws Exception {
         final EuropostLocationSnapshot snapshot = new EuropostLocationSnapshot();
         final EuropostLocation location =
-                coreDAO.findById(orderDetails.getEuropostLocationId(), EuropostLocation.class);
+                coreDao.findById(orderDetails.getEuropostLocationId(), EuropostLocation.class);
         snapshot.setAddress(location.getAddress());
         snapshot.setAltId(location.getAltId());
         snapshot.setCity(location.getCity());

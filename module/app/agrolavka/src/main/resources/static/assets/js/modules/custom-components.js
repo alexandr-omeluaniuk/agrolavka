@@ -9,6 +9,12 @@ class XElement extends HTMLElement {
     connectedCallback() {
         this.innerHTML = "";
         this.appendChild(this._contents);
+        if (this.onClick) {
+            this.addEventListener('click', this.onClick);
+        }
+        if (this.postConstruct) {
+            this.postConstruct();
+        }
     }
     
     createTemplate() {
@@ -139,6 +145,13 @@ class XProductPrice extends XElement {
         `;
         return template;
     }
+    
+    _setPrice(price) {
+        const priceBig = parseFloat(price).toFixed(2).split('.')[0];
+        const priceSmall = parseFloat(price).toFixed(2).split('.')[1];
+        this.querySelector('.agr-price').innerHTML = priceBig + ".<small>" + priceSmall
+            + '</small> <small class="text-muted">BYN</small>';
+    }
 }
 window.customElements.define('x-agr-product-price', XProductPrice);
 
@@ -212,29 +225,160 @@ class XProductVolumes extends XElement {
 }
 window.customElements.define('x-agr-product-volumes', XProductVolumes);
 
+class XProductVariant extends XElement {  
+    
+    onClick() {
+        const variantsComponent = this.closest('x-agr-product-variants');
+        variantsComponent._switchButtons(this.state.variant);
+    }
+    
+    createTemplate() {
+        this.state = {
+            variant: null
+        };
+        this.state.variant = JSON.parse(this.getAttribute('data-variant').replaceAll("'", '"'));
+        this.template = document.createElement('template');
+        this.template.innerHTML = this.render();
+        return this.template;
+    }
+    
+    render() {
+        const price = parseFloat(this.state.variant.price).toFixed(2).split('.');
+        const priceInt = price[0];
+        const priceFloat = price[1];
+        return `<button type="button" class="w-100 mb-1 agr-variant-btn btn 
+                    btn-sm btn-rounded btn-outline-primary" data-mdb-ripple-init
+                    data-product-variant-id="${this.state.variant.id}"
+                    data-product-variant-price="${this.state.variant.price}"
+                    data-product-variant-name="${this.state.variant.name}">
+                        <div class="d-flex justify-content-between">
+                            <div>${this.state.variant.characteristics}</div>
+                            <div>${priceInt}<small>.${priceFloat}</small></div>
+                        </div>
+                    </button>`;
+    };
+}
+window.customElements.define('x-agr-product-variant', XProductVariant);
+
+class XProductVariants extends XElement {    
+    createTemplate() {
+        this.state = {
+            selectedVariant: null,
+            variants: [],
+            inCartVariants: []
+        };
+        const rawVariants = this.getAttribute('data-variants');
+        this.state.variants = JSON.parse(rawVariants.replaceAll("'", '"'));
+        this.state.selectedVariant = this.state.variants[0];
+        this.state.inCartVariants = JSON.parse(this.getAttribute('data-in-cart-variants').replaceAll("'", '"'));
+        this.template = document.createElement('template'); 
+        this.template.innerHTML = this.render();
+        return this.template;
+    }
+    
+    postConstruct() {
+        this._switchButtons(this.state.selectedVariant);
+    }
+    
+    render() {
+        const buttons = this.state.variants.map(v => 
+            `<x-agr-product-variant data-variant="${JSON.stringify(v).replaceAll('"', "'")}" 
+                data-selected="${this.state.selectedVariant.id === v.id}"></x-agr-product-variant>`
+        ).join('');
+        return `
+            <div class="d-flex flex-column mb-2">
+                ${buttons}
+            </div>
+            <hr/>
+        `;
+    };
+    
+    _switchButtons(variant) {
+        this.state.selectedVariant = variant;
+        this.querySelectorAll('x-agr-product-variant').forEach(btn => {
+            const isActive = btn.state.variant.id === variant.id;
+            const innerBtn = btn.querySelector('button');
+            if (isActive) {
+                innerBtn.classList.remove("btn-outline-primary");
+                innerBtn.classList.add("btn-primary");
+            } else {
+                innerBtn.classList.remove("btn-primary");
+                innerBtn.classList.add("btn-outline-primary");
+            }
+        });
+        this.closest('div').querySelector('x-agr-product-price')._setPrice(variant.price);
+        this.closest('x-agr-product-actions')._setInCartButtonState(
+            this.state.inCartVariants.includes(this.state.selectedVariant.id)
+        );
+    }
+    
+    _modifyVariantsInCart(variantId, action) {
+        if (action === 'add') {
+            this.state.inCartVariants.push(variantId);
+        } else {
+            this.state.inCartVariants = this.state.inCartVariants.filter(v => v !== variantId);
+        }
+    }
+}
+window.customElements.define('x-agr-product-variants', XProductVariants);
+
 class XProductActions extends XElement {    
     createTemplate() {
+        this.state = {
+            id: null,
+            inCart: false
+        };
+        this.state.id = this.getAttribute('data-id');
+        this.state.inCart = this.getAttribute('data-in-cart') === 'true';
         let template = document.createElement('template');
-        const id = this.getAttribute('data-id');
+        template.innerHTML = this.render();
+        return template;
+    }
+    
+    render() {
         const cls = this.getAttribute('data-cls');
-        const inCart = this.getAttribute('data-in-cart');
+        const rawVariants = this.getAttribute('data-variants');
+        const hasVariants = rawVariants && rawVariants.length > 2;
         const volumes = this.getAttribute('data-volume');
-        template.innerHTML = `
-            ${volumes ? `<x-agr-product-volumes data-cls="${cls}" data-volume="${volumes}"></x-agr-product-volumes>` : ''}
-            <button class="btn btn-outline-info btn-rounded w-100 mt-1 ${cls}" data-product-id="${id}" data-order="">
+        return `
+            ${hasVariants ? `<x-agr-product-variants data-variants="${rawVariants}" data-in-cart-variants="${this.getAttribute('data-in-cart-variants')}"></x-agr-product-variants>` : ''}
+            ${volumes && !hasVariants ? `<x-agr-product-volumes data-cls="${cls}" data-volume="${volumes}"></x-agr-product-volumes>` : ''}
+            <button class="btn btn-outline-info btn-rounded w-100 mt-1 ${cls}" data-product-id="${this.state.id}" data-order="">
                 <i class="far fa-hand-point-up me-2"></i> Заказать сразу
             </button>
-            ${inCart ? `
-                <button class="btn btn-outline-danger btn-rounded w-100 mt-1 ${cls}" data-product-id="${id}" data-remove="">
+            ${this.state.inCart ? `
+                <button class="btn btn-outline-danger btn-rounded w-100 mt-1 ${cls}" data-product-id="${this.state.id}" data-remove="">
                     <i class="fas fa-minus-circle me-2"></i> Из корзины
                 </button>
             ` : `
-                <button class="btn btn-outline-success btn-rounded w-100 mt-1 ${cls}" data-product-id="${id}" data-add="">
+                <button class="btn btn-outline-success btn-rounded w-100 mt-1 ${cls}" data-product-id="${this.state.id}" data-add="">
                     <i class="fas fa-cart-plus me-2"></i> В корзину
                 </button>
             `}
         `;
-        return template;
+    }
+    
+    _setInCartButtonState(inCart) {
+        if (this.state.inCart !== inCart) {
+            this.state.inCart = inCart;
+            if (inCart) {
+                const cartButton = this.querySelector('button[data-add]');
+                cartButton.removeAttribute('disabled');
+                cartButton.removeAttribute('data-add');
+                cartButton.setAttribute('data-remove', '');
+                cartButton.innerHTML = '<i class="fas fa-minus-circle me-2"></i> Из корзины';
+                cartButton.classList.remove('btn-outline-success');
+                cartButton.classList.add('btn-outline-danger');
+            } else {
+                const cartButton = this.querySelector('button[data-remove]');
+                cartButton.removeAttribute('disabled');
+                cartButton.removeAttribute('data-remove');
+                cartButton.setAttribute('data-add', '');
+                cartButton.innerHTML = '<i class="fas fa-cart-plus me-2"></i> В корзину';
+                cartButton.classList.add('btn-outline-success');
+                cartButton.classList.remove('btn-outline-danger');
+            }
+        }
     }
 }
 window.customElements.define('x-agr-product-actions', XProductActions);
@@ -254,7 +398,7 @@ class XProductCard extends XElement {
         const imageCreatedDate = this.getAttribute('data-image-created');
         const link = this.getAttribute('data-link');
         const volumes = this.getAttribute('data-volume');
-        const imageElement = image 
+        const imageElement = image
             ? `<div class="card-img-top agr-card-image" style="background-image: url('/media/${image}?timestamp=${imageCreatedDate}')"></div>` 
             : `<div class="card-img-top agr-card-image" style="background-image: url('/assets/img/no-image.png')"></div>`;
         template.innerHTML = `
@@ -272,7 +416,13 @@ class XProductCard extends XElement {
                                     <small class="text-muted">${createdDate}</small>
                                 </div>
                             ` : ''}
-                            <x-agr-product-actions data-id="${id}" data-cls="agr-card-button" data-in-cart="${inCart}" data-volume="${volumes}"></x-agr-product-actions>
+                            <x-agr-product-actions
+                                data-id="${id}"
+                                data-cls="agr-card-button"
+                                data-in-cart="${inCart}"
+                                data-volume="${volumes}"
+                                data-variants="${this.getAttribute('data-variants')}"
+                                data-in-cart-variants="${this.getAttribute('data-in-cart-variants')}"></x-agr-product-actions>
                         </div>
                     </div>
                 </div>

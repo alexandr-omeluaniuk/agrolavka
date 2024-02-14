@@ -65,7 +65,7 @@ public class AgrolavkaDataFactory {
         final var position = new OrderPosition();
         position.setProduct(product);
         position.setProductId(product.getId());
-        position.setPrice(product.getDiscountPrice());
+        position.setPrice(product.getPrice());
         position.setQuantity(1);
         return position;
     }

@@ -21,7 +21,8 @@
 <x-agr-product-card 
     data-id="${product.id}"
     data-discount="${product.discount != null && product.discount.discount != null ? product.discount.discount : ""}"
-    data-in-cart="<%= cart.getPositions().stream().filter(pos -> Objects.equals(product.getId(), pos.getProductId())).findFirst().isPresent() ? "true" : "" %>"
+    data-in-cart="<%= CartUtils.inCart(product, cart.getPositions()) ? "true" : "" %>"
+    data-in-cart-variants="<%= CartUtils.inCartVariants(product, cart.getPositions()) %>"
     data-in-stock="${product.quantity > 0 ? "true" : ""}"
     data-hide-ribbon="<%= AppCache.isBelongsToGroup("Средства защиты растений (СЗР)", product.getGroup()) ? "true" : "" %>"
     data-name="<%= product.getName().replace("\"", "'") %>"
@@ -30,6 +31,7 @@
     data-image-created="${product.images.size() > 0 ? product.images.get(0).createdDate : ""}"
     data-created="<%= Boolean.TRUE.equals(showCreatedDate) ? new SimpleDateFormat("dd.MM.yyyy").format(product.getCreatedDate()) : "" %>"
     data-volume="<%= product.getVolumes() != null ? product.getVolumes().replace("\"", "'") : "" %>"
+    data-variants="<%= product.getVariants().toString().replace("\"", "'") %>"
     data-link="<%= UrlProducer.buildProductUrl(product)%>">
     <t:card-placeholder isProduct="true"></t:card-placeholder>
 </x-agr-product-card>

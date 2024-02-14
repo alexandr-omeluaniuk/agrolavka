@@ -16,6 +16,10 @@ java {
 test {
     useJUnitPlatform()
     finalizedBy jacocoTestReport
+    testLogging {
+        events "STANDARD_OUT"
+        exceptionFormat "full"
+    }
 }
 jacoco {
     toolVersion = "0.8.10"

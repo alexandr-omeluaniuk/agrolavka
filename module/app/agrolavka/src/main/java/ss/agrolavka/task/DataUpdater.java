@@ -25,10 +25,11 @@ import ss.agrolavka.dao.ExternalEntityDAO;
 import ss.agrolavka.dao.ProductDAO;
 import ss.agrolavka.service.GroupProductsService;
 import ss.agrolavka.service.MySkladIntegrationService;
+import ss.agrolavka.task.mysklad.PriceTypeSynchronizator;
+import ss.agrolavka.task.mysklad.ProductVariantSynchronizator;
 import ss.agrolavka.util.AppCache;
 import ss.agrolavka.util.UrlProducer;
 import ss.entity.agrolavka.Discount;
-import ss.entity.agrolavka.PriceType;
 import ss.entity.agrolavka.Product;
 import ss.entity.agrolavka.ProductsGroup;
 import ss.entity.images.storage.EntityImage;
@@ -72,6 +73,12 @@ public class DataUpdater {
     @Autowired
     private CacheManager cacheManager;
     
+    @Autowired
+    private ProductVariantSynchronizator productVariantSynchronizator;
+    
+    @Autowired
+    private PriceTypeSynchronizator priceTypeSynchronizator;
+    
     @PostConstruct
     protected void init() {
         AppCache.flushCache(coreDAO.getAll(ProductsGroup.class));
@@ -95,11 +102,14 @@ public class DataUpdater {
         try {
             LOG.info("====================================== MY SKLAD DATA UPDATE ===================================");
             securityService.backgroundAuthentication(
-                    configuration.backgroundUserUsername(), configuration.backgroundUserPassword());
-            importPriceTypes();
+                configuration.backgroundUserUsername(), 
+                configuration.backgroundUserPassword()
+            );
+            priceTypeSynchronizator.doImport();
             importProductGroups();
             importProducts();
             importImages();
+            productVariantSynchronizator.doImport();
             groupProductsService.groupProductByVolumes();
             AppCache.flushCache(coreDAO.getAll(ProductsGroup.class));
             LOG.info("===============================================================================================");
@@ -110,38 +120,6 @@ public class DataUpdater {
             alertService.sendAlert("Import MySklad data - fail!", e);
             return false;
         }
-    }
-    
-    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    private void importPriceTypes() throws Exception {
-        List<PriceType> priceTypes = mySkladIntegrationService.getPriceTypes();
-        Map<String, PriceType> map = new HashMap<>();
-        for (PriceType pt : priceTypes) {
-            map.put(pt.getExternalId(), pt);
-        }
-        Set<String> actualPriceTypesIDs = map.keySet();
-        Set<String> deleteNotIn = new HashSet<>(map.keySet());
-        Set<String> existPriceTypesIDs = new HashSet<>();
-        List<PriceType> existingPriceTypes = externalEntityDAO.getExternalEntitiesByIds(map.keySet(), PriceType.class);
-        for (PriceType existingPriceType : existingPriceTypes) {
-            PriceType freshPriceType = map.get(existingPriceType.getExternalId());
-            existingPriceType.setName(freshPriceType.getName());
-            existPriceTypesIDs.add(existingPriceType.getExternalId());
-        }
-        LOG.info("update price types [" + existingPriceTypes.size() + "]");
-        coreDAO.massUpdate(existingPriceTypes);
-        // create new groups
-        actualPriceTypesIDs.removeAll(existPriceTypesIDs);
-        List<PriceType> newPriceTypes = new ArrayList<>();
-        for (String newExternalId : actualPriceTypesIDs) {
-            PriceType newPriceType = map.get(newExternalId);
-            LOG.info("create new price type: " + newPriceType);
-            newPriceTypes.add(newPriceType);
-        }
-        LOG.info("new price types [" + newPriceTypes.size() + "]");
-        coreDAO.massCreate(newPriceTypes);
-        // remove unused groups.
-        externalEntityDAO.removeExternalEntitiesNotInIDs(deleteNotIn, PriceType.class);
     }
     
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)

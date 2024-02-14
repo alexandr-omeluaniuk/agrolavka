@@ -5,6 +5,7 @@ import java.util.Map;
 import ss.entity.agrolavka.Discount;
 import ss.entity.agrolavka.PriceType;
 import ss.entity.agrolavka.Product;
+import ss.entity.agrolavka.ProductVariant;
 import ss.entity.agrolavka.ProductsGroup;
 import ss.entity.images.storage.EntityImage;
 
@@ -27,6 +28,8 @@ public interface MySkladIntegrationService {
      * @return products.
      */
     List<Product> getProducts(int offset, int limit);
+    
+    List<ProductVariant> getProductVariants();
     
     /**
      * Get product images.

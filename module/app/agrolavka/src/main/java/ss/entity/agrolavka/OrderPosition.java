@@ -45,9 +45,14 @@ public class OrderPosition extends DataModel implements Comparable<OrderPosition
     @Updatable
     @Column(name = "quantity", nullable = false)
     private Integer quantity;
+    /** Variant ID. */
+    @Column(name = "variant_id")
+    private String variantId;
     /** Product. */
     @Transient
     private Product product;
+    @Transient
+    private ProductVariant variant;
     /** Temporary ID. Should be used until entity is not save in DB. */
     @Transient
     private String positionId;
@@ -125,7 +130,9 @@ public class OrderPosition extends DataModel implements Comparable<OrderPosition
         return ((ThrowingSupplier<String>) () -> {
             String name = "";
             if (getProduct() != null) {
-                if (getProduct().getVolumes() != null) {
+                if (getVariant() != null) {
+                    name = getVariant().getName();
+                } else if (getProduct().getVolumes() != null) {
                     final Optional<ProductVolume> volume = getProduct().getProductVolumes().stream()
                         .filter(item -> item.getPrice().equals(getPrice())).findFirst();
                     name = getProduct().getName() + (volume.isEmpty() ? "" : (" (" + volume.get().getVolumeLabel() + ")"));
@@ -135,6 +142,22 @@ public class OrderPosition extends DataModel implements Comparable<OrderPosition
             }
             return name;
         }).get();
+    }
+
+    public String getVariantId() {
+        return variantId;
+    }
+
+    public void setVariantId(String variantId) {
+        this.variantId = variantId;
+    }
+
+    public ProductVariant getVariant() {
+        return variant;
+    }
+
+    public void setVariant(ProductVariant variant) {
+        this.variant = variant;
     }
     
     @Override

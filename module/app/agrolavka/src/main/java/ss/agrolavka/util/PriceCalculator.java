@@ -20,9 +20,12 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.TreeMap;
 import ss.agrolavka.wrapper.ProductVolume;
+import ss.entity.agrolavka.Discount;
 import ss.entity.agrolavka.Product;
+import ss.entity.agrolavka.ProductVariant;
 
 /**
  * Price calculator.
@@ -32,7 +35,11 @@ public class PriceCalculator {
     
     private static final int MILLILITER_IN_LITER = 1000;
     
-    public static Map<Double, Integer> breakQuantityByVolume(final Product product, final Double quantity) throws JsonProcessingException {
+    public static Map<Double, Integer> breakQuantityByVolume(
+        final Product product,
+        final Optional<ProductVariant> variant,
+        final Double quantity
+    ) throws JsonProcessingException {
         final Map<Double, Integer> result = new TreeMap<>();
         if (product.getVolumes() != null) {
             int rest = toMilliliters(quantity);
@@ -49,12 +56,26 @@ public class PriceCalculator {
                 }
             }
         } else {
-            result.put(product.getDiscountPrice(), quantity.intValue());
+            final var basePrice = getBasePrice(product, variant.map(v -> Collections.singletonList(v)).orElse(Collections.emptyList()));
+            final var shopPrice = getShopPrice(basePrice, product.getDiscount());
+            result.put(shopPrice, quantity.intValue());
         }
         return result;
     }
     
     private static int toMilliliters(final double quantityInLiters) {
         return Double.valueOf(String.valueOf(quantityInLiters * MILLILITER_IN_LITER)).intValue();
+    }
+    
+    public static Double getBasePrice(Product product, List<ProductVariant> variants) {
+        return variants.isEmpty() ? product.getPrice() : variants.get(0).getPrice();
+    }
+    
+    public static Double getShopPrice(Double basePrice, Discount discount) {
+        if (discount != null) {
+            return basePrice - (basePrice * discount.getDiscount() / 100);
+        } else {
+            return basePrice;
+        }
     }
 }

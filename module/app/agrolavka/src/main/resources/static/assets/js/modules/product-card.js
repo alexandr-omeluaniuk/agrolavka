@@ -27,8 +27,9 @@ const addToCartListener = (evt, button) => {
     modalElement.cartButton = button;
     const fieldProductId = modalElement.querySelector('input[name="productId"]');
     const fieldQuantity = modalElement.querySelector('input[name="quantity"]');
+    const variantIdField = modalElement.querySelector('input[name="variantId"]');
     fieldProductId.value = button.getAttribute('data-product-id');
-    modifyQuantityField(fieldQuantity, button);
+    modifyQuantityField(fieldQuantity, variantIdField, button);
     const modal = new mdb.Modal(modalElement, {});
     modal.toggle();
     setTimeout(() => {
@@ -40,7 +41,11 @@ const removeFromCartListener = (evt, button) => {
     evt.preventDefault();
     evt.stopPropagation();
     button.setAttribute('disabled', 'true');
-    fetch('/api/agrolavka/public/cart/product/' + button.getAttribute('data-product-id'), {
+    const actionsComponent = button.closest('x-agr-product-actions');
+    const variantsComponent = actionsComponent.querySelector('x-agr-product-variants');
+    const variantId = variantsComponent ? variantsComponent.state.selectedVariant.id : null;
+    const url = variantId ? `/variant/${variantId}` : `/product/${button.getAttribute('data-product-id')}`;
+    fetch('/api/agrolavka/public/cart' + url, {
         method: 'DELETE',
         headers: {
             'Accept': 'application/json',
@@ -49,13 +54,11 @@ const removeFromCartListener = (evt, button) => {
     }).then(function (response) {
         if (response.ok) {
             response.json().then(cart => {
-                button.removeAttribute('disabled');
-                button.removeAttribute('data-remove');
-                button.setAttribute('data-add', '');
                 updateCartTotal(cart);
-                button.innerHTML = '<i class="fas fa-cart-plus me-2"></i> В корзину';
-                button.classList.add('btn-outline-success');
-                button.classList.remove('btn-outline-danger');
+                actionsComponent._setInCartButtonState(false);
+                if (variantId) {
+                    variantsComponent._modifyVariantsInCart(variantId, 'remove');
+                }
             });
         }
     }).catch(error => {
@@ -86,13 +89,14 @@ const addToCartConfirmListener = (evt, button) => {
         }).then(function (response) {
             if (response.ok) {
                 response.json().then(cart => {
-                    modalElement.cartButton.removeAttribute('disabled');
-                    modalElement.cartButton.removeAttribute('data-add');
-                    modalElement.cartButton.setAttribute('data-remove', '');
                     updateCartTotal(cart);
-                    modalElement.cartButton.innerHTML = '<i class="fas fa-minus-circle me-2"></i> Из корзины';
-                    modalElement.cartButton.classList.remove('btn-outline-success');
-                    modalElement.cartButton.classList.add('btn-outline-danger');
+                    modalElement.cartButton.closest('x-agr-product-actions')._setInCartButtonState(true);
+                    if (formData.variantId) {
+                        modalElement.cartButton
+                            .closest('x-agr-product-actions')
+                            .querySelector('x-agr-product-variants')
+                            ._modifyVariantsInCart(formData.variantId, 'add');
+                    }
                 });
             }
         }).catch(error => {
@@ -108,8 +112,9 @@ const orderOneClickButtonListener = (evt, button) => {
     const productId = button.getAttribute('data-product-id');
     const modalElement = document.getElementById('agr-one-click-order-modal');
     modalElement.querySelector('input[name="productId"]').value = productId;
+    const variantIdField = modalElement.querySelector('input[name="variantId"]');
     const fieldQuantity = modalElement.querySelector('input[name="quantity"]');
-    modifyQuantityField(fieldQuantity, button);
+    modifyQuantityField(fieldQuantity, variantIdField, button);
     const confirmButton = modalElement.querySelector('button[data-one-click-order]');
     confirmButton.removeAttribute('disabled');
     confirmButton.querySelector('.spinner-border').classList.add('d-none');
@@ -193,9 +198,13 @@ const photoClickListener = (evt, image) => {
     modal.toggle();
 };
 
-const modifyQuantityField = (fieldQuantity, button) => {
+const modifyQuantityField = (fieldQuantity, variantIdField, button) => {
     const volumesComponent = button.closest('div').querySelector('div[data-volumes]');
+    const variantsComponent = button.closest('x-agr-product-actions').querySelector('x-agr-product-variants');
     const helpText = fieldQuantity.closest('form').querySelector('.agr-volume-help-text');
+    if (variantsComponent) {
+        variantIdField.value = variantsComponent.state.selectedVariant.id;
+    }
     if (volumesComponent) {
         fieldQuantity.setAttribute("step", ".1");
         try {

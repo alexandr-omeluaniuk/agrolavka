@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import jakarta.servlet.http.HttpServletRequest;
+import java.util.function.Predicate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -87,33 +88,25 @@ class AgrolavkaPublicRestController {
     @RequestMapping(value = "/cart/product/{id}", method = RequestMethod.DELETE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public Order removeFromCartByProductId(@PathVariable("id") Long id, HttpServletRequest request) throws Exception {
-        final Order order = orderService.getCurrentOrder(request);
-        List<OrderPosition> positions = order.getPositions().stream().filter(pos -> {
+        return removePosition((pos) -> {
             return !Objects.equals(pos.getProductId(), id);
-        }).collect(Collectors.toList());
-        order.setPositions(positions);
-        if (positions.isEmpty()) {
-            request.getSession().removeAttribute(SiteConstants.CART_SESSION_ATTRIBUTE);
-        } else {
-            request.getSession().setAttribute(SiteConstants.CART_SESSION_ATTRIBUTE, order);
-        }
-        return order;
+        }, request);
+    }
+    
+    @RequestMapping(value = "/cart/variant/{id}", method = RequestMethod.DELETE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public Order removeFromCartByVariantId(@PathVariable("id") final String id, HttpServletRequest request) throws Exception {
+        return removePosition((pos) -> {
+            return !Objects.equals(pos.getVariantId(), id);
+        }, request);
     }
     
     @RequestMapping(value = "/cart/position/{id}", method = RequestMethod.DELETE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public Order removeFromCartByPositionId(@PathVariable("id") String id, HttpServletRequest request) throws Exception {
-        final Order order = orderService.getCurrentOrder(request);
-        List<OrderPosition> positions = order.getPositions().stream().filter(pos -> {
+    public Order removeFromCartByPositionId(@PathVariable("id") final String id, HttpServletRequest request) throws Exception {
+        return removePosition((pos) -> {
             return !Objects.equals(pos.getPositionId(), id);
-        }).collect(Collectors.toList());
-        order.setPositions(positions);
-        if (positions.isEmpty()) {
-            request.getSession().removeAttribute(SiteConstants.CART_SESSION_ATTRIBUTE);
-        } else {
-            request.getSession().setAttribute(SiteConstants.CART_SESSION_ATTRIBUTE, order);
-        }
-        return order;
+        }, request);
     }
     /**
      * Change cart position quantity.
@@ -185,5 +178,17 @@ class AgrolavkaPublicRestController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, List<ProductsGroup>> catalog() throws Exception {
         return AppCache.getCategoriesTree();
+    }
+    
+    private Order removePosition(Predicate<OrderPosition> predicate, HttpServletRequest request) {
+        final Order order = orderService.getCurrentOrder(request);
+        List<OrderPosition> positions = order.getPositions().stream().filter(predicate).collect(Collectors.toList());
+        order.setPositions(positions);
+        if (positions.isEmpty()) {
+            request.getSession().removeAttribute(SiteConstants.CART_SESSION_ATTRIBUTE);
+        } else {
+            request.getSession().setAttribute(SiteConstants.CART_SESSION_ATTRIBUTE, order);
+        }
+        return order;
     }
 }

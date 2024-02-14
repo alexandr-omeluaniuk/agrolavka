@@ -2,34 +2,18 @@ package ss.agrolavka.dao.impl;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.CriteriaUpdate;
-import jakarta.persistence.criteria.Expression;
-import jakarta.persistence.criteria.Join;
-import jakarta.persistence.criteria.JoinType;
-import jakarta.persistence.criteria.Predicate;
-import jakarta.persistence.criteria.Root;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import jakarta.persistence.criteria.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import ss.agrolavka.dao.ProductDAO;
 import ss.agrolavka.wrapper.ProductsSearchRequest;
-import ss.entity.agrolavka.Discount;
-import ss.entity.agrolavka.Product;
-import ss.entity.agrolavka.Product_;
-import ss.entity.agrolavka.ProductsGroup;
-import ss.entity.agrolavka.ProductsGroup_;
+import ss.entity.agrolavka.*;
 import ss.entity.security.EntityAudit_;
 import ss.martin.core.dao.CoreDao;
+
+import java.util.*;
 
 /**
  * Product DAO implementation.
@@ -71,6 +55,8 @@ class ProductDAOImpl implements ProductDAO {
                     criteria.orderBy(cb.desc(c.get(request.getOrderBy())));
                 }
             }
+        } else {
+            criteria.orderBy(cb.asc(c.get(Product_.name)));
         }
         return em.createQuery(criteria)
                 .setFirstResult((request.getPage() - 1) * request.getPageSize())

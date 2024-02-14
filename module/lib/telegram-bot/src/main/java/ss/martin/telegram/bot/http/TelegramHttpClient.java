@@ -99,13 +99,4 @@ public class TelegramHttpClient {
             throw new TelegramBotException(response.result());
         }
     }
-    
-    private String extractString(final Response response) {
-        if (response.ok()) {
-            return response.result();
-        } else {
-            throw new TelegramBotException(response.result() == null ? response.description() : response.result());
-        }
-    }
-
 }
