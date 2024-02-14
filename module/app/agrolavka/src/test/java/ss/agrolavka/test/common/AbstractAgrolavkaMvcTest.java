@@ -1,6 +1,5 @@
 package ss.agrolavka.test.common;
 
-import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -12,7 +11,14 @@ import ss.entity.agrolavka.ProductsGroup;
 import ss.martin.security.test.PlatformSecurityMvcTest;
 import ss.martin.telegram.bot.api.TelegramBot;
 
-@SpringBootTest(classes = AgrolavkaTestApplication.class)
+import java.util.Optional;
+
+@SpringBootTest(
+        classes = AgrolavkaTestApplication.class,
+        properties = {
+                "mysklad.api.url=http://localhost:20233/mysklad"
+        }
+)
 public abstract class AbstractAgrolavkaMvcTest extends PlatformSecurityMvcTest {
     
     @MockBean(name = "telegramBotOrders")
