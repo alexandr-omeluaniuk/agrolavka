@@ -76,7 +76,8 @@
             var map = L.map('agr-map-${shop.id}').setView([lat, lon], 15);
             L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1Ijoic3RzdHJlbG9rIiwiYSI6ImNpaG0yZ3ZoMTBvN290cGx6OWlodXRscW0ifQ.fszeWQtak5VL53VkO7pvcw', {
                 attribution: '',
-                maxZoom: 18,
+                maxZoom: 16,
+                minZoom: 15,
                 id: 'mapbox/streets-v11',
                 tileSize: 512,
                 zoomOffset: -1,
