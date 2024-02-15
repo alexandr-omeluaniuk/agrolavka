@@ -30,7 +30,8 @@ import { handleProductCardEvent } from "./modules/product-card.js";
     const preventModalEventOnDemand = (evt) => {
         const modal = evt.target.closest('#agr-photo-modal');
         if (modal) {
-            if (!evt.target.classList.contains('btn-close') 
+            if (!evt.target.classList.contains('btn-close')
+                    && !evt.target.classList.contains('modal')
                     && !evt.target.classList.contains('swiper-button-next')
                     && !evt.target.classList.contains('swiper-button-prev')) {
                 evt.stopPropagation();
