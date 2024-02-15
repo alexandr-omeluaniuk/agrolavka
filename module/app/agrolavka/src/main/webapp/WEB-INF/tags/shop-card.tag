@@ -24,7 +24,7 @@
         <a href="#">
             <div class="mask" style="background-color: rgba(0, 0, 0, 0.05)"></div>
         </a>
-        <div class="card-body">
+        <div class="card-body p-3">
             <h4 class="card-title mb-0">${shop.title}</h4>
             <p class="mt-1 text-muted" style="white-space: pre-line;">${shop.address}</p>
             <h6>Время работы</h6>
