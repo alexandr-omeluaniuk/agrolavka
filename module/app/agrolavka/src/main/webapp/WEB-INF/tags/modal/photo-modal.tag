@@ -12,14 +12,14 @@
 <%@attribute name="product" required="true" type="Product"%>
 <%-- any content can be specified here e.g.: --%>
 <div class="modal fade" id="agr-photo-modal" tabindex="-1" aria-hidden="true" style="z-index: 3000">
-    <div class="modal-dialog modal-fullscreen modal-dialog-centered">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content" style="background-color: white;">
             <div class="modal-header">
                 <h5 class="modal-title">${product.name}</h5>
                 <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body d-flex align-items-center justify-content-center">
-                <div class="agr-product-photo-modal-swiper swiper w-100" style="height: 100%;">
+                <div class="agr-product-photo-modal-swiper swiper w-100" style="height: 70vh;">
                     <!-- Additional required wrapper -->
                     <div class="swiper-wrapper">
                         <c:forEach items="${product.images}" var="image" varStatus="loop">
