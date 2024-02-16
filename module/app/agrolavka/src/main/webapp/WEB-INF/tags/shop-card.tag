@@ -29,19 +29,19 @@
             <p class="mt-1 text-muted" style="white-space: pre-line;">${shop.address}</p>
             <h6>Время работы</h6>
             <%
-                                final String workingWhours = shop.getWorkingHours();
-                                final String[] lines = workingWhours.split("\n");
-                                for (final String line : lines) {
-                                    if (line.contains("|")) {
-                                        final String subline1 = line.substring(0, line.lastIndexOf("|"));
-                                        final String subline2 = line.substring(line.lastIndexOf("|") + 1);
-                                        out.print("<div class=\"d-flex justify-content-between align-items-center\">");
-                                        out.print("<small>" + subline1 + "</small> <small>" + subline2 + "</small>");
-                                        out.print("</div>");
-                                    } else {
-                                        out.print("<p style=\"white-space: pre;\">${shop.workingHours}</p>");
-                                    }
-                                }
+                final String workingHours = shop.getWorkingHours();
+                final String[] lines = workingHours.split("\n");
+                for (final String line : lines) {
+                    if (line.contains("|")) {
+                        final String subline1 = line.substring(0, line.lastIndexOf("|"));
+                        final String subline2 = line.substring(line.lastIndexOf("|") + 1);
+                        out.print("<div class=\"d-flex justify-content-between align-items-center\">");
+                        out.print("<small>" + subline1 + "</small> <small>" + subline2 + "</small>");
+                        out.print("</div>");
+                    } else {
+                        out.print("<p style=\"white-space: pre;\">${shop.workingHours}</p>");
+                    }
+                }
             %>
             <button type="button" class="mt-3 btn btn-outline-success btn-rounded w-100" data-mdb-ripple-init>
                 Посмотреть на карте

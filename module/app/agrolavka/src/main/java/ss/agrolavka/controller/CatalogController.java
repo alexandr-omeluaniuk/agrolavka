@@ -84,8 +84,7 @@ class CatalogController extends BaseJspController {
             .map(desc -> desc.replace("\"", "&quot;")).orElse("");
         final var variants = productService.getVariants(product.getExternalId());
         final var basePrice = PriceCalculator.getBasePrice(product, variants);
-        final var shopPrice = PriceCalculator.getShopPrice(basePrice, product.getDiscount());
-        final var discount = product.getDiscount() != null && product.getDiscount().getDiscount() != null 
+        final var discount = product.getDiscount() != null && product.getDiscount().getDiscount() != null
             ? product.getDiscount().getDiscount() : null;
         final var orderPositions = orderService.getCurrentOrder(request).getPositions();
         model.addAttribute(TITLE, product.getSeoTitle() != null
@@ -99,7 +98,7 @@ class CatalogController extends BaseJspController {
         model.addAttribute(STRUCTURED_DATA_DESCRIPTION, metaDescription.replace("\\", "").replace("\"", "'"));
         model.addAttribute(BREADCRUMB_LABEL, product.getName());
         model.addAttribute(BREADCRUMB_PATH, productsGroupService.getBreadcrumbPath(product.getGroup()));
-        model.addAttribute(PRODUCT_PRICE, String.format("%.2f", shopPrice));
+        model.addAttribute(PRODUCT_PRICE, String.format("%.2f", basePrice));
         model.addAttribute(PRODUCT_DISCOUNT, discount != null ? discount : "");
         model.addAttribute(PRODUCT_URL, domainConfiguration.host() + request.getRequestURI());
         model.addAttribute(IN_CART, CartUtils.inCart(product, orderPositions));
