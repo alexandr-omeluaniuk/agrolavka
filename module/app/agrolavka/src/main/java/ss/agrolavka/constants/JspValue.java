@@ -44,4 +44,5 @@ public final class JspValue {
     public static final String VOLUMES = "volumes";
     public static final String VARIANTS = "variants";
     public static final String PRICE_VALID_UNTIL = "priceValidUntil";
+    public static final String SHOP = "shop";
 }

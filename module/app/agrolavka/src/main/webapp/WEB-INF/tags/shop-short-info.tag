@@ -5,14 +5,14 @@
 --%>
 
 <%@tag description="put the tag description here" pageEncoding="UTF-8" 
-       import="ss.entity.agrolavka.Shop"%>
+       import="ss.entity.agrolavka.Shop,ss.agrolavka.util.*"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <%-- The list of normal or fragment attributes can be specified here: --%>
 <%@attribute name="shop" required="true" type="ss.entity.agrolavka.Shop"%>
 
 <%-- any content can be specified here e.g.: --%>
-<a class="agr-shop-address-link" href="/shops"><h6 class="agr-shop-address">${shop.address}</h6></a>
+<a class="agr-shop-address-link" href="/shops/${UrlProducer.transliterate(shop.title.toLowerCase())}"><h6 class="agr-shop-address">${shop.address}</h6></a>
 <% if (shop.getPhone() != null) { %>
 <div class="d-flex justify-content-between align-items-center">
     <h6 class="mt-2">Телефон</h6>

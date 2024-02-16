@@ -5,7 +5,7 @@
 --%>
 
 <%@tag description="put the tag description here" pageEncoding="UTF-8" 
-       import="ss.entity.agrolavka.Shop,ss.entity.images.storage.EntityImage"%>
+       import="ss.entity.agrolavka.Shop,ss.entity.images.storage.EntityImage,ss.agrolavka.util.*"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <%-- The list of normal or fragment attributes can be specified here: --%>
@@ -21,7 +21,7 @@
             <c:if test="${shop.images.size() == 0}">
                 <div class="card-img-top agr-card-image" style="background-image: url('/assets/img/no-image.png')"></div>
             </c:if>
-        <a href="#">
+        <a href="/shops/${UrlProducer.transliterate(shop.title.toLowerCase())}">
             <div class="mask" style="background-color: rgba(0, 0, 0, 0.05)"></div>
         </a>
         <div class="card-body p-3">
