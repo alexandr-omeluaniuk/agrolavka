@@ -1,20 +1,5 @@
 package ss.agrolavka.service.impl;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
-import java.util.zip.GZIPInputStream;
-import javax.net.ssl.HttpsURLConnection;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -27,15 +12,24 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.function.ThrowingSupplier;
 import ss.agrolavka.AgrolavkaConfiguration;
 import ss.agrolavka.service.MySkladIntegrationService;
-import ss.entity.agrolavka.Discount;
-import ss.entity.agrolavka.PriceType;
-import ss.entity.agrolavka.Product;
-import ss.entity.agrolavka.ProductVariant;
-import ss.entity.agrolavka.ProductsGroup;
+import ss.entity.agrolavka.*;
 import ss.entity.images.storage.EntityImage;
 import ss.martin.base.lang.ThrowingRunnable;
 import ss.martin.core.dao.CoreDao;
 import ss.martin.images.storage.api.ImagesStorageApi;
+
+import javax.net.ssl.HttpsURLConnection;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
+import java.util.zip.GZIPInputStream;
 
 /**
  * My Sklad integration service implementation.
@@ -387,7 +381,7 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
             connection.setDoInput(true);
             connection.setDoOutput(true);
             if (payload != null) {
-                connection.getOutputStream().write(payload.getBytes("UTF-8"));
+                connection.getOutputStream().write(payload.getBytes(StandardCharsets.UTF_8));
             }
             int responseCode = connection.getResponseCode();
             LOG.debug("response code [" + responseCode + "]");
@@ -400,6 +394,7 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
                 LOG.debug("response: " + response);
                 return response;
             } else if (responseCode == 401) {
+                LOG.error("MySklad auth error [" + url + "]: " + inputStreamToString(connection.getErrorStream()));
                 throw new MySkladAuthenticationException();
             } else {
                 response = inputStreamToString(connection.getErrorStream());

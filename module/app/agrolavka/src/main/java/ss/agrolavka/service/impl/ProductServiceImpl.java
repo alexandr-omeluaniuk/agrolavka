@@ -74,13 +74,11 @@ class ProductServiceImpl implements ProductService{
         searchRequest.setPageSize(Integer.MAX_VALUE);
         searchRequest.setWithDiscounts(true);
         final var products = productDao.search(searchRequest).stream()
-            .filter(product -> product.getQuantity() != null && product.getQuantity() > 0)
-            .collect(Collectors.toList());
-        Collections.sort(products, (p1, p2) -> {
-            final var id1 = p1.getDiscount().getId();
-            final var id2 = p2.getDiscount().getId();
-            return id1 > id2 ? -1 : 1;
-        });
+                .filter(product -> product.getQuantity() != null && product.getQuantity() > 0).sorted((p1, p2) -> {
+                    final var id1 = p1.getDiscount().getId();
+                    final var id2 = p2.getDiscount().getId();
+                    return id2.compareTo(id1);
+                }).collect(Collectors.toList());
         products.forEach(p -> p.setVariants(getVariants(p.getExternalId())));
         return products;
     }
