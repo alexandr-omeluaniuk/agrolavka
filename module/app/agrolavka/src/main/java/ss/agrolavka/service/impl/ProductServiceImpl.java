@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import ss.agrolavka.constants.CacheKey;
 import ss.agrolavka.dao.ProductDAO;
 import ss.agrolavka.service.ProductService;
+import ss.agrolavka.util.PriceCalculator;
 import ss.agrolavka.util.UrlProducer;
 import ss.agrolavka.wrapper.ProductsSearchRequest;
 import ss.agrolavka.wrapper.ProductsSearchResponse;
@@ -45,6 +46,7 @@ class ProductServiceImpl implements ProductService{
         request.setOrderBy(Product_.NAME);
         final var products = productDao.search(request);
         products.forEach(product -> {
+            product.setPrice(PriceCalculator.getShopPrice(product.getPrice(), product.getDiscount()));
             product.setBuyPrice(null);
             product.setQuantity(product.getQuantity() != null && product.getQuantity() > 0 ? 1d : 0d);
             product.setUrl(UrlProducer.buildProductUrl(product));
