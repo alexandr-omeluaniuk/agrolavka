@@ -40,7 +40,7 @@
                             sb = noResult;
                         } else {
                             data.forEach(product => {
-                                const price = parseFloat(product.discountPrice ? product.discountPrice : product.price).toFixed(2);
+                                const price = parseFloat(product.price).toFixed(2);
                                 const priceRub = price.split('.')[0];
                                 const priceCent = price.split('.')[1];
                                 sb +=
@@ -56,8 +56,9 @@
                                         + '</div>'
                                         + '<div class="d-flex justify-content-between">'
                                             + '<small class="text-muted">' + (product.group ? product.group.name : '') + '</small>'
-                                            + '<span class="agr-quantity badge ' + (product.quantity ? 'bg-success' : 'bg-gray') + '">' 
-                                                    + (product.quantity ? 'в наличии' : 'под заказ') + '</span>'
+                                            + '<div>' + (product.discount ? '<span class="badge bg-danger me-1"><b>-' + product.discount.discount + '%</b></span>' : '')
+                                            + '<span class="agr-quantity badge ' + (product.quantity ? 'bg-success' : 'bg-gray') + '">'
+                                                    + (product.quantity ? 'в наличии' : 'под заказ') + '</span></div>'
                                         + '</div>'
                                         + '</a>'
                                         + '</li>';
@@ -149,7 +150,7 @@
                             sb = noResult;
                         } else {
                             data.forEach(product => {
-                                const price = parseFloat(product.discountPrice ? product.discountPrice : product.price).toFixed(2);
+                                const price = parseFloat(product.price).toFixed(2);
                                 const priceRub = price.split('.')[0];
                                 const priceCent = price.split('.')[1];
                                 let priceMaxRub, priceMaxCent;
@@ -171,8 +172,9 @@
                                             + '</div>'
                                             + '<div class="d-flex justify-content-between">'
                                                 + '<small class="text-muted">' + (product.group ? product.group.name : '') + '</small>'
-                                                + '<span class="agr-quantity badge ' + (product.quantity ? 'bg-success' : 'bg-gray') + '">' 
-                                                    + (product.quantity ? 'в наличии' : 'под заказ') + '</span>'
+                                                + '<div>' + (product.discount ? '<span class="badge bg-danger me-1"><b>-' + product.discount.discount + '%</b></span>' : '')
+                                                    + '<span class="agr-quantity badge ' + (product.quantity ? 'bg-success' : 'bg-gray') + '">'
+                                                    + (product.quantity ? 'в наличии' : 'под заказ') + '</span></div>'
                                             + '</div>'
                                         + '</a>'
                                     + '</li>';
