@@ -1,14 +1,15 @@
 package ss.agrolavka.service;
 
-import java.util.List;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ss.entity.agrolavka.Order;
 import ss.entity.agrolavka.OrderPosition;
 import ss.entity.agrolavka.Product;
 import ss.martin.core.dao.CoreDao;
+
+import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
 public class OrderPositionService {
@@ -25,7 +26,7 @@ public class OrderPositionService {
             .collect(Collectors.toMap(Product::getId, Function.identity()));
         order.getPositions().forEach(pos -> {
             pos.setProduct(productsMap.get(pos.getProductId()));
-            if (pos.getVariantId() != null) {
+            if (pos.getVariantId() != null && pos.getProduct() != null && pos.getProduct().getExternalId() != null) {
                 final var productVariants = productService.getVariants(pos.getProduct().getExternalId());
                 pos.setVariant(
                     productVariants.stream()
