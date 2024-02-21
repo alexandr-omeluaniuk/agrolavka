@@ -1,13 +1,10 @@
 package ss.agrolavka.service;
 
+import ss.entity.agrolavka.*;
+import ss.entity.images.storage.EntityImage;
+
 import java.util.List;
 import java.util.Map;
-import ss.entity.agrolavka.Discount;
-import ss.entity.agrolavka.PriceType;
-import ss.entity.agrolavka.Product;
-import ss.entity.agrolavka.ProductVariant;
-import ss.entity.agrolavka.ProductsGroup;
-import ss.entity.images.storage.EntityImage;
 
 /**
  * My Sklad integration service.
@@ -107,7 +104,6 @@ public interface MySkladIntegrationService {
     /**
      * Get discounts.
      * @return discounts.
-     * @throws Exception error.
      */
-    List<Discount> getDiscounts() throws Exception;
+    List<Discount> getDiscounts();
 }

@@ -173,12 +173,13 @@ class ProductDAOImpl implements ProductDAO {
     
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public void resetDiscounts() {
+    public void resetDiscounts(List<Discount> discounts) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaUpdate<Product> criteria = cb.createCriteriaUpdate(Product.class);
         Root<Product> c = criteria.from(Product.class);
         Expression<Discount> expr = cb.nullLiteral(Discount.class);
         criteria.set(c.get(Product_.discount), expr);
+        criteria.where(c.get(Product_.discount).in(discounts));
         em.createQuery(criteria).executeUpdate();
     }
 
