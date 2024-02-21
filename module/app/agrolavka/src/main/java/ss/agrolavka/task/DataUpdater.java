@@ -1,17 +1,6 @@
 package ss.agrolavka.task;
 
 import jakarta.annotation.PostConstruct;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +14,7 @@ import ss.agrolavka.dao.ExternalEntityDAO;
 import ss.agrolavka.dao.ProductDAO;
 import ss.agrolavka.service.GroupProductsService;
 import ss.agrolavka.service.MySkladIntegrationService;
+import ss.agrolavka.task.mysklad.DiscountsSynchronizer;
 import ss.agrolavka.task.mysklad.PriceTypeSynchronizator;
 import ss.agrolavka.task.mysklad.ProductVariantSynchronizator;
 import ss.agrolavka.util.AppCache;
@@ -36,6 +26,10 @@ import ss.entity.images.storage.EntityImage;
 import ss.martin.core.dao.CoreDao;
 import ss.martin.platform.service.SecurityService;
 import ss.martin.security.api.AlertService;
+
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * Data updater.
@@ -78,6 +72,9 @@ public class DataUpdater {
     
     @Autowired
     private PriceTypeSynchronizator priceTypeSynchronizator;
+
+    @Autowired
+    private DiscountsSynchronizer discountsSynchronizer;
     
     @PostConstruct
     protected void init() {
@@ -106,8 +103,9 @@ public class DataUpdater {
                 configuration.backgroundUserPassword()
             );
             priceTypeSynchronizator.doImport();
+            final var productDiscountMap = discountsSynchronizer.doImport();
             importProductGroups();
-            importProducts();
+            importProducts(productDiscountMap);
             importImages();
             productVariantSynchronizator.doImport();
             groupProductsService.groupProductByVolumes();
@@ -168,21 +166,9 @@ public class DataUpdater {
         externalEntityDAO.removeExternalEntitiesNotInIDs(deleteNotIn, ProductsGroup.class);
     }
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    private void importProducts() throws Exception {
-        productDAO.resetDiscounts();
-        for (Discount discount : coreDAO.getAll(Discount.class)) {
-            coreDAO.delete(discount.getId(), Discount.class);
-        }
-        List<Discount> discounts = mySkladIntegrationService.getDiscounts();
-        final var discountsMap = new HashMap<String, Discount>();
-        for (Discount discount : discounts) {
-            discount.getProducts().forEach(p -> {
-                discountsMap.put(p.getExternalId(), discount);
-            });
-            discount.setProducts(null);
-        }
-        coreDAO.massCreate(discounts);
-        LOG.info("discounts [" + discounts.size() + "]");
+    private void importProducts(Map<String, String> productDiscountMap) throws Exception {
+        final var discountsMap = coreDAO.getAll(Discount.class).stream()
+            .collect(Collectors.toMap(Discount::getExternalId, Function.identity()));
         List<Product> products = new ArrayList<>();
         Map<String, Product> stock = new HashMap<>();
         int offset = 0;
@@ -201,8 +187,9 @@ public class DataUpdater {
             while (unique.contains(t)) {
                 t += "-alt";
             }
+
             product.setUrl(t);
-            product.setDiscount(discountsMap.get(product.getExternalId()));
+            product.setDiscount(getDiscount(product, productDiscountMap, discountsMap));
             productsMap.put(product.getExternalId(), product);
             unique.add(t);
         }
@@ -244,6 +231,19 @@ public class DataUpdater {
         coreDAO.massCreate(newProducts);
         // remove unused groups.
         externalEntityDAO.removeExternalEntitiesNotInIDs(deleteNotIn, Product.class);
+    }
+
+    private Discount getDiscount(
+            Product product,
+            Map<String, String> productDiscountMap,
+            Map<String, Discount> discountsMap
+    ) {
+        final var discountExternalId = productDiscountMap.get(product.getExternalId());
+        if (discountExternalId != null && discountsMap.containsKey(discountExternalId)) {
+            return discountsMap.get(discountExternalId);
+        } else {
+            return null;
+        }
     }
     
     @Transactional(propagation = Propagation.SUPPORTS, rollbackFor = Exception.class)

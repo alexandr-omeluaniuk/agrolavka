@@ -271,7 +271,7 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
     }
     
     @Override
-    public List<Discount> getDiscounts() throws Exception {
+    public List<Discount> getDiscounts() {
         String response = request("/entity/discount", "GET", null);
         JSONObject json = new JSONObject(response);
         JSONArray rows = json.getJSONArray("rows");

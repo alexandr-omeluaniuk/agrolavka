@@ -227,7 +227,9 @@ window.customElements.define('x-agr-product-volumes', XProductVolumes);
 
 class XProductVariant extends XElement {  
     
-    onClick() {
+    onClick(event) {
+        event.preventDefault();
+        event.stopPropagation();
         const variantsComponent = this.closest('x-agr-product-variants');
         variantsComponent._switchButtons(this.state.variant);
     }
