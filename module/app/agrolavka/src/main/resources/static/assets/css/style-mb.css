@@ -543,6 +543,9 @@ and open the template in the editor.
 .agr-variant-btn.btn-outline-primary {
     color: var(--agr-bs-purple-dark);
 }
+.agr-variant-btn {
+    text-transform: none;
+}
 /** ============================================== RIBBON ============================================================================== */
 .ribbon {
     z-index: 500;

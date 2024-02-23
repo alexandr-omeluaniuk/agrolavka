@@ -1,21 +1,9 @@
 package ss.agrolavka.rest;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.stream.Collectors;
 import jakarta.servlet.http.HttpServletRequest;
-import java.util.function.Predicate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ss.agrolavka.constants.SiteConstants;
 import ss.agrolavka.constants.SiteUrls;
 import ss.agrolavka.service.OrderService;
@@ -25,11 +13,12 @@ import ss.agrolavka.wrapper.CartProduct;
 import ss.agrolavka.wrapper.OneClickOrderWrapper;
 import ss.agrolavka.wrapper.OrderDetailsWrapper;
 import ss.agrolavka.wrapper.ProductsSearchResponse;
-import ss.entity.agrolavka.Feedback;
-import ss.entity.agrolavka.Order;
-import ss.entity.agrolavka.OrderPosition;
-import ss.entity.agrolavka.ProductsGroup;
+import ss.entity.agrolavka.*;
 import ss.martin.core.dao.CoreDao;
+
+import java.util.*;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 /**
  * Public REST controller.
@@ -62,51 +51,43 @@ class AgrolavkaPublicRestController {
     ) {
         return productService.quickSearchProducts(searchText);
     }
-    
-    /**
-     * Add product to cart.
-     * @param id product ID.
-     * @param request HTTP request.
-     * @return cart.
-     * @throws Exception error.
-     */
+
     @RequestMapping(value = "/cart", method = RequestMethod.PUT,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public Order addToCart(
             @RequestBody final CartProduct cartProduct,
             final HttpServletRequest request
     ) throws Exception {
+        if (Objects.equals(cartProduct.getVariantId(), ProductVariant.PRIMARY_VARIANT)) {
+            cartProduct.setVariantId(null);
+        }
         return orderService.addProductToCart(cartProduct, request);
     }
-    /**
-     * Remove product from cart.
-     * @param id product ID.
-     * @param request HTTP request.
-     * @return cart.
-     * @throws Exception error.
-     */
+
     @RequestMapping(value = "/cart/product/{id}", method = RequestMethod.DELETE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public Order removeFromCartByProductId(@PathVariable("id") Long id, HttpServletRequest request) throws Exception {
-        return removePosition((pos) -> {
-            return !Objects.equals(pos.getProductId(), id);
-        }, request);
+        return removePosition((pos) -> !Objects.equals(pos.getProductId(), id), request);
     }
     
-    @RequestMapping(value = "/cart/variant/{id}", method = RequestMethod.DELETE,
+    @RequestMapping(value = "/cart/variant/{productId}/{variantId}", method = RequestMethod.DELETE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public Order removeFromCartByVariantId(@PathVariable("id") final String id, HttpServletRequest request) throws Exception {
-        return removePosition((pos) -> {
-            return !Objects.equals(pos.getVariantId(), id);
-        }, request);
+    public Order removeFromCartByVariantId(
+            @PathVariable("productId") final Long productId,
+            @PathVariable("variantId") final String variantId,
+            HttpServletRequest request
+    ) throws Exception {
+        if (ProductVariant.PRIMARY_VARIANT.equals(variantId)) {
+            return removeFromCartByProductId(productId, request);
+        } else {
+            return removePosition((pos) -> !Objects.equals(pos.getVariantId(), variantId), request);
+        }
     }
     
     @RequestMapping(value = "/cart/position/{id}", method = RequestMethod.DELETE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public Order removeFromCartByPositionId(@PathVariable("id") final String id, HttpServletRequest request) throws Exception {
-        return removePosition((pos) -> {
-            return !Objects.equals(pos.getPositionId(), id);
-        }, request);
+        return removePosition((pos) -> !Objects.equals(pos.getPositionId(), id), request);
     }
     /**
      * Change cart position quantity.
