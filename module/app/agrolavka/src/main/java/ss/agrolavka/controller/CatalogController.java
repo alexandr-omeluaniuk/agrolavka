@@ -12,9 +12,9 @@ import ss.agrolavka.constants.SiteConstants;
 import ss.agrolavka.constants.SiteUrls;
 import ss.agrolavka.dao.ProductDAO;
 import ss.agrolavka.util.CartUtils;
-import ss.agrolavka.util.PriceCalculator;
 import ss.agrolavka.wrapper.ProductsSearchRequest;
 import ss.entity.agrolavka.Product;
+import ss.entity.agrolavka.ProductVariant;
 import ss.entity.agrolavka.Product_;
 import ss.entity.agrolavka.ProductsGroup;
 import ss.entity.martin.DataModel;
@@ -83,7 +83,10 @@ class CatalogController extends BaseJspController {
         final var fullDescription = Optional.ofNullable(product.getDescription())
             .map(desc -> desc.replace("\"", "&quot;")).orElse("");
         final var variants = productService.getVariants(product.getExternalId());
-        final var basePrice = PriceCalculator.getBasePrice(product, variants);
+        if (!variants.isEmpty()) {
+            variants.add(0, primaryProductVariant(product));
+        }
+        final var basePrice = product.getPrice();
         final var discount = product.getDiscount() != null && product.getDiscount().getDiscount() != null
             ? product.getDiscount().getDiscount() : null;
         final var orderPositions = orderService.getCurrentOrder(request).getPositions();
@@ -198,9 +201,24 @@ class CatalogController extends BaseJspController {
             searchRequest.setOrderBy(Product_.NAME);
         }
         final var products = productService.search(searchRequest);
-        products.forEach(p -> p.setVariants(productService.getVariants(p.getExternalId())));
+        products.forEach(p -> {
+            final var variants = productService.getVariants(p.getExternalId());
+            if (!variants.isEmpty()) {
+                variants.add(0, primaryProductVariant(p));
+            }
+            p.setVariants(variants);
+        });
         model.addAttribute(PRODUCTS_SEARCH_RESULT, products);
         Long count = productDAO.count(searchRequest);
         model.addAttribute(PRODUCTS_SEARCH_RESULT_PAGES, Double.valueOf(Math.ceil((double) count / pageSize)).intValue());
+    }
+
+    private ProductVariant primaryProductVariant(Product product) {
+        final var variant = new ProductVariant();
+        variant.setCharacteristics(product.getName());
+        variant.setPrice(product.getPrice());
+        variant.setName(product.getName());
+        variant.setExternalId(ProductVariant.PRIMARY_VARIANT);
+        return variant;
     }
 }

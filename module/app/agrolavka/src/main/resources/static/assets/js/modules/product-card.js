@@ -44,7 +44,8 @@ const removeFromCartListener = (evt, button) => {
     const actionsComponent = button.closest('x-agr-product-actions');
     const variantsComponent = actionsComponent.querySelector('x-agr-product-variants');
     const variantId = variantsComponent ? variantsComponent.state.selectedVariant.id : null;
-    const url = variantId ? `/variant/${variantId}` : `/product/${button.getAttribute('data-product-id')}`;
+    const productId = button.getAttribute('data-product-id');
+    const url = variantId ? `/variant/${productId}/${variantId}` : `/product/${productId}`;
     fetch('/api/agrolavka/public/cart' + url, {
         method: 'DELETE',
         headers: {

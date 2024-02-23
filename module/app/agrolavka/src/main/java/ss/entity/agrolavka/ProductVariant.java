@@ -13,6 +13,8 @@ import org.json.JSONObject;
 @Entity
 @Table(name = "product_variant")
 public class ProductVariant extends ExternalEntity implements Comparable<ProductVariant> {
+
+    public static final String PRIMARY_VARIANT = "0";
     
     @Column(name = "name", length = 1000, nullable = false)
     private String name;
@@ -109,9 +111,9 @@ public class ProductVariant extends ExternalEntity implements Comparable<Product
     @Override
     public int compareTo(ProductVariant o) {
         if (o.getPrice() < getPrice()) {
-            return 1;
-        } else if (o.getPrice() > getPrice()) {
             return -1;
+        } else if (o.getPrice() > getPrice()) {
+            return 1;
         } else {
             return 0;
         }

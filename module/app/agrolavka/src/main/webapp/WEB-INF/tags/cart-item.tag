@@ -13,18 +13,18 @@
 
 <%-- any content can be specified here e.g.: --%>
 <div class="card mb-4 shadow-1-strong" data-cart-item-id="${position.positionId}">
-    <div class="card-body">
+    <div class="card-body p-3">
         <div class="row">
 
             <div class="col-12 col-sm-12 col-md-7 col-lg-7 col-xl-8 d-flex mb-2">
                 <c:choose>
                     <c:when test="${position.product.images.size() > 0}">
-                        <div class="agr-cart-position-image shadow-1-strong" 
+                        <div class="agr-cart-position-image shadow-1-strong rounded-3"
                                  style="background-image: url('/media/${position.product.images.get(0).fileNameOnDisk}')" 
                                  alt="${position.product.name}"></div>
                     </c:when>
                     <c:otherwise>
-                        <div class="agr-cart-position-image shadow-1-strong rounded-circle" 
+                        <div class="agr-cart-position-image shadow-1-strong rounded-3"
                                  style="background-image: url('/assets/img/no-image.png')" 
                                  alt="${position.product.name}"></div>
                     </c:otherwise>
