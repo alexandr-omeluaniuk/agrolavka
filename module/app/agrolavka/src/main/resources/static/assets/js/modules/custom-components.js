@@ -248,8 +248,9 @@ class XProductVariant extends XElement {
         const price = parseFloat(this.state.variant.price).toFixed(2).split('.');
         const priceInt = price[0];
         const priceFloat = price[1];
-        return `<button type="button" class="w-100 mb-1 agr-variant-btn btn
-                    btn-sm btn-rounded btn-outline-${this.state.variant.id === "0" ? 'success' : 'primary'}" data-mdb-ripple-init
+        return `<button type="button"
+                    class="w-100 mb-1 agr-variant-btn btn btn-sm btn-rounded btn-outline-primary"
+                    data-mdb-ripple-init
                     data-product-variant-id="${this.state.variant.id}"
                     data-product-variant-price="${this.state.variant.price}"
                     data-product-variant-name="${this.state.variant.name}"
@@ -301,13 +302,12 @@ class XProductVariants extends XElement {
         this.querySelectorAll('x-agr-product-variant').forEach(btn => {
             const isActive = btn.state.variant.id === variant.id;
             const innerBtn = btn.querySelector('button');
-            const isPrimary = innerBtn.hasAttribute('data-product-variant-primary');
             if (isActive) {
-                innerBtn.classList.remove(isPrimary ? "btn-outline-success" : "btn-outline-primary");
-                innerBtn.classList.add(isPrimary ? "btn-success" : "btn-primary");
+                innerBtn.classList.remove("btn-outline-primary");
+                innerBtn.classList.add("btn-primary");
             } else {
-                innerBtn.classList.remove(isPrimary ? "btn-success" : "btn-primary");
-                innerBtn.classList.add(isPrimary ? "btn-outline-success" : "btn-outline-primary");
+                innerBtn.classList.remove("btn-primary");
+                innerBtn.classList.add("btn-outline-primary");
             }
         });
         this.closest('div').querySelector('x-agr-product-price')._setPrice(variant.price);
