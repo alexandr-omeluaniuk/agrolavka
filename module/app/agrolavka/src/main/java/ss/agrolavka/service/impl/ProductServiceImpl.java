@@ -50,6 +50,16 @@ class ProductServiceImpl implements ProductService{
             product.setBuyPrice(null);
             product.setQuantity(product.getQuantity() != null && product.getQuantity() > 0 ? 1d : 0d);
             product.setUrl(UrlProducer.buildProductUrl(product));
+            final var variants = getVariants(product.getExternalId());
+            if (!variants.isEmpty()) {
+                final var lowestVariantPrice = PriceCalculator.getShopPrice(
+                        variants.get(variants.size() - 1).getPrice(),
+                        product.getDiscount()
+                );
+                if (lowestVariantPrice < product.getPrice()) {
+                    product.setPrice(lowestVariantPrice);
+                }
+            }
         });
         final var count = productDao.count(request);
         return new ProductsSearchResponse(products, count);
