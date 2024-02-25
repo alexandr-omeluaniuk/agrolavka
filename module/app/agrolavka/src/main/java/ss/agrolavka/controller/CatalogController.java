@@ -215,10 +215,22 @@ class CatalogController extends BaseJspController {
 
     private ProductVariant primaryProductVariant(Product product) {
         final var variant = new ProductVariant();
-        variant.setCharacteristics(product.getName());
+        variant.setCharacteristics(createPrimaryCharacteristic(product.getName()));
         variant.setPrice(product.getPrice());
         variant.setName(product.getName());
         variant.setExternalId(ProductVariant.PRIMARY_VARIANT);
         return variant;
+    }
+
+    private String createPrimaryCharacteristic(String productName) {
+        if (productName.contains(",")) {
+            final var parts = productName.split(",");
+            return parts[parts.length - 1];
+        } else if (productName.contains(" ")) {
+            final var parts = productName.split(" ");
+            return parts[parts.length - 1];
+        } else {
+            return productName;
+        }
     }
 }
