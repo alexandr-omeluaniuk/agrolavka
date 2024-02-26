@@ -115,42 +115,74 @@ window.customElements.define('x-agr-category-card', XCategoryCard);
 
 class XProductPrice extends XElement {    
     createTemplate() {
+        this.state = {
+            discount: null,
+            rawPrice: null,
+            rowClass: null
+        }
         let template = document.createElement('template');
-        const rowClass = this.getAttribute('data-row-class');
-        const discount = this.getAttribute('data-discount');
-        const rawPrice = this.getAttribute('data-price');
+        this.state.rowClass = this.getAttribute('data-row-class');
+        this.state.discount = this.getAttribute('data-discount');
+        this.state.rawPrice = this.getAttribute('data-price');
+        template.innerHTML = this.render();
+        return template;
+    }
+
+    render() {
+        const rawPrice = this.state.rawPrice;
+        const rowClass = this.state.rowClass;
+        const discount = this.state.discount;
+
         const price = parseFloat(rawPrice).toFixed(2).split('.');
         const priceInt = price[0];
         const priceFloat = price[1];
         const discountPrice = parseFloat(rawPrice * (1 - discount/100)).toFixed(2).split('.');
         const discountPriceInt = discountPrice[0];
         const discountPriceFloat = discountPrice[1];
-        template.innerHTML = `
-            <div class="d-flex align-items-center justify-content-between ${rowClass}">
-                <small class="text-muted">Цена</small>
-                <span class="agr-price fw-bold ${discount ? 'text-decoration-line-through text-muted' : 'text-dark'}">
-                    ${priceInt}<small>.${priceFloat}</small>
-                    <small class="text-muted">BYN</small>
-                </span>
-            </div>
-            ${discount ? `
-                <div class="d-flex align-items-center justify-content-between ${rowClass}">
-                    <small class="text-danger"><i class="fas fa-fire me-1"></i> Акция</small>
-                    <div class="text-danger fw-bold">
-                        ${discountPriceInt}<small>.${discountPriceFloat}</small>
-                        <small>BYN</small>
+        return `
+                    <div class="d-flex align-items-center justify-content-between ${rowClass}">
+                        <small class="text-muted">Цена</small>
+                        <span class="agr-price fw-bold ${discount ? 'text-decoration-line-through text-muted' : 'text-dark'}">
+                            ${priceInt}<small>.${priceFloat}</small>
+                            <small class="text-muted">BYN</small>
+                        </span>
                     </div>
-                </div>
-            ` : ''}
-        `;
-        return template;
+                    ${discount ? `
+                        <div class="d-flex align-items-center justify-content-between ${rowClass}">
+                            <small class="text-danger"><i class="fas fa-fire me-1"></i> Акция</small>
+                            <div class="text-danger fw-bold">
+                                ${discountPriceInt}<small>.${discountPriceFloat}</small>
+                                <small>BYN</small>
+                            </div>
+                        </div>
+                    ` : ''}
+                `;
     }
-    
-    _setPrice(price) {
+
+    _setMainPrice() {
+        const price = this.state.rawPrice;
         const priceBig = parseFloat(price).toFixed(2).split('.')[0];
         const priceSmall = parseFloat(price).toFixed(2).split('.')[1];
         this.querySelector('.agr-price').innerHTML = priceBig + ".<small>" + priceSmall
             + '</small> <small class="text-muted">BYN</small>';
+    }
+
+    _setDiscountPrice() {
+        const rawPrice = this.state.rawPrice;
+        const discount = this.state.discount;
+        const price = parseFloat(rawPrice * (1 - discount/100)).toFixed(2).split('.');
+        const priceBig = parseFloat(price).toFixed(2).split('.')[0];
+        const priceSmall = parseFloat(price).toFixed(2).split('.')[1];
+        this.querySelector('.text-danger.fw-bold').innerHTML = priceBig + ".<small>" + priceSmall
+            + '</small> <small>BYN</small>';
+    }
+    
+    _setPrice(price) {
+        this.state.rawPrice = price;
+        this._setMainPrice();
+        if (this.state.discount) {
+            this._setDiscountPrice();
+        }
     }
 }
 window.customElements.define('x-agr-product-price', XProductPrice);

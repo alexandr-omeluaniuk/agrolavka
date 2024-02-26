@@ -1,13 +1,6 @@
 package ss.agrolavka.service.impl;
 
 import jakarta.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,21 +9,16 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import ss.agrolavka.constants.OrderStatus;
 import ss.agrolavka.constants.SiteConstants;
-import ss.agrolavka.service.OrderPositionService;
 import ss.agrolavka.service.OrderService;
 import ss.agrolavka.service.ProductService;
 import ss.agrolavka.util.PriceCalculator;
 import ss.agrolavka.wrapper.CartProduct;
 import ss.agrolavka.wrapper.OneClickOrderWrapper;
 import ss.agrolavka.wrapper.OrderDetailsWrapper;
-import ss.entity.agrolavka.Address;
-import ss.entity.agrolavka.EuropostLocation;
-import ss.entity.agrolavka.EuropostLocationSnapshot;
-import ss.entity.agrolavka.Order;
-import ss.entity.agrolavka.OrderPosition;
-import ss.entity.agrolavka.Product;
-import ss.entity.agrolavka.ProductVariant;
+import ss.entity.agrolavka.*;
 import ss.martin.core.dao.CoreDao;
+
+import java.util.*;
 
 /**
  * Order service implementation.
@@ -153,7 +141,7 @@ class OrderServiceImpl implements OrderService {
     
     private Optional<ProductVariant> getVariant(final String variantId, final Product product) {
         if (variantId != null) {
-            return productService.getVariants(product.getExternalId()).stream()
+            return productService.getVariants(product).stream()
                 .filter(v -> v.getExternalId().equals(variantId)).findFirst();
         } else {
             return Optional.empty();

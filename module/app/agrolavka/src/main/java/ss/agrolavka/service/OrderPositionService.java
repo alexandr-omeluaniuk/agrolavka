@@ -27,7 +27,7 @@ public class OrderPositionService {
         order.getPositions().forEach(pos -> {
             pos.setProduct(productsMap.get(pos.getProductId()));
             if (pos.getVariantId() != null && pos.getProduct() != null && pos.getProduct().getExternalId() != null) {
-                final var productVariants = productService.getVariants(pos.getProduct().getExternalId());
+                final var productVariants = productService.getVariants(pos.getProduct());
                 pos.setVariant(
                     productVariants.stream()
                         .filter(v -> v.getExternalId().equals(pos.getVariantId()))
