@@ -1,4 +1,4 @@
-package ss.martin.platform.rest;
+package ss.martin.security.rest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -7,14 +7,14 @@ import ss.entity.security.SystemUser;
 import ss.martin.core.dao.CoreDao;
 import ss.martin.core.model.EntitySearchRequest;
 import ss.martin.core.model.EntitySearchResponse;
-import ss.martin.platform.service.SecurityService;
-import ss.martin.platform.wrapper.UserPermissions;
 import ss.martin.security.api.RegistrationUserService;
 import ss.martin.security.constants.PlatformUrl;
+import ss.martin.security.model.UserPermissions;
+import ss.martin.security.service.SecurityService;
 
 @RestController
 @RequestMapping(PlatformUrl.SECURITY_URL)
-public class PermissionsRestController {
+public class SecurityRestController {
     /** Security service. */
     @Autowired
     private SecurityService securityService;
