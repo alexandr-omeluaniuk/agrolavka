@@ -1,18 +1,13 @@
 package ss.entity.security;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import ss.entity.martin.SoftDeleted;
 import ss.martin.core.anno.EntityAccess;
-import ss.martin.core.anno.Updatable;
 import ss.martin.core.constants.StandardRole;
 import ss.martin.security.constants.SystemUserStatus;
 
@@ -26,7 +21,6 @@ import ss.martin.security.constants.SystemUserStatus;
 public class SystemUser extends TenantEntity implements SoftDeleted {
     /** Email. */
     @Email
-    @Updatable
     @NotEmpty
     @Size(max = 255)
     @Column(name = "email", nullable = false, length = 255)
@@ -38,12 +32,10 @@ public class SystemUser extends TenantEntity implements SoftDeleted {
     private String password;
     /** First name. */
     @Size(max = 255)
-    @Updatable
     @Column(name = "firstname", length = 255)
     private String firstname;
     /** Last name. */
     @Size(max = 255)
-    @Updatable
     @NotEmpty
     @Column(name = "lastname", nullable = false, length = 255)
     private String lastname;

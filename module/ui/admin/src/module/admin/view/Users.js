@@ -30,7 +30,7 @@ function Users() {
     const [tableConfig, setTableConfig] = React.useState(null);
     useEffect(() => {
         if (tableConfig === null) {
-            setTableConfig(new TableConfig(t('m_administrator:administrator.users'), '/platform/entity/ss.entity.security.SystemUser', [
+            setTableConfig(new TableConfig(t('m_administrator:administrator.users'), '/platform/security/users', [
                 new TableColumn('fullname', t('m_administrator:users.fullname'), (row) => {
                     return `${row.firstname ? `${row.firstname} ` : ''}${row.lastname}`;
                 }).setSortable().width('300px'),
