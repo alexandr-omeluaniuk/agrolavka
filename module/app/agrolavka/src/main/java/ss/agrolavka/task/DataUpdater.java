@@ -24,8 +24,8 @@ import ss.entity.agrolavka.Product;
 import ss.entity.agrolavka.ProductsGroup;
 import ss.entity.images.storage.EntityImage;
 import ss.martin.core.dao.CoreDao;
-import ss.martin.platform.service.SecurityService;
 import ss.martin.security.api.AlertService;
+import ss.martin.security.service.SecurityService;
 
 import java.util.*;
 import java.util.function.Function;

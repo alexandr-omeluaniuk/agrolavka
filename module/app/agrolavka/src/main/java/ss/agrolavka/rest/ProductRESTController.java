@@ -2,52 +2,34 @@ package ss.agrolavka.rest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ss.agrolavka.constants.SiteUrls;
 import ss.agrolavka.dao.ProductDAO;
 import ss.agrolavka.service.GroupProductsService;
+import ss.agrolavka.service.ProductService;
 import ss.agrolavka.wrapper.ProductsSearchRequest;
 import ss.entity.agrolavka.Product;
 import ss.martin.core.dao.CoreDao;
 import ss.martin.core.model.EntitySearchResponse;
 
-/**
- * Product REST controller.
- * @author alex
- */
 @RestController
 @RequestMapping(SiteUrls.URL_PROTECTED + "/product")
 public class ProductRESTController {
-    /** Product DAO. */
+
     @Autowired
     private ProductDAO productDAO;
-    /** Core DAO. */
+
     @Autowired
     private CoreDao coreDAO;
-    /** Group products service. */
+
     @Autowired
     private GroupProductsService groupProductsService;
-    /**
-     * Search products.
-     * @param page page.
-     * @param pageSize page size.
-     * @param order order.
-     * @param orderBy order by.
-     * @param searchText search text.
-     * @param code product code.
-     * @param groupId group ID.
-     * @param available product is available.
-     * @param discounts with discounts.
-     * @param includesHidden includes hidden products.
-     * @return products portion.
-     * @throws Exception error.
-     */
+
+    @Autowired
+    private ProductService productService;
+
     @RequestMapping(value = "/search", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public EntitySearchResponse search(
+    public EntitySearchResponse<Product> search(
             @RequestParam("page") Integer page,
             @RequestParam("page_size") Integer pageSize,
             @RequestParam(value = "order", required = false) String order,
@@ -70,26 +52,32 @@ public class ProductRESTController {
         request.setAvailable(available);
         request.setWithDiscounts(discounts);
         request.setIncludesHidden(includesHidden);
-        return new EntitySearchResponse(productDAO.count(request).intValue(), productDAO.search(request));
+        return new EntitySearchResponse<Product>(productDAO.count(request).intValue(), productDAO.search(request));
     }
-    
-    /**
-     * Group products by volume.
-     * @throws Exception error.
-     */
+
     @RequestMapping(value = "/group", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
     public void groupProductsByVolume() throws Exception {
         groupProductsService.groupProductByVolumes();
     }
-    /**
-     * Get product by ID.
-     * @param id product ID.
-     * @return product or null;
-     * @throws Exception error.
-     */
+
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public Product getProductById(@PathVariable("id") Long id)throws Exception {
         final Product product = coreDAO.findById(id, Product.class);
         return product;
+    }
+
+    @PostMapping
+    public Product create(@RequestBody Product product) {
+        return productService.createProduct(product);
+    }
+
+    @PutMapping
+    public Product update(@RequestBody Product product) {
+        return productService.updateProduct(product);
+    }
+
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable("id") Long id) {
+        productService.deleteProduct(id);
     }
 }

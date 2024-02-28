@@ -2,29 +2,17 @@ package ss.entity.agrolavka;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.Lob;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
-import jakarta.persistence.Transient;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import ss.agrolavka.wrapper.ProductVolume;
 import ss.entity.images.storage.EntityImage;
-import ss.martin.core.anno.Updatable;
+
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Product.
@@ -34,11 +22,9 @@ import ss.martin.core.anno.Updatable;
 @Table(name = "product")
 public class Product extends ExternalEntity {
     /** Name. */
-    @Updatable
     @Column(name = "name", length = 1000, nullable = false)
     private String name;
     /** Price. */
-    @Updatable
     @NotNull
     @Column(name = "price", nullable = false)
     private Double price;
@@ -69,7 +55,6 @@ public class Product extends ExternalEntity {
     @JoinColumn(name = "group_id")
     private ProductsGroup group;
     /** Description. */
-    @Updatable
     @Lob
     @Size(max = 65535)
     @Column(name = "description", length = 65535)
@@ -91,12 +76,10 @@ public class Product extends ExternalEntity {
     @Column(name = "updated")
     private Date updated;
     /** SEO title. */
-    @Updatable
     @Size(max = 255)
     @Column(name = "seo_title", length = 255)
     private String seoTitle;
     /** SEO description. */
-    @Updatable
     @Size(max = 255)
     @Column(name = "seo_description", length = 255)
     private String seoDescription;
@@ -112,7 +95,6 @@ public class Product extends ExternalEntity {
     @Column(name = "volumes", length = 3000)
     private String volumes;
     /** Video URL. */
-    @Updatable
     @Size(max = 3000)
     @Column(name = "video_url", length = 3000)
     private String videoURL;

@@ -1,4 +1,4 @@
-package ss.martin.platform.wrapper;
+package ss.martin.security.model;
 
 import ss.entity.martin.Subscription;
 import ss.martin.core.constants.StandardRole;

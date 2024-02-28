@@ -1,18 +1,14 @@
 package ss.entity.martin;
 
-import java.util.Date;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import ss.martin.core.anno.EntityAccess;
 import ss.martin.core.constants.StandardRole;
-import ss.martin.core.anno.Updatable;
+
+import java.util.Date;
 
 /**
  * Subscription.
@@ -26,29 +22,24 @@ public class Subscription extends DataModel implements SoftDeleted {
     @NotEmpty
     @Size(max = 255)
     @Column(name = "organization_name", length = 255)
-    @Updatable
     private String organizationName;
     /** Started. */
     @NotNull
     @Temporal(TemporalType.DATE)
     @Column(name = "started", nullable = false)
-    @Updatable
     private Date started;
     /** Expiration date. */
     @NotNull
     @Temporal(TemporalType.DATE)
     @Column(name = "expiration_date", nullable = false)
-    @Updatable
     private Date expirationDate;
     /** Subscription admin email. */
     @NotEmpty
     @Email
-    @Updatable
     @Size(max = 255)
     @Column(name = "admin_email", length = 255, nullable = false, updatable = false)
     private String subscriptionAdminEmail;
     /** Active. */
-    @Updatable
     @Column(name = "active", nullable = false)
     private boolean active;
 

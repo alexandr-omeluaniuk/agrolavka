@@ -10,7 +10,6 @@ import jakarta.validation.constraints.Size;
 import org.springframework.web.multipart.MultipartFile;
 import ss.entity.security.EntityAudit;
 import ss.martin.base.lang.ThrowingRunnable;
-import ss.martin.core.anno.Updatable;
 import ss.martin.images.storage.deserializer.ByteArrayDeserializer;
 import ss.martin.images.storage.jpa.listener.EntityImageListener;
 
@@ -23,19 +22,16 @@ import ss.martin.images.storage.jpa.listener.EntityImageListener;
 @EntityListeners(EntityImageListener.class)
 public class EntityImage extends EntityAudit {
     /** Image file name. */
-    @Updatable
     @NotNull
     @Size(max = 1000)
     @Column(name = "name", length = 1000, nullable = false)
     private String name;
     /** Image mime type. */
-    @Updatable
     @NotNull
     @Size(max = 255)
     @Column(name = "type", length = 255, nullable = false)
     private String type;
     /** Image size, in bytes. */
-    @Updatable
     @NotNull
     @Column(name = "image_size", nullable = false)
     private Long size;
@@ -45,7 +41,6 @@ public class EntityImage extends EntityAudit {
     private String fileNameOnDisk;
     /** Data. */
     @JsonDeserialize(using = ByteArrayDeserializer.class)
-    @Updatable
     @Column(name = "image_data", nullable = true)
     private byte[] data;
     

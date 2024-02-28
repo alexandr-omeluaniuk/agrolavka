@@ -143,9 +143,9 @@ function Products() {
     useEffect(() => {
         const apiUrl = new ApiURL(
                 '/agrolavka/protected/product/search',
-                selectedProductGroup ? '/platform/entity/ss.entity.agrolavka.Product' : null,
+                selectedProductGroup ? '/agrolavka/protected/product' : null,
                 null,
-                '/platform/entity/ss.entity.agrolavka.Product'
+                '/agrolavka/protected/product'
         );
         apiUrl.beforeCreate = (data) => {
             data.group = selectedProductGroup;

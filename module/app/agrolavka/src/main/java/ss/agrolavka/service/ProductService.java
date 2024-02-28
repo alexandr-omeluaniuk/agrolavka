@@ -12,12 +12,15 @@ import ss.agrolavka.wrapper.ProductsSearchResponse;
 import ss.entity.agrolavka.Product;
 import ss.entity.agrolavka.ProductVariant;
 import ss.entity.agrolavka.Product_;
+import ss.entity.images.storage.EntityImage;
 import ss.entity.security.EntityAudit_;
 import ss.martin.core.dao.CoreDao;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -34,6 +37,9 @@ public class ProductService {
     
     @Autowired
     private CoreDao coreDao;
+
+    @Autowired
+    private MySkladIntegrationService mySkladService;
     
     public ProductsSearchResponse quickSearchProducts(final String searchText) {
         final var request = new ProductsSearchRequest();
@@ -135,6 +141,42 @@ public class ProductService {
         return products;
     }
 
+    public Product createProduct(Product product) {
+        Product mySkladEntity = mySkladService.createProduct(product);
+        product.setExternalId(mySkladEntity.getExternalId());
+        mySkladService.attachImagesToProduct(product);
+        return coreDao.create(product);
+    }
+
+    public Product updateProduct(Product product) {
+        Product entityFromDB = coreDao.findById(product.getId(), Product.class);
+        if (!GroupProductsService.GROUPED_PRODUCT_EXTERNAL_ID.equals(product.getExternalId())) {
+            mySkladService.updateProduct(product);
+            final List<EntityImage> actualImages = getActualImages(
+                    entityFromDB.getImages(), product.getImages());
+            entityFromDB.setImages(actualImages);
+            entityFromDB = coreDao.update(entityFromDB);
+            product.setImages(entityFromDB.getImages());
+            mySkladService.removeProductImages(product);
+            mySkladService.attachImagesToProduct(product);
+        }
+        entityFromDB.setName(product.getName());
+        entityFromDB.setPrice(product.getPrice());
+        entityFromDB.setDescription(product.getDescription());
+        entityFromDB.setSeoTitle(product.getSeoTitle());
+        entityFromDB.setSeoDescription(product.getSeoDescription());
+        entityFromDB.setVideoURL(product.getVideoURL());
+        return coreDao.update(entityFromDB);
+    }
+
+    public void deleteProduct(Long id) {
+        Product product = coreDao.findById(id, Product.class);
+        if (!GroupProductsService.GROUPED_PRODUCT_EXTERNAL_ID.equals(product.getExternalId())) {
+            mySkladService.deleteProduct(product);
+        }
+        coreDao.delete(id, Product.class);
+    }
+
     private ProductVariant primaryProductVariant(Product product) {
         final var variant = new ProductVariant();
         variant.setCharacteristics(createPrimaryCharacteristic(product.getName()));
@@ -154,5 +196,22 @@ public class ProductService {
         } else {
             return productName;
         }
+    }
+
+    private List<EntityImage> getActualImages(
+            final List<EntityImage> imagesDB,
+            final List<EntityImage> images
+    ) {
+        Map<Long, EntityImage> map = imagesDB.stream()
+                .collect(Collectors.toMap(EntityImage::getId, Function.identity()));
+        final var actualImages = new ArrayList<EntityImage>();
+        for (EntityImage image : images) {
+            if (image.getData() != null) {
+                actualImages.add(image);
+            } else if (image.getId() != null && map.containsKey(image.getId())) {
+                actualImages.add(map.get(image.getId()));
+            }
+        }
+        return actualImages;
     }
 }
