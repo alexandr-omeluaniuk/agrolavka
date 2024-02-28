@@ -2,20 +2,14 @@ package ss.entity.agrolavka;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import java.util.Optional;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import ss.agrolavka.wrapper.ProductVolume;
 import ss.entity.martin.DataModel;
 import ss.martin.base.lang.ThrowingSupplier;
-import ss.martin.core.anno.Updatable;
+
+import java.util.Optional;
 
 /**
  * Order position.
@@ -36,13 +30,11 @@ public class OrderPosition extends DataModel implements Comparable<OrderPosition
     private Long productId;
     /** Product price. */
     @NotNull
-    @Updatable
     @Column(name = "price", nullable = false)
     private Double price;
     /** Quantity. */
     @NotNull
     @Min(1)
-    @Updatable
     @Column(name = "quantity", nullable = false)
     private Integer quantity;
     /** Variant ID. */
