@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import ss.agrolavka.constants.SiteUrls;
 import ss.agrolavka.dao.ProductDAO;
 import ss.agrolavka.service.GroupProductsService;
+import ss.agrolavka.service.ProductService;
 import ss.agrolavka.wrapper.ProductsSearchRequest;
 import ss.entity.agrolavka.Product;
 import ss.martin.core.dao.CoreDao;
@@ -23,6 +24,9 @@ public class ProductRESTController {
 
     @Autowired
     private GroupProductsService groupProductsService;
+
+    @Autowired
+    private ProductService productService;
 
     @RequestMapping(value = "/search", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public EntitySearchResponse<Product> search(
@@ -60,5 +64,20 @@ public class ProductRESTController {
     public Product getProductById(@PathVariable("id") Long id)throws Exception {
         final Product product = coreDAO.findById(id, Product.class);
         return product;
+    }
+
+    @PostMapping
+    public Product create(@RequestBody Product product) {
+        return productService.createProduct(product);
+    }
+
+    @PutMapping
+    public Product update(@RequestBody Product product) {
+        return productService.updateProduct(product);
+    }
+
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable("id") Long id) {
+        productService.deleteProduct(id);
     }
 }

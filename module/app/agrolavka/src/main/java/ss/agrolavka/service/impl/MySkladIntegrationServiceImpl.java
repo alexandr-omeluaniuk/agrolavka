@@ -394,7 +394,7 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
                 LOG.debug("response: " + response);
                 return response;
             } else if (responseCode == 401) {
-                LOG.error("MySklad auth error [" + url + "]: " + inputStreamToString(connection.getErrorStream()));
+                LOG.info("MySklad auth error [" + url + "]: " + inputStreamToString(connection.getErrorStream()));
                 throw new MySkladAuthenticationException();
             } else {
                 response = inputStreamToString(connection.getErrorStream());
