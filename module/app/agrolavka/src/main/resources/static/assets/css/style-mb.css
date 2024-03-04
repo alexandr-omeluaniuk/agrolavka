@@ -74,8 +74,8 @@ and open the template in the editor.
     .carousel-item.active {
         height: 50vh;
     }
-    .agr-card-body-category {
-        min-height: 89px;
+    .agr-card-body-category .card-title{
+        min-height: 60px;
     }
     .agr-navbar-mobile {
         display: none !important;
@@ -117,8 +117,8 @@ and open the template in the editor.
     .agr-navbar {
         background-color: var(--agr-background-color);
     }
-    .agr-card-body-category {
-        min-height: 77px;
+    .agr-card-body-category .card-title {
+        min-height: 44px;
     }
     .my-5 {
         margin-top: 1.5rem !important;
@@ -545,6 +545,21 @@ and open the template in the editor.
 }
 .agr-variant-btn {
     text-transform: none;
+}
+.agr-sub-category-link {
+    font-size: 12px;
+    text-align: left;
+    line-length: 22px;
+}
+.agr-sub-category-link div {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+}
+.agr-sub-category-link:hover {
+    text-decoration: underline;
+    text-decoration-color: var(--agr-bs-purple-dark);
 }
 /** ============================================== RIBBON ============================================================================== */
 .ribbon {

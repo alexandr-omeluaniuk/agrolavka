@@ -92,21 +92,32 @@ class XCategoryCard extends XElement {
         const image = this.getAttribute('data-image');
         const imageCreatedDate = this.getAttribute('data-image-created');
         const link = this.getAttribute('data-link');
-        const imageElement = image 
+        const nestedGroups = JSON.parse(this.getAttribute('data-nested-groups').replaceAll("'", '"'));
+        const hasMoreNestedGroups = this.getAttribute('data-has-more-nested-groups') === "true";
+        const imageElement = image
             ? `<div class="card-img-top agr-card-image" style="background-image: url('/media/${image}?timestamp=${imageCreatedDate}')"></div>` 
             : `<div class="card-img-top agr-card-image" style="background-image: url('/assets/img/no-image.png')"></div>`;
+        let nestedGroupsHtml = '';
+        nestedGroups.forEach(item => {
+            nestedGroupsHtml += `<a class="agr-sub-category-link" href="${item.value}"><div class="text-muted">${item.key}</div></a>`;
+        });
+        if (hasMoreNestedGroups) {
+            nestedGroupsHtml += `<a class="agr-sub-category-link" href="${link}"><div class="text-primary">> смотреть все</div></a>`;
+        }
         template.innerHTML = `
+        <a href="${link}">
             <div class="card shadow-1-strong mb-4 hover-shadow">
                 <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
                     ${imageElement}
-                    <a href="${link}">
-                        <div class="mask" style="background-color: rgba(0, 0, 0, 0.05)"></div>
-                    </a>
                     <div class="card-body agr-card-body-category">
-                        <h6 class="card-title mb-0">${name}</h6>
+                        <h6 class="card-title mb-0 text-dark">${name}</h6>
+                        ${nestedGroupsHtml.length > 0 ? '<hr class="text-muted mt-2 mb-2"/><div class="d-flex flex-column gap-1">' : ''}
+                        ${nestedGroupsHtml}
+                        ${nestedGroupsHtml.length > 0 ? '</div>' : ''}
                     </div>
                 </div>
             </div>
+        </a>
         `;
         return template;
     }
