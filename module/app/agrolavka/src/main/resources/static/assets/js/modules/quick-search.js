@@ -18,7 +18,7 @@
             document.querySelector('#agr-quick-search-input-mobile').focus();
         }, 700);
     });
-
+    const input = document.querySelector('#agr-quick-search-input-mobile-trigger');
     document.querySelector('#agr-quick-search-input-mobile').addEventListener('input', function (e) {
         const searchText = this.value;
         const searchResultOutput = document.querySelector('#agr-quick-search-result-mobile');
@@ -77,6 +77,38 @@
         }
     });
 
+    function randomInterval(min, max) {
+        return Math.floor(Math.random() * (max - min + 1) + min)
+    }
+
+    var textCursor = 0;
+    const texts = [
+        "Мульчирующая пленка",
+        "Aqualis Еврохим",
+        "Капельная лента",
+        "Капельный полив",
+        "Балерина гербицид"
+    ]
+    const text = texts[randomInterval(0, texts.length - 1)];
+    function animateText() {
+        if (textCursor <= text.length) {
+            input.placeholder = text.substring(0, textCursor) + "";
+            textCursor++;
+            setTimeout(animateText, randomInterval(50, 150));
+        } else {
+            animateTextReverse();
+        }
+    }
+    function animateTextReverse() {
+        if (textCursor > 0) {
+            input.placeholder = text.substring(0, textCursor);
+            textCursor--;
+            setTimeout(animateTextReverse, randomInterval(10, 40));
+        } else {
+            input.placeholder = 'Быстрый поиск';
+        }
+    }
+    animateText();
 })();
 
 
@@ -193,4 +225,36 @@
         }
     });
 
+    function randomInterval(min, max) {
+        return Math.floor(Math.random() * (max - min + 1) + min)
+    }
+
+    var textCursor = 0;
+    const texts = [
+        "Мульчирующая пленка",
+        "Aqualis Еврохим",
+        "Капельная лента",
+        "Капельный полив",
+        "Балерина гербицид"
+    ]
+    const text = texts[randomInterval(0, texts.length - 1)];
+    function animateText() {
+        if (textCursor <= text.length) {
+            input.placeholder = text.substring(0, textCursor);
+            textCursor++;
+            setTimeout(animateText, randomInterval(50, 150));
+        } else {
+            animateTextReverse();
+        }
+    }
+    function animateTextReverse() {
+        if (textCursor > 0) {
+            input.placeholder = text.substring(0, textCursor);
+            textCursor--;
+            setTimeout(animateTextReverse, randomInterval(10, 40));
+        } else {
+            input.placeholder = 'Быстрый поиск';
+        }
+    }
+    animateText();
 })();

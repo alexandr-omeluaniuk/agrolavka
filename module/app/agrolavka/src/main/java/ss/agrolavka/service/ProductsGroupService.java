@@ -1,63 +1,112 @@
 package ss.agrolavka.service;
 
-import java.util.List;
-import java.util.Map;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.stereotype.Service;
+import ss.agrolavka.constants.CacheKey;
+import ss.agrolavka.util.UrlProducer;
 import ss.entity.agrolavka.ProductsGroup;
+import ss.martin.core.dao.CoreDao;
+
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
- * Products group service.
+ * Products group service implementation.
  * @author alex
  */
-public interface ProductsGroupService {
+@Service
+public class ProductsGroupService {
     
-    /**
-     * Create products group.
-     * @param group group.
-     * @return new group.
-     */
-    ProductsGroup create(ProductsGroup group);
+    @Autowired
+    private MySkladIntegrationService mySklad;
     
-    /**
-     * Update products group.
-     * @param group group.
-     * @return updated group.
-     */
-    ProductsGroup update(ProductsGroup group);
+    @Autowired
+    private CacheManager cacheManager;
     
-    /**
-     * Delete products group.
-     * @param id group ID.
-     */
-    void delete(Long id);
+    @Autowired
+    private CoreDao coreDao;
+
+    public ProductsGroup create(final ProductsGroup group) {
+        group.setUrl(UrlProducer.transliterate(group.getName()));
+        group.setExternalId(mySklad.createProductsGroup(group));
+        final var newEntity = coreDao.create(group);
+        resetCache();
+        return newEntity;
+    }
+
+    public ProductsGroup update(final ProductsGroup group) {
+        group.setUrl(UrlProducer.transliterate(group.getName()));
+        mySklad.updateProductsGroup(group);
+        final var updatedEntity = coreDao.update(group);
+        resetCache();
+        return updatedEntity;
+    }
+
+    public void delete(final Long id) {
+        final var group = coreDao.findById(id, ProductsGroup.class);
+        Optional.ofNullable(group).ifPresent(entity -> {
+            mySklad.deleteProductsGroup(group);
+            coreDao.delete(id, ProductsGroup.class);
+            resetCache();
+        });
+    }
+
+    public List<ProductsGroup> getTopCategories() {
+        return getAllGroups().stream()
+            .filter(group -> group.isTopCategory() != null && group.isTopCategory())
+            .sorted()
+            .collect(
+                Collectors.toList()
+            );
+    }
     
-    /**
-     * Get top categories.
-     * @return top product groups.
-     */
-    List<ProductsGroup> getTopCategories();
+    @Cacheable(CacheKey.PRODUCTS_GROUPS)
+    public List<ProductsGroup> getAllGroups() {
+        return coreDao.getAll(ProductsGroup.class);
+    }
     
-    /**
-     * Get all groups.
-     * @return all groups.
-     */
-    List<ProductsGroup> getAllGroups();
+    public List<ProductsGroup> getRootProductGroups() {
+        final var rootGroups = getAllGroups().stream().filter(group -> {
+            return group.getParentId() == null;
+        }).collect(Collectors.toList());
+        Collections.sort(rootGroups);
+        return rootGroups;
+    }
     
-    /**
-     * Get root groups.
-     * @return root groups.
-     */
-    List<ProductsGroup> getRootProductGroups();
+    public List<ProductsGroup> getBreadcrumbPath(final ProductsGroup group) {
+        final var path = new ArrayList<ProductsGroup>();
+        var current = group;
+        final var groups = getAllGroups();
+        while (current != null) {
+            path.add(current);
+            final var parentId = current.getParentId();
+            if (parentId != null) {
+                current = groups.stream().filter(g -> {
+                    return parentId.equals(g.getExternalId());
+                }).findFirst().get();
+            } else {
+                current = null;
+            }
+        }
+        Collections.reverse(path);
+        return path;
+    }
     
-    /**
-     * Get breadcrumb path for target product group.
-     * @param group group.
-     * @return sequence of product groups.
-     */
-    List<ProductsGroup> getBreadcrumbPath(ProductsGroup group);
+    public Map<String, List<ProductsGroup>> getCategoriesTree() {
+        final var tree = new HashMap<String, List<ProductsGroup>>();
+        for (final var group : getAllGroups()) {
+            final var parentId = Optional.ofNullable(group.getParentId()).orElse("-1");
+            if (!tree.containsKey(parentId)) {
+                tree.put(parentId, new ArrayList<>());
+            }
+            tree.get(parentId).add(group);
+        }
+        return tree;
+    }
     
-    /**
-     * Get categories tree. Key is products group external ID, value is child products groups.
-     * @return map.
-     */
-    Map<String, List<ProductsGroup>> getCategoriesTree();
+    private void resetCache() {
+        Optional.ofNullable(cacheManager.getCache(CacheKey.PRODUCTS_GROUPS)).ifPresent(cache -> cache.clear());
+    }
 }
