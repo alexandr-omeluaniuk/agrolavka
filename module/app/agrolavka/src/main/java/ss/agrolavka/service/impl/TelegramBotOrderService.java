@@ -1,13 +1,6 @@
 package ss.agrolavka.service.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -19,13 +12,21 @@ import ss.martin.base.lang.ThrowingSupplier;
 import ss.martin.security.configuration.external.DomainConfiguration;
 import ss.martin.telegram.bot.api.TelegramBot;
 import ss.martin.telegram.bot.formatter.TableFormatter;
-import static ss.martin.telegram.bot.formatter.TableFormatter.*;
 import ss.martin.telegram.bot.model.CallbackQuery;
 import ss.martin.telegram.bot.model.EditMessageText;
 import ss.martin.telegram.bot.model.SendMessage;
 import ss.martin.telegram.bot.model.Update;
 import ss.martin.telegram.bot.model.replymarkup.InlineKeyboardButton;
 import ss.martin.telegram.bot.model.replymarkup.InlineKeyboardMarkup;
+
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import static ss.martin.telegram.bot.formatter.TableFormatter.*;
 
 /**
  * Telegram bots service.
@@ -78,7 +79,7 @@ public class TelegramBotOrderService extends AbstractTelegramBotService {
             final var javaType = objectMapper.getTypeFactory().constructCollectionType(List.class, CreatedTelegramMessageMetadata.class);
             ((ThrowingRunnable) () -> {
                 final List<CreatedTelegramMessageMetadata> orderMessages = objectMapper.readValue(tm, javaType);
-                orderMessages.stream().forEach(m -> {
+                orderMessages.forEach(m -> {
                     telegramBot.updateMessageText(
                         new EditMessageText(
                             m.messageId,
@@ -111,9 +112,7 @@ public class TelegramBotOrderService extends AbstractTelegramBotService {
         } else if (OrderStatus.DELIVERY.equals(order.getStatus())) {
             buttons.add(declineButton);
         }
-        return ((ThrowingSupplier<InlineKeyboardMarkup>) () -> {
-            return new InlineKeyboardMarkup(Arrays.asList(buttons));
-        }).get();
+        return ((ThrowingSupplier<InlineKeyboardMarkup>) () -> new InlineKeyboardMarkup(List.of(buttons))).get();
     }
     
     private String getOrderMessage(final Order order) {
