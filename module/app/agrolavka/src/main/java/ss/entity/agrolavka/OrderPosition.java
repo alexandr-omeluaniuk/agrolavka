@@ -123,7 +123,7 @@ public class OrderPosition extends DataModel implements Comparable<OrderPosition
             String name = "";
             if (getProduct() != null) {
                 if (getVariant() != null) {
-                    name = getVariant().getName();
+                    name = getVariant().getName() + " " + getVariant().getCharacteristics();
                 } else if (getProduct().getVolumes() != null) {
                     final Optional<ProductVolume> volume = getProduct().getProductVolumes().stream()
                         .filter(item -> item.getPrice().equals(getPrice())).findFirst();

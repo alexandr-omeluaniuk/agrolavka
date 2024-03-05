@@ -15,16 +15,13 @@
     <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
         <div class="card-img-top agr-card-image" style="background-image: url('/assets/img/no-image.png')"></div>
         <div class="card-body agr-card-body-category">
-            <a href="#" tabindex="-1" class="btn disabled placeholder col-6 bg-dark"></a>
-            <a href="#" tabindex="-1" class="btn disabled placeholder col-5 bg-dark"></a>
             <a href="#" tabindex="-1" class="btn disabled placeholder col-12 bg-dark"></a>
-            <c:if test="${isProduct}">
-                <a href="#" tabindex="-1" class="btn disabled placeholder col-12 bg-dark"></a>
-                <a href="#" tabindex="-1" class="btn disabled placeholder col-12 bg-dark"></a>
-                <a href="#" tabindex="-1" class="btn disabled placeholder col-5 bg-dark"></a>
-                <a href="#" tabindex="-1" class="btn disabled placeholder col-5 bg-dark"></a>
-                <a href="#" tabindex="-1" class="btn disabled placeholder col-12 bg-dark"></a>
-            </c:if>
+            <a href="#" tabindex="-1" class="btn disabled placeholder col-12 bg-dark"></a>
+            <a href="#" tabindex="-1" class="btn disabled placeholder col-12 bg-dark"></a>
+            <a href="#" tabindex="-1" class="btn disabled placeholder col-12 bg-dark"></a>
+            <a href="#" tabindex="-1" class="btn disabled placeholder col-12 bg-dark"></a>
+            <a href="#" tabindex="-1" class="btn disabled placeholder col-12 bg-dark"></a>
+            <a href="#" tabindex="-1" class="btn disabled placeholder col-12 bg-dark"></a>
         </div>
     </div>
 </div>

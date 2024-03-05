@@ -139,7 +139,7 @@ function Order(props) {
                 }).setSortable().width('40px'),
                 new TableColumn('name', t('m_agrolavka:order.position.name'), (row) => {
                     if (row.variant) {
-                        return row.variant.name;
+                        return row.variant.name + " " + row.variant.characteristics;
                     } else if (row.product) {
                         return row.product.name;
                     } else {

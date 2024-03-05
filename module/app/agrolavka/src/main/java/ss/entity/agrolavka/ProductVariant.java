@@ -118,4 +118,14 @@ public class ProductVariant extends ExternalEntity implements Comparable<Product
             return 0;
         }
     }
+
+    public static String createProductWithModificationsName(String productName) {
+        if (productName.contains(",")) {
+            return productName.substring(0, productName.lastIndexOf(","));
+        } else if (productName.contains(" ")) {
+            return productName.substring(0, productName.lastIndexOf(" "));
+        } else {
+            return productName;
+        }
+    }
 }

@@ -192,4 +192,16 @@ class ProductDAOImpl implements ProductDAO {
         criteria.select(c).where(cb.greaterThanOrEqualTo(c.get(Product_.UPDATED), minDate));
         return em.createQuery(criteria).getResultList();
     }
+
+    @Override
+    public List<Product> getByExternalIds(List<String> externalIds) {
+        if (externalIds.isEmpty()) {
+            return Collections.emptyList();
+        }
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Product> criteria = cb.createQuery(Product.class);
+        Root<Product> c = criteria.from(Product.class);
+        criteria.select(c).where(c.get(Product_.EXTERNAL_ID).in(externalIds));
+        return em.createQuery(criteria).getResultList();
+    }
 }

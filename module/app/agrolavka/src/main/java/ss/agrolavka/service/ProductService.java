@@ -181,7 +181,7 @@ public class ProductService {
         final var variant = new ProductVariant();
         variant.setCharacteristics(createPrimaryCharacteristic(product.getName()));
         variant.setPrice(product.getPrice());
-        variant.setName(product.getName());
+        variant.setName(ProductVariant.createProductWithModificationsName(product.getName()));
         variant.setExternalId(ProductVariant.PRIMARY_VARIANT);
         return variant;
     }

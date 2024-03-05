@@ -66,7 +66,7 @@ class AgrolavkaPublicRestController {
 
     @RequestMapping(value = "/cart/product/{id}", method = RequestMethod.DELETE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public Order removeFromCartByProductId(@PathVariable("id") Long id, HttpServletRequest request) throws Exception {
+    public Order removeFromCartByProductId(@PathVariable("id") Long id, HttpServletRequest request) {
         return removePosition((pos) -> !Objects.equals(pos.getProductId(), id), request);
     }
     
