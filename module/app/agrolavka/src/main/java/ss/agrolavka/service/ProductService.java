@@ -187,11 +187,11 @@ public class ProductService {
     }
 
     private String createPrimaryCharacteristic(String productName) {
-        if (productName.contains(",")) {
-            final var parts = productName.split(",");
-            return parts[parts.length - 1];
-        } else if (productName.contains(" ")) {
+        if (productName.contains(" ")) {
             final var parts = productName.split(" ");
+            return parts[parts.length - 1];
+        } else if (productName.contains(",")) {
+            final var parts = productName.split(",");
             return parts[parts.length - 1];
         } else {
             return productName;
