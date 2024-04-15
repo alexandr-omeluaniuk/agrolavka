@@ -23,6 +23,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
+import java.net.NoRouteToHostException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
@@ -371,36 +372,51 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
             LOG.debug("payload [" + payload + "]");
         }
         return ((ThrowingSupplier<String>) () -> {
-            HttpURLConnection connection = (HttpURLConnection) new URL(rootUrl + url).openConnection();
-            connection.setRequestMethod(method);
-            connection.addRequestProperty("Accept-Encoding", "gzip");
-            connection.setReadTimeout(Long.valueOf(TimeUnit.SECONDS.toMillis(30)).intValue());
-            for (String header : headers.keySet()) {
-                connection.setRequestProperty(header, headers.get(header));
+            final var maxRouteFails = 100;
+            var attempt = 0;
+            while (attempt < maxRouteFails) {
+                try {
+                    return unsafeRequest(url, method, headers, payload);
+                } catch (NoRouteToHostException ex) {
+                    LOG.info("No route to host[" + url + "], attempt [" + attempt + "]");
+                    attempt++;
+                }
             }
-            connection.setDoInput(true);
-            connection.setDoOutput(true);
-            if (payload != null) {
-                connection.getOutputStream().write(payload.getBytes(StandardCharsets.UTF_8));
-            }
-            int responseCode = connection.getResponseCode();
-            LOG.debug("response code [" + responseCode + "]");
-            final var contentEncoding = connection.getHeaderField("Content-Encoding");
-            LOG.debug("Content-Encoding: " + contentEncoding);
-            String response = null;
-            if (responseCode == 200 || responseCode == 201) {
-                final var is = "gzip".equals(contentEncoding) ? new GZIPInputStream(connection.getInputStream()) : connection.getInputStream();
-                response = inputStreamToString(is);
-                LOG.debug("response: " + response);
-                return response;
-            } else if (responseCode == 401) {
-                LOG.info("MySklad auth error [" + url + "]: " + inputStreamToString(connection.getErrorStream()));
-                throw new MySkladAuthenticationException();
-            } else {
-                response = inputStreamToString(connection.getErrorStream());
-                throw new MySkladInternalErrorException(response);
-            }
+            throw new MySkladInternalErrorException("No route to host");
         }).get();
+    }
+
+    private String unsafeRequest(String url, String method, Map<String, String> headers, String payload)
+        throws Exception {
+        HttpURLConnection connection = (HttpURLConnection) new URL(rootUrl + url).openConnection();
+        connection.setRequestMethod(method);
+        connection.addRequestProperty("Accept-Encoding", "gzip");
+        connection.setReadTimeout(Long.valueOf(TimeUnit.SECONDS.toMillis(30)).intValue());
+        for (String header : headers.keySet()) {
+            connection.setRequestProperty(header, headers.get(header));
+        }
+        connection.setDoInput(true);
+        connection.setDoOutput(true);
+        if (payload != null) {
+            connection.getOutputStream().write(payload.getBytes(StandardCharsets.UTF_8));
+        }
+        int responseCode = connection.getResponseCode();
+        LOG.debug("response code [" + responseCode + "]");
+        final var contentEncoding = connection.getHeaderField("Content-Encoding");
+        LOG.debug("Content-Encoding: " + contentEncoding);
+        String response = null;
+        if (responseCode == 200 || responseCode == 201) {
+            final var is = "gzip".equals(contentEncoding) ? new GZIPInputStream(connection.getInputStream()) : connection.getInputStream();
+            response = inputStreamToString(is);
+            LOG.debug("response: " + response);
+            return response;
+        } else if (responseCode == 401) {
+            LOG.info("MySklad auth error [" + url + "]: " + inputStreamToString(connection.getErrorStream()));
+            throw new MySkladAuthenticationException();
+        } else {
+            response = inputStreamToString(connection.getErrorStream());
+            throw new MySkladInternalErrorException(response);
+        }
     }
     /**
      * Request data.
