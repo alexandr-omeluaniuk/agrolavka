@@ -1,6 +1,8 @@
 package ss.agrolavka.rest;
 
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -76,7 +78,7 @@ class AgrolavkaPublicRestController {
             @PathVariable("productId") final Long productId,
             @PathVariable("variantId") final String variantId,
             HttpServletRequest request
-    ) throws Exception {
+    ) {
         if (ProductVariant.PRIMARY_VARIANT.equals(variantId)) {
             return removeFromCartByProductId(productId, request);
         } else {
@@ -134,10 +136,14 @@ class AgrolavkaPublicRestController {
      */
     @RequestMapping(value = "/order", method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public Order confirmOrder(HttpServletRequest request, @RequestBody() OrderDetailsWrapper orderWrapper)
-            throws Exception {
+    public Order confirmOrder(
+        HttpServletRequest request,
+        HttpServletResponse response,
+        @RequestBody() OrderDetailsWrapper orderWrapper
+    ) throws Exception {
         final Order order = orderService.getCurrentOrder(request);
         final Order savedOrder = orderService.createOrder(order, orderWrapper);
+        setPhoneCookie(response, orderWrapper.getPhone());
         final Order newOrder = new Order();
         newOrder.setPositions(new ArrayList<>());
         request.getSession().setAttribute(SiteConstants.CART_SESSION_ATTRIBUTE, newOrder);
@@ -151,8 +157,13 @@ class AgrolavkaPublicRestController {
      */
     @RequestMapping(value = "/order/one-click", method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public Order confirmOneClickOrder(@RequestBody() OneClickOrderWrapper orderWrapper) throws Exception {
-        return orderService.createOneClickOrder(orderWrapper);
+    public Order confirmOneClickOrder(
+        HttpServletResponse response,
+        @RequestBody() OneClickOrderWrapper orderWrapper
+    ) throws Exception {
+        final var order = orderService.createOneClickOrder(orderWrapper);
+        setPhoneCookie(response, orderWrapper.getPhone());
+        return order;
     }
     
     @RequestMapping(value = "/catalog", method = RequestMethod.GET,
@@ -171,5 +182,11 @@ class AgrolavkaPublicRestController {
             request.getSession().setAttribute(SiteConstants.CART_SESSION_ATTRIBUTE, order);
         }
         return order;
+    }
+
+    private void setPhoneCookie(HttpServletResponse response, String phoneNumber) {
+        final var phoneCookie = new Cookie(SiteConstants.PHONE_COOKIE, phoneNumber);
+        phoneCookie.setMaxAge(Integer.MAX_VALUE);
+        response.addCookie(phoneCookie);
     }
 }

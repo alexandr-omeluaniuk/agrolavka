@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import ss.agrolavka.constants.OrderStatus;
 import ss.agrolavka.constants.SiteConstants;
+import ss.agrolavka.dao.OrderDAO;
 import ss.agrolavka.service.impl.TelegramBotOrderService;
 import ss.agrolavka.util.PriceCalculator;
 import ss.agrolavka.wrapper.CartProduct;
@@ -36,6 +37,9 @@ public class OrderService {
     
     @Autowired
     private ProductService productService;
+
+    @Autowired
+    private OrderDAO orderDao;
     
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public Order createOrder(final Order order, final OrderDetailsWrapper orderDetails) throws Exception {
@@ -99,6 +103,16 @@ public class OrderService {
         final Order savedOrder = coreDao.create(order);
         sendTelegramNotification(savedOrder);
         return order;
+    }
+
+    public List<Order> getOrdersHistory(final HttpServletRequest request) {
+        final var phoneCookie = Arrays.stream(request.getCookies())
+            .filter(cookie -> SiteConstants.PHONE_COOKIE.equals(cookie.getName())).findFirst();
+        if (phoneCookie.isPresent()) {
+            return orderDao.getPurchaseHistory(phoneCookie.get().getValue());
+        } else {
+            return Collections.emptyList();
+        }
     }
     
     public Order getCurrentOrder(final HttpServletRequest request) {
