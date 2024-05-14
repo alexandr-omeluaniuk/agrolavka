@@ -98,7 +98,8 @@ public class OrderDAO {
     @Cacheable(value = CacheKey.PURCHASE_HISTORY)
     public List<Order> getPurchaseHistory(final String phoneNumber) {
         final Query query = em.createNativeQuery(
-            "SELECT * FROM customer_order WHERE SUBSTRING(REGEXP_REPLACE(phone, '[^0-9]', ''), -7) = " + phoneNumber,
+            "SELECT * FROM customer_order WHERE SUBSTRING(REGEXP_REPLACE(phone, '[^0-9]', ''), -7) = "
+                + phoneNumber + " order by created desc limit 10",
             Order.class
         );
         return query.getResultList();
