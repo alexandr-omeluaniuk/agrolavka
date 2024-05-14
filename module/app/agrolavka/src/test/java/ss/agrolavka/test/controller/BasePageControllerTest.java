@@ -13,7 +13,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 abstract class BasePageControllerTest extends AbstractAgrolavkaMvcTest {
 
-    protected static final String USER_PHONE = "+375 (29) 66644-55";
+    protected static final String USER_PHONE = "296664455";
     
     
     protected ResultActions call(final String url, final String ...attributes) throws Exception {
