@@ -7,6 +7,7 @@ package ss.agrolavka.dao;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.Query;
 import jakarta.persistence.criteria.*;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
@@ -94,14 +95,13 @@ public class OrderDAO {
     }
 
     @Transactional(propagation = Propagation.SUPPORTS)
-    @Cacheable(CacheKey.PURCHASE_HISTORY)
+    @Cacheable(value = CacheKey.PURCHASE_HISTORY, key = "#phoneNumber")
     public List<Order> getPurchaseHistory(final String phoneNumber) {
-        final var query = em.createNativeQuery(
+        final Query query = em.createNativeQuery(
             "SELECT * FROM customer_order WHERE SUBSTRING(REGEXP_REPLACE(phone, '[^0-9]', ''), -7) = ?1",
             Order.class
         );
         query.setParameter(1, phoneNumber.replaceAll("[^0-9]", ""));
-        final var result = query.getResultList();
-        return result;
+        return query.getResultList();
     }
 }

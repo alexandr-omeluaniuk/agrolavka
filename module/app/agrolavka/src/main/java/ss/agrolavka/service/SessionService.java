@@ -3,7 +3,9 @@ package ss.agrolavka.service;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
+import ss.agrolavka.constants.CacheKey;
 import ss.agrolavka.constants.SiteConstants;
 import ss.entity.agrolavka.Order;
 
@@ -12,6 +14,7 @@ import java.util.ArrayList;
 @Service
 public class SessionService {
 
+    @CacheEvict(value = CacheKey.PURCHASE_HISTORY, key = "#phoneNumber")
     public void setPhoneCookie(HttpServletResponse response, String phoneNumber) {
         final var phoneCookie = new Cookie(SiteConstants.PHONE_COOKIE, phoneNumber);
         phoneCookie.setMaxAge(Integer.MAX_VALUE);
