@@ -4,10 +4,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import ss.agrolavka.constants.JspValue;
-import ss.agrolavka.service.OrderService;
-import ss.agrolavka.service.ProductService;
-import ss.agrolavka.service.ProductsGroupService;
-import ss.agrolavka.service.SiteDataService;
+import ss.agrolavka.service.*;
 import ss.martin.security.configuration.external.DomainConfiguration;
 
 /**
@@ -24,6 +21,9 @@ abstract class BaseJspController {
     
     @Autowired
     protected OrderService orderService;
+
+    @Autowired
+    protected SessionService sessionService;
     
     @Autowired
     protected SiteDataService siteDataService;
@@ -33,7 +33,7 @@ abstract class BaseJspController {
     
     protected void setCommonAttributes(final HttpServletRequest request, final Model model) {
         // cart
-        final var order = orderService.getCurrentOrder(request);
+        final var order = sessionService.getCurrentOrder(request);
         var total = 0d;
         for (final var pos : order.getPositions()) {
             total += pos.getPrice() * pos.getQuantity();

@@ -39,6 +39,9 @@ public class OrderService {
     private ProductService productService;
 
     @Autowired
+    private SessionService sessionService;
+
+    @Autowired
     private OrderDAO orderDao;
     
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
@@ -106,6 +109,9 @@ public class OrderService {
     }
 
     public List<Order> getOrdersHistory(final HttpServletRequest request) {
+        if (request.getCookies() == null) {
+            return Collections.emptyList();
+        }
         final var phoneCookie = Arrays.stream(request.getCookies())
             .filter(cookie -> SiteConstants.PHONE_COOKIE.equals(cookie.getName())).findFirst();
         if (phoneCookie.isPresent()) {
@@ -115,20 +121,10 @@ public class OrderService {
         }
     }
     
-    public Order getCurrentOrder(final HttpServletRequest request) {
-        Order order = (Order) request.getSession(true).getAttribute(SiteConstants.CART_SESSION_ATTRIBUTE);
-        if (order == null) {
-            order = new Order();
-            order.setPositions(new ArrayList<>());
-            request.getSession().setAttribute(SiteConstants.CART_SESSION_ATTRIBUTE, order);
-        }
-        return order;
-    }
-    
     public Order addProductToCart(final CartProduct cartProduct, final HttpServletRequest request) throws Exception {
         Product product = coreDao.findById(cartProduct.getProductId(), Product.class);
         final var variant = getVariant(cartProduct.getVariantId(), product);
-        final Order order = getCurrentOrder(request);
+        final Order order = sessionService.getCurrentOrder(request);
         if (product != null) {
             PriceCalculator.breakQuantityByVolume(product, variant, cartProduct.getQuantity()).forEach((price, quantity) -> {
                 OrderPosition position = new OrderPosition();

@@ -89,7 +89,7 @@ class CatalogController extends BaseJspController {
         final var basePrice = product.getPrice();
         final var discount = product.getDiscount() != null && product.getDiscount().getDiscount() != null
             ? product.getDiscount().getDiscount() : null;
-        final var orderPositions = orderService.getCurrentOrder(request).getPositions();
+        final var orderPositions = sessionService.getCurrentOrder(request).getPositions();
         model.addAttribute(TITLE, product.getSeoTitle() != null
                 ? product.getSeoTitle() : "Купить " + product.getGroup().getName() + " " + product.getName()
                 + ". Способ применения, инструкция, описание " + product.getName());

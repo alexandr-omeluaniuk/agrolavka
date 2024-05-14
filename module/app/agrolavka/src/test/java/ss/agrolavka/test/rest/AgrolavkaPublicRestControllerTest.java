@@ -1,21 +1,31 @@
 package ss.agrolavka.test.rest;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import ss.agrolavka.constants.SiteUrls;
+import ss.agrolavka.service.SessionService;
 import ss.agrolavka.test.common.AbstractAgrolavkaMvcTest;
 import ss.agrolavka.test.common.AgrolavkaDataFactory;
 import ss.agrolavka.wrapper.CartProduct;
 import ss.agrolavka.wrapper.OrderDetailsWrapper;
 import ss.agrolavka.wrapper.ProductsSearchResponse;
 import ss.entity.agrolavka.Order;
+import ss.entity.agrolavka.OrderPosition;
 import ss.martin.security.test.DataFactory;
+
+import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.when;
 
 
 public class AgrolavkaPublicRestControllerTest extends AbstractAgrolavkaMvcTest {
+
+    @MockBean
+    private SessionService sessionService;
     
     @Test
     public void testSearch() {
@@ -61,6 +71,9 @@ public class AgrolavkaPublicRestControllerTest extends AbstractAgrolavkaMvcTest 
         final var cartProduct = new CartProduct();
         cartProduct.setProductId(product.getId());
         cartProduct.setQuantity(20d);
+        final var cart = new Order();
+        cart.setPositions(new ArrayList<>());
+        when(sessionService.getCurrentOrder(any())).thenReturn(cart);
 
         final var order = callPut(
             SiteUrls.URL_PUBLIC + "/cart",
@@ -81,13 +94,24 @@ public class AgrolavkaPublicRestControllerTest extends AbstractAgrolavkaMvcTest 
         );
         final var payload = new OrderDetailsWrapper();
         payload.setPhone("+375-29-785-27-22");
+        final var cart = new Order();
+        cart.setPositions(new ArrayList<>());
+        final var position = new OrderPosition();
+        position.setProductId(product.getId());
+        position.setPrice(product.getPrice());
+        position.setQuantity(20);
+        position.setOrder(cart);
+        cart.getPositions().add(position);
+        when(sessionService.getCurrentOrder(any())).thenReturn(cart);
 
-        final var response = callPost(
+        final var order = callPost(
             SiteUrls.URL_PUBLIC + "/order",
             payload,
-            ProductsSearchResponse.class,
+            Order.class,
             HttpStatus.OK
         );
-        assertNotNull(response);
+        assertNotNull(order);
+        assertEquals(1, order.getPositions().size());
+        assertNotNull(order.getId());
     }
 }

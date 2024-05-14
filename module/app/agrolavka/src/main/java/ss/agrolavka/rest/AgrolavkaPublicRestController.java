@@ -1,6 +1,5 @@
 package ss.agrolavka.rest;
 
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +9,7 @@ import ss.agrolavka.constants.SiteConstants;
 import ss.agrolavka.constants.SiteUrls;
 import ss.agrolavka.service.OrderService;
 import ss.agrolavka.service.ProductService;
+import ss.agrolavka.service.SessionService;
 import ss.agrolavka.util.AppCache;
 import ss.agrolavka.wrapper.CartProduct;
 import ss.agrolavka.wrapper.OneClickOrderWrapper;
@@ -39,6 +39,9 @@ class AgrolavkaPublicRestController {
     /** Order service. */
     @Autowired
     private OrderService orderService;
+
+    @Autowired
+    private SessionService sessionService;
     
     /**
      * Search product.
@@ -103,7 +106,7 @@ class AgrolavkaPublicRestController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public Order changeCartPositionQuantity(@PathVariable("id") String id, @PathVariable("quantity") Integer quantity,
             HttpServletRequest request) throws Exception {
-        final Order order = orderService.getCurrentOrder(request);
+        final Order order = sessionService.getCurrentOrder(request);
         final List<OrderPosition> positions = order.getPositions().stream().filter(pos -> {
             return Objects.equals(pos.getPositionId(), id);
         }).collect(Collectors.toList());
@@ -141,9 +144,9 @@ class AgrolavkaPublicRestController {
         HttpServletResponse response,
         @RequestBody() OrderDetailsWrapper orderWrapper
     ) throws Exception {
-        final Order order = orderService.getCurrentOrder(request);
+        final Order order = sessionService.getCurrentOrder(request);
         final Order savedOrder = orderService.createOrder(order, orderWrapper);
-        setPhoneCookie(response, orderWrapper.getPhone());
+        sessionService.setPhoneCookie(response, orderWrapper.getPhone());
         final Order newOrder = new Order();
         newOrder.setPositions(new ArrayList<>());
         request.getSession().setAttribute(SiteConstants.CART_SESSION_ATTRIBUTE, newOrder);
@@ -162,7 +165,7 @@ class AgrolavkaPublicRestController {
         @RequestBody() OneClickOrderWrapper orderWrapper
     ) throws Exception {
         final var order = orderService.createOneClickOrder(orderWrapper);
-        setPhoneCookie(response, orderWrapper.getPhone());
+        sessionService.setPhoneCookie(response, orderWrapper.getPhone());
         return order;
     }
     
@@ -173,7 +176,7 @@ class AgrolavkaPublicRestController {
     }
     
     private Order removePosition(Predicate<OrderPosition> predicate, HttpServletRequest request) {
-        final Order order = orderService.getCurrentOrder(request);
+        final Order order = sessionService.getCurrentOrder(request);
         List<OrderPosition> positions = order.getPositions().stream().filter(predicate).collect(Collectors.toList());
         order.setPositions(positions);
         if (positions.isEmpty()) {
@@ -182,11 +185,5 @@ class AgrolavkaPublicRestController {
             request.getSession().setAttribute(SiteConstants.CART_SESSION_ATTRIBUTE, order);
         }
         return order;
-    }
-
-    private void setPhoneCookie(HttpServletResponse response, String phoneNumber) {
-        final var phoneCookie = new Cookie(SiteConstants.PHONE_COOKIE, phoneNumber);
-        phoneCookie.setMaxAge(Integer.MAX_VALUE);
-        response.addCookie(phoneCookie);
     }
 }
