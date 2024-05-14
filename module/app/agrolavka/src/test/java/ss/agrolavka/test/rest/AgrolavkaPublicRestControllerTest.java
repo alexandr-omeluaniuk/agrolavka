@@ -52,14 +52,12 @@ public class AgrolavkaPublicRestControllerTest extends AbstractAgrolavkaMvcTest 
     }
 
     @Test
-    public void testCreateOrder() {
+    public void testAddToCart() {
         DataFactory.silentAuthentication(coreDao);
         final var productGroup = coreDao.create(AgrolavkaDataFactory.generateProductGroup("New group"));
         final var product = coreDao.create(
             AgrolavkaDataFactory.generateProduct(productGroup, "Hummer", 100.0, 2.0)
         );
-        final var payload = new OrderDetailsWrapper();
-        payload.setPhone("+375-29-785-27-22");
         final var cartProduct = new CartProduct();
         cartProduct.setProductId(product.getId());
         cartProduct.setQuantity(20d);
@@ -72,6 +70,17 @@ public class AgrolavkaPublicRestControllerTest extends AbstractAgrolavkaMvcTest 
         );
         assertNotNull(order);
         assertEquals(1, order.getPositions().size());
+    }
+
+    @Test
+    public void testCreateOrder() {
+        DataFactory.silentAuthentication(coreDao);
+        final var productGroup = coreDao.create(AgrolavkaDataFactory.generateProductGroup("New group"));
+        final var product = coreDao.create(
+            AgrolavkaDataFactory.generateProduct(productGroup, "Hummer", 100.0, 2.0)
+        );
+        final var payload = new OrderDetailsWrapper();
+        payload.setPhone("+375-29-785-27-22");
 
         final var response = callPost(
             SiteUrls.URL_PUBLIC + "/order",
