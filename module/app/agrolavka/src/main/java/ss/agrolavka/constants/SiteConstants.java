@@ -16,4 +16,6 @@ public final class SiteConstants {
     /** Cart session attribute. */
     public static final String CART_SESSION_ATTRIBUTE = "CART";
     public static final String PHONE_COOKIE = "PHONE_COOKIE";
+    /** Min order sum. */
+    public static final int MIN_ORDER_SUM = 0;
 }

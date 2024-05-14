@@ -95,13 +95,12 @@ public class OrderDAO {
     }
 
     @Transactional(propagation = Propagation.SUPPORTS)
-    @Cacheable(value = CacheKey.PURCHASE_HISTORY, key = "#phoneNumber")
+    @Cacheable(value = CacheKey.PURCHASE_HISTORY)
     public List<Order> getPurchaseHistory(final String phoneNumber) {
         final Query query = em.createNativeQuery(
-            "SELECT * FROM customer_order WHERE SUBSTRING(REGEXP_REPLACE(phone, '[^0-9]', ''), -7) = ?1",
+            "SELECT * FROM customer_order WHERE SUBSTRING(REGEXP_REPLACE(phone, '[^0-9]', ''), -7) = " + phoneNumber,
             Order.class
         );
-        query.setParameter(1, phoneNumber.replaceAll("[^0-9]", ""));
         return query.getResultList();
     }
 }

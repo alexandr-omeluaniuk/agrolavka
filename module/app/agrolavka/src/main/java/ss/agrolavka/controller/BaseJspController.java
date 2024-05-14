@@ -39,11 +39,12 @@ abstract class BaseJspController {
             total += pos.getPrice() * pos.getQuantity();
         }
         final var parts = String.format("%.2f", total).split("\\.");
+        final var purchaseHistory = orderService.getPurchaseHistory(request);
         model.addAttribute(JspValue.CART, order);
         model.addAttribute(JspValue.TOTAL_INTEGER, parts[0]);
         model.addAttribute(JspValue.TOTAL_DECIMAL, parts[1]);
         model.addAttribute(JspValue.SHOPS, siteDataService.getAllShops());
         model.addAttribute(JspValue.DOMAIN, domainConfiguration.host());
-        model.addAttribute(JspValue.PURCHASE_HISTORY, orderService.getPurchaseHistory(request));
+        model.addAttribute(JspValue.PURCHASE_HISTORY, purchaseHistory);
     }
 }
