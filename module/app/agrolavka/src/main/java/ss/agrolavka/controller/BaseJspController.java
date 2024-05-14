@@ -44,6 +44,6 @@ abstract class BaseJspController {
         model.addAttribute(JspValue.TOTAL_DECIMAL, parts[1]);
         model.addAttribute(JspValue.SHOPS, siteDataService.getAllShops());
         model.addAttribute(JspValue.DOMAIN, domainConfiguration.host());
-        model.addAttribute(JspValue.PURCHASE_HISTORY, orderService.getOrdersHistory(request));
+        model.addAttribute(JspValue.PURCHASE_HISTORY, orderService.getPurchaseHistory(request));
     }
 }

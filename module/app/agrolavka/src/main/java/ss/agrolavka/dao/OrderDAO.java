@@ -96,17 +96,12 @@ public class OrderDAO {
     @Transactional(propagation = Propagation.SUPPORTS)
     @Cacheable(CacheKey.PURCHASE_HISTORY)
     public List<Order> getPurchaseHistory(final String phoneNumber) {
-        final var cb = em.getCriteriaBuilder();
-        final var criteria = cb.createQuery(Order.class);
-        final var c = criteria.from(Order.class);
-        criteria.select(c).where(
-
-        );
         final var query = em.createNativeQuery(
             "SELECT * FROM customer_order WHERE SUBSTRING(REGEXP_REPLACE(phone, '[^0-9]', ''), -7) = ?1",
             Order.class
         );
         query.setParameter(1, phoneNumber.replaceAll("[^0-9]", ""));
-        return query.getResultList();
+        final var result = query.getResultList();
+        return result;
     }
 }

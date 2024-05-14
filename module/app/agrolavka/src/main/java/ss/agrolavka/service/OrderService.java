@@ -108,7 +108,7 @@ public class OrderService {
         return order;
     }
 
-    public List<Order> getOrdersHistory(final HttpServletRequest request) {
+    public List<Order> getPurchaseHistory(final HttpServletRequest request) {
         if (request.getCookies() == null) {
             return Collections.emptyList();
         }
