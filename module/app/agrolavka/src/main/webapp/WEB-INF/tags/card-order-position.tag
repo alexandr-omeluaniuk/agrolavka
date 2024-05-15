@@ -11,7 +11,10 @@
        import="ss.entity.agrolavka.*,ss.agrolavka.util.*,java.util.List,java.lang.*"%>
 
 <%-- The list of normal or fragment attributes can be specified here: --%>
-<%@attribute name="order" required="true" type="Order"%>
+<%@attribute name="position" required="true" type="OrderPosition"%>
+<%@attribute name="cart" required="true" type="Order"%>
 
 <%-- any content can be specified here e.g.: --%>
-TODO
+<div>
+    <t:card-product product="${position.product}" cart="${cart}" showCreatedDate="false"/>
+</div>

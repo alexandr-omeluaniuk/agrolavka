@@ -9,7 +9,12 @@
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <!DOCTYPE html>
 <t:app title="Корзина" metaDescription="Ваши покупки в магазине Агролавка" canonical="/cart">
-    
+
+    <jsp:attribute name="headSection">
+        <link rel="stylesheet" href="/assets/vendor/swiper/swiper-bundle.min.css"/>
+        <script src="/assets/vendor/swiper/swiper-bundle.min.js"></script>
+    </jsp:attribute>
+
     <jsp:body>
         <main class="min-vh-100">
             <div class="container">
@@ -43,7 +48,7 @@
                 </section>
                 <section>
                     <c:if test="${not empty purchaseHistory}">
-                        <t:purchase-history purchaseHistory="${purchaseHistory}"/>
+                        <t:purchase-history purchaseHistory="${purchaseHistory}" cart="${cart}"/>
                     </c:if>
                 </section>
             </div>

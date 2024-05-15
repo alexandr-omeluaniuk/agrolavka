@@ -8,20 +8,23 @@ package ss.agrolavka.dao;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.criteria.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import ss.agrolavka.constants.CacheKey;
 import ss.agrolavka.constants.OrderStatus;
+import ss.agrolavka.service.ProductService;
 import ss.agrolavka.wrapper.OrderSearchRequest;
-import ss.entity.agrolavka.Address;
-import ss.entity.agrolavka.Address_;
 import ss.entity.agrolavka.Order;
-import ss.entity.agrolavka.Order_;
+import ss.entity.agrolavka.*;
+import ss.martin.core.dao.CoreDao;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * Order DAO implementation.
@@ -32,6 +35,13 @@ public class OrderDAO {
     /** Entity manager. */
     @PersistenceContext
     private EntityManager em;
+
+    @Autowired
+    private CoreDao coreDao;
+
+    @Autowired
+    private ProductService productService;
+
     @Transactional(propagation = Propagation.SUPPORTS)
     public List<Order> search(OrderSearchRequest request) throws Exception {
         if (request.getPage() == null || request.getPage() < 1) {
@@ -112,6 +122,21 @@ public class OrderDAO {
         criteria.select(c).where(
             cb.like(fun, "%" + phoneNumber)
         ).orderBy(cb.desc(c.get(Order_.created)));
-        return em.createQuery(criteria).getResultList();
+        final var purchaseHistory = em.createQuery(criteria).getResultList();
+        if (!purchaseHistory.isEmpty()) {
+            final var productIds = purchaseHistory.stream()
+                .flatMap(mapper -> mapper.getPositions().stream().map(OrderPosition::getProductId))
+                .collect(Collectors.toSet());
+            final var productsMap = coreDao.findByIds(productIds, Product.class).stream().collect(
+                Collectors.toMap(Product::getId, Function.identity())
+            );
+            productsMap.values().forEach(product -> product.setVariants(productService.getVariants(product)));
+            purchaseHistory.forEach(order -> {
+                order.getPositions().forEach(position -> position.setProduct(productsMap.get(position.getProductId())));
+            });
+        }
+        return purchaseHistory.stream()
+            .filter(order -> order.getPositions().stream().anyMatch(position -> position.getProduct() != null))
+            .collect(Collectors.toList());
     }
 }
