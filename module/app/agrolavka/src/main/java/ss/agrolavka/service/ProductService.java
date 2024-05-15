@@ -39,6 +39,9 @@ public class ProductService {
     private CoreDao coreDao;
 
     @Autowired
+    private ProductVariantsService productVariantsService;
+
+    @Autowired
     private MySkladIntegrationService mySkladService;
     
     public ProductsSearchResponse quickSearchProducts(final String searchText) {
@@ -117,7 +120,7 @@ public class ProductService {
     }
 
     public List<ProductVariant> getVariants(Product product) {
-        final var variantsMap = getVariantsMap();
+        final var variantsMap = productVariantsService.getVariantsMap();
         if (product.getExternalId() != null && variantsMap.containsKey(product.getExternalId())) {
             final var variants = variantsMap.get(product.getExternalId());
             Collections.sort(variants);
@@ -126,13 +129,6 @@ public class ProductService {
         } else {
             return Collections.emptyList();
         }
-    }
-    
-    @Cacheable(CacheKey.PRODUCT_VARIANTS)
-    private Map<String, List<ProductVariant>> getVariantsMap() {
-        return coreDao.getAll(ProductVariant.class).stream().collect(
-            Collectors.groupingBy(ProductVariant::getParentId)
-        );
     }
 
     public List<Product> search(ProductsSearchRequest request) {

@@ -7,7 +7,6 @@ package ss.agrolavka.dao;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.Query;
 import jakarta.persistence.criteria.*;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
@@ -97,11 +96,22 @@ public class OrderDAO {
     @Transactional(propagation = Propagation.SUPPORTS)
     @Cacheable(value = CacheKey.PURCHASE_HISTORY)
     public List<Order> getPurchaseHistory(final String phoneNumber) {
-        final Query query = em.createNativeQuery(
-            "SELECT * FROM customer_order WHERE SUBSTRING(REGEXP_REPLACE(phone, '[^0-9]', ''), -7) = "
-                + phoneNumber + " order by created desc limit 10",
-            Order.class
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Order> criteria = cb.createQuery(Order.class);
+        Root<Order> c = criteria.from(Order.class);
+        c.fetch(Order_.europostLocationSnapshot, JoinType.LEFT);
+        c.fetch(Order_.address, JoinType.LEFT);
+        c.fetch(Order_.positions, JoinType.LEFT);
+        final var fun = cb.function(
+            "REGEXP_REPLACE",
+            String.class,
+            c.get(Order_.phone),
+            cb.literal("[^0-9]"),
+            cb.literal("")
         );
-        return query.getResultList();
+        criteria.select(c).where(
+            cb.like(fun, "%" + phoneNumber)
+        ).orderBy(cb.desc(c.get(Order_.created)));
+        return em.createQuery(criteria).getResultList();
     }
 }
