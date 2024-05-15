@@ -14,7 +14,7 @@
 
 <%-- any content can be specified here e.g.: --%>
 <hr/>
-<h5>Ранее заказывали:</h5>
+<h5 class="text-center">История заказов</h5>
 <c:forEach items="${purchaseHistory}" var="order">
     <div class="row">
         <div class="col-12 ps-3 d-flex justify-content-between">
