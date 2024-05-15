@@ -15,6 +15,5 @@
 <%@attribute name="cart" required="true" type="Order"%>
 
 <%-- any content can be specified here e.g.: --%>
-<div>
-    <t:card-product product="${position.product}" cart="${cart}" showCreatedDate="false"/>
-</div>
+<small class="text-dark">Количество: ${position.quantity}</small>
+<t:card-product product="${position.product}" cart="${cart}" showCreatedDate="false"/>

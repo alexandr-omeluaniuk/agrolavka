@@ -17,10 +17,11 @@
 <h5>Ранее заказывали:</h5>
 <c:forEach items="${purchaseHistory}" var="order">
     <div class="row">
-        <div class="col-12">
-            <small class="text-muted">Заказ от ${order.formatCreated()}</small>
+        <div class="col-12 ps-3">
+            <h6 class="text-muted mb-0">Заказ от ${order.formatCreated()} на сумму <b class="text-dark">${order.calculateTotal()} BYN</b>
+            </h6>
         </div>
-        <div class="agr-purchase-history-swiper swiper w-100 mb-2 p-3">
+        <div class="agr-purchase-history-swiper swiper w-100 mb-0 p-3">
             <div class="swiper-wrapper">
                 <c:forEach items="${order.positions}" var="position">
                     <c:if test="${position.product != null}">
@@ -35,7 +36,7 @@
             <div class="swiper-button-next shadow-1-strong"></div>
         </div>
     </div>
-
+    <hr/>
 </c:forEach>
 
 <script>
