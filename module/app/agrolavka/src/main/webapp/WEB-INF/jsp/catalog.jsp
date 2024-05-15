@@ -35,9 +35,6 @@
                         </t:products-search-result>
                     </section>
                 </c:if>
-                <c:if test="${not empty purchaseHistory}">
-                    <t:purchase-history purchaseHistory="${purchaseHistory}"/>
-                </c:if>
             </div>
         </main>
         <modal:one-click-order-modal/>

@@ -1,24 +1,16 @@
 package ss.entity.agrolavka;
 
-import java.util.Date;
-import java.util.List;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import org.hibernate.validator.constraints.Length;
 import ss.agrolavka.constants.OrderStatus;
 import ss.entity.martin.DataModel;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 /**
  * Customer order.
@@ -29,6 +21,8 @@ import ss.entity.martin.DataModel;
 public class Order extends DataModel {
     /** Default UID. */
     private static final long serialVersionUID = 1L;
+
+    private static final SimpleDateFormat SDF_CREATED = new SimpleDateFormat("dd MMM yyyy", new Locale("ru"));
     /** Order positions. */
     @Size(min = 1)
     @OneToMany(fetch = FetchType.EAGER, orphanRemoval = true, cascade = CascadeType.ALL, mappedBy = "order")
@@ -175,5 +169,9 @@ public class Order extends DataModel {
     @Override
     public String toString() {
         return "ss.entity.agrolavka.Order[ id=" + getId() + " ]";
+    }
+
+    public String formatCreated() {
+        return SDF_CREATED.format(created);
     }
 }

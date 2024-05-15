@@ -15,10 +15,7 @@
 <c:forEach items="${purchaseHistory}" var="order">
     <div class="row">
         <div class="col-12">
-            <h6 class="text-muted">${order.created}</h6>
-        </div>
-        <div class="col-12">
-            TODO
+            <small class="text-muted">Заказ от ${order.formatCreated()}</small>
         </div>
     </div>
 

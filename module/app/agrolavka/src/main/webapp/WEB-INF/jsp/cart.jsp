@@ -41,6 +41,11 @@
                         </c:otherwise>
                     </c:choose>
                 </section>
+                <section>
+                    <c:if test="${not empty purchaseHistory}">
+                        <t:purchase-history purchaseHistory="${purchaseHistory}"/>
+                    </c:if>
+                </section>
             </div>
         </main>
     </jsp:body>
