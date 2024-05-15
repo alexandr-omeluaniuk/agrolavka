@@ -42,6 +42,9 @@ public class OrderService {
     private SessionService sessionService;
 
     @Autowired
+    private PurchaseHistoryService purchaseHistoryService;
+
+    @Autowired
     private OrderDAO orderDao;
     
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
@@ -115,7 +118,7 @@ public class OrderService {
         final var phoneCookie = Arrays.stream(request.getCookies())
             .filter(cookie -> SiteConstants.PHONE_COOKIE.equals(cookie.getName())).findFirst();
         if (phoneCookie.isPresent()) {
-            return orderDao.getPurchaseHistory(phoneCookie.get().getValue());
+            return purchaseHistoryService.getPurchaseHistory(phoneCookie.get().getValue());
         } else {
             return Collections.emptyList();
         }

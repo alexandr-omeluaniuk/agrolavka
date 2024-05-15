@@ -20,7 +20,7 @@
         <div class="col-12">
             <small class="text-muted">Заказ от ${order.formatCreated()}</small>
         </div>
-        <div class="agr-purchase-history-swiper swiper w-100 mb-2 p-2">
+        <div class="agr-purchase-history-swiper swiper w-100 mb-2 p-3">
             <div class="swiper-wrapper">
                 <c:forEach items="${order.positions}" var="position">
                     <c:if test="${position.product != null}">
