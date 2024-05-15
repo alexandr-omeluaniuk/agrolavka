@@ -122,9 +122,9 @@ public class ProductService {
     public List<ProductVariant> getVariants(Product product) {
         final var variantsMap = productVariantsService.getVariantsMap();
         if (product.getExternalId() != null && variantsMap.containsKey(product.getExternalId())) {
-            final var variants = variantsMap.get(product.getExternalId());
+            final var variants = new ArrayList<ProductVariant>(variantsMap.get(product.getExternalId()));
             Collections.sort(variants);
-            variants.add(0,primaryProductVariant(product));
+            variants.add(0, primaryProductVariant(product));
             return variants;
         } else {
             return Collections.emptyList();
