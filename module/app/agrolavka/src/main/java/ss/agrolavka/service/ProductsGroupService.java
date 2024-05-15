@@ -2,7 +2,6 @@ package ss.agrolavka.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import ss.agrolavka.constants.CacheKey;
 import ss.agrolavka.util.UrlProducer;
@@ -21,6 +20,9 @@ public class ProductsGroupService {
     
     @Autowired
     private MySkladIntegrationService mySklad;
+
+    @Autowired
+    private AllProductGroupsService allProductGroupsService;
     
     @Autowired
     private CacheManager cacheManager;
@@ -54,7 +56,7 @@ public class ProductsGroupService {
     }
 
     public List<ProductsGroup> getTopCategories() {
-        return getAllGroups().stream()
+        return allProductGroupsService.getAllGroups().stream()
             .filter(group -> group.isTopCategory() != null && group.isTopCategory())
             .sorted()
             .collect(
@@ -62,13 +64,8 @@ public class ProductsGroupService {
             );
     }
     
-    @Cacheable(CacheKey.PRODUCTS_GROUPS)
-    public List<ProductsGroup> getAllGroups() {
-        return coreDao.getAll(ProductsGroup.class);
-    }
-    
     public List<ProductsGroup> getRootProductGroups() {
-        final var rootGroups = getAllGroups().stream().filter(group -> {
+        final var rootGroups = allProductGroupsService.getAllGroups().stream().filter(group -> {
             return group.getParentId() == null;
         }).collect(Collectors.toList());
         Collections.sort(rootGroups);
@@ -78,7 +75,7 @@ public class ProductsGroupService {
     public List<ProductsGroup> getBreadcrumbPath(final ProductsGroup group) {
         final var path = new ArrayList<ProductsGroup>();
         var current = group;
-        final var groups = getAllGroups();
+        final var groups = allProductGroupsService.getAllGroups();
         while (current != null) {
             path.add(current);
             final var parentId = current.getParentId();
@@ -96,7 +93,7 @@ public class ProductsGroupService {
     
     public Map<String, List<ProductsGroup>> getCategoriesTree() {
         final var tree = new HashMap<String, List<ProductsGroup>>();
-        for (final var group : getAllGroups()) {
+        for (final var group : allProductGroupsService.getAllGroups()) {
             final var parentId = Optional.ofNullable(group.getParentId()).orElse("-1");
             if (!tree.containsKey(parentId)) {
                 tree.put(parentId, new ArrayList<>());

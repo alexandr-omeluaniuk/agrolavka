@@ -11,6 +11,7 @@ import ss.agrolavka.constants.JspPage;
 import ss.agrolavka.constants.SiteConstants;
 import ss.agrolavka.constants.SiteUrls;
 import ss.agrolavka.dao.ProductDAO;
+import ss.agrolavka.service.AllProductGroupsService;
 import ss.agrolavka.service.ProductService;
 import ss.agrolavka.util.CartUtils;
 import ss.agrolavka.wrapper.ProductsSearchRequest;
@@ -45,6 +46,9 @@ class CatalogController extends BaseJspController {
 
     @Autowired
     private ProductService productService;
+
+    @Autowired
+    private AllProductGroupsService allProductGroupsService;
         
     @RequestMapping(SiteUrls.PAGE_CATALOG)
     public Object catalog(
@@ -172,7 +176,7 @@ class CatalogController extends BaseJspController {
     
     private DataModel resolveUrlToProductGroup(String url) {
         String last = url.substring(url.lastIndexOf("/") + 1);
-        for (final var group : productsGroupService.getAllGroups()) {
+        for (final var group : allProductGroupsService.getAllGroups()) {
             if (last.equals(group.getUrl())) {
                 return group;
             }

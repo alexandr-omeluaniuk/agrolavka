@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import ss.agrolavka.dao.ProductDAO;
+import ss.agrolavka.service.AllProductGroupsService;
 import ss.agrolavka.wrapper.ProductsSearchRequest;
 import ss.entity.agrolavka.*;
 import ss.entity.security.EntityAudit_;
@@ -27,6 +28,9 @@ class ProductDAOImpl implements ProductDAO {
     /** Core DAO. */
     @Autowired
     private CoreDao coreDAO;
+
+    @Autowired
+    private AllProductGroupsService allProductGroupsService;
     
     @Override
     @Transactional(propagation = Propagation.SUPPORTS)
@@ -104,10 +108,12 @@ class ProductDAOImpl implements ProductDAO {
             predicates.add(cb.equal(c.get(Product_.hidden), false));
         }
         if (request.getGroupId() != null) {
-            ProductsGroup targetGroup = coreDAO.findById(request.getGroupId(), ProductsGroup.class);
+            final var allGroupsList = allProductGroupsService.getAllGroups();
+            ProductsGroup targetGroup = allGroupsList.stream().filter(
+                gr -> request.getGroupId().equals(gr.getId())
+            ).findFirst().get();
             Map<String, List<ProductsGroup>> groupsMap = new HashMap<>();
-            List<ProductsGroup> allGroups = coreDAO.getAll(ProductsGroup.class);
-            for (ProductsGroup group : allGroups) {
+            for (ProductsGroup group : allGroupsList) {
                 if (group.getParentId() != null) {
                     if (!groupsMap.containsKey(group.getParentId())) {
                         groupsMap.put(group.getParentId(), new ArrayList<>());
@@ -139,7 +145,7 @@ class ProductDAOImpl implements ProductDAO {
     private void walkProductGroup(ProductsGroup group, Set<Long> groupIds, Map<String, List<ProductsGroup>> groupsMap) {
         groupIds.add(group.getId());
         if (groupsMap.containsKey(group.getExternalId())) {
-            groupsMap.get(group.getExternalId()).stream().forEach(g -> {
+            groupsMap.get(group.getExternalId()).forEach(g -> {
                 walkProductGroup(g, groupIds, groupsMap);
             });
         }
