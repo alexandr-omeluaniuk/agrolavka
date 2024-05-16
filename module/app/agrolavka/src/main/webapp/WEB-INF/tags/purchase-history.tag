@@ -20,7 +20,7 @@
 <section id="agr-purchase-history-container" class="d-none">
     <c:forEach items="${purchaseHistory}" var="order">
         <div class="row">
-            <div class="col-12 ps-3 d-flex justify-content-between">
+            <div class="col-12 ps-3 d-flex justify-content-between mb-2">
                 <h6 class="text-muted mb-0">Заказ от ${order.formatCreated()}</h6>
                 <h6>на сумму <b class="text-dark">${order.formatTotal()} BYN</b></h6>
             </div>
@@ -29,7 +29,7 @@
                     <c:forEach items="${order.positions}" var="position">
                         <c:if test="${position.product != null}">
                             <div class="swiper-slide">
-                                <t:card-product product="${position.product}" cart="${cart}" showCreatedDate="false"/>
+                                <t:card-product product="${position.product}" cart="${cart}" showGroup="true" showCreatedDate="false"/>
                             </div>
                         </c:if>
                     </c:forEach>

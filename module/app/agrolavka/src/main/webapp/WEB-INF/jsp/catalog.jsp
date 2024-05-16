@@ -46,7 +46,7 @@
                         <div class="swiper-wrapper">
                             <c:forEach items="${purchaseHistoryProducts}" var="p">
                                 <div class="swiper-slide">
-                                    <t:card-product product="${p}" cart="${cart}" showCreatedDate="false"/>
+                                    <t:card-product product="${p}" cart="${cart}" showCreatedDate="false" showGroup="true"/>
                                 </div>
                             </c:forEach>
                         </div>

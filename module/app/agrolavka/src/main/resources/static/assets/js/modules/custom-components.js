@@ -445,6 +445,8 @@ class XProductCard extends XElement {
         const imageCreatedDate = this.getAttribute('data-image-created');
         const link = this.getAttribute('data-link');
         const volumes = this.getAttribute('data-volume');
+        const groupName = this.getAttribute('data-group-name');
+        const groupLink = this.getAttribute('data-group-link');
         const imageElement = image
             ? `<div class="card-img-top agr-card-image" style="background-image: url('/media/${image}?timestamp=${imageCreatedDate}')"></div>` 
             : `<div class="card-img-top agr-card-image" style="background-image: url('/assets/img/no-image.png')"></div>`;
@@ -455,6 +457,7 @@ class XProductCard extends XElement {
                     <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
                         ${imageElement}
                         <div class="card-body" style="min-height: 100px;">
+                            ${groupName && groupLink ? `<a class="agr-sub-category-link" href="${groupLink}"><div class="text-muted">${groupName}</div></a>` : ''}
                             <h6 class="card-title text-dark text-left" style="min-height: 60px;">${name}</h6>
                             <x-agr-product-price data-row-class="agr-card-line" data-discount="${discount}" data-price="${price}"></x-agr-product-price>
                             ${createdDate ? `
