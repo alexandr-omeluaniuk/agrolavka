@@ -18,7 +18,8 @@ public class CatalogControllerTest extends BasePageControllerTest {
             JspValue.AVAILABLE,
             JspValue.TITLE,
             JspValue.META_DESCRIPTION,
-            JspValue.CATEGORIES
+            JspValue.CATEGORIES,
+            JspValue.PURCHASE_HISTORY_PRODUCTS
         );
     }
     
@@ -36,7 +37,8 @@ public class CatalogControllerTest extends BasePageControllerTest {
             JspValue.AVAILABLE,
             JspValue.TITLE,
             JspValue.META_DESCRIPTION,
-            JspValue.CATEGORIES
+            JspValue.CATEGORIES,
+            JspValue.PURCHASE_HISTORY_PRODUCTS
         );
     }
     
@@ -59,7 +61,8 @@ public class CatalogControllerTest extends BasePageControllerTest {
             JspValue.META_DESCRIPTION,
             JspValue.CATEGORIES,
             JspValue.PRODUCTS_SEARCH_RESULT,
-            JspValue.PRODUCTS_SEARCH_RESULT_PAGES
+            JspValue.PRODUCTS_SEARCH_RESULT_PAGES,
+            JspValue.PURCHASE_HISTORY_PRODUCTS
         );
     }
     
