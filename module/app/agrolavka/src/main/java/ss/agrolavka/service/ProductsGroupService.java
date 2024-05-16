@@ -1,6 +1,7 @@
 package ss.agrolavka.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Service;
 import ss.agrolavka.constants.CacheKey;
@@ -102,8 +103,24 @@ public class ProductsGroupService {
         }
         return tree;
     }
+
+    public Set<Long> getAllNestedGroups(final ProductsGroup target) {
+        final var treeMap = getCategoriesTree();
+        Set<Long> groupIds = new HashSet<>();
+        walkProductGroup(target, groupIds, treeMap);
+        return groupIds;
+    }
+
+    private void walkProductGroup(ProductsGroup group, Set<Long> groupIds, Map<String, List<ProductsGroup>> groupsMap) {
+        groupIds.add(group.getId());
+        if (groupsMap.containsKey(group.getExternalId())) {
+            groupsMap.get(group.getExternalId()).forEach(g -> {
+                walkProductGroup(g, groupIds, groupsMap);
+            });
+        }
+    }
     
     private void resetCache() {
-        Optional.ofNullable(cacheManager.getCache(CacheKey.PRODUCTS_GROUPS)).ifPresent(cache -> cache.clear());
+        Optional.ofNullable(cacheManager.getCache(CacheKey.PRODUCTS_GROUPS)).ifPresent(Cache::clear);
     }
 }

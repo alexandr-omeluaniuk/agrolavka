@@ -45,11 +45,9 @@
                     <div class="col-12 agr-purchase-history-products-swiper swiper w-100 mb-0 ps-3 pe-3">
                         <div class="swiper-wrapper">
                             <c:forEach items="${purchaseHistoryProducts}" var="p">
-                                <c:if test="${p != null}">
-                                    <div class="swiper-slide">
-                                        <t:card-product product="${p}" cart="${cart}" showCreatedDate="false"/>
-                                    </div>
-                                </c:if>
+                                <div class="swiper-slide">
+                                    <t:card-product product="${p}" cart="${cart}" showCreatedDate="false"/>
+                                </div>
                             </c:forEach>
                         </div>
                         <div class="swiper-pagination"></div>

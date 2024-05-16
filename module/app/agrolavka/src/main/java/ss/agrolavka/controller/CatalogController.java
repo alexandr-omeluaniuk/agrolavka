@@ -138,8 +138,18 @@ class CatalogController extends BaseJspController {
         final var purchaseHistory = orderService.getPurchaseHistory(request);
         final var uniqueProducts = purchaseHistory.stream()
             .flatMap(order -> order.getPositions().stream().map(OrderPosition::getProduct))
+            .filter(Objects::nonNull)
             .collect(Collectors.toSet());
-        model.addAttribute(PURCHASE_HISTORY_PRODUCTS, uniqueProducts);
+        if (group == null) {
+            model.addAttribute(PURCHASE_HISTORY_PRODUCTS, uniqueProducts);
+        } else {
+            final var nestedGroups = productsGroupService.getAllNestedGroups(group);
+            nestedGroups.add(group.getId());
+            final var groupProducts = uniqueProducts.stream()
+                .filter(product -> nestedGroups.contains(product.getGroup().getId()))
+                .collect(Collectors.toSet());
+            model.addAttribute(PURCHASE_HISTORY_PRODUCTS, groupProducts);
+        }
     }
     
     private void setCatalogAttributes(final Model model, final ProductsGroup group) {
@@ -226,6 +236,4 @@ class CatalogController extends BaseJspController {
         Long count = productDAO.count(searchRequest);
         model.addAttribute(PRODUCTS_SEARCH_RESULT_PAGES, Double.valueOf(Math.ceil((double) count / pageSize)).intValue());
     }
-
-
 }
