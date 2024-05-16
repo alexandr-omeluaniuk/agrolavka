@@ -148,6 +148,10 @@ public class Order extends DataModel {
     public double calculateTotal() {
         return positions.stream().map(pos -> pos.getQuantity() * pos.getPrice()).reduce(0d, Double::sum);
     }
+
+    public String formatTotal() {
+        return String.format("%.2f", calculateTotal());
+    }
     
     @Override
     public int hashCode() {
