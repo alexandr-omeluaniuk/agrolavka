@@ -15,9 +15,9 @@
 <%-- any content can be specified here e.g.: --%>
 <hr/>
 <button class="btn btn-outline-dark w-100 mb-3" id="agr-switch-purchase-history">
-    Показать историю заказов
+    Скрыть историю заказов
 </button>
-<section id="agr-purchase-history-container" class="d-none">
+<section id="agr-purchase-history-container">
     <c:forEach items="${purchaseHistory}" var="order">
         <div class="row">
             <div class="col-12 ps-3 d-flex justify-content-between mb-2">
