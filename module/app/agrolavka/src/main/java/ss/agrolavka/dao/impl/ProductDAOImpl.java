@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import ss.agrolavka.dao.ProductDAO;
 import ss.agrolavka.service.AllProductGroupsService;
+import ss.agrolavka.service.ProductsGroupService;
 import ss.agrolavka.wrapper.ProductsSearchRequest;
 import ss.entity.agrolavka.*;
 import ss.entity.security.EntityAudit_;
@@ -30,7 +31,10 @@ class ProductDAOImpl implements ProductDAO {
     private CoreDao coreDAO;
 
     @Autowired
-    private AllProductGroupsService allProductGroupsService;
+    private ProductsGroupService productsGroupService;
+
+    @Autowired
+    private  AllProductGroupsService allProductGroupsService;
     
     @Override
     @Transactional(propagation = Propagation.SUPPORTS)
@@ -109,22 +113,14 @@ class ProductDAOImpl implements ProductDAO {
         }
         if (request.getGroupId() != null) {
             final var allGroupsList = allProductGroupsService.getAllGroups();
-            ProductsGroup targetGroup = allGroupsList.stream().filter(
+            allGroupsList.stream().filter(
                 gr -> request.getGroupId().equals(gr.getId())
-            ).findFirst().get();
-            Map<String, List<ProductsGroup>> groupsMap = new HashMap<>();
-            for (ProductsGroup group : allGroupsList) {
-                if (group.getParentId() != null) {
-                    if (!groupsMap.containsKey(group.getParentId())) {
-                        groupsMap.put(group.getParentId(), new ArrayList<>());
-                    }
-                    groupsMap.get(group.getParentId()).add(group);
-                }
-            }
-            Set<Long> groupIds = new HashSet<>();
-            walkProductGroup(targetGroup, groupIds, groupsMap);
-            Join<Product, ProductsGroup> productGroup = c.join(Product_.group, JoinType.LEFT);
-            predicates.add(productGroup.get(ProductsGroup_.id).in(groupIds));
+            ).findFirst().ifPresent(targetGroup -> {
+                final var groupIds = productsGroupService.getAllNestedGroups(targetGroup);
+                groupIds.add(targetGroup.getId());
+                Join<Product, ProductsGroup> productGroup = c.join(Product_.group, JoinType.LEFT);
+                predicates.add(productGroup.get(ProductsGroup_.id).in(groupIds));
+            });
         }
         if (request.getText() != null && !request.getText().isBlank()) {
             predicates.add(cb.like(cb.upper(c.get(Product_.name)), "%" + request.getText().toUpperCase() + "%"));
@@ -139,16 +135,6 @@ class ProductDAOImpl implements ProductDAO {
             predicates.add(cb.isNotNull(c.get(Product_.discount)));
         }
         return predicates;
-    }
-    
-    @Transactional(propagation = Propagation.SUPPORTS)
-    private void walkProductGroup(ProductsGroup group, Set<Long> groupIds, Map<String, List<ProductsGroup>> groupsMap) {
-        groupIds.add(group.getId());
-        if (groupsMap.containsKey(group.getExternalId())) {
-            groupsMap.get(group.getExternalId()).forEach(g -> {
-                walkProductGroup(g, groupIds, groupsMap);
-            });
-        }
     }
     
     @Override
