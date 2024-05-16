@@ -15,6 +15,7 @@ import ss.agrolavka.service.AllProductGroupsService;
 import ss.agrolavka.service.ProductService;
 import ss.agrolavka.util.CartUtils;
 import ss.agrolavka.wrapper.ProductsSearchRequest;
+import ss.entity.agrolavka.OrderPosition;
 import ss.entity.agrolavka.Product;
 import ss.entity.agrolavka.Product_;
 import ss.entity.agrolavka.ProductsGroup;
@@ -22,6 +23,7 @@ import ss.entity.martin.DataModel;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static ss.agrolavka.constants.JspValue.*;
 
@@ -65,6 +67,7 @@ class CatalogController extends BaseJspController {
         model.addAttribute(CANONICAL, url  + (page != null ? "?page=" + page : ""));
         if (SiteUrls.PAGE_CATALOG_ROOT.equals(url)) {
             setCatalogRootAttributes(model);
+            setPurchaseHistoryProducts(model, request, null);
             return JspPage.CATALOG;
         } else {
             final var entity = resolveUrlToProductGroup(url);
@@ -73,6 +76,7 @@ class CatalogController extends BaseJspController {
             }
             if (entity instanceof ProductsGroup group) {
                 setCatalogAttributes(model, group);
+                setPurchaseHistoryProducts(model, request, group);
                 setProducts(model, group.getId(), page, sort, available);
                 return JspPage.CATALOG;
             } else if (entity instanceof Product product) {
@@ -124,6 +128,18 @@ class CatalogController extends BaseJspController {
         model.addAttribute(TITLE, "Широкий выбор товаров для сада и огорода");
         model.addAttribute(META_DESCRIPTION, "Каталог товаров для сада и огорода");
         model.addAttribute(CATEGORIES, productsGroupService.getRootProductGroups());
+    }
+
+    private void setPurchaseHistoryProducts(
+        final Model model,
+        final HttpServletRequest request,
+        final ProductsGroup group
+    ) {
+        final var purchaseHistory = orderService.getPurchaseHistory(request);
+        final var uniqueProducts = purchaseHistory.stream()
+            .flatMap(order -> order.getPositions().stream().map(OrderPosition::getProduct))
+            .collect(Collectors.toSet());
+        model.addAttribute(PURCHASE_HISTORY_PRODUCTS, uniqueProducts);
     }
     
     private void setCatalogAttributes(final Model model, final ProductsGroup group) {
