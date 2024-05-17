@@ -29,7 +29,7 @@
                             <div class="row">
                                 <c:forEach items="${products}" var="product">
                                     <div class="col-sm-6 col-md-6 col-lg-4 col-xl-3 col-6">
-                                        <t:card-product product="${product}" cart="${cart}"/>
+                                        <t:card-product product="${product}" cart="${cart}" showGroup="true"/>
                                     </div>
                                 </c:forEach>
                             </div>

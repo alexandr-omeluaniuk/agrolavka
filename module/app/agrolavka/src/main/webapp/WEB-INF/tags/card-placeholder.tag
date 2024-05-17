@@ -11,7 +11,7 @@
 <%-- The list of normal or fragment attributes can be specified here: --%>
 
 <%-- any content can be specified here e.g.: --%>
-<div class="card shadow-1-strong mb-4" aria-hidden="true">
+<div class="card shadow-1-strong mb-4 agr-card-placeholder" aria-hidden="true">
     <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
         <div class="card-img-top agr-card-image" style="background-image: url('/assets/img/no-image.png')"></div>
         <div class="card-body agr-card-body-category">

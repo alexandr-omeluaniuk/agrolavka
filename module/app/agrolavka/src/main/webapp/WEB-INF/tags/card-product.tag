@@ -17,6 +17,7 @@
 <%@attribute name="product" required="true" type="Product"%>
 <%@attribute name="cart" required="true" type="Order"%>
 <%@attribute name="showCreatedDate" required="false" type="Boolean"%>
+<%@attribute name="showGroup" required="false" type="Boolean"%>
 
 <x-agr-product-card 
     data-id="${product.id}"
@@ -26,6 +27,8 @@
     data-in-stock="${product.quantity > 0 ? "true" : ""}"
     data-hide-ribbon="<%= AppCache.isBelongsToGroup("Средства защиты растений (СЗР)", product.getGroup()) ? "true" : "" %>"
     data-name="<%= product.getName().replace("\"", "'") %>"
+    data-group-name="<%= showGroup != null && showGroup ? product.getGroup().getName().replace("\"", "'") : "" %>"
+    data-group-link="<%= showGroup != null && showGroup ? UrlProducer.buildProductGroupUrl(product.getGroup()) : "" %>"
     data-price="${product.price}"
     data-image="${product.images.size() > 0 ? product.images.get(0).fileNameOnDisk : ""}"
     data-image-created="${product.images.size() > 0 ? product.images.get(0).createdDate : ""}"

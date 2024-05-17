@@ -1,6 +1,7 @@
 package ss.agrolavka.rest;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -8,6 +9,7 @@ import ss.agrolavka.constants.SiteConstants;
 import ss.agrolavka.constants.SiteUrls;
 import ss.agrolavka.service.OrderService;
 import ss.agrolavka.service.ProductService;
+import ss.agrolavka.service.SessionService;
 import ss.agrolavka.util.AppCache;
 import ss.agrolavka.wrapper.CartProduct;
 import ss.agrolavka.wrapper.OneClickOrderWrapper;
@@ -37,6 +39,9 @@ class AgrolavkaPublicRestController {
     /** Order service. */
     @Autowired
     private OrderService orderService;
+
+    @Autowired
+    private SessionService sessionService;
     
     /**
      * Search product.
@@ -76,7 +81,7 @@ class AgrolavkaPublicRestController {
             @PathVariable("productId") final Long productId,
             @PathVariable("variantId") final String variantId,
             HttpServletRequest request
-    ) throws Exception {
+    ) {
         if (ProductVariant.PRIMARY_VARIANT.equals(variantId)) {
             return removeFromCartByProductId(productId, request);
         } else {
@@ -101,7 +106,7 @@ class AgrolavkaPublicRestController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public Order changeCartPositionQuantity(@PathVariable("id") String id, @PathVariable("quantity") Integer quantity,
             HttpServletRequest request) throws Exception {
-        final Order order = orderService.getCurrentOrder(request);
+        final Order order = sessionService.getCurrentOrder(request);
         final List<OrderPosition> positions = order.getPositions().stream().filter(pos -> {
             return Objects.equals(pos.getPositionId(), id);
         }).collect(Collectors.toList());
@@ -134,10 +139,14 @@ class AgrolavkaPublicRestController {
      */
     @RequestMapping(value = "/order", method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public Order confirmOrder(HttpServletRequest request, @RequestBody() OrderDetailsWrapper orderWrapper)
-            throws Exception {
-        final Order order = orderService.getCurrentOrder(request);
+    public Order confirmOrder(
+        HttpServletRequest request,
+        HttpServletResponse response,
+        @RequestBody() OrderDetailsWrapper orderWrapper
+    ) throws Exception {
+        final Order order = sessionService.getCurrentOrder(request);
         final Order savedOrder = orderService.createOrder(order, orderWrapper);
+        sessionService.setPhoneCookie(response, orderWrapper.getPhone());
         final Order newOrder = new Order();
         newOrder.setPositions(new ArrayList<>());
         request.getSession().setAttribute(SiteConstants.CART_SESSION_ATTRIBUTE, newOrder);
@@ -151,8 +160,13 @@ class AgrolavkaPublicRestController {
      */
     @RequestMapping(value = "/order/one-click", method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public Order confirmOneClickOrder(@RequestBody() OneClickOrderWrapper orderWrapper) throws Exception {
-        return orderService.createOneClickOrder(orderWrapper);
+    public Order confirmOneClickOrder(
+        HttpServletResponse response,
+        @RequestBody() OneClickOrderWrapper orderWrapper
+    ) throws Exception {
+        final var order = orderService.createOneClickOrder(orderWrapper);
+        sessionService.setPhoneCookie(response, orderWrapper.getPhone());
+        return order;
     }
     
     @RequestMapping(value = "/catalog", method = RequestMethod.GET,
@@ -162,7 +176,7 @@ class AgrolavkaPublicRestController {
     }
     
     private Order removePosition(Predicate<OrderPosition> predicate, HttpServletRequest request) {
-        final Order order = orderService.getCurrentOrder(request);
+        final Order order = sessionService.getCurrentOrder(request);
         List<OrderPosition> positions = order.getPositions().stream().filter(predicate).collect(Collectors.toList());
         order.setPositions(positions);
         if (positions.isEmpty()) {

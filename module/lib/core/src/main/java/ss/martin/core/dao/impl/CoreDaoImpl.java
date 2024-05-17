@@ -6,12 +6,6 @@ import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +15,13 @@ import ss.entity.martin.SoftDeleted;
 import ss.martin.core.dao.CoreDao;
 import ss.martin.core.model.EntitySearchRequest;
 import ss.martin.core.model.EntitySearchResponse;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Repository
 class CoreDaoImpl implements CoreDao {
@@ -186,7 +187,7 @@ class CoreDaoImpl implements CoreDao {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<T> criteria = cb.createQuery(cl);
         Root<T> c = criteria.from(cl);
-        criteria.select(c).where(new Predicate[0]);
+        criteria.select(c).where();
         return em.createQuery(criteria).getResultList();
     }
     

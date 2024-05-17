@@ -11,9 +11,11 @@ import ss.agrolavka.constants.JspPage;
 import ss.agrolavka.constants.SiteConstants;
 import ss.agrolavka.constants.SiteUrls;
 import ss.agrolavka.dao.ProductDAO;
+import ss.agrolavka.service.AllProductGroupsService;
 import ss.agrolavka.service.ProductService;
 import ss.agrolavka.util.CartUtils;
 import ss.agrolavka.wrapper.ProductsSearchRequest;
+import ss.entity.agrolavka.OrderPosition;
 import ss.entity.agrolavka.Product;
 import ss.entity.agrolavka.Product_;
 import ss.entity.agrolavka.ProductsGroup;
@@ -21,6 +23,7 @@ import ss.entity.martin.DataModel;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static ss.agrolavka.constants.JspValue.*;
 
@@ -45,6 +48,9 @@ class CatalogController extends BaseJspController {
 
     @Autowired
     private ProductService productService;
+
+    @Autowired
+    private AllProductGroupsService allProductGroupsService;
         
     @RequestMapping(SiteUrls.PAGE_CATALOG)
     public Object catalog(
@@ -61,6 +67,7 @@ class CatalogController extends BaseJspController {
         model.addAttribute(CANONICAL, url  + (page != null ? "?page=" + page : ""));
         if (SiteUrls.PAGE_CATALOG_ROOT.equals(url)) {
             setCatalogRootAttributes(model);
+            setPurchaseHistoryProducts(model, request, null);
             return JspPage.CATALOG;
         } else {
             final var entity = resolveUrlToProductGroup(url);
@@ -69,6 +76,7 @@ class CatalogController extends BaseJspController {
             }
             if (entity instanceof ProductsGroup group) {
                 setCatalogAttributes(model, group);
+                setPurchaseHistoryProducts(model, request, group);
                 setProducts(model, group.getId(), page, sort, available);
                 return JspPage.CATALOG;
             } else if (entity instanceof Product product) {
@@ -89,7 +97,7 @@ class CatalogController extends BaseJspController {
         final var basePrice = product.getPrice();
         final var discount = product.getDiscount() != null && product.getDiscount().getDiscount() != null
             ? product.getDiscount().getDiscount() : null;
-        final var orderPositions = orderService.getCurrentOrder(request).getPositions();
+        final var orderPositions = sessionService.getCurrentOrder(request).getPositions();
         model.addAttribute(TITLE, product.getSeoTitle() != null
                 ? product.getSeoTitle() : "Купить " + product.getGroup().getName() + " " + product.getName()
                 + ". Способ применения, инструкция, описание " + product.getName());
@@ -120,6 +128,28 @@ class CatalogController extends BaseJspController {
         model.addAttribute(TITLE, "Широкий выбор товаров для сада и огорода");
         model.addAttribute(META_DESCRIPTION, "Каталог товаров для сада и огорода");
         model.addAttribute(CATEGORIES, productsGroupService.getRootProductGroups());
+    }
+
+    private void setPurchaseHistoryProducts(
+        final Model model,
+        final HttpServletRequest request,
+        final ProductsGroup group
+    ) {
+        final var purchaseHistory = orderService.getPurchaseHistory(request);
+        final var uniqueProducts = purchaseHistory.stream()
+            .flatMap(order -> order.getPositions().stream().map(OrderPosition::getProduct))
+            .filter(Objects::nonNull)
+            .collect(Collectors.toSet());
+        if (group == null) {
+            model.addAttribute(PURCHASE_HISTORY_PRODUCTS, uniqueProducts);
+        } else {
+            final var nestedGroups = productsGroupService.getAllNestedGroups(group);
+            nestedGroups.add(group.getId());
+            final var groupProducts = uniqueProducts.stream()
+                .filter(product -> nestedGroups.contains(product.getGroup().getId()))
+                .collect(Collectors.toSet());
+            model.addAttribute(PURCHASE_HISTORY_PRODUCTS, groupProducts);
+        }
     }
     
     private void setCatalogAttributes(final Model model, final ProductsGroup group) {
@@ -172,7 +202,7 @@ class CatalogController extends BaseJspController {
     
     private DataModel resolveUrlToProductGroup(String url) {
         String last = url.substring(url.lastIndexOf("/") + 1);
-        for (final var group : productsGroupService.getAllGroups()) {
+        for (final var group : allProductGroupsService.getAllGroups()) {
             if (last.equals(group.getUrl())) {
                 return group;
             }
@@ -206,6 +236,4 @@ class CatalogController extends BaseJspController {
         Long count = productDAO.count(searchRequest);
         model.addAttribute(PRODUCTS_SEARCH_RESULT_PAGES, Double.valueOf(Math.ceil((double) count / pageSize)).intValue());
     }
-
-
 }
