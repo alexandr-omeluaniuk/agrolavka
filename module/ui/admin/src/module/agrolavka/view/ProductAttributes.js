@@ -5,8 +5,8 @@
  */
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { TableConfig, TableColumn, FormConfig, FormField, ALIGN_RIGHT, ApiURL } from '../../../util/model/TableConfig';
-import { TYPES } from '../../../service/DataTypeService';
+import { TableConfig, TableColumn, FormConfig, FormField, ALIGN_RIGHT, ApiURL, Validator } from '../../../util/model/TableConfig';
+import { TYPES, VALIDATORS } from '../../../service/DataTypeService';
 import DataTable from '../../../component/datatable/DataTable';
 import AppURLs from '../../../conf/app-urls';
 import { NavLink } from "react-router-dom";
@@ -19,9 +19,9 @@ function ProductAttributes() {
     const updateTable = () => {
         const apiUrl = new ApiURL(
                 '/agrolavka/protected/product-attributes',
-                null,
-                null,
-                null
+                '/agrolavka/protected/product-attributes',
+                '/agrolavka/protected/product-attributes',
+                '/agrolavka/protected/product-attributes'
         );
         apiUrl.addGetExtraParam('order_by', 'name');
         const newTableConfig = new TableConfig(t('m_agrolavka:agrolavka.feedbacks'), apiUrl, [
@@ -40,7 +40,11 @@ function ProductAttributes() {
                 return moment(row.created).locale('ru').format('DD.MM.yyyy HH:mm');
             }).width('160px').alignment(ALIGN_RIGHT)
         ], new FormConfig([
-            new FormField('id', TYPES.ID).hide()
+            new FormField('id', TYPES.ID).hide(),
+            new FormField('name', TYPES.TEXTFIELD, t('m_agrolavka:attributes.name')).setGrid({xs: 12, md: 12}).validation([
+                new Validator(VALIDATORS.REQUIRED),
+                new Validator(VALIDATORS.MAX_LENGTH, {length: 255})
+            ])
         ])).setElevation(1);
         setTableConfig(newTableConfig);
     };
@@ -61,4 +65,3 @@ function ProductAttributes() {
 }
 
 export default ProductAttributes;
-

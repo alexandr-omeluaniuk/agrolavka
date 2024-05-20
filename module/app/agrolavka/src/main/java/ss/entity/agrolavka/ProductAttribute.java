@@ -2,6 +2,8 @@ package ss.entity.agrolavka;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import ss.entity.security.EntityAudit;
 
 import java.util.List;
@@ -14,7 +16,8 @@ public class ProductAttribute extends EntityAudit {
     @Column(name = "name", length = 255, nullable = false)
     private String name;
 
-    @OneToMany(fetch = FetchType.EAGER, orphanRemoval = true, mappedBy = "productAttribute", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "productAttribute")
+    @Fetch(FetchMode.JOIN)
     private List<ProductAttributeItem> items;
 
     public List<ProductAttributeItem> getItems() {
