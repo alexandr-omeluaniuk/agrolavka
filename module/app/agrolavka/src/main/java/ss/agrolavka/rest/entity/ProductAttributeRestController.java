@@ -1,11 +1,9 @@
 package ss.agrolavka.rest.entity;
 
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ss.agrolavka.constants.SiteUrls;
 import ss.entity.agrolavka.ProductAttribute;
+import ss.entity.agrolavka.ProductAttributeItem;
 
 @RestController
 @RequestMapping(SiteUrls.URL_PROTECTED + "/product-attributes")
@@ -21,5 +19,14 @@ public class ProductAttributeRestController extends BasicEntityRestController<Pr
         @RequestBody ProductAttribute attribute
     ) {
         return coreDAO.create(attribute);
+    }
+
+    @PostMapping("/item/{id}")
+    public ProductAttributeItem createItem(
+        @PathVariable("id") Long id,
+        @RequestBody ProductAttributeItem item
+    ) {
+        item.setProductAttribute(coreDAO.findById(id, ProductAttribute.class));
+        return coreDAO.create(item);
     }
 }
