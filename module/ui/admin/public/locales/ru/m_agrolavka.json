@@ -6,7 +6,8 @@
         "sandbox": "Песочница",
         "feedbacks": "Обратная связь",
         "shops": "Магазины",
-        "slides": "Слайды"
+        "slides": "Слайды",
+        "product-attributes": "Аттрибуты"
     },
     "products": {
         "product_groups": "Категория",
@@ -60,6 +61,12 @@
         "feedback_number": "Номер",
         "contact": "Контактная информация",
         "message": "Сообщение",
+        "created": "Создано"
+    },
+    "attributes": {
+        "number": "Номер",
+        "name": "Название",
+        "items": "Возможные значения",
         "created": "Создано"
     },
     "order": {
