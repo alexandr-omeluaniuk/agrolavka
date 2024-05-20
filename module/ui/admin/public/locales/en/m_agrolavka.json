@@ -67,7 +67,9 @@
         "name": "Name",
         "items": "Items",
         "created": "Created",
-        "addItem": "Add item"
+        "addItem": "Add item",
+        "newItem": "New item",
+        "itemName": "Item name"
     },
     "order": {
         "title": "Order # {{num}}",
