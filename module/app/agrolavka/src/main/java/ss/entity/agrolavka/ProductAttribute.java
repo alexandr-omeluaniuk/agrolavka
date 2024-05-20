@@ -2,13 +2,13 @@ package ss.entity.agrolavka;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import ss.entity.martin.DataModel;
+import ss.entity.security.EntityAudit;
 
 import java.util.List;
 
 @Entity
 @Table(name = "product_attribute")
-public class ProductAttribute extends DataModel {
+public class ProductAttribute extends EntityAudit {
 
     @NotNull
     @Column(name = "name", length = 255, nullable = false)

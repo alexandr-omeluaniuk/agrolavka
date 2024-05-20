@@ -3,11 +3,11 @@ package ss.entity.agrolavka;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import ss.entity.martin.DataModel;
+import ss.entity.security.EntityAudit;
 
 @Entity
 @Table(name = "product_attribute_item")
-public class ProductAttributeItem extends DataModel {
+public class ProductAttributeItem extends EntityAudit {
 
     @NotNull
     @Column(name = "name", length = 255, nullable = false)

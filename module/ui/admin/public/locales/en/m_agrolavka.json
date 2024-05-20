@@ -6,7 +6,8 @@
         "sandbox": "Sandbox",
         "feedbacks": "Feedbacks",
         "shops": "Shops",
-        "slides": "Slides"
+        "slides": "Slides",
+        "product-attributes": "Attributes"
     },
     "products": {
         "product_groups": "Product groups",
@@ -59,6 +60,12 @@
         "feedback_number": "Nr.",
         "contact": "Contact information",
         "message": "Message",
+        "created": "Created"
+    },
+    "attributes": {
+        "number": "Nr.",
+        "name": "Name",
+        "items": "Items",
         "created": "Created"
     },
     "order": {
