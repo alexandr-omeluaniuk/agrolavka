@@ -17,12 +17,16 @@ import Switch from '@material-ui/core/Switch';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Avatar from '@material-ui/core/Avatar';
 import DataService from '../../../service/DataService';
-import { TableConfig, TableColumn, FormConfig, ALIGN_RIGHT, ApiURL } from '../../../util/model/TableConfig';
+import { TableConfig, TableColumn, FormConfig, ALIGN_RIGHT, ApiURL, Validator } from '../../../util/model/TableConfig';
 import DataTable from '../../../component/datatable/DataTable';
 import ProductsGroups from './ProductsGroups';
 import Price from '../component/Price';
 import { NavLink } from "react-router-dom";
 import AppURLs from '../../../conf/app-urls';
+import Form from '../../../component/form/Form';
+import FormDialog from '../../../component/window/FormDialog';
+import FormField from '../../../component/form/FormField';
+import { TYPES, VALIDATORS } from '../../../service/DataTypeService';
 
 let dataService = new DataService();
 
@@ -77,6 +81,13 @@ function Products() {
     const [filterCode, setFilterCode] = React.useState(null);
     const [filterAvailable, setFilterAvailable] = React.useState(false);
     const [filterDiscounts, setFilterDiscounts] = React.useState(false);
+
+    const [formConfig, setFormConfig] = React.useState(null);
+    const [formTitle, setFormTitle] = React.useState('');
+    const [formOpen, setFormOpen] = React.useState(false);
+    const [formDisabled, setFormDisabled] = React.useState(false);
+    const [record, setRecord] = React.useState(null);
+    const [reload, setReload] = React.useState(false);
     // ------------------------------------------------------- METHODS --------------------------------------------------------------------
     const productsFilter = () => {
         return (
@@ -142,8 +153,21 @@ function Products() {
         dataService.put('/agrolavka/protected/product/group').then(resp => {
         });
     };
-    const addAttributes = () => {
-        console.log('FIRE');
+    const addAttributes = (product) => {
+        setFormTitle(t('m_agrolavka:products.addAttributes') + ' [' + product.name + ']');
+        setRecord({});
+        setFormOpen(true);
+    };
+    const onFormSubmitAction = async (data) => {
+        setFormDisabled(true);
+        if (data.id) {
+            
+        } else {
+            
+        }
+        setFormDisabled(false);
+        setFormOpen(false);
+        setReload(!reload);
     };
     // ------------------------------------------------------- HOOKS ----------------------------------------------------------------------
     useEffect(() => {
@@ -210,6 +234,9 @@ function Products() {
                 return <span className={quantityStyle}>{row.quantity}</span>;
             }).width('100px').alignment(ALIGN_RIGHT),
             new TableColumn('btn_add_item', '', (row) => {
+                if (row.minPrice && row.maxPrice) {
+                    return null;
+                }
                 return <Tooltip title={t('m_agrolavka:products.addAttributes')}>
                             <IconButton onClick={() => addAttributes(row)}>
                                 <Icon className={classes.addAttributes}>post_add</Icon>
@@ -236,6 +263,20 @@ function Products() {
         setTableConfig(newTableConfig);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedProductGroup, filterProductName, filterCode, filterAvailable, filterDiscounts]);
+    useEffect(() => {
+        if (formConfig === null) {
+            setFormConfig(new FormConfig([
+                // new FormField('id', TYPES.ID).hide(),
+                // new FormField('product_id', TYPES.INTEGER_NUMBER).hide(),
+                // new FormField('name', TYPES.TEXTFIELD, t('m_agrolavka:attributes.itemName'))
+                //         .setGrid({xs: 12, md: 12}).validation([
+                //     new Validator(VALIDATORS.REQUIRED),
+                //     new Validator(VALIDATORS.MAX_LENGTH, {length: 255})
+                // ])
+            ]));
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [formConfig]);
     // ------------------------------------------------------- RENDERING ------------------------------------------------------------------
     if (tableConfig === null) {
         return null;
@@ -246,8 +287,14 @@ function Products() {
                     <ProductsGroups onSelect={setSelectedProductGroup}/>
                 </Grid>
                 <Grid item sm={12} md={9}>
-                    {selectedProductGroup ? <DataTable tableConfig={tableConfig}/> : null}
+                    {selectedProductGroup ? <DataTable tableConfig={tableConfig} reload={reload}/> : null}
                 </Grid>
+                {formConfig ? (
+                    <FormDialog title={formTitle} open={formOpen} handleClose={() => setFormOpen(false)} fullScreen={false}>
+                        <Form formConfig={formConfig} onSubmitAction={onFormSubmitAction} record={record}
+                            disabled={formDisabled}/>
+                    </FormDialog>
+                ) : null}
             </Grid>
     );
 }
