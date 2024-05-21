@@ -29,4 +29,11 @@ public class ProductAttributeRestController extends BasicEntityRestController<Pr
         item.setProductAttribute(coreDAO.findById(id, ProductAttribute.class));
         return coreDAO.create(item);
     }
+
+    @DeleteMapping("/item/{id}")
+    public void deleteItem(
+        @PathVariable("id") Long id
+    ) {
+        coreDAO.delete(id, ProductAttributeItem.class);
+    }
 }
