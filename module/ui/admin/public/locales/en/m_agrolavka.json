@@ -25,7 +25,8 @@
         "quantity": "Quantity",
         "available": "Available",
         "discounts": "With discount",
-        "product_video_url": "VIdeo URL"
+        "product_video_url": "VIdeo URL",
+        "addAttributes": "Add attributes"
     },
     "products_groups": {
         "new_group": "Create new product group",
