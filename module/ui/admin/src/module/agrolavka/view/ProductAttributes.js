@@ -47,6 +47,12 @@ function ProductAttributes() {
         setReload(!reload);
     }
 
+    const onEditItem = (item) => {
+        setFormTitle(t('m_agrolavka:attributes.editItem') + ' [' + item.name + ']');
+        setRecord(item);
+        setFormOpen(true);
+    };
+
     const updateTable = () => {
         const apiUrl = new ApiURL(
                 '/agrolavka/protected/product-attributes',
@@ -69,7 +75,7 @@ function ProductAttributes() {
                 const items = [];
                 row.items.forEach(i => {
                     items.push(
-                        <Chip label={i.name} clickable color="secondary" onDelete={() => onDeleteItem(i.id)}/>
+                        <Chip label={i.name} clickable key={i.id} color="secondary" onDelete={() => onDeleteItem(i.id)} onClick={() => onEditItem(i)}/>
                     );
                 });
                 return <React.Fragment>
@@ -98,9 +104,13 @@ function ProductAttributes() {
 
     const onFormSubmitAction = async (data) => {
         setFormDisabled(true);
-        const parentId = data.product_attribute_id;
-        delete data.product_attribute_id;
-        const item = await dataService.post('/agrolavka/protected/product-attributes/item/' + parentId, data);
+        if (data.id) {
+            await dataService.put('/agrolavka/protected/product-attributes/item', data);
+        } else {
+            const parentId = data.product_attribute_id;
+            delete data.product_attribute_id;
+            await dataService.post('/agrolavka/protected/product-attributes/item/' + parentId, data);
+        }
         setFormDisabled(false);
         setFormOpen(false);
         setReload(!reload);

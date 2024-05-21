@@ -69,7 +69,8 @@
         "created": "Created",
         "addItem": "Add item",
         "newItem": "New item",
-        "itemName": "Item name"
+        "itemName": "Item name",
+        "editItem": "Edit item"
     },
     "order": {
         "title": "Order # {{num}}",
