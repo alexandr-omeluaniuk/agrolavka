@@ -56,7 +56,7 @@ function DataTable(props) {
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
     const { t } = useTranslation();
-    const { tableConfig } = props;
+    const { tableConfig, reload } = props;
     const [load, setLoad] = React.useState(null);
     const [data, setData] = React.useState(null);
     const [total, setTotal] = React.useState(0);
@@ -97,7 +97,7 @@ function DataTable(props) {
             });
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [load, tableConfig, page, rowsPerPage, order, orderBy]);
+    }, [load, tableConfig, page, rowsPerPage, order, orderBy, reload]);
 //    useEffect(() => {
 //        return () => {
 //            dataService.abort();

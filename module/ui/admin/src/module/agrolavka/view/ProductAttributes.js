@@ -10,7 +10,7 @@ import { TableConfig, TableColumn, FormConfig, FormField, ALIGN_RIGHT, ApiURL, V
 import { TYPES, VALIDATORS } from '../../../service/DataTypeService';
 import DataTable from '../../../component/datatable/DataTable';
 import moment from 'moment';
-import { Icon, IconButton, Tooltip } from '@material-ui/core';
+import { Chip, Icon, IconButton, Tooltip } from '@material-ui/core';
 import FormDialog from '../../../component/window/FormDialog';
 import Form from '../../../component/form/Form';
 import DataService from '../../../service/DataService';
@@ -32,6 +32,7 @@ function ProductAttributes() {
     const [formOpen, setFormOpen] = React.useState(false);
     const [formDisabled, setFormDisabled] = React.useState(false);
     const [record, setRecord] = React.useState(null);
+    const [reload, setReload] = React.useState(false);
     // ------------------------------------------------------- METHODS --------------------------------------------------------------------
     const addItem = (row) => {
         setFormTitle(t('m_agrolavka:attributes.newItem') + ' [' + row.name + ']');
@@ -40,6 +41,11 @@ function ProductAttributes() {
         });
         setFormOpen(true);
     };
+
+    const onDeleteItem = async (id) => {
+        await dataService.delete('/agrolavka/protected/product-attributes/item/' + id);
+        setReload(!reload);
+    }
 
     const updateTable = () => {
         const apiUrl = new ApiURL(
@@ -60,7 +66,15 @@ function ProductAttributes() {
                 return row.name;
             }).width('230px'),
             new TableColumn('items', t('m_agrolavka:attributes.items'), (row) => {
-                return row.items;
+                const items = [];
+                row.items.forEach(i => {
+                    items.push(
+                        <Chip label={i.name} clickable color="secondary" onDelete={() => onDeleteItem(i.id)}/>
+                    );
+                });
+                return <React.Fragment>
+                    {items}
+                </React.Fragment>;
             }),
             new TableColumn('created_date', t('m_agrolavka:attributes.created'), (row) => {
                 return moment(row.created).locale('ru').format('DD.MM.yyyy HH:mm');
@@ -89,6 +103,7 @@ function ProductAttributes() {
         const item = await dataService.post('/agrolavka/protected/product-attributes/item/' + parentId, data);
         setFormDisabled(false);
         setFormOpen(false);
+        setReload(!reload);
     };
     // ------------------------------------------------------- HOOKS ----------------------------------------------------------------------
     useEffect(() => {
@@ -117,7 +132,7 @@ function ProductAttributes() {
     }
     return (
         <React.Fragment>
-            <DataTable tableConfig={tableConfig}/>
+            <DataTable tableConfig={tableConfig} reload={reload}/>
             {formConfig ? (
                 <FormDialog title={formTitle} open={formOpen} handleClose={() => setFormOpen(false)} fullScreen={false}>
                     <Form formConfig={formConfig} onSubmitAction={onFormSubmitAction} record={record}
