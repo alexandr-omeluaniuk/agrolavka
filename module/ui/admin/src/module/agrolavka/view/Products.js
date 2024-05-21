@@ -62,6 +62,9 @@ const useStyles = makeStyles(theme => ({
     hidden: {
         opacity: '.5',
         textDecoration: 'line-through'
+    },
+    addAttributes: {
+        color: theme.palette.success.main
     }
 }));
 
@@ -139,6 +142,9 @@ function Products() {
         dataService.put('/agrolavka/protected/product/group').then(resp => {
         });
     };
+    const addAttributes = () => {
+        console.log('FIRE');
+    };
     // ------------------------------------------------------- HOOKS ----------------------------------------------------------------------
     useEffect(() => {
         const apiUrl = new ApiURL(
@@ -202,7 +208,14 @@ function Products() {
                         [classes.quantityAvailable]: row.quantity > 0
                     });
                 return <span className={quantityStyle}>{row.quantity}</span>;
-            }).width('100px').alignment(ALIGN_RIGHT)
+            }).width('100px').alignment(ALIGN_RIGHT),
+            new TableColumn('btn_add_item', '', (row) => {
+                return <Tooltip title={t('m_agrolavka:products.addAttributes')}>
+                            <IconButton onClick={() => addAttributes(row)}>
+                                <Icon className={classes.addAttributes}>post_add</Icon>
+                            </IconButton>
+                        </Tooltip>;
+            }).width('40px').alignment(ALIGN_RIGHT).asAction()
         ], new FormConfig([
             
         ]).setBeforeOnEditRecord((record) => {
