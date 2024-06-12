@@ -153,9 +153,12 @@ function Products() {
         dataService.put('/agrolavka/protected/product/group').then(resp => {
         });
     };
-    const addAttributes = (product) => {
+    const addAttributes = async (product) => {
         setFormTitle(t('m_agrolavka:products.addAttributes') + ' [' + product.name + ']');
-        setRecord({id: product.id, attributes: []});
+        const selected = await dataService.get('/agrolavka/protected/product-attributes/links/' + product.id);
+        console.log(selected);
+        console.log(selected.map(i => i.attributeItem.id));
+        setRecord({id: product.id, attributes: selected.map(i => i.attributeItem.id)});
         setFormOpen(true);
     };
     const onFormSubmitAction = async (data) => {
