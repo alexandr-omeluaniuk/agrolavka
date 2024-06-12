@@ -1,17 +1,24 @@
 package ss.agrolavka.rest.entity;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import ss.agrolavka.constants.SiteUrls;
+import ss.agrolavka.dao.ProductAttributeLinkDao;
 import ss.entity.agrolavka.ProductAttribute;
 import ss.entity.agrolavka.ProductAttributeItem;
 import ss.entity.agrolavka.ProductAttributeLink;
 
-import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping(SiteUrls.URL_PROTECTED + "/product-attributes")
 public class ProductAttributeRestController extends BasicEntityRestController<ProductAttribute> {
+
+    @Autowired
+    private ProductAttributeLinkDao productAttributeLinkDao;
 
     @Override
     protected Class<ProductAttribute> entityClass() {
@@ -54,6 +61,22 @@ public class ProductAttributeRestController extends BasicEntityRestController<Pr
     public List<ProductAttributeLink> getProductAttributes(
         @PathVariable("id") Long productId
     ) {
-        return Collections.emptyList();
+        return productAttributeLinkDao.getProductLinks(productId);
+    }
+
+    @PutMapping("/links/{id}")
+    @Transactional(propagation = Propagation.REQUIRED)
+    public void saveProductAttributeLinks(
+        @PathVariable("id") Long productId,
+        @RequestBody Set<Long> attributeItems
+    ) {
+        productAttributeLinkDao.deleteProductLinks(productId);
+        final var links = coreDAO.findByIds(attributeItems, ProductAttributeItem.class).stream().map(item -> {
+            final var link = new ProductAttributeLink();
+            link.setAttributeItem(item);
+            link.setProductId(productId);
+            return link;
+        }).toList();
+        coreDAO.massCreate(links);
     }
 }

@@ -29,9 +29,8 @@ function AttributesTree(props) {
 
     useEffect(() => {
         if (attributes === null) {
-            dataService.get('/agrolavka/protected/product-attributes').then(data => {
+            dataService.get('/agrolavka/protected/product-attributes?order_by=name&order=asc').then(data => {
                 setAttributes(data.data);
-                console.log(data.data);
             });
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
