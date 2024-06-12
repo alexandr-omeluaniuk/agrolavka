@@ -17,7 +17,7 @@ import Switch from '@material-ui/core/Switch';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Avatar from '@material-ui/core/Avatar';
 import DataService from '../../../service/DataService';
-import { TableConfig, TableColumn, FormConfig, ALIGN_RIGHT, ApiURL, Validator } from '../../../util/model/TableConfig';
+import { TableConfig, TableColumn, FormConfig, ALIGN_RIGHT, ApiURL, Validator, FormField } from '../../../util/model/TableConfig';
 import DataTable from '../../../component/datatable/DataTable';
 import ProductsGroups from './ProductsGroups';
 import Price from '../component/Price';
@@ -25,8 +25,8 @@ import { NavLink } from "react-router-dom";
 import AppURLs from '../../../conf/app-urls';
 import Form from '../../../component/form/Form';
 import FormDialog from '../../../component/window/FormDialog';
-import FormField from '../../../component/form/FormField';
 import { TYPES, VALIDATORS } from '../../../service/DataTypeService';
+import AttributesTree from '../component/AttributesTree';
 
 let dataService = new DataService();
 
@@ -155,7 +155,7 @@ function Products() {
     };
     const addAttributes = (product) => {
         setFormTitle(t('m_agrolavka:products.addAttributes') + ' [' + product.name + ']');
-        setRecord({});
+        setRecord({id: -1});
         setFormOpen(true);
     };
     const onFormSubmitAction = async (data) => {
@@ -265,15 +265,15 @@ function Products() {
     }, [selectedProductGroup, filterProductName, filterCode, filterAvailable, filterDiscounts]);
     useEffect(() => {
         if (formConfig === null) {
-            setFormConfig(new FormConfig([
-                // new FormField('id', TYPES.ID).hide(),
-                // new FormField('product_id', TYPES.INTEGER_NUMBER).hide(),
-                // new FormField('name', TYPES.TEXTFIELD, t('m_agrolavka:attributes.itemName'))
-                //         .setGrid({xs: 12, md: 12}).validation([
-                //     new Validator(VALIDATORS.REQUIRED),
-                //     new Validator(VALIDATORS.MAX_LENGTH, {length: 255})
-                // ])
-            ]));
+            const attributesTree = new FormField('data', TYPES.CUSTOM, '').setGrid({xs: 12, md: 12});
+            attributesTree.render = () => {
+                return <AttributesTree></AttributesTree>;
+            }
+            const form = new FormConfig([
+                new FormField('id', TYPES.ID).hide(),
+                attributesTree
+            ]);
+            setFormConfig(form);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [formConfig]);
