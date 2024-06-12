@@ -4,6 +4,10 @@ import org.springframework.web.bind.annotation.*;
 import ss.agrolavka.constants.SiteUrls;
 import ss.entity.agrolavka.ProductAttribute;
 import ss.entity.agrolavka.ProductAttributeItem;
+import ss.entity.agrolavka.ProductAttributeLink;
+
+import java.util.Collections;
+import java.util.List;
 
 @RestController
 @RequestMapping(SiteUrls.URL_PROTECTED + "/product-attributes")
@@ -44,5 +48,12 @@ public class ProductAttributeRestController extends BasicEntityRestController<Pr
         @PathVariable("id") Long id
     ) {
         coreDAO.delete(id, ProductAttributeItem.class);
+    }
+
+    @GetMapping("/links/{id}")
+    public List<ProductAttributeLink> getProductAttributes(
+        @PathVariable("id") Long productId
+    ) {
+        return Collections.emptyList();
     }
 }

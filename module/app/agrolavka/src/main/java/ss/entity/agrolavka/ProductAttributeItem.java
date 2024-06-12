@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import ss.entity.security.EntityAudit;
 
+import java.util.List;
+
 @Entity
 @Table(name = "product_attribute_item")
 public class ProductAttributeItem extends EntityAudit {
@@ -18,6 +20,10 @@ public class ProductAttributeItem extends EntityAudit {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_attribute_id")
     private ProductAttribute productAttribute;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "attributeItem", fetch = FetchType.LAZY)
+    private List<ProductAttributeLink> links;
 
     public String getName() {
         return name;
@@ -33,6 +39,14 @@ public class ProductAttributeItem extends EntityAudit {
 
     public void setProductAttribute(ProductAttribute productAttribute) {
         this.productAttribute = productAttribute;
+    }
+
+    public List<ProductAttributeLink> getLinks() {
+        return links;
+    }
+
+    public void setLinks(List<ProductAttributeLink> links) {
+        this.links = links;
     }
 
     @Override
