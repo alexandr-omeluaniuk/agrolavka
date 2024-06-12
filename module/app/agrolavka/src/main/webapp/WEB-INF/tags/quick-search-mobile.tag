@@ -19,8 +19,12 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <input type="search" class="form-control me-2 modal-title" aria-label="Поиск товаров" id="agr-quick-search-input-mobile"
-                       placeholder="Быстрый поиск" autocomplete="off" tabindex="1">
+                <div class="position-relative me-2 w-100">
+                    <input type="text" class="form-control modal-title"
+                        aria-label="Поиск товаров" id="agr-quick-search-input-mobile"
+                        placeholder="Быстрый поиск" autocomplete="off" tabindex="1">
+                    <i class="fas fa-times position-absolute d-none" style="right: 10px; top: 10px;" id="agr-quick-search-input-mobile-clear"></i>
+                </div>
                 <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">

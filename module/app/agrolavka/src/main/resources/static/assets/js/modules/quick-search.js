@@ -1,6 +1,9 @@
 (function () {
     "use strict";
 
+    const clearTextElement = document.querySelector('#agr-quick-search-input-mobile-clear');
+    const searchInput = document.querySelector('#agr-quick-search-input-mobile');
+
     function highlightText(text, searchText) {
         const idx = text.toLowerCase().indexOf(searchText.toLowerCase());
         if (searchText.length > 0 && idx !== -1) {
@@ -10,6 +13,11 @@
             return text;
         }
     }
+    clearTextElement.addEventListener('click', function (e) {
+        searchInput.value = '';
+        searchInput.focus();
+        searchInput.dispatchEvent(new Event('input', { bubbles: true }));
+    });
 
     document.querySelector('#agr-quick-search-input-mobile-trigger').addEventListener('focus', function (e) {
         const modalToggler = document.querySelector('[data-mdb-target="#agr-quick-search-mobile-modal"]');
@@ -19,11 +27,12 @@
         }, 700);
     });
     const input = document.querySelector('#agr-quick-search-input-mobile-trigger');
-    document.querySelector('#agr-quick-search-input-mobile').addEventListener('input', function (e) {
+    searchInput.addEventListener('input', function (e) {
         const searchText = this.value;
         const searchResultOutput = document.querySelector('#agr-quick-search-result-mobile');
         const noResult = '<li><a class="dropdown-item text-muted" href="#">По вашему запросу ничего не найдено</a></li>';
         if (searchText) {
+            clearTextElement.classList.remove("d-none");
             fetch('/api/agrolavka/public/search?searchText=' + searchText, {
                 method: 'GET',
                 headers: {
@@ -73,6 +82,7 @@
                 console.error('HTTP error occurred: ' + error);
             });
         } else {
+            clearTextElement.classList.add("d-none");
             searchResultOutput.innerHTML = '';
         }
     });
