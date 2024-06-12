@@ -155,7 +155,7 @@ function Products() {
     };
     const addAttributes = (product) => {
         setFormTitle(t('m_agrolavka:products.addAttributes') + ' [' + product.name + ']');
-        setRecord({id: -1});
+        setRecord({id: -1, attributes: []});
         setFormOpen(true);
     };
     const onFormSubmitAction = async (data) => {
@@ -265,9 +265,9 @@ function Products() {
     }, [selectedProductGroup, filterProductName, filterCode, filterAvailable, filterDiscounts]);
     useEffect(() => {
         if (formConfig === null) {
-            const attributesTree = new FormField('data', TYPES.CUSTOM, '').setGrid({xs: 12, md: 12});
-            attributesTree.render = () => {
-                return <AttributesTree></AttributesTree>;
+            const attributesTree = new FormField('attributes', TYPES.CUSTOM, '').setGrid({xs: 12, md: 12});
+            attributesTree.render = (name, fieldValue, onChangeFieldValue) => {
+                return <AttributesTree name={name} fieldValue={fieldValue} onChangeFieldValue={onChangeFieldValue}></AttributesTree>;
             }
             const form = new FormConfig([
                 new FormField('id', TYPES.ID).hide(),

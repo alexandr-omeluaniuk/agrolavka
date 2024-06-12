@@ -1,5 +1,5 @@
 
-import { Accordion, AccordionDetails, AccordionSummary, Typography } from '@material-ui/core';
+import { Accordion, AccordionDetails, AccordionSummary, Checkbox, FormControlLabel, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import React, { useEffect } from 'react';
 import DataService from '../../../service/DataService';
@@ -7,9 +7,18 @@ import DataService from '../../../service/DataService';
 let dataService = new DataService();
 
 const useStyles = makeStyles(theme => ({
+    items: {
+        display: 'flex',
+        flexDirection: 'column',
+        width: '100%'
+    },
     heading: {
-        fontSize: theme.typography.pxToRem(15),
-        fontWeight: theme.typography.fontWeightRegular
+        display: 'flex',
+        justifyContent: 'space-between',
+        width: '100%'
+    },
+    headingCol: {
+        flex: 1
     }
 }));
 
@@ -31,13 +40,33 @@ function AttributesTree(props) {
     const renderAccordion = () => {
         const list = [];
         attributes.forEach(attr => {
+            const selectedCount = attr.items.filter(x => fieldValue.includes(x.id)).length;
+            const checkboxes = [];
+            attr.items.forEach(item => {
+                checkboxes.push(
+                    <FormControlLabel key={item.id} label={item.name} variant={'standard'} control={(
+                        <Checkbox checked={fieldValue.includes(item.id)} onChange={(e) => {
+                            let fieldValueCopy = JSON.parse(JSON.stringify(fieldValue));
+                            if (e.target.checked) {
+                                fieldValueCopy.push(item.id)
+                            } else {
+                                fieldValueCopy = fieldValueCopy.filter(i => i != item.id);
+                            }
+                            onChangeFieldValue(name, fieldValueCopy);
+                        }} name={item.name} color="secondary"/>
+                    )}/>
+                );
+            });
             list.push(
                 <Accordion key={attr.id}>
-                    <AccordionSummary>
-                        <Typography className={classes.heading}>{attr.name} [{attr.items.length}]</Typography>
+                    <AccordionSummary className={classes.heading}>
+                        <div className={classes.headingCol}><Typography variant={'caption'}><b>{attr.name}</b></Typography></div>
+                        <div><Typography variant={'caption'}>{selectedCount} / {attr.items.length}</Typography></div>
                     </AccordionSummary>
                     <AccordionDetails>
-                        TODO
+                        <div className={classes.items}>
+                        {checkboxes}
+                        </div>
                     </AccordionDetails>
                 </Accordion>
             );
