@@ -111,7 +111,8 @@ function ProductAttributes() {
             new FormField('name', TYPES.TEXTFIELD, t('m_agrolavka:attributes.name')).setGrid({xs: 12, md: 12}).validation([
                 new Validator(VALIDATORS.REQUIRED),
                 new Validator(VALIDATORS.MAX_LENGTH, {length: 255})
-            ])
+            ]),
+            new FormField('color', TYPES.COLOR, t('m_agrolavka:attributes.color')).setGrid({xs: 12, md: 12})
         ])).setElevation(1);
         setTableConfig(newTableConfig);
     };

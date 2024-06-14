@@ -71,7 +71,8 @@
         "addItem": "Add item",
         "newItem": "New item",
         "itemName": "Item name",
-        "editItem": "Edit item"
+        "editItem": "Edit item",
+        "color": "Color"
     },
     "order": {
         "title": "Order # {{num}}",

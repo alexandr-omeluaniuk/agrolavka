@@ -30,7 +30,8 @@ export let TYPES = {
     DATE: 'DATE',
     BOOLEAN: 'BOOLEAN',
     CUSTOM: 'CUSTOM',
-    HTML: 'HTML'
+    HTML: 'HTML',
+    COLOR: 'COLOR'
 };
 
 export let VALIDATORS = {

@@ -24,6 +24,7 @@ import PasswordField from './input/PasswordField';
 import { MuiPickersUtilsProvider, KeyboardTimePicker, KeyboardDatePicker, DateTimePicker } from '@material-ui/pickers';
 import MomentUtils from '@date-io/moment';
 import moment from 'moment';
+import ColorPickerInput from './input/ColorPickerInput';
 //import "moment/locale/de";
 
 function FormField (props) {
@@ -141,6 +142,9 @@ function FormField (props) {
                         <Checkbox checked={fieldValue ? true : false} onChange={(e) => onChangeFieldValue(name, e.target.checked)} 
                             name={name} color="secondary"/>
                     )}/>;
+        } else if (fieldConfig.type === TYPES.COLOR) {
+            return <ColorPickerInput name={name} fieldValue={fieldValue} onChangeFieldValue={onChangeFieldValue}
+                        label={label}></ColorPickerInput>
         } else if (fieldConfig.type === TYPES.CUSTOM) {
             return fieldConfig.render(name, fieldValue, onChangeFieldValue);
         }
