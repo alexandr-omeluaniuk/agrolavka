@@ -47,7 +47,7 @@ function ColorPickerInput(props) {
 
     return (
         <div className={classes.pickerContainer}>
-            <Typography component="h5" align="center">{label}</Typography>
+            <Typography component="h5">{label}</Typography>
             <Slider marks value={fieldValue.contrast} min={100} max={900} step={100} onChange={contrastChanged} className={classes.slider} />
             <div>
                 {COLORS.map((row, index) => (

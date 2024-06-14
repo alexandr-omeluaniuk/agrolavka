@@ -32,6 +32,13 @@ public class ProductAttributeRestController extends BasicEntityRestController<Pr
         return coreDAO.create(attribute);
     }
 
+    @PutMapping
+    public ProductAttribute edit(
+        @RequestBody ProductAttribute attribute
+    ) {
+        return coreDAO.update(attribute);
+    }
+
     @PostMapping("/item/{id}")
     public ProductAttributeItem createItem(
         @PathVariable("id") Long id,

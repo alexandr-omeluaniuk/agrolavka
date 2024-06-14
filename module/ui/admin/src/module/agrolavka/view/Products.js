@@ -156,8 +156,6 @@ function Products() {
     const addAttributes = async (product) => {
         setFormTitle(t('m_agrolavka:products.addAttributes') + ' [' + product.name + ']');
         const selected = await dataService.get('/agrolavka/protected/product-attributes/links/' + product.id);
-        console.log(selected);
-        console.log(selected.map(i => i.attributeItem.id));
         setRecord({id: product.id, attributes: selected.map(i => i.attributeItem.id)});
         setFormOpen(true);
     };

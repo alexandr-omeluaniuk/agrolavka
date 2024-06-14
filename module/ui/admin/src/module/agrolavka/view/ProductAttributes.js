@@ -72,7 +72,7 @@ function ProductAttributes() {
                 return num;
             }).width('100px').setSortable(),
             new TableColumn('name', t('m_agrolavka:attributes.name'), (row) => {
-                return row.name;
+                return <b style={{color: row.color}}>{row.name}</b>;
             }).width('230px'),
             new TableColumn('items', t('m_agrolavka:attributes.items'), (row) => {
                 const items = [];

@@ -25,6 +25,7 @@ import { MuiPickersUtilsProvider, KeyboardTimePicker, KeyboardDatePicker, DateTi
 import MomentUtils from '@date-io/moment';
 import moment from 'moment';
 import ColorPickerInput from './input/ColorPickerInput';
+import { COLORS } from "../../conf/theme";
 //import "moment/locale/de";
 
 function FormField (props) {
@@ -143,10 +144,23 @@ function FormField (props) {
                             name={name} color="secondary"/>
                     )}/>;
         } else if (fieldConfig.type === TYPES.COLOR) {
-            return <ColorPickerInput name={name} fieldValue={fieldValue ? fieldValue : {
-                color: 'Red',
-                contrast: 500
-            }} onChangeFieldValue={onChangeFieldValue}
+            var val = fieldValue;
+            if (typeof fieldValue === 'string') {
+                const allColors = [];
+                COLORS.forEach(item => item.forEach(c => allColors.push(c)));
+                const color = allColors.filter(i => Object.values(i.color).includes(fieldValue))[0];
+                val = {
+                    color: color.label,
+                    contrast: parseInt(Object.keys(color.color).filter(k => color.color[k] === fieldValue)[0])
+                }
+            }
+            if (!val) {
+                val = {
+                    color: 'Red',
+                    contrast: 500
+                };
+            }
+            return <ColorPickerInput name={name} fieldValue={val} onChangeFieldValue={onChangeFieldValue}
                         label={label}></ColorPickerInput>
         } else if (fieldConfig.type === TYPES.CUSTOM) {
             return fieldConfig.render(name, fieldValue, onChangeFieldValue);
