@@ -59,7 +59,11 @@
                             <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 d-flex flex-column gx-5">
                                 <t:product-images product="${product}"></t:product-images>
                                 <hr/>
-                                <x-agr-product-price 
+                                <c:if test="${not empty product.attributeLinks}">
+                                    <x-agr-attribute-links data-links="${attributeLinks}"></x-agr-attribute-links>
+                                    <hr/>
+                                </c:if>
+                                <x-agr-product-price
                                     data-discount="${productDiscount}" 
                                     data-price="${productPrice}"></x-agr-product-price>
                                 <hr/>

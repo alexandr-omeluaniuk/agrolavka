@@ -532,7 +532,7 @@ class XAttributeLinks extends XElement {
             sb += `<span class="badge rounded-pill me-1" style="background-color: ${link.color}"># ${link.item}</span>`;
         });
         template.innerHTML = `
-            <div class="mt-1 mb-1">
+            <div class="mt-2 mb-2">
                 ${sb}
             </div>
         `;

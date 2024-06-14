@@ -12,6 +12,7 @@ import ss.agrolavka.constants.SiteConstants;
 import ss.agrolavka.constants.SiteUrls;
 import ss.agrolavka.dao.ProductDAO;
 import ss.agrolavka.service.AllProductGroupsService;
+import ss.agrolavka.service.ProductAttributesService;
 import ss.agrolavka.service.ProductService;
 import ss.agrolavka.util.CartUtils;
 import ss.agrolavka.wrapper.ProductsSearchRequest;
@@ -51,6 +52,9 @@ class CatalogController extends BaseJspController {
 
     @Autowired
     private AllProductGroupsService allProductGroupsService;
+
+    @Autowired
+    private ProductAttributesService productAttributesService;
         
     @RequestMapping(SiteUrls.PAGE_CATALOG)
     public Object catalog(
@@ -101,7 +105,9 @@ class CatalogController extends BaseJspController {
         model.addAttribute(TITLE, product.getSeoTitle() != null
                 ? product.getSeoTitle() : "Купить " + product.getGroup().getName() + " " + product.getName()
                 + ". Способ применения, инструкция, описание " + product.getName());
-        model.addAttribute(PRODUCT, product);
+        final var productWithLinks = productAttributesService.setAttributeLinks(Collections.singletonList(product)).get(0);
+        model.addAttribute(PRODUCT, productWithLinks);
+        model.addAttribute(ATTRIBUTE_LINKS, productWithLinks.getAttributeLinks().toString().replace("\"", "'"));
         model.addAttribute(STRUCTURED_IMAGE, product.getImages().isEmpty() 
                 ? domainConfiguration.host() + "/assets/img/no-image.png"
                 : domainConfiguration.host() + "/media/" + product.getImages().get(0).getFileNameOnDisk());
@@ -232,7 +238,7 @@ class CatalogController extends BaseJspController {
         }
         final var products = productService.search(searchRequest);
         products.forEach(p -> p.setVariants(productService.getVariants(p)));
-        model.addAttribute(PRODUCTS_SEARCH_RESULT, products);
+        model.addAttribute(PRODUCTS_SEARCH_RESULT, productAttributesService.setAttributeLinks(products));
         Long count = productDAO.count(searchRequest);
         model.addAttribute(PRODUCTS_SEARCH_RESULT_PAGES, Double.valueOf(Math.ceil((double) count / pageSize)).intValue());
     }
