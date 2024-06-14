@@ -1,7 +1,7 @@
 package ss.agrolavka.rest.entity;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.CacheManager;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +20,9 @@ import java.util.Set;
 public class ProductAttributeRestController extends BasicEntityRestController<ProductAttribute> {
 
     @Autowired
+    private CacheManager cacheManager;
+
+    @Autowired
     private ProductAttributeLinkDao productAttributeLinkDao;
 
     @Override
@@ -27,48 +30,52 @@ public class ProductAttributeRestController extends BasicEntityRestController<Pr
         return ProductAttribute.class;
     }
 
-    @CacheEvict(CacheKey.PRODUCT_ATTRIBUTE_LINKS)
     @PostMapping
     public ProductAttribute create(
         @RequestBody ProductAttribute attribute
     ) {
-        return coreDAO.create(attribute);
+        final var result = coreDAO.create(attribute);
+        resetAttributesCache();
+        return result;
     }
 
-    @CacheEvict(CacheKey.PRODUCT_ATTRIBUTE_LINKS)
     @PutMapping
     public ProductAttribute edit(
         @RequestBody ProductAttribute attribute
     ) {
-        return coreDAO.update(attribute);
+        final var result = coreDAO.update(attribute);
+        resetAttributesCache();
+        return result;
     }
 
-    @CacheEvict(CacheKey.PRODUCT_ATTRIBUTE_LINKS)
     @PostMapping("/item/{id}")
     public ProductAttributeItem createItem(
         @PathVariable("id") Long id,
         @RequestBody ProductAttributeItem item
     ) {
         item.setProductAttribute(coreDAO.findById(id, ProductAttribute.class));
-        return coreDAO.create(item);
+        final var result = coreDAO.create(item);
+        resetAttributesCache();
+        return result;
     }
 
-    @CacheEvict(CacheKey.PRODUCT_ATTRIBUTE_LINKS)
     @PutMapping("/item")
     public ProductAttributeItem editItem(
         @RequestBody ProductAttributeItem item
     ) {
         final var record = coreDAO.findById(item.getId(), ProductAttributeItem.class);
         record.setName(item.getName());
-        return coreDAO.update(record);
+        final var result = coreDAO.update(record);
+        resetAttributesCache();
+        return result;
     }
 
-    @CacheEvict(CacheKey.PRODUCT_ATTRIBUTE_LINKS)
     @DeleteMapping("/item/{id}")
     public void deleteItem(
         @PathVariable("id") Long id
     ) {
         coreDAO.delete(id, ProductAttributeItem.class);
+        resetAttributesCache();
     }
 
     @GetMapping("/links/{id}")
@@ -78,7 +85,6 @@ public class ProductAttributeRestController extends BasicEntityRestController<Pr
         return productAttributeLinkDao.getProductLinks(productId);
     }
 
-    @CacheEvict(CacheKey.PRODUCT_ATTRIBUTE_LINKS)
     @PutMapping("/links/{id}")
     @Transactional(propagation = Propagation.REQUIRED)
     public void saveProductAttributeLinks(
@@ -93,5 +99,13 @@ public class ProductAttributeRestController extends BasicEntityRestController<Pr
             return link;
         }).toList();
         coreDAO.massCreate(links);
+        resetAttributesCache();
+    }
+
+    private void resetAttributesCache() {
+        final var cache = cacheManager.getCache(CacheKey.PRODUCT_ATTRIBUTE_LINKS);
+        if (cache != null) {
+            cache.clear();
+        }
     }
 }

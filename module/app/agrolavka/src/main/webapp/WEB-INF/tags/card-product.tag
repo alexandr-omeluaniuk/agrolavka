@@ -35,6 +35,7 @@
     data-created="<%= Boolean.TRUE.equals(showCreatedDate) ? new SimpleDateFormat("dd.MM.yyyy").format(product.getCreatedDate()) : "" %>"
     data-volume="<%= product.getVolumes() != null ? product.getVolumes().replace("\"", "'") : "" %>"
     data-variants="<%= product.getVariants().toString().replace("\"", "'") %>"
+    data-attribute-links="<%= product.getAttributeLinks() != null ? product.getAttributeLinks().toString().replace("\"", "'") : "" %>"
     data-link="<%= UrlProducer.buildProductUrl(product)%>">
     <t:card-placeholder isProduct="true"></t:card-placeholder>
 </x-agr-product-card>

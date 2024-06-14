@@ -41,7 +41,17 @@ function AttributesTree(props) {
         attributes.forEach(attr => {
             const selectedCount = attr.items.filter(x => fieldValue.includes(x.id)).length;
             const checkboxes = [];
-            attr.items.forEach(item => {
+            const attrItems = attr.items;
+            attrItems.sort((a, b) => {
+                if (a.name < b.name) {
+                    return -1;
+                }
+                if (a.name > b.name) {
+                    return 1;
+                }
+                return 0;
+            });
+            attrItems.forEach(item => {
                 checkboxes.push(
                     <FormControlLabel key={item.id} label={item.name} variant={'standard'} control={(
                         <Checkbox checked={fieldValue.includes(item.id)} onChange={(e) => {

@@ -20,16 +20,15 @@ public class ProductAttributesService {
     @Autowired
     private CoreDao coreDao;
 
-    public void setAttributeLinks(List<Product> products) {
+    public List<Product> setAttributeLinks(List<Product> products) {
+        products.forEach(p -> p.setAttributeLinks(new ArrayList<>()));
         final var productsMap = products.stream().collect(Collectors.toMap(Product::getId, Function.identity()));
         productAttributeLinkDao.getAllLinks().forEach(link -> {
             if (productsMap.containsKey(link.getProductId())) {
                 final var product = productsMap.get(link.getProductId());
-                if (product.getAttributeLinks() == null) {
-                    product.setAttributeLinks(new ArrayList<>());
-                }
                 product.getAttributeLinks().add(link);
             }
         });
+        return products;
     }
 }

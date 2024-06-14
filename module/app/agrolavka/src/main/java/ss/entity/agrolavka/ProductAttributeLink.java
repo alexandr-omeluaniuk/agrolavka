@@ -2,6 +2,7 @@ package ss.entity.agrolavka;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import org.json.JSONObject;
 import ss.entity.security.EntityAudit;
 
 @Entity
@@ -31,5 +32,14 @@ public class ProductAttributeLink extends EntityAudit {
 
     public void setAttributeItem(ProductAttributeItem attributeItem) {
         this.attributeItem = attributeItem;
+    }
+
+    @Override
+    public String toString() {
+        final var json = new JSONObject();
+        json.put("item", getAttributeItem().getName());
+        json.put("attribute", getAttributeItem().getProductAttribute().getName());
+        json.put("color", getAttributeItem().getProductAttribute().getColor());
+        return json.toString();
     }
 }
