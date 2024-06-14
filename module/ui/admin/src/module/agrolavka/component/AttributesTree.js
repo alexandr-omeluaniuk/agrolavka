@@ -49,7 +49,7 @@ function AttributesTree(props) {
                             if (e.target.checked) {
                                 fieldValueCopy.push(item.id)
                             } else {
-                                fieldValueCopy = fieldValueCopy.filter(i => i != item.id);
+                                fieldValueCopy = fieldValueCopy.filter(i => i !== item.id);
                             }
                             onChangeFieldValue(name, fieldValueCopy);
                         }} name={item.name} color="secondary"/>

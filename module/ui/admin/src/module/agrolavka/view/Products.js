@@ -17,7 +17,7 @@ import Switch from '@material-ui/core/Switch';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Avatar from '@material-ui/core/Avatar';
 import DataService from '../../../service/DataService';
-import { TableConfig, TableColumn, FormConfig, ALIGN_RIGHT, ApiURL, Validator, FormField } from '../../../util/model/TableConfig';
+import { TableConfig, TableColumn, FormConfig, ALIGN_RIGHT, ApiURL, FormField } from '../../../util/model/TableConfig';
 import DataTable from '../../../component/datatable/DataTable';
 import ProductsGroups from './ProductsGroups';
 import Price from '../component/Price';
@@ -25,7 +25,7 @@ import { NavLink } from "react-router-dom";
 import AppURLs from '../../../conf/app-urls';
 import Form from '../../../component/form/Form';
 import FormDialog from '../../../component/window/FormDialog';
-import { TYPES, VALIDATORS } from '../../../service/DataTypeService';
+import { TYPES } from '../../../service/DataTypeService';
 import AttributesTree from '../component/AttributesTree';
 
 let dataService = new DataService();

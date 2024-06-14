@@ -20,6 +20,9 @@ let dataService = new DataService();
 const useStyles = makeStyles(theme => ({
     addItem: {
         color: theme.palette.success.main
+    },
+    chip: {
+        marginRight: theme.spacing(1)
     }
 }));
 
@@ -73,9 +76,21 @@ function ProductAttributes() {
             }).width('230px'),
             new TableColumn('items', t('m_agrolavka:attributes.items'), (row) => {
                 const items = [];
-                row.items.forEach(i => {
+                const attrList = row.items;
+                attrList.sort((a, b) => {
+                    if (a.name < b.name) {
+                        return -1;
+                    }
+                    if (a.name > b.name) {
+                        return 1;
+                    }
+                    return 0;
+                });
+                console.log(attrList);
+                attrList.forEach(i => {
                     items.push(
-                        <Chip label={i.name} clickable key={i.id} color="secondary" onDelete={() => onDeleteItem(i.id)} onClick={() => onEditItem(i)}/>
+                        <Chip label={i.name} clickable key={i.id} color="secondary" className={classes.chip}
+                            onDelete={() => onDeleteItem(i.id)} onClick={() => onEditItem(i)}/>
                     );
                 });
                 return <React.Fragment>
