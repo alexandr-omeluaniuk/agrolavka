@@ -86,7 +86,6 @@ function ProductAttributes() {
                     }
                     return 0;
                 });
-                console.log(attrList);
                 attrList.forEach(i => {
                     items.push(
                         <Chip label={i.name} clickable key={i.id} color="secondary" className={classes.chip}
