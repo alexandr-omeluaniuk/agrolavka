@@ -143,7 +143,10 @@ function FormField (props) {
                             name={name} color="secondary"/>
                     )}/>;
         } else if (fieldConfig.type === TYPES.COLOR) {
-            return <ColorPickerInput name={name} fieldValue={fieldValue} onChangeFieldValue={onChangeFieldValue}
+            return <ColorPickerInput name={name} fieldValue={fieldValue ? fieldValue : {
+                color: 'Red',
+                contrast: 500
+            }} onChangeFieldValue={onChangeFieldValue}
                         label={label}></ColorPickerInput>
         } else if (fieldConfig.type === TYPES.CUSTOM) {
             return fieldConfig.render(name, fieldValue, onChangeFieldValue);

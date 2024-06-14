@@ -262,7 +262,7 @@ function DataTable(props) {
                 <FormControlLabel control={<Switch checked={dense} onChange={handleChangeDense} />} label={t('component.datatable.dense_padding')} />
             )}
             {tableConfig.isFormDialog ? (
-                <FormDialog title={formTitle} open={formOpen} handleClose={() => setFormOpen(false)}>
+                <FormDialog title={formTitle} open={formOpen} handleClose={() => setFormOpen(false)} fullScreen={tableConfig.fullScreen === false ? false : true}>
                     <Form formConfig={actualFormConfig} onSubmitAction={onFormSubmitAction} record={record} disabled={formDisabled}/>
                 </FormDialog>
             ) : null}

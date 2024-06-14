@@ -114,6 +114,7 @@ function ProductAttributes() {
             ]),
             new FormField('color', TYPES.COLOR, t('m_agrolavka:attributes.color')).setGrid({xs: 12, md: 12})
         ])).setElevation(1);
+        newTableConfig.fullScreen = false;
         setTableConfig(newTableConfig);
     };
 

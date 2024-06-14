@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-import React, { useEffect } from "react";
+import React from "react";
 import { makeStyles } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
@@ -16,8 +16,8 @@ import { COLORS } from "../../../conf/theme";
 const useStyles = makeStyles(theme => ({
     pickerContainer: {
         overflow: 'hidden',
-        width: `${48 * 4 + theme.spacing(4)}px`,
-        padding: theme.spacing(2)
+        width: `${48 * 4 + theme.spacing(6)}px`,
+        padding: theme.spacing(3)
     },
     item: {
         borderRadius: 0,
@@ -25,52 +25,38 @@ const useStyles = makeStyles(theme => ({
         width: '48px'
     },
     slider: {
-        marginRight: theme.spacing(1),
-        marginLeft: theme.spacing(1)
     }
 }));
 
 function ColorPickerInput(props) {
     const { name, fieldValue, onChangeFieldValue, label } = props;
     const classes = useStyles();
-    const [contrast, setContrast] = React.useState(900);
-    const [color, setColor] = React.useState('Red');
 
     const contrastChanged = (event, contrast) => {
-        setContrast(contrast);
         onChangeFieldValue(name, {
-            color: color,
+            color: fieldValue.color,
             contrast: contrast
         });
     };
     const colorChanged = (c) => {
-        setColor(c);
         onChangeFieldValue(name, {
-            color: color,
-            contrast: contrast
+            color: c,
+            contrast: fieldValue.contrast
         });
     };
-
-    useEffect(() => {
-        if (fieldValue) {
-            setContrast(fieldValue.contrast);
-            setColor(fieldValue.color);
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [fieldValue]);
 
     return (
         <div className={classes.pickerContainer}>
             <Typography component="h5" align="center">{label}</Typography>
-            <Slider marks value={contrast} min={100} max={900} step={100} onChange={contrastChanged} className={classes.slider} />
+            <Slider marks value={fieldValue.contrast} min={100} max={900} step={100} onChange={contrastChanged} className={classes.slider} />
             <div>
                 {COLORS.map((row, index) => (
                     <div key={index}>
                         {row.map((c, index2) => {
-                            const clr = c.color[contrast];
+                            const clr = c.color[fieldValue.contrast];
                             return (<Tooltip title={c.label} key={index2}>
                                 <IconButton className={classes.item} style={{ backgroundColor: clr }} onClick={() => colorChanged(c.label)}>
-                                    {color === c.label ? (
+                                    {fieldValue.color === c.label ? (
                                         <Icon>checked</Icon>
                                     ) : null}
                                 </IconButton>
