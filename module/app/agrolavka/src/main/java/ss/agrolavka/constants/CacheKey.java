@@ -16,4 +16,5 @@ public final class CacheKey {
     public static final String PRODUCTS_COUNT = "productsCount";
     public static final String PRODUCT_VARIANTS = "productVariants";
     public static final String PURCHASE_HISTORY = "purchaseHistory";
+    public static final String PRODUCT_ATTRIBUTE_LINKS = "productAttributeLinks";
 }

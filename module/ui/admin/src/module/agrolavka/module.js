@@ -20,7 +20,7 @@ export const agrolavka = new Module('agrolavka', '/agrolavka', [
     new ModuleView('products', '/products', 'store', Products),
     new ModuleView('slides', '/slides', 'grade', Slides),
     new ModuleView('shops', '/shops', 'location_on', Shops),
-    new ModuleView('product-attributes', '/product-attributes', 'tune', ProductAttributes),
+    new ModuleView('product-attributes', '/product-attributes', 'style', ProductAttributes),
     new ModuleView(null, '/order/:id', null, Order),
     new ModuleView(null, '/product/:id', null, Product)
 ], (routes) => <OrdersForPrintProvider key="OrdersForPrintProvider">{routes}</OrdersForPrintProvider>).setIcon('store_mall_directory')
