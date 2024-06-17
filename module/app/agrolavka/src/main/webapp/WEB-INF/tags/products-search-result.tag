@@ -19,7 +19,10 @@
 
 <%-- any content can be specified here e.g.: --%>
 <div class="row products-search-result">
-    <div class="col-sm-12">
+    <div class="col-md-12 col-lg-3">
+        TODO: Filters
+    </div>
+    <div class="col-md-12 col-lg-9">
         <% String url = ss.agrolavka.util.UrlProducer.buildProductGroupUrl(group); %>
         <t:products-search-result-pagination pages="${pages}" page="${page}" view="${view}" sort="${sort}" url="<%= url %>"
                                              available="${available}" group="${group}">

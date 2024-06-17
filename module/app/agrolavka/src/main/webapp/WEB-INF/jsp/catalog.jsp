@@ -17,7 +17,7 @@
     
     <jsp:body>
         <main class="min-vh-100">
-            <div class="container mb-5">
+            <div class="container-fluid mb-5">
                 
                 <section>
                     <h3 class="text-center mb-4">${group != null ? group.name : 'Каталог товаров'}</h3>
@@ -70,7 +70,7 @@
                                         slidesPerView: 3
                                     },
                                     1200: {
-                                        slidesPerView: 4
+                                        slidesPerView: 6
                                     }
                                 },
                                 navigation: {
