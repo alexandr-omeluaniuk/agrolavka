@@ -14,7 +14,7 @@
 <%-- any content can be specified here e.g.: --%>
 <div class="row">
     <div class="col-md-12 col-lg-3">
-        TODO: Filters
+        <t:catalog-filters attributes="${productAttributes}"></t:catalog-filters>
     </div>
     <div class="col-md-12 col-lg-9">
         <div class="row">

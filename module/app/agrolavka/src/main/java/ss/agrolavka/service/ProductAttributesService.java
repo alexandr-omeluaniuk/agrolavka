@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ss.agrolavka.dao.ProductAttributeLinkDao;
 import ss.entity.agrolavka.Product;
+import ss.entity.agrolavka.ProductAttribute;
 import ss.martin.core.dao.CoreDao;
 
 import java.util.ArrayList;
@@ -30,5 +31,9 @@ public class ProductAttributesService {
             }
         });
         return products;
+    }
+
+    public List<ProductAttribute> getAllProductAttributes() {
+        return coreDao.getAll(ProductAttribute.class);
     }
 }

@@ -200,6 +200,7 @@ class CatalogController extends BaseJspController {
         final String sort,
         final boolean available
     ) {
+        model.addAttribute(PRODUCT_ATTRIBUTES, productAttributesService.getAllProductAttributes());
         model.addAttribute(PAGE, Optional.ofNullable(page).orElse(1));
         model.addAttribute(VIEW, Optional.ofNullable(view).orElse(VIEW_TILES));
         model.addAttribute(SORT, Optional.ofNullable(sort).orElse(SORT_ALPHABET));
