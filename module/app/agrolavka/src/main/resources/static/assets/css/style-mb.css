@@ -687,3 +687,12 @@ and open the template in the editor.
     background-color: white; 
     border-radius: 50%;
 }
+.form-check-input[type=checkbox]:checked {
+    background-color: var(--bs-purple) !important;
+}
+.form-check-input:checked {
+    border-color: var(--bs-purple) !important;
+}
+.form-check-input:checked:focus {
+    border-color: var(--bs-purple) !important;
+}

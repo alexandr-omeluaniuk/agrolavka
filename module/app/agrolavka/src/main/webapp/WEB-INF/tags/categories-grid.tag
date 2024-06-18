@@ -13,10 +13,7 @@
 
 <%-- any content can be specified here e.g.: --%>
 <div class="row">
-    <div class="col-md-12 col-lg-3">
-        <t:catalog-filters attributes="${productAttributes}"></t:catalog-filters>
-    </div>
-    <div class="col-md-12 col-lg-9">
+    <div class="col-md-12 col-lg-10">
         <div class="row">
             <c:forEach items="${categories}" var="group">
                 <div class="col-lg-3 col-md-4 col-sm-6 col-6">
@@ -24,5 +21,8 @@
                 </div>
             </c:forEach>
         </div>
+    </div>
+    <div class="col-md-12 col-lg-2">
+        <t:catalog-filters attributes="${productAttributes}"></t:catalog-filters>
     </div>
 </div>

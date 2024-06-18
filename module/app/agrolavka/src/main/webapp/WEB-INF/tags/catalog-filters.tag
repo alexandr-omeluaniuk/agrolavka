@@ -6,3 +6,19 @@
 <%-- The list of normal or fragment attributes can be specified here: --%>
 <%@attribute name="attributes" required="true" type="java.util.List<ProductAttribute>"%>
 
+<c:forEach items="${attributes}" var="attribute">
+    <div class="d-flex flex-column">
+        <hr/>
+        <h6>
+            ${attribute.name}
+        </h6>
+        <c:forEach items="${attribute.items}" var="item">
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="attr-${item.id}">
+                <label class="form-check-label" for="attr-${item.id}">
+                    ${item.name}
+                </label>
+            </div>
+        </c:forEach>
+    </div>
+</c:forEach>
