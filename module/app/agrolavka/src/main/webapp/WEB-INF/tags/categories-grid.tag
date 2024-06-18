@@ -13,16 +13,9 @@
 
 <%-- any content can be specified here e.g.: --%>
 <div class="row">
-    <div class="col-md-12 col-lg-10">
-        <div class="row">
-            <c:forEach items="${categories}" var="group">
-                <div class="col-lg-3 col-md-4 col-sm-6 col-6">
-                    <t:card-category group="${group}"/>
-                </div>
-            </c:forEach>
+    <c:forEach items="${categories}" var="group">
+        <div class="col-lg-3 col-md-4 col-sm-6 col-6">
+            <t:card-category group="${group}"/>
         </div>
-    </div>
-    <div class="col-md-12 col-lg-2">
-        <t:catalog-filters attributes="${productAttributes}"></t:catalog-filters>
-    </div>
+    </c:forEach>
 </div>

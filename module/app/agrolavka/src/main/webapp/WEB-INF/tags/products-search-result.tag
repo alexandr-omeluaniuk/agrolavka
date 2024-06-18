@@ -16,12 +16,10 @@
 <%@attribute name="sort" required="true" type="String"%>
 <%@attribute name="group" required="true" type="ProductsGroup"%>
 <%@attribute name="cart" required="true" type="Order"%>
+<%@attribute name="productAttributes" required="true" type="java.util.List<ProductAttribute>"%>
 
 <%-- any content can be specified here e.g.: --%>
 <div class="row products-search-result">
-    <div class="col-md-12 col-lg-3">
-        TODO: Filters
-    </div>
     <div class="col-md-12 col-lg-9">
         <% String url = ss.agrolavka.util.UrlProducer.buildProductGroupUrl(group); %>
         <t:products-search-result-pagination pages="${pages}" page="${page}" view="${view}" sort="${sort}" url="<%= url %>"
@@ -56,5 +54,8 @@
         <t:products-search-result-pagination pages="${pages}" page="${page}" view="${view}" sort="${sort}" url="<%= url %>"
                                              available="${available}" group="${group}">
         </t:products-search-result-pagination>
+    </div>
+    <div class="col-md-12 col-lg-3">
+        <t:catalog-filters attributes="${productAttributes}"></t:catalog-filters>
     </div>
 </div>
