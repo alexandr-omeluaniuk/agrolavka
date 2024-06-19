@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import ss.agrolavka.constants.JspValue;
 import ss.agrolavka.constants.SiteUrls;
 import ss.agrolavka.test.common.AgrolavkaDataFactory;
+import ss.entity.agrolavka.ProductAttributeLink;
 import ss.martin.security.test.DataFactory;
 
 public class CatalogControllerTest extends BasePageControllerTest {
@@ -39,6 +40,39 @@ public class CatalogControllerTest extends BasePageControllerTest {
             JspValue.META_DESCRIPTION,
             JspValue.CATEGORIES,
             JspValue.PURCHASE_HISTORY_PRODUCTS
+        );
+    }
+
+    @Test
+    public void testCatalogRoot_ProductAttributeItem() throws Exception {
+        DataFactory.silentAuthentication(coreDao);
+        final var rootGroup = AgrolavkaDataFactory.generateProductGroup("My test group 2");
+        final var group = coreDao.create(rootGroup);
+        final var product = AgrolavkaDataFactory.generateProduct(group, "The best product", 100d, 1d);
+        coreDao.create(product);
+        final var attribute = AgrolavkaDataFactory.generateProductAttribute("Brand");
+        coreDao.create(attribute);
+        final var item = AgrolavkaDataFactory.generateProductAttributeItem("Yara", attribute);
+        coreDao.create(item);
+        final var link = new ProductAttributeLink();
+        link.setProductId(product.getId());
+        link.setAttributeItem(item);
+        coreDao.create(link);
+
+        call(SiteUrls.PAGE_CATALOG_ROOT + "/brand/yara",
+            JspValue.CANONICAL,
+            JspValue.PAGE,
+            JspValue.VIEW,
+            JspValue.SORT,
+            JspValue.AVAILABLE,
+            JspValue.TITLE,
+            JspValue.META_DESCRIPTION,
+            JspValue.CATEGORIES,
+            JspValue.PRODUCTS_SEARCH_RESULT,
+            JspValue.PRODUCTS_SEARCH_RESULT_PAGES,
+            JspValue.BREADCRUMB_LABEL,
+            JspValue.BREADCRUMB_PATH,
+            JspValue.PURCHASE_HISTORY
         );
     }
     
