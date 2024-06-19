@@ -2,11 +2,6 @@ package ss.martin.security.service;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.Optional;
-import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,10 +17,6 @@ import ss.entity.security.SystemUser;
 import ss.martin.base.lang.ThrowingRunnable;
 import ss.martin.core.constants.StandardRole;
 import ss.martin.core.dao.CoreDao;
-import ss.martin.notification.email.api.EmailService;
-import ss.martin.notification.email.api.model.EmailAttachment;
-import ss.martin.notification.email.api.model.EmailContact;
-import ss.martin.notification.email.api.model.EmailRequest;
 import ss.martin.security.api.RegistrationUserService;
 import ss.martin.security.configuration.external.DomainConfiguration;
 import ss.martin.security.configuration.external.NavigationConfiguration;
@@ -34,6 +25,8 @@ import ss.martin.security.constants.SystemUserStatus;
 import ss.martin.security.context.SecurityContext;
 import ss.martin.security.dao.UserDao;
 import ss.martin.security.exception.RegistrationUserException;
+
+import java.util.*;
 
 /**
  * Registration user service implementation.
@@ -53,9 +46,6 @@ class RegistrationUserServiceImpl implements RegistrationUserService {
     /** User DAO. */
     @Autowired
     private UserDao userDao;
-    /** Email service. */
-    @Autowired
-    private EmailService emailService;
     /** Password encoder. */
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
@@ -151,18 +141,8 @@ class RegistrationUserServiceImpl implements RegistrationUserService {
         systemUser.setStatus(SystemUserStatus.REGISTRATION);
         systemUser.setValidationString(validationString);
         SecurityContext.executeBehalfUser(systemUser, () -> coreDao.create(systemUser));
-        final var firstname = Optional.ofNullable(systemUser.getFirstname()).orElse("");
-        final var link = domainConfiguration.host() + navigationConfiguration.registrationVerification() 
+        final var link = domainConfiguration.host() + navigationConfiguration.registrationVerification()
                 + "/" + validationString;
-        final var emailRequest = new EmailRequest(
-                new EmailContact(domainConfiguration.emailName(), domainConfiguration.email()),
-                new EmailContact[] {
-                    new EmailContact(firstname + " " + systemUser.getLastname(), systemUser.getEmail())
-                },
-                "New user registration",
-                String.format("Follow the link: %s", link),
-                new EmailAttachment[0]
-        );
-        emailService.sendEmail(emailRequest);
+        System.out.println("Validation link: " + link);
     }
 }

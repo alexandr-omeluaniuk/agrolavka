@@ -1,21 +1,20 @@
 package ss.martin.security.test;
 
-import ss.martin.security.test.util.DataFactory;
-import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.core.context.SecurityContextHolder;
 import ss.entity.security.SystemUser;
 import ss.martin.core.constants.StandardRole;
 import ss.martin.core.dao.CoreDao;
-import ss.martin.notification.email.api.EmailService;
+import ss.martin.security.api.RegistrationUserService;
 import ss.martin.security.constants.SystemUserStatus;
 import ss.martin.security.context.SecurityContext;
 import ss.martin.security.dao.UserDao;
 import ss.martin.security.exception.RegistrationUserException;
+import ss.martin.security.test.util.DataFactory;
 import ss.martin.test.AbstractComponentTest;
-import ss.martin.security.api.RegistrationUserService;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class RegistrationUserServiceTest extends AbstractComponentTest {
     
@@ -27,9 +26,6 @@ public class RegistrationUserServiceTest extends AbstractComponentTest {
     
     @Autowired
     private CoreDao coreDao;
-    
-    @MockBean
-    private EmailService emailService;
     
     @Test
     public void testCreateSuperAdmin() {
