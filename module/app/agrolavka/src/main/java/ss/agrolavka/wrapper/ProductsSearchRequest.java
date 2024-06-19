@@ -5,6 +5,8 @@
  */
 package ss.agrolavka.wrapper;
 
+import java.util.Set;
+
 /**
  * Product search request.
  * @author alex
@@ -12,6 +14,7 @@ package ss.agrolavka.wrapper;
 public class ProductsSearchRequest {
     /** Products group ID. Optional. */
     private Long groupId;
+    private Set<Long> productIds;
     /** Page number. Starts with 1. */
     private Integer page;
     /** Page size. */
@@ -150,5 +153,13 @@ public class ProductsSearchRequest {
      */
     public void setIncludesHidden(boolean includesHidden) {
         this.includesHidden = includesHidden;
+    }
+
+    public Set<Long> getProductIds() {
+        return productIds;
+    }
+
+    public void setProductIds(Set<Long> productIds) {
+        this.productIds = productIds;
     }
 }

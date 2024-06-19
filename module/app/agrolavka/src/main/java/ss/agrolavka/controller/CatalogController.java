@@ -16,10 +16,7 @@ import ss.agrolavka.service.ProductAttributesService;
 import ss.agrolavka.service.ProductService;
 import ss.agrolavka.util.CartUtils;
 import ss.agrolavka.wrapper.ProductsSearchRequest;
-import ss.entity.agrolavka.OrderPosition;
-import ss.entity.agrolavka.Product;
-import ss.entity.agrolavka.Product_;
-import ss.entity.agrolavka.ProductsGroup;
+import ss.entity.agrolavka.*;
 import ss.entity.martin.DataModel;
 
 import java.text.SimpleDateFormat;
@@ -76,13 +73,17 @@ class CatalogController extends BaseJspController {
         } else {
             final var entity = resolveUrlToProductGroup(url);
             if (entity == null) {
-                System.out.println(url);
                 return new ModelAndView(REDIRECT_TO_404);
             }
             if (entity instanceof ProductsGroup group) {
                 setCatalogAttributes(model, group);
                 setPurchaseHistoryProducts(model, request, group);
-                setProducts(model, group.getId(), page, sort, available);
+                setProducts(model, group.getId(), null, page, sort, available);
+                return JspPage.CATALOG;
+            } else if (entity instanceof ProductAttributeItem item) {
+                setProductAttributeAttributes(model, item);
+                final var productIds = productAttributesService.getProductIds(item);
+                setProducts(model, null, productIds, page, sort, available);
                 return JspPage.CATALOG;
             } else if (entity instanceof Product product) {
                 model.addAttribute(CANONICAL, url);
@@ -173,6 +174,19 @@ class CatalogController extends BaseJspController {
         }
         model.addAttribute(CATEGORIES, Optional.ofNullable(categories).orElse(Collections.emptyList()));
     }
+
+    private void setProductAttributeAttributes(final Model model, final ProductAttributeItem item) {
+        model.addAttribute(TITLE, item.getName());
+        final var fakeGroup = new ProductsGroup();
+        fakeGroup.setName(item.getName());
+        fakeGroup.setDescription(item.getDescription());
+        fakeGroup.setUrl(item.getProductAttribute().getUrl() + "/" + item.getUrl());
+        model.addAttribute(PRODUCT_GROUP, fakeGroup);
+        model.addAttribute(BREADCRUMB_LABEL, item.getProductAttribute().getName() + " \"" + item.getName() + "\"");
+        model.addAttribute(BREADCRUMB_PATH, Collections.emptyList());
+        model.addAttribute(META_DESCRIPTION, getMetaDescription(item));
+        model.addAttribute(CATEGORIES, Collections.emptyList());
+    }
     
     private String getMetaDescription(final ProductsGroup group) {
         String meta = "Купить " + group.getName();
@@ -184,6 +198,11 @@ class CatalogController extends BaseJspController {
         return meta.length() > 255 ? meta.substring(0, 255) : meta;
     }
     
+    private String getMetaDescription(final ProductAttributeItem item) {
+        String meta = "Купить " + item.getProductAttribute().getName() + " " + item.getName();
+        return meta.length() > 255 ? meta.substring(0, 255) : meta;
+    }
+
     private String getMetaDescription(final Product product) {
         String meta = "Купить " + product.getName();
         if (product.getSeoDescription() != null && !product.getSeoDescription().isBlank()) {
@@ -214,12 +233,34 @@ class CatalogController extends BaseJspController {
                 return group;
             }
         }
-        return productDAO.getProductByUrl(last);
+        final var product = productDAO.getProductByUrl(last);
+        if (product == null) {
+            final var parts = Arrays.stream(url.split("/")).filter(text -> !text.isBlank()).toList();
+            if (parts.size() == 3) {
+                return productAttributesService.findByUrl(parts.get(1), parts.get(2));
+            } else {
+                return null;
+            }
+        } else {
+            return product;
+        }
     }
     
-    private void setProducts(Model model, Long groupId, Integer page, String sort, boolean available) {
+    private void setProducts(
+        Model model,
+        Long groupId,
+        Set<Long> productIds,
+        Integer page,
+        String sort,
+        boolean available
+    ) {
         final var searchRequest = new ProductsSearchRequest();
-        searchRequest.setGroupId(groupId);
+        if (groupId != null) {
+            searchRequest.setGroupId(groupId);
+        }
+        if (productIds != null && !productIds.isEmpty()) {
+            searchRequest.setProductIds(productIds);
+        }
         searchRequest.setPage(page == null ? 1 : page);
         searchRequest.setAvailable(available);
         int pageSize = SiteConstants.SEARCH_RESULT_TILES_COLUMNS * SiteConstants.SEARCH_RESULT_TILES_ROWS;
