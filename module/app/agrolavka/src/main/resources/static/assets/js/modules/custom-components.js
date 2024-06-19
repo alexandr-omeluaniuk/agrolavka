@@ -528,7 +528,11 @@ class XAttributeLinks extends XElement {
         const links = JSON.parse(this.getAttribute('data-links').replaceAll("'", '"'));
         let sb = '';
         links.forEach(link => {
-            sb += `<span class="badge rounded-pill me-1" style="background-color: ${link.color}"># ${link.item}</span>`;
+            sb += `
+                <a href="/catalog/attribute/${link.item}">
+                    <span class="badge rounded-pill me-1" style="background-color: ${link.color}"># ${link.item}</span>
+                </a>
+            `;
         });
         template.innerHTML = `
             <div class="mt-2 mb-2">

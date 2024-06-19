@@ -16,8 +16,13 @@ public class ProductAttribute extends EntityAudit {
     @Column(name = "name", length = 255, nullable = false)
     private String name;
 
-    @Column(name = "color", length = 10)
+    @NotNull
+    @Column(name = "color", length = 10, nullable = false)
     private String color;
+
+    @NotNull
+    @Column(name = "url", length = 255, nullable = false)
+    private String url;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "productAttribute")
     @Fetch(FetchMode.JOIN)
@@ -45,6 +50,14 @@ public class ProductAttribute extends EntityAudit {
 
     public void setColor(String color) {
         this.color = color;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     @Override

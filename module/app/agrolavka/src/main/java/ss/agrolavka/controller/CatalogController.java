@@ -76,6 +76,7 @@ class CatalogController extends BaseJspController {
         } else {
             final var entity = resolveUrlToProductGroup(url);
             if (entity == null) {
+                System.out.println(url);
                 return new ModelAndView(REDIRECT_TO_404);
             }
             if (entity instanceof ProductsGroup group) {

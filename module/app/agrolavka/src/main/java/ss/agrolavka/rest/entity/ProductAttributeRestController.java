@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import ss.agrolavka.constants.CacheKey;
 import ss.agrolavka.constants.SiteUrls;
 import ss.agrolavka.dao.ProductAttributeLinkDao;
+import ss.agrolavka.util.UrlProducer;
 import ss.entity.agrolavka.ProductAttribute;
 import ss.entity.agrolavka.ProductAttributeItem;
 import ss.entity.agrolavka.ProductAttributeLink;
@@ -34,6 +35,7 @@ public class ProductAttributeRestController extends BasicEntityRestController<Pr
     public ProductAttribute create(
         @RequestBody ProductAttribute attribute
     ) {
+        attribute.setUrl(UrlProducer.transliterate(attribute.getName()));
         final var result = coreDAO.create(attribute);
         resetAttributesCache();
         return result;
@@ -43,6 +45,7 @@ public class ProductAttributeRestController extends BasicEntityRestController<Pr
     public ProductAttribute edit(
         @RequestBody ProductAttribute attribute
     ) {
+        attribute.setUrl(UrlProducer.transliterate(attribute.getName()));
         final var result = coreDAO.update(attribute);
         resetAttributesCache();
         return result;
@@ -53,7 +56,9 @@ public class ProductAttributeRestController extends BasicEntityRestController<Pr
         @PathVariable("id") Long id,
         @RequestBody ProductAttributeItem item
     ) {
-        item.setProductAttribute(coreDAO.findById(id, ProductAttribute.class));
+        final var attribute = coreDAO.findById(id, ProductAttribute.class);
+        item.setProductAttribute(attribute);
+        item.setUrl(UrlProducer.transliterate(item.getName()));
         final var result = coreDAO.create(item);
         resetAttributesCache();
         return result;
@@ -65,6 +70,7 @@ public class ProductAttributeRestController extends BasicEntityRestController<Pr
     ) {
         final var record = coreDAO.findById(item.getId(), ProductAttributeItem.class);
         record.setName(item.getName());
+        record.setUrl(UrlProducer.transliterate(item.getName()));
         final var result = coreDAO.update(record);
         resetAttributesCache();
         return result;

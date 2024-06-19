@@ -3,6 +3,7 @@ package ss.entity.agrolavka;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import ss.entity.security.EntityAudit;
 
 import java.util.List;
@@ -24,6 +25,22 @@ public class ProductAttributeItem extends EntityAudit {
     @JsonIgnore
     @OneToMany(mappedBy = "attributeItem", fetch = FetchType.LAZY)
     private List<ProductAttributeLink> links;
+
+    @NotNull
+    @Column(name = "url", length = 255, nullable = false)
+    private String url;
+
+    @Size(max = 1000)
+    @Column(name = "description", length = 1000)
+    private String description;
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
     public String getName() {
         return name;
@@ -47,6 +64,14 @@ public class ProductAttributeItem extends EntityAudit {
 
     public void setLinks(List<ProductAttributeLink> links) {
         this.links = links;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     @Override

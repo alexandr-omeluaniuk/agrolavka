@@ -5,12 +5,13 @@
  */
 package ss.agrolavka.util;
 
+import ss.entity.agrolavka.Product;
+import ss.entity.agrolavka.ProductsGroup;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import ss.entity.agrolavka.Product;
-import ss.entity.agrolavka.ProductsGroup;
 
 /**
  * URL producer.
@@ -80,9 +81,7 @@ public class UrlProducer {
             path.add(current);
             final String parentId = current.getParentId();
             if (parentId != null) {
-                current = groups.stream().filter(g -> {
-                    return parentId.equals(g.getExternalId());
-                }).findFirst().get();
+                current = groups.stream().filter(g -> parentId.equals(g.getExternalId())).findFirst().get();
             } else {
                 current = null;
             }
