@@ -39,6 +39,7 @@ public class ProductAttributeLink extends EntityAudit {
         final var json = new JSONObject();
         json.put("item", getAttributeItem().getName());
         json.put("attribute", getAttributeItem().getProductAttribute().getName());
+        json.put("link", getAttributeItem().getProductAttribute().getUrl() + "/" + getAttributeItem().getUrl());
         json.put("color", getAttributeItem().getProductAttribute().getColor());
         return json.toString();
     }

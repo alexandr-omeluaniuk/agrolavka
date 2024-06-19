@@ -529,7 +529,7 @@ class XAttributeLinks extends XElement {
         let sb = '';
         links.forEach(link => {
             sb += `
-                <a href="/catalog/attribute/${link.item}">
+                <a href="/catalog/${link.link}">
                     <span class="badge rounded-pill me-1" style="background-color: ${link.color}"># ${link.item}</span>
                 </a>
             `;
