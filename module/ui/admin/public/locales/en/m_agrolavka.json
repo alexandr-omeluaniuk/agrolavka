@@ -71,6 +71,7 @@
         "addItem": "Add item",
         "newItem": "New item",
         "itemName": "Item name",
+        "itemDescription": "Description",
         "editItem": "Edit item",
         "color": "Color"
     },

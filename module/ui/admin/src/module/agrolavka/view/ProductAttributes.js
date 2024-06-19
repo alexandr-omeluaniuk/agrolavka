@@ -147,6 +147,10 @@ function ProductAttributes() {
                         .setGrid({xs: 12, md: 12}).validation([
                     new Validator(VALIDATORS.REQUIRED),
                     new Validator(VALIDATORS.MAX_LENGTH, {length: 255})
+                ]),
+                new FormField('description', TYPES.TEXTAREA, t('m_agrolavka:attributes.itemDescription'))
+                        .setGrid({xs: 12, md: 12}).validation([
+                    new Validator(VALIDATORS.MAX_LENGTH, {length: 1000})
                 ])
             ]));
         }
