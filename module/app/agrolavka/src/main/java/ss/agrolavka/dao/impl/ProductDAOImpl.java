@@ -122,6 +122,9 @@ class ProductDAOImpl implements ProductDAO {
                 predicates.add(productGroup.get(ProductsGroup_.id).in(groupIds));
             });
         }
+        if (request.getProductIds() != null && !request.getProductIds().isEmpty()) {
+            predicates.add(c.get(Product_.id).in(request.getProductIds()));
+        }
         if (request.getText() != null && !request.getText().isBlank()) {
             predicates.add(cb.like(cb.upper(c.get(Product_.name)), "%" + request.getText().toUpperCase() + "%"));
         }

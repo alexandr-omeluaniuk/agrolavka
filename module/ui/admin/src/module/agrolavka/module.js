@@ -6,7 +6,7 @@
 import { Module } from '../../util/model/Module';
 import { ModuleView } from '../../util/model/ModuleView';
 import Products from './view/Products';
-import Feedbacks from './view/Feedbacks';
+import ProductAttributes from './view/ProductAttributes';
 import Orders from './view/Orders';
 import Order from './view/Order';
 import Shops from './view/Shops';
@@ -20,7 +20,7 @@ export const agrolavka = new Module('agrolavka', '/agrolavka', [
     new ModuleView('products', '/products', 'store', Products),
     new ModuleView('slides', '/slides', 'grade', Slides),
     new ModuleView('shops', '/shops', 'location_on', Shops),
-    new ModuleView('feedbacks', '/feedbacks', 'feedback', Feedbacks),
+    new ModuleView('product-attributes', '/product-attributes', 'style', ProductAttributes),
     new ModuleView(null, '/order/:id', null, Order),
     new ModuleView(null, '/product/:id', null, Product)
 ], (routes) => <OrdersForPrintProvider key="OrdersForPrintProvider">{routes}</OrdersForPrintProvider>).setIcon('store_mall_directory')

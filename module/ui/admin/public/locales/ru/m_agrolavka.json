@@ -6,7 +6,8 @@
         "sandbox": "Песочница",
         "feedbacks": "Обратная связь",
         "shops": "Магазины",
-        "slides": "Слайды"
+        "slides": "Слайды",
+        "product-attributes": "Аттрибуты"
     },
     "products": {
         "product_groups": "Категория",
@@ -24,7 +25,8 @@
         "quantity": "Кол-во",
         "available": "В наличии",
         "discounts": "На акции",
-        "product_video_url": "Ссылка на видео"
+        "product_video_url": "Ссылка на видео",
+        "addAttributes": "Добавить аттрибуты"
     },
     "products_groups": {
         "new_group": "Создать новую группу товаров",
@@ -61,6 +63,18 @@
         "contact": "Контактная информация",
         "message": "Сообщение",
         "created": "Создано"
+    },
+    "attributes": {
+        "number": "Номер",
+        "name": "Название",
+        "items": "Возможные значения",
+        "created": "Создано",
+        "addItem": "Добавить значение",
+        "newItem": "Новое значение",
+        "itemName": "Название",
+        "itemDescription": "Описание",
+        "editItem": "Редактировать значение",
+        "color": "Цвет"
     },
     "order": {
         "title": "Заказ № {{num}}",

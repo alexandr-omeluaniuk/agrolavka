@@ -17,12 +17,16 @@ import Switch from '@material-ui/core/Switch';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Avatar from '@material-ui/core/Avatar';
 import DataService from '../../../service/DataService';
-import { TableConfig, TableColumn, FormConfig, ALIGN_RIGHT, ApiURL } from '../../../util/model/TableConfig';
+import { TableConfig, TableColumn, FormConfig, ALIGN_RIGHT, ApiURL, FormField } from '../../../util/model/TableConfig';
 import DataTable from '../../../component/datatable/DataTable';
 import ProductsGroups from './ProductsGroups';
 import Price from '../component/Price';
 import { NavLink } from "react-router-dom";
 import AppURLs from '../../../conf/app-urls';
+import Form from '../../../component/form/Form';
+import FormDialog from '../../../component/window/FormDialog';
+import { TYPES } from '../../../service/DataTypeService';
+import AttributesTree from '../component/AttributesTree';
 
 let dataService = new DataService();
 
@@ -62,6 +66,9 @@ const useStyles = makeStyles(theme => ({
     hidden: {
         opacity: '.5',
         textDecoration: 'line-through'
+    },
+    addAttributes: {
+        color: theme.palette.success.main
     }
 }));
 
@@ -74,6 +81,13 @@ function Products() {
     const [filterCode, setFilterCode] = React.useState(null);
     const [filterAvailable, setFilterAvailable] = React.useState(false);
     const [filterDiscounts, setFilterDiscounts] = React.useState(false);
+
+    const [formConfig, setFormConfig] = React.useState(null);
+    const [formTitle, setFormTitle] = React.useState('');
+    const [formOpen, setFormOpen] = React.useState(false);
+    const [formDisabled, setFormDisabled] = React.useState(false);
+    const [record, setRecord] = React.useState(null);
+    const [reload, setReload] = React.useState(false);
     // ------------------------------------------------------- METHODS --------------------------------------------------------------------
     const productsFilter = () => {
         return (
@@ -139,6 +153,19 @@ function Products() {
         dataService.put('/agrolavka/protected/product/group').then(resp => {
         });
     };
+    const addAttributes = async (product) => {
+        setFormTitle(t('m_agrolavka:products.addAttributes') + ' [' + product.name + ']');
+        const selected = await dataService.get('/agrolavka/protected/product-attributes/links/' + product.id);
+        setRecord({id: product.id, attributes: selected.map(i => i.attributeItem.id)});
+        setFormOpen(true);
+    };
+    const onFormSubmitAction = async (data) => {
+        setFormDisabled(true);
+        await dataService.put('/agrolavka/protected/product-attributes/links/' + data.id, data.attributes);
+        setFormDisabled(false);
+        setFormOpen(false);
+        setReload(!reload);
+    };
     // ------------------------------------------------------- HOOKS ----------------------------------------------------------------------
     useEffect(() => {
         const apiUrl = new ApiURL(
@@ -202,7 +229,17 @@ function Products() {
                         [classes.quantityAvailable]: row.quantity > 0
                     });
                 return <span className={quantityStyle}>{row.quantity}</span>;
-            }).width('100px').alignment(ALIGN_RIGHT)
+            }).width('100px').alignment(ALIGN_RIGHT),
+            new TableColumn('btn_add_item', '', (row) => {
+                if (row.minPrice && row.maxPrice) {
+                    return null;
+                }
+                return <Tooltip title={t('m_agrolavka:products.addAttributes')}>
+                            <IconButton onClick={() => addAttributes(row)}>
+                                <Icon className={classes.addAttributes}>post_add</Icon>
+                            </IconButton>
+                        </Tooltip>;
+            }).width('40px').alignment(ALIGN_RIGHT).asAction()
         ], new FormConfig([
             
         ]).setBeforeOnEditRecord((record) => {
@@ -223,6 +260,20 @@ function Products() {
         setTableConfig(newTableConfig);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedProductGroup, filterProductName, filterCode, filterAvailable, filterDiscounts]);
+    useEffect(() => {
+        if (formConfig === null) {
+            const attributesTree = new FormField('attributes', TYPES.CUSTOM, '').setGrid({xs: 12, md: 12});
+            attributesTree.render = (name, fieldValue, onChangeFieldValue) => {
+                return <AttributesTree name={name} fieldValue={fieldValue} onChangeFieldValue={onChangeFieldValue}></AttributesTree>;
+            }
+            const form = new FormConfig([
+                new FormField('id', TYPES.ID).hide(),
+                attributesTree
+            ]);
+            setFormConfig(form);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [formConfig]);
     // ------------------------------------------------------- RENDERING ------------------------------------------------------------------
     if (tableConfig === null) {
         return null;
@@ -233,8 +284,14 @@ function Products() {
                     <ProductsGroups onSelect={setSelectedProductGroup}/>
                 </Grid>
                 <Grid item sm={12} md={9}>
-                    {selectedProductGroup ? <DataTable tableConfig={tableConfig}/> : null}
+                    {selectedProductGroup ? <DataTable tableConfig={tableConfig} reload={reload}/> : null}
                 </Grid>
+                {formConfig ? (
+                    <FormDialog title={formTitle} open={formOpen} handleClose={() => setFormOpen(false)} fullScreen={false}>
+                        <Form formConfig={formConfig} onSubmitAction={onFormSubmitAction} record={record}
+                            disabled={formDisabled}/>
+                    </FormDialog>
+                ) : null}
             </Grid>
     );
 }

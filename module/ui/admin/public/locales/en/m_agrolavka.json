@@ -6,7 +6,8 @@
         "sandbox": "Sandbox",
         "feedbacks": "Feedbacks",
         "shops": "Shops",
-        "slides": "Slides"
+        "slides": "Slides",
+        "product-attributes": "Attributes"
     },
     "products": {
         "product_groups": "Product groups",
@@ -24,7 +25,8 @@
         "quantity": "Quantity",
         "available": "Available",
         "discounts": "With discount",
-        "product_video_url": "VIdeo URL"
+        "product_video_url": "VIdeo URL",
+        "addAttributes": "Add attributes"
     },
     "products_groups": {
         "new_group": "Create new product group",
@@ -60,6 +62,18 @@
         "contact": "Contact information",
         "message": "Message",
         "created": "Created"
+    },
+    "attributes": {
+        "number": "Nr.",
+        "name": "Name",
+        "items": "Items",
+        "created": "Created",
+        "addItem": "Add item",
+        "newItem": "New item",
+        "itemName": "Item name",
+        "itemDescription": "Description",
+        "editItem": "Edit item",
+        "color": "Color"
     },
     "order": {
         "title": "Order # {{num}}",

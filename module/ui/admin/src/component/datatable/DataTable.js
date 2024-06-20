@@ -56,7 +56,7 @@ function DataTable(props) {
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
     const { t } = useTranslation();
-    const { tableConfig } = props;
+    const { tableConfig, reload } = props;
     const [load, setLoad] = React.useState(null);
     const [data, setData] = React.useState(null);
     const [total, setTotal] = React.useState(0);
@@ -97,7 +97,7 @@ function DataTable(props) {
             });
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [load, tableConfig, page, rowsPerPage, order, orderBy]);
+    }, [load, tableConfig, page, rowsPerPage, order, orderBy, reload]);
 //    useEffect(() => {
 //        return () => {
 //            dataService.abort();
@@ -262,7 +262,7 @@ function DataTable(props) {
                 <FormControlLabel control={<Switch checked={dense} onChange={handleChangeDense} />} label={t('component.datatable.dense_padding')} />
             )}
             {tableConfig.isFormDialog ? (
-                <FormDialog title={formTitle} open={formOpen} handleClose={() => setFormOpen(false)}>
+                <FormDialog title={formTitle} open={formOpen} handleClose={() => setFormOpen(false)} fullScreen={tableConfig.fullScreen === false ? false : true}>
                     <Form formConfig={actualFormConfig} onSubmitAction={onFormSubmitAction} record={record} disabled={formDisabled}/>
                 </FormDialog>
             ) : null}

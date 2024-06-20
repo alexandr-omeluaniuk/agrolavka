@@ -83,7 +83,7 @@
     }
 %>
 <div class="row mb-3 mt-3">
-    <div class="col-sm-12 col-lg-12 col-xl-4 d-flex justify-content-start mt-3">
+    <div class="col-sm-12 col-lg-12 col-xl-2 d-flex justify-content-start mt-3">
         <c:if test="${pages > 1}">
             <nav aria-label="Page navigation" class="d-flex justify-content-start">
                 <ul class="pagination pagination-circle" style="margin-bottom: 0;">
@@ -112,7 +112,7 @@
             </nav>
         </c:if>
     </div>
-    <div class="col-sm-12 col-lg-6 col-xl-4 d-flex justify-content-start mt-3">
+    <div class="col-sm-12 col-lg-6 col-xl-5 d-flex justify-content-start mt-3">
         <% if (group != null && !AppCache.isBelongsToGroup("Средства защиты растений (СЗР)", group)) { %>
         <div class="dropdown w-100">
             <button class="btn btn-primary dropdown-toggle w-100 text-left" type="button" id="agr-dropdown-products-available" 
@@ -133,7 +133,7 @@
             }
         %>
     </div>
-    <div class="col-sm-12 col-lg-6 col-xl-4 d-flex justify-content-end mt-3">
+    <div class="col-sm-12 col-lg-6 col-xl-5 d-flex justify-content-end mt-3">
         <div class="dropdown me-2 w-100">
             <button class="btn btn-primary dropdown-toggle w-100 text-left" type="button" id="sort-products" 
                     data-mdb-toggle="dropdown" aria-expanded="false">

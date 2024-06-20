@@ -4,6 +4,8 @@
  * and open the template in the editor.
  */
 
+import { COLORS } from "../conf/theme";
+
 export const CLIENT_DATE_FORMAT = 'DD.MM.YYYY';
 export const SERVER_DATE_FORMAT = 'YYYY-MM-DD';
 export const TIME_FORMAT = 'HH:mm';
@@ -30,7 +32,8 @@ export let TYPES = {
     DATE: 'DATE',
     BOOLEAN: 'BOOLEAN',
     CUSTOM: 'CUSTOM',
-    HTML: 'HTML'
+    HTML: 'HTML',
+    COLOR: 'COLOR'
 };
 
 export let VALIDATORS = {
@@ -114,6 +117,11 @@ export class DataTypeService {
             return value.format(SERVER_DATE_FORMAT);
         } else if (value && value.format && field.type === TYPES.DATETIME) {
             return value.format(DATETIME_FORMAT);
+        } else if (value && field.type === TYPES.COLOR) {
+            const allColors = {};
+            COLORS.forEach(item => item.forEach(c => allColors[c.label] = c));
+            const color = allColors[value.color].color[value.contrast];
+            return color;
         } else if (value && value.format && field.type === TYPES.TIME) {
             return value.format(TIME_FORMAT);
         } else if (value && field.type === TYPES.IMAGES) {

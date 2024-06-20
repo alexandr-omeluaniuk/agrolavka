@@ -25,6 +25,7 @@ public final class JspValue {
     public static final String VIEW = "view";
     public static final String SORT = "sort";
     public static final String AVAILABLE = "available";
+    public static final String PRODUCT_ATTRIBUTES = "productAttributes";
     public static final String CANONICAL = "canonical";
     public static final String META_DESCRIPTION = "metaDescription";
     public static final String FULL_PRODUCT_DESCRIPTION = "fullProductDescription";
@@ -47,4 +48,5 @@ public final class JspValue {
     public static final String VARIANTS = "variants";
     public static final String PRICE_VALID_UNTIL = "priceValidUntil";
     public static final String SHOP = "shop";
+    public static final String ATTRIBUTE_LINKS = "attributeLinks";
 }

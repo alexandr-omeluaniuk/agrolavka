@@ -1,16 +1,12 @@
 package ss.agrolavka.test.common;
 
+import ss.agrolavka.constants.OrderStatus;
+import ss.agrolavka.util.UrlProducer;
+import ss.entity.agrolavka.*;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.UUID;
-import ss.agrolavka.constants.OrderStatus;
-import ss.agrolavka.util.UrlProducer;
-import ss.entity.agrolavka.Address;
-import ss.entity.agrolavka.Order;
-import ss.entity.agrolavka.OrderPosition;
-import ss.entity.agrolavka.Product;
-import ss.entity.agrolavka.ProductsGroup;
-import ss.entity.agrolavka.Shop;
 
 public class AgrolavkaDataFactory {
     
@@ -20,6 +16,22 @@ public class AgrolavkaDataFactory {
         group.setExternalId(UUID.randomUUID().toString());
         group.setUrl(UrlProducer.transliterate(name));
         return group;
+    }
+
+    public static ProductAttribute generateProductAttribute(final String name) {
+        final var attribute = new ProductAttribute();
+        attribute.setName(name);
+        attribute.setUrl(UrlProducer.transliterate(name));
+        attribute.setColor("#000000");
+        return attribute;
+    }
+
+    public static ProductAttributeItem generateProductAttributeItem(final String name, final ProductAttribute attribute) {
+        final var item = new ProductAttributeItem();
+        item.setName(name);
+        item.setUrl(UrlProducer.transliterate(name));
+        item.setProductAttribute(attribute);
+        return item;
     }
     
     public static Product generateProduct(

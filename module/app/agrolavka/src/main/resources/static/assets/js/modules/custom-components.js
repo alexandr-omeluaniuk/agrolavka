@@ -447,6 +447,7 @@ class XProductCard extends XElement {
         const volumes = this.getAttribute('data-volume');
         const groupName = this.getAttribute('data-group-name');
         const groupLink = this.getAttribute('data-group-link');
+        const attributeLinks = this.getAttribute('data-attribute-links');
         const imageElement = image
             ? `<div class="card-img-top agr-card-image" style="background-image: url('/media/${image}?timestamp=${imageCreatedDate}')"></div>` 
             : `<div class="card-img-top agr-card-image" style="background-image: url('/assets/img/no-image.png')"></div>`;
@@ -458,6 +459,7 @@ class XProductCard extends XElement {
                         ${imageElement}
                         <div class="card-body" style="min-height: 100px;">
                             ${groupName && groupLink ? `<a class="agr-sub-category-link" href="${groupLink}"><div class="text-muted">${groupName}</div></a>` : ''}
+                            ${attributeLinks ? `<x-agr-attribute-links data-links="${attributeLinks}"></x-agr-attribute-links>` : ""}
                             <h6 class="card-title text-dark text-left" style="min-height: 60px;">${name}</h6>
                             <x-agr-product-price data-row-class="agr-card-line" data-discount="${discount}" data-price="${price}"></x-agr-product-price>
                             ${createdDate ? `
@@ -519,3 +521,25 @@ class XProductDescription extends XElement {
     }
 }
 window.customElements.define('x-agr-product-description', XProductDescription);
+
+class XAttributeLinks extends XElement {
+    createTemplate() {
+        let template = document.createElement('template');
+        const links = JSON.parse(this.getAttribute('data-links').replaceAll("'", '"'));
+        let sb = '';
+        links.forEach(link => {
+            sb += `
+                <a href="/catalog/${link.link}">
+                    <span class="badge rounded-pill me-1" style="background-color: ${link.color}"># ${link.item}</span>
+                </a>
+            `;
+        });
+        template.innerHTML = `
+            <div class="mt-2 mb-2">
+                ${sb}
+            </div>
+        `;
+        return template;
+    }
+}
+window.customElements.define('x-agr-attribute-links', XAttributeLinks);

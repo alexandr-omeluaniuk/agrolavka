@@ -101,6 +101,9 @@ public class Product extends ExternalEntity {
     
     @Transient
     private List<ProductVariant> variants;
+
+    @Transient
+    private List<ProductAttributeLink> attributeLinks;
     
     public String getName() {
         return name;
@@ -260,6 +263,14 @@ public class Product extends ExternalEntity {
 
     public void setVariants(List<ProductVariant> variants) {
         this.variants = variants;
+    }
+
+    public List<ProductAttributeLink> getAttributeLinks() {
+        return attributeLinks;
+    }
+
+    public void setAttributeLinks(List<ProductAttributeLink> attributeLinks) {
+        this.attributeLinks = attributeLinks;
     }
     
     @Override
