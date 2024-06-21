@@ -176,14 +176,18 @@ class CatalogController extends BaseJspController {
     }
 
     private void setProductAttributeAttributes(final Model model, final ProductAttributeItem item) {
-        model.addAttribute(TITLE, item.getName());
+        model.addAttribute(TITLE, item.getProductAttribute().getName() + " - " + item.getName());
+        final var attribute = item.getProductAttribute();
+        final var fakeTopGroup = new ProductsGroup();
+        fakeTopGroup.setName(attribute.getName());
+        fakeTopGroup.setUrl(attribute.getUrl());
         final var fakeGroup = new ProductsGroup();
         fakeGroup.setName(item.getName());
         fakeGroup.setDescription(item.getDescription());
         fakeGroup.setUrl(item.getProductAttribute().getUrl() + "/" + item.getUrl());
         model.addAttribute(PRODUCT_GROUP, fakeGroup);
-        model.addAttribute(BREADCRUMB_LABEL, item.getProductAttribute().getName() + " \"" + item.getName() + "\"");
-        model.addAttribute(BREADCRUMB_PATH, Collections.emptyList());
+        model.addAttribute(BREADCRUMB_LABEL, item.getName());
+        model.addAttribute(BREADCRUMB_PATH, Collections.singletonList(fakeTopGroup));
         model.addAttribute(META_DESCRIPTION, getMetaDescription(item));
         model.addAttribute(CATEGORIES, Collections.emptyList());
     }
