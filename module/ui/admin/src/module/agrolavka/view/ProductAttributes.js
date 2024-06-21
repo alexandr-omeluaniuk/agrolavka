@@ -65,7 +65,7 @@ function ProductAttributes() {
         );
         apiUrl.addGetExtraParam('order_by', 'name');
         apiUrl.addGetExtraParam('order', 'asc');
-        const newTableConfig = new TableConfig(t('m_agrolavka:agrolavka.feedbacks'), apiUrl, [
+        const newTableConfig = new TableConfig(t('m_agrolavka:agrolavka.product-attributes'), apiUrl, [
             new TableColumn('id', t('m_agrolavka:attributes.number'), (row) => {
                 let num = row.id.toString();
                 while (num.length < 5) num = "0" + num;

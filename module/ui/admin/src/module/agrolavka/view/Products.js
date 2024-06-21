@@ -211,6 +211,16 @@ function Products() {
                         </React.Fragment>
                 );
             }).setSortable(),
+            new TableColumn('name', t('m_agrolavka:products.attributes'), (row) => {
+                if (row.attributeLinks.length > 0) {
+                    console.log(row.attributeLinks);
+                    let result = [];
+                    row.attributeLinks.forEach(item => result.push(item.attributeItem.name));
+                    return result.join(",");
+                } else {
+                    return null;
+                }
+            }),
             new TableColumn('code', t('m_agrolavka:products.product_code')).setSortable().width('150px').alignment(ALIGN_RIGHT),
             new TableColumn('price', t('m_agrolavka:products.product_price'), (row) => {
                 if (row.minPrice && row.maxPrice) {

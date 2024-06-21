@@ -227,23 +227,20 @@ class CatalogController extends BaseJspController {
     }
     
     private DataModel resolveUrlToProductGroup(String url) {
+        final var parts = Arrays.stream(url.split("/")).filter(text -> !text.isBlank()).toList();
+        if (parts.size() == 3) {
+            final var productAttribute = productAttributesService.findByUrl(parts.get(1), parts.get(2));
+            if (productAttribute != null) {
+                return productAttribute;
+            }
+        }
         String last = url.substring(url.lastIndexOf("/") + 1);
         for (final var group : allProductGroupsService.getAllGroups()) {
             if (last.equals(group.getUrl())) {
                 return group;
             }
         }
-        final var product = productDAO.getProductByUrl(last);
-        if (product == null) {
-            final var parts = Arrays.stream(url.split("/")).filter(text -> !text.isBlank()).toList();
-            if (parts.size() == 3) {
-                return productAttributesService.findByUrl(parts.get(1), parts.get(2));
-            } else {
-                return null;
-            }
-        } else {
-            return product;
-        }
+        return productDAO.getProductByUrl(last);
     }
     
     private void setProducts(
