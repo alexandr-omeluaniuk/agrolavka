@@ -10,14 +10,14 @@
 
 <%-- The list of normal or fragment attributes can be specified here: --%>
 <%@attribute name="categories" required="true" type="java.util.List<ss.entity.agrolavka.ProductsGroup>"%>
-<%@attribute name="attributeGroups" required="true" type="java.util.List<ss.entity.agrolavka.ProductsGroup>"%>
+<%@attribute name="attributeGroups" required="true" type="java.util.List<ss.entity.agrolavka.ProductAttribute>"%>
 
 <%-- any content can be specified here e.g.: --%>
 <c:if test="${not empty attributeGroups}">
     <div class="row">
         <c:forEach items="${attributeGroups}" var="attribute">
             <div class="col-lg-3 col-md-4 col-sm-6 col-6">
-                <t:card-category group="${attribute}"/>
+                <t:card-attribute attribute="${attribute}"/>
             </div>
         </c:forEach>
     </div>

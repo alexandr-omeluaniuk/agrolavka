@@ -4,9 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ss.agrolavka.dao.ProductAttributeLinkDao;
 import ss.entity.agrolavka.Product;
+import ss.entity.agrolavka.ProductAttribute;
 import ss.entity.agrolavka.ProductAttributeItem;
 import ss.entity.agrolavka.ProductAttributeLink;
-import ss.entity.agrolavka.ProductsGroup;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,14 +48,9 @@ public class ProductAttributesService {
         return result.map(ProductAttributeLink::getAttributeItem).orElse(null);
     }
 
-    public List<ProductsGroup> getAttributeGroups() {
+    public List<ProductAttribute> getAttributeGroups() {
         return productAttributeLinkDao.getAllLinks()
             .stream().map(link -> link.getAttributeItem().getProductAttribute()).distinct()
-            .map(attribute -> {
-                final var group = new ProductsGroup();
-                group.setName(attribute.getName());
-                group.setUrl(attribute.getUrl());
-                return group;
-            }).sorted((a, b) -> a.getName().compareTo(b.getName())).collect(Collectors.toCollection(ArrayList::new));
+            .sorted((a, b) -> a.getName().compareTo(b.getName())).collect(Collectors.toCollection(ArrayList::new));
     }
 }
