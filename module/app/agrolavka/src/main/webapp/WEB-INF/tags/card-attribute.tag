@@ -16,4 +16,10 @@
 <%-- The list of normal or fragment attributes can be specified here: --%>
 <%@attribute name="attribute" required="true" type="ProductAttribute"%>
 
-<div>TODO</div>
+<div class="card shadow-1-strong mb-4 hover-shadow">
+    <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
+        <div class="card-body agr-card-body-category">
+            <h6 class="card-title mb-0 text-dark">${attribute.name}</h6>
+        </div>
+    </div>
+</div>
