@@ -6,6 +6,7 @@ import ss.agrolavka.dao.ProductAttributeLinkDao;
 import ss.entity.agrolavka.Product;
 import ss.entity.agrolavka.ProductAttributeItem;
 import ss.entity.agrolavka.ProductAttributeLink;
+import ss.entity.agrolavka.ProductsGroup;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,5 +46,16 @@ public class ProductAttributesService {
             return isAttributeMatch && isItemMatch;
         }).findFirst();
         return result.map(ProductAttributeLink::getAttributeItem).orElse(null);
+    }
+
+    public List<ProductsGroup> getAttributeGroups() {
+        return productAttributeLinkDao.getAllLinks()
+            .stream().map(link -> link.getAttributeItem().getProductAttribute()).distinct()
+            .map(attribute -> {
+                final var group = new ProductsGroup();
+                group.setName(attribute.getName());
+                group.setUrl(attribute.getUrl());
+                return group;
+            }).sorted((a, b) -> a.getName().compareTo(b.getName())).collect(Collectors.toCollection(ArrayList::new));
     }
 }

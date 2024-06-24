@@ -30,6 +30,7 @@ public final class JspValue {
     public static final String META_DESCRIPTION = "metaDescription";
     public static final String FULL_PRODUCT_DESCRIPTION = "fullProductDescription";
     public static final String CATEGORIES = "categories";
+    public static final String ATTRIBUTE_GROUPS = "attributeGroups";
     public static final String PRODUCTS_SEARCH_RESULT = "searchResult";
     public static final String PRODUCTS_SEARCH_RESULT_PAGES = "searchResultPages";
     public static final String PRODUCT_GROUP = "group";

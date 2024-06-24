@@ -30,7 +30,7 @@
                         </c:otherwise>
                     </c:choose>
                     <t:breadcrumb label="${breadcrumbLabel}" groups="${breadcrumbPath}"/>
-                    <t:categories-grid categories="${categories}" />
+                    <t:categories-grid categories="${categories}" attributeGroups="${attributeGroups}" />
                 </section>
                 <c:if test="${empty categories}">
                     <section class="pb-4">

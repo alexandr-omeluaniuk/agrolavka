@@ -136,6 +136,7 @@ class CatalogController extends BaseJspController {
         model.addAttribute(TITLE, "Широкий выбор товаров для сада и огорода");
         model.addAttribute(META_DESCRIPTION, "Каталог товаров для сада и огорода");
         model.addAttribute(CATEGORIES, productsGroupService.getRootProductGroups());
+        model.addAttribute(ATTRIBUTE_GROUPS, productAttributesService.getAttributeGroups());
     }
 
     private void setPurchaseHistoryProducts(
