@@ -13,16 +13,6 @@
 <%@attribute name="attributeGroups" required="true" type="java.util.List<ss.entity.agrolavka.ProductAttribute>"%>
 
 <%-- any content can be specified here e.g.: --%>
-<c:if test="${not empty attributeGroups}">
-    <div class="row">
-        <c:forEach items="${attributeGroups}" var="attribute">
-            <div class="col-lg-3 col-md-4 col-sm-6 col-6">
-                <t:card-attribute attribute="${attribute}"/>
-            </div>
-        </c:forEach>
-    </div>
-    <hr/>
-</c:if>
 <div class="row">
     <c:forEach items="${categories}" var="group">
         <div class="col-lg-3 col-md-4 col-sm-6 col-6">
@@ -30,3 +20,12 @@
         </div>
     </c:forEach>
 </div>
+<c:if test="${not empty attributeGroups}">
+    <div class="row mt-3">
+        <c:forEach items="${attributeGroups}" var="attribute">
+            <div class="col-lg-3 col-md-4 col-sm-6 col-6">
+                <t:card-attribute attribute="${attribute}"/>
+            </div>
+        </c:forEach>
+    </div>
+</c:if>

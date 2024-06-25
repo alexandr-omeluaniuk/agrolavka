@@ -16,10 +16,14 @@
 <%-- The list of normal or fragment attributes can be specified here: --%>
 <%@attribute name="attribute" required="true" type="ProductAttribute"%>
 
-<div class="card shadow-1-strong mb-4 hover-shadow">
-    <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
-        <div class="card-body agr-card-body-category">
-            <h6 class="card-title mb-0 text-dark">${attribute.name}</h6>
-        </div>
+<div class="card mb-4 shadow-0 border">
+    <div class="card-body">
+        <h6 class="card-title mb-0 text-dark">${attribute.name}</h6>
+        <hr class="mb-2 mt-2"/>
+        <c:forEach items="${attribute.items}" var="item">
+            <a class="agr-sub-category-link" href="/catalog/${attribute.url}/${item.url}">
+                <div class="text-muted">${item.name}</div>
+            </a>
+        </c:forEach>
     </div>
 </div>
