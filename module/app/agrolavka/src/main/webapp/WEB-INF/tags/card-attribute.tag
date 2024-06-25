@@ -20,10 +20,12 @@
     <div class="card-body">
         <h6 class="card-title mb-0 text-dark">${attribute.name}</h6>
         <hr class="mb-2 mt-2"/>
+        <div class="d-flex flex-column gap-1">
         <c:forEach items="${attribute.items}" var="item">
             <a class="agr-sub-category-link" href="/catalog/${attribute.url}/${item.url}">
                 <div class="text-muted">${item.name}</div>
             </a>
         </c:forEach>
+        </div>
     </div>
 </div>

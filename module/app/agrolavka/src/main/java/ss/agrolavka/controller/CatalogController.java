@@ -150,7 +150,8 @@ class CatalogController extends BaseJspController {
             .filter(Objects::nonNull)
             .collect(Collectors.toSet());
         if (group == null) {
-            model.addAttribute(PURCHASE_HISTORY_PRODUCTS, uniqueProducts);
+            final var history = uniqueProducts.size() > 20 ? new ArrayList<>(uniqueProducts).subList(0, 20) : uniqueProducts;
+            model.addAttribute(PURCHASE_HISTORY_PRODUCTS, history);
         } else {
             final var nestedGroups = productsGroupService.getAllNestedGroups(group);
             nestedGroups.add(group.getId());
@@ -188,7 +189,7 @@ class CatalogController extends BaseJspController {
         fakeGroup.setUrl(item.getProductAttribute().getUrl() + "/" + item.getUrl());
         model.addAttribute(PRODUCT_GROUP, fakeGroup);
         model.addAttribute(BREADCRUMB_LABEL, item.getName());
-        model.addAttribute(BREADCRUMB_PATH, Collections.singletonList(fakeTopGroup));
+        model.addAttribute(BREADCRUMB_PATH, /* Collections.singletonList(fakeTopGroup)*/ Collections.emptyList());
         model.addAttribute(META_DESCRIPTION, getMetaDescription(item));
         model.addAttribute(CATEGORIES, Collections.emptyList());
     }
