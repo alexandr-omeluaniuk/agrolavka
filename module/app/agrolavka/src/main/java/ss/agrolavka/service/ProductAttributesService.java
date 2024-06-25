@@ -49,8 +49,10 @@ public class ProductAttributesService {
     }
 
     public List<ProductAttribute> getAttributeGroups() {
-        return productAttributeLinkDao.getAllLinks()
+        final var groups = productAttributeLinkDao.getAllLinks()
             .stream().map(link -> link.getAttributeItem().getProductAttribute()).distinct()
             .sorted((a, b) -> a.getName().compareTo(b.getName())).collect(Collectors.toCollection(ArrayList::new));
+        groups.forEach(group -> group.getItems().sort((a, b) -> a.getName().compareTo(b.getName())));
+        return groups;
     }
 }

@@ -188,7 +188,7 @@ class CatalogController extends BaseJspController {
         fakeGroup.setDescription(item.getDescription());
         fakeGroup.setUrl(item.getProductAttribute().getUrl() + "/" + item.getUrl());
         model.addAttribute(PRODUCT_GROUP, fakeGroup);
-        model.addAttribute(BREADCRUMB_LABEL, item.getName());
+        model.addAttribute(BREADCRUMB_LABEL, attribute.getName() + " - " + item.getName());
         model.addAttribute(BREADCRUMB_PATH, /* Collections.singletonList(fakeTopGroup)*/ Collections.emptyList());
         model.addAttribute(META_DESCRIPTION, getMetaDescription(item));
         model.addAttribute(CATEGORIES, Collections.emptyList());
