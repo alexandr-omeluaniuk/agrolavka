@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import ss.agrolavka.constants.SiteUrls;
 import ss.agrolavka.dao.ProductDAO;
 import ss.agrolavka.service.GroupProductsService;
+import ss.agrolavka.service.ProductAttributesService;
 import ss.agrolavka.service.ProductService;
 import ss.agrolavka.wrapper.ProductsSearchRequest;
 import ss.entity.agrolavka.Product;
@@ -27,6 +28,9 @@ public class ProductRESTController {
 
     @Autowired
     private ProductService productService;
+
+    @Autowired
+    private ProductAttributesService productAttributesService;
 
     @RequestMapping(value = "/search", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public EntitySearchResponse<Product> search(
@@ -52,7 +56,9 @@ public class ProductRESTController {
         request.setAvailable(available);
         request.setWithDiscounts(discounts);
         request.setIncludesHidden(includesHidden);
-        return new EntitySearchResponse<Product>(productDAO.count(request).intValue(), productDAO.search(request));
+        final var products = productDAO.search(request);
+        productAttributesService.setAttributeLinks(products);
+        return new EntitySearchResponse<Product>(productDAO.count(request).intValue(), products);
     }
 
     @RequestMapping(value = "/group", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)

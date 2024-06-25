@@ -136,6 +136,7 @@ class CatalogController extends BaseJspController {
         model.addAttribute(TITLE, "Широкий выбор товаров для сада и огорода");
         model.addAttribute(META_DESCRIPTION, "Каталог товаров для сада и огорода");
         model.addAttribute(CATEGORIES, productsGroupService.getRootProductGroups());
+        model.addAttribute(ATTRIBUTE_GROUPS, productAttributesService.getAttributeGroups());
     }
 
     private void setPurchaseHistoryProducts(
@@ -149,7 +150,8 @@ class CatalogController extends BaseJspController {
             .filter(Objects::nonNull)
             .collect(Collectors.toSet());
         if (group == null) {
-            model.addAttribute(PURCHASE_HISTORY_PRODUCTS, uniqueProducts);
+            final var history = uniqueProducts.size() > 20 ? new ArrayList<>(uniqueProducts).subList(0, 20) : uniqueProducts;
+            model.addAttribute(PURCHASE_HISTORY_PRODUCTS, history);
         } else {
             final var nestedGroups = productsGroupService.getAllNestedGroups(group);
             nestedGroups.add(group.getId());
@@ -176,14 +178,18 @@ class CatalogController extends BaseJspController {
     }
 
     private void setProductAttributeAttributes(final Model model, final ProductAttributeItem item) {
-        model.addAttribute(TITLE, item.getName());
+        model.addAttribute(TITLE, item.getProductAttribute().getName() + " - " + item.getName());
+        final var attribute = item.getProductAttribute();
+        final var fakeTopGroup = new ProductsGroup();
+        fakeTopGroup.setName(attribute.getName());
+        fakeTopGroup.setUrl(attribute.getUrl());
         final var fakeGroup = new ProductsGroup();
         fakeGroup.setName(item.getName());
         fakeGroup.setDescription(item.getDescription());
         fakeGroup.setUrl(item.getProductAttribute().getUrl() + "/" + item.getUrl());
         model.addAttribute(PRODUCT_GROUP, fakeGroup);
-        model.addAttribute(BREADCRUMB_LABEL, item.getProductAttribute().getName() + " \"" + item.getName() + "\"");
-        model.addAttribute(BREADCRUMB_PATH, Collections.emptyList());
+        model.addAttribute(BREADCRUMB_LABEL, attribute.getName() + " - " + item.getName());
+        model.addAttribute(BREADCRUMB_PATH, /* Collections.singletonList(fakeTopGroup)*/ Collections.emptyList());
         model.addAttribute(META_DESCRIPTION, getMetaDescription(item));
         model.addAttribute(CATEGORIES, Collections.emptyList());
     }
@@ -227,23 +233,20 @@ class CatalogController extends BaseJspController {
     }
     
     private DataModel resolveUrlToProductGroup(String url) {
+        final var parts = Arrays.stream(url.split("/")).filter(text -> !text.isBlank()).toList();
+        if (parts.size() == 3) {
+            final var productAttribute = productAttributesService.findByUrl(parts.get(1), parts.get(2));
+            if (productAttribute != null) {
+                return productAttribute;
+            }
+        }
         String last = url.substring(url.lastIndexOf("/") + 1);
         for (final var group : allProductGroupsService.getAllGroups()) {
             if (last.equals(group.getUrl())) {
                 return group;
             }
         }
-        final var product = productDAO.getProductByUrl(last);
-        if (product == null) {
-            final var parts = Arrays.stream(url.split("/")).filter(text -> !text.isBlank()).toList();
-            if (parts.size() == 3) {
-                return productAttributesService.findByUrl(parts.get(1), parts.get(2));
-            } else {
-                return null;
-            }
-        } else {
-            return product;
-        }
+        return productDAO.getProductByUrl(last);
     }
     
     private void setProducts(

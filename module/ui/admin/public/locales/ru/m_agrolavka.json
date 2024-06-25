@@ -26,7 +26,8 @@
         "available": "В наличии",
         "discounts": "На акции",
         "product_video_url": "Ссылка на видео",
-        "addAttributes": "Добавить аттрибуты"
+        "addAttributes": "Добавить аттрибуты",
+        "attributes": "Аттрибуты"
     },
     "products_groups": {
         "new_group": "Создать новую группу товаров",

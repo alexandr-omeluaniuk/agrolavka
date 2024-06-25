@@ -20,7 +20,8 @@ public class CatalogControllerTest extends BasePageControllerTest {
             JspValue.TITLE,
             JspValue.META_DESCRIPTION,
             JspValue.CATEGORIES,
-            JspValue.PURCHASE_HISTORY_PRODUCTS
+            JspValue.PURCHASE_HISTORY_PRODUCTS,
+            JspValue.ATTRIBUTE_GROUPS
         );
     }
     
@@ -39,7 +40,8 @@ public class CatalogControllerTest extends BasePageControllerTest {
             JspValue.TITLE,
             JspValue.META_DESCRIPTION,
             JspValue.CATEGORIES,
-            JspValue.PURCHASE_HISTORY_PRODUCTS
+            JspValue.PURCHASE_HISTORY_PRODUCTS,
+            JspValue.ATTRIBUTE_GROUPS
         );
     }
 

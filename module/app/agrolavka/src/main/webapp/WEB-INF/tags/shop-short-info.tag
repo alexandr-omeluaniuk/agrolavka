@@ -12,7 +12,10 @@
 <%@attribute name="shop" required="true" type="ss.entity.agrolavka.Shop"%>
 
 <%-- any content can be specified here e.g.: --%>
-<a class="agr-shop-address-link" href="/shops/${UrlProducer.transliterate(shop.title.toLowerCase())}"><h6 class="agr-shop-address">${shop.address}</h6></a>
+<h4 class="mb-0">${shop.title}</h4>
+<a class="agr-shop-address-link" href="/shops/${UrlProducer.transliterate(shop.title.toLowerCase())}">
+    <h6 class="agr-shop-address mt-0">${shop.address}</h6>
+</a>
 <% if (shop.getPhone() != null) { %>
 <div class="d-flex justify-content-between align-items-center">
     <h6 class="mt-2">Телефон</h6>
@@ -35,4 +38,4 @@
         }
     }
 %>
-<hr/>
+<hr class="d-lg-none d-md-block"/>
