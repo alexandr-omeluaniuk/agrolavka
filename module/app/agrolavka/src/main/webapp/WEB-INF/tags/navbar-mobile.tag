@@ -32,7 +32,7 @@
                     </div>
                 </div>
                 <div class="d-flex align-items-center justify-content-between">
-                    <button class="navbar-toggler agr-mobile-menu-btn" type="button">
+                    <button class="navbar-toggler agr-mobile-menu-btn" type="button" role="button" aria-label="Menu">
                         <i class="fas fa-bars"></i>
                     </button>
                     <t:quick-search-mobile />
