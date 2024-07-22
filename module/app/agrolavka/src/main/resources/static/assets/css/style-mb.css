@@ -696,3 +696,7 @@ and open the template in the editor.
 .form-check-input:checked:focus {
     border-color: var(--bs-purple) !important;
 }
+.form-check-input[type=radio]:checked:after {
+    border-color: var(--bs-purple) !important;
+    background-color: var(--bs-purple) !important;
+}

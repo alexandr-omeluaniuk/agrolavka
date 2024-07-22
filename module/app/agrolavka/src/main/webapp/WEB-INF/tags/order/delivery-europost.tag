@@ -14,7 +14,7 @@
 <%-- any content can be specified here e.g.: --%>
 <div class="row d-none" id="order-europost">
     
-    <div class="col-sm-12 col-lg-12 mb-3 mt-3">
+    <div class="col-sm-12 col-lg-12 mb-3">
             <div class="input-group me-4 d-lg-none d-xl-flex" id="agr-europost-location-dropdown">
                 <span class="input-group-text"><i class="fas fa-mail-bulk"></i></span>
                 <input type="search" class="form-control" aria-label="Отделения Европочты" placeholder="Выберите отделение Европочты *"
@@ -34,7 +34,7 @@
                     </c:forEach>
                 </ul>
             </div>
-            <input type="number" hidden="true" name="europostLocationId" required readonly/>
+            <input type="number" hidden="true" name="europostLocationId" class="form-control" placeholder="Выберите отделение Европочты *" required readonly/>
     </div>
     
     <div class="col-sm-12 col-lg-4">
