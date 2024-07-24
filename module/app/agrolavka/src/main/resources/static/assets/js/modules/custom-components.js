@@ -28,7 +28,7 @@ class XMenuItemIcon extends XElement {
         const color = this.getAttribute('color');
         const icon = this.getAttribute('icon');
         template.innerHTML = `
-            <button class="btn btn-sm btn-${color} btn-floating me-2" type="button">
+            <button class="btn btn-sm btn-${color} btn-floating me-2" type="button" role="button" aria-label="Icon">
                 <i class="fas fa-${icon} fa-fw me-3"></i>
             </button>
         `;
