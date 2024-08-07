@@ -231,7 +231,7 @@ class ProductDAOImpl implements ProductDAO {
         if (hiddenGroups.isEmpty()) {
             return cb.greaterThanOrEqualTo(c.get(Product_.id), 0L);
         } else {
-            return cb.not(productGroup.get(ProductsGroup_.id).in());
+            return cb.not(productGroup.get(ProductsGroup_.id).in(hiddenGroups));
         }
     }
 }
