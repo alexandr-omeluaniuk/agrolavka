@@ -50,7 +50,6 @@ class ProductDAOImpl implements ProductDAO {
         criteria.select(c).where(predicates.toArray(Predicate[]::new));
         if (request.getOrder() != null && request.getOrderBy() != null) {
             if (EntityAudit_.CREATED_DATE.equals(request.getOrderBy())) {
-                criteria.where(cb.greaterThan(c.get(Product_.quantity), 0d));
                 if ("asc".equals(request.getOrder())) {
                     criteria.orderBy(cb.asc(c.get(EntityAudit_.createdDate)));
                 } else {
@@ -108,17 +107,21 @@ class ProductDAOImpl implements ProductDAO {
     private List<Predicate> createSearchCriteria(CriteriaBuilder cb, Root<Product> c,
             ProductsSearchRequest request) {
         List<Predicate> predicates = new ArrayList<>();
+        predicates.add(hideGroups(cb, c));
         if (!request.isIncludesHidden()) {
             predicates.add(cb.equal(c.get(Product_.hidden), false));
         }
+        if (EntityAudit_.CREATED_DATE.equals(request.getOrderBy())) {
+            predicates.add(cb.greaterThan(c.get(Product_.quantity), 0d));
+        }
         if (request.getGroupId() != null) {
             final var allGroupsList = allProductGroupsService.getAllGroups();
+            Join<Product, ProductsGroup> productGroup = c.join(Product_.group, JoinType.LEFT);
             allGroupsList.stream().filter(
                 gr -> request.getGroupId().equals(gr.getId())
             ).findFirst().ifPresent(targetGroup -> {
                 final var groupIds = productsGroupService.getAllNestedGroups(targetGroup);
                 groupIds.add(targetGroup.getId());
-                Join<Product, ProductsGroup> productGroup = c.join(Product_.group, JoinType.LEFT);
                 predicates.add(productGroup.get(ProductsGroup_.id).in(groupIds));
             });
         }
@@ -161,7 +164,10 @@ class ProductDAOImpl implements ProductDAO {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Product> criteria = cb.createQuery(Product.class);
         Root<Product> c = criteria.from(Product.class);
-        criteria.select(c).where(cb.equal(c.get(Product_.url), url));
+        criteria.select(c).where(
+            hideGroups(cb, c),
+            cb.equal(c.get(Product_.url), url)
+        );
         List<Product> list = em.createQuery(criteria).getResultList();
         return list.isEmpty() ? null : list.get(0);
     }
@@ -184,7 +190,9 @@ class ProductDAOImpl implements ProductDAO {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Product> criteria = cb.createQuery(Product.class);
         Root<Product> c = criteria.from(Product.class);
-        criteria.select(c).where(cb.greaterThanOrEqualTo(c.get(Product_.UPDATED), minDate));
+        criteria.select(c).where(
+            cb.greaterThanOrEqualTo(c.get(Product_.UPDATED), minDate)
+        );
         return em.createQuery(criteria).getResultList();
     }
 
@@ -196,7 +204,34 @@ class ProductDAOImpl implements ProductDAO {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Product> criteria = cb.createQuery(Product.class);
         Root<Product> c = criteria.from(Product.class);
-        criteria.select(c).where(c.get(Product_.EXTERNAL_ID).in(externalIds));
+        criteria.select(c).where(
+            c.get(Product_.EXTERNAL_ID).in(externalIds)
+        );
         return em.createQuery(criteria).getResultList();
+    }
+
+    @Override
+    public List<Product> getByIds(Set<Long> ids) {
+        if (ids.isEmpty()) {
+            return Collections.emptyList();
+        }
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Product> criteria = cb.createQuery(Product.class);
+        Root<Product> c = criteria.from(Product.class);
+        criteria.select(c).where(
+            hideGroups(cb, c),
+            c.get(Product_.ID).in(ids)
+        );
+        return em.createQuery(criteria).getResultList();
+    }
+
+    private Predicate hideGroups(CriteriaBuilder cb, Root<Product> c) {
+        Join<Product, ProductsGroup> productGroup = c.join(Product_.group, JoinType.LEFT);
+        final var hiddenGroups = productsGroupService.getHiddenGroupIds();
+        if (hiddenGroups.isEmpty()) {
+            return cb.greaterThanOrEqualTo(c.get(Product_.id), 0L);
+        } else {
+            return cb.not(productGroup.get(ProductsGroup_.id).in());
+        }
     }
 }

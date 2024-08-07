@@ -59,4 +59,6 @@ public interface ProductDAO {
     List<Product> getLastModifiedProducts(Date minDate);
 
     List<Product> getByExternalIds(List<String> externalIds);
+
+    List<Product> getByIds(Set<Long> ids);
 }

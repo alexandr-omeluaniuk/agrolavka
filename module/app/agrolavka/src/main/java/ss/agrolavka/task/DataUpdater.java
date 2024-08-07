@@ -14,6 +14,7 @@ import ss.agrolavka.dao.ExternalEntityDAO;
 import ss.agrolavka.dao.ProductDAO;
 import ss.agrolavka.service.GroupProductsService;
 import ss.agrolavka.service.MySkladIntegrationService;
+import ss.agrolavka.service.ProductsGroupService;
 import ss.agrolavka.task.mysklad.DiscountsSynchronizer;
 import ss.agrolavka.task.mysklad.PriceTypeSynchronizator;
 import ss.agrolavka.task.mysklad.ProductVariantSynchronizator;
@@ -75,10 +76,13 @@ public class DataUpdater {
 
     @Autowired
     private DiscountsSynchronizer discountsSynchronizer;
+
+    @Autowired
+    private ProductsGroupService productsGroupService;
     
     @PostConstruct
     protected void init() {
-        AppCache.flushCache(coreDAO.getAll(ProductsGroup.class));
+        AppCache.flushCache(productsGroupService.getActiveProductGroups());
     }
     /**
      * Import MySklad data.

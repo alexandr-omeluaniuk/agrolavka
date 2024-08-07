@@ -1,21 +1,15 @@
 package ss.entity.agrolavka;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import java.util.List;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.json.JSONObject;
 import ss.entity.images.storage.EntityImage;
+
+import java.util.List;
 
 /**
  * Products group.
@@ -64,6 +58,9 @@ public class ProductsGroup extends ExternalEntity implements Comparable<Products
             inverseJoinColumns = @JoinColumn(name = "image_id", referencedColumnName = "id"))
     @Fetch(FetchMode.SUBSELECT)
     private List<EntityImage> images;
+
+    @Column(name = "is_hidden")
+    private Boolean hidden;
     
     public String getName() {
         return name;
@@ -127,6 +124,14 @@ public class ProductsGroup extends ExternalEntity implements Comparable<Products
     
     public void setSeoDescription(String seoDescription) {
         this.seoDescription = seoDescription;
+    }
+
+    public Boolean getHidden() {
+        return hidden;
+    }
+
+    public void setHidden(Boolean hidden) {
+        this.hidden = hidden;
     }
     
     @Override
