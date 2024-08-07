@@ -5,6 +5,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import ss.agrolavka.constants.CacheKey;
 import ss.agrolavka.dao.OrderDAO;
+import ss.agrolavka.dao.ProductDAO;
 import ss.entity.agrolavka.Order;
 import ss.entity.agrolavka.OrderPosition;
 import ss.entity.agrolavka.Product;
@@ -24,6 +25,9 @@ public class PurchaseHistoryService {
     private ProductService productService;
 
     @Autowired
+    private ProductDAO productDAO;
+
+    @Autowired
     private OrderDAO orderDAO;
 
     @Cacheable(value = CacheKey.PURCHASE_HISTORY)
@@ -33,7 +37,7 @@ public class PurchaseHistoryService {
             final var productIds = purchaseHistory.stream()
                 .flatMap(mapper -> mapper.getPositions().stream().map(OrderPosition::getProductId))
                 .collect(Collectors.toSet());
-            final var productsMap = coreDao.findByIds(productIds, Product.class).stream().collect(
+            final var productsMap = productDAO.getByIds(productIds).stream().collect(
                 Collectors.toMap(Product::getId, Function.identity())
             );
             productsMap.values().forEach(product -> product.setVariants(productService.getVariants(product)));

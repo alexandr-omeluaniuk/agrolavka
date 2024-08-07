@@ -58,6 +58,9 @@ const useStyles = makeStyles(theme => ({
     favoriteIcon: {
         color: theme.palette.secondary.main
     },
+    hiddenIcon: {
+        color: theme.palette.error.main
+    },
     small: {
         width: theme.spacing(3),
         height: theme.spacing(3),
@@ -103,6 +106,9 @@ function ProductsGroups(props) {
             node.setOrigin(productGroup);
             if (productGroup.topCategory) {
                 node.setIcon(<Icon className={classes.favoriteIcon}>favorite</Icon>);
+            }
+            if (productGroup.hidden) {
+                node.setIcon(<Icon className={classes.hiddenIcon}>heart_broken</Icon>);
             }
             node.setAvatar(<Avatar className={classes.small} src={
                 productGroup.images && productGroup.images.length > 0 && productGroup.images[0].fileNameOnDisk
@@ -213,11 +219,13 @@ function ProductsGroups(props) {
             setFormConfig(new FormConfig([
                 new FormField('id', TYPES.ID).hide(),
                 new FormField('name', TYPES.TEXTFIELD, t('m_agrolavka:products_groups.product_group_name'))
-                        .setGrid({xs: 12, md: 9}).validation([
+                        .setGrid({xs: 12, md: 6}).validation([
                     new Validator(VALIDATORS.REQUIRED),
                     new Validator(VALIDATORS.MAX_LENGTH, {length: 255})
                 ]),
                 new FormField('topCategory', TYPES.BOOLEAN, t('m_agrolavka:products_groups.product_group_top_category'))
+                        .setGrid({xs: 12, md: 3}),
+                new FormField('hidden', TYPES.BOOLEAN, 'Скрыть')
                         .setGrid({xs: 12, md: 3}),
                 new FormField('description', TYPES.TEXTAREA, t('m_agrolavka:products_groups.product_group_description'))
                         .setGrid({xs: 12}).validation([
