@@ -140,6 +140,9 @@ class ProductDAOImpl implements ProductDAO {
         if (request.isWithDiscounts()) {
             predicates.add(cb.isNotNull(c.get(Product_.discount)));
         }
+        if (request.isInvisible()) {
+            predicates.add(cb.equal(c.get(Product_.invisible), true));
+        }
         return predicates;
     }
     

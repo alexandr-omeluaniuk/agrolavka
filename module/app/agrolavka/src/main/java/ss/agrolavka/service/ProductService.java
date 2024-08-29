@@ -162,6 +162,7 @@ public class ProductService {
         entityFromDB.setSeoTitle(product.getSeoTitle());
         entityFromDB.setSeoDescription(product.getSeoDescription());
         entityFromDB.setVideoURL(product.getVideoURL());
+        entityFromDB.setInvisible(product.getInvisible());
         return coreDao.update(entityFromDB);
     }
 

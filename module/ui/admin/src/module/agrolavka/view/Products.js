@@ -81,6 +81,7 @@ function Products() {
     const [filterCode, setFilterCode] = React.useState(null);
     const [filterAvailable, setFilterAvailable] = React.useState(false);
     const [filterDiscounts, setFilterDiscounts] = React.useState(false);
+    const [filterInvisible, setFilterInvisible] = React.useState(false);
 
     const [formConfig, setFormConfig] = React.useState(null);
     const [formTitle, setFormTitle] = React.useState('');
@@ -92,7 +93,7 @@ function Products() {
     const productsFilter = () => {
         return (
                 <Grid container spacing={2}>
-                    <Grid item xs={12} md={6}>
+                    <Grid item xs={12} md={4}>
                         <TextField label={t('m_agrolavka:products.product_name')} variant="outlined" fullWidth onChange={(e) => {
                             setFilterProductName(e.target.value);
                         }}/>
@@ -113,6 +114,13 @@ function Products() {
                         <FormControlLabel label={t('m_agrolavka:products.discounts')} control={(
                             <Switch checked={filterDiscounts} onChange={(e) => {
                                 setFilterDiscounts(e.target.checked);
+                            }}/>
+                        )}/>
+                    </Grid>
+                    <Grid item xs={6} md={2} className={classes.filterAvailable}>
+                        <FormControlLabel label={'Скрытые'} control={(
+                            <Switch checked={filterInvisible} onChange={(e) => {
+                                setFilterInvisible(e.target.checked);
                             }}/>
                         )}/>
                     </Grid>
@@ -190,6 +198,7 @@ function Products() {
         apiUrl.addGetExtraParam('code', filterCode ? filterCode : '');
         apiUrl.addGetExtraParam('available', filterAvailable);
         apiUrl.addGetExtraParam('discounts', filterDiscounts);
+        apiUrl.addGetExtraParam('invisible', filterInvisible);
         apiUrl.addGetExtraParam('includesHidden', true);
         const newTableConfig = new TableConfig(
                 t('m_agrolavka:agrolavka.products') + (selectedProductGroup ? ` (${selectedProductGroup.name})` : ''), apiUrl, [
@@ -269,7 +278,7 @@ function Products() {
         newTableConfig.isFormDialog = false;
         setTableConfig(newTableConfig);
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [selectedProductGroup, filterProductName, filterCode, filterAvailable, filterDiscounts]);
+    }, [selectedProductGroup, filterProductName, filterCode, filterAvailable, filterDiscounts, filterInvisible]);
     useEffect(() => {
         if (formConfig === null) {
             const attributesTree = new FormField('attributes', TYPES.CUSTOM, '').setGrid({xs: 12, md: 12});
