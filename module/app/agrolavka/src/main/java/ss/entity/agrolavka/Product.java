@@ -98,6 +98,9 @@ public class Product extends ExternalEntity {
     @Size(max = 3000)
     @Column(name = "video_url", length = 3000)
     private String videoURL;
+
+    @Column(name = "is_invisible")
+    private Boolean invisible;
     
     @Transient
     private List<ProductVariant> variants;
@@ -271,6 +274,14 @@ public class Product extends ExternalEntity {
 
     public void setAttributeLinks(List<ProductAttributeLink> attributeLinks) {
         this.attributeLinks = attributeLinks;
+    }
+
+    public Boolean getInvisible() {
+        return invisible;
+    }
+
+    public void setInvisible(Boolean invisible) {
+        this.invisible = invisible;
     }
     
     @Override

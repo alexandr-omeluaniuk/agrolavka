@@ -33,6 +33,10 @@ public class ProductsSearchRequest {
     private boolean withDiscounts = false;
     /** Includes hidden. */
     private boolean includesHidden = false;
+
+    private boolean invisible = false;
+
+    private boolean noInvisible = true;
     // =================================================== SET & GET ==================================================
     /**
      * @return the groupId
@@ -161,5 +165,21 @@ public class ProductsSearchRequest {
 
     public void setProductIds(Set<Long> productIds) {
         this.productIds = productIds;
+    }
+
+    public boolean isInvisible() {
+        return invisible;
+    }
+
+    public void setInvisible(boolean invisible) {
+        this.invisible = invisible;
+    }
+
+    public boolean isNoInvisible() {
+        return noInvisible;
+    }
+
+    public void setNoInvisible(boolean noInvisible) {
+        this.noInvisible = noInvisible;
     }
 }

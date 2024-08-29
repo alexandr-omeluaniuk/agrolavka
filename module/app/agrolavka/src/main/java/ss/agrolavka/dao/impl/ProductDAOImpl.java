@@ -140,6 +140,17 @@ class ProductDAOImpl implements ProductDAO {
         if (request.isWithDiscounts()) {
             predicates.add(cb.isNotNull(c.get(Product_.discount)));
         }
+        if (request.isInvisible()) {
+            predicates.add(cb.equal(c.get(Product_.invisible), true));
+        }
+        if (request.isNoInvisible()) {
+            predicates.add(
+                cb.or(
+                    cb.equal(c.get(Product_.invisible), false),
+                    cb.isNull(c.get(Product_.invisible))
+                )
+            );
+        }
         return predicates;
     }
     
@@ -166,7 +177,11 @@ class ProductDAOImpl implements ProductDAO {
         Root<Product> c = criteria.from(Product.class);
         criteria.select(c).where(
             hideGroups(cb, c),
-            cb.equal(c.get(Product_.url), url)
+            cb.equal(c.get(Product_.url), url),
+            cb.or(
+                cb.equal(c.get(Product_.invisible), false),
+                cb.isNull(c.get(Product_.invisible))
+            )
         );
         List<Product> list = em.createQuery(criteria).getResultList();
         return list.isEmpty() ? null : list.get(0);
