@@ -58,6 +58,7 @@ public class ProductRESTController {
         request.setWithDiscounts(discounts);
         request.setIncludesHidden(includesHidden);
         request.setInvisible(invisible);
+        request.setNoInvisible(false);
         final var products = productDAO.search(request);
         productAttributesService.setAttributeLinks(products);
         return new EntitySearchResponse<Product>(productDAO.count(request).intValue(), products);

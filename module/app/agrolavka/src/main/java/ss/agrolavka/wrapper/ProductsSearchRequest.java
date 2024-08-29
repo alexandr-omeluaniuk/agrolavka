@@ -35,6 +35,8 @@ public class ProductsSearchRequest {
     private boolean includesHidden = false;
 
     private boolean invisible = false;
+
+    private boolean noInvisible = true;
     // =================================================== SET & GET ==================================================
     /**
      * @return the groupId
@@ -171,5 +173,13 @@ public class ProductsSearchRequest {
 
     public void setInvisible(boolean invisible) {
         this.invisible = invisible;
+    }
+
+    public boolean isNoInvisible() {
+        return noInvisible;
+    }
+
+    public void setNoInvisible(boolean noInvisible) {
+        this.noInvisible = noInvisible;
     }
 }

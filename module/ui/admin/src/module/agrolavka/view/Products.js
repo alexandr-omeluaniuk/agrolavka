@@ -213,7 +213,7 @@ function Products() {
                 return (
                         <React.Fragment>
                             <NavLink to={AppURLs.app + '/agrolavka/product/' + row.id} color="primary">
-                                <span className={row.hidden ? classes.hidden : null}>{row.name}</span>
+                                <span className={row.hidden || row.invisible ? classes.hidden : null}>{row.name}</span>
                             </NavLink>
                             <br/>
                             <small className={classes.productGroup}>{row.group ? row.group.name : ''}</small>
