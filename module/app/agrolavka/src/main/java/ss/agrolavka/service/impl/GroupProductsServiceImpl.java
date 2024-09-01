@@ -17,20 +17,6 @@
 package ss.agrolavka.service.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Function;
-import java.util.function.Predicate;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +31,14 @@ import ss.entity.agrolavka.Product;
 import ss.entity.images.storage.EntityImage;
 import ss.martin.core.dao.CoreDao;
 import ss.martin.images.storage.api.ImagesStorageApi;
+
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * Group products service implementation.
@@ -70,8 +64,8 @@ class GroupProductsServiceImpl implements GroupProductsService {
     @Override
     public void groupProductByVolumes() throws Exception {
         resetHiddenFlag();
-        final Set<Long> hiddenProducts = doGrouping();
-        setHiddenFlag(hiddenProducts);
+        // final Set<Long> hiddenProducts = doGrouping();
+        // setHiddenFlag(hiddenProducts);
     }
     
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
@@ -138,7 +132,10 @@ class GroupProductsServiceImpl implements GroupProductsService {
     private void resetHiddenFlag() throws Exception {
         final List<Product> allProducts = coreDAO.getAll(Product.class);
         allProducts.forEach(p -> p.setHidden(false));
+        final var fakeProducts = allProducts.stream().filter(p -> GROUPED_PRODUCT_EXTERNAL_ID.equals(p.getExternalId())).toList();
+        LOG.info("Delete fake products: " + fakeProducts.size());
         coreDAO.massUpdate(allProducts);
+        coreDAO.massDelete(fakeProducts);
         LOG.info("Flag 'hidden' has been reset");
     }
     
