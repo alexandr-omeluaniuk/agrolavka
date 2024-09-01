@@ -50,6 +50,13 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
     private static final String METHOD_GET = "GET";
     
     private static final String SITE_PRICE_TYPE = "Цена продажи";
+
+    private static final Set<String> CHARACTERISTIC_NAMES_SKIP = new HashSet<>(
+        Arrays.stream(new String[] {
+            "на розлив",
+            "развес"
+        }).toList()
+    );
     /** My sklad API endpoint. */
     @Value("${mysklad.api.url:https://api.moysklad.ru/api/remap/1.2}")
     private String rootUrl;
@@ -136,7 +143,13 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
                     final var characteristics = item.getJSONArray("characteristics");
                     final var characteristicsNames = new ArrayList<String>();
                     for (int j = 0; j < characteristics.length(); j++) {
-                        characteristicsNames.add(characteristics.getJSONObject(j).getString("value"));
+                        final var charObj = characteristics.getJSONObject(j);
+                        if (!CHARACTERISTIC_NAMES_SKIP.contains(charObj.getString("name"))) {
+                            characteristicsNames.add(charObj.getString("value"));
+                        }
+                    }
+                    if (characteristicsNames.isEmpty()) {
+                        continue;
                     }
                     variant.setCharacteristics(characteristicsNames.stream().collect(Collectors.joining("::")));
                 }
