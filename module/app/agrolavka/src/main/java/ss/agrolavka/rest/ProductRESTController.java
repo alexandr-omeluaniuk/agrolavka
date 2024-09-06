@@ -5,7 +5,6 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import ss.agrolavka.constants.SiteUrls;
 import ss.agrolavka.dao.ProductDAO;
-import ss.agrolavka.service.GroupProductsService;
 import ss.agrolavka.service.ProductAttributesService;
 import ss.agrolavka.service.ProductService;
 import ss.agrolavka.wrapper.ProductsSearchRequest;
@@ -22,9 +21,6 @@ public class ProductRESTController {
 
     @Autowired
     private CoreDao coreDAO;
-
-    @Autowired
-    private GroupProductsService groupProductsService;
 
     @Autowired
     private ProductService productService;
@@ -62,11 +58,6 @@ public class ProductRESTController {
         final var products = productDAO.search(request);
         productAttributesService.setAttributeLinks(products);
         return new EntitySearchResponse<Product>(productDAO.count(request).intValue(), products);
-    }
-
-    @RequestMapping(value = "/group", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
-    public void groupProductsByVolume() throws Exception {
-        groupProductsService.groupProductByVolumes();
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)

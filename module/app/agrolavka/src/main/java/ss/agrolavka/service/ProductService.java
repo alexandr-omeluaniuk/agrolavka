@@ -146,16 +146,16 @@ public class ProductService {
 
     public Product updateProduct(Product product) {
         Product entityFromDB = coreDao.findById(product.getId(), Product.class);
-        if (!GroupProductsService.GROUPED_PRODUCT_EXTERNAL_ID.equals(product.getExternalId())) {
-            mySkladService.updateProduct(product);
-            final List<EntityImage> actualImages = getActualImages(
-                    entityFromDB.getImages(), product.getImages());
-            entityFromDB.setImages(actualImages);
-            entityFromDB = coreDao.update(entityFromDB);
-            product.setImages(entityFromDB.getImages());
-            mySkladService.removeProductImages(product);
-            mySkladService.attachImagesToProduct(product);
-        }
+
+        mySkladService.updateProduct(product);
+        final List<EntityImage> actualImages = getActualImages(
+            entityFromDB.getImages(), product.getImages());
+        entityFromDB.setImages(actualImages);
+        entityFromDB = coreDao.update(entityFromDB);
+        product.setImages(entityFromDB.getImages());
+        mySkladService.removeProductImages(product);
+        mySkladService.attachImagesToProduct(product);
+
         entityFromDB.setName(product.getName());
         entityFromDB.setPrice(product.getPrice());
         entityFromDB.setDescription(product.getDescription());
@@ -168,9 +168,9 @@ public class ProductService {
 
     public void deleteProduct(Long id) {
         Product product = coreDao.findById(id, Product.class);
-        if (!GroupProductsService.GROUPED_PRODUCT_EXTERNAL_ID.equals(product.getExternalId())) {
-            mySkladService.deleteProduct(product);
-        }
+
+        mySkladService.deleteProduct(product);
+
         coreDao.delete(id, Product.class);
     }
 

@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 import ss.agrolavka.AgrolavkaConfiguration;
 import ss.agrolavka.dao.ExternalEntityDAO;
 import ss.agrolavka.dao.ProductDAO;
-import ss.agrolavka.service.GroupProductsService;
 import ss.agrolavka.service.MySkladIntegrationService;
 import ss.agrolavka.service.ProductsGroupService;
 import ss.agrolavka.task.mysklad.DiscountsSynchronizer;
@@ -58,10 +57,7 @@ public class DataUpdater {
     /** Agrolavka configuration. */
     @Autowired
     private AgrolavkaConfiguration configuration;
-    /** Group products service. */
-    @Autowired
-    private GroupProductsService groupProductsService;
-    
+
     @Autowired
     private AlertService alertService;
     
@@ -112,7 +108,6 @@ public class DataUpdater {
             importProducts(productDiscountMap);
             importImages();
             productVariantSynchronizator.doImport();
-            groupProductsService.groupProductByVolumes();
             AppCache.flushCache(coreDAO.getAll(ProductsGroup.class));
             LOG.info("===============================================================================================");
             resetAllCaches();
@@ -265,9 +260,6 @@ public class DataUpdater {
             counter++;
             List<EntityImage> productImages = new ArrayList<>();
             try {
-                if (GroupProductsService.GROUPED_PRODUCT_EXTERNAL_ID.equals(product.getExternalId())) {
-                    continue;
-                }
                 List<EntityImage> images = mySkladIntegrationService.getProductImages(product.getExternalId());
                 final Set<String> imageKeys = images.stream().map((i) -> i.getSize() + "::" + i.getName())
                     .collect(Collectors.toSet());
