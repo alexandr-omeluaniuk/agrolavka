@@ -20,6 +20,8 @@ public final class JspValue {
     public static final String TOTAL_INTEGER = "totalInteger";
     public static final String TOTAL_DECIMAL = "totalDecimal";
     public static final String TITLE = "title";
+
+    public static final String SYSTEM_SETTINGS = "systemSettings";
     
     public static final String PAGE = "page";
     public static final String VIEW = "view";
