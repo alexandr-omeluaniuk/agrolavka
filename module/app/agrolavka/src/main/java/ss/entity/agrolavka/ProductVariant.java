@@ -31,6 +31,9 @@ public class ProductVariant extends ExternalEntity implements Comparable<Product
     @Column(name = "characteristics", length = 255, nullable = false)
     private String characteristics;
 
+    @Column(name = "is_hidden")
+    private Boolean hidden;
+
     /**
      * @return the name
      */
@@ -79,6 +82,14 @@ public class ProductVariant extends ExternalEntity implements Comparable<Product
 
     public void setCharacteristics(String characteristics) {
         this.characteristics = characteristics;
+    }
+
+    public Boolean getHidden() {
+        return hidden;
+    }
+
+    public void setHidden(Boolean hidden) {
+        this.hidden = hidden;
     }
     
     @Override

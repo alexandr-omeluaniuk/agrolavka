@@ -142,15 +142,18 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
                     variant.setParentId(productUrlParts[productUrlParts.length - 1]);
                     final var characteristics = item.getJSONArray("characteristics");
                     final var characteristicsNames = new ArrayList<String>();
+                    boolean hidden = false;
                     for (int j = 0; j < characteristics.length(); j++) {
                         final var charObj = characteristics.getJSONObject(j);
-                        if (!CHARACTERISTIC_NAMES_SKIP.contains(charObj.getString("name"))) {
-                            characteristicsNames.add(charObj.getString("value"));
+                        if (CHARACTERISTIC_NAMES_SKIP.contains(charObj.getString("name"))) {
+                            hidden = true;
                         }
+                        characteristicsNames.add(charObj.getString("value"));
                     }
                     if (characteristicsNames.isEmpty()) {
                         continue;
                     }
+                    variant.setHidden(hidden);
                     variant.setCharacteristics(characteristicsNames.stream().collect(Collectors.joining("::")));
                 }
                 result.add(variant);

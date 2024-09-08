@@ -19,7 +19,7 @@ public class ProductVariantsService {
 
     @Cacheable(CacheKey.PRODUCT_VARIANTS)
     public Map<String, List<ProductVariant>> getVariantsMap() {
-        return coreDao.getAll(ProductVariant.class).stream().collect(
+        return coreDao.getAll(ProductVariant.class).stream().filter(v -> !Boolean.TRUE.equals(v.getHidden())).collect(
             Collectors.groupingBy(ProductVariant::getParentId)
         );
     }

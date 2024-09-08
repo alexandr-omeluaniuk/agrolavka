@@ -7,7 +7,8 @@
         "feedbacks": "Обратная связь",
         "shops": "Магазины",
         "slides": "Слайды",
-        "product-attributes": "Аттрибуты"
+        "product-attributes": "Аттрибуты",
+        "system-settings": "Системные настройки"
     },
     "products": {
         "product_groups": "Категория",
