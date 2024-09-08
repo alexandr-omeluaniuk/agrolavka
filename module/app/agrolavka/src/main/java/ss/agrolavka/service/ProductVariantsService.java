@@ -17,9 +17,19 @@ public class ProductVariantsService {
     @Autowired
     private CoreDao coreDao;
 
+    @Autowired
+    private SystemSettingsService systemSettingsService;
+
     @Cacheable(CacheKey.PRODUCT_VARIANTS)
     public Map<String, List<ProductVariant>> getVariantsMap() {
-        return coreDao.getAll(ProductVariant.class).stream().collect(
+        final var showAll = systemSettingsService.getCurrentSettings().isShowAllProductVariants();
+        return coreDao.getAll(ProductVariant.class).stream().filter(v -> {
+            if (showAll) {
+                return true;
+            } else {
+                return !Boolean.TRUE.equals(v.getHidden());
+            }
+        }).collect(
             Collectors.groupingBy(ProductVariant::getParentId)
         );
     }

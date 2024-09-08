@@ -5,8 +5,6 @@
  */
 package ss.agrolavka.dao.impl;
 
-import java.util.List;
-import java.util.Set;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.criteria.CriteriaBuilder;
@@ -17,9 +15,11 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import ss.agrolavka.dao.ExternalEntityDAO;
-import ss.agrolavka.service.GroupProductsService;
 import ss.entity.agrolavka.ExternalEntity;
 import ss.entity.agrolavka.ExternalEntity_;
+
+import java.util.List;
+import java.util.Set;
 
 /**
  * External entity DAO implementation.
@@ -46,8 +46,7 @@ class ExternalEntityDAOImpl implements ExternalEntityDAO {
         CriteriaDelete<T> criteria = cb.createCriteriaDelete(cl);
         Root<T> c = criteria.from(cl);
         criteria.where(cb.and(
-                cb.not(c.get(ExternalEntity_.externalId).in(ids)),
-                cb.notEqual(c.get(ExternalEntity_.EXTERNAL_ID), GroupProductsService.GROUPED_PRODUCT_EXTERNAL_ID)
+                cb.not(c.get(ExternalEntity_.externalId).in(ids))
         ));
         em.createQuery(criteria).executeUpdate();
     }

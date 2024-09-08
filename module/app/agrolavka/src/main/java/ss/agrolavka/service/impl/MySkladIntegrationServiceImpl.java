@@ -11,7 +11,9 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import org.springframework.util.function.ThrowingSupplier;
 import ss.agrolavka.AgrolavkaConfiguration;
+import ss.agrolavka.dao.ExternalEntityDAO;
 import ss.agrolavka.service.MySkladIntegrationService;
+import ss.agrolavka.util.AppCache;
 import ss.entity.agrolavka.*;
 import ss.entity.images.storage.EntityImage;
 import ss.martin.base.lang.ThrowingRunnable;
@@ -50,6 +52,13 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
     private static final String METHOD_GET = "GET";
     
     private static final String SITE_PRICE_TYPE = "Цена продажи";
+
+    private static final Set<String> CHARACTERISTIC_NAMES_SKIP = new HashSet<>(
+        Arrays.stream(new String[] {
+            "на розлив",
+            "развес"
+        }).toList()
+    );
     /** My sklad API endpoint. */
     @Value("${mysklad.api.url:https://api.moysklad.ru/api/remap/1.2}")
     private String rootUrl;
@@ -62,6 +71,9 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
     /** Core DAO. */
     @Autowired
     private CoreDao coreDAO;
+
+    @Autowired
+    private ExternalEntityDAO externalEntityDAO;
     /** Authorization token. */
     private String token;
     
@@ -135,9 +147,27 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
                     variant.setParentId(productUrlParts[productUrlParts.length - 1]);
                     final var characteristics = item.getJSONArray("characteristics");
                     final var characteristicsNames = new ArrayList<String>();
+                    boolean hidden = false;
                     for (int j = 0; j < characteristics.length(); j++) {
-                        characteristicsNames.add(characteristics.getJSONObject(j).getString("value"));
+                        final var charObj = characteristics.getJSONObject(j);
+                        if (CHARACTERISTIC_NAMES_SKIP.contains(charObj.getString("name"))) {
+                            final var products = externalEntityDAO.getExternalEntitiesByIds(
+                                new HashSet<>(Arrays.asList(variant.getParentId())),
+                                Product.class
+                            );
+                            final var product = products.isEmpty() ? null : products.get(0);
+                            final var specificGroup = AppCache.isBelongsToGroup("Средства защиты растений (СЗР)", product.getGroup());
+                            if (specificGroup) {
+                                hidden = true;
+                                LOG.info("Product [" + product.getName() + "] variant [" + charObj.getString("value") + "] marked as hidden");
+                            }
+                        }
+                        characteristicsNames.add(charObj.getString("value"));
                     }
+                    if (characteristicsNames.isEmpty()) {
+                        continue;
+                    }
+                    variant.setHidden(hidden);
                     variant.setCharacteristics(characteristicsNames.stream().collect(Collectors.joining("::")));
                 }
                 result.add(variant);

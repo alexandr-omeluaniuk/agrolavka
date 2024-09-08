@@ -72,7 +72,7 @@
                                     data-in-cart="${inCart ? "true" : ""}"
                                     data-in-cart-variants="${inCartVariants}"
                                     data-variants="${variants}"
-                                    data-volume="${volumes}"></x-agr-product-actions>
+                                    data-volume=""></x-agr-product-actions>
                                 <hr/>
                             </div>
                             <div class="col-xs-12 col-sm-6 col-md-8 col-lg-9 gx-5">

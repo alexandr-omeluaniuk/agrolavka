@@ -12,6 +12,7 @@ import Order from './view/Order';
 import Shops from './view/Shops';
 import Slides from './view/Slides';
 import Product from './view/Product';
+import SystemSettings from './view/SystemSettings';
 import { ROLE_SUBSCRIPTION_ADMINISTRATOR, ROLE_SUBSCRIPTION_USER } from '../../conf/standard-roles';
 import { OrdersForPrintProvider } from './hooks/OrdersForPrintContext';
 
@@ -21,6 +22,7 @@ export const agrolavka = new Module('agrolavka', '/agrolavka', [
     new ModuleView('slides', '/slides', 'grade', Slides),
     new ModuleView('shops', '/shops', 'location_on', Shops),
     new ModuleView('product-attributes', '/product-attributes', 'style', ProductAttributes),
+    new ModuleView('system-settings', '/system-settings', 'settings', SystemSettings),
     new ModuleView(null, '/order/:id', null, Order),
     new ModuleView(null, '/product/:id', null, Product)
 ], (routes) => <OrdersForPrintProvider key="OrdersForPrintProvider">{routes}</OrdersForPrintProvider>).setIcon('store_mall_directory')
