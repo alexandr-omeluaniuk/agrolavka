@@ -11,7 +11,9 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import org.springframework.util.function.ThrowingSupplier;
 import ss.agrolavka.AgrolavkaConfiguration;
+import ss.agrolavka.dao.ExternalEntityDAO;
 import ss.agrolavka.service.MySkladIntegrationService;
+import ss.agrolavka.util.AppCache;
 import ss.entity.agrolavka.*;
 import ss.entity.images.storage.EntityImage;
 import ss.martin.base.lang.ThrowingRunnable;
@@ -69,6 +71,9 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
     /** Core DAO. */
     @Autowired
     private CoreDao coreDAO;
+
+    @Autowired
+    private ExternalEntityDAO externalEntityDAO;
     /** Authorization token. */
     private String token;
     
@@ -146,7 +151,16 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
                     for (int j = 0; j < characteristics.length(); j++) {
                         final var charObj = characteristics.getJSONObject(j);
                         if (CHARACTERISTIC_NAMES_SKIP.contains(charObj.getString("name"))) {
-                            hidden = true;
+                            final var products = externalEntityDAO.getExternalEntitiesByIds(
+                                new HashSet<>(Arrays.asList(variant.getParentId())),
+                                Product.class
+                            );
+                            final var product = products.isEmpty() ? null : products.get(0);
+                            final var specificGroup = AppCache.isBelongsToGroup("Средства защиты растений (СЗР)", product.getGroup());
+                            if (specificGroup) {
+                                hidden = true;
+                                LOG.info("Product [" + product.getName() + "] variant [" + charObj.getString("value") + "] marked as hidden");
+                            }
                         }
                         characteristicsNames.add(charObj.getString("value"));
                     }
