@@ -34,7 +34,12 @@ public class SystemSettingsRestController {
         if (payload.getId() == null) {
             entity = coreDao.create(payload);
         } else {
-            entity = coreDao.update(payload);
+            final var fromDb = coreDao.findById(payload.getId(), SystemSettings.class);
+            fromDb.setDeliveryConditions(payload.getDeliveryConditions());
+            fromDb.setDeliveryOrder(payload.getDeliveryOrder());
+            fromDb.setDeliveryPaymentDetails(payload.getDeliveryPaymentDetails());
+            fromDb.setShowAllProductVariants(payload.isShowAllProductVariants());
+            entity = coreDao.update(fromDb);
         }
         resetCaches();
         return entity;

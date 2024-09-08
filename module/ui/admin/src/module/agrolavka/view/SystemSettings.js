@@ -44,6 +44,8 @@ function SystemSettings(props) {
     
     const formConfig = new FormConfig([
         new FormField('id', TYPES.ID).hide(),
+        new FormField('showAllProductVariants', TYPES.BOOLEAN, 'Показать все модификации продуктов')
+            .setGrid({xs: 12, md: 12}),
         new FormField('deliveryConditions', TYPES.TEXTAREA, 'Об условиях доставки').setGrid({xs: 12, md: 4}).validation([
             new Validator(VALIDATORS.REQUIRED),
             new Validator(VALIDATORS.MAX_LENGTH, {length: 65535})
@@ -70,6 +72,7 @@ function SystemSettings(props) {
         setFormDisabled(true);
         dataService.put('/agrolavka/protected/system-settings', data).then(() => {
             setFormDisabled(false);
+            setSystemSettings(null);
             showNotification("Успешно сохранено", '', 'success');
         });
     };

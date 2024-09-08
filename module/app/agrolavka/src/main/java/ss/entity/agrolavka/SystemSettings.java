@@ -18,6 +18,9 @@ public class SystemSettings extends EntityAudit {
     @Column(name = "delivery_payment_details", length = 65535, nullable = false)
     private String deliveryPaymentDetails;
 
+    @Column(name = "show_all_product_variants")
+    private boolean showAllProductVariants;
+
     public String getDeliveryConditions() {
         return deliveryConditions;
     }
@@ -40,5 +43,13 @@ public class SystemSettings extends EntityAudit {
 
     public void setDeliveryPaymentDetails(String deliveryPaymentDetails) {
         this.deliveryPaymentDetails = deliveryPaymentDetails;
+    }
+
+    public boolean isShowAllProductVariants() {
+        return showAllProductVariants;
+    }
+
+    public void setShowAllProductVariants(boolean showAllProductVariants) {
+        this.showAllProductVariants = showAllProductVariants;
     }
 }
