@@ -39,6 +39,11 @@ public class SystemSettingsRestController {
             fromDb.setDeliveryOrder(payload.getDeliveryOrder());
             fromDb.setDeliveryPaymentDetails(payload.getDeliveryPaymentDetails());
             fromDb.setShowAllProductVariants(payload.isShowAllProductVariants());
+            fromDb.setDiscountAbout(payload.getDiscountAbout());
+            fromDb.setDiscountParticipate(payload.getDiscountParticipate());
+            fromDb.setDiscountSize(payload.getDiscountSize());
+            fromDb.setRegistrationInfo(payload.getRegistrationInfo());
+            fromDb.setGuaranteeInfo(payload.getGuaranteeInfo());
             entity = coreDao.update(fromDb);
         }
         resetCaches();
