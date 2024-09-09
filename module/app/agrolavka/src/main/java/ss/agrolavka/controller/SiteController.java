@@ -6,7 +6,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import ss.agrolavka.service.SystemSettingsService;
 import ss.agrolavka.util.UrlProducer;
 import ss.entity.agrolavka.EuropostLocation;
 import ss.martin.core.dao.CoreDao;
@@ -26,9 +25,6 @@ public class SiteController extends BaseJspController {
     /** Core DAO. */
     @Autowired
     private CoreDao coreDAO;
-
-    @Autowired
-    private SystemSettingsService systemSettingsService;
     
     /**
      * Cart page.
@@ -67,7 +63,6 @@ public class SiteController extends BaseJspController {
     @RequestMapping("/delivery")
     public String delivery(Model model, HttpServletRequest httpRequest) throws Exception {
         setCommonAttributes(httpRequest, model);
-        model.addAttribute(SYSTEM_SETTINGS, systemSettingsService.getCurrentSettings());
         return "delivery";
     }
     /**

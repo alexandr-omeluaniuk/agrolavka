@@ -44,6 +44,7 @@ public class SystemSettingsRestController {
             fromDb.setDiscountSize(payload.getDiscountSize());
             fromDb.setRegistrationInfo(payload.getRegistrationInfo());
             fromDb.setGuaranteeInfo(payload.getGuaranteeInfo());
+            fromDb.setReturnInfo(payload.getReturnInfo());
             entity = coreDao.update(fromDb);
         }
         resetCaches();

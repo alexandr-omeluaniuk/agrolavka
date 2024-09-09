@@ -29,10 +29,7 @@
                         <a class="nav-link" href="/promotions">Акции</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/delivery">Доставка</a>
-                    </li>
-                    <li class="nav-item d-lg-none d-xl-none d-xxl-block">
-                        <a class="nav-link" href="/discount">Дисконтная программа</a>
+                        <a class="nav-link" href="/delivery">Информация</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#contacts">Контакты</a>

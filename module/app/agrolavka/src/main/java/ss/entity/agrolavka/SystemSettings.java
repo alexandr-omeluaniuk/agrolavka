@@ -36,6 +36,17 @@ public class SystemSettings extends EntityAudit {
     @Column(name = "guarantee_info", length = 65535)
     private String guaranteeInfo;
 
+    @Column(name = "return_info", length = 65535)
+    private String returnInfo;
+
+    public String getReturnInfo() {
+        return returnInfo;
+    }
+
+    public void setReturnInfo(String returnInfo) {
+        this.returnInfo = returnInfo;
+    }
+
     public String getDiscountAbout() {
         return discountAbout;
     }

@@ -50,93 +50,72 @@
                             
                         </div>
                     </div>
-                    
-                    <hr class="my-3"/>
-                            
-                    <h3 class="text-center mb-4 mt-4">Способы и регионы доставки товаров</h3>
-                    
+                </section>
+
+                <section class="mb-5">
                     <div class="row">
-                        
-                        <div class="col-sm-12 col-md-4">
-                            <div class="card shadow-1-strong mb-3">
-                                <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
-                                    <h5 class="mb-3 mt-3 text-center text-dark"><strong>Доставка Европочтой</strong></h5>
-                                    <div class="card-img-top agr-card-image" style="background-image: url('/assets/img/delivery/europost.jpg')"></div>
-                                    <div class="mask" style="background-color: rgba(0, 0, 0, 0.05)"></div>
-                                    
-                                </div>
-                                <div class="card-body">
-                                    <small class="mb-0 text-dark">Доставка посылок по всей Беларуси, 
-                                        <a class="agr-link" href="https://evropochta.by/">Европочтой</a>
-                                        имеет ряд преимуществ, таких как низкие тарифы для физических и юридических лиц,
-                                        более 230 офисов по всей Беларуси
-                                    </small>
-                                </div>
+                        <div class="col-md-4 gx-5 mb-4">
+                            <div class="bg-image hover-overlay ripple shadow-2-strong" data-mdb-ripple-color="light">
+                                <img src="/assets/img/intro/discount.webp" class="img-fluid" />
+                                <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
                             </div>
                         </div>
-                        
-                        <div class="col-sm-12 col-md-4">
-                            <div class="card shadow-1-strong mb-3">
-                                <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
-                                    <h5 class="mb-3 mt-3 text-center text-dark"><strong>Почта</strong></h5>
-                                    <div class="card-img-top agr-card-image" style="background-image: url('/assets/img/delivery/post.jpg')"></div>
-                                    <div class="mask" style="background-color: rgba(0, 0, 0, 0.05)"></div>
-                                    <div class="card-body">
-                                        <p class="text-justify small">
-                                            Во все регионы Беларуси через отделения РУП «Белпочта». 
-                                            Срок доставки: 2-4 рабочих дня с момента отправки посылки, после полной ее комплектации. 
-                                            Отправка осуществляется с понедельника по пятницу.
-                                            Стоимость доставки зависит от почтовых тарифов.
-                                            Оплата при отправке заказа почтой: производится в белорусских рублях и осуществляется на почте при 
-                                            получении заказа. Срок сохранения посылки на почте: первые 7 дней – бесплатно, далее хранение платно, 
-                                            после хранения 30 дней – посылка уходит обратно (возврат). 
-                                            Дисконтная программа распространяется при заказах через почту.
-                                        </p>
-                                    </div>
-                                </div>
-                                
-                            </div>
+
+                        <div class="col-md-8 gx-5 mb-4">
+                            <h4><strong>Дисконтная программа</strong></h4>
+
+                            <hr class="my-3"/>
+
+                            <h6>Что такое дисконтная программа магазина «Агролавка»?</h6>
+                            <small class="text-muted">
+                                ${systemSettings.discountAbout}
+                            </small>
+
+                            <hr class="my-3"/>
+
+                            <h6>Как приобрести дисконтную карту?</h6>
+                            <small class="text-muted text-justify">
+                                ${systemSettings.discountParticipate}
+                            </small>
+
+                            <hr class="my-3"/>
+
+                            <h6>От чего зависит размер скидки?</h6>
+                            <small class="text-muted text-justify">
+                                ${systemSettings.discountSize}
+                            </small>
+
                         </div>
-                        
-                        <div class="col-sm-12 col-md-4">
-                            <div class="card shadow-1-strong mb-3">
-                                <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
-                                    <h5 class="mb-3 mt-3 text-center text-dark"><strong>Курьер</strong></h5>
-                                    <div class="card-img-top agr-card-image" style="background-image: url('/assets/img/delivery/truck.jpg')"></div>
-                                    <div class="mask" style="background-color: rgba(0, 0, 0, 0.05)"></div>
-                                    <div class="card-body">
-                                        <p class="small text-justify">
-                                            Стоимость доставки зависит от логистики и объема заказа и уточняется при подтверждении заказа.
-                                            Оплата наличными курьеру при доставке.
-                                            Дисконтная программа распространяется при заказах.
-                                        </>
-                                    </div>
-                                </div>
-                                
-                            </div>
-                        </div>
-                        
                     </div>
-                    
+                </section>
+
+                <section class="mb-5">
                     <div class="row">
-                        
-                        <div class="col-sm-12 col-md-4">
-                            <div class="card shadow-1-strong mb-3">
-                                <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
-                                    <h5 class="mb-3 mt-3 text-center text-dark"><strong>Самовывоз</strong></h5>
-                                    <div class="card-img-top agr-card-image" style="background-image: url('/assets/img/delivery/selfpickup.jpg')"></div>
-                                    <div class="mask" style="background-color: rgba(0, 0, 0, 0.05)"></div>
-                                    
-                                </div>
-                                <div class="card-body">
-                                    <small class="mb-0 text-dark">Бесплатно, из магазина, 
-                                        <a class="agr-link" href="/shops">расположенного в г.Дрогичине или г.Бресте</a></small>
-                                </div>
+                        <div class="col-md-4 gx-5 mb-4">
+                            <div class="bg-image hover-overlay ripple shadow-2-strong" data-mdb-ripple-color="light">
+                                <img src="/assets/img/delivery/selfpickup.jpg" class="img-fluid" />
+                                <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
                             </div>
                         </div>
-                        
+
+                        <div class="col-md-8 gx-5 mb-4">
+                            <h4><strong>Гарантия и возврат товара</strong></h4>
+
+                            <hr class="my-3"/>
+
+                            <h6>Возврат товара</h6>
+                            <p class="text-muted text-justify">
+                                <small>${systemSettings.returnInfo}</small>
+                            </p>
+
+                            <hr class="my-3"/>
+
+                            <h6>Гарантия на товар</h6>
+                            <p class="text-muted text-justify">
+                                <small>${systemSettings.guaranteeInfo}</small>
+                            </p>
+                        </div>
                     </div>
-                    
                 </section>
                 
             </div>

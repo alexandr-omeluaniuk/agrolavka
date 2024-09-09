@@ -70,11 +70,15 @@ function SystemSettings(props) {
             new Validator(VALIDATORS.REQUIRED),
             new Validator(VALIDATORS.MAX_LENGTH, {length: 65535})
         ]).setAttributes({ rows: 10, labelWidth: 200 }),
-        new FormField('registrationInfo', TYPES.TEXTAREA, 'Информация о регистрации').setGrid({xs: 12, md: 6}).validation([
+        new FormField('registrationInfo', TYPES.TEXTAREA, 'Информация о регистрации').setGrid({xs: 12, md: 4}).validation([
             new Validator(VALIDATORS.REQUIRED),
             new Validator(VALIDATORS.MAX_LENGTH, {length: 65535})
         ]).setAttributes({ rows: 10, labelWidth: 200 }),
-        new FormField('guaranteeInfo', TYPES.TEXTAREA, 'Условия возврата и гарантия').setGrid({xs: 12, md: 6}).validation([
+        new FormField('guaranteeInfo', TYPES.TEXTAREA, 'Гарантия на товар').setGrid({xs: 12, md: 4}).validation([
+            new Validator(VALIDATORS.REQUIRED),
+            new Validator(VALIDATORS.MAX_LENGTH, {length: 65535})
+        ]).setAttributes({ rows: 10, labelWidth: 200 }),
+        new FormField('returnInfo', TYPES.TEXTAREA, 'Возврат товара').setGrid({xs: 12, md: 4}).validation([
             new Validator(VALIDATORS.REQUIRED),
             new Validator(VALIDATORS.MAX_LENGTH, {length: 65535})
         ]).setAttributes({ rows: 10, labelWidth: 200 })
