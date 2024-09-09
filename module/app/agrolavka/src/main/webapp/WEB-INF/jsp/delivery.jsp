@@ -14,6 +14,27 @@
         
         <main class="min-vh-100">
             <div class="container">
+
+                <section class="mb-5">
+                    <div class="row">
+                        <div class="col-md-4 gx-5 mb-4">
+                            <div class="bg-image hover-overlay ripple shadow-2-strong" data-mdb-ripple-color="light">
+                                <img src="/assets/img/delivery/promo.jpg" class="img-fluid" />
+                                <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-8 gx-5 mb-4">
+                            <h4><strong>Информация для покупателя</strong></h4>
+
+                            <hr class="my-3"/>
+
+                            <small class="text-muted">
+                                <small>${systemSettings.registrationInfo}</small>
+                            </small>
+                        </div>
+                    </div>
+                </section>
                     
                 <section class="mb-5">
                     <div class="row">
