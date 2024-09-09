@@ -23,7 +23,8 @@ abstract class BasePageControllerTest extends AbstractAgrolavkaMvcTest {
             JspValue.TOTAL_DECIMAL,
             JspValue.TOTAL_INTEGER,
             JspValue.DOMAIN,
-            JspValue.PURCHASE_HISTORY
+            JspValue.PURCHASE_HISTORY,
+            JspValue.SYSTEM_SETTINGS
         };
         return mockMvc.perform(get(url).cookie(new Cookie(SiteConstants.PHONE_COOKIE, USER_PHONE)))
             .andDo(print()).andExpect(status().isOk()).andExpect(model().attributeExists(
