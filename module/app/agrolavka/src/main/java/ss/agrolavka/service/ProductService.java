@@ -1,6 +1,7 @@
 package ss.agrolavka.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import ss.agrolavka.constants.CacheKey;
@@ -16,10 +17,7 @@ import ss.entity.images.storage.EntityImage;
 import ss.entity.security.EntityAudit_;
 import ss.martin.core.dao.CoreDao;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -43,6 +41,9 @@ public class ProductService {
 
     @Autowired
     private MySkladIntegrationService mySkladService;
+
+    @Autowired
+    private CacheManager cacheManager;
     
     public ProductsSearchResponse quickSearchProducts(final String searchText) {
         final var request = new ProductsSearchRequest();
@@ -146,7 +147,7 @@ public class ProductService {
 
     public Product updateProduct(Product product) {
         Product entityFromDB = coreDao.findById(product.getId(), Product.class);
-
+        final var isResetCache = !Objects.equals(entityFromDB.getHideModifications(), product.getHideModifications());
         mySkladService.updateProduct(product);
         final List<EntityImage> actualImages = getActualImages(
             entityFromDB.getImages(), product.getImages());
@@ -163,7 +164,12 @@ public class ProductService {
         entityFromDB.setSeoDescription(product.getSeoDescription());
         entityFromDB.setVideoURL(product.getVideoURL());
         entityFromDB.setInvisible(product.getInvisible());
-        return coreDao.update(entityFromDB);
+        entityFromDB.setHideModifications(product.getHideModifications());
+        final var updated =  coreDao.update(entityFromDB);
+        if (isResetCache) {
+            resetProductVariantCache();
+        }
+        return updated;
     }
 
     public void deleteProduct(Long id) {
@@ -210,5 +216,15 @@ public class ProductService {
             }
         }
         return actualImages;
+    }
+
+    private void resetProductVariantCache() {
+        final var caches = new String[] { CacheKey.PRODUCT_VARIANTS };
+        Arrays.stream(caches).forEach(name -> {
+            final var cache = cacheManager.getCache(name);
+            if (cache != null) {
+                cache.clear();
+            }
+        });
     }
 }

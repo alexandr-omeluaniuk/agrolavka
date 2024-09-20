@@ -101,6 +101,9 @@ public class Product extends ExternalEntity {
 
     @Column(name = "is_invisible")
     private Boolean invisible;
+
+    @Column(name = "hide_modifications")
+    private Boolean hideModifications;
     
     @Transient
     private List<ProductVariant> variants;
@@ -282,6 +285,14 @@ public class Product extends ExternalEntity {
 
     public void setInvisible(Boolean invisible) {
         this.invisible = invisible;
+    }
+
+    public Boolean getHideModifications() {
+        return hideModifications;
+    }
+
+    public void setHideModifications(Boolean hideModifications) {
+        this.hideModifications = hideModifications;
     }
     
     @Override
