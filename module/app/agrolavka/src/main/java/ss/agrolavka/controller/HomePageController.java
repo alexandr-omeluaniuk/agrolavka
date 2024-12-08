@@ -10,6 +10,8 @@ import ss.agrolavka.constants.JspValue;
 import ss.agrolavka.constants.SiteUrls;
 import ss.agrolavka.service.ProductAttributesService;
 
+import java.util.Collections;
+
 /**
  * Home page controller.
  * @author alex
@@ -29,7 +31,9 @@ class HomePageController extends BaseJspController {
             JspValue.NEW_PRODUCTS,
             productAttributesService.setAttributeLinks(productService.getNewProducts())
         );
-        model.addAttribute(JspValue.SLIDES, siteDataService.getAllSlides());
+        final var slides = siteDataService.getAllSlides();
+        Collections.sort(slides);
+        model.addAttribute(JspValue.SLIDES, slides);
         final var withDiscount = productAttributesService.setAttributeLinks(productService.getProductsWithDiscount());
         final var withDiscountFirst12 = withDiscount.size() > 12 ? withDiscount.subList(0, 12) : withDiscount;
         model.addAttribute(JspValue.PRODUCTS_WITH_DISCOUNT, withDiscountFirst12);

@@ -34,8 +34,13 @@
                     <div class="mask" style="background-color: rgba(0, 0, 0, 0.3);">
                         <div class="d-flex justify-content-center align-items-center h-100">
                             <div class="text-white text-center">
-                                <h1>${slide.title}</h1>
-                                <h5>${slide.subtitle}</h5>
+                                <c:if test="${empty slide.htmlContent}">
+                                    <h1>${slide.title}</h1>
+                                    <h5>${slide.subtitle}</h5>
+                                </c:if>
+                                <c:if test="${not empty slide.htmlContent}">
+                                    ${slide.htmlContent}
+                                </c:if>
                                 <c:if test="${not empty slide.buttonText}">
                                     <a class="btn btn-outline-light btn-lg m-2" href="${slide.buttonLink}" role="button">${slide.buttonText}</a>
                                 </c:if>
