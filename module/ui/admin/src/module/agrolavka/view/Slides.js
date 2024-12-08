@@ -30,7 +30,10 @@ function Slides() {
             }).width('40px'),
             new TableColumn('title', t('m_agrolavka:slides.name'), (row) => {
                 return row.title;
-            })
+            }),
+            new TableColumn('order', 'Приоритет', (row) => {
+                return row.order;
+            }).width('100px').setSortable()
         ], new FormConfig([
             new FormField('id', TYPES.ID).hide(),
             new FormField('name', TYPES.TEXTFIELD, t('m_agrolavka:slides.name')).setGrid({xs: 12}).validation([
@@ -50,6 +53,11 @@ function Slides() {
             new FormField('buttonLink', TYPES.TEXTFIELD, t('m_agrolavka:slides.button_link')).setGrid({xs: 12, md: 6}).validation([
                 new Validator(VALIDATORS.MAX_LENGTH, {length: 1000})
             ]),
+            new FormField('order', TYPES.INTEGER_NUMBER, 'Приоритет слайда').setGrid({xs: 12}).validation([
+                new Validator(VALIDATORS.REQUIRED)
+            ]),
+            new FormField('htmlContent', TYPES.HTML, 'Описание (стилизованое)').setGrid({xs: 12})
+                .setAttributes({ labelWidth: 200 }),
             new FormField('images', TYPES.IMAGES, t('m_agrolavka:shops.images')).setAttributes({valueType: 'file', multipart: 'image'}).setGrid({xs: 12}).validation([
                 new Validator(VALIDATORS.REQUIRED)
             ])

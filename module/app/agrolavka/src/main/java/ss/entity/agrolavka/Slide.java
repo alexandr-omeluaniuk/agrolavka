@@ -1,20 +1,14 @@
 package ss.entity.agrolavka;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import java.util.List;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import ss.entity.images.storage.EntityImage;
 import ss.entity.security.EntityAudit;
+
+import java.util.List;
 
 /**
  * Site slide.
@@ -22,7 +16,7 @@ import ss.entity.security.EntityAudit;
  */
 @Entity
 @Table(name = "slide")
-public class Slide extends EntityAudit implements EntityWithImages {
+public class Slide extends EntityAudit implements EntityWithImages, Comparable<Slide> {
     /** Name. */
     @NotNull
     @Size(max = 255)
@@ -45,6 +39,12 @@ public class Slide extends EntityAudit implements EntityWithImages {
     @Size(max = 1000)
     @Column(name = "button_link", length = 1000)
     private String buttonLink;
+    @Lob
+    @Size(max = 65535)
+    @Column(name = "html_content", length = 65535)
+    private String htmlContent;
+    @Column(name = "slide_order")
+    private Integer order;
     /** Images. */
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinTable(name = "slide_images",
@@ -52,6 +52,14 @@ public class Slide extends EntityAudit implements EntityWithImages {
             inverseJoinColumns = @JoinColumn(name = "image_id", referencedColumnName = "id"))
     @Fetch(FetchMode.SUBSELECT)
     private List<EntityImage> images;
+
+    public String getHtmlContent() {
+        return htmlContent;
+    }
+
+    public void setHtmlContent(String htmlContent) {
+        this.htmlContent = htmlContent;
+    }
     
     public String getName() {
         return name;
@@ -102,6 +110,16 @@ public class Slide extends EntityAudit implements EntityWithImages {
     public void setImages(List<EntityImage> images) {
         this.images = images;
     }
+
+
+    /** Slide order. */
+    public Integer getOrder() {
+        return order;
+    }
+
+    public void setOrder(Integer order) {
+        this.order = order;
+    }
     
     @Override
     public int hashCode() {
@@ -123,5 +141,18 @@ public class Slide extends EntityAudit implements EntityWithImages {
     @Override
     public String toString() {
         return "Slide[ id=" + getId() + ", name=" + getName() + " ]";
+    }
+
+    @Override
+    public int compareTo(Slide slide) {
+        final var order1 = slide.getOrder() == null ? 0 : slide.getOrder();
+        final var order2 = this.getOrder() == null ? 0 : this.getOrder();
+        if (order1 == order2) {
+            return 0;
+        } else if (order1 > order2) {
+            return -1;
+        } else {
+            return 1;
+        }
     }
 }
