@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ss.agrolavka.AgrolavkaConfiguration;
 import ss.agrolavka.dao.ExternalEntityDAO;
 import ss.agrolavka.dao.ProductDAO;
+import ss.agrolavka.lucene.LuceneIndexer;
 import ss.agrolavka.service.MySkladIntegrationService;
 import ss.agrolavka.service.ProductsGroupService;
 import ss.agrolavka.task.mysklad.DiscountsSynchronizer;
@@ -75,6 +76,9 @@ public class DataUpdater {
 
     @Autowired
     private ProductsGroupService productsGroupService;
+
+    @Autowired
+    private LuceneIndexer indexer;
     
     @PostConstruct
     protected void init() {
@@ -99,7 +103,7 @@ public class DataUpdater {
         try {
             LOG.info("====================================== MY SKLAD DATA UPDATE ===================================");
             securityService.backgroundAuthentication(
-                configuration.backgroundUserUsername(), 
+                configuration.backgroundUserUsername(),
                 configuration.backgroundUserPassword()
             );
             priceTypeSynchronizator.doImport();
@@ -111,6 +115,7 @@ public class DataUpdater {
             AppCache.flushCache(coreDAO.getAll(ProductsGroup.class));
             LOG.info("===============================================================================================");
             resetAllCaches();
+            indexer.refreshIndex();
             return true;
         } catch (final Exception e) {
             LOG.error("Import MySklad data - fail!", e);
@@ -252,7 +257,7 @@ public class DataUpdater {
         LOG.info("");
         final Calendar calendar = new GregorianCalendar();
         calendar.setTime(new Date());
-        calendar.add(Calendar.DAY_OF_MONTH, -3);
+        calendar.add(Calendar.DAY_OF_MONTH, -1000);
         List<Product> products = productDAO.getLastModifiedProducts(calendar.getTime());
         LOG.info("found [" + products.size() + "] products for images uploading");
         int counter = 0;

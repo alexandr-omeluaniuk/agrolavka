@@ -1,7 +1,8 @@
 package ss.agrolavka.wrapper;
 
-import java.util.List;
 import ss.entity.agrolavka.Product;
+
+import java.util.List;
 
 /**
  * Products search response.
@@ -9,5 +10,7 @@ import ss.entity.agrolavka.Product;
  */
 public record ProductsSearchResponse(
     List<Product> data,
-    Long count
+    Long count,
+
+    String searchText
 ) {}
