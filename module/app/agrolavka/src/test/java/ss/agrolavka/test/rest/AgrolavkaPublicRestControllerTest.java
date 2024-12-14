@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import ss.agrolavka.constants.SiteUrls;
-import ss.agrolavka.lucene.LuceneIndexer;
 import ss.agrolavka.lucene.LuceneSearchResult;
 import ss.agrolavka.service.SessionService;
 import ss.agrolavka.test.common.AbstractAgrolavkaMvcTest;
@@ -29,9 +28,6 @@ public class AgrolavkaPublicRestControllerTest extends AbstractAgrolavkaMvcTest 
 
     @MockBean
     private SessionService sessionService;
-
-    @MockBean
-    private LuceneIndexer luceneIndexer;
     
     @Test
     public void testSearch() {

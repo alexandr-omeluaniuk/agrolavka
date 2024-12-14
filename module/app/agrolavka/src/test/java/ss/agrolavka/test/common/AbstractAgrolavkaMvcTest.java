@@ -6,6 +6,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.cache.CacheManager;
 import ss.agrolavka.constants.CacheKey;
+import ss.agrolavka.lucene.LuceneIndexer;
 import ss.entity.agrolavka.Product;
 import ss.entity.agrolavka.ProductsGroup;
 import ss.martin.security.test.PlatformSecurityMvcTest;
@@ -26,6 +27,9 @@ public abstract class AbstractAgrolavkaMvcTest extends PlatformSecurityMvcTest {
     
     @MockBean(name = "telegramBotErrors")
     protected TelegramBot telegramBotErrors;
+
+    @MockBean
+    protected LuceneIndexer luceneIndexer;
     
     @Autowired
     private CacheManager cacheManager;
