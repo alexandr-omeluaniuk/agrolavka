@@ -6,6 +6,10 @@ dependencies {
     implementation "org.json:json:20201115"
     implementation "com.github.vandeseer:easytable:0.8.5"
     implementation "com.googlecode.htmlcompressor:htmlcompressor:1.5.2"
+    implementation libs.luceneCore
+    implementation libs.luceneAnalyzersCommon
+    implementation libs.luceneGrouping
+    implementation libs.luceneQueryParser
     runtimeOnly "org.apache.tomcat.embed:tomcat-embed-jasper"
     runtimeOnly "org.glassfish.web:jakarta.servlet.jsp.jstl"
     runtimeOnly "jakarta.servlet.jsp.jstl:jakarta.servlet.jsp.jstl-api"

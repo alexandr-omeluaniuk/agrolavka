@@ -4,6 +4,8 @@
     const clearTextElement = document.querySelector('#agr-quick-search-input-mobile-clear');
     const searchInput = document.querySelector('#agr-quick-search-input-mobile');
 
+    let controller;
+
     function highlightText(text, searchText) {
         const idx = text.toLowerCase().indexOf(searchText.toLowerCase());
         if (searchText.length > 0 && idx !== -1) {
@@ -33,18 +35,24 @@
         const noResult = '<li><a class="dropdown-item text-muted" href="#">По вашему запросу ничего не найдено</a></li>';
         if (searchText) {
             clearTextElement.classList.remove("d-none");
-            fetch('/api/agrolavka/public/search?searchText=' + searchText, {
+            if (controller) {
+                controller.abort();
+            }
+            controller = new AbortController();
+            fetch('/api/agrolavka/public/search?searchText=' + encodeURIComponent(searchText), {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
-                }
+                },
+                signal: controller.signal
             }).then(function (response) {
                 if (response.ok) {
                     response.json().then(json => {
                         let sb = '';
                         const data = json.data;
                         const count = json.count;
+                        const searchTerm = json.searchText;
                         if (data.length === 0) {
                             sb = noResult;
                         } else {
@@ -56,7 +64,7 @@
                                         '<li class="agr-product-search-link">'
                                         + '<a class="dropdown-item" href="' + product.url + '">'
                                         + '<div class="d-flex w-100 justify-content-between">'
-                                        + '<h6 class="mb-1">' + highlightText(product.name, searchText) + '</h6>'
+                                        + '<h6 class="mb-1">' + highlightText(product.name, searchTerm) + '</h6>'
                                         + '<small style="margin-left: 10px; min-width: 80px; text-align: right;"'
                                         + 'class="fw-bold">' + priceRub
                                         + '.<span style="font-size: .9em; margin-right: 5px;">' + priceCent + '</span>'
@@ -125,6 +133,8 @@
 (function () {
     "use strict";
 
+    let controller;
+
     function highlightText(text, searchText) {
         const idx = text.toLowerCase().indexOf(searchText.toLowerCase());
         if (searchText.length > 0 && idx !== -1) {
@@ -176,18 +186,24 @@
         const searchResultOutput = document.querySelector('#agr-quick-search-result-desktop');
         const noResult = '<li><a class="dropdown-item text-muted" href="#">По вашему запросу ничего не найдено</a></li>';
         if (searchText) {
-            fetch('/api/agrolavka/public/search?searchText=' + searchText, {
+            if (controller) {
+                controller.abort();
+            }
+            controller = new AbortController();
+            fetch('/api/agrolavka/public/search?searchText=' + encodeURIComponent(searchText), {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
-                }
+                },
+                signal: controller.signal
             }).then(function (response) {
                 if (response.ok) {
                     response.json().then(json => {
                         let sb = '';
                         const data = json.data;
                         const count = json.count;
+                        const searchTerm = json.searchText;
                         if (data.length === 0) {
                             sb = noResult;
                         } else {
@@ -205,7 +221,7 @@
                                     '<li class="agr-product-search-link">'
                                         + '<a class="dropdown-item" href="' + product.url + '">'
                                             + '<div class="d-flex w-100 justify-content-between">'
-                                                + '<h6 class="mb-1">' + highlightText(product.name, searchText) + '</h6>'
+                                                + '<h6 class="mb-1">' + highlightText(product.name, searchTerm) + '</h6>'
                                                 + '<small style="margin-left: 10px; min-width: 80px; text-align: right;" class="fw-bold">' + priceRub
                                                         + '.<span style="font-size: .9em;">' + priceCent + '</span>'
                                                         + (priceMaxRub ? ' - ' + priceMaxRub + '.<span style="font-size: .9em;">' + priceMaxCent + '</span>' : '')

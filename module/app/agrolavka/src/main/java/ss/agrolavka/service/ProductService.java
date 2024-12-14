@@ -6,6 +6,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import ss.agrolavka.constants.CacheKey;
 import ss.agrolavka.dao.ProductDAO;
+import ss.agrolavka.lucene.LuceneIndexer;
 import ss.agrolavka.util.PriceCalculator;
 import ss.agrolavka.util.UrlProducer;
 import ss.agrolavka.wrapper.ProductsSearchRequest;
@@ -44,15 +45,39 @@ public class ProductService {
 
     @Autowired
     private CacheManager cacheManager;
+
+    @Autowired
+    private LuceneIndexer indexer;
     
-    public ProductsSearchResponse quickSearchProducts(final String searchText) {
-        final var request = new ProductsSearchRequest();
+    public ProductsSearchResponse quickSearchProducts(String searchText) {
+        ProductsSearchRequest request = new ProductsSearchRequest();
         request.setPage(1);
         request.setPageSize(QUICK_SEARCH_PRODUCTS_MAX);
         request.setText(searchText);
         request.setOrder("asc");
         request.setOrderBy(Product_.NAME);
-        final var products = productDao.search(request);
+        List<Product> products = productDao.search(request);
+        if (products.isEmpty()) {
+            // запасной поиск полнотекстовый fuzzy если не нашли ничего по основному
+            final var luceneResult = indexer.search(searchText);
+            final var matchedIds = luceneResult.documents.stream().map(doc -> Long.valueOf(doc.get("id")))
+                .collect(Collectors.toSet());
+            request.setProductIds(matchedIds);
+            request.setText(null);
+            products = productDao.search(request);
+            products.sort((a, b) -> {
+                final var aName = a.getName();
+                final var bName = b.getName();
+                if (aName.toLowerCase().contains(luceneResult.term) && !bName.toLowerCase().contains(luceneResult.term)) {
+                    return -1;
+                } else if (!aName.toLowerCase().contains(luceneResult.term) && bName.toLowerCase().contains(luceneResult.term)) {
+                    return 1;
+                } else {
+                    return aName.compareTo(bName);
+                }
+            });
+            searchText = luceneResult.term;
+        }
         products.forEach(product -> {
             product.setPrice(PriceCalculator.getShopPrice(product.getPrice(), product.getDiscount()));
             product.setBuyPrice(null);
@@ -69,8 +94,8 @@ public class ProductService {
                 }
             }
         });
-        final var count = productDao.count(request);
-        return new ProductsSearchResponse(products, count);
+        final var count = products.isEmpty() ? 0 : productDao.count(request);
+        return new ProductsSearchResponse(products, count, searchText);
     }
     
     @Cacheable(CacheKey.NEW_PRODUCTS)
