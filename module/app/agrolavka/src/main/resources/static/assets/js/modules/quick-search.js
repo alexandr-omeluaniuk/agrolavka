@@ -4,6 +4,8 @@
     const clearTextElement = document.querySelector('#agr-quick-search-input-mobile-clear');
     const searchInput = document.querySelector('#agr-quick-search-input-mobile');
 
+    let controller;
+
     function highlightText(text, searchText) {
         const idx = text.toLowerCase().indexOf(searchText.toLowerCase());
         if (searchText.length > 0 && idx !== -1) {
@@ -33,12 +35,17 @@
         const noResult = '<li><a class="dropdown-item text-muted" href="#">По вашему запросу ничего не найдено</a></li>';
         if (searchText) {
             clearTextElement.classList.remove("d-none");
+            if (controller) {
+                controller.abort();
+            }
+            controller = new AbortController();
             fetch('/api/agrolavka/public/search?searchText=' + encodeURIComponent(searchText), {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
-                }
+                },
+                signal: controller.signal
             }).then(function (response) {
                 if (response.ok) {
                     response.json().then(json => {
@@ -126,6 +133,8 @@
 (function () {
     "use strict";
 
+    let controller;
+
     function highlightText(text, searchText) {
         const idx = text.toLowerCase().indexOf(searchText.toLowerCase());
         if (searchText.length > 0 && idx !== -1) {
@@ -177,12 +186,17 @@
         const searchResultOutput = document.querySelector('#agr-quick-search-result-desktop');
         const noResult = '<li><a class="dropdown-item text-muted" href="#">По вашему запросу ничего не найдено</a></li>';
         if (searchText) {
+            if (controller) {
+                controller.abort();
+            }
+            controller = new AbortController();
             fetch('/api/agrolavka/public/search?searchText=' + encodeURIComponent(searchText), {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
-                }
+                },
+                signal: controller.signal
             }).then(function (response) {
                 if (response.ok) {
                     response.json().then(json => {

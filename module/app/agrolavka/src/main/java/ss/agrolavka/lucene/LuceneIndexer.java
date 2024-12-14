@@ -2,7 +2,7 @@ package ss.agrolavka.lucene;
 
 import jakarta.annotation.PostConstruct;
 import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.analysis.ru.RussianAnalyzer;
+import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.LongField;
@@ -21,10 +21,7 @@ import ss.martin.base.lang.ThrowingSupplier;
 import ss.martin.core.dao.CoreDao;
 
 import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -57,7 +54,7 @@ public class LuceneIndexer {
                 isFirstInit = true;
             }
             Directory dir = FSDirectory.open(dirPath);
-            Analyzer analyzer = new RussianAnalyzer();
+            Analyzer analyzer = new StandardAnalyzer();
             IndexWriterConfig iwc = new IndexWriterConfig(analyzer);
             if (isFirstInit) {
                 iwc.setOpenMode(IndexWriterConfig.OpenMode.CREATE);
@@ -65,7 +62,11 @@ public class LuceneIndexer {
                 iwc.setOpenMode(IndexWriterConfig.OpenMode.CREATE_OR_APPEND);
             }
             writer = new IndexWriter(dir, iwc);
-            reader = DirectoryReader.open(dir);
+            try {
+                reader = DirectoryReader.open(dir);
+            } catch (Exception ee) {
+                LOG.warn("Init lucene reader fail", ee);
+            }
             LOG.info("Lucene dir path [" + dirPath + "]");
         } catch (Exception e) {
             LOG.error("Lucene initialization failed", e);
@@ -77,7 +78,10 @@ public class LuceneIndexer {
     }
 
     public LuceneSearchResult search(String text) {
-        final var result1 = doSearch(text);
+        if (reader == null) {
+            return new LuceneSearchResult(new ArrayList<>(), "");
+        }
+        final var result1 = doSearch(text.toLowerCase());
         if (text.length() < 3) {
             return new LuceneSearchResult(result1, text);
         } else {
@@ -90,13 +94,21 @@ public class LuceneIndexer {
 
     private List<Document> doSearch(String langText) {
         return ((ThrowingSupplier<List<Document>>) () -> {
-            Query fuzzyQuery = new FuzzyQuery(new Term("name", langText));
-            Query fuzzyQuery2 = new FuzzyQuery(new Term("name", langText + "*"));
-            final var boolQuery = new BooleanQuery.Builder().add(
-                new BooleanClause(fuzzyQuery, BooleanClause.Occur.SHOULD)
-            ).add(
-                new BooleanClause(fuzzyQuery2, BooleanClause.Occur.SHOULD)
-            ).build();
+            final var boolQueryBuilder = new BooleanQuery.Builder();
+            Arrays.stream(langText.split(" ")).forEach(token -> {
+                final var boolQueryBuilderInner = new BooleanQuery.Builder();
+                final var fuzzyQuery = new FuzzyQuery(new Term("name", token));
+                final var fuzzyQuery2 = new FuzzyQuery(new Term("name", token + "*"));
+                boolQueryBuilderInner.add(
+                    new BooleanClause(fuzzyQuery, BooleanClause.Occur.SHOULD)
+                ).add(
+                    new BooleanClause(fuzzyQuery2, BooleanClause.Occur.SHOULD)
+                );
+                boolQueryBuilder.add(
+                    new BooleanClause(boolQueryBuilderInner.build(), BooleanClause.Occur.MUST)
+                );
+            });
+            final var boolQuery = boolQueryBuilder.build();
 
             IndexSearcher searcher = new IndexSearcher(reader);
             TopDocs topDocs = searcher.search(boolQuery, QUICK_SEARCH_PRODUCTS_MAX);

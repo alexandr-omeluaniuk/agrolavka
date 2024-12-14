@@ -42,8 +42,8 @@ public class AgrolavkaPublicRestControllerTest extends AbstractAgrolavkaMvcTest 
             HttpStatus.OK
         );
         assertNotNull(response);
-        assertEquals(0, response.count());
-        assertEquals(0, response.data().size());
+        assertEquals(1, response.count());
+        assertEquals(1, response.data().size());
 
         final var response2 = callGet(
             SiteUrls.URL_PUBLIC + "/search?searchText=D", 
@@ -51,8 +51,8 @@ public class AgrolavkaPublicRestControllerTest extends AbstractAgrolavkaMvcTest 
             HttpStatus.OK
         );
         assertNotNull(response2);
-        assertEquals(0, response2.count());
-        assertEquals(0, response2.data().size());
+        assertEquals(1, response2.count());
+        assertEquals(1, response2.data().size());
 
 //        final var response3 = callGet(
 //            SiteUrls.URL_PUBLIC + "/search?searchText=mm",

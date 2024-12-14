@@ -1,6 +1,7 @@
 package ss.martin.security.rest;
 
 import jakarta.servlet.http.HttpServletRequest;
+import org.apache.catalina.connector.ClientAbortException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,12 @@ class HttpErrorHandler {
         LOG.warn("Access denied", ex);
         return new RestResponse(false, ex.getMessage());
     }
+
+    @ExceptionHandler(value = ClientAbortException.class)
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public void handleClientAbort() {
+    }
     
     /**
      * Handle internal error exception.
@@ -48,6 +55,9 @@ class HttpErrorHandler {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ResponseBody
     public RestResponse handleInternalError(final Exception ex, final HttpServletRequest request) {
+        if (ex instanceof ClientAbortException || (ex.getCause() != null && ex.getCause() instanceof ClientAbortException)) {
+            return new RestResponse();
+        }
         final var err = "HTTP request error!\n" + ex.getMessage() + "\n" + getRequestInfo(request);
         LOG.error(err, ex);
         alertService.sendAlert(err, ex);

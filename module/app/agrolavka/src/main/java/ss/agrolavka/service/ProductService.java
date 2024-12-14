@@ -49,17 +49,35 @@ public class ProductService {
     @Autowired
     private LuceneIndexer indexer;
     
-    public ProductsSearchResponse quickSearchProducts(final String searchText) {
-        final var luceneResult = indexer.search(searchText);
-        final var matchedIds = luceneResult.documents.stream().map(doc -> Long.valueOf(doc.get("id")))
-            .collect(Collectors.toSet());
-        final var request = new ProductsSearchRequest();
+    public ProductsSearchResponse quickSearchProducts(String searchText) {
+        ProductsSearchRequest request = new ProductsSearchRequest();
         request.setPage(1);
         request.setPageSize(QUICK_SEARCH_PRODUCTS_MAX);
-        request.setProductIds(matchedIds);
+        request.setText(searchText);
         request.setOrder("asc");
         request.setOrderBy(Product_.NAME);
-        final var products = matchedIds.isEmpty() ? new ArrayList<Product>() : productDao.search(request);
+        List<Product> products = productDao.search(request);
+        if (products.isEmpty()) {
+            // запасной поиск полнотекстовый fuzzy если не нашли ничего по основному
+            final var luceneResult = indexer.search(searchText);
+            final var matchedIds = luceneResult.documents.stream().map(doc -> Long.valueOf(doc.get("id")))
+                .collect(Collectors.toSet());
+            request.setProductIds(matchedIds);
+            request.setText(null);
+            products = productDao.search(request);
+            products.sort((a, b) -> {
+                final var aName = a.getName();
+                final var bName = b.getName();
+                if (aName.toLowerCase().contains(luceneResult.term) && !bName.toLowerCase().contains(luceneResult.term)) {
+                    return -1;
+                } else if (!aName.toLowerCase().contains(luceneResult.term) && bName.toLowerCase().contains(luceneResult.term)) {
+                    return 1;
+                } else {
+                    return aName.compareTo(bName);
+                }
+            });
+            searchText = luceneResult.term;
+        }
         products.forEach(product -> {
             product.setPrice(PriceCalculator.getShopPrice(product.getPrice(), product.getDiscount()));
             product.setBuyPrice(null);
@@ -76,19 +94,8 @@ public class ProductService {
                 }
             }
         });
-        final var count = matchedIds.isEmpty() ? 0 : productDao.count(request);
-        products.sort((a, b) -> {
-            final var aName = a.getName();
-            final var bName = b.getName();
-            if (aName.toLowerCase().contains(luceneResult.term) && !bName.toLowerCase().contains(luceneResult.term)) {
-                return -1;
-            } else if (!aName.toLowerCase().contains(luceneResult.term) && bName.toLowerCase().contains(luceneResult.term)) {
-                return 1;
-            } else {
-                return aName.compareTo(bName);
-            }
-        });
-        return new ProductsSearchResponse(products, count, luceneResult.term);
+        final var count = products.isEmpty() ? 0 : productDao.count(request);
+        return new ProductsSearchResponse(products, count, searchText);
     }
     
     @Cacheable(CacheKey.NEW_PRODUCTS)
