@@ -257,7 +257,7 @@ public class DataUpdater {
         LOG.info("");
         final Calendar calendar = new GregorianCalendar();
         calendar.setTime(new Date());
-        calendar.add(Calendar.DAY_OF_MONTH, -1000);
+        calendar.add(Calendar.DAY_OF_MONTH, -3);
         List<Product> products = productDAO.getLastModifiedProducts(calendar.getTime());
         LOG.info("found [" + products.size() + "] products for images uploading");
         int counter = 0;
