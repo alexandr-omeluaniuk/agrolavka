@@ -4,7 +4,6 @@
  * and open the template in the editor.
  */
 import React, { useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
 import { TableConfig, TableColumn, FormConfig, FormField, ApiURL , Validator } from '../../../util/model/TableConfig';
 import { TYPES, VALIDATORS } from '../../../service/DataTypeService';
 import DataTable from '../../../component/datatable/DataTable';
@@ -41,7 +40,6 @@ const DAYS = [
 ]
 
 function ScheduleSettings() {
-    const { t } = useTranslation();
     const [tableConfig, setTableConfig] = React.useState(null);
     // ------------------------------------------------------- METHODS --------------------------------------------------------------------
     const updateTable = () => {

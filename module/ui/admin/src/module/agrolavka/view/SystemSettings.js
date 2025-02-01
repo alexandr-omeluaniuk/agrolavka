@@ -2,20 +2,15 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/ClientSide/javascript.js to edit this template
  */
-import React, { useEffect, useContext } from 'react';
-import { ToolbarContext } from '../../../context/ToolbarContext';
+import React, { useEffect } from 'react';
 import { TYPES, VALIDATORS } from '../../../service/DataTypeService';
 import { FormConfig, FormField, Validator } from '../../../util/model/TableConfig';
-import { useTranslation } from 'react-i18next';
 import DataService from '../../../service/DataService';
 import { makeStyles } from '@material-ui/core/styles';
 import Form from './../../../component/form/Form';
 import Typography from '@material-ui/core/Typography';
-import IconButton from '@material-ui/core/IconButton';
 import Paper from '@material-ui/core/Paper';
-import Icon from '@material-ui/core/Icon';
 import Divider from '@material-ui/core/Divider';
-import { NavLink } from "react-router-dom";
 import useNotification from '../../../hooks/useNotification';
 
 const dataService = new DataService();
