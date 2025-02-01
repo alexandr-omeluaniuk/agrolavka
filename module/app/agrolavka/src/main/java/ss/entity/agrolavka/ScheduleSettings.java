@@ -5,20 +5,24 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import ss.entity.security.EntityAudit;
 
-import java.util.Date;
-
 @Entity
-@Table(name = "schedule_settings")
+@Table(name = "show_products_schedule_settings")
 public class ScheduleSettings extends EntityAudit {
 
     @Column(name = "day_of_week", nullable = false)
     private Integer dayOfWeek;
 
-    @Column(name = "from_date", nullable = false)
-    private Date fromDate;
+    @Column(name = "from_hours", nullable = false)
+    private Integer fromHours;
 
-    @Column(name = "to_date", nullable = false)
-    private Date toDate;
+    @Column(name = "from_minutes", nullable = false)
+    private Integer fromMinutes;
+
+    @Column(name = "to_hours", nullable = false)
+    private Integer toHours;
+
+    @Column(name = "to_minutes", nullable = false)
+    private Integer toMinutes;
 
     public Integer getDayOfWeek() {
         return dayOfWeek;
@@ -28,19 +32,35 @@ public class ScheduleSettings extends EntityAudit {
         this.dayOfWeek = dayOfWeek;
     }
 
-    public Date getFromDate() {
-        return fromDate;
+    public Integer getFromHours() {
+        return fromHours;
     }
 
-    public void setFromDate(Date from) {
-        this.fromDate = from;
+    public void setFromHours(Integer fromHours) {
+        this.fromHours = fromHours;
     }
 
-    public Date getToDate() {
-        return toDate;
+    public Integer getFromMinutes() {
+        return fromMinutes;
     }
 
-    public void setToDate(Date to) {
-        this.toDate = to;
+    public void setFromMinutes(Integer fromMinutes) {
+        this.fromMinutes = fromMinutes;
+    }
+
+    public Integer getToHours() {
+        return toHours;
+    }
+
+    public void setToHours(Integer toHours) {
+        this.toHours = toHours;
+    }
+
+    public Integer getToMinutes() {
+        return toMinutes;
+    }
+
+    public void setToMinutes(Integer toMinutes) {
+        this.toMinutes = toMinutes;
     }
 }

@@ -180,6 +180,9 @@ export class Validator {
     constructor(type, attributes) {
         this.type = type;
         this.attr = attributes;
+        if (attributes && attributes.size) {
+            this.size = attributes.size;
+        }
     }
 }
 

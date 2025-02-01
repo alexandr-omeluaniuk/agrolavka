@@ -15,6 +15,7 @@ import Product from './view/Product';
 import SystemSettings from './view/SystemSettings';
 import { ROLE_SUBSCRIPTION_ADMINISTRATOR, ROLE_SUBSCRIPTION_USER } from '../../conf/standard-roles';
 import { OrdersForPrintProvider } from './hooks/OrdersForPrintContext';
+import ScheduleSettings from './view/ScheduleSettings';
 
 export const agrolavka = new Module('agrolavka', '/agrolavka', [
     new ModuleView('orders', '/orders', 'shopping_cart', Orders),
@@ -23,6 +24,7 @@ export const agrolavka = new Module('agrolavka', '/agrolavka', [
     new ModuleView('shops', '/shops', 'location_on', Shops),
     new ModuleView('product-attributes', '/product-attributes', 'style', ProductAttributes),
     new ModuleView('system-settings', '/system-settings', 'settings', SystemSettings),
+    new ModuleView('schedule-settings', '/schedule-settings', 'schedule', ScheduleSettings),
     new ModuleView(null, '/order/:id', null, Order),
     new ModuleView(null, '/product/:id', null, Product)
 ], (routes) => <OrdersForPrintProvider key="OrdersForPrintProvider">{routes}</OrdersForPrintProvider>).setIcon('store_mall_directory')
