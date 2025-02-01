@@ -18,4 +18,6 @@ public final class CacheKey {
     public static final String PURCHASE_HISTORY = "purchaseHistory";
     public static final String PRODUCT_ATTRIBUTE_LINKS = "productAttributeLinks";
     public static final String SYSTEM_SETTINGS = "systemSettings";
+
+    public static final String SCHEDULE_SETTINGS = "scheduleSettings";
 }
