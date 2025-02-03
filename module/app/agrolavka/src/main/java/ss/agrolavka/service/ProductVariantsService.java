@@ -14,7 +14,8 @@ import ss.entity.agrolavka.ProductVariant;
 import ss.martin.core.dao.CoreDao;
 
 import java.time.DayOfWeek;
-import java.time.OffsetDateTime;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -88,7 +89,8 @@ public class ProductVariantsService {
 
     private Boolean isTimeForShowProhibited() {
         final var settings = systemSettingsService.getScheduleSettings();
-        final var now = OffsetDateTime.now();
+        final var now = LocalDateTime.now().atZone(ZoneId.of("UTC"))
+            .withZoneSameInstant(ZoneId.of("Europe/Minsk"));
         final var nowDayOfWeek = now.getDayOfWeek();
         final var nowHours = now.getHour();
         final var nowMinutes = now.getMinute();
