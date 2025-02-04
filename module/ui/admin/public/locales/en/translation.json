@@ -121,6 +121,8 @@
         "email": "Wrong email address",
         "min_length": "Min {{length}} characters",
         "max_length": "Max {{length}} characters",
-        "web_url": "Incorrect URL"
+        "web_url": "Incorrect URL",
+        "max": "Greater than max value",
+        "min": "Very small"
     }
 }
