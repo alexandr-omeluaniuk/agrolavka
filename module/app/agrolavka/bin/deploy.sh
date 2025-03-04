@@ -1,6 +1,6 @@
 #!/bin/bash
-JAVA_HOME=/usr/lib/jvm/jdk-17
-KEY=/home/alex/secure/agrolavka/id_rsa_agrolavka
+JAVA_HOME=/home/alex/work/soft/java/jdk-17.0.2
+KEY=/home/alex/work/secure/agrolavka/id_rsa_agrolavka
 HOST=157.90.160.237
 
 export JAVA_HOME=${JAVA_HOME}
