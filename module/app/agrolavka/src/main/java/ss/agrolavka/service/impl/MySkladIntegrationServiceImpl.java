@@ -156,6 +156,14 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
                                 Product.class
                             );
                             final var product = products.isEmpty() ? null : products.get(0);
+                            if (product == null) {
+                                LOG.info("SKIPPED: " + charObj.getString("name"));
+                                continue;
+                            }
+                            if (product.getGroup() == null) {
+                                LOG.info("Product has no group: " + product.getName());
+                                continue;
+                            }
                             final var specificGroup = AppCache.isBelongsToGroup("Средства защиты растений (СЗР)", product.getGroup());
                             if (specificGroup) {
                                 hidden = true;
