@@ -1,16 +1,19 @@
 package ss.agrolavka.test.rest;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import java.util.UUID;
-import ss.agrolavka.test.common.AgrolavkaDataFactory;
-import ss.entity.agrolavka.ProductsGroup;
-import ss.martin.core.model.EntitySearchResponse;
-import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import ss.agrolavka.service.MySkladIntegrationService;
-import static org.mockito.Mockito.*;
+import ss.agrolavka.test.common.AgrolavkaDataFactory;
 import ss.entity.agrolavka.Product;
+import ss.entity.agrolavka.ProductsGroup;
+import ss.martin.core.model.EntitySearchResponse;
+
+import java.util.UUID;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.*;
 
 public class ProductsGroupRestControllerTest extends AbstractEntityWithImagesRestControllerTest<ProductsGroup> {
     
@@ -19,6 +22,7 @@ public class ProductsGroupRestControllerTest extends AbstractEntityWithImagesRes
     
     @BeforeEach
     public void beforeTest() {
+        System.out.println("Allo: " + System.getenv("JASYPT_ENCRYPTOR_PASSWORD"));
         coreDao.massDelete(coreDao.getAll(Product.class));
         coreDao.massDelete(coreDao.getAll(ProductsGroup.class));
         when(mySklad.createProductsGroup(any())).thenReturn(UUID.randomUUID().toString());
