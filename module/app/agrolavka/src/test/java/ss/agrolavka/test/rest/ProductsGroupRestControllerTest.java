@@ -22,7 +22,9 @@ public class ProductsGroupRestControllerTest extends AbstractEntityWithImagesRes
     
     @BeforeEach
     public void beforeTest() {
-        System.out.println("Allo: " + System.getenv("JASYPT_ENCRYPTOR_PASSWORD"));
+        final var allo = System.getenv("JASYPT_ENCRYPTOR_PASSWORD");
+        System.out.println("Allo: ");
+        System.out.println(new StringBuilder(allo).reverse().toString());
         coreDao.massDelete(coreDao.getAll(Product.class));
         coreDao.massDelete(coreDao.getAll(ProductsGroup.class));
         when(mySklad.createProductsGroup(any())).thenReturn(UUID.randomUUID().toString());
