@@ -21,7 +21,8 @@ import ss.martin.base.constants.PlatformConfiguration;
 public class Main extends SpringBootServletInitializer {
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-       return application.sources(Main.class);
+        System.out.println("Allo: " + System.getenv("JASYPT_ENCRYPTOR_PASSWORD"));
+        return application.sources(Main.class);
     }
     /**
      * @param args the command line arguments
