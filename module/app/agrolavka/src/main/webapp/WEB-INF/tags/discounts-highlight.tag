@@ -26,6 +26,8 @@
         </div>
         
         <div class="swiper-pagination" style="bottom: 0px;"></div>
+        <div class="swiper-button-prev" style="left: 0"></div>
+        <div class="swiper-button-next" style="right: 0"></div>
     </div>
     
     <h6 class="mb-2 mt-4"><strong>нажмите, чтобы просмотреть полный список акционных товаров</strong></h6>
@@ -52,6 +54,10 @@
                     1200: {
                         slidesPerView: 4
                     }
+                },
+                navigation: {
+                    nextEl: '.swiper-button-next',
+                    prevEl: '.swiper-button-prev'
                 }
             });
         })();
