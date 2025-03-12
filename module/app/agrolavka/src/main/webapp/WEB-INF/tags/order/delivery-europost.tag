@@ -90,16 +90,16 @@
         
         var ua = window.navigator.userAgent;
         var iOS = !!ua.match(/iPad/i) || !!ua.match(/iPhone/i);
-        if (!iOS) {
-            input.addEventListener('blur', function (e) {
-                if (e.relatedTarget === null) {
-                    const searchResultOutput = document.querySelector('#agr-europost-locations-list');
-                    searchResultOutput.classList.remove("show");
-                    searchResultOutput.classList.remove("list-group");
-                }
-            }, false);
-        }
-        
+        // if (!iOS) {
+        //     input.addEventListener('blur', function (e) {
+        //         if (e.relatedTarget === null) {
+        //             const searchResultOutput = document.querySelector('#agr-europost-locations-list');
+        //             searchResultOutput.classList.remove("show");
+        //             searchResultOutput.classList.remove("list-group");
+        //         }
+        //     }, false);
+        // }
+
         input.addEventListener('input', function (e) {
             const searchText = this.value;
             searchResultOutput.querySelectorAll('li').forEach(item => {

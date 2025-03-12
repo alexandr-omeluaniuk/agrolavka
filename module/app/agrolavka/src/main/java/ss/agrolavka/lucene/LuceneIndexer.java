@@ -129,7 +129,7 @@ public class LuceneIndexer {
             doc.add(new TextField("name", product.getName(), Field.Store.NO));
             writer.updateDocument(term, doc);
             writer.commit();
-            LOG.info("Product indexed [" + product.getId() +"]");
+            LOG.debug("Product indexed [" + product.getId() +"]");
         } catch (Exception e) {
             LOG.error("Document can not be added to index", e);
         }
