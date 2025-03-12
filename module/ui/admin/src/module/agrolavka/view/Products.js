@@ -130,11 +130,6 @@ function Products() {
     const toolbarBefore = () => {
         return (
                 <React.Fragment>
-                    <Tooltip title={t('m_agrolavka:backup')}>
-                        <IconButton onClick={backup}>
-                            <Icon color="primary">backup</Icon>
-                        </IconButton>
-                    </Tooltip>
                     <Tooltip title={t('m_agrolavka:products.synchronize')}>
                         <IconButton onClick={synchronizeData}>
                             <Icon color="primary">sync_alt</Icon>
@@ -146,10 +141,6 @@ function Products() {
     const synchronizeData = () => {
         dataService.put('/agrolavka/protected/mysklad/synchronize').then(resp => {
             //setProductGroups(null);
-        });
-    };
-    const backup = () => {
-        dataService.getFile('/api/agrolavka/protected/mysklad/backup').then(resp => {
         });
     };
     const addAttributes = async (product) => {
