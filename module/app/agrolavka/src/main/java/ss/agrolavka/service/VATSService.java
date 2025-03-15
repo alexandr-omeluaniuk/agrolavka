@@ -30,7 +30,6 @@ public class VATSService {
     private OrderDAO orderDAO;
 
     public Object handleIncomingRequest(Map<String, String> request) {
-        LOG.info(secretIncoming);
         if (!secretIncoming.equals(request.get(TOKEN_KEY))) {
             throw new RuntimeException("Access denied for VATS token: " + request.get(TOKEN_KEY));
         }
