@@ -192,6 +192,15 @@ class AgrolavkaPublicRestController {
         return response == null ? "" : objectMapper.writeValueAsString(response);
     }
 
+    @RequestMapping(value = "/phone-api", method = RequestMethod.POST,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public String phoneApiCall(
+            @RequestBody String request
+    ) throws Exception {
+        vatsService.phoneApiCall(request);
+        return null;
+    }
+
     private Map<String, String> parse(String request) {
         final var result = new HashMap<String, String>();
         Arrays.stream(request.split("&")).forEach(row -> {

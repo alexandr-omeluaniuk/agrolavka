@@ -45,6 +45,10 @@ public class VATSService {
         return null;
     }
 
+    public void phoneApiCall(String request) {
+        LOG.info("PHONE API: " + request);
+    }
+
     private ContactInfo findContact(String phone) {
         final var orders = orderDAO.getPurchaseHistoryByPhone(phone);
         if (orders.isEmpty()) {
