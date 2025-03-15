@@ -48,6 +48,7 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
     private static final String URL_MODIFICATIONS = "/entity/variant";
     private static final String URL_PRODUCTS = "/entity/product?limit=%d&offset=%d";
     private static final String URL_PRODUCT_IMAGES = "/entity/product/%s/images";
+    private static final String URL_AGENTS = "/entity/counterparty";
     
     private static final String METHOD_GET = "GET";
     
@@ -102,6 +103,21 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
         }
         LOG.debug("loaded product groups [" + result.size() + "]");
         return result;
+    }
+
+    public List<Agent> getAgents(int offset, int limit) {
+        return ((ThrowingSupplier<List<Agent>>) () -> {
+            String response = request(String.format(URL_AGENTS, limit, offset), METHOD_GET, null);
+            JSONObject json = new JSONObject(response);
+            List<Agent> result = new ArrayList<>();
+            JSONArray rows = json.getJSONArray("rows");
+            for (int i = 0; i < rows.length(); i++) {
+                JSONObject item = rows.getJSONObject(i);
+                Agent agent = agentFromJson(item);
+            }
+            LOG.debug("loaded agents [" + result.size() + "]");
+            return result;
+        }).get();
     }
     
     @Override
@@ -526,6 +542,16 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
         byte[] data = baos.toByteArray();
         baos.close();
         return data;
+    }
+    private Agent agentFromJson(JSONObject item) {
+        Agent agent = new Agent();
+        agent.setExternalId(item.getString("id"));
+        agent.setName(item.getString("name"));
+        if (item.has("phone")) {
+            return agent;
+        } else {
+            return null;
+        }
     }
     /**
      * Create product from JSON.
