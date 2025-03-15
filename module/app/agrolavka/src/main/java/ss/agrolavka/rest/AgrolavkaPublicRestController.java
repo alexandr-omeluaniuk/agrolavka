@@ -1,5 +1,6 @@
 package ss.agrolavka.rest;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +47,9 @@ class AgrolavkaPublicRestController {
 
     @Autowired
     private VATSService vatsService;
+
+    @Autowired
+    private ObjectMapper objectMapper;
     
     /**
      * Search product.
@@ -181,10 +185,20 @@ class AgrolavkaPublicRestController {
 
     @RequestMapping(value = "/vats", method = RequestMethod.POST,
             produces = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    public void vatsIncome(
-        @RequestBody Map<String, String> request
-    ) {
-        vatsService.handleIncomingRequest(request);
+    public String vatsIncome(
+        @RequestBody String request
+    ) throws Exception {
+        final var response = vatsService.handleIncomingRequest(parse(request));
+        return response == null ? "" : objectMapper.writeValueAsString(response);
+    }
+
+    private Map<String, String> parse(String request) {
+        final var result = new HashMap<String, String>();
+        Arrays.stream(request.split("&")).forEach(row -> {
+            final var parts = row.split("=");
+            result.put(parts[0], parts.length > 1 ? parts[1] : null);
+        });
+        return result;
     }
     
     private Order removePosition(Predicate<OrderPosition> predicate, HttpServletRequest request) {
