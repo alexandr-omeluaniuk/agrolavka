@@ -83,7 +83,7 @@ public class VATSService {
             }
             final var info = new ContactInfo();
             info.setContact_name(sb.toString());
-            info.setResponsible("admin");
+            // info.setResponsible("admin");
             LOG.info("VATS client: " + info.getContact_name());
             return info;
         }
