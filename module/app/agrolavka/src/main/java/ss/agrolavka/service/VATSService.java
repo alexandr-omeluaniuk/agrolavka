@@ -74,13 +74,13 @@ public class VATSService {
                 }
             }
             if (!isFound) {
-                sb.append("<Без имени>");
+                sb.append("Без имени");
             }
-            final var lastOrder = orders.get(0);
-            sb.append(", заказ #").append(lastOrder.getId());
-            if (orders.size() > 1) {
-                sb.append(", заказов [").append(orders.size()).append("]");
-            }
+//            final var lastOrder = orders.get(0);
+//            sb.append(", заказ #").append(lastOrder.getId());
+//            if (orders.size() > 1) {
+//                sb.append(", заказов [").append(orders.size()).append("]");
+//            }
             final var info = new ContactInfo();
             info.setContact_name(sb.toString());
             // info.setResponsible("admin");
