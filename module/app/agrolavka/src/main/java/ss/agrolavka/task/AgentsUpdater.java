@@ -21,7 +21,7 @@ public class AgentsUpdater {
     @Autowired
     private AgentsSynchronizer synchronizer;
 
-    @Scheduled(cron = "0 1 * * * *")
+    @Scheduled(cron = "0 */30 * * * *")
     public void importAgents() {
         securityService.backgroundAuthentication(
                 configuration.backgroundUserUsername(),

@@ -48,7 +48,7 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
     private static final String URL_MODIFICATIONS = "/entity/variant";
     private static final String URL_PRODUCTS = "/entity/product?limit=%d&offset=%d";
     private static final String URL_PRODUCT_IMAGES = "/entity/product/%s/images";
-    private static final String URL_AGENTS = "/entity/counterparty";
+    private static final String URL_AGENTS = "/entity/counterparty?limit=%d&offset=%d";
     
     private static final String METHOD_GET = "GET";
     
@@ -551,7 +551,8 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
         Agent agent = new Agent();
         agent.setExternalId(item.getString("id"));
         agent.setName(item.getString("name"));
-        if (item.has("phone")) {
+        if (item.has("phone") && !item.getString("phone").isBlank()) {
+            agent.setPhone(item.getString("phone"));
             return agent;
         } else {
             return null;
