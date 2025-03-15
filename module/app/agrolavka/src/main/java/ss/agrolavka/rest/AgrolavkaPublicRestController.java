@@ -182,7 +182,7 @@ class AgrolavkaPublicRestController {
     @RequestMapping(value = "/vats", method = RequestMethod.POST,
             produces = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public void vatsIncome(
-        @RequestBody String request
+        @RequestBody Map<String, String> request
     ) {
         vatsService.handleIncomingRequest(request);
     }
