@@ -10,6 +10,7 @@ import ss.agrolavka.constants.SiteUrls;
 import ss.agrolavka.service.OrderService;
 import ss.agrolavka.service.ProductService;
 import ss.agrolavka.service.SessionService;
+import ss.agrolavka.service.VATSService;
 import ss.agrolavka.util.AppCache;
 import ss.agrolavka.wrapper.CartProduct;
 import ss.agrolavka.wrapper.OneClickOrderWrapper;
@@ -42,6 +43,9 @@ class AgrolavkaPublicRestController {
 
     @Autowired
     private SessionService sessionService;
+
+    @Autowired
+    private VATSService vatsService;
     
     /**
      * Search product.
@@ -173,6 +177,14 @@ class AgrolavkaPublicRestController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, List<ProductsGroup>> catalog() throws Exception {
         return AppCache.getCategoriesTree();
+    }
+
+    @RequestMapping(value = "/vats", method = RequestMethod.POST,
+            produces = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    public void vatsIncome(
+        @RequestBody String request
+    ) {
+        vatsService.handleIncomingRequest(request);
     }
     
     private Order removePosition(Predicate<OrderPosition> predicate, HttpServletRequest request) {
