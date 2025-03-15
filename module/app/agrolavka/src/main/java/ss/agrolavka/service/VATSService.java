@@ -48,7 +48,15 @@ public class VATSService {
     private ContactInfo findContact(String phone) {
         final var orders = orderDAO.getPurchaseHistoryByPhone(phone);
         if (orders.isEmpty()) {
-            return null;
+            final var agents = orderDAO.getAgentsByPhone(phone);
+            if (agents.isEmpty()) {
+                return null;
+            } else {
+                final var info = new ContactInfo();
+                info.setContact_name("КА " + agents.get(0).getName());
+                LOG.info("VATS agent: " + info.getContact_name());
+                return info;
+            }
         } else {
             final var sb = new StringBuilder("Клиент ");
             boolean isFound = false;
