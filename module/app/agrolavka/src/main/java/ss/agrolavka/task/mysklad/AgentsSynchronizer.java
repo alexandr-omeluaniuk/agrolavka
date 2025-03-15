@@ -34,8 +34,8 @@ public class AgentsSynchronizer {
         final var mySkladAgents = new ArrayList<Agent>();
         int offset = 0;
         while (offset < 10000) {
-            LOG.info("agents portion: " + offset + " - " + (offset + 1000));
             List<Agent> chunk = mySkladIntegrationService.getAgents(offset, 1000);
+            LOG.info("agents portion: " + offset + " - " + (offset + 1000) + " result size [" + chunk.size() + "]");
             if (chunk.isEmpty()) {
                 break;
             }
