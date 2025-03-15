@@ -176,9 +176,12 @@ public class DataUpdater {
         List<Product> products = new ArrayList<>();
         Map<String, Product> stock = new HashMap<>();
         int offset = 0;
-        while (offset < 5000) {
+        while (offset < 10000) {
             LOG.info("products portion: " + offset + " - " + (offset + 1000));
             List<Product> chunk = mySkladIntegrationService.getProducts(offset, 1000);
+            if (chunk.isEmpty()) {
+                break;
+            }
             stock.putAll(mySkladIntegrationService.getStock(offset, 1000));
             products.addAll(chunk);
             offset += 1000;

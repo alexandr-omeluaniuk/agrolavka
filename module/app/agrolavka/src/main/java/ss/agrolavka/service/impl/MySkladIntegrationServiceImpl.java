@@ -105,6 +105,7 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
         return result;
     }
 
+    @Override
     public List<Agent> getAgents(int offset, int limit) {
         return ((ThrowingSupplier<List<Agent>>) () -> {
             String response = request(String.format(URL_AGENTS, limit, offset), METHOD_GET, null);
@@ -114,6 +115,9 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
             for (int i = 0; i < rows.length(); i++) {
                 JSONObject item = rows.getJSONObject(i);
                 Agent agent = agentFromJson(item);
+                if (agent != null) {
+                    result.add(agent);
+                }
             }
             LOG.debug("loaded agents [" + result.size() + "]");
             return result;
