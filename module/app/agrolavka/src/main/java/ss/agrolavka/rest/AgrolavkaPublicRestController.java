@@ -197,8 +197,7 @@ class AgrolavkaPublicRestController {
     public String phoneApiCall(
             @RequestBody String request
     ) throws Exception {
-        vatsService.phoneApiCall(request);
-        return null;
+        return vatsService.phoneApiCall(request);
     }
 
     private Map<String, String> parse(String request) {

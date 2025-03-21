@@ -1,13 +1,19 @@
 package ss.agrolavka.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 import ss.agrolavka.constants.VATSCallCommand;
 import ss.agrolavka.dao.OrderDAO;
 import ss.agrolavka.wrapper.ContactInfo;
+import ss.agrolavka.wrapper.vats.OutgoingCall;
+import ss.agrolavka.wrapper.vats.OutgoingVatsCall;
 import ss.entity.agrolavka.Order;
 
 import java.util.Map;
@@ -26,8 +32,23 @@ public class VATSService {
     @Value("${vats.secret.incoming:1111}")
     private String secretIncoming;
 
+    @Value("${vats.secret.outgoing:1111}")
+    private String secretOutgoing;
+
+    @Value("${vats.address:1111}")
+    private String vatsAddress;
+
+    @Value("${vats.user:1111}")
+    private String vatsUser;
+
     @Autowired
     private OrderDAO orderDAO;
+
+    @Autowired
+    private RestTemplate restTemplate;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     public Object handleIncomingRequest(Map<String, String> request) {
         if (!secretIncoming.equals(request.get(TOKEN_KEY))) {
@@ -45,8 +66,23 @@ public class VATSService {
         return null;
     }
 
-    public void phoneApiCall(String request) {
-        LOG.info("PHONE API: " + request);
+    public String phoneApiCall(String request) throws Exception {
+        OutgoingCall call = objectMapper.readValue(request, OutgoingCall.class);
+        LOG.info("PHONE API: " + call);
+        OutgoingVatsCall payload = new OutgoingVatsCall();
+        payload.setClid(call.getSrcNumber());
+        payload.setPhone(call.getDestNumber().replaceAll("[^\\d.]", ""));
+        payload.setUser(vatsUser);
+        final var headers = new HttpHeaders();
+        headers.add("X-API-KEY", secretOutgoing);
+        final var entity = new HttpEntity(payload, headers);
+        final var response = restTemplate.postForEntity(
+                vatsAddress,
+                entity,
+                String.class
+        );
+        LOG.info("VATS RESPONSE: " + response.getBody());
+        return response.getBody();
     }
 
     private ContactInfo findContact(String phone) {
