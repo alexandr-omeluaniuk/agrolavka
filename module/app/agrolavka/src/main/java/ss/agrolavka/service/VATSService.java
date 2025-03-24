@@ -40,7 +40,7 @@ public class VATSService {
     @Value("${vats.address:1111}")
     private String vatsAddress;
 
-    @Value("${vats.mapping:ewogICIxIjogMTAxLAogICIyIjogMTAyLAogICIzIjogMTAzCn0=}")
+    @Value("${vats.mapping:{}")
     private String vatsUsers;
 
     @Autowired
