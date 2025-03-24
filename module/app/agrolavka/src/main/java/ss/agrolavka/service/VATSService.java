@@ -1,5 +1,6 @@
 package ss.agrolavka.service;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +17,7 @@ import ss.agrolavka.wrapper.vats.OutgoingCall;
 import ss.agrolavka.wrapper.vats.OutgoingVatsCall;
 import ss.entity.agrolavka.Order;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @Service
@@ -38,8 +40,8 @@ public class VATSService {
     @Value("${vats.address:1111}")
     private String vatsAddress;
 
-    @Value("${vats.user:1111}")
-    private String vatsUser;
+    @Value("${vats.mapping:ewogICIxIjogMTAxLAogICIyIjogMTAyLAogICIzIjogMTAzCn0=}")
+    private String vatsUsers;
 
     @Autowired
     private OrderDAO orderDAO;
@@ -67,12 +69,15 @@ public class VATSService {
     }
 
     public String phoneApiCall(String request) throws Exception {
+        TypeReference<HashMap<String,String>> typeRef = new TypeReference<>() {};
+        final var mapping = objectMapper.readValue(vatsUsers, typeRef);
         OutgoingCall call = objectMapper.readValue(request, OutgoingCall.class);
-        LOG.info("PHONE API: " + call);
+        LOG.info("PHONE API: " + request);
         OutgoingVatsCall payload = new OutgoingVatsCall();
         payload.setClid(call.getSrcNumber());
         payload.setPhone(call.getDestNumber().replaceAll("[^\\d.]", ""));
-        payload.setUser(vatsUser);
+        payload.setUser(mapping.get(call.getUid()));
+        payload.setShow_phone(true);
         final var headers = new HttpHeaders();
         headers.add("X-API-KEY", secretOutgoing);
         final var entity = new HttpEntity(payload, headers);

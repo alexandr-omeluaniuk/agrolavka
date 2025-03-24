@@ -8,6 +8,8 @@ public class OutgoingVatsCall {
 
     private String clid;
 
+    private Boolean show_phone;
+
     public String getPhone() {
         return phone;
     }
@@ -30,5 +32,13 @@ public class OutgoingVatsCall {
 
     public void setClid(String clid) {
         this.clid = clid;
+    }
+
+    public Boolean getShow_phone() {
+        return show_phone;
+    }
+
+    public void setShow_phone(Boolean show_phone) {
+        this.show_phone = show_phone;
     }
 }
