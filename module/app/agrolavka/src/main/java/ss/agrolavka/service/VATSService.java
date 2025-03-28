@@ -13,12 +13,17 @@ import org.springframework.web.client.RestTemplate;
 import ss.agrolavka.constants.VATSCallCommand;
 import ss.agrolavka.dao.OrderDAO;
 import ss.agrolavka.wrapper.ContactInfo;
+import ss.agrolavka.wrapper.vats.CompletedCall;
 import ss.agrolavka.wrapper.vats.OutgoingCall;
 import ss.agrolavka.wrapper.vats.OutgoingVatsCall;
 import ss.entity.agrolavka.Order;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class VATSService {
@@ -52,7 +57,10 @@ public class VATSService {
     @Autowired
     private ObjectMapper objectMapper;
 
-    public Object handleIncomingRequest(Map<String, String> request) {
+    @Autowired
+    private PhoneApiService phoneApiService;
+
+    public Object handleIncomingRequest(Map<String, String> request) throws ParseException {
         if (!secretIncoming.equals(request.get(TOKEN_KEY))) {
             throw new RuntimeException("Access denied for VATS token: " + request.get(TOKEN_KEY));
         }
@@ -60,6 +68,9 @@ public class VATSService {
             final var command = VATSCallCommand.valueOf(request.get(COMMAND_KEY));
             if (command == VATSCallCommand.contact) {
                 return findContact(request.get(PHONE_KEY));
+            } else if (command == VATSCallCommand.history) {
+                createMySkladCall(request);
+                return null;
             } else {
                 return null;
             }
@@ -88,6 +99,22 @@ public class VATSService {
         );
         LOG.info("VATS RESPONSE: " + response.getBody());
         return response.getBody();
+    }
+
+    private void createMySkladCall(Map<String, String> request) throws ParseException {
+        final var vatsFormat = new SimpleDateFormat("yyyyMMddTHHmmssZ");
+        final var phoneApiFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+        final var startCall = vatsFormat.parse(request.get("start"));
+        final var duration = TimeUnit.SECONDS.toMillis(Long.parseLong(request.get("duration")));
+        final var call = new CompletedCall();
+        call.setExternalId(request.get("callid"));
+        call.setIncoming("in".equals(request.get("type")));
+        call.setNumber(request.get("phone"));
+        call.setStartTime(phoneApiFormat.format(startCall));
+        call.setDuration(duration);
+        call.setEndTime(phoneApiFormat.format(new Date(startCall.getTime() + duration)));
+
+        phoneApiService.createCall(call, request.get("crm_token"));
     }
 
     private ContactInfo findContact(String phone) {
