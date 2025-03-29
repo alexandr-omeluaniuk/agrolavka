@@ -3,6 +3,8 @@ package ss.agrolavka.rest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -31,6 +33,9 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping(SiteUrls.URL_PUBLIC)
 class AgrolavkaPublicRestController {
+
+    private static final Logger LOG = LoggerFactory.getLogger(AgrolavkaPublicRestController.class);
+
     /** Core DAO. */
     @Autowired
     private CoreDao coreDAO;
@@ -201,6 +206,7 @@ class AgrolavkaPublicRestController {
     }
 
     private Map<String, String> parse(String request) {
+        LOG.info("VATS request: " + request);
         final var result = new HashMap<String, String>();
         Arrays.stream(request.split("&")).forEach(row -> {
             final var parts = row.split("=");
