@@ -102,7 +102,7 @@ public class VATSService {
     }
 
     private void createMySkladCall(Map<String, String> request) throws ParseException {
-        final var vatsFormat = new SimpleDateFormat("yyyyMMdd-HHmmssZ");
+        final var vatsFormat = new SimpleDateFormat("yyyyMMdd-HHmmss");
         final var phoneApiFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
         final var startCall = vatsFormat.parse(request.get("start").replace("T", "-").replace("Z", ""));
         final var duration = TimeUnit.SECONDS.toMillis(Long.parseLong(request.get("duration")));
@@ -114,7 +114,7 @@ public class VATSService {
         call.setDuration(duration);
         call.setEndTime(phoneApiFormat.format(new Date(startCall.getTime() + duration)));
 
-        phoneApiService.createCall(call, request.get("crm_token"));
+        phoneApiService.createCall(call);
     }
 
     private ContactInfo findContact(String phone) {
