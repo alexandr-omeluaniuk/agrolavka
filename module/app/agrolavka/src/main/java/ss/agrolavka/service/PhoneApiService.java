@@ -35,7 +35,7 @@ public class PhoneApiService {
             HttpMethod.POST,
             entity,
             String.class
-        ).getBody();
-        LOG.info("PHONE API RESPONSE: " + response);
+        );
+        // LOG.info("PHONE API RESPONSE: " + response);
     }
 }

@@ -14,7 +14,7 @@ public class CompletedCall {
 
     private MySkladRef employee;
 
-    private Boolean isIncoming;
+    private String isIncoming;
 
     private String startTime;
 
@@ -64,11 +64,11 @@ public class CompletedCall {
         this.employee = employee;
     }
 
-    public Boolean getIncoming() {
+    public String getIsIncoming() {
         return isIncoming;
     }
 
-    public void setIncoming(Boolean incoming) {
+    public void setIsIncoming(String incoming) {
         isIncoming = incoming;
     }
 

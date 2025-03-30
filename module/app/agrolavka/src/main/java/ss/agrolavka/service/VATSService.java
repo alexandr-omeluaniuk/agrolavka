@@ -108,7 +108,7 @@ public class VATSService {
         final var duration = TimeUnit.SECONDS.toMillis(Long.parseLong(request.get("duration")));
         final var call = new CompletedCall();
         call.setExternalId(request.get("callid"));
-        call.setIncoming("in".equals(request.get("type")));
+        call.setIsIncoming("in".equals(request.get("type")) ? "true" : "false");
         call.setNumber(request.get("phone"));
         call.setStartTime(phoneApiFormat.format(startCall));
         call.setDuration(duration);
