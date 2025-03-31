@@ -2,6 +2,7 @@ package ss.agrolavka.service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +46,7 @@ public class VATSService {
     @Value("${vats.address:1111}")
     private String vatsAddress;
 
-    @Value("${vats.mapping:{}")
+    @Value("${vats.mapping:{}}")
     private String vatsUsers;
 
     @Autowired
@@ -59,6 +60,17 @@ public class VATSService {
 
     @Autowired
     private PhoneApiService phoneApiService;
+
+    @PostConstruct
+    private void init() {
+        try {
+            TypeReference<HashMap<String,String>> typeRef = new TypeReference<>() {};
+            final var mapping = objectMapper.readValue(vatsUsers, typeRef);
+            mapping.forEach((key, value) -> LOG.info(key + " <> " + value));
+        } catch (Exception e) {
+            LOG.warn("Invalid VATS users mapping: " + vatsUsers, e);
+        }
+    }
 
     public Object handleIncomingRequest(Map<String, String> request) throws ParseException {
         if (!secretIncoming.equals(request.get(TOKEN_KEY))) {
@@ -112,6 +124,7 @@ public class VATSService {
         call.setNumber(request.get("phone"));
         call.setStartTime(phoneApiFormat.format(startCall));
         call.setDuration(duration);
+        call.setExtension(request.get("ext"));
         call.setEndTime(phoneApiFormat.format(new Date(startCall.getTime() + duration)));
 
         phoneApiService.createCall(call);
