@@ -207,6 +207,7 @@ public class DataUpdater {
             Product stockProduct = stock.get(actualProduct.getCode());
             eProduct.setName(actualProduct.getName());
             eProduct.setPrice(actualProduct.getPrice());
+            eProduct.setTradePrice(actualProduct.getTradePrice());
             eProduct.setGroup(actualProduct.getGroup());
             eProduct.setArticle(actualProduct.getArticle());
             eProduct.setBuyPrice(actualProduct.getBuyPrice());
