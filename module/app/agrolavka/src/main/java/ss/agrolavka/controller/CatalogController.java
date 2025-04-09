@@ -130,6 +130,10 @@ class CatalogController extends BaseJspController {
         model.addAttribute(VARIANTS, variants.toString().replace("\"", "'"));
         model.addAttribute(META_DESCRIPTION, metaDescription);
         model.addAttribute(FULL_PRODUCT_DESCRIPTION, fullDescription);
+        if (product.getTradePriceLimit() != null && product.getTradePrice() != null) {
+            model.addAttribute(PRODUCT_TRADE_PRICE, String.format("%.2f", product.getTradePrice()));
+            model.addAttribute(PRODUCT_TRADE_PRICE_LIMIT, product.getTradePriceLimit());
+        }
         final var calendar = new GregorianCalendar();
         calendar.setTime(new Date());
         calendar.add(Calendar.MONTH, 1);
