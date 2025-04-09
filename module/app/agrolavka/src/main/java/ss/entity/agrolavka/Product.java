@@ -40,7 +40,9 @@ public class Product extends ExternalEntity {
     private Double buyPrice;
     @Column(name = "trade_price")
     private Double tradePrice;
-    private Double tradePriceLimit;
+
+    @Column(name = "trade_price_limit")
+    private Integer tradePriceLimit;
     /** Article number. */
     @Size(max = 255)
     @Column(name = "article", length = 255)
@@ -304,10 +306,10 @@ public class Product extends ExternalEntity {
     public void setTradePrice(Double tradePrice) {
         this.tradePrice = tradePrice;
     }
-    public Double getTradePriceLimit() {
+    public Integer getTradePriceLimit() {
         return tradePriceLimit;
     }
-    public void setTradePriceLimit(Double tradePriceLimit) {
+    public void setTradePriceLimit(Integer tradePriceLimit) {
         this.tradePriceLimit = tradePriceLimit;
     }
 

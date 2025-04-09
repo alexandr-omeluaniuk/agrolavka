@@ -208,6 +208,7 @@ public class DataUpdater {
             eProduct.setName(actualProduct.getName());
             eProduct.setPrice(actualProduct.getPrice());
             eProduct.setTradePrice(actualProduct.getTradePrice());
+            eProduct.setTradePriceLimit(actualProduct.getTradePriceLimit());
             eProduct.setGroup(actualProduct.getGroup());
             eProduct.setArticle(actualProduct.getArticle());
             eProduct.setBuyPrice(actualProduct.getBuyPrice());

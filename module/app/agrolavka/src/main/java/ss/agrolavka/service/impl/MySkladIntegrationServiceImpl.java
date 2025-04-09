@@ -54,6 +54,7 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
     
     private static final String SITE_PRICE_TYPE = "Цена продажи";
     private static final String TRADE_PRICE_TYPE = "Оптовая цена";
+    private static final String TRADE_PRICE_LIMIT_ATTR_NAME = "кол-во для опт. цены";
 
     private static final Set<String> CHARACTERISTIC_NAMES_SKIP = new HashSet<>(
         Arrays.stream(new String[] {
@@ -591,6 +592,7 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
         }
         product.setPrice(extractPriceValue(item));
         product.setTradePrice(extractTradePriceValue(item));
+        product.setTradePriceLimit(extractTradePriceLimitValue(item));
         if (item.has("buyPrice")) {
             JSONObject buyPrice = item.getJSONObject("buyPrice");
             product.setBuyPrice(buyPrice.getDouble("value") / 100);
@@ -640,6 +642,19 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
                 JSONObject price = prices.getJSONObject(j);
                 if (TRADE_PRICE_TYPE.equals(price.getJSONObject("priceType").getString("name"))) {
                     return price.getDouble("value") / 100;
+                }
+            }
+        }
+        return null;
+    }
+
+    private Integer extractTradePriceLimitValue(JSONObject item) {
+        if (item.has("attributes")) {
+            JSONArray attributes = item.getJSONArray("attributes");
+            for (int j = 0; j < attributes.length(); j++) {
+                JSONObject attr = attributes.getJSONObject(j);
+                if (TRADE_PRICE_LIMIT_ATTR_NAME.equals(attr.getString("name"))) {
+                    return attr.getInt("value");
                 }
             }
         }
