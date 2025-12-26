@@ -50,34 +50,13 @@ public class ProductService {
     private LuceneIndexer indexer;
     
     public ProductsSearchResponse quickSearchProducts(String searchText) {
-        ProductsSearchRequest request = new ProductsSearchRequest();
-        request.setPage(1);
-        request.setPageSize(QUICK_SEARCH_PRODUCTS_MAX);
-        request.setText(searchText);
-        request.setOrder("asc");
-        request.setOrderBy(Product_.NAME);
-        List<Product> products = productDao.search(request);
-        if (products.isEmpty()) {
-            // запасной поиск полнотекстовый fuzzy если не нашли ничего по основному
-            final var luceneResult = indexer.search(searchText);
-            final var matchedIds = luceneResult.documents.stream().map(doc -> Long.valueOf(doc.get("id")))
-                .collect(Collectors.toSet());
-            request.setProductIds(matchedIds);
-            request.setText(null);
-            products = productDao.search(request);
-            products.sort((a, b) -> {
-                final var aName = a.getName();
-                final var bName = b.getName();
-                if (aName.toLowerCase().contains(luceneResult.term) && !bName.toLowerCase().contains(luceneResult.term)) {
-                    return -1;
-                } else if (!aName.toLowerCase().contains(luceneResult.term) && bName.toLowerCase().contains(luceneResult.term)) {
-                    return 1;
-                } else {
-                    return aName.compareTo(bName);
-                }
-            });
-            searchText = luceneResult.term;
-        }
+        final var resultsMap = Arrays.stream(searchText.split(" ")).map(this::searchByToken).toList();
+        final var products = new ArrayList<>(collectSearchResults(resultsMap));
+        products.sort((a, b) -> {
+            final var aName = a.getName();
+            final var bName = b.getName();
+            return aName.toLowerCase().compareTo(bName.toLowerCase());
+        });
         products.forEach(product -> {
             product.setPrice(PriceCalculator.getShopPrice(product.getPrice(), product.getDiscount()));
             product.setBuyPrice(null);
@@ -94,8 +73,54 @@ public class ProductService {
                 }
             }
         });
-        final var count = products.isEmpty() ? 0 : productDao.count(request);
-        return new ProductsSearchResponse(products, count, searchText);
+        final var count = Long.valueOf(products.size());
+        final var tokens = resultsMap.stream().map(r -> r.term).toList();
+        return new ProductsSearchResponse(products, count, searchText, tokens);
+    }
+
+    /**
+     * Функция свертывания результатов
+     * Собираем только те, которые присутсвуют во всех без исключения выборках
+     */
+    private List<Product> collectSearchResults(List<SubResult> results) {
+        if (results.size() == 1) {
+            return results.get(0).data;
+        }
+        final var resultMaps = results.stream().map(r -> r.data.stream().collect(Collectors.toMap(Product::getId, Function.identity()))).toList();
+        final var firstResult = resultMaps.get(0);
+        final var result = new ArrayList<Product>();
+        firstResult.keySet().forEach(pId -> {
+            final var presentInAllResults = resultMaps.stream().allMatch(r -> r.containsKey(pId));
+            if (presentInAllResults) {
+                result.add(firstResult.get(pId));
+            }
+        });
+        return result;
+    }
+
+    /**
+     * Поиск по одиночному токену из всей фразы
+     */
+    private SubResult searchByToken(String token) {
+        ProductsSearchRequest request = new ProductsSearchRequest();
+        request.setPage(1);
+        request.setPageSize(QUICK_SEARCH_PRODUCTS_MAX);
+        request.setText(token);
+        request.setOrder("asc");
+        request.setOrderBy(Product_.NAME);
+        List<Product> products = productDao.search(request);
+        String term = token;
+        if (products.isEmpty()) {
+            // запасной поиск полнотекстовый fuzzy если не нашли ничего по основному
+            final var luceneResult = indexer.search(token);
+            final var matchedIds = luceneResult.documents.stream().map(doc -> Long.valueOf(doc.get("id")))
+                .collect(Collectors.toSet());
+            request.setProductIds(matchedIds);
+            request.setText(null);
+            products = productDao.search(request);
+            term = luceneResult.term;
+        }
+        return new SubResult(products, term);
     }
     
     @Cacheable(CacheKey.NEW_PRODUCTS)
@@ -251,5 +276,16 @@ public class ProductService {
                 cache.clear();
             }
         });
+    }
+
+
+    private class SubResult {
+        public List<Product> data;
+        public String term;
+
+        public SubResult(List<Product> product, String term) {
+            this.data = product;
+            this.term = term;
+        }
     }
 }

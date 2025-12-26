@@ -8,7 +8,9 @@ import org.apache.lucene.document.Field;
 import org.apache.lucene.document.LongField;
 import org.apache.lucene.document.TextField;
 import org.apache.lucene.index.*;
-import org.apache.lucene.search.*;
+import org.apache.lucene.search.FuzzyQuery;
+import org.apache.lucene.search.IndexSearcher;
+import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.slf4j.Logger;
@@ -94,24 +96,9 @@ public class LuceneIndexer {
 
     private List<Document> doSearch(String langText) {
         return ((ThrowingSupplier<List<Document>>) () -> {
-            final var boolQueryBuilder = new BooleanQuery.Builder();
-            Arrays.stream(langText.split(" ")).forEach(token -> {
-                final var boolQueryBuilderInner = new BooleanQuery.Builder();
-                final var fuzzyQuery = new FuzzyQuery(new Term("name", token));
-                final var fuzzyQuery2 = new FuzzyQuery(new Term("name", token + "*"));
-                boolQueryBuilderInner.add(
-                    new BooleanClause(fuzzyQuery, BooleanClause.Occur.SHOULD)
-                ).add(
-                    new BooleanClause(fuzzyQuery2, BooleanClause.Occur.SHOULD)
-                );
-                boolQueryBuilder.add(
-                    new BooleanClause(boolQueryBuilderInner.build(), BooleanClause.Occur.MUST)
-                );
-            });
-            final var boolQuery = boolQueryBuilder.build();
-
+            final var query = new FuzzyQuery(new Term("name", langText.toLowerCase()), 2);
             IndexSearcher searcher = new IndexSearcher(reader);
-            TopDocs topDocs = searcher.search(boolQuery, QUICK_SEARCH_PRODUCTS_MAX);
+            TopDocs topDocs = searcher.search(query, QUICK_SEARCH_PRODUCTS_MAX);
             final var docs = Arrays.stream(topDocs.scoreDocs).toList().stream()
                 .map(scoreDoc -> ((ThrowingSupplier<Document>) () -> {
                     return searcher.doc(scoreDoc.doc);
@@ -126,7 +113,7 @@ public class LuceneIndexer {
             final var term = new Term("id", product.getId().toString());
             final var doc = new Document();
             doc.add(new LongField("id", product.getId(), Field.Store.YES));
-            doc.add(new TextField("name", product.getName(), Field.Store.NO));
+            doc.add(new TextField("name", product.getName().toLowerCase(), Field.Store.NO));
             writer.updateDocument(term, doc);
             writer.commit();
             LOG.info("Product indexed [" + product.getId() +"]");
