@@ -91,6 +91,7 @@ class CatalogController extends BaseJspController {
                 return JspPage.CATALOG;
             } else if (entity instanceof Product product) {
                 model.addAttribute(CANONICAL, url);
+                model.addAttribute(RELATED_PRODUCTS, productService.getRelatedProducts(product.getId()));
                 setProductAttributes(model, product, request);
                 return JspPage.PRODUCT;
             } else {

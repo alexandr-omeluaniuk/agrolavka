@@ -240,6 +240,17 @@ class ProductDAOImpl implements ProductDAO {
         return em.createQuery(criteria).getResultList();
     }
 
+    @Transactional(propagation = Propagation.SUPPORTS)
+    public List<Long> getRelatedProducts(Long productId) {
+        String sql = "select product_id as pid, count(product_id) as cnt from customer_order_position "
+            + "where product_id != 1 and product_id != %d and order_id in ("
+            + "select order_id from customer_order_position where product_id = %d"
+            + ") group by product_id order by cnt desc";
+        final var query = em.createNativeQuery(String.format(sql, productId, productId));
+        List<Object[]> results = query.getResultList();
+        return results.stream().map(item -> Long.valueOf(item[0].toString())).toList();
+    }
+
     private Predicate hideGroups(CriteriaBuilder cb, Root<Product> c) {
         Join<Product, ProductsGroup> productGroup = c.join(Product_.group, JoinType.LEFT);
         final var hiddenGroups = productsGroupService.getHiddenGroupIds();

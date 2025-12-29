@@ -133,7 +133,8 @@ public class CatalogControllerTest extends BasePageControllerTest {
             JspValue.VARIANTS,
             JspValue.IN_CART_VARIANTS,
             JspValue.PRODUCT_DISCOUNT,
-            JspValue.ATTRIBUTE_LINKS
+            JspValue.ATTRIBUTE_LINKS,
+            JspValue.RELATED_PRODUCTS
         );
     }
 }
