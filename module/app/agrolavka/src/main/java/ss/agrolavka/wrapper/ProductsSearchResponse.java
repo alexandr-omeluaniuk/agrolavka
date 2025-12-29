@@ -11,6 +11,6 @@ import java.util.List;
 public record ProductsSearchResponse(
     List<Product> data,
     Long count,
-
-    String searchText
+    String searchText,
+    List<String> tokens
 ) {}

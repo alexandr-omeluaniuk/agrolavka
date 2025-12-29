@@ -14,6 +14,9 @@ and open the template in the editor.
     --swiper-navigation-color: #563296;
     --swiper-navigation-size: 18px !important;
 }
+.card.shadow-1-strong {
+    box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px !important;
+}
 .dropdown-toggle:after  {
     float: right;
     margin-top: 8px;
@@ -640,8 +643,8 @@ and open the template in the editor.
 
 /** =================================================== FRAMEWORKK ======================================================================*/
 .hover-shadow:hover {
-    -webkit-box-shadow: 0 8px 17px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%) !important;
-    box-shadow: 0 8px 17px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%) !important;
+    -webkit-box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px !important;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px !important;
     -webkit-transition: all .3s ease-in-out !important;
     transition: all .3s ease-in-out !important;
 }

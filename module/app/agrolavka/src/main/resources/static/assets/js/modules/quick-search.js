@@ -6,14 +6,21 @@
 
     let controller;
 
-    function highlightText(text, searchText) {
-        const idx = text.toLowerCase().indexOf(searchText.toLowerCase());
-        if (searchText.length > 0 && idx !== -1) {
-            return text.substring(0, idx) + '<span class="highlighted-text">' +
-                    text.substring(idx, idx + searchText.length) + '</span>' + text.substring(idx + searchText.length);
-        } else {
-            return text;
+    function highlightText(text, tokens) {
+        const processToken = (input, searchText) => {
+            const idx = input.toLowerCase().indexOf(searchText.toLowerCase());
+            if (searchText.length > 0 && idx !== -1) {
+                return input.substring(0, idx) + '<span class="highlighted-text">' +
+                    input.substring(idx, idx + searchText.length) + '</span>' + input.substring(idx + searchText.length);
+            } else {
+                return input;
+            }
         }
+        let result = text;
+        tokens.forEach(token => {
+            result = processToken(result, token);
+        });
+        return result;
     }
     clearTextElement.addEventListener('click', function (e) {
         searchInput.value = '';
@@ -52,7 +59,7 @@
                         let sb = '';
                         const data = json.data;
                         const count = json.count;
-                        const searchTerm = json.searchText;
+                        const tokens = json.tokens;
                         if (data.length === 0) {
                             sb = noResult;
                         } else {
@@ -64,7 +71,7 @@
                                         '<li class="agr-product-search-link">'
                                         + '<a class="dropdown-item" href="' + product.url + '">'
                                         + '<div class="d-flex w-100 justify-content-between">'
-                                        + '<h6 class="mb-1">' + highlightText(product.name, searchTerm) + '</h6>'
+                                        + '<h6 class="mb-1">' + highlightText(product.name, tokens) + '</h6>'
                                         + '<small style="margin-left: 10px; min-width: 80px; text-align: right;"'
                                         + 'class="fw-bold">' + priceRub
                                         + '.<span style="font-size: .9em; margin-right: 5px;">' + priceCent + '</span>'
@@ -135,14 +142,21 @@
 
     let controller;
 
-    function highlightText(text, searchText) {
-        const idx = text.toLowerCase().indexOf(searchText.toLowerCase());
-        if (searchText.length > 0 && idx !== -1) {
-            return text.substring(0, idx) + '<span class="highlighted-text">' +
-                text.substring(idx, idx + searchText.length) + '</span>' + text.substring(idx + searchText.length);
-        } else {
-            return text;
+    function highlightText(text, tokens) {
+        const processToken = (input, searchText) => {
+            const idx = input.toLowerCase().indexOf(searchText.toLowerCase());
+            if (searchText.length > 0 && idx !== -1) {
+                return input.substring(0, idx) + '<span class="highlighted-text">' +
+                    input.substring(idx, idx + searchText.length) + '</span>' + input.substring(idx + searchText.length);
+            } else {
+                return input;
+            }
         }
+        let result = text;
+        tokens.forEach(token => {
+            result = processToken(result, token);
+        });
+        return result;
     }
     const input = document.querySelector('#agr-quick-search-input-desktop');
     const switcher =  document.querySelector('#agr-quick-search-switcher-desktop');
@@ -203,7 +217,7 @@
                         let sb = '';
                         const data = json.data;
                         const count = json.count;
-                        const searchTerm = json.searchText;
+                        const tokens = json.tokens;
                         if (data.length === 0) {
                             sb = noResult;
                         } else {
@@ -221,7 +235,7 @@
                                     '<li class="agr-product-search-link">'
                                         + '<a class="dropdown-item" href="' + product.url + '">'
                                             + '<div class="d-flex w-100 justify-content-between">'
-                                                + '<h6 class="mb-1">' + highlightText(product.name, searchTerm) + '</h6>'
+                                                + '<h6 class="mb-1">' + highlightText(product.name, tokens) + '</h6>'
                                                 + '<small style="margin-left: 10px; min-width: 80px; text-align: right;" class="fw-bold">' + priceRub
                                                         + '.<span style="font-size: .9em;">' + priceCent + '</span>'
                                                         + (priceMaxRub ? ' - ' + priceMaxRub + '.<span style="font-size: .9em;">' + priceMaxCent + '</span>' : '')
