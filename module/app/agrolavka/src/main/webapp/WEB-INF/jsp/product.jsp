@@ -85,7 +85,11 @@
                         </div>
                     </article>
                 </section>
-                
+                <c:if test="${relatedProducts.size() > 0}">
+                    <hr class="mt-4 mb-4" />
+                    <t:related-products products="${relatedProducts}"/>
+                </c:if>
+
             </div>
         </main>
         <modal:one-click-order-modal/>
