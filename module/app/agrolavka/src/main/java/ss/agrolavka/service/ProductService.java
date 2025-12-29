@@ -83,6 +83,9 @@ public class ProductService {
      * Собираем только те, которые присутсвуют во всех без исключения выборках
      */
     private List<Product> collectSearchResults(List<SubResult> results) {
+        if (results.isEmpty()) {
+            return new ArrayList<>();
+        }
         if (results.size() == 1) {
             return results.get(0).data;
         }

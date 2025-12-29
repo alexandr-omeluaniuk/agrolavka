@@ -61,4 +61,10 @@ public interface ProductDAO {
     List<Product> getByExternalIds(List<String> externalIds);
 
     List<Product> getByIds(Set<Long> ids);
+
+    /**
+     * Get products what were ordered together with target product.
+     * @param productId - target product ID.
+     */
+    List<Product> getRelatedProducts(Long productId);
 }

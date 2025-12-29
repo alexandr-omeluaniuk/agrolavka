@@ -52,4 +52,5 @@ public final class JspValue {
     public static final String PRICE_VALID_UNTIL = "priceValidUntil";
     public static final String SHOP = "shop";
     public static final String ATTRIBUTE_LINKS = "attributeLinks";
+    public static final String RELATED_PRODUCTS = "relatedProducts";
 }
