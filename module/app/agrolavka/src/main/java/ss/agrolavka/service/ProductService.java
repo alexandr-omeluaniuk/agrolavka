@@ -127,21 +127,31 @@ public class ProductService {
     }
 
     public List<Product> getRelatedProducts(Long productId) {
-        final var relatedProducts = productDao.getRelatedProducts(productId).subList(0, 11);
-        final var searchRequest = new ProductsSearchRequest();
-        searchRequest.setPage(1);
-        searchRequest.setPageSize(12);
-        searchRequest.setProductIds(new HashSet<>(relatedProducts));
-        final var products =  productDao.search(searchRequest);
-        products.forEach(p -> p.setVariants(getVariants(p)));
-        final var productsMap = products.stream().collect(Collectors.toMap(Product::getId, Function.identity()));
-        final var result = new ArrayList<Product>();
-        for (Long pid : relatedProducts) {
-            if (productsMap.containsKey(pid)) {
-                result.add(productsMap.get(pid));
+        try {
+            final var relatedProducts = productDao.getRelatedProducts(productId);
+            List<Long> portion;
+            if (relatedProducts.size() > 12) {
+                portion = relatedProducts.subList(0, 11);
+            } else {
+                portion = relatedProducts;
             }
+            final var searchRequest = new ProductsSearchRequest();
+            searchRequest.setPage(1);
+            searchRequest.setPageSize(12);
+            searchRequest.setProductIds(new HashSet<>(portion));
+            final var products =  productDao.search(searchRequest);
+            products.forEach(p -> p.setVariants(getVariants(p)));
+            final var productsMap = products.stream().collect(Collectors.toMap(Product::getId, Function.identity()));
+            final var result = new ArrayList<Product>();
+            for (Long pid : portion) {
+                if (productsMap.containsKey(pid)) {
+                    result.add(productsMap.get(pid));
+                }
+            }
+            return result;
+        } catch (Exception e) {
+            return Collections.emptyList();
         }
-        return result;
     }
     
     @Cacheable(CacheKey.NEW_PRODUCTS)

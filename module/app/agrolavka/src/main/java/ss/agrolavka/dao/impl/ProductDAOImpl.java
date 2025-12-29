@@ -242,7 +242,8 @@ class ProductDAOImpl implements ProductDAO {
 
     @Transactional(propagation = Propagation.SUPPORTS)
     public List<Long> getRelatedProducts(Long productId) {
-        String sql = "select product_id as pid, count(product_id) as cnt from customer_order_position where order_id and product_id != %d in ("
+        String sql = "select product_id as pid, count(product_id) as cnt from customer_order_position "
+            + "where product_id != 1 and product_id != %d and order_id in ("
             + "select order_id from customer_order_position where product_id = %d"
             + ") group by product_id order by cnt desc";
         final var query = em.createNativeQuery(String.format(sql, productId, productId));
