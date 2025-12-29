@@ -66,5 +66,5 @@ public interface ProductDAO {
      * Get products what were ordered together with target product.
      * @param productId - target product ID.
      */
-    List<Product> getRelatedProducts(Long productId);
+    List<Long> getRelatedProducts(Long productId);
 }

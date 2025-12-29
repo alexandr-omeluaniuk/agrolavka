@@ -127,14 +127,21 @@ public class ProductService {
     }
 
     public List<Product> getRelatedProducts(Long productId) {
-        final var relatedProducts = productDao.getRelatedProducts(productId).stream().map(Product::getId).toList();
+        final var relatedProducts = productDao.getRelatedProducts(productId).subList(0, 11);
         final var searchRequest = new ProductsSearchRequest();
         searchRequest.setPage(1);
         searchRequest.setPageSize(12);
         searchRequest.setProductIds(new HashSet<>(relatedProducts));
         final var products =  productDao.search(searchRequest);
         products.forEach(p -> p.setVariants(getVariants(p)));
-        return products;
+        final var productsMap = products.stream().collect(Collectors.toMap(Product::getId, Function.identity()));
+        final var result = new ArrayList<Product>();
+        for (Long pid : relatedProducts) {
+            if (productsMap.containsKey(pid)) {
+                result.add(productsMap.get(pid));
+            }
+        }
+        return result;
     }
     
     @Cacheable(CacheKey.NEW_PRODUCTS)
