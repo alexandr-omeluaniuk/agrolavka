@@ -98,7 +98,7 @@ public class BackupService {
         ).setFields("id").execute();
         LOG.info("Backup uploaded");
         // delete outdated backups
-        final var limitDate = System.currentTimeMillis() - TimeUnit.DAYS.toMillis(30);
+        final var limitDate = System.currentTimeMillis() - TimeUnit.DAYS.toMillis(20);
         FileList result = service.files().list()
             .setPageSize(100).setFields("files(id, name, createdTime)")
             .execute();
