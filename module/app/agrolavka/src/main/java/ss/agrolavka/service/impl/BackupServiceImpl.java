@@ -22,11 +22,14 @@ import com.google.api.client.extensions.jetty.auth.oauth2.LocalServerReceiver;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
 import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets;
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
+import com.google.api.client.http.InputStreamContent;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.gson.GsonFactory;
+import com.google.api.client.util.DateTime;
 import com.google.api.client.util.store.FileDataStoreFactory;
 import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.DriveScopes;
+import com.google.api.services.drive.model.FileList;
 import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,7 +41,9 @@ import ss.martin.images.storage.configuration.external.StorageConfiguration;
 
 import java.io.*;
 import java.security.GeneralSecurityException;
+import java.text.SimpleDateFormat;
 import java.util.Collections;
+import java.util.Date;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -107,7 +112,33 @@ class BackupServiceImpl implements BackupService {
 
     @Override
     public void createBackup() throws Exception {
-        final var drive = getInstance();
+        if (!BACKUP_DIR.exists()) {
+            BACKUP_DIR.mkdirs();
+        }
+        final var service = getInstance();
+        File dumpFile = mysqlDump();
+        LOG.info("SQL Dump file path: " + dumpFile.getAbsolutePath());
+        File imagesZip = imagesBackup();
+        LOG.info("Images zip file path: " + imagesZip.getAbsolutePath());
+        File backupFile = backupArchive();
+        LOG.info("Backup archive file path: " + backupFile.getAbsolutePath());
+        com.google.api.services.drive.model.File fileMetadata = new com.google.api.services.drive.model.File();
+        fileMetadata.setName(new SimpleDateFormat("dd.MM.yyyy").format(new Date()) + "-backup.zip");
+        fileMetadata.setCreatedTime(new DateTime(System.currentTimeMillis()));
+        service.files().create(
+            fileMetadata,
+            new InputStreamContent("application/zip", new FileInputStream(backupFile))
+        ).setFields("id").execute();
+        LOG.info("Backup uploaded");
+        // delete outdated backups
+        FileList result = service.files().list()
+            .setPageSize(10)
+            .execute();
+        final var files = result.getFiles();
+        files.forEach(f -> {
+            System.out.println(f.getCreatedTime());
+            System.out.println(f.getName());
+        });
     }
 
     private File backupArchive() throws Exception {
@@ -133,7 +164,7 @@ class BackupServiceImpl implements BackupService {
     private File mysqlDump() throws Exception {
         File dumpFile = new File(BACKUP_DIR, "agrolavka.sql");
         String command = "mysqldump -u" + dbUser + " -p" + dbPassword + " agrolavka -r " + dumpFile.getAbsolutePath();
-        LOG.info("Command: " + command);
+        LOG.debug("Command: " + command);
         Process process = Runtime.getRuntime().exec(command);
         int code = process.waitFor();
         LOG.info("mysqldump code: " + code);
