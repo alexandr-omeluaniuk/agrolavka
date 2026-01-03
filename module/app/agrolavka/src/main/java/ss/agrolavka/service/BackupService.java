@@ -29,4 +29,6 @@ public interface BackupService {
      * @throws Exception error.
      */
     File doBackup() throws Exception;
+
+    void createBackup() throws Exception;
 }

@@ -16,11 +16,18 @@
  */
 package ss.agrolavka.service.impl;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
+import com.google.api.client.auth.oauth2.Credential;
+import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp;
+import com.google.api.client.extensions.jetty.auth.oauth2.LocalServerReceiver;
+import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
+import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets;
+import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
+import com.google.api.client.http.javanet.NetHttpTransport;
+import com.google.api.client.json.gson.GsonFactory;
+import com.google.api.client.util.store.FileDataStoreFactory;
+import com.google.api.services.drive.Drive;
+import com.google.api.services.drive.DriveScopes;
+import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +35,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import ss.agrolavka.service.BackupService;
 import ss.martin.images.storage.configuration.external.StorageConfiguration;
+
+import java.io.*;
+import java.security.GeneralSecurityException;
+import java.util.Collections;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 /**
  * Backup service implementation.
@@ -48,6 +61,13 @@ class BackupServiceImpl implements BackupService {
     /** Platform configuration. */
     @Autowired
     private StorageConfiguration storageConfiguration;
+
+    @Value("${gdrive.pups}")
+    private String gdrivePups;
+    @Value("${gdrive.store}")
+    private String gdriveStore;
+    @Value("${gdrive.aname}")
+    private String gdriveAname;
 //    /** Email service. */
 //    @Autowired
 //    private EmailService emailService;
@@ -79,7 +99,17 @@ class BackupServiceImpl implements BackupService {
 //        LOG.info("email sent...");
         return backupFile;
     }
-    
+
+    @PostConstruct
+    private void init() throws Exception {
+        createBackup();
+    }
+
+    @Override
+    public void createBackup() throws Exception {
+        final var drive = getInstance();
+    }
+
     private File backupArchive() throws Exception {
         File backupFile = new File("/tmp", "agrolavka_backup.zip");
         try (FileOutputStream fos = new FileOutputStream(backupFile); ZipOutputStream zos = new ZipOutputStream(fos)) {
@@ -141,5 +171,29 @@ class BackupServiceImpl implements BackupService {
             fis.close();
         }
     }
-    
+
+    private Credential getCredentials(final NetHttpTransport HTTP_TRANSPORT)
+        throws IOException {
+        final var jsonFactory = GsonFactory.getDefaultInstance();
+        InputStream in = new FileInputStream(gdrivePups);
+        GoogleClientSecrets clientSecrets =
+            GoogleClientSecrets.load(jsonFactory, new InputStreamReader(in));
+        GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(
+            HTTP_TRANSPORT, jsonFactory, clientSecrets, Collections.singletonList(DriveScopes.DRIVE_FILE))
+            .setDataStoreFactory(new FileDataStoreFactory(new File(gdriveStore)))
+            .setAccessType("offline")
+            .build();
+        LocalServerReceiver receiver = new LocalServerReceiver.Builder().setPort(8888).build();
+        Credential credential = new AuthorizationCodeInstalledApp(flow, receiver).authorize("user");
+        receiver.stop();
+        return credential;
+    }
+
+    private Drive getInstance() throws GeneralSecurityException, IOException {
+        final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
+        Drive service = new Drive.Builder(HTTP_TRANSPORT, GsonFactory.getDefaultInstance(), getCredentials(HTTP_TRANSPORT))
+            .setApplicationName(gdriveAname)
+            .build();
+        return service;
+    }
 }
