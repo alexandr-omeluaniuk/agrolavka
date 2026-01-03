@@ -27,6 +27,7 @@ import Form from '../../../component/form/Form';
 import FormDialog from '../../../component/window/FormDialog';
 import { TYPES } from '../../../service/DataTypeService';
 import AttributesTree from '../component/AttributesTree';
+import useNotification from '../../../hooks/useNotification';
 
 let dataService = new DataService();
 
@@ -75,6 +76,7 @@ const useStyles = makeStyles(theme => ({
 function Products() {
     const classes = useStyles();
     const { t } = useTranslation();
+    const { showNotification } = useNotification();
     const [selectedProductGroup, setSelectedProductGroup] = React.useState(null);
     const [tableConfig, setTableConfig] = React.useState(null);
     const [filterProductName, setFilterProductName] = React.useState(null);
@@ -149,7 +151,8 @@ function Products() {
         });
     };
     const backup = () => {
-        dataService.getFile('/api/agrolavka/protected/mysklad/backup').then(resp => {
+        dataService.put('/agrolavka/protected/mysklad/backup').then(resp => {
+            showNotification('Файл скоро будет загружен на Гугл Диск', '', 'success');
         });
     };
     const addAttributes = async (product) => {
