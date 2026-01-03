@@ -66,11 +66,11 @@ public class BackupService {
     @Autowired
     private StorageConfiguration storageConfiguration;
 
-    @Value("${gdrive.pups}")
+    @Value("${gdrive.pups:opa}")
     private String gdrivePups;
-    @Value("${gdrive.store}")
+    @Value("${gdrive.store:opa}")
     private String gdriveStore;
-    @Value("${gdrive.aname}")
+    @Value("${gdrive.aname:opa}")
     private String gdriveAname;
 
 //    @PostConstruct
