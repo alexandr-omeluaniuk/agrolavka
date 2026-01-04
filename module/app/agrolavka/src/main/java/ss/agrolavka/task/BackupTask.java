@@ -15,7 +15,7 @@ class BackupTask {
     @Autowired
     private AlertService alertService;
 
-    @Scheduled(cron = "0 30 4 * * *")
+    @Scheduled(cron = "0 15 2 * * *")
     public void backupCron() {
         try {
             backupService.createBackup();

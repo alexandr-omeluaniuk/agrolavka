@@ -6,6 +6,8 @@
 package ss.agrolavka.rest;
 
 import jakarta.servlet.http.HttpServletResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -26,6 +28,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/agrolavka/protected/mysklad")
 public class DataRESTController {
+
+    private static final Logger LOG = LoggerFactory.getLogger(DataRESTController.class);
 
     @Autowired
     private AlertService alertService;
@@ -56,6 +60,7 @@ public class DataRESTController {
             try {
                 backupService.createBackup();
             } catch (Exception e) {
+                LOG.error("Create backup failed", e);
                 alertService.sendAlert("Create backup failed", e);
             }
         }).start();

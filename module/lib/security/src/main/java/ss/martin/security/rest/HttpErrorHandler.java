@@ -68,6 +68,7 @@ class HttpErrorHandler {
         return ((ThrowingSupplier<String>) () -> {
             final var sb = new StringBuilder();
             sb.append("\n");
+            sb.append("IP: ").append(request.getRemoteHost()).append(":").append(request.getRemotePort()).append("\n");
             sb.append(request.getMethod()).append(": ").append(request.getRequestURI()).append("\n");
             return sb.toString();
         }).get();

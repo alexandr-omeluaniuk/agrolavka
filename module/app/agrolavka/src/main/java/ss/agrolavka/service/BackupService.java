@@ -30,6 +30,7 @@ import com.google.api.client.util.store.FileDataStoreFactory;
 import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.DriveScopes;
 import com.google.api.services.drive.model.FileList;
+import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +39,6 @@ import org.springframework.stereotype.Service;
 import ss.martin.images.storage.configuration.external.StorageConfiguration;
 
 import java.io.*;
-import java.security.GeneralSecurityException;
 import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Date;
@@ -73,16 +73,30 @@ public class BackupService {
     @Value("${gdrive.aname:opa}")
     private String gdriveAname;
 
-//    @PostConstruct
-//    public void init() throws Exception {
-//        createBackup();
-//    }
+    private Drive service;
+
+    @PostConstruct
+    public void init() throws Exception {
+        final var HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
+        final var credentials = getCredentials(HTTP_TRANSPORT);
+        LOG.info("Google token expiration in [{}] sec", credentials.getExpiresInSeconds());
+        service = getInstance(HTTP_TRANSPORT, credentials);
+        new Thread(() -> {
+            try {
+                Thread.sleep(TimeUnit.MINUTES.toMillis(20));
+                final var result = credentials.refreshToken();
+                LOG.info("Google token refreshed [{}], expiration in [{}] sec", result, credentials.getExpiresInSeconds());
+            } catch (Exception e) {
+                LOG.warn("Refresh google credentials problem", e);
+            }
+        }).start();
+        // createBackup();
+    }
 
     public void createBackup() throws Exception {
         if (!BACKUP_DIR.exists()) {
             BACKUP_DIR.mkdirs();
         }
-        final var service = getInstance();
         File dumpFile = mysqlDump();
         LOG.info("SQL Dump file path: " + dumpFile.getAbsolutePath());
         File imagesZip = imagesBackup();
@@ -191,11 +205,9 @@ public class BackupService {
         return credential;
     }
 
-    private Drive getInstance() throws GeneralSecurityException, IOException {
-        final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
-        Drive service = new Drive.Builder(HTTP_TRANSPORT, GsonFactory.getDefaultInstance(), getCredentials(HTTP_TRANSPORT))
+    private Drive getInstance(final NetHttpTransport HTTP_TRANSPORT, final Credential credentials) {
+        return new Drive.Builder(HTTP_TRANSPORT, GsonFactory.getDefaultInstance(), credentials)
             .setApplicationName(gdriveAname)
             .build();
-        return service;
     }
 }
