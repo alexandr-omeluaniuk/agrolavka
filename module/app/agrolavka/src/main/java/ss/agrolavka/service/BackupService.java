@@ -72,28 +72,36 @@ public class BackupService {
     private String gdriveStore;
     @Value("${gdrive.aname:opa}")
     private String gdriveAname;
+    @Value("${gdrive.host:localhost}")
+    private String gdriveHost;
+    @Value("${gdrive.port:8888}")
+    private Integer gdrivePort;
 
     private Drive service;
 
     @PostConstruct
     public void init() throws Exception {
-        try {
-            final var HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
-            final var credentials = getCredentials(HTTP_TRANSPORT);
-            LOG.info("Google token expiration in [{}] sec", credentials.getExpiresInSeconds());
-            service = getInstance(HTTP_TRANSPORT, credentials);
-            new Thread(() -> {
-                try {
-                    Thread.sleep(TimeUnit.MINUTES.toMillis(20));
-                    final var result = credentials.refreshToken();
-                    LOG.info("Google token refreshed [{}], expiration in [{}] sec", result, credentials.getExpiresInSeconds());
-                } catch (Exception e) {
-                    LOG.warn("Refresh google credentials problem", e);
+        new Thread(() -> {
+            try {
+                final var HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
+                final var credentials = getCredentials(HTTP_TRANSPORT);
+                credentials.refreshToken();
+                LOG.info("Google token expiration in [{}] sec", credentials.getExpiresInSeconds());
+                service = getInstance(HTTP_TRANSPORT, credentials);
+                while (true) {
+                    try {
+                        Thread.sleep(TimeUnit.MINUTES.toMillis(10));
+                        final var result = credentials.refreshToken();
+                        LOG.info("Google token refreshed [{}], expiration in [{}] sec", result, credentials.getExpiresInSeconds());
+                    } catch (Exception e) {
+                        LOG.warn("Refresh google credentials problem", e);
+                    }
                 }
-            }).start();
-        } catch (Exception e) {
-            LOG.error("Init backup service problem", e);
-        }
+            } catch (Exception e) {
+                LOG.error("Init backup service problem", e);
+            }
+
+        }).start();
         // createBackup();
     }
 
@@ -203,10 +211,10 @@ public class BackupService {
             .setDataStoreFactory(new FileDataStoreFactory(new File(gdriveStore)))
             .setAccessType("offline")
             .build();
-        LocalServerReceiver receiver = new LocalServerReceiver.Builder().setPort(8888).build();
-        Credential credential = new AuthorizationCodeInstalledApp(flow, receiver).authorize("user");
-        receiver.stop();
-        return credential;
+        return new AuthorizationCodeInstalledApp(
+            flow,
+            new LocalServerReceiver.Builder().setPort(gdrivePort).setHost(gdriveHost).build()
+        ).authorize("user");
     }
 
     private Drive getInstance(final NetHttpTransport HTTP_TRANSPORT, final Credential credentials) {
