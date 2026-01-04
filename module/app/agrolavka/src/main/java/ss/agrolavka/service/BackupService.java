@@ -77,19 +77,23 @@ public class BackupService {
 
     @PostConstruct
     public void init() throws Exception {
-        final var HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
-        final var credentials = getCredentials(HTTP_TRANSPORT);
-        LOG.info("Google token expiration in [{}] sec", credentials.getExpiresInSeconds());
-        service = getInstance(HTTP_TRANSPORT, credentials);
-        new Thread(() -> {
-            try {
-                Thread.sleep(TimeUnit.MINUTES.toMillis(20));
-                final var result = credentials.refreshToken();
-                LOG.info("Google token refreshed [{}], expiration in [{}] sec", result, credentials.getExpiresInSeconds());
-            } catch (Exception e) {
-                LOG.warn("Refresh google credentials problem", e);
-            }
-        }).start();
+        try {
+            final var HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
+            final var credentials = getCredentials(HTTP_TRANSPORT);
+            LOG.info("Google token expiration in [{}] sec", credentials.getExpiresInSeconds());
+            service = getInstance(HTTP_TRANSPORT, credentials);
+            new Thread(() -> {
+                try {
+                    Thread.sleep(TimeUnit.MINUTES.toMillis(20));
+                    final var result = credentials.refreshToken();
+                    LOG.info("Google token refreshed [{}], expiration in [{}] sec", result, credentials.getExpiresInSeconds());
+                } catch (Exception e) {
+                    LOG.warn("Refresh google credentials problem", e);
+                }
+            }).start();
+        } catch (Exception e) {
+            LOG.error("Init backup service problem", e);
+        }
         // createBackup();
     }
 
