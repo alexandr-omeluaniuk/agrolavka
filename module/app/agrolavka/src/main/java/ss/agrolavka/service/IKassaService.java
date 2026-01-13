@@ -1,17 +1,21 @@
 package ss.agrolavka.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import ss.agrolavka.wrapper.CreateIKassaProductsRequest;
 import ss.agrolavka.wrapper.IKassaAuthResponse;
+import ss.agrolavka.wrapper.iKassaProduct;
+import ss.entity.agrolavka.Product;
 import ss.martin.base.lang.ThrowingSupplier;
 
+import java.math.BigDecimal;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Duration;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -38,11 +42,29 @@ public class IKassaService {
 
     private static IKassaAuthResponse accessToken = null;
 
-    @PostConstruct
-    public void init() {
-        doAuthentication();
-        System.out.println(accessToken.accessToken());
-        System.out.println(accessToken.expiresIn());
+    public void createProducts(List<Product> products) {
+        final var payload = products.stream().map(product -> {
+            return new iKassaProduct(
+                product.getArticle(),
+                product.getCode(),
+                product.getId().toString(),
+                true,
+                product.getName(),
+                BigDecimal.valueOf(product.getPrice()).intValue(),
+                true,
+                product.getGroup().getName()
+            );
+        }).toList();
+        final ThrowingSupplier<String> execFun = ((ThrowingSupplier<String>) () -> objectMapper.readValue(
+            httpClient.send(
+                HttpRequest.newBuilder().uri(new URI(URL + "/api/wms.sku.create"))
+                    .header("Content-Type", "application/json").POST(
+                        HttpRequest.BodyPublishers.ofString(objectMapper.writeValueAsString(new CreateIKassaProductsRequest(payload)))
+                    ).build(),
+                HttpResponse.BodyHandlers.ofString()).body(),
+            String.class
+        ));
+        final var response = executeWithAuthentication(execFun);
     }
 
     private <T> T executeWithAuthentication(ThrowingSupplier<T> execFun) {
