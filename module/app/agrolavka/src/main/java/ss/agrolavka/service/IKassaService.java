@@ -1,8 +1,12 @@
 package ss.agrolavka.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import jakarta.annotation.PostConstruct;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import ss.agrolavka.dao.ProductDAO;
 import ss.agrolavka.wrapper.CreateIKassaProductsRequest;
 import ss.agrolavka.wrapper.IKassaAuthResponse;
 import ss.agrolavka.wrapper.iKassaProduct;
@@ -15,6 +19,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -29,7 +34,7 @@ public class IKassaService {
     private final HttpClient httpClient = HttpClient.newBuilder().version(HttpClient.Version.HTTP_2)
         .connectTimeout(Duration.ofSeconds(20)).build();
 
-    private final ObjectMapper objectMapper = new ObjectMapper();
+    private final ObjectMapper objectMapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
 
     @Value("${ikassa.client:0asid-iasd-iasd}")
     private String clientId;
@@ -40,7 +45,19 @@ public class IKassaService {
     @Value("${ikassa.unp:1234567890}")
     private Integer unp;
 
+    @Autowired
+    private ProductDAO productDAO;
+
     private static IKassaAuthResponse accessToken = null;
+
+    @PostConstruct
+    private void init() {
+        final var list = new ArrayList<String>();
+        list.add("f2af42f5-7122-11eb-0a80-08d30028b447");
+        list.add("de7b5704-7122-11eb-0a80-08d300289681");
+        final var products = productDAO.getByExternalIds(list);
+        createProducts(products);
+    }
 
     public void createProducts(List<Product> products) {
         final var payload = products.stream().map(product -> {
@@ -48,23 +65,28 @@ public class IKassaService {
                 product.getArticle(),
                 product.getCode(),
                 product.getId().toString(),
-                true,
+                false,
                 product.getName(),
-                BigDecimal.valueOf(product.getPrice()).intValue(),
+                // price with discounts????
+                BigDecimal.valueOf(product.getPrice() * 100).intValue(),
                 true,
-                product.getGroup().getName()
+                "product"
             );
         }).toList();
-        final ThrowingSupplier<String> execFun = ((ThrowingSupplier<String>) () -> objectMapper.readValue(
-            httpClient.send(
-                HttpRequest.newBuilder().uri(new URI(URL + "/api/wms.sku.create"))
-                    .header("Content-Type", "application/json").POST(
-                        HttpRequest.BodyPublishers.ofString(objectMapper.writeValueAsString(new CreateIKassaProductsRequest(payload)))
+        final ThrowingSupplier<String> execFun = () -> {
+            final var payloadStr = objectMapper.writeValueAsString(new CreateIKassaProductsRequest(payload));
+            System.out.println(payloadStr);
+            final var resp = httpClient.send(
+                HttpRequest.newBuilder().uri(new URI("https://wms.ikassa.by/api/wms.sku.create"))
+                    .header("Content-Type", "application/json")
+                    .header("Authorization", accessToken.accessToken()).POST(
+                        HttpRequest.BodyPublishers.ofString(payloadStr)
                     ).build(),
-                HttpResponse.BodyHandlers.ofString()).body(),
-            String.class
-        ));
+                HttpResponse.BodyHandlers.ofString());
+            return resp.body();
+        };
         final var response = executeWithAuthentication(execFun);
+        System.out.println(response);
     }
 
     private <T> T executeWithAuthentication(ThrowingSupplier<T> execFun) {
