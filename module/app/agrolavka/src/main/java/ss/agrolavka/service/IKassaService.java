@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
 import ss.agrolavka.dao.ProductDAO;
 import ss.agrolavka.wrapper.CreateIKassaProductsRequest;
 import ss.agrolavka.wrapper.IKassaAuthResponse;
@@ -26,7 +25,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Integration with iKassa
  */
-@Service
+// @Service
 public class IKassaService {
 
     private static final String URL = "https://accounts.ikassa.by";
