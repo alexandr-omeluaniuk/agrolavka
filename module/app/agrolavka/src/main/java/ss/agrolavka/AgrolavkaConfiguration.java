@@ -16,6 +16,5 @@ public record AgrolavkaConfiguration(
     String backgroundUserPassword,
     String telegramBotOrders,
     String telegramBotErrors,
-    List<String> telegramUsers,
-    List<String> blacklistIp
+    List<String> telegramUsers
 ) {}
