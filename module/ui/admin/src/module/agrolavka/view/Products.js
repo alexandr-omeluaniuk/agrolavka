@@ -27,6 +27,7 @@ import Form from '../../../component/form/Form';
 import FormDialog from '../../../component/window/FormDialog';
 import { TYPES } from '../../../service/DataTypeService';
 import AttributesTree from '../component/AttributesTree';
+import useNotification from '../../../hooks/useNotification';
 
 let dataService = new DataService();
 
@@ -75,6 +76,7 @@ const useStyles = makeStyles(theme => ({
 function Products() {
     const classes = useStyles();
     const { t } = useTranslation();
+    const { showNotification } = useNotification();
     const [selectedProductGroup, setSelectedProductGroup] = React.useState(null);
     const [tableConfig, setTableConfig] = React.useState(null);
     const [filterProductName, setFilterProductName] = React.useState(null);
@@ -130,6 +132,11 @@ function Products() {
     const toolbarBefore = () => {
         return (
                 <React.Fragment>
+                    <Tooltip title={t('m_agrolavka:backup')}>
+                        <IconButton onClick={backup}>
+                            <Icon color="primary">backup</Icon>
+                        </IconButton>
+                    </Tooltip>
                     <Tooltip title={t('m_agrolavka:products.synchronize')}>
                         <IconButton onClick={synchronizeData}>
                             <Icon color="primary">sync_alt</Icon>
@@ -141,6 +148,11 @@ function Products() {
     const synchronizeData = () => {
         dataService.put('/agrolavka/protected/mysklad/synchronize').then(resp => {
             //setProductGroups(null);
+        });
+    };
+    const backup = () => {
+        dataService.put('/agrolavka/protected/mysklad/backup').then(resp => {
+            showNotification('Файл скоро будет загружен на Гугл Диск', '', 'success');
         });
     };
     const addAttributes = async (product) => {
