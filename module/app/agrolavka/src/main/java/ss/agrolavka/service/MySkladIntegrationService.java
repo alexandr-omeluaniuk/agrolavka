@@ -25,6 +25,8 @@ public interface MySkladIntegrationService {
      * @return products.
      */
     List<Product> getProducts(int offset, int limit);
+
+    List<Agent> getAgents(int offset, int limit);
     
     List<ProductVariant> getProductVariants();
     

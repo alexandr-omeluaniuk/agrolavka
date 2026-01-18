@@ -27,6 +27,8 @@
         </div>
         
         <div class="swiper-pagination" style="bottom: 0px;"></div>
+        <div class="swiper-button-prev" style="left: 0"></div>
+        <div class="swiper-button-next" style="right: 0"></div>
     </div>
         
     <script>
@@ -50,6 +52,10 @@
                     1200: {
                         slidesPerView: 4
                     }
+                },
+                navigation: {
+                    nextEl: '.swiper-button-next',
+                    prevEl: '.swiper-button-prev'
                 }
             });
         })();

@@ -38,6 +38,11 @@ public class Product extends ExternalEntity {
     @NotNull
     @Column(name = "buy_price")
     private Double buyPrice;
+    @Column(name = "trade_price")
+    private Double tradePrice;
+
+    @Column(name = "trade_price_limit")
+    private Integer tradePriceLimit;
     /** Article number. */
     @Size(max = 255)
     @Column(name = "article", length = 255)
@@ -294,7 +299,20 @@ public class Product extends ExternalEntity {
     public void setHideModifications(Boolean hideModifications) {
         this.hideModifications = hideModifications;
     }
-    
+
+    public Double getTradePrice() {
+        return tradePrice;
+    }
+    public void setTradePrice(Double tradePrice) {
+        this.tradePrice = tradePrice;
+    }
+    public Integer getTradePriceLimit() {
+        return tradePriceLimit;
+    }
+    public void setTradePriceLimit(Integer tradePriceLimit) {
+        this.tradePriceLimit = tradePriceLimit;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;

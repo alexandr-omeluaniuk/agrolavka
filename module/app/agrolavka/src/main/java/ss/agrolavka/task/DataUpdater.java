@@ -176,7 +176,7 @@ public class DataUpdater {
         List<Product> products = new ArrayList<>();
         Map<String, Product> stock = new HashMap<>();
         int offset = 0;
-        while (offset < 5000) {
+        while (offset < 6000) {
             LOG.info("products portion: " + offset + " - " + (offset + 1000));
             List<Product> chunk = mySkladIntegrationService.getProducts(offset, 1000);
             stock.putAll(mySkladIntegrationService.getStock(offset, 1000));
@@ -207,6 +207,8 @@ public class DataUpdater {
             Product stockProduct = stock.get(actualProduct.getCode());
             eProduct.setName(actualProduct.getName());
             eProduct.setPrice(actualProduct.getPrice());
+            eProduct.setTradePrice(actualProduct.getTradePrice());
+            eProduct.setTradePriceLimit(actualProduct.getTradePriceLimit());
             eProduct.setGroup(actualProduct.getGroup());
             eProduct.setArticle(actualProduct.getArticle());
             eProduct.setBuyPrice(actualProduct.getBuyPrice());

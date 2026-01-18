@@ -65,7 +65,9 @@
                                 </c:if>
                                 <x-agr-product-price
                                     data-discount="${productDiscount}" 
-                                    data-price="${productPrice}"></x-agr-product-price>
+                                    data-price="${productPrice}"
+                                    data-trade-price="${productTradePrice}"
+                                    data-trade-price-limit="${productTradePriceLimit}"></x-agr-product-price>
                                 <hr/>
                                 <x-agr-product-actions 
                                     data-id="${product.id}" 

@@ -129,12 +129,16 @@ class XProductPrice extends XElement {
         this.state = {
             discount: null,
             rawPrice: null,
-            rowClass: null
+            rowClass: null,
+            tradePrice: null,
+            tradePriceLimit: null
         }
         let template = document.createElement('template');
         this.state.rowClass = this.getAttribute('data-row-class');
         this.state.discount = this.getAttribute('data-discount');
         this.state.rawPrice = this.getAttribute('data-price');
+        this.state.tradePrice = this.getAttribute('data-trade-price');
+        this.state.tradePriceLimit = this.getAttribute('data-trade-price-limit');
         template.innerHTML = this.render();
         return template;
     }
@@ -158,6 +162,7 @@ class XProductPrice extends XElement {
                             <small class="text-muted">BYN</small>
                         </span>
                     </div>
+                    ${this._renderTradePrice()}
                     ${discount ? `
                         <div class="d-flex align-items-center justify-content-between ${rowClass}">
                             <small class="text-danger"><i class="fas fa-fire me-1"></i> Акция</small>
@@ -168,6 +173,28 @@ class XProductPrice extends XElement {
                         </div>
                     ` : ''}
                 `;
+    }
+
+    _renderTradePrice() {
+        const tradePrice = this.state.tradePrice;
+        const tradePriceLimit = this.state.tradePriceLimit;
+        if (tradePrice && tradePriceLimit) {
+            const rowClass = this.state.rowClass;
+            const price = parseFloat(tradePrice).toFixed(2).split('.');
+            const priceInt = price[0];
+            const priceFloat = price[1];
+            return `
+                <div class="d-flex align-items-start justify-content-between pt-1 ${rowClass}">
+                    <small class="text-success"><b>Оптовая цена<br><small>от ${tradePriceLimit} единиц</small></b></small>
+                    <span class="agr-price fw-bold text-success">
+                        ${priceInt}<small>.${priceFloat}</small>
+                        <small>BYN</small>
+                    </span>
+                </div>
+            `;
+        } else {
+            return ''
+        }
     }
 
     _setMainPrice() {
@@ -448,6 +475,8 @@ class XProductCard extends XElement {
         const groupName = this.getAttribute('data-group-name');
         const groupLink = this.getAttribute('data-group-link');
         const attributeLinks = this.getAttribute('data-attribute-links');
+        const tradePrice = this.getAttribute('data-trade-price');
+        const tradePriceLimit = this.getAttribute('data-trade-price-limit');
         const imageElement = image
             ? `<div class="card-img-top agr-card-image" style="background-image: url('/media/${image}?timestamp=${imageCreatedDate}')"></div>` 
             : `<div class="card-img-top agr-card-image" style="background-image: url('/assets/img/no-image.png')"></div>`;
@@ -461,7 +490,7 @@ class XProductCard extends XElement {
                             ${groupName && groupLink ? `<a class="agr-sub-category-link" href="${groupLink}"><div class="text-muted">${groupName}</div></a>` : ''}
                             ${attributeLinks ? `<x-agr-attribute-links data-links="${attributeLinks}"></x-agr-attribute-links>` : ""}
                             <h6 class="card-title text-dark text-left" style="min-height: 60px;">${name}</h6>
-                            <x-agr-product-price data-row-class="agr-card-line" data-discount="${discount}" data-price="${price}"></x-agr-product-price>
+                            <x-agr-product-price data-row-class="agr-card-line" data-discount="${discount}" data-price="${price}" data-trade-price="${tradePrice}" data-trade-price-limit="${tradePriceLimit}"></x-agr-product-price>
                             ${createdDate ? `
                                 <div class="d-flex align-items-center justify-content-between mb-1 agr-card-line">
                                     <small class="text-muted">Добавлено</small>
