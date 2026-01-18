@@ -6,8 +6,6 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +18,11 @@ import ss.entity.security.SystemUser;
 import ss.martin.base.lang.ThrowingFunction;
 import ss.martin.security.context.SecurityContext;
 import ss.martin.security.context.UserPrincipal;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * JWT filter.
@@ -34,6 +37,21 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     /** JWT token utility. */
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
+
+    private static final List<String> blacklist = new ArrayList<>();
+
+    static {
+        blacklist.add("POST::/api/route");
+        blacklist.add("POST::/app");
+        blacklist.add("POST::/api");
+        blacklist.add("POST::/_next/server");
+        blacklist.add("POST::/_next");
+        blacklist.add("POST::/error");
+        blacklist.add("GET::/shops/php_info.php");
+        blacklist.add("GET::/shops/phptest.php3");
+        blacklist.add("GET::/shops/info.php3");
+        blacklist.add("GET::/shops/phpinfo.php3");
+    }
     
     @Override
     protected void doFilterInternal(
@@ -41,8 +59,13 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         final HttpServletResponse response, 
         final FilterChain chain
     ) throws ServletException, IOException {
-        handleAuthorizationHeader(request);
-        chain.doFilter(request, response);
+        final var match = request.getMethod() + "::" + request.getServletPath();
+        if (blacklist.contains(match)) {
+            response.sendError(HttpServletResponse.SC_BAD_GATEWAY);
+        } else {
+            handleAuthorizationHeader(request);
+            chain.doFilter(request, response);
+        }
     }
     
     private void handleAuthorizationHeader(final HttpServletRequest request) {

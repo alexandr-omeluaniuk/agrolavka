@@ -583,6 +583,7 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
             LOG.debug("security token: " + tokenResponse);
             JSONObject json = new JSONObject(tokenResponse);
             token = json.getString("access_token");
+            // System.out.println("TOKEN: " + token);
             LOG.debug("new acquired token: " + token);
         }).run();
     }
