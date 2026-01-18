@@ -1,7 +1,10 @@
 package ss.agrolavka.rest;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -10,6 +13,7 @@ import ss.agrolavka.constants.SiteUrls;
 import ss.agrolavka.service.OrderService;
 import ss.agrolavka.service.ProductService;
 import ss.agrolavka.service.SessionService;
+import ss.agrolavka.service.VATSService;
 import ss.agrolavka.util.AppCache;
 import ss.agrolavka.wrapper.CartProduct;
 import ss.agrolavka.wrapper.OneClickOrderWrapper;
@@ -29,6 +33,9 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping(SiteUrls.URL_PUBLIC)
 class AgrolavkaPublicRestController {
+
+    private static final Logger LOG = LoggerFactory.getLogger(AgrolavkaPublicRestController.class);
+
     /** Core DAO. */
     @Autowired
     private CoreDao coreDAO;
@@ -42,6 +49,12 @@ class AgrolavkaPublicRestController {
 
     @Autowired
     private SessionService sessionService;
+
+    @Autowired
+    private VATSService vatsService;
+
+    @Autowired
+    private ObjectMapper objectMapper;
     
     /**
      * Search product.
@@ -173,6 +186,33 @@ class AgrolavkaPublicRestController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, List<ProductsGroup>> catalog() throws Exception {
         return AppCache.getCategoriesTree();
+    }
+
+    @RequestMapping(value = "/vats", method = RequestMethod.POST,
+            produces = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    public String vatsIncome(
+        @RequestBody String request
+    ) throws Exception {
+        final var response = vatsService.handleIncomingRequest(parse(request));
+        return response == null ? "" : objectMapper.writeValueAsString(response);
+    }
+
+    @RequestMapping(value = "/phone-api", method = RequestMethod.POST,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public String phoneApiCall(
+            @RequestBody String request
+    ) throws Exception {
+        return vatsService.phoneApiCall(request);
+    }
+
+    private Map<String, String> parse(String request) {
+        LOG.info("VATS request: " + request);
+        final var result = new HashMap<String, String>();
+        Arrays.stream(request.split("&")).forEach(row -> {
+            final var parts = row.split("=");
+            result.put(parts[0], parts.length > 1 ? parts[1] : null);
+        });
+        return result;
     }
     
     private Order removePosition(Predicate<OrderPosition> predicate, HttpServletRequest request) {

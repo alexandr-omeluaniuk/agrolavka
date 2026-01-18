@@ -1,7 +1,8 @@
 package ss.agrolavka;
 
-import java.util.List;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+
+import java.util.List;
 
 /**
  * Site configuration.

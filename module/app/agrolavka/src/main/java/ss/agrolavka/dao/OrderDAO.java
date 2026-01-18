@@ -13,10 +13,8 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import ss.agrolavka.constants.OrderStatus;
 import ss.agrolavka.wrapper.OrderSearchRequest;
-import ss.entity.agrolavka.Address;
-import ss.entity.agrolavka.Address_;
 import ss.entity.agrolavka.Order;
-import ss.entity.agrolavka.Order_;
+import ss.entity.agrolavka.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -110,6 +108,24 @@ public class OrderDAO {
         criteria.select(c).where(
             cb.like(fun, "%" + phoneNumber)
         ).orderBy(cb.desc(c.get(Order_.created)));
+        return em.createQuery(criteria).getResultList();
+    }
+
+    @Transactional(propagation = Propagation.SUPPORTS)
+    public List<Agent> getAgentsByPhone(final String phoneNumber) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Agent> criteria = cb.createQuery(Agent.class);
+        Root<Agent> c = criteria.from(Agent.class);
+        final var fun = cb.function(
+                "REGEXP_REPLACE",
+                String.class,
+                c.get(Agent_.phone),
+                cb.literal("[^0-9]"),
+                cb.literal("")
+        );
+        criteria.select(c).where(
+                cb.like(fun, "%" + phoneNumber)
+        );
         return em.createQuery(criteria).getResultList();
     }
 }

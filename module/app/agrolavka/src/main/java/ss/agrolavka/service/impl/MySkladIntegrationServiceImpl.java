@@ -48,10 +48,13 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
     private static final String URL_MODIFICATIONS = "/entity/variant";
     private static final String URL_PRODUCTS = "/entity/product?limit=%d&offset=%d";
     private static final String URL_PRODUCT_IMAGES = "/entity/product/%s/images";
+    private static final String URL_AGENTS = "/entity/counterparty?limit=%d&offset=%d";
     
     private static final String METHOD_GET = "GET";
     
     private static final String SITE_PRICE_TYPE = "Цена продажи";
+    private static final String TRADE_PRICE_TYPE = "Оптовая цена";
+    private static final String TRADE_PRICE_LIMIT_ATTR_NAME = "кол-во для опт. цены";
 
     private static final Set<String> CHARACTERISTIC_NAMES_SKIP = new HashSet<>(
         Arrays.stream(new String[] {
@@ -102,6 +105,25 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
         }
         LOG.debug("loaded product groups [" + result.size() + "]");
         return result;
+    }
+
+    @Override
+    public List<Agent> getAgents(int offset, int limit) {
+        return ((ThrowingSupplier<List<Agent>>) () -> {
+            String response = request(String.format(URL_AGENTS, limit, offset), METHOD_GET, null);
+            JSONObject json = new JSONObject(response);
+            List<Agent> result = new ArrayList<>();
+            JSONArray rows = json.getJSONArray("rows");
+            for (int i = 0; i < rows.length(); i++) {
+                JSONObject item = rows.getJSONObject(i);
+                Agent agent = agentFromJson(item);
+                if (agent != null) {
+                    result.add(agent);
+                }
+            }
+            LOG.debug("loaded agents [" + result.size() + "]");
+            return result;
+        }).get();
     }
     
     @Override
@@ -527,6 +549,17 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
         baos.close();
         return data;
     }
+    private Agent agentFromJson(JSONObject item) {
+        Agent agent = new Agent();
+        agent.setExternalId(item.getString("id"));
+        agent.setName(item.getString("name"));
+        if (item.has("phone") && !item.getString("phone").isBlank()) {
+            agent.setPhone(item.getString("phone"));
+            return agent;
+        } else {
+            return null;
+        }
+    }
     /**
      * Create product from JSON.
      * @param item json object.
@@ -558,6 +591,8 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
             }
         }
         product.setPrice(extractPriceValue(item));
+        product.setTradePrice(extractTradePriceValue(item));
+        product.setTradePriceLimit(extractTradePriceLimitValue(item));
         if (item.has("buyPrice")) {
             JSONObject buyPrice = item.getJSONObject("buyPrice");
             product.setBuyPrice(buyPrice.getDouble("value") / 100);
@@ -583,6 +618,7 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
             LOG.debug("security token: " + tokenResponse);
             JSONObject json = new JSONObject(tokenResponse);
             token = json.getString("access_token");
+            // System.out.println("TOKEN: " + token);
             LOG.debug("new acquired token: " + token);
         }).run();
     }
@@ -594,6 +630,32 @@ class MySkladIntegrationServiceImpl implements MySkladIntegrationService {
                 JSONObject price = prices.getJSONObject(j);
                 if (SITE_PRICE_TYPE.equals(price.getJSONObject("priceType").getString("name"))) {
                     return price.getDouble("value") / 100;
+                }
+            }
+        }
+        return null;
+    }
+
+    private Double extractTradePriceValue(JSONObject item) {
+        if (item.has("salePrices")) {
+            JSONArray prices = item.getJSONArray("salePrices");
+            for (int j = 0; j < prices.length(); j++) {
+                JSONObject price = prices.getJSONObject(j);
+                if (TRADE_PRICE_TYPE.equals(price.getJSONObject("priceType").getString("name"))) {
+                    return price.getDouble("value") / 100;
+                }
+            }
+        }
+        return null;
+    }
+
+    private Integer extractTradePriceLimitValue(JSONObject item) {
+        if (item.has("attributes")) {
+            JSONArray attributes = item.getJSONArray("attributes");
+            for (int j = 0; j < attributes.length(); j++) {
+                JSONObject attr = attributes.getJSONObject(j);
+                if (TRADE_PRICE_LIMIT_ATTR_NAME.equals(attr.getString("name"))) {
+                    return attr.getInt("value");
                 }
             }
         }
