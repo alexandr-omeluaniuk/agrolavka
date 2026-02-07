@@ -11,7 +11,7 @@ and open the template in the editor.
     --agr-background-color: #000000ba;
     --agr-bs-purple-dark: #563296;
     --agr-success: #007730;
-    --agr-info: #006689;
+    --agr-info: #0c80a7;
     --agr-danger: #d10025;
     --swiper-pagination-color: #563296;
     --swiper-navigation-color: #563296;
@@ -573,11 +573,11 @@ and open the template in the editor.
     text-decoration: underline;
     text-decoration-color: var(--agr-bs-purple-dark);
 }
-.agr-card-button.btn-outline-success {
+.btn-outline-success {
     color: var(--agr-success) !important;
     border-color: var(--agr-success) !important;
 }
-.agr-card-button.btn-outline-info {
+.btn-outline-info {
     color: var(--agr-info) !important;
     border-color: var(--agr-info) !important;
 }
