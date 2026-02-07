@@ -49,7 +49,7 @@ class XMenuItem extends XElement {
         const endIcon = this.getAttribute('end-icon');
         const customLinkAttributes = this.getAttribute('link-attributes'); 
         template.innerHTML = `
-            <a href="${link}" class="agr-mobile-menu-link" ${customLinkAttributes ? customLinkAttributes : ''}>
+            <a href="${link}" aria-label="${label}" class="agr-mobile-menu-link" ${customLinkAttributes ? customLinkAttributes : ''}>
                 <div class="list-group-item list-group-item-action d-flex rounded-pill p-2 align-items-center">
                     <x-agr-menu-item-icon icon="${icon}" color="${iconColor}"></x-agr-menu-item-icon>
                     <${labelElement} class="text-${labelColor}" style="flex: 1;">${label}</${labelElement}>
@@ -71,7 +71,7 @@ class XCatalogMenuItem extends XElement {
         const catalog = this.getAttribute('data-catalog');
         const image = this.getAttribute('data-image');
         template.innerHTML = `
-            <a href="${href}" class="agr-menu-catalog-group-link ${isTopCategory ? 'agr-menu-item-top-category' : ''}" ${href ? 'data-catalog-nav-link' : ''} ${catalog ? `data-catalog="${catalog}"` : ''}>
+            <a href="${href}" aria-label="${label}" class="agr-menu-catalog-group-link ${isTopCategory ? 'agr-menu-item-top-category' : ''}" ${href ? 'data-catalog-nav-link' : ''} ${catalog ? `data-catalog="${catalog}"` : ''}>
                 <div class="list-group-item list-group-item-action d-flex rounded-pill p-2 align-items-center">
                     <button class="btn btn-sm btn-light btn-floating me-2" type="button" style="background-size: cover; background-image: url('${image}')">
                     </button>
@@ -105,7 +105,7 @@ class XCategoryCard extends XElement {
             nestedGroupsHtml += `<a class="agr-sub-category-link" href="${link}"><div class="text-primary">> смотреть все</div></a>`;
         }
         template.innerHTML = `
-        <a href="${link}">
+        <a href="${link}" aria-label="${name}">
             <div class="card shadow-1-strong mb-4 hover-shadow">
                 <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
                     ${imageElement}
@@ -481,7 +481,7 @@ class XProductCard extends XElement {
             ? `<div class="card-img-top agr-card-image" style="background-image: url('/media/${image}?timestamp=${imageCreatedDate}')"></div>` 
             : `<div class="card-img-top agr-card-image" style="background-image: url('/assets/img/no-image.png')"></div>`;
         template.innerHTML = `
-            <a href="${link}">
+            <a href="${link}" aria-label="${name}">
                 <div class="card shadow-1-strong mb-4 hover-shadow">
                     <x-agr-product-ribbon data-discount="${discount}" data-in-stock="${inStock}" data-hide="${hide}"></x-agr-product-ribbon>
                     <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
@@ -558,7 +558,7 @@ class XAttributeLinks extends XElement {
         let sb = '';
         links.forEach(link => {
             sb += `
-                <a href="/catalog/${link.link}">
+                <a href="/catalog/${link.link}" aria-label="${link.link}">
                     <span class="badge rounded-pill me-1" style="background-color: ${link.color}"># ${link.item}</span>
                 </a>
             `;
