@@ -558,7 +558,7 @@ and open the template in the editor.
 .agr-sub-category-link {
     font-size: 12px;
     text-align: left;
-    line-length: 22px;
+    line-height: 24px;
 }
 .agr-sub-category-link div {
     white-space: nowrap;
@@ -689,6 +689,16 @@ and open the template in the editor.
     width: 40px; 
     background-color: white; 
     border-radius: 50%;
+}
+.swiper-button-next {
+    right: -20px !important;
+    min-height: 50px;
+    min-width: 50px;
+}
+.swiper-button-prev {
+    left: -20px !important;
+    min-height: 50px;
+    min-width: 50px;
 }
 .form-check-input[type=checkbox]:checked {
     background-color: var(--bs-purple) !important;

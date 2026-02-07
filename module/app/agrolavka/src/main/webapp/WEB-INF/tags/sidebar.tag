@@ -15,7 +15,7 @@
 <nav class="agr-menu-sidebar shadow-2-strong">
     <div class="agr-menu-container">
         <div class="d-flex align-items-center p-3" style="position: relative; z-index: 700;">
-            <a href="/">
+            <a href="/" aria-label="Главная">
                 <h3 class="mb-0"><i class="fas fa-carrot agr-carrot-logo"></i></h3>
             </a>
             <h4 class="text-center mb-0" style="flex: 1">Агролавка</h4>
