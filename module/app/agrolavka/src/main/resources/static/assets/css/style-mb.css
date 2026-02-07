@@ -10,6 +10,9 @@ and open the template in the editor.
 :root {
     --agr-background-color: #000000ba;
     --agr-bs-purple-dark: #563296;
+    --agr-success: #007730;
+    --agr-info: #0c80a7;
+    --agr-danger: #d10025;
     --swiper-pagination-color: #563296;
     --swiper-navigation-color: #563296;
     --swiper-navigation-size: 18px !important;
@@ -25,7 +28,7 @@ and open the template in the editor.
     color: #fff !important;
 }
 .agr-navbar {
-    background-color: #00000085;
+    background-color: #0000009e;
     position: fixed;
     top: 0;
     left: 0;
@@ -558,7 +561,7 @@ and open the template in the editor.
 .agr-sub-category-link {
     font-size: 12px;
     text-align: left;
-    line-length: 22px;
+    line-height: 24px;
 }
 .agr-sub-category-link div {
     white-space: nowrap;
@@ -570,6 +573,14 @@ and open the template in the editor.
     text-decoration: underline;
     text-decoration-color: var(--agr-bs-purple-dark);
 }
+.btn-outline-success {
+    color: var(--agr-success) !important;
+    border-color: var(--agr-success) !important;
+}
+.btn-outline-info {
+    color: var(--agr-info) !important;
+    border-color: var(--agr-info) !important;
+}
 /** ============================================== RIBBON ============================================================================== */
 .ribbon {
     z-index: 500;
@@ -577,6 +588,13 @@ and open the template in the editor.
     height: 120px;
     overflow: hidden;
     position: absolute;
+
+    .bg-success {
+        background-color: var(--agr-success) !important;
+    }
+    .bg-danger {
+        background-color: var(--agr-danger) !important;
+    }
 }
 .ribbon::before,
 .ribbon::after {
@@ -658,6 +676,9 @@ and open the template in the editor.
 .text-left {
     text-align: left;
 }
+.text-danger {
+    color: var(--agr-danger) !important;
+}
 .page-item.active .page-link {
     background-color: var(--bs-purple);
 }
@@ -684,11 +705,12 @@ and open the template in the editor.
     background-color: #6c757d !important;
     color: white !important;
 }
-.swiper-button-prev.shadow-1-strong, .swiper-button-next.shadow-1-strong {
-    height: 40px; 
-    width: 40px; 
-    background-color: white; 
+.swiper-button-prev, .swiper-button-next {
+    height: 40px !important;
+    width: 40px !important;
+    background-color: #ffffff7d;
     border-radius: 50%;
+    border: 1px solid #dddddd !important;
 }
 .form-check-input[type=checkbox]:checked {
     background-color: var(--bs-purple) !important;

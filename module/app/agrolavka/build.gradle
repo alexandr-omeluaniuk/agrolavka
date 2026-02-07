@@ -49,11 +49,15 @@ tasks.named("bootRun") {
     sourceResources sourceSets.main
 }
 
+task deletePrevBuild(type: Delete) {
+    delete 'src/main/resources/static/admin/build'
+}
+
 task copyAdminApp(type: Copy) {
     from '../../ui/admin/build'
     into 'src/main/resources/static/admin/build'
 }
-
+copyAdminApp.dependsOn(':module:app:agrolavka:deletePrevBuild')
 copyAdminApp.dependsOn(':module:ui:admin:buildReactApp')
 if (isDeploy) {
     println "NPM build enabled..."

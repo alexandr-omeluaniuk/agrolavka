@@ -12,7 +12,7 @@
 <header class="agr-navbar-desktop">
     <nav class="navbar navbar-expand-lg navbar-dark agr-navbar shadow-2-strong">
         <div class="container-fluid">
-            <a href="/" class="navbar-brand nav-link d-none d-lg-block">
+            <a href="/" class="navbar-brand nav-link d-none d-lg-block" aria-label="Главная">
                 <strong class="d-flex justify-content-center align-items-center">
                     <i class="fas fa-carrot agr-carrot-logo" style="font-size: 1.5em;"></i><span class="ms-2">Агролавка</span>
                 </strong>
@@ -49,11 +49,11 @@
                     <!-- Icons -->
                     <li class="nav-item me-3 ms-3 me-lg-0">
                         <a class="nav-link d-flex align-items-center" href="https://www.instagram.com/agrolavka.by" target="_blank" rel="noreferrer">
-                            <img src="/assets/img/instagram.ico" alt="Instagram"><span class="ms-2 d-block d-lg-none">Инстаграм</span>
+                            <img src="/assets/img/instagram.png" width="32" height="32" alt="Instagram"><span class="ms-2 d-block d-lg-none">Инстаграм</span>
                         </a>
                     </li>
                     <li>
-                        <a class="nav-link d-flex align-items-center" href="https://invite.viber.com/?g2=AQAg5Rkk2LluF0zHtRAvabtjZ4jDtGaaMApRoqe3%2FboHZogbep9nBgCTSKDPVqTl" target="_blank" rel="noreferrer">
+                        <a class="nav-link d-flex align-items-center" href="https://invite.viber.com/?g2=AQAg5Rkk2LluF0zHtRAvabtjZ4jDtGaaMApRoqe3%2FboHZogbep9nBgCTSKDPVqTl" target="_blank" rel="noreferrer" aria-label="viber">
                             <div class="agr-viber">
                                 <i class="fab fa-viber"></i>
                             </div>

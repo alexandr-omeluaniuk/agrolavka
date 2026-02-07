@@ -44,7 +44,7 @@
                             <li class="d-flex gap-3 mb-2 flex-column">
                                 <a href="https://www.instagram.com/agrolavka.by">
                                     <div class="d-flex align-items-center">
-                                        <img src="/assets/img/instagram.ico" alt="Instagram">
+                                        <img src="/assets/img/instagram.png" width="32" height="32" alt="Instagram">
                                         <h5 class="text-light mb-0 mt-0 ms-2">Инстаграм</h5>
                                     </div>
                                 </a>
