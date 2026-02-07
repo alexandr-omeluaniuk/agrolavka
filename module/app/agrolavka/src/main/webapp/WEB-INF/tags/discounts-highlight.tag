@@ -16,7 +16,7 @@
     <h4 class="mb-3"><strong>Акции</strong></h4>
     <h6 class="mb-2">Покупайте товары дешевле чем обычно!</h6>
     
-    <div class="agr-products-with-discounts-swiper swiper p-2">
+    <div class="agr-products-with-discounts-swiper swiper p-3">
         <div class="swiper-wrapper">
             <c:forEach items="${products}" var="product">
                 <div class="swiper-slide">
@@ -31,7 +31,7 @@
     </div>
     
     <h6 class="mb-2 mt-4"><strong>нажмите, чтобы просмотреть полный список акционных товаров</strong></h6>
-    <a class="btn btn-outline-danger btn-lg m-2" href="/promotions" role="button" ><i class="fas fa-fire me-1"></i> Все товары на акции</a>
+    <a class="btn btn-outline-dark btn-lg m-2" href="/promotions" role="button" ><i class="fas fa-fire me-1"></i> Все товары на акции</a>
     
     <script>
         (function() {
