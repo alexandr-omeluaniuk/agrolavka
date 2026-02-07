@@ -49,7 +49,7 @@
                     <!-- Icons -->
                     <li class="nav-item me-3 ms-3 me-lg-0">
                         <a class="nav-link d-flex align-items-center" href="https://www.instagram.com/agrolavka.by" target="_blank" rel="noreferrer">
-                            <img src="/assets/img/instagram.ico" alt="Instagram"><span class="ms-2 d-block d-lg-none">Инстаграм</span>
+                            <img src="/assets/img/instagram.png" width="32" height="32" alt="Instagram"><span class="ms-2 d-block d-lg-none">Инстаграм</span>
                         </a>
                     </li>
                     <li>

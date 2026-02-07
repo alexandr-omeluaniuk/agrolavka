@@ -22,7 +22,7 @@
                         </a>
                         <a class="nav-link" href="tel:+375292848848" style="flex: 1"><i class="fas fa-phone-alt"></i> <b>(29) 2-848-848</b></a>
                         <a href="https://www.instagram.com/agrolavka.by" target="_blank" rel="noreferrer" class="me-2">
-                            <img src="/assets/img/instagram.ico" alt="Instagram">
+                            <img src="/assets/img/instagram.png" alt="Instagram" width="32" height="32">
                         </a>
                         <a href="https://invite.viber.com/?g2=AQAg5Rkk2LluF0zHtRAvabtjZ4jDtGaaMApRoqe3%2FboHZogbep9nBgCTSKDPVqTl" target="_blank" rel="noreferrer">
                             <div class="agr-viber">
