@@ -17,7 +17,7 @@
 <section class="text-center">
     <h4 class="mb-3"><strong>Наша основная специализация</strong></h4>
     
-    <div class="agr-top-categories-swiper swiper p-3">
+    <div class="agr-top-categories-swiper swiper p-2">
         <div class="swiper-wrapper">
             <c:forEach items="${topCategories}" var="category">
                 <div class="swiper-slide">
