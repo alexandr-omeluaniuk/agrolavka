@@ -35,6 +35,7 @@ public class AgrolavkaPublicRestControllerTest extends AbstractAgrolavkaMvcTest 
         final var productGroup = coreDao.create(AgrolavkaDataFactory.generateProductGroup("New group"));
         coreDao.create(AgrolavkaDataFactory.generateProduct(productGroup, "Hummer", 100.0, 2.0));
         when(luceneIndexer.search(any())).thenReturn(new LuceneSearchResult(Collections.emptyList(), ""));
+        when(luceneIndexer.searchByDesc(any())).thenReturn(new LuceneSearchResult(Collections.emptyList(), ""));
 
         final var response = callGet(
             SiteUrls.URL_PUBLIC + "/search?searchText=",
