@@ -51,16 +51,28 @@ public class ProductService {
     
     public ProductsSearchResponse quickSearchProducts(String searchText) {
         final var resultsMap = Arrays.stream(searchText.split(" ")).map(this::searchByToken).toList();
-        List<Product> products = new ArrayList<>(collectSearchResults(resultsMap));
-        if (products.isEmpty()) {
+        Set<Product> productsSet = new HashSet<>(collectSearchResults(resultsMap));
+        if (productsSet.size() < QUICK_SEARCH_PRODUCTS_MAX) {
             // ищем по описанию если не нашли по названию
             final var resultsMap2 = Arrays.stream(searchText.split(" ")).map(this::searchByTokenDesc).toList();
-            products = new ArrayList<>(collectSearchResults(resultsMap2));
+            productsSet.addAll(collectSearchResults(resultsMap2));
+        }
+        List<Product> products;
+        if (productsSet.size() > QUICK_SEARCH_PRODUCTS_MAX) {
+            products = new ArrayList<>(productsSet).subList(0, QUICK_SEARCH_PRODUCTS_MAX - 1);
+        } else {
+            products = new ArrayList<>(productsSet);
         }
         products.sort((a, b) -> {
-            final var aName = a.getName();
-            final var bName = b.getName();
-            return aName.toLowerCase().compareTo(bName.toLowerCase());
+            if (a.getSearchPriority() < b.getSearchPriority()) {
+                return -1;
+            } else if (a.getSearchPriority() > b.getSearchPriority()) {
+                return 1;
+            } else {
+                final var aName = a.getName();
+                final var bName = b.getName();
+                return aName.toLowerCase().compareTo(bName.toLowerCase());
+            }
         });
         products.forEach(product -> {
             product.setPrice(PriceCalculator.getShopPrice(product.getPrice(), product.getDiscount()));
@@ -128,6 +140,7 @@ public class ProductService {
             products = productDao.search(request);
             term = luceneResult.term;
         }
+        products.forEach(p -> p.setSearchPriority(0));
         return new SubResult(products, term);
     }
 
@@ -144,6 +157,7 @@ public class ProductService {
         request.setProductIds(matchedIds);
         request.setText(null);
         final var products = productDao.search(request);
+        products.forEach(p -> p.setSearchPriority(1));
         return new SubResult(products, luceneResult.term);
     }
 

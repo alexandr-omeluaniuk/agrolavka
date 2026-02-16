@@ -115,6 +115,10 @@ public class Product extends ExternalEntity {
 
     @Transient
     private List<ProductAttributeLink> attributeLinks;
+
+    /** Приоритет для поиска, чем число меньше, тем выше будет позиция в поиске */
+    @Transient
+    private Integer searchPriority;
     
     public String getName() {
         return name;
@@ -311,6 +315,13 @@ public class Product extends ExternalEntity {
     }
     public void setTradePriceLimit(Integer tradePriceLimit) {
         this.tradePriceLimit = tradePriceLimit;
+    }
+    public Integer getSearchPriority() {
+        return searchPriority;
+    }
+
+    public void setSearchPriority(Integer searchPriority) {
+        this.searchPriority = searchPriority;
     }
 
     @Override
