@@ -51,7 +51,12 @@ public class ProductService {
     
     public ProductsSearchResponse quickSearchProducts(String searchText) {
         final var resultsMap = Arrays.stream(searchText.split(" ")).map(this::searchByToken).toList();
-        final var products = new ArrayList<>(collectSearchResults(resultsMap));
+        List<Product> products = new ArrayList<>(collectSearchResults(resultsMap));
+        if (products.isEmpty()) {
+            // ищем по описанию если не нашли по названию
+            final var resultsMap2 = Arrays.stream(searchText.split(" ")).map(this::searchByTokenDesc).toList();
+            products = new ArrayList<>(collectSearchResults(resultsMap2));
+        }
         products.sort((a, b) -> {
             final var aName = a.getName();
             final var bName = b.getName();
@@ -124,6 +129,22 @@ public class ProductService {
             term = luceneResult.term;
         }
         return new SubResult(products, term);
+    }
+
+    private SubResult searchByTokenDesc(String token) {
+        ProductsSearchRequest request = new ProductsSearchRequest();
+        request.setPage(1);
+        request.setPageSize(QUICK_SEARCH_PRODUCTS_MAX);
+        request.setText(token);
+        request.setOrder("asc");
+        request.setOrderBy(Product_.NAME);
+        final var luceneResult = indexer.searchByDesc(token);
+        final var matchedIds = luceneResult.documents.stream().map(doc -> Long.valueOf(doc.get("id")))
+            .collect(Collectors.toSet());
+        request.setProductIds(matchedIds);
+        request.setText(null);
+        final var products = productDao.search(request);
+        return new SubResult(products, luceneResult.term);
     }
 
     public List<Product> getRelatedProducts(Long productId) {
