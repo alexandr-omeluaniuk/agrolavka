@@ -13,6 +13,7 @@ import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
+import org.jsoup.Jsoup;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -108,12 +109,50 @@ public class LuceneIndexer {
         }).get();
     }
 
+    public LuceneSearchResult searchByDesc(String text) {
+        if (reader == null) {
+            return new LuceneSearchResult(new ArrayList<>(), "");
+        }
+        final var result1 = doSearchByDescription(text.toLowerCase());
+        if (text.length() < 3) {
+            return new LuceneSearchResult(result1, text);
+        } else {
+            final var lang2Text = inverseLanguage(text);
+            final var result2 = doSearchByDescription(lang2Text);
+            return result1.size() >= result2.size()
+                ? new LuceneSearchResult(result1, text) : new LuceneSearchResult(result2, lang2Text);
+        }
+    }
+
+    private List<Document> doSearchByDescription(String langText) {
+        return ((ThrowingSupplier<List<Document>>) () -> {
+            final var query = new FuzzyQuery(new Term("description", langText.toLowerCase()), 2);
+            IndexSearcher searcher = new IndexSearcher(reader);
+            TopDocs topDocs = searcher.search(query, QUICK_SEARCH_PRODUCTS_MAX);
+            final var docs = Arrays.stream(topDocs.scoreDocs).toList().stream()
+                .map(scoreDoc -> ((ThrowingSupplier<Document>) () -> {
+                    return searcher.doc(scoreDoc.doc);
+                }).get())
+                .toList();
+            return docs;
+        }).get();
+    }
+
     private void addToIndex(Product product) {
         try {
             final var term = new Term("id", product.getId().toString());
             final var doc = new Document();
             doc.add(new LongField("id", product.getId(), Field.Store.YES));
             doc.add(new TextField("name", product.getName().toLowerCase(), Field.Store.NO));
+            if (product.getDescription() != null) {
+                doc.add(
+                    new TextField(
+                        "description",
+                        Jsoup.parse(product.getDescription()).text().toLowerCase(),
+                        Field.Store.NO
+                    )
+                );
+            }
             writer.updateDocument(term, doc);
             writer.commit();
             LOG.debug("Product indexed [" + product.getId() +"]");

@@ -28,6 +28,7 @@ dependencyResolutionManagement {
             library('luceneGrouping', 'org.apache.lucene', 'lucene-grouping').versionRef('lucene')
             library('luceneAnalyzersCommon', 'org.apache.lucene', 'lucene-analysis-common').versionRef('lucene')
             library('luceneQueryParser', 'org.apache.lucene', 'lucene-queryparser').versionRef('lucene')
+            library("jsoup", "org.jsoup", "jsoup").version("1.15.3")
         }
     }
 }
