@@ -51,6 +51,8 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         blacklist.add("GET::/shops/phptest.php3");
         blacklist.add("GET::/shops/info.php3");
         blacklist.add("GET::/shops/phpinfo.php3");
+        blacklist.add("GET::/shops/feed");
+        blacklist.add("GET::/shops/rss");
     }
     
     @Override
