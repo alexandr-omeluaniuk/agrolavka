@@ -16,7 +16,7 @@
 
         <div class="row" id="contacts">
             <c:forEach items="${shops}" var="shop">
-                <div class="col-lg-4 col-md-12 gx-4">
+                <div class="col-lg-3 col-md-12 gx-4">
                     <t:shop-short-info shop="${shop}"/>
                 </div>
             </c:forEach>
@@ -25,7 +25,7 @@
         <hr class="d-lg-block d-none"/>
 
         <div class="row">
-            <div class="col-lg-4 col-md-12">
+            <div class="col-lg-3 col-md-12">
                 <div class="row">
 
                     <div class="col-12">
@@ -64,7 +64,7 @@
                 </div>
             </div>
 
-            <div class="col-lg-8 col-md-12">
+            <div class="col-lg-9 col-md-12">
                 <h4>Информация для покупателя</h4>
                 <p>
                     <small>${systemSettings.registrationInfo}</small>
