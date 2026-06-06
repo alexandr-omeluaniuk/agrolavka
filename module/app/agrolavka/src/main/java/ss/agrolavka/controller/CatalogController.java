@@ -90,7 +90,7 @@ class CatalogController extends BaseJspController {
                 setProducts(model, null, productIds, page, sort, available);
                 return JspPage.CATALOG;
             } else if (entity instanceof Product product) {
-                if (product.getSpecial() && prohibitedProductsService.isSpecialProductsMustBeHidden()) {
+                if (Objects.equals(Boolean.TRUE, product.getSpecial()) && prohibitedProductsService.isSpecialProductsMustBeHidden()) {
                     return new ModelAndView(REDIRECT_TO_404);
                 }
                 model.addAttribute(CANONICAL, url);
