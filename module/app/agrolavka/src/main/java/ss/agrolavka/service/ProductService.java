@@ -263,7 +263,8 @@ public class ProductService {
 
     public Product updateProduct(Product product) {
         Product entityFromDB = coreDao.findById(product.getId(), Product.class);
-        final var isResetCache = !Objects.equals(entityFromDB.getHideModifications(), product.getHideModifications());
+        final var isResetCache = !Objects.equals(entityFromDB.getHideModifications(), product.getHideModifications())
+            || !Objects.equals(entityFromDB.getSpecial(), product.getSpecial());
         mySkladService.updateProduct(product);
         final List<EntityImage> actualImages = getActualImages(
             entityFromDB.getImages(), product.getImages());

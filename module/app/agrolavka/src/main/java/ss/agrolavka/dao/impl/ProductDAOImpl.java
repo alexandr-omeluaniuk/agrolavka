@@ -143,7 +143,6 @@ class ProductDAOImpl implements ProductDAO {
         if (request.isInvisible()) {
             predicates.add(cb.equal(c.get(Product_.invisible), true));
         }
-        System.out.println(request.isSpecial());
         if (request.isSpecial()) {
             predicates.add(cb.equal(c.get(Product_.special), true));
         }
