@@ -107,6 +107,10 @@ public class Product extends ExternalEntity {
     @Column(name = "is_invisible")
     private Boolean invisible;
 
+    /** Can be hidden by schedule */
+    @Column(name = "is_special")
+    private Boolean special;
+
     @Column(name = "hide_modifications")
     private Boolean hideModifications;
     
@@ -294,6 +298,14 @@ public class Product extends ExternalEntity {
 
     public void setInvisible(Boolean invisible) {
         this.invisible = invisible;
+    }
+
+    public Boolean getSpecial() {
+        return special;
+    }
+
+    public void setSpecial(Boolean special) {
+        this.special = special;
     }
 
     public Boolean getHideModifications() {

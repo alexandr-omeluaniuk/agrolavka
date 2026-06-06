@@ -11,10 +11,7 @@ import ss.agrolavka.constants.JspPage;
 import ss.agrolavka.constants.SiteConstants;
 import ss.agrolavka.constants.SiteUrls;
 import ss.agrolavka.dao.ProductDAO;
-import ss.agrolavka.service.AllProductGroupsService;
-import ss.agrolavka.service.ProductAttributesService;
-import ss.agrolavka.service.ProductService;
-import ss.agrolavka.service.ProductsGroupService;
+import ss.agrolavka.service.*;
 import ss.agrolavka.util.CartUtils;
 import ss.agrolavka.wrapper.ProductsSearchRequest;
 import ss.entity.agrolavka.*;
@@ -56,6 +53,9 @@ class CatalogController extends BaseJspController {
 
     @Autowired
     private ProductAttributesService productAttributesService;
+
+    @Autowired
+    private ProhibitedProductsService prohibitedProductsService;
         
     @RequestMapping(SiteUrls.PAGE_CATALOG)
     public Object catalog(
@@ -90,6 +90,9 @@ class CatalogController extends BaseJspController {
                 setProducts(model, null, productIds, page, sort, available);
                 return JspPage.CATALOG;
             } else if (entity instanceof Product product) {
+                if (Objects.equals(Boolean.TRUE, product.getSpecial()) && prohibitedProductsService.isSpecialProductsMustBeHidden()) {
+                    return new ModelAndView(REDIRECT_TO_404);
+                }
                 model.addAttribute(CANONICAL, url);
                 model.addAttribute(RELATED_PRODUCTS, productService.getRelatedProducts(product.getId()));
                 setProductAttributes(model, product, request);
@@ -275,6 +278,7 @@ class CatalogController extends BaseJspController {
         }
         searchRequest.setPage(page == null ? 1 : page);
         searchRequest.setAvailable(available);
+        searchRequest.setExcludeSpecial(prohibitedProductsService.isSpecialProductsMustBeHidden());
         int pageSize = SiteConstants.SEARCH_RESULT_TILES_COLUMNS * SiteConstants.SEARCH_RESULT_TILES_ROWS;
         searchRequest.setPageSize(pageSize);
         if (SORT_ALPHABET.equals(sort)) {

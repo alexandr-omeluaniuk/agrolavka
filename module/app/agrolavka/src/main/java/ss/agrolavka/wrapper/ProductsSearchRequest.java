@@ -36,7 +36,11 @@ public class ProductsSearchRequest {
 
     private boolean invisible = false;
 
+    private boolean special = false;
+
     private boolean noInvisible = true;
+
+    private boolean excludeSpecial = false;
     // =================================================== SET & GET ==================================================
     /**
      * @return the groupId
@@ -173,6 +177,22 @@ public class ProductsSearchRequest {
 
     public void setInvisible(boolean invisible) {
         this.invisible = invisible;
+    }
+
+    public boolean isSpecial() {
+        return special;
+    }
+
+    public void setSpecial(boolean special) {
+        this.special = special;
+    }
+
+    public boolean isExcludeSpecial() {
+        return excludeSpecial;
+    }
+
+    public void setExcludeSpecial(boolean flag) {
+        this.excludeSpecial = flag;
     }
 
     public boolean isNoInvisible() {

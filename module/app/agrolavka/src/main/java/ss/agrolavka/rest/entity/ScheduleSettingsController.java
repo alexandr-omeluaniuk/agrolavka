@@ -54,7 +54,9 @@ public class ScheduleSettingsController extends BasicEntityRestController<Schedu
         final var caches = new String[] {
             CacheKey.SCHEDULE_SETTINGS,
             CacheKey.PRODUCT_VARIANTS,
-            CacheKey.SYSTEM_SETTINGS
+            CacheKey.SYSTEM_SETTINGS,
+            CacheKey.PRODUCTS_WITH_DISCOUNT,
+            CacheKey.NEW_PRODUCTS
         };
         Arrays.stream(caches).forEach(name -> {
             final var cache = cacheManager.getCache(name);
