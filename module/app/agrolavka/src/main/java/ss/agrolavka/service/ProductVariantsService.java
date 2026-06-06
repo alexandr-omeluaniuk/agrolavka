@@ -13,9 +13,6 @@ import ss.entity.agrolavka.Product;
 import ss.entity.agrolavka.ProductVariant;
 import ss.martin.core.dao.CoreDao;
 
-import java.time.DayOfWeek;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -39,6 +36,9 @@ public class ProductVariantsService {
     private SystemSettingsService systemSettingsService;
 
     @Autowired
+    private ProhibitedProductsService prohibitedProductsService;
+
+    @Autowired
     private CacheManager cacheManager;
 
     @PostConstruct
@@ -46,7 +46,7 @@ public class ProductVariantsService {
         final var prohibitedThread = new Thread(() -> {
             Boolean prevProhibitedFlag = null;
             while (true) {
-                final var isProhibited = isTimeForShowProhibited();
+                final var isProhibited = prohibitedProductsService.isTimeForShowProhibited();
                 if (!Objects.equals(isProhibited, prevProhibitedFlag)) {
                     resetCaches();
                     LOG.info("Prohibited flag resets caches");
@@ -70,7 +70,7 @@ public class ProductVariantsService {
         final var productIds = allVariants.stream().map(ProductVariant::getParentId).toList();
         final var products = productDAO.getByExternalIds(productIds).stream()
             .collect(Collectors.toMap(Product::getExternalId, Function.identity()));
-        final var isProhibited = isTimeForShowProhibited();
+        final var isProhibited = prohibitedProductsService.isTimeForShowProhibited();
         LOG.info("Prohibited flag: " + isProhibited);
         return allVariants.stream().filter(v -> {
             if (products.containsKey(v.getParentId())
@@ -85,23 +85,6 @@ public class ProductVariantsService {
         }).collect(
             Collectors.groupingBy(ProductVariant::getParentId)
         );
-    }
-
-    private Boolean isTimeForShowProhibited() {
-        final var settings = systemSettingsService.getScheduleSettings();
-        final var now = LocalDateTime.now().atZone(ZoneId.of("UTC"))
-            .withZoneSameInstant(ZoneId.of("Europe/Minsk"));
-        final var nowDayOfWeek = now.getDayOfWeek();
-        final var nowHours = now.getHour();
-        final var nowMinutes = now.getMinute();
-        final var nowTimestamp = nowHours * 60 + nowMinutes;
-        final var matched = settings.stream().filter(s -> {
-            final var fromTimestamp = s.getFromHours() * 60 + s.getFromMinutes();
-            final var toTimestamp = s.getToHours() * 60 + s.getToMinutes();
-            return DayOfWeek.of(s.getDayOfWeek()) == nowDayOfWeek &&
-                fromTimestamp < nowTimestamp && nowTimestamp < toTimestamp;
-        }).toList();
-        return !matched.isEmpty();
     }
 
     private void resetCaches() {

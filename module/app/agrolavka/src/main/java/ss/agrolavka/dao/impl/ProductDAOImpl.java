@@ -154,6 +154,14 @@ class ProductDAOImpl implements ProductDAO {
                 )
             );
         }
+        if (request.isExcludeSpecial()) {
+            predicates.add(
+                cb.or(
+                    cb.equal(c.get(Product_.special), false),
+                    cb.isNull(c.get(Product_.special))
+                )
+            );
+        }
         return predicates;
     }
     
