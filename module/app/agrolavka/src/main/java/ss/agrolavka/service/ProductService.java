@@ -48,6 +48,9 @@ public class ProductService {
 
     @Autowired
     private LuceneIndexer indexer;
+
+    @Autowired
+    private ProhibitedProductsService prohibitedProductsService;
     
     public ProductsSearchResponse quickSearchProducts(String searchText) {
         final var resultsMap = Arrays.stream(searchText.split(" ")).map(this::searchByToken).toList();
@@ -128,6 +131,7 @@ public class ProductService {
         request.setText(token);
         request.setOrder("asc");
         request.setOrderBy(Product_.NAME);
+        request.setExcludeSpecial(prohibitedProductsService.isSpecialProductsMustBeHidden());
         List<Product> products = productDao.search(request);
         String term = token;
         if (products.isEmpty()) {
@@ -151,6 +155,7 @@ public class ProductService {
         request.setText(token);
         request.setOrder("asc");
         request.setOrderBy(Product_.NAME);
+        request.setExcludeSpecial(prohibitedProductsService.isSpecialProductsMustBeHidden());
         final var luceneResult = indexer.searchByDesc(token);
         final var matchedIds = luceneResult.documents.stream().map(doc -> Long.valueOf(doc.get("id")))
             .collect(Collectors.toSet());
@@ -174,6 +179,7 @@ public class ProductService {
             searchRequest.setPage(1);
             searchRequest.setPageSize(12);
             searchRequest.setProductIds(new HashSet<>(portion));
+            searchRequest.setExcludeSpecial(prohibitedProductsService.isSpecialProductsMustBeHidden());
             final var products =  productDao.search(searchRequest);
             products.forEach(p -> p.setVariants(getVariants(p)));
             final var productsMap = products.stream().collect(Collectors.toMap(Product::getId, Function.identity()));
@@ -337,7 +343,11 @@ public class ProductService {
     }
 
     private void resetProductVariantCache() {
-        final var caches = new String[] { CacheKey.PRODUCT_VARIANTS };
+        final var caches = new String[] {
+            CacheKey.PRODUCT_VARIANTS,
+            CacheKey.PRODUCTS_WITH_DISCOUNT,
+            CacheKey.NEW_PRODUCTS
+        };
         Arrays.stream(caches).forEach(name -> {
             final var cache = cacheManager.getCache(name);
             if (cache != null) {
