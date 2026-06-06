@@ -202,6 +202,7 @@ public class ProductService {
         searchRequest.setPageSize(12);
         searchRequest.setOrder("desc");
         searchRequest.setOrderBy(EntityAudit_.CREATED_DATE);
+        searchRequest.setExcludeSpecial(prohibitedProductsService.isSpecialProductsMustBeHidden());
         final var products =  productDao.search(searchRequest);
         products.forEach(p -> p.setVariants(getVariants(p)));
         return products;
@@ -213,6 +214,7 @@ public class ProductService {
         searchRequest.setPage(1);
         searchRequest.setPageSize(Integer.MAX_VALUE);
         searchRequest.setWithDiscounts(true);
+        searchRequest.setExcludeSpecial(prohibitedProductsService.isSpecialProductsMustBeHidden());
         final var rawProducts = productDao.search(searchRequest);
         rawProducts.forEach(p -> p.setVariants(getVariants(p)));
         final var products = rawProducts.stream()
