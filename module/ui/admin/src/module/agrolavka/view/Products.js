@@ -84,6 +84,7 @@ function Products() {
     const [filterAvailable, setFilterAvailable] = React.useState(false);
     const [filterDiscounts, setFilterDiscounts] = React.useState(false);
     const [filterInvisible, setFilterInvisible] = React.useState(false);
+    const [filterSpecial, setFilterSpecial] = React.useState(false);
 
     const [formConfig, setFormConfig] = React.useState(null);
     const [formTitle, setFormTitle] = React.useState('');
@@ -95,34 +96,41 @@ function Products() {
     const productsFilter = () => {
         return (
                 <Grid container spacing={2}>
-                    <Grid item xs={12} md={4}>
+                    <Grid item xs={12} md={8}>
                         <TextField label={t('m_agrolavka:products.product_name')} variant="outlined" fullWidth onChange={(e) => {
                             setFilterProductName(e.target.value);
                         }}/>
                     </Grid>
-                    <Grid item xs={12} md={2}>
+                    <Grid item xs={12} md={4}>
                         <TextField label={t('m_agrolavka:products.product_code')} variant="outlined" fullWidth onChange={(e) => {
                             setFilterCode(e.target.value);
                         }}/>
                     </Grid>
-                    <Grid item xs={6} md={2} className={classes.filterAvailable}>
+                    <Grid item xs={6} md={3} className={classes.filterAvailable}>
                         <FormControlLabel label={t('m_agrolavka:products.available')} control={(
                             <Switch checked={filterAvailable} onChange={(e) => {
                                 setFilterAvailable(e.target.checked);
                             }}/>
                         )}/>
                     </Grid>
-                    <Grid item xs={6} md={2} className={classes.filterAvailable}>
+                    <Grid item xs={6} md={3} className={classes.filterAvailable}>
                         <FormControlLabel label={t('m_agrolavka:products.discounts')} control={(
                             <Switch checked={filterDiscounts} onChange={(e) => {
                                 setFilterDiscounts(e.target.checked);
                             }}/>
                         )}/>
                     </Grid>
-                    <Grid item xs={6} md={2} className={classes.filterAvailable}>
+                    <Grid item xs={6} md={3} className={classes.filterAvailable}>
                         <FormControlLabel label={'Скрытые'} control={(
                             <Switch checked={filterInvisible} onChange={(e) => {
                                 setFilterInvisible(e.target.checked);
+                            }}/>
+                        )}/>
+                    </Grid>
+                    <Grid item xs={6} md={3} className={classes.filterAvailable}>
+                        <FormControlLabel label={'Специальные'} control={(
+                            <Switch checked={filterSpecial} onChange={(e) => {
+                                setFilterSpecial(e.target.checked);
                             }}/>
                         )}/>
                     </Grid>
@@ -192,6 +200,7 @@ function Products() {
         apiUrl.addGetExtraParam('code', filterCode ? filterCode : '');
         apiUrl.addGetExtraParam('available', filterAvailable);
         apiUrl.addGetExtraParam('discounts', filterDiscounts);
+        apiUrl.addGetExtraParam('special', filterSpecial);
         apiUrl.addGetExtraParam('invisible', filterInvisible);
         apiUrl.addGetExtraParam('includesHidden', true);
         const newTableConfig = new TableConfig(
@@ -272,7 +281,7 @@ function Products() {
         newTableConfig.isFormDialog = false;
         setTableConfig(newTableConfig);
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [selectedProductGroup, filterProductName, filterCode, filterAvailable, filterDiscounts, filterInvisible]);
+    }, [selectedProductGroup, filterProductName, filterCode, filterAvailable, filterDiscounts, filterInvisible, filterSpecial]);
     useEffect(() => {
         if (formConfig === null) {
             const attributesTree = new FormField('attributes', TYPES.CUSTOM, '').setGrid({xs: 12, md: 12});

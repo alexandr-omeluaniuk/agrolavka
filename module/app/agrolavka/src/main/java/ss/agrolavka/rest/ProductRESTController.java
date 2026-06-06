@@ -40,6 +40,7 @@ public class ProductRESTController {
             @RequestParam(value = "available", required = false) boolean available,
             @RequestParam(value = "discounts", required = false) boolean discounts,
             @RequestParam(value = "invisible", required = false) boolean invisible,
+            @RequestParam(value = "special", required = false) boolean special,
             @RequestParam(value = "includesHidden", required = false) boolean includesHidden
     ) throws Exception {
         ProductsSearchRequest request = new ProductsSearchRequest();
@@ -54,6 +55,7 @@ public class ProductRESTController {
         request.setWithDiscounts(discounts);
         request.setIncludesHidden(includesHidden);
         request.setInvisible(invisible);
+        request.setSpecial(special);
         request.setNoInvisible(false);
         final var products = productDAO.search(request);
         productAttributesService.setAttributeLinks(products);

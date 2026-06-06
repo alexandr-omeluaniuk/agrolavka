@@ -36,6 +36,8 @@ public class ProductsSearchRequest {
 
     private boolean invisible = false;
 
+    private boolean special = false;
+
     private boolean noInvisible = true;
     // =================================================== SET & GET ==================================================
     /**
@@ -173,6 +175,14 @@ public class ProductsSearchRequest {
 
     public void setInvisible(boolean invisible) {
         this.invisible = invisible;
+    }
+
+    public boolean isSpecial() {
+        return special;
+    }
+
+    public void setSpecial(boolean special) {
+        this.special = special;
     }
 
     public boolean isNoInvisible() {

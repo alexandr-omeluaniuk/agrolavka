@@ -280,6 +280,7 @@ public class ProductService {
         entityFromDB.setSeoDescription(product.getSeoDescription());
         entityFromDB.setVideoURL(product.getVideoURL());
         entityFromDB.setInvisible(product.getInvisible());
+        entityFromDB.setSpecial(product.getSpecial());
         entityFromDB.setHideModifications(product.getHideModifications());
         final var updated =  coreDao.update(entityFromDB);
         if (isResetCache) {

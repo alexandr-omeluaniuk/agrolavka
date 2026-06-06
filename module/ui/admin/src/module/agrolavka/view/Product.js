@@ -53,7 +53,8 @@ function Product(props) {
             new Validator(VALIDATORS.REQUIRED),
             new Validator(VALIDATORS.MIN, {size: 0})
         ]).setAttributes({ decimalScale: 2, suffix: ' BYN', align: 'right' }),
-        new FormField('invisible', TYPES.BOOLEAN, 'Скрыть продукт').setGrid({xs: 12, md: 6}),
+        new FormField('invisible', TYPES.BOOLEAN, 'Скрыть продукт').setGrid({xs: 12, md: 3}),
+        new FormField('special', TYPES.BOOLEAN, 'Специальный').setGrid({xs: 12, md: 3}),
         new FormField('hideModifications', TYPES.BOOLEAN, 'Скрыть модификации продукта').setGrid({xs: 12, md: 6}),
         new FormField('description', TYPES.HTML, t('m_agrolavka:products.product_description')).setGrid({xs: 12})
                 .setAttributes({ labelWidth: 200 }),
